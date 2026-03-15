@@ -1,0 +1,2730 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>データサイエンス入門 第2回｜データの分類と収集法</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@400;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:        #0f1117;
+  --bg2:       #161b27;
+  --bg3:       #1e2535;
+  --border:    #2a3349;
+  --text:      #e2e8f5;
+  --text-muted:#8a99b8;
+  --accent:    #5b8dee;
+  --accent2:   #38bdf8;
+  --green:     #34d399;
+  --yellow:    #fbbf24;
+  --orange:    #f97316;
+  --red:       #f87171;
+  --purple:    #a78bfa;
+  --pink:      #f472b6;
+
+  --audio-border: #3b82f6;
+  --audio-bg:     #1e3a5f22;
+  --infer-border: #8b5cf6;
+  --infer-bg:     #3b1f7222;
+  --warn-border:  #f97316;
+  --warn-bg:      #4a1f0522;
+  --tip-border:   #34d399;
+  --tip-bg:       #0d3d2a22;
+  --exam-border:  #fbbf24;
+  --exam-bg:      #3d2d0522;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.8;
+  display: flex;
+}
+
+/* ─── SIDEBAR ─── */
+#sidebar {
+  width: 260px;
+  min-width: 260px;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  overflow-y: auto;
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  padding: 24px 0;
+  z-index: 100;
+}
+#sidebar::-webkit-scrollbar { width: 4px; }
+#sidebar::-webkit-scrollbar-track { background: transparent; }
+#sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+.sidebar-header {
+  padding: 0 20px 20px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+.sidebar-header .course { font-size: 10px; color: var(--accent2); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 6px; }
+.sidebar-header .title { font-size: 13px; font-weight: 700; line-height: 1.4; }
+
+.toc-section { margin-bottom: 4px; }
+.toc-chapter {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 20px;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.toc-chapter:hover { color: var(--accent); }
+.toc-item {
+  display: block;
+  padding: 5px 20px 5px 32px;
+  font-size: 12px; color: var(--text-muted);
+  text-decoration: none;
+  transition: all 0.15s;
+  border-left: 2px solid transparent;
+  margin-left: 0;
+}
+.toc-item:hover { color: var(--text); border-left-color: var(--accent); background: #ffffff08; }
+.toc-item.active { color: var(--accent); border-left-color: var(--accent); background: #5b8dee10; }
+
+/* ─── MAIN ─── */
+#main {
+  flex: 1;
+  min-width: 0;
+  padding: 48px 52px 80px;
+  max-width: 900px;
+}
+
+/* ─── HEADER HERO ─── */
+.hero {
+  background: linear-gradient(135deg, #1a2540 0%, #0f1117 60%, #1a1f35 100%);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 40px 44px;
+  margin-bottom: 48px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; top: -60px; right: -60px;
+  width: 220px; height: 220px;
+  background: radial-gradient(circle, #5b8dee18 0%, transparent 70%);
+  border-radius: 50%;
+}
+.hero-label {
+  font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--accent2); margin-bottom: 10px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.hero-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 28px; font-weight: 700; line-height: 1.3;
+  color: var(--text); margin-bottom: 20px;
+}
+.hero-title span { color: var(--accent); }
+.hero-meta {
+  display: flex; flex-wrap: wrap; gap: 16px;
+}
+.hero-meta-item {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 12px; color: var(--text-muted);
+  font-family: 'JetBrains Mono', monospace;
+}
+.hero-meta-item .dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent);
+}
+
+/* ─── SECTION ─── */
+.chapter-divider {
+  display: flex; align-items: center; gap: 16px;
+  margin: 56px 0 32px;
+}
+.chapter-number {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; font-weight: 500;
+  color: var(--accent);
+  background: #5b8dee15;
+  border: 1px solid #5b8dee40;
+  padding: 4px 10px; border-radius: 4px;
+  white-space: nowrap;
+}
+.chapter-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 22px; font-weight: 700;
+  color: var(--text);
+}
+.chapter-line { flex: 1; height: 1px; background: var(--border); }
+
+.section {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px 32px;
+  margin-bottom: 20px;
+  animation: fadeUp 0.4s ease both;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.section-title {
+  font-size: 16px; font-weight: 700;
+  color: var(--accent2);
+  margin-bottom: 18px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+}
+.section-title .icon { font-size: 18px; }
+
+h3 {
+  font-size: 14px; font-weight: 700;
+  color: var(--yellow);
+  margin: 22px 0 10px;
+}
+h4 {
+  font-size: 13px; font-weight: 700;
+  color: var(--text);
+  margin: 16px 0 8px;
+}
+
+p { margin-bottom: 10px; color: var(--text); }
+p:last-child { margin-bottom: 0; }
+
+ul, ol { padding-left: 20px; margin-bottom: 10px; }
+li { margin-bottom: 4px; }
+
+strong { color: var(--accent2); font-weight: 700; }
+em { color: var(--yellow); font-style: normal; font-weight: 500; }
+code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  padding: 1px 6px; border-radius: 4px;
+  color: var(--green);
+}
+
+/* ─── BLOCKS ─── */
+.block {
+  border-left: 3px solid;
+  padding: 14px 18px;
+  border-radius: 0 8px 8px 0;
+  margin: 14px 0;
+  font-size: 14px;
+}
+.block-audio   { border-color: var(--audio-border); background: var(--audio-bg); }
+.block-infer   { border-color: var(--infer-border); background: var(--infer-bg); }
+.block-warn    { border-color: var(--warn-border);  background: var(--warn-bg);  }
+.block-tip     { border-color: var(--tip-border);   background: var(--tip-bg);   }
+.block-exam    { border-color: var(--exam-border);  background: var(--exam-bg);  }
+.block-def     { border-color: var(--accent);       background: #5b8dee12;       }
+
+.block-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; margin-bottom: 6px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.block-audio .block-label   { color: var(--audio-border); }
+.block-infer .block-label   { color: var(--infer-border); }
+.block-warn  .block-label   { color: var(--warn-border);  }
+.block-tip   .block-label   { color: var(--tip-border);   }
+.block-exam  .block-label   { color: var(--exam-border);  }
+.block-def   .block-label   { color: var(--accent);       }
+
+/* ─── POINTER ─── */
+.pointer {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: var(--text-muted);
+  margin-top: 6px; display: block;
+}
+
+/* ─── TABLES ─── */
+.table-wrap { overflow-x: auto; margin: 14px 0; border-radius: 8px; border: 1px solid var(--border); }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th {
+  background: var(--bg3); color: var(--accent2);
+  font-weight: 700; font-size: 11px; letter-spacing: 0.06em;
+  padding: 10px 14px; text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+td {
+  padding: 9px 14px;
+  border-bottom: 1px solid #1e263a;
+  vertical-align: top;
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: #ffffff04; }
+.check  { color: var(--green);  font-weight: 700; }
+.cross  { color: var(--red);    font-weight: 700; }
+.na     { color: var(--text-muted); }
+.badge {
+  display: inline-block;
+  font-size: 10px; font-weight: 700;
+  padding: 2px 7px; border-radius: 3px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.badge-high   { background: #34d39920; color: var(--green);  border: 1px solid #34d39940; }
+.badge-mid    { background: #fbbf2420; color: var(--yellow); border: 1px solid #fbbf2440; }
+.badge-low    { background: #f8717120; color: var(--red);    border: 1px solid #f8717140; }
+.badge-accent { background: #5b8dee20; color: var(--accent); border: 1px solid #5b8dee40; }
+
+/* ─── FLOW DIAGRAM ─── */
+.flow {
+  display: flex; align-items: stretch; gap: 0;
+  margin: 16px 0; overflow-x: auto; padding-bottom: 4px;
+}
+.flow-item {
+  display: flex; flex-direction: column; align-items: center;
+}
+.flow-box {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 12px; font-weight: 700;
+  text-align: center; min-width: 90px;
+  white-space: nowrap;
+}
+.flow-box.active { border-color: var(--accent); background: #5b8dee18; color: var(--accent); }
+.flow-arrow {
+  display: flex; align-items: center;
+  padding: 0 6px; color: var(--accent); font-size: 18px;
+  align-self: center;
+}
+.flow-sub { font-size: 10px; color: var(--text-muted); text-align: center; margin-top: 5px; max-width: 90px; line-height: 1.3; }
+
+/* ─── SCALE TREE ─── */
+.scale-tree {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 16px 0;
+}
+.scale-card {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  transition: border-color 0.2s;
+}
+.scale-card:hover { border-color: var(--accent); }
+.scale-card .label {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; margin-bottom: 4px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.scale-card .name { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+.scale-card .desc { font-size: 12px; color: var(--text-muted); line-height: 1.6; }
+.scale-card .examples { margin-top: 8px; }
+.scale-card .examples span {
+  display: inline-block;
+  font-size: 10px;
+  background: var(--bg); border: 1px solid var(--border);
+  padding: 2px 7px; border-radius: 3px; margin: 2px 2px 0 0;
+  font-family: 'JetBrains Mono', monospace;
+}
+.scale-quant { border-top: 3px solid var(--accent); }
+.scale-quant .label { color: var(--accent); }
+.scale-qual  { border-top: 3px solid var(--green); }
+.scale-qual  .label { color: var(--green); }
+
+/* ─── OPS TABLE ─── */
+.ops-table {
+  width: 100%; border-collapse: separate; border-spacing: 0;
+  font-size: 13px; margin: 16px 0;
+  border: 1px solid var(--border); border-radius: 8px; overflow: hidden;
+}
+.ops-table th { background: var(--bg3); padding: 10px 16px; color: var(--accent2); font-size: 11px; }
+.ops-table td { padding: 10px 16px; border-top: 1px solid #1e263a; }
+.ops-table tr:last-child td { border-bottom: none; }
+.ops-yes { color: var(--green); font-size: 18px; font-weight: 700; text-align: center; }
+.ops-no  { color: var(--red);   font-size: 18px; text-align: center; }
+
+/* ─── SAMPLING TREE ─── */
+.sampling-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px; margin: 16px 0;
+}
+.samp-card {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+.samp-card .num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: var(--accent);
+  background: #5b8dee15; border: 1px solid #5b8dee30;
+  padding: 2px 8px; border-radius: 3px;
+  display: inline-block; margin-bottom: 8px;
+}
+.samp-card .sname { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+.samp-card .sdef  { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; line-height: 1.5; }
+.merit-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+.merit {
+  font-size: 10px; padding: 2px 7px; border-radius: 3px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.merit.good { background: #34d39915; color: var(--green); border: 1px solid #34d39930; }
+.merit.bad  { background: #f8717115; color: var(--red);   border: 1px solid #f8717130; }
+
+/* ─── CC TABLE ─── */
+.cc-table { width: 100%; font-size: 12px; border-collapse: collapse; margin: 14px 0; }
+.cc-table th { background: var(--bg3); padding: 8px 12px; font-size: 11px; color: var(--accent2); border-bottom: 1px solid var(--border); text-align: center; }
+.cc-table td { padding: 8px 12px; border-bottom: 1px solid #1e263a; text-align: center; vertical-align: middle; }
+.cc-table td:first-child { text-align: left; font-family: 'JetBrains Mono', monospace; font-weight: 700; }
+.cc-open  { color: var(--green); font-weight: 700; }
+.cc-notopen { color: var(--red); font-size: 11px; }
+
+/* ─── OPEN DATA 3 ELEMENTS ─── */
+.open-data-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 12px; margin: 16px 0;
+}
+.od-card {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 10px; padding: 18px;
+  text-align: center;
+  transition: transform 0.2s, border-color 0.2s;
+}
+.od-card:hover { transform: translateY(-2px); border-color: var(--accent); }
+.od-card .num-circle {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #fff; font-weight: 700; font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 10px;
+}
+.od-card .od-title { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+.od-card .od-desc  { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
+
+/* ─── DEMO STEPS ─── */
+.demo-step {
+  display: flex; gap: 16px; margin-bottom: 20px;
+  align-items: flex-start;
+}
+.demo-step-num {
+  min-width: 32px; height: 32px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border-radius: 50%; color: #fff; font-weight: 700; font-size: 13px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 2px;
+}
+.demo-step-body { flex: 1; }
+.demo-step-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+.demo-step-why {
+  font-size: 11px; color: var(--accent2);
+  background: #5b8dee10; border: 1px solid #5b8dee25;
+  padding: 4px 10px; border-radius: 4px;
+  margin-bottom: 8px; display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ─── API FLOW ─── */
+.api-flow {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px; margin: 16px 0;
+}
+.api-row {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 8px; font-size: 13px;
+}
+.api-row:last-child { margin-bottom: 0; }
+.api-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; padding: 2px 8px; border-radius: 3px;
+  font-weight: 700; white-space: nowrap;
+}
+.api-tag.base { background: #5b8dee20; color: var(--accent); border: 1px solid #5b8dee40; }
+.api-tag.param { background: #fbbf2420; color: var(--yellow); border: 1px solid #fbbf2440; }
+.api-tag.id   { background: #34d39920; color: var(--green);  border: 1px solid #34d39940; }
+.api-plus { color: var(--text-muted); font-size: 16px; font-weight: 700; }
+.api-result {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; color: var(--green);
+  word-break: break-all; margin-top: 10px;
+  line-height: 1.6;
+}
+
+/* ─── KEYWORD GRID ─── */
+.keyword-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px; margin: 16px 0;
+}
+.kw-card {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px; padding: 14px;
+  transition: border-color 0.2s;
+}
+.kw-card:hover { border-color: var(--accent); }
+.kw-card .kw-term { font-size: 14px; font-weight: 700; color: var(--accent2); margin-bottom: 2px; }
+.kw-card .kw-read { font-size: 10px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; margin-bottom: 6px; }
+.kw-card .kw-def  { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+.kw-card .kw-stars { color: var(--yellow); font-size: 11px; margin-top: 6px; }
+
+/* ─── EXAM TABLE ─── */
+.exam-grid {
+  display: grid; gap: 10px; margin: 16px 0;
+}
+.exam-row {
+  display: flex; gap: 12px; align-items: flex-start;
+  background: var(--bg3); border: 1px solid var(--exam-border);
+  border-radius: 8px; padding: 12px 16px;
+}
+.exam-star { color: var(--yellow); font-size: 18px; flex-shrink: 0; margin-top: 2px; }
+.exam-body .exam-title { font-size: 13px; font-weight: 700; color: var(--yellow); margin-bottom: 4px; }
+.exam-body .exam-desc  { font-size: 12px; color: var(--text-muted); }
+
+/* ─── UNKNOWN TABLE ─── */
+.unknown-item {
+  display: flex; gap: 12px; align-items: flex-start;
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 8px; padding: 12px 16px; margin-bottom: 8px;
+}
+.uid {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; font-weight: 700; color: var(--accent);
+  background: #5b8dee15; border: 1px solid #5b8dee30;
+  padding: 2px 7px; border-radius: 3px; white-space: nowrap;
+  height: fit-content;
+}
+
+/* ─── NEXT CONNECT ─── */
+.next-card {
+  background: linear-gradient(135deg, #1a2540, #1a1f35);
+  border: 1px solid var(--accent);
+  border-radius: 12px; padding: 24px 28px;
+  display: flex; align-items: center; gap: 20px;
+  margin-top: 20px;
+}
+.next-arrow { font-size: 32px; color: var(--accent); }
+.next-body .next-label { font-size: 10px; color: var(--accent2); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 4px; }
+.next-body .next-title { font-size: 16px; font-weight: 700; }
+.next-body .next-desc  { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+/* ─── SVG DIAGRAMS ─── */
+.svg-wrap {
+  margin: 20px 0;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  overflow-x: auto;
+}
+.svg-wrap svg { display: block; margin: 0 auto; max-width: 100%; height: auto; }
+.svg-caption {
+  text-align: center;
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 10px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 900px) {
+  #sidebar { display: none; }
+  #main { padding: 24px 20px 60px; }
+  .scale-tree, .open-data-grid, .sampling-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══ SIDEBAR ══ -->
+<nav id="sidebar">
+  <div class="sidebar-header">
+    <div class="course">データサイエンス入門</div>
+    <div class="title">第2回｜データの分類と収集法</div>
+  </div>
+
+  <div class="toc-section">
+    <div class="toc-chapter">概要</div>
+    <a href="#overview" class="toc-item">学習目標・授業構成</a>
+    <a href="#review" class="toc-item">第1回 復習</a>
+  </div>
+  <div class="toc-section">
+    <div class="toc-chapter">第1章 データの分類</div>
+    <a href="#data-def" class="toc-item">データとは？</a>
+    <a href="#classification" class="toc-item">分類とは？</a>
+    <a href="#class-methods" class="toc-item">データの分類方法</a>
+    <a href="#quantqual" class="toc-item">量的・質的データ</a>
+    <a href="#stevens" class="toc-item">Stevensの尺度水準</a>
+    <a href="#ratio-interval" class="toc-item">比率尺度・間隔尺度</a>
+    <a href="#ordinal-nominal" class="toc-item">順序尺度・名義尺度</a>
+    <a href="#operations" class="toc-item">可能な演算の違い</a>
+    <a href="#struct-unstruct" class="toc-item">構造化・非構造化データ</a>
+    <a href="#primary-secondary" class="toc-item">一次・二次データ</a>
+  </div>
+  <div class="toc-section">
+    <div class="toc-chapter">第2章 データ収集方法</div>
+    <a href="#collection-plan" class="toc-item">調査計画の立案</a>
+    <a href="#data-types" class="toc-item">調査データ・ログデータ</a>
+    <a href="#population" class="toc-item">母集団とは</a>
+    <a href="#census-sample" class="toc-item">全数調査・標本調査</a>
+    <a href="#sampling" class="toc-item">サンプリング方法</a>
+    <a href="#ch2-summary" class="toc-item">第2章まとめ・一覧表</a>
+  </div>
+  <div class="toc-section">
+    <div class="toc-chapter">第3章 2次データの活用</div>
+    <a href="#open-def" class="toc-item">オープンデータとは</a>
+    <a href="#open-elements" class="toc-item">オープンデータの3要素</a>
+    <a href="#machine-readable" class="toc-item">機械可読・CSV</a>
+    <a href="#license" class="toc-item">留意点①ライセンス</a>
+    <a href="#survey-overview" class="toc-item">留意点②調査の概要</a>
+  </div>
+  <div class="toc-section">
+    <div class="toc-chapter">第4章 データ収集事例</div>
+    <a href="#scraping" class="toc-item">ウェブスクレイピング</a>
+    <a href="#webapi" class="toc-item">WebAPIとは</a>
+    <a href="#demo" class="toc-item">統計ダッシュボード デモ</a>
+  </div>
+  <div class="toc-section">
+    <div class="toc-chapter">補足・まとめ</div>
+    <a href="#keywords" class="toc-item">最重要ワード一覧</a>
+    <a href="#exam" class="toc-item">試験・レポート重要観点</a>
+    <a href="#unknown" class="toc-item">未確定事項</a>
+  </div>
+</nav>
+
+<!-- ══ MAIN ══ -->
+<main id="main">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-label">SSP v4.2 統合ノート</div>
+  <div class="hero-title">データサイエンス入門<br><span>第2回：データの分類と収集法</span></div>
+  <div class="hero-meta">
+    <div class="hero-meta-item"><span class="dot"></span>サイバー大学 IT総合学部</div>
+    <div class="hero-meta-item"><span class="dot"></span>担当：浅田 麻菜 先生</div>
+    <div class="hero-meta-item"><span class="dot"></span>2025年4月15日</div>
+    <div class="hero-meta-item"><span class="dot"></span>S02 + S03(73p) 統合</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     概要
+══════════════════════════════ -->
+<div id="overview"></div>
+<div class="chapter-divider">
+  <span class="chapter-number">概要</span>
+  <span class="chapter-title">学習目標・授業構成</span>
+  <span class="chapter-line"></span>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="icon">🎯</span>第2回 学習目標</div>
+  <ul>
+    <li>データの<strong>分類方法・収集方法</strong>について説明できる</li>
+    <li><strong>オープンデータ</strong>の利用方法や留意点を説明できる</li>
+  </ul>
+  <span class="pointer">← S03:p.6</span>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="icon">📍</span>データ分析の手順における位置づけ</div>
+  <p>第2回は、以下のデータ分析の手順サイクルの「<strong>②データ収集</strong>」を担当する回。</p>
+  <div class="flow">
+    <div class="flow-item">
+      <div class="flow-box">①課題発見</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-item">
+      <div class="flow-box active">②データ収集<br>★今回</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-item">
+      <div class="flow-box">③探索的<br>データ解析</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-item">
+      <div class="flow-box">④データ解析<br>・推測</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-item">
+      <div class="flow-box">⑤提案<br>結果共有</div>
+    </div>
+  </div>
+  <div class="block block-audio"><div class="block-label">🎤 音声補足</div>「データ分析の手順の2番目、データ収集について扱います。」</div>
+
+  <div class="svg-wrap">
+    <svg viewBox="0 0 560 260" xmlns="http://www.w3.org/2000/svg" width="560">
+      <defs>
+        <marker id="ar1" markerWidth="8" markerHeight="6" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#5b8dee"/></marker>
+        <marker id="ar2" markerWidth="8" markerHeight="6" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#38bdf8"/></marker>
+      </defs>
+      <!-- 課題発見 top -->
+      <circle cx="280" cy="52" r="44" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="280" y="47" text-anchor="middle" fill="#e2e8f5" font-size="12" font-family="'Noto Sans JP',sans-serif" font-weight="700">課題</text>
+      <text x="280" y="64" text-anchor="middle" fill="#e2e8f5" font-size="12" font-family="'Noto Sans JP',sans-serif" font-weight="700">発見</text>
+      <!-- データ収集 right ★今回 -->
+      <circle cx="460" cy="148" r="48" fill="#0f2040" stroke="#38bdf8" stroke-width="2.5"/>
+      <text x="460" y="140" text-anchor="middle" fill="#38bdf8" font-size="12" font-family="'Noto Sans JP',sans-serif" font-weight="700">データ</text>
+      <text x="460" y="157" text-anchor="middle" fill="#38bdf8" font-size="12" font-family="'Noto Sans JP',sans-serif" font-weight="700">収集</text>
+      <text x="460" y="174" text-anchor="middle" fill="#fbbf24" font-size="10" font-family="'Noto Sans JP',sans-serif">★今回</text>
+      <!-- 探索的データ解析 right-bottom -->
+      <circle cx="370" cy="228" r="38" fill="#1e2535" stroke="#5b8dee" stroke-width="1"/>
+      <text x="370" y="222" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="'Noto Sans JP',sans-serif">探索的</text>
+      <text x="370" y="237" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="'Noto Sans JP',sans-serif">データ解析</text>
+      <!-- データ解析・推測 left-bottom -->
+      <circle cx="190" cy="228" r="38" fill="#1e2535" stroke="#5b8dee" stroke-width="1"/>
+      <text x="190" y="222" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="'Noto Sans JP',sans-serif">データ解析</text>
+      <text x="190" y="237" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="'Noto Sans JP',sans-serif">・推測</text>
+      <!-- 提案・結果共有 left -->
+      <circle cx="100" cy="148" r="38" fill="#1e2535" stroke="#5b8dee" stroke-width="1"/>
+      <text x="100" y="142" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="'Noto Sans JP',sans-serif">提案・</text>
+      <text x="100" y="157" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="'Noto Sans JP',sans-serif">結果共有</text>
+      <!-- 矢印 -->
+      <path d="M312,76 Q395,85 418,112" stroke="#5b8dee" stroke-width="1.5" fill="none" marker-end="url(#ar1)"/>
+      <path d="M443,193 Q420,222 404,224" stroke="#5b8dee" stroke-width="1.5" fill="none" marker-end="url(#ar1)"/>
+      <path d="M332,232 L228,232" stroke="#5b8dee" stroke-width="1.5" fill="none" marker-end="url(#ar1)"/>
+      <path d="M152,216 Q118,196 108,182" stroke="#5b8dee" stroke-width="1.5" fill="none" marker-end="url(#ar1)"/>
+      <path d="M105,110 Q150,68 238,58" stroke="#5b8dee" stroke-width="1.5" fill="none" marker-end="url(#ar1)"/>
+    </svg>
+    <div class="svg-caption">図：データ分析の手順サイクル（S03:p.2）— 第2回は「データ収集」を担当</div>
+  </div>
+  <span class="pointer">← S03:p.2 / S02</span>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="icon">📋</span>第2回 授業構成</div>
+  <div class="table-wrap">
+    <table>
+      <tr><th>章</th><th>タイトル</th></tr>
+      <tr><td><span class="badge badge-accent">第1章</span></td><td>データの分類</td></tr>
+      <tr><td><span class="badge badge-accent">第2章</span></td><td>データの収集方法</td></tr>
+      <tr><td><span class="badge badge-accent">第3章</span></td><td>2次データの活用</td></tr>
+      <tr><td><span class="badge badge-accent">第4章</span></td><td>データの収集事例</td></tr>
+    </table>
+  </div>
+  <span class="pointer">← S03:p.5</span>
+</div>
+
+<!-- ══════════════════════════════
+     第1回 復習
+══════════════════════════════ -->
+<div id="review"></div>
+<div class="chapter-divider">
+  <span class="chapter-number">復習</span>
+  <span class="chapter-title">第1回「オリエンテーション」復習</span>
+  <span class="chapter-line"></span>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="icon">🔄</span>第1回の内容</div>
+  <ul>
+    <li><strong>第1章</strong>：オリエンテーション、用語の定義</li>
+    <li><strong>第2章</strong>：データサイエンスが重要となった社会的要因・技術的要因</li>
+    <li><strong>第3章</strong>：データ分析の手順</li>
+    <li><strong>第4章</strong>：データ分析に適した課題・目的</li>
+  </ul>
+  <span class="pointer">← S03:p.2</span>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="icon">❓</span>復習問題</div>
+  <div class="block block-def">
+    <div class="block-label">Q</div>
+    データサイエンス・人工知能が現代社会において重要となった<strong>社会的要因・技術的要因</strong>をそれぞれ挙げてください。
+  </div>
+  <div class="block block-tip">
+    <div class="block-label">A</div>
+    <ul>
+      <li><strong>社会的要因</strong>：人材不足、知識継承、課題の複雑化</li>
+      <li><strong>技術的要因</strong>：記憶媒体の大容量化、計算機の計算能力向上</li>
+    </ul>
+  </div>
+  <div class="block block-audio">
+    <div class="block-label">🎤 音声補足</div>
+    「たくさんのデータを保存することができるようになった」「コンピューターがたくさんのデータを計算することができるようになった」という具体的な言い換えが講師から示された。
+  </div>
+  <span class="pointer">← S03:p.4 / S02</span>
+</div>
+
+<!-- ══════════════════════════════
+     第1章
+══════════════════════════════ -->
+<div class="chapter-divider">
+  <span class="chapter-number">第1章</span>
+  <span class="chapter-title">データの分類</span>
+  <span class="chapter-line"></span>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="icon">🎯</span>第1章 学習目標</div>
+  <ul>
+    <li>データの<strong>分類方法</strong>を理解し、説明できる</li>
+    <li>データの分類に応じた<strong>メリット・デメリットや注意点</strong>を説明できる</li>
+  </ul>
+  <span class="pointer">← S03:p.8</span>
+</div>
+
+<!-- データとは -->
+<div id="data-def"></div>
+<div class="section">
+  <div class="section-title"><span class="icon">📖</span>データとは？</div>
+  <p>小学館「デジタル大辞泉」による定義：</p>
+  <div class="block block-def">
+    <div class="block-label">定義①</div>
+    物事の推論の基礎となる事実。また、参考となる資料・情報。「—を集める」「確実な—」
+  </div>
+  <div class="block block-def" style="border-color:var(--accent2);">
+    <div class="block-label" style="color:var(--accent2);">定義② ★重要</div>
+    コンピューターで、プログラムを使った処理の対象となる<strong>記号化・数字化された資料</strong>。
+  </div>
+  <div class="block block-audio">
+    <div class="block-label">🎤 重要（音声）</div>
+    「今回特に重要となるのはこの②の定義、<strong>コンピューターで処理できる資料</strong>ということになります。」
+  </div>
+
+  <h3>データの例</h3>
+  <div class="table-wrap">
+    <table>
+      <tr><th>個人情報系</th><th>授業・評価系</th><th>環境・通信系</th></tr>
+      <tr><td>名前、年齢、電話番号、学籍番号、顔写真</td><td>講義動画、小テスト点数、成績評価</td><td>室温、回線速度</td></tr>
+    </table>
+  </div>
+  <div class="block block-audio">
+    <div class="block-label">🎤 音声補足</div>
+    「この授業動画も実はデータの塊です。こういったものがどれやったら記号化や数字化ができるのかということをぜひ考えながらこの授業を実行してもらうとデータについての理解が深まると思います。」
+  </div>
+  <span class="pointer">← S03:p.9 / S02</span>
+</div>
+
+<!-- 分類とは -->
+<div id="classification"></div>
+<div class="section">
+  <div class="section-title"><span class="icon">⚖️</span>分類とは？</div>
+  <div class="block block-def">
+    <div class="block-label">定義</div>
+    分類 ＝ <strong>どのモノサシを使ってグループ分けをするか？</strong><br>
+    同じ対象でも、モノサシが違えば分類が変わる
+  </div>
+
+  <h3>例）「いままでに知り合った人を分類する」</h3>
+  <div class="table-wrap">
+    <table>
+      <tr><th>モノサシ</th><th>分類例</th></tr>
+      <tr><td><strong>関係</strong></td><td>家族、友人、同僚、先輩 …</td></tr>
+      <tr><td><strong>所属</strong></td><td>中学、高校、大学、職場 …</td></tr>
+      <tr><td><strong>性格</strong></td><td>明るい、マイペース、穏やか …</td></tr>
+    </table>
+  </div>
+  <span class="pointer">← S03:p.10 / S02</span>
+</div>
+
+<!-- 分類方法 -->
+<div id="class-methods"></div>
+<div class="section">
+  <div class="section-title"><span class="icon">📐</span>データの分類方法</div>
+  <div class="table-wrap">
+    <table>
+      <tr><th>モノサシ</th><th>問いかけ</th><th>本授業での扱い</th></tr>
+      <tr><td><strong>① 性質</strong></td><td>データにどんな意味があるのか？</td><td><span class="check">✅ 詳しく扱う</span></td></tr>
+      <tr><td><strong>② 形式</strong></td><td>データはどのように表現できるか？</td><td><span class="check">✅ 詳しく扱う</span></td></tr>
+      <tr><td><strong>③ 所有者</strong></td><td>誰が所有（集めた）データか？</td><td><span class="check">✅ 詳しく扱う</span></td></tr>
+      <tr><td>収集法</td><td>どのように集めたデータか？</td><td><span class="na">—</span></td></tr>
+      <tr><td>時系列</td><td>前後関係のあるデータか？</td><td><span class="na">—</span></td></tr>
+    </table>
+  </div>
+  <span class="pointer">← S03:p.11 / S02</span>
+</div>
+
+<!-- 量的・質的 -->
+<div id="quantqual"></div>
+<div class="section">
+  <div class="section-title"><span class="icon">①</span>データの性質による分類：量的・質的データ</div>
+  <p>→ データの「<strong>数の意味</strong>」に着目した分類</p>
+
+  <div class="scale-tree">
+    <div class="scale-card scale-quant">
+      <div class="label">量的データ</div>
+      <div class="name">Quantitative Data</div>
+      <div class="desc"><strong>数値自体に意味があるデータ</strong><br>数字の大小・比率・差に意味がある</div>
+      <div class="examples">
+        <span>温度</span><span>点数</span><span>西暦</span><span>時間</span>
+      </div>
+    </div>
+    <div class="scale-card scale-qual">
+      <div class="label">質的データ</div>
+      <div class="name">Qualitative Data</div>
+      <div class="desc"><strong>種類を区別するためのデータ</strong><br>グループ分けに使う</div>
+      <div class="examples">
+        <span>性別</span><span>気候</span><span>成績評価</span><span>順位</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="block block-exam">
+    <div class="block-label">⭐ 試験ポイント</div>
+    「この分類、かなり有名ですごく重要なデータの分類なので、ぜひ押さえていってください。」← S02
+  </div>
+  <span class="pointer">← S03:p.12 / S02</span>
+</div>
+
+<!-- Stevens -->
+<div id="stevens"></div>
+<div class="section">
+  <div class="section-title"><span class="icon">📊</span>Stevensの尺度水準</div>
+
+  <div class="block block-def">
+    <div class="block-label">「尺度」とは</div>
+    分類をするためのモノサシのこと
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <tr><th>項目</th><th>内容</th></tr>
+      <tr><td><strong>提唱者</strong></td><td>S. S. Stevens（アメリカの心理学者）</td></tr>
+      <tr><td><strong>発表年</strong></td><td>1946年</td></tr>
+      <tr><td><strong>発表媒体</strong></td><td>Science誌（著名な学術誌）</td></tr>
+      <tr><td><strong>現在の位置づけ</strong></td><td>現在では一般的なデータの分類方法の一つ</td></tr>
+    </table>
+  </div>
+
+  <div class="block block-exam">
+    <div class="block-label">⭐ 試験ポイント（音声）</div>
+    「資格試験などを受けられる方は結構この問題に聞かれることがありますので、こちらもぜひ押さえてください。」← S02
+  </div>
+
+  <h3>4つの尺度の全体像</h3>
+  <div class="scale-tree">
+    <div class="scale-card scale-quant">
+      <div class="label">量的データ</div>
+      <div class="name">比率尺度（比例尺度）</div>
+      <div class="desc">原点0あり。比率・差・大小比較すべて可能</div>
+      <div class="examples"><span>速度</span><span>重さ</span><span>長さ</span><span>貨幣</span></div>
+    </div>
+    <div class="scale-card scale-quant">
+      <div class="label">量的データ</div>
+      <div class="name">間隔尺度</div>
+      <div class="desc">原点0なし。差・大小比較のみ可能</div>
+      <div class="examples"><span>西暦</span><span>摂氏</span><span>華氏</span><span>偏差値</span></div>
+    </div>
+    <div class="scale-card scale-qual">
+      <div class="label">質的データ</div>
+      <div class="name">順序尺度</div>
+      <div class="desc">大小・順序関係の評価のみ可能。足引き不可</div>
+      <div class="examples"><span>成績評価</span><span>順位</span><span>アンケート</span></div>
+    </div>
+    <div class="scale-card scale-qual">
+      <div class="label">質的データ</div>
+      <div class="name">名義尺度</div>
+      <div class="desc">区別のみ可能。演算すべて不可</div>
+      <div class="examples"><span>血液型</span><span>電話番号</span><span>住所</span></div>
+    </div>
+  </div>
+  <div class="svg-wrap">
+    <svg viewBox="0 0 680 300" xmlns="http://www.w3.org/2000/svg" width="680">
+      <!-- 中央ルート -->
+      <rect x="240" y="10" width="200" height="52" rx="8" fill="#1e2535" stroke="#5b8dee" stroke-width="2"/>
+      <text x="340" y="32" text-anchor="middle" fill="#38bdf8" font-size="12" font-family="'Noto Sans JP',sans-serif" font-weight="700">Stevensの尺度水準</text>
+      <text x="340" y="50" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="'Noto Sans JP',sans-serif">1946年 S.S.Stevens提唱</text>
+      <!-- 量的データ -->
+      <rect x="60" y="110" width="160" height="40" rx="6" fill="#1a2e50" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="140" y="127" text-anchor="middle" fill="#5b8dee" font-size="11" font-family="'Noto Sans JP',sans-serif" font-weight="700">量的データ</text>
+      <text x="140" y="143" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="'Noto Sans JP',sans-serif">数値自体に意味がある</text>
+      <!-- 質的データ -->
+      <rect x="460" y="110" width="160" height="40" rx="6" fill="#0d3328" stroke="#34d399" stroke-width="1.5"/>
+      <text x="540" y="127" text-anchor="middle" fill="#34d399" font-size="11" font-family="'Noto Sans JP',sans-serif" font-weight="700">質的データ</text>
+      <text x="540" y="143" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="'Noto Sans JP',sans-serif">種類を区別するための</text>
+      <!-- 比率尺度 -->
+      <rect x="10" y="210" width="150" height="72" rx="6" fill="#1e2535" stroke="#5b8dee" stroke-width="1"/>
+      <text x="85" y="228" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="'Noto Sans JP',sans-serif" font-weight="700">比率尺度</text>
+      <text x="85" y="242" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="'Noto Sans JP',sans-serif">（比例尺度）</text>
+      <text x="85" y="257" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="'Noto Sans JP',sans-serif">原点0あり</text>
+      <text x="85" y="271" text-anchor="middle" fill="#fbbf24" font-size="9" font-family="'Noto Sans JP',sans-serif">速度・重さ・貨幣</text>
+      <!-- 間隔尺度 -->
+      <rect x="170" y="210" width="150" height="72" rx="6" fill="#1e2535" stroke="#5b8dee" stroke-width="1"/>
+      <text x="245" y="228" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="'Noto Sans JP',sans-serif" font-weight="700">間隔尺度</text>
+      <text x="245" y="245" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="'Noto Sans JP',sans-serif">原点0なし</text>
+      <text x="245" y="259" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="'Noto Sans JP',sans-serif">差に意味がある</text>
+      <text x="245" y="273" text-anchor="middle" fill="#fbbf24" font-size="9" font-family="'Noto Sans JP',sans-serif">西暦・摂氏・偏差値</text>
+      <!-- 順序尺度 -->
+      <rect x="360" y="210" width="150" height="72" rx="6" fill="#1e2535" stroke="#34d399" stroke-width="1"/>
+      <text x="435" y="228" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="'Noto Sans JP',sans-serif" font-weight="700">順序尺度</text>
+      <text x="435" y="245" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="'Noto Sans JP',sans-serif">大小比較のみ可</text>
+      <text x="435" y="259" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="'Noto Sans JP',sans-serif">足引き不可</text>
+      <text x="435" y="273" text-anchor="middle" fill="#fbbf24" font-size="9" font-family="'Noto Sans JP',sans-serif">成績評価・順位</text>
+      <!-- 名義尺度 -->
+      <rect x="520" y="210" width="150" height="72" rx="6" fill="#1e2535" stroke="#34d399" stroke-width="1"/>
+      <text x="595" y="228" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="'Noto Sans JP',sans-serif" font-weight="700">名義尺度</text>
+      <text x="595" y="245" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="'Noto Sans JP',sans-serif">区別のみ</text>
+      <text x="595" y="259" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="'Noto Sans JP',sans-serif">演算不可</text>
+      <text x="595" y="273" text-anchor="middle" fill="#fbbf24" font-size="9" font-family="'Noto Sans JP',sans-serif">血液型・電話番号</text>
+      <!-- 線 ルート→量的 -->
+      <line x1="280" y1="62" x2="200" y2="110" stroke="#5b8dee" stroke-width="1.5"/>
+      <!-- 線 ルート→質的 -->
+      <line x1="400" y1="62" x2="480" y2="110" stroke="#34d399" stroke-width="1.5"/>
+      <!-- 線 量的→比率 -->
+      <line x1="100" y1="150" x2="85" y2="210" stroke="#5b8dee" stroke-width="1"/>
+      <!-- 線 量的→間隔 -->
+      <line x1="170" y1="150" x2="245" y2="210" stroke="#5b8dee" stroke-width="1"/>
+      <!-- 線 質的→順序 -->
+      <line x1="490" y1="150" x2="435" y2="210" stroke="#34d399" stroke-width="1"/>
+      <!-- 線 質的→名義 -->
+      <line x1="580" y1="150" x2="595" y2="210" stroke="#34d399" stroke-width="1"/>
+    </svg>
+    <div class="svg-caption">図：Stevensの尺度水準 ツリー（S03:p.13）</div>
+  </div>
+  <span class="pointer">← S03:p.13</span>
+</div>
+<div id="ratio-interval"></div>
+<div class="section">
+  <div class="section-title"><span class="icon">📏</span>量的データの分類：比率尺度・間隔尺度</div>
+
+  <h3>比率尺度（ratio scale）／ 比例尺度</h3>
+  <div class="block block-def">
+    <div class="block-label">定義</div>
+    <strong>数値の比率・差が評価できる尺度。絶対的な基準（原点0）が必須。</strong>
+  </div>
+  <ul>
+    <li><strong>例：</strong>速度、重さ、長さ、貨幣（お金）</li>
+    <li><strong>グラフの特徴：</strong>原点（0）が必ず存在するグラフで表す</li>
+  </ul>
+  <div class="block block-audio">
+    <div class="block-label">🎤 具体例（音声）</div>
+    「給料が2倍になった」→ 今まで10万円だったお給料が20万円になったということが明確にわかる。比率が意味を持つ。← S02
+  </div>
+  <div class="block block-infer">
+    <div class="block-label">⚠️ 用語注記 [検証済み]</div>
+    スライド（S03:p.14）では「<strong>比例尺度</strong>」と表記されているが、統計学の正式用語は「<strong>比率尺度（ratio scale）</strong>」である。<br>
+    <strong>本ノートでは、授業スライド表記を尊重して「比例尺度」を残しつつ、統計学の一般用語である「比率尺度」も併記する。</strong><br>
+    試験・資格などでは「比率尺度」として出題される場合もあるため、両方の名称を把握しておくこと。
+  </div>
+
+  <h3>間隔尺度（interval scale）</h3>
+  <div class="block block-def">
+    <div class="block-label">定義</div>
+    <strong>数値の差が評価できる尺度。絶対的な基準（原点0）を持たない。</strong>
+  </div>
+  <ul>
+    <li><strong>例：</strong>西暦、摂氏（℃）、華氏（℉）、偏差値</li>
+    <li><strong>グラフの特徴：</strong>基準点（原点）が任意。差に意味がある。</li>
+  </ul>
+  <div class="block block-audio">
+    <div class="block-label">🎤 具体例（音声）</div>
+    <ul style="margin:0;padding-left:18px;">
+      <li>西暦のゼロ年 → キリストが生まれた年という「決め事」であり、<strong>紀元前（ゼロ以下）</strong>という概念が存在する</li>
+      <li>摂氏0度 → 水が凍る温度というだけで、<strong>マイナスの温度も存在する</strong>。ゼロ度で「温度がなくなる」わけではない</li>
+    </ul>
+  </div>
+  <div class="block block-warn">
+    <div class="block-label">⚠️ 注意（音声）</div>
+    「西暦1000年から西暦2000年になったので年数が2倍になった」という表現はしない。間隔尺度では<strong>比率計算（掛け割り）ができない</strong>。← S02
+  </div>
+
+  <h3>比率尺度 vs 間隔尺度 比較表</h3>
+  <div class="table-wrap">
+    <table>
+      <tr><th></th><th>比率尺度（比例尺度）</th><th>間隔尺度</th></tr>
+      <tr><td><strong>定義</strong></td><td>比率・差が評価できる</td><td>差のみ評価できる</td></tr>
+      <tr><td><strong>原点0</strong></td><td>必須（絶対的基準）</td><td>なし（任意）</td></tr>
+      <tr><td><strong>例</strong></td><td>速度・重さ・長さ・貨幣</td><td>西暦・摂氏・華氏・偏差値</td></tr>
+      <tr><td><strong>グラフ</strong></td><td>原点あり（棒グラフ等）</td><td>原点なし（折れ線等）</td></tr>
+    </table>
+  </div>
+  <span class="pointer">← S03:p.14 / S02</span>
+</div>
+
+<!-- 順序・名義 -->
+<div id="ordinal-nominal"></div>
+<div class="section">
+  <div class="section-title"><span class="icon">📋</span>質的データの分類：順序尺度・名義尺度</div>
+
+  <h3>順序尺度（ordinal scale）</h3>
+  <div class="block block-def">
+    <div class="block-label">定義</div>
+    <strong>大小・順序関係の評価ができる尺度</strong>
+  </div>
+  <ul>
+    <li><strong>例：</strong>成績評価、順位、アンケート調査</li>
+  </ul>
+  <div class="block block-warn">
+    <div class="block-label">⚠️ 重要ポイント</div>
+    良い方から順にA・B・C・Dの4段階評価を数値化した場合：<br>
+    <strong>悪い（2）＋ 普通（3）＝ とても良い（5）とはならない！</strong><br>
+    → 順序の関係は評価できるが、<strong>足し引きはできない</strong>
+  </div>
+  <span class="pointer">← S03:p.17 / S02</span>
+
+  <h3>名義尺度（nominal scale）</h3>
+  <div class="block block-def">
+    <div class="block-label">定義</div>
+    <strong>個体等の区別のみできる尺度</strong>
+  </div>
+  <ul>
+    <li><strong>例：</strong>血液型、電話番号、住所</li>
+  </ul>
+  <div class="block block-audio">
+    <div class="block-label">🎤 具体例（音声）</div>
+    名簿で男性を1・女性を2と記入する場合、女性を1・男性を2としても区別という目的は達成できる。男性（1人）＋女性（1人）＝3 という数字に意味はない。← S02
+  </div>
+  <span class="pointer">← S03:p.17 / S02</span>
+</div>
+
+<!-- 演算の違い -->
+<div id="operations"></div>
+<div class="section">
+  <div class="section-title"><span class="icon">🧮</span>可能な演算の違い ⭐最重要</div>
+
+  <div class="block block-exam">
+    <div class="block-label">⭐ 最重要</div>
+    <strong>尺度に応じて扱える演算が異なることに注意！</strong>
+  </div>
+
+  <table class="ops-table">
+    <tr>
+      <th>尺度</th>
+      <th style="text-align:center">大小比較<br>（A＜B）</th>
+      <th style="text-align:center">足す・引く</th>
+      <th style="text-align:center">掛ける・割る</th>
+    </tr>
+    <tr>
+      <td><strong>比率尺度（比例尺度）</strong><br><span style="font-size:11px;color:var(--text-muted)">速度・重さ・貨幣</span></td>
+      <td class="ops-yes">✓</td>
+      <td class="ops-yes">✓</td>
+      <td class="ops-yes">✓</td>
+    </tr>
+    <tr>
+      <td><strong>間隔尺度</strong><br><span style="font-size:11px;color:var(--text-muted)">西暦・摂氏・偏差値</span></td>
+      <td class="ops-yes">✓</td>
+      <td class="ops-yes">✓</td>
+      <td class="ops-no">✗</td>
+    </tr>
+    <tr>
+      <td><strong>順序尺度</strong><br><span style="font-size:11px;color:var(--text-muted)">成績評価・順位</span></td>
+      <td class="ops-yes">✓</td>
+      <td class="ops-no">✗</td>
+      <td class="ops-no">✗</td>
+    </tr>
+    <tr>
+      <td><strong>名義尺度</strong><br><span style="font-size:11px;color:var(--text-muted)">血液型・電話番号</span></td>
+      <td class="ops-no">✗</td>
+      <td class="ops-no">✗</td>
+      <td class="ops-no">✗</td>
+    </tr>
+  </table>
+
+  <h3>❌ 誤った演算の使用例（試験頻出）</h3>
+  <div class="block block-warn">
+    <div class="block-label">❌ 誤り</div>
+    「マラソン大会で10人中5位だったので、<strong>平均くらいの実力だ</strong>」<br>
+    → これは<strong>誤り</strong>
+  </div>
+  <div class="block block-tip">
+    <div class="block-label">理由</div>
+    <ul style="margin:0;padding-left:18px;">
+      <li>「10人中5位」は<strong>順序尺度</strong></li>
+      <li>「平均」は足し引き・割り算の演算を伴う</li>
+      <li>順序尺度には足し引きが適用できないため、「平均」は算出できない</li>
+    </ul>
+  </div>
+  <div class="block block-audio">
+    <div class="block-label">🎤 具体的な反例（音声）</div>
+    マラソン大会で1位と2位のタイムが非常に近くて、3人以下が団子状態だった場合、5位の人は「真ん中ぐらいの速さ」とは全く言えない。← S02
+  </div>
+  <div class="block block-exam">
+    <div class="block-label">⭐ 注意（音声）</div>
+    「データを扱うときは、自分がどの尺度のデータを扱っているかを常に意識しながら演算・分析を行うこと。誤った演算を使うと、間違った考察・結論に至る。」← S02
+  </div>
+
+  <div class="svg-wrap">
+    <svg viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg" width="600">
+      <!-- ヘッダー行 -->
+      <rect x="0" y="0" width="600" height="40" rx="0" fill="#1e2535"/>
+      <text x="120" y="25" text-anchor="middle" fill="#38bdf8" font-size="11" font-family="'Noto Sans JP',sans-serif" font-weight="700">尺度</text>
+      <text x="290" y="25" text-anchor="middle" fill="#38bdf8" font-size="11" font-family="'Noto Sans JP',sans-serif" font-weight="700">大小比較 (A＜B)</text>
+      <text x="430" y="25" text-anchor="middle" fill="#38bdf8" font-size="11" font-family="'Noto Sans JP',sans-serif" font-weight="700">足す・引く</text>
+      <text x="545" y="25" text-anchor="middle" fill="#38bdf8" font-size="11" font-family="'Noto Sans JP',sans-serif" font-weight="700">掛ける・割る</text>
+      <!-- 比率尺度行 -->
+      <rect x="0" y="40" width="600" height="44" fill="#1a2530" stroke="#2a3349" stroke-width="0.5"/>
+      <text x="120" y="58" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="'Noto Sans JP',sans-serif" font-weight="700">比率尺度（比例尺度）</text>
+      <text x="120" y="74" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="'Noto Sans JP',sans-serif">速度・重さ・貨幣</text>
+      <text x="290" y="68" text-anchor="middle" fill="#34d399" font-size="22" font-family="sans-serif">✓</text>
+      <text x="430" y="68" text-anchor="middle" fill="#34d399" font-size="22" font-family="sans-serif">✓</text>
+      <text x="545" y="68" text-anchor="middle" fill="#34d399" font-size="22" font-family="sans-serif">✓</text>
+      <!-- 間隔尺度行 -->
+      <rect x="0" y="84" width="600" height="44" fill="#1e2535" stroke="#2a3349" stroke-width="0.5"/>
+      <text x="120" y="102" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="'Noto Sans JP',sans-serif" font-weight="700">間隔尺度</text>
+      <text x="120" y="118" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="'Noto Sans JP',sans-serif">西暦・摂氏・偏差値</text>
+      <text x="290" y="112" text-anchor="middle" fill="#34d399" font-size="22" font-family="sans-serif">✓</text>
+      <text x="430" y="112" text-anchor="middle" fill="#34d399" font-size="22" font-family="sans-serif">✓</text>
+      <text x="545" y="112" text-anchor="middle" fill="#f87171" font-size="22" font-family="sans-serif">✗</text>
+      <!-- 順序尺度行 -->
+      <rect x="0" y="128" width="600" height="44" fill="#1a2530" stroke="#2a3349" stroke-width="0.5"/>
+      <text x="120" y="146" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="'Noto Sans JP',sans-serif" font-weight="700">順序尺度</text>
+      <text x="120" y="162" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="'Noto Sans JP',sans-serif">成績評価・順位・アンケート</text>
+      <text x="290" y="156" text-anchor="middle" fill="#34d399" font-size="22" font-family="sans-serif">✓</text>
+      <text x="430" y="156" text-anchor="middle" fill="#f87171" font-size="22" font-family="sans-serif">✗</text>
+      <text x="545" y="156" text-anchor="middle" fill="#f87171" font-size="22" font-family="sans-serif">✗</text>
+      <!-- 名義尺度行 -->
+      <rect x="0" y="172" width="600" height="44" fill="#1e2535" stroke="#2a3349" stroke-width="0.5"/>
+      <text x="120" y="190" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="'Noto Sans JP',sans-serif" font-weight="700">名義尺度</text>
+      <text x="120" y="206" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="'Noto Sans JP',sans-serif">血液型・電話番号・住所</text>
+      <text x="290" y="200" text-anchor="middle" fill="#f87171" font-size="22" font-family="sans-serif">✗</text>
+      <text x="430" y="200" text-anchor="middle" fill="#f87171" font-size="22" font-family="sans-serif">✗</text>
+      <text x="545" y="200" text-anchor="middle" fill="#f87171" font-size="22" font-family="sans-serif">✗</text>
+      <!-- 縦線 -->
+      <line x1="240" y1="0" x2="240" y2="216" stroke="#2a3349" stroke-width="1"/>
+      <line x1="370" y1="0" x2="370" y2="216" stroke="#2a3349" stroke-width="1"/>
+      <line x1="490" y1="0" x2="490" y2="216" stroke="#2a3349" stroke-width="1"/>
+    </svg>
+    <div class="svg-caption">図：尺度に応じた可能な演算の違い（S03:p.20）</div>
+  </div>
+  <span class="pointer">← S03:p.20 / S02</span>
+</div>
+
+<!-- 構造化・非構造化 -->
+<div id="struct-unstruct"></div>
+<div class="section">
+  <div class="section-title"><span class="icon">②</span>データの表現形式による分類</div>
+
+  <div class="scale-tree">
+    <div class="scale-card" style="border-top:3px solid var(--accent);">
+      <div class="label" style="color:var(--accent);">構造化データ</div>
+      <div class="name">Structured Data</div>
+      <div class="desc">
+        <strong>表形式で表現できるデータ</strong><br>
+        ・既存のDBで管理可能<br>
+        ・分析までのコストは<em>比較的低い</em>
+      </div>
+      <div class="examples"><span>名簿</span><span>帳簿</span><span>番組表</span></div>
+    </div>
+    <div class="scale-card" style="border-top:3px solid var(--orange);">
+      <div class="label" style="color:var(--orange);">非構造化データ</div>
+      <div class="name">Unstructured Data</div>
+      <div class="desc">
+        <strong>表形式で表現できないデータ</strong><br>
+        ・データ容量が大きい<br>
+        ・分析には数値化処理が必要<br>
+        ・分析コストが<em>非常に高い</em>
+      </div>
+      <div class="examples"><span>画像</span><span>動画</span><span>音声</span><span>音楽</span></div>
+    </div>
+  </div>
+
+  <div class="block block-audio">
+    <div class="block-label">🎤 音声補足</div>
+    「皆さんも何かのデータをまず分析したいと思ったら、そのデータが構造化データなのか、あるいは非構造化データであるのかということに注目して、分析がどれくらいかかるのかというのを見積もるようにするとすごくわかりやすいと思います。」← S02
+  </div>
+  <span class="pointer">← S03:p.21 / S02</span>
+</div>
+
+<!-- 一次・二次 -->
+<div id="primary-secondary"></div>
+<div class="section">
+  <div class="section-title"><span class="icon">③</span>データの所有者による分類</div>
+
+  <div class="table-wrap">
+    <table>
+      <tr><th>分類名</th><th>英語名</th><th>収集方法</th><th>コスト</th><th>価値</th></tr>
+      <tr>
+        <td><strong>一次データ</strong></td><td><code>primary data</code></td>
+        <td>自分・自社で収集したデータ</td>
+        <td><span class="badge badge-low">高</span></td>
+        <td><span class="badge badge-high">高</span></td>
+      </tr>
+      <tr>
+        <td><strong>二次データ</strong></td><td><code>secondary data</code></td>
+        <td>外部の人・機関が収集したデータ</td>
+        <td><span class="badge badge-mid">低〜高</span></td>
+        <td><span class="badge badge-mid">低〜高</span></td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="block block-audio">
+    <div class="block-label">🎤 一次データの特徴（音声）</div>
+    <ul style="margin:0;padding-left:18px;">
+      <li>データを集めるためにすごくコストがかかる</li>
+      <li>他の人は持っていないデータなので、<strong>データそのものの価値は高い</strong></li>
+    </ul>
+  </div>
+  <div class="block block-audio">
+    <div class="block-label">🎤 二次データの特徴（音声）</div>
+    <ul style="margin:0;padding-left:18px;">
+      <li>他の人が収集してくれたデータなのでコストが低い場合もある</li>
+      <li>他の人が取ったデータを<strong>購入する場合もある</strong>ので、意外とコストが高くなることもある</li>
+      <li>誰もが知っているデータの可能性がある → 価値が低い場合もある</li>
+      <li>自分のデータと組み合わせることで<strong>非常に高い価値を生み出すこともある</strong></li>
+    </ul>
+  </div>
+  <span class="pointer">← S03:p.22 / S02</span>
+</div>
+
+<!-- ══════════════════════════════
+     第2章
+══════════════════════════════ -->
+<div class="chapter-divider">
+  <span class="chapter-number">第2章</span>
+  <span class="chapter-title">データ収集方法</span>
+  <span class="chapter-line"></span>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="icon">🎯</span>第2章 学習目標</div>
+  <ul>
+    <li>目的に応じた、<strong>適切なデータ収集方法</strong>が選択できる</li>
+    <li>データ収集方法に応じた<strong>留意点</strong>を理解し説明できる</li>
+  </ul>
+  <span class="pointer">← S03:p.26</span>
+</div>
+
+<!-- 収集計画 -->
+<div id="collection-plan"></div>
+<div class="section">
+  <div class="section-title"><span class="icon">📝</span>データ収集計画の立案</div>
+
+  <h3>授業を通じて考える事例</h3>
+  <div class="block block-def">
+    <div class="block-label">事例</div>
+    「サービスを開始したばかりのスマホゲーム。ユーザはどう思っているのかな？」
+  </div>
+
+  <h3>データ収集計画の手順</h3>
+  <div class="demo-step">
+    <div class="demo-step-num">1</div>
+    <div class="demo-step-body">
+      <div class="demo-step-title">目的の確認（最重要）</div>
+      <p>→ 今回の例：<strong>ユーザーの満足度を調べる</strong></p>
+    </div>
+  </div>
+  <div class="demo-step">
+    <div class="demo-step-num">2</div>
+    <div class="demo-step-body">
+      <div class="demo-step-title">調査計画の立案</div>
+      <ul>
+        <li>調査方法（どのように調べるか）</li>
+        <li>サンプリング方法（誰に調査するか）</li>
+        <li>質問内容（何を聞くか）</li>
+        <li>調査人数（何人に調査するか）</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="block block-exam">
+    <div class="block-label">⭐ ポイント</div>
+    <strong>調査目的に応じた適切なデータ収集計画を考える必要がある</strong>
+  </div>
+  <span class="pointer">← S03:p.28 / S02</span>
+</div>
+
+<!-- 調査・ログデータ -->
+<div id="data-types"></div>
+<div class="section">
+  <div class="section-title"><span class="icon">📊</span>調査方法とデータの分類</div>
+
+  <div class="table-wrap">
+    <table>
+      <tr><th>分類名</th><th>説明</th><th>例</th><th>授業での扱い</th></tr>
+      <tr>
+        <td><strong>調査データ</strong></td>
+        <td>調査目的に応じて<strong>明示的に</strong>収集するデータ</td>
+        <td>ユーザーアンケート、調査会社への依頼</td>
+        <td><span class="check">✅</span></td>
+      </tr>
+      <tr>
+        <td><strong>ログデータ</strong></td>
+        <td>行動等の結果、<strong>自動的に</strong>収集されるデータ</td>
+        <td>プレイ時間・課金額・ログイン時間</td>
+        <td><span class="check">✅</span></td>
+      </tr>
+      <tr>
+        <td>実験データ</td>
+        <td>条件を統制して収集したデータ</td>
+        <td>—</td>
+        <td><span class="na">言及のみ</span></td>
+      </tr>
+      <tr>
+        <td>観測データ</td>
+        <td>事象の変化を収集したデータ</td>
+        <td>—</td>
+        <td><span class="na">言及のみ</span></td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="block block-audio">
+    <div class="block-label">🎤 調査データのポイント（音声）</div>
+    「調査対象の人にあなたはこれこれについてどう思いますかと聞いて、その人から<strong>明示的に返答をしてもらって</strong>集めてくるデータというのが調査データ」← S02
+  </div>
+  <div class="block block-audio">
+    <div class="block-label">🎤 ログデータのポイント（音声）</div>
+    ユーザーが意識せずに行動の結果として自動的に蓄積されるデータ。会社側がユーザーから「明示的に」教えてもらうのではなく、行動ログとして自動収集される。← S02
+  </div>
+
+  <div class="block block-tip">
+    <div class="block-label">今回の事例での選択</div>
+    ユーザーの「満足度」を知りたい → 「どのように満足していますか」と<strong>明示的に聞く</strong>方が適切<br>
+    → <strong>調査方法：アンケート調査</strong>を選択
+  </div>
+  <span class="pointer">← S03:p.29-30 / S02</span>
+</div>
+
+<!-- 母集団 -->
+<div id="population"></div>
+<div class="section">
+  <div class="section-title"><span class="icon">👥</span>母集団とは</div>
+
+  <div class="block block-def">
+    <div class="block-label">定義</div>
+    <strong>母集団 ＝ 調査対象となる数値や属性集団全体のこと</strong>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <tr><th>調査内容</th><th>母集団</th></tr>
+      <tr><td>日本の国勢調査</td><td>日本に住む人、全員</td></tr>
+      <tr><td>池にいる魚のサイズ調査</td><td>該当の池の魚、全て</td></tr>
+      <tr><td>あるゲームの満足度調査</td><td>該当のゲームの全ユーザー</td></tr>
+    </table>
+  </div>
+
+  <div class="block block-audio">
+    <div class="block-label">🎤 問題提起（音声）</div>
+    アンケートをアプリの「お知らせ」に掲載した場合 → <strong>一部の熱心なユーザーのデータしか取れない</strong><br>
+    → どうしたら「全体」の意見を反映したデータになるか？<br>
+    → これが「<strong>サンプリング方法</strong>」の問題
+  </div>
+  <span class="pointer">← S03:p.30-31 / S02</span>
+</div>
+
+<!-- 全数・標本 -->
+<div id="census-sample"></div>
+<div class="section">
+  <div class="section-title"><span class="icon">⚖️</span>全数調査と標本調査</div>
+
+  <div class="table-wrap">
+    <table>
+      <tr><th></th><th>全数調査（悉皆調査）</th><th>標本調査（サンプル調査）</th></tr>
+      <tr><td><strong>対象</strong></td><td>母集団に含まれる<strong>全員</strong></td><td>母集団に含まれる<strong>一部だけ</strong></td></tr>
+      <tr><td><strong>調査コスト</strong></td><td>母集団が大きい場合、非常に高い</td><td>サンプル数にほぼ比例（コスト抑制可能）</td></tr>
+      <tr><td><strong>標本誤差</strong></td><td><span class="check">生じない</span></td><td><span class="cross">必ず含まれる</span></td></tr>
+    </table>
+  </div>
+
+  <div class="block block-def">
+    <div class="block-label">標本誤差とは</div>
+    標本調査から得られる推定値と、母集団から得られる値との差
+  </div>
+
+  <div class="block block-audio">
+    <div class="block-label">🎤 全数調査の具体例（音声）</div>
+    国勢調査は日本に住んでいる人全員が対象なので、たくさんの調査員を雇用したり、集めてきたデータを分析するのに<strong>莫大なコスト</strong>がかかる。← S02
+  </div>
+  <div class="block block-audio">
+    <div class="block-label">🎤 標本調査の具体例（音声）</div>
+    池の魚を全部釣り上げて調べるのは大変なので、一部のサンプルだけを取り出してサイズを調べ、<strong>全体のサイズを予想</strong>する。← S02
+  </div>
+  <span class="pointer">← S03:p.32-33 / S02</span>
+</div>
+
+<!-- サンプリング -->
+<div id="sampling"></div>
+<div class="section">
+  <div class="section-title"><span class="icon">🎲</span>サンプリング方法の分類</div>
+
+  <div class="table-wrap">
+    <table>
+      <tr><th colspan="2">分類</th><th>ランダム使用</th></tr>
+      <tr><td colspan="2"><strong>全数調査（悉皆調査）</strong></td><td><span class="na">—</span></td></tr>
+      <tr><td rowspan="4">標本調査<br>↓<br><strong>確率抽出法</strong></td><td>①単純無作為抽出法</td><td><span class="check">✅ 使う</span></td></tr>
+      <tr><td>②系統抽出法</td><td><span class="check">✅ 使う</span></td></tr>
+      <tr><td>③層別抽出法（層化抽出法）</td><td><span class="check">✅ 使う</span></td></tr>
+      <tr><td>④多段抽出法</td><td><span class="check">✅ 使う</span></td></tr>
+      <tr><td colspan="2">標本調査 → <strong>非確率抽出法</strong></td><td><span class="cross">❌ 使わない</span></td></tr>
+    </table>
+  </div>
+
+  <div class="block block-tip">
+    <div class="block-label">確率抽出法 vs 非確率抽出法</div>
+    <div class="table-wrap" style="margin:8px 0 0;">
+      <table>
+        <tr><th></th><th>確率抽出法</th><th>非確率抽出法</th></tr>
+        <tr><td><strong>定義</strong></td><td>ランダム（無作為）を使って抽出する</td><td>ランダムを使わずに抽出する</td></tr>
+        <tr><td><strong>特徴</strong></td><td>誰でも選ばれる確率が理論上等しい</td><td>調査者の判断・条件で対象を選ぶ</td></tr>
+        <tr><td><strong>本授業での扱い</strong></td><td>4種類を詳しく説明</td><td>分類図で言及のみ（詳細説明なし）</td></tr>
+      </table>
+    </div>
+    <p style="font-size:12px;color:var(--text-muted);margin-top:8px;">※ 本講義では非確率抽出法の詳細説明は行われていない（U04）。「ランダムを使わない標本抽出の総称」として把握しておけば十分。</p>
+  </div>
+
+  <div class="svg-wrap">
+    <svg viewBox="0 0 680 280" xmlns="http://www.w3.org/2000/svg" width="680">
+      <defs>
+        <marker id="ta" markerWidth="7" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#5b8dee"/></marker>
+      </defs>
+      <!-- 調査方法 root -->
+      <rect x="240" y="10" width="200" height="40" rx="6" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="340" y="35" text-anchor="middle" fill="#e2e8f5" font-size="12" font-family="'Noto Sans JP',sans-serif" font-weight="700">調査方法</text>
+      <!-- 全数調査 -->
+      <rect x="30" y="90" width="150" height="40" rx="5" fill="#1a2530" stroke="#34d399" stroke-width="1.2"/>
+      <text x="105" y="108" text-anchor="middle" fill="#34d399" font-size="11" font-family="'Noto Sans JP',sans-serif" font-weight="700">全数調査</text>
+      <text x="105" y="122" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="'Noto Sans JP',sans-serif">悉皆調査</text>
+      <!-- 標本調査 -->
+      <rect x="240" y="90" width="200" height="40" rx="5" fill="#1e2535" stroke="#5b8dee" stroke-width="1.2"/>
+      <text x="340" y="108" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="'Noto Sans JP',sans-serif" font-weight="700">標本調査（サンプル調査）</text>
+      <text x="340" y="122" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="'Noto Sans JP',sans-serif">標本＝サンプル</text>
+      <!-- 確率抽出法 -->
+      <rect x="230" y="170" width="140" height="36" rx="5" fill="#1a2e50" stroke="#5b8dee" stroke-width="1"/>
+      <text x="300" y="183" text-anchor="middle" fill="#5b8dee" font-size="10" font-family="'Noto Sans JP',sans-serif" font-weight="700">確率抽出法</text>
+      <text x="300" y="197" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="'Noto Sans JP',sans-serif">ランダムを使う</text>
+      <!-- 非確率抽出法 -->
+      <rect x="400" y="170" width="140" height="36" rx="5" fill="#1e2535" stroke="#8a99b8" stroke-width="1"/>
+      <text x="470" y="183" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="'Noto Sans JP',sans-serif" font-weight="700">非確率抽出法</text>
+      <text x="470" y="197" text-anchor="middle" fill="#5a6580" font-size="9" font-family="'Noto Sans JP',sans-serif">ランダムを使わない</text>
+      <!-- 4手法 -->
+      <rect x="30" y="240" width="118" height="32" rx="4" fill="#1e2535" stroke="#5b8dee" stroke-width="1"/>
+      <text x="89" y="261" text-anchor="middle" fill="#e2e8f5" font-size="9" font-family="'Noto Sans JP',sans-serif">①単純無作為抽出法</text>
+      <rect x="156" y="240" width="100" height="32" rx="4" fill="#1e2535" stroke="#5b8dee" stroke-width="1"/>
+      <text x="206" y="261" text-anchor="middle" fill="#e2e8f5" font-size="9" font-family="'Noto Sans JP',sans-serif">②系統抽出法</text>
+      <rect x="264" y="240" width="108" height="32" rx="4" fill="#1e2535" stroke="#5b8dee" stroke-width="1"/>
+      <text x="318" y="256" text-anchor="middle" fill="#e2e8f5" font-size="9" font-family="'Noto Sans JP',sans-serif">③層別抽出法</text>
+      <text x="318" y="268" text-anchor="middle" fill="#8a99b8" font-size="8" font-family="'Noto Sans JP',sans-serif">（層化抽出法）</text>
+      <rect x="380" y="240" width="100" height="32" rx="4" fill="#1e2535" stroke="#5b8dee" stroke-width="1"/>
+      <text x="430" y="261" text-anchor="middle" fill="#e2e8f5" font-size="9" font-family="'Noto Sans JP',sans-serif">④多段抽出法</text>
+      <!-- 線 -->
+      <line x1="280" y1="50" x2="140" y2="90" stroke="#5b8dee" stroke-width="1.2" marker-end="url(#ta)"/>
+      <line x1="340" y1="50" x2="340" y2="90" stroke="#5b8dee" stroke-width="1.2" marker-end="url(#ta)"/>
+      <line x1="320" y1="130" x2="300" y2="170" stroke="#5b8dee" stroke-width="1" marker-end="url(#ta)"/>
+      <line x1="370" y1="130" x2="460" y2="170" stroke="#8a99b8" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#ta)"/>
+      <line x1="220" y1="192" x2="89" y2="240" stroke="#5b8dee" stroke-width="1" marker-end="url(#ta)"/>
+      <line x1="255" y1="200" x2="206" y2="240" stroke="#5b8dee" stroke-width="1" marker-end="url(#ta)"/>
+      <line x1="300" y1="206" x2="318" y2="240" stroke="#5b8dee" stroke-width="1" marker-end="url(#ta)"/>
+      <line x1="340" y1="200" x2="430" y2="240" stroke="#5b8dee" stroke-width="1" marker-end="url(#ta)"/>
+    </svg>
+    <div class="svg-caption">図：サンプリング方法の分類ツリー（S03:p.34）</div>
+  </div>
+
+  <h3>①単純無作為抽出法</h3>
+  <div class="samp-card" style="margin-bottom:10px;">
+    <div class="num">Simple Random Sampling</div>
+    <div class="sname">母集団からランダムに回答者を抽出</div>
+    <div class="sdef">母集団からランダムに回答者を抽出する最もシンプルな方法</div>
+    <div class="merit-row">
+      <span class="merit good">母集団情報不要</span>
+      <span class="merit good">シンプル</span>
+      <span class="merit bad">誤差が多い可能性</span>
+    </div>
+  </div>
+  <div class="block block-audio">
+    <div class="block-label">🎤 音声補足</div>
+    「母集団に関する情報が全くなくてもですね、名簿に対して、じゃあ適当にこの人とこの人を回答してもらおうということができる」← S02
+  </div>
+
+  <h3>②系統抽出法</h3>
+  <div class="samp-card" style="margin-bottom:10px;">
+    <div class="num">Systematic Sampling</div>
+    <div class="sname">ID順リストを作り一定間隔で抽出</div>
+    <div class="sdef">
+      手順：① 母集団にID順のリストを作成（名前順・学籍番号順など）<br>
+      　　　② 一定間隔でIDを飛ばして抽出（例：1番・6番・11番・16番…）
+    </div>
+    <div class="merit-row">
+      <span class="merit good">母集団情報不要</span>
+      <span class="merit good">単純無作為より低コスト</span>
+      <span class="merit bad">リストによっては誤差大</span>
+    </div>
+  </div>
+  <div class="block block-audio">
+    <div class="block-label">🎤 デメリットの具体例（音声）</div>
+    男性と女性がごちゃごちゃになっているリストの場合、場合によっては男性しか抽出できないということも考えられる。← S02
+  </div>
+
+  <h3>③層別抽出法（層化抽出法）</h3>
+  <div class="samp-card" style="margin-bottom:10px;">
+    <div class="num">Stratified Sampling</div>
+    <div class="sname">重ならない層に分けてランダム抽出</div>
+    <div class="sdef">
+      母集団をお互いに重ならない層に分けてランダムに回答者を抽出する方法<br>
+      例：男性ユーザーと女性ユーザーに層を分ける、10代・20代・30代で層を分ける
+    </div>
+    <div class="merit-row">
+      <span class="merit good">層間の偏りが大きくても使用可</span>
+      <span class="merit bad">事前に母集団情報が必要</span>
+    </div>
+  </div>
+  <div class="block block-audio">
+    <div class="block-label">🎤 メリットの具体例（音声）</div>
+    男性ユーザーが9割・女性ユーザーが1割の場合、ランダムで取ってしまうと全員が男性ユーザーになる可能性もある。層別抽出なら<strong>男女両方のデータを確実に取得できる</strong>。← S02
+  </div>
+  <div class="block block-audio">
+    <div class="block-label">🎤 デメリットの補足（音声）</div>
+    「男性ユーザーと女性ユーザーがいる」という情報を事前につかんでいないと層別抽出ができない。← S02
+  </div>
+
+  <div class="svg-wrap">
+    <svg viewBox="0 0 520 200" xmlns="http://www.w3.org/2000/svg" width="520">
+      <!-- 母集団 -->
+      <rect x="10" y="10" width="500" height="180" rx="10" fill="#161b27" stroke="#5b8dee" stroke-width="1.5" stroke-dasharray="6,3"/>
+      <text x="260" y="30" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="'Noto Sans JP',sans-serif">母集団（全ゲームユーザー）</text>
+      <!-- 男性層 -->
+      <rect x="30" y="45" width="200" height="130" rx="8" fill="#1a2e50" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="130" y="68" text-anchor="middle" fill="#5b8dee" font-size="11" font-family="'Noto Sans JP',sans-serif" font-weight="700">男性ユーザー層</text>
+      <!-- 男性人形 -->
+      <circle cx="80" cy="105" r="12" fill="#5b8dee" opacity="0.7"/>
+      <rect x="72" cy="118" width="16" height="22" rx="3" fill="#5b8dee" opacity="0.5" y="118"/>
+      <circle cx="130" cy="105" r="12" fill="#5b8dee" opacity="0.7"/>
+      <rect x="122" cy="118" width="16" height="22" rx="3" fill="#5b8dee" opacity="0.5" y="118"/>
+      <circle cx="180" cy="105" r="12" fill="#5b8dee" opacity="0.7"/>
+      <rect x="172" cy="118" width="16" height="22" rx="3" fill="#5b8dee" opacity="0.5" y="118"/>
+      <!-- 抽出マーク 男 -->
+      <circle cx="80" cy="105" r="16" fill="none" stroke="#fbbf24" stroke-width="2.5"/>
+      <circle cx="180" cy="105" r="16" fill="none" stroke="#fbbf24" stroke-width="2.5"/>
+      <text x="130" y="158" text-anchor="middle" fill="#fbbf24" font-size="9" font-family="'Noto Sans JP',sans-serif">ランダムに抽出</text>
+      <!-- 女性層 -->
+      <rect x="280" y="45" width="210" height="130" rx="8" fill="#1a2535" stroke="#f472b6" stroke-width="1.5"/>
+      <text x="385" y="68" text-anchor="middle" fill="#f472b6" font-size="11" font-family="'Noto Sans JP',sans-serif" font-weight="700">女性ユーザー層</text>
+      <circle cx="330" cy="105" r="12" fill="#f472b6" opacity="0.7"/>
+      <rect x="322" cy="118" width="16" height="22" rx="3" fill="#f472b6" opacity="0.5" y="118"/>
+      <circle cx="385" cy="105" r="12" fill="#f472b6" opacity="0.7"/>
+      <rect x="377" cy="118" width="16" height="22" rx="3" fill="#f472b6" opacity="0.5" y="118"/>
+      <circle cx="440" cy="105" r="12" fill="#f472b6" opacity="0.7"/>
+      <rect x="432" cy="118" width="16" height="22" rx="3" fill="#f472b6" opacity="0.5" y="118"/>
+      <!-- 抽出マーク 女 -->
+      <circle cx="330" cy="105" r="16" fill="none" stroke="#fbbf24" stroke-width="2.5"/>
+      <circle cx="440" cy="105" r="16" fill="none" stroke="#fbbf24" stroke-width="2.5"/>
+      <text x="385" y="158" text-anchor="middle" fill="#fbbf24" font-size="9" font-family="'Noto Sans JP',sans-serif">ランダムに抽出</text>
+    </svg>
+    <div class="svg-caption">図：層別抽出法（層化抽出法）— 重ならない層に分けてランダム抽出（S03:p.37）</div>
+  </div>
+
+  <h3>④多段抽出法</h3>
+  <div class="samp-card" style="margin-bottom:10px;">
+    <div class="num">Multi-stage Sampling</div>
+    <div class="sname">グループ分け→無作為抽出を繰り返す</div>
+    <div class="sdef">
+      「いくつかのグループに分け、無作為抽出でグループを選択」を繰り返す。最終的に抽出されたグループから無作為で調査対象を抽出
+    </div>
+    <div class="merit-row">
+      <span class="merit good">収集効率が良い</span>
+      <span class="merit bad">サンプルサイズ小さいと誤差大</span>
+    </div>
+  </div>
+  <div class="block block-audio">
+    <div class="block-label">🎤 スマホゲームの事例（音声）</div>
+    第1段：スマホの機種名で無作為抽出<br>
+    第2段：年代で無作為抽出<br>
+    第3段：回答者を無作為抽出 → 調査対象決定<br><br>
+    メリット：機種を選ぶことで一つの機種の動きを確認するだけで実際に調査ができる<br>
+    デメリット：最新の機種ばかり使う人のデータばかり取れてしまう問題もある← S02
+  </div>
+
+  <div class="svg-wrap">
+    <svg viewBox="0 0 560 260" xmlns="http://www.w3.org/2000/svg" width="560">
+      <defs>
+        <marker id="ma" markerWidth="7" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#5b8dee"/></marker>
+      </defs>
+      <!-- 母集団 -->
+      <rect x="180" y="10" width="200" height="36" rx="6" fill="#1a2e50" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="280" y="25" text-anchor="middle" fill="#38bdf8" font-size="11" font-family="'Noto Sans JP',sans-serif" font-weight="700">母集団（全ゲームユーザー）</text>
+      <text x="280" y="39" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="'Noto Sans JP',sans-serif">男性ユーザー　女性ユーザー</text>
+      <!-- 第1段 -->
+      <text x="280" y="68" text-anchor="middle" fill="#fbbf24" font-size="10" font-family="'Noto Sans JP',sans-serif">第1段：機種名で無作為抽出</text>
+      <line x1="280" y1="46" x2="280" y2="58" stroke="#5b8dee" stroke-width="1.2" marker-end="url(#ma)"/>
+      <!-- 機種ボックス3つ -->
+      <rect x="40" y="76" width="100" height="32" rx="5" fill="#1e2535" stroke="#8a99b8" stroke-width="1"/>
+      <text x="90" y="96" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="'Noto Sans JP',sans-serif">機種A</text>
+      <rect x="230" y="76" width="100" height="32" rx="5" fill="#1a2e50" stroke="#5b8dee" stroke-width="2"/>
+      <text x="280" y="96" text-anchor="middle" fill="#5b8dee" font-size="10" font-family="'Noto Sans JP',sans-serif" font-weight="700">機種B ★</text>
+      <rect x="420" y="76" width="100" height="32" rx="5" fill="#1e2535" stroke="#8a99b8" stroke-width="1"/>
+      <text x="470" y="96" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="'Noto Sans JP',sans-serif">機種C</text>
+      <!-- 線 母集団→機種 -->
+      <line x1="240" y1="46" x2="110" y2="76" stroke="#5b8dee" stroke-width="1" stroke-dasharray="4,3"/>
+      <line x1="280" y1="46" x2="280" y2="76" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#ma)"/>
+      <line x1="320" y1="46" x2="450" y2="76" stroke="#5b8dee" stroke-width="1" stroke-dasharray="4,3"/>
+      <!-- 第2段 -->
+      <text x="280" y="132" text-anchor="middle" fill="#fbbf24" font-size="10" font-family="'Noto Sans JP',sans-serif">第2段：年代で無作為抽出</text>
+      <line x1="280" y1="108" x2="280" y2="122" stroke="#5b8dee" stroke-width="1.2" marker-end="url(#ma)"/>
+      <!-- 年代ボックス -->
+      <rect x="140" y="140" width="80" height="30" rx="4" fill="#1e2535" stroke="#8a99b8" stroke-width="1"/>
+      <text x="180" y="158" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="'Noto Sans JP',sans-serif">10〜20代</text>
+      <rect x="240" y="140" width="80" height="30" rx="4" fill="#1a2e50" stroke="#5b8dee" stroke-width="2"/>
+      <text x="280" y="158" text-anchor="middle" fill="#5b8dee" font-size="10" font-family="'Noto Sans JP',sans-serif" font-weight="700">30代 ★</text>
+      <rect x="340" y="140" width="80" height="30" rx="4" fill="#1e2535" stroke="#8a99b8" stroke-width="1"/>
+      <text x="380" y="158" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="'Noto Sans JP',sans-serif">40代以上</text>
+      <line x1="255" y1="108" x2="195" y2="140" stroke="#5b8dee" stroke-width="1" stroke-dasharray="4,3"/>
+      <line x1="280" y1="108" x2="280" y2="140" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#ma)"/>
+      <line x1="305" y1="108" x2="365" y2="140" stroke="#5b8dee" stroke-width="1" stroke-dasharray="4,3"/>
+      <!-- 第3段 -->
+      <text x="280" y="196" text-anchor="middle" fill="#fbbf24" font-size="10" font-family="'Noto Sans JP',sans-serif">第3段：回答者を無作為抽出 → 調査対象決定</text>
+      <line x1="280" y1="170" x2="280" y2="186" stroke="#5b8dee" stroke-width="1.2" marker-end="url(#ma)"/>
+      <!-- 回答者 -->
+      <circle cx="240" cy="228" r="14" fill="#5b8dee" opacity="0.8"/>
+      <circle cx="280" cy="228" r="14" fill="#5b8dee" opacity="0.8"/>
+      <circle cx="320" cy="228" r="14" fill="#5b8dee" opacity="0.8"/>
+      <text x="240" y="233" text-anchor="middle" fill="#fff" font-size="9" font-family="sans-serif">👤</text>
+      <text x="280" y="233" text-anchor="middle" fill="#fff" font-size="9" font-family="sans-serif">👤</text>
+      <text x="320" y="233" text-anchor="middle" fill="#fff" font-size="9" font-family="sans-serif">👤</text>
+      <text x="280" y="252" text-anchor="middle" fill="#34d399" font-size="10" font-family="'Noto Sans JP',sans-serif" font-weight="700">調査対象決定</text>
+    </svg>
+    <div class="svg-caption">図：多段抽出法 — 3段階の抽出例（S03:p.39）</div>
+  </div>
+  <span class="pointer">← S03:p.34-39 / S02</span>
+</div>
+
+<!-- 第2章まとめ -->
+<div id="ch2-summary"></div>
+<div class="section">
+  <div class="section-title"><span class="icon">📋</span>第2章まとめ：サンプリング方法 総復習一覧表</div>
+
+  <div class="table-wrap">
+    <table>
+      <tr><th>方法</th><th>概要</th><th>メリット</th><th>デメリット</th><th>母集団情報</th></tr>
+      <tr>
+        <td><strong>全数調査</strong><br>（悉皆調査）</td>
+        <td>母集団全員を調査</td>
+        <td>標本誤差なし・正確</td>
+        <td>母集団大きいとコスト莫大</td>
+        <td><span class="na">—</span></td>
+      </tr>
+      <tr>
+        <td><strong>標本調査</strong><br>（サンプル調査）</td>
+        <td>母集団の一部を調査</td>
+        <td>コストをサンプル数で調整できる</td>
+        <td>標本誤差が必ず生じる</td>
+        <td><span class="na">—</span></td>
+      </tr>
+      <tr>
+        <td><strong>①単純無作為抽出</strong></td>
+        <td>母集団からランダムに抽出</td>
+        <td>母集団情報不要・シンプル</td>
+        <td>誤差を多く含む可能性あり</td>
+        <td><span class="check">不要</span></td>
+      </tr>
+      <tr>
+        <td><strong>②系統抽出</strong></td>
+        <td>IDリスト化→一定間隔で抽出</td>
+        <td>母集団情報不要・単純無作為より低コスト</td>
+        <td>リストによっては誤差大（性別偏りなど）</td>
+        <td><span class="check">不要</span></td>
+      </tr>
+      <tr>
+        <td><strong>③層別抽出</strong><br>（層化抽出）</td>
+        <td>重ならない層に分けてランダム抽出</td>
+        <td>層間の偏りが大きくても使用可能</td>
+        <td>事前に母集団情報が必要</td>
+        <td><span class="cross">必要</span></td>
+      </tr>
+      <tr>
+        <td><strong>④多段抽出</strong></td>
+        <td>グループ分け→無作為抽出を繰り返す</td>
+        <td>収集効率が良い</td>
+        <td>サンプルサイズが小さいと誤差大</td>
+        <td><span class="na">—</span></td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="block block-exam">
+    <div class="block-label">⭐ 試験頻出ポイント</div>
+    <ul style="margin:0;padding-left:18px;">
+      <li><strong>層別抽出法だけ</strong>が「事前に母集団の情報が必要」という条件がある</li>
+      <li><strong>全数調査だけ</strong>が「標本誤差が生じない」</li>
+      <li>単純無作為・系統抽出は「<strong>母集団情報がなくても使える</strong>」点が共通</li>
+    </ul>
+  </div>
+
+  <h3>今回の事例での最終的な調査計画</h3>
+  <div class="table-wrap">
+    <table>
+      <tr><th>項目</th><th>決定内容</th></tr>
+      <tr><td><strong>目的</strong></td><td>ユーザーの満足度調査</td></tr>
+      <tr><td><strong>調査方法</strong></td><td>アンケート調査</td></tr>
+      <tr><td><strong>サンプリング方法</strong></td><td>年代で層別抽出</td></tr>
+    </table>
+  </div>
+  <span class="pointer">← S03:p.40-41 / S02</span>
+</div>
+
+<!-- ══════════════════════════════
+     第3章
+══════════════════════════════ -->
+<div class="chapter-divider">
+  <span class="chapter-number">第3章</span>
+  <span class="chapter-title">2次データの活用</span>
+  <span class="chapter-line"></span>
+</div>
+
+<!-- オープンデータとは -->
+<div id="open-def"></div>
+<div class="section">
+  <div class="section-title"><span class="icon">🌐</span>オープンデータとは？</div>
+
+  <div class="block block-audio">
+    <div class="block-label">🎤 音声補足（定義について）</div>
+    「このオープンデータに関しても固定的な定義というのは実はないんですが、いくつか有力な定義があります」← S02
+  </div>
+
+  <h3>定義① Open Knowledge Foundation（イギリス）</h3>
+  <div class="block block-def">
+    <div class="block-label">Open Knowledge Foundation</div>
+    オープンデータとは、<strong>自由に使えて再利用もでき、かつ誰でも再配布できる</strong>ようなデータのことだ。従うべき決まりは、せいぜい「作者のクレジットを残す」あるいは「同じ条件で配布する」程度である。
+  </div>
+  <div class="block block-audio">
+    <div class="block-label">🎤 音声補足</div>
+    「自由に使えて再配布もできる。つまり二次利用ができる。そして、かつ誰でも再配布ができる。この『<strong>誰でも</strong>』というところがポイントです。」← S02
+  </div>
+
+  <h3>定義② デジタル庁「オープンデータ基本指針」（日本）</h3>
+  <div class="block block-def">
+    <div class="block-label">デジタル庁</div>
+    <ol style="margin:0;padding-left:18px;">
+      <li>営利目的・非営利目的を問わず<strong>二次利用可能</strong>なルールが適用されたもの</li>
+      <li><strong>機械判読</strong>に適したもの</li>
+      <li><strong>無償</strong>で利用できるもの</li>
+    </ol>
+  </div>
+  <span class="pointer">← S03:p.47-48 / S02</span>
+</div>
+
+<!-- 3要素 -->
+<div id="open-elements"></div>
+<div class="section">
+  <div class="section-title"><span class="icon">🔑</span>オープンデータの3要素</div>
+
+  <div class="open-data-grid">
+    <div class="od-card">
+      <div class="num-circle">1</div>
+      <div class="od-title">誰でも・どんな目的でも使用可能</div>
+      <div class="od-desc">商用・個人利用を問わず<strong>無償</strong>で使用可能</div>
+    </div>
+    <div class="od-card">
+      <div class="num-circle">2</div>
+      <div class="od-title">再利用・再配布が可能</div>
+      <div class="od-desc">他のデータと組み合わせて分析・<strong>再配布</strong>もできる（二次利用）</div>
+    </div>
+    <div class="od-card">
+      <div class="num-circle">3</div>
+      <div class="od-title">誰にでも利用できる方法・形式での配布が基本</div>
+      <div class="od-desc"><strong>機械可読</strong>かつインターネット経由でダウンロード可能</div>
+    </div>
+  </div>
+
+  <div class="block block-audio">
+    <div class="block-label">🎤 ①について（音声）</div>
+    「このデータは自分の好きな人にだけ配布する、でもこの人はなんか嫌だからそれと配布しないよ、みたいなのはオープンデータとは言うことはできません。」← S02
+  </div>
+  <div class="block block-audio">
+    <div class="block-label">🎤 ②について（音声）</div>
+    「自分が集めたデータとオープンデータを組み合わせて、さらにこういったデータがありますよということで配布をすること、これができるのがオープンデータということになります。」← S02
+  </div>
+  <div class="block block-audio">
+    <div class="block-label">🎤 ③について（音声）</div>
+    「日本に住んでいてもアメリカに住んでいてもイギリスに住んでいても、どこにいてもですね使えるデータとなっている。そのような場合はインターネット経由で公開されているのが望ましい。」← S02
+  </div>
+  <span class="pointer">← S03:p.51 / S02</span>
+</div>
+
+<!-- 機械可読・CSV -->
+<div id="machine-readable"></div>
+<div class="section">
+  <div class="section-title"><span class="icon">💻</span>機械可読（機械判別可能）とCSV</div>
+
+  <div class="block block-def">
+    <div class="block-label">機械可読（Machine Readable）とは</div>
+    <strong>人の手を介さなくても、直接、計算機で処理可能なデータのこと</strong><br>
+    Machine Readable（マシンリーダブル）とも呼ばれる
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <tr><th>種別</th><th>例</th><th>理由</th></tr>
+      <tr><td><span class="cross">機械可読でない</span></td><td>紙で収集したアンケート調査</td><td>スキャナやExcel入力が必要</td></tr>
+      <tr><td><span class="cross">機械可読でない</span></td><td>カメラで撮影した書類データ</td><td>OCR機能への入力という人の手が必要</td></tr>
+      <tr><td><span class="cross">機械可読でない</span></td><td>高価な専用ソフトが必要なデータ</td><td>データを開くためのコストが別途発生</td></tr>
+      <tr><td><span class="check">機械可読</span></td><td><strong>CSV形式、TSV形式</strong></td><td>様々なソフトで直接処理可能</td></tr>
+    </table>
+  </div>
+
+  <h3>CSV（Comma Separated Values）とは</h3>
+  <div class="block block-def">
+    <div class="block-label">CSV</div>
+    <strong>Comma Separated Values</strong> の略。カンマ区切りの形式で保存された<strong>機械可読な構造化データ</strong>形式
+  </div>
+  <ul>
+    <li>メモ帳で開くと → カンマ区切りのテキストとして表示</li>
+    <li><strong>Excelで開くと → カンマが取り除かれて表形式で表示</strong></li>
+    <li>様々なソフトで表示できる → より多くの人がデータを使える</li>
+  </ul>
+  <div class="block block-audio">
+    <div class="block-label">🎤 音声補足</div>
+    「CSV形式でオープンデータを公開することによって、より多くの人がデータを使うことができるようになっているというのが、このCSV形式のポイントです。」← S02
+  </div>
+
+  <div class="svg-wrap">
+    <svg viewBox="0 0 580 180" xmlns="http://www.w3.org/2000/svg" width="580">
+      <!-- メモ帳ウィンドウ -->
+      <rect x="20" y="10" width="240" height="160" rx="8" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+      <rect x="20" y="10" width="240" height="28" rx="8" fill="#2a3349"/>
+      <rect x="20" y="28" width="240" height="10" fill="#2a3349"/>
+      <circle cx="40" cy="24" r="6" fill="#f87171"/>
+      <circle cx="58" cy="24" r="6" fill="#fbbf24"/>
+      <circle cx="76" cy="24" r="6" fill="#34d399"/>
+      <text x="140" y="26" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="'JetBrains Mono',monospace">example.csv — メモ帳</text>
+      <text x="34" y="58" fill="#34d399" font-size="10" font-family="'JetBrains Mono',monospace">choice,price,memory,panel</text>
+      <text x="34" y="75" fill="#e2e8f5" font-size="10" font-family="'JetBrains Mono',monospace">1,170,4,1</text>
+      <text x="34" y="91" fill="#e2e8f5" font-size="10" font-family="'JetBrains Mono',monospace">0,100,6,0</text>
+      <text x="34" y="107" fill="#e2e8f5" font-size="10" font-family="'JetBrains Mono',monospace">0,170,4,1</text>
+      <text x="34" y="123" fill="#e2e8f5" font-size="10" font-family="'JetBrains Mono',monospace">1,100,6,0</text>
+      <text x="34" y="139" fill="#e2e8f5" font-size="10" font-family="'JetBrains Mono',monospace">0,170,4,1</text>
+      <text x="130" y="166" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="'Noto Sans JP',sans-serif">メモ帳で開いた場合</text>
+      <!-- 矢印 -->
+      <text x="276" y="100" text-anchor="middle" fill="#5b8dee" font-size="24" font-family="sans-serif">→</text>
+      <!-- Excelウィンドウ -->
+      <rect x="300" y="10" width="260" height="160" rx="8" fill="#1e2535" stroke="#34d399" stroke-width="1.5"/>
+      <rect x="300" y="10" width="260" height="28" rx="8" fill="#2a3349"/>
+      <rect x="300" y="28" width="260" height="10" fill="#2a3349"/>
+      <circle cx="320" cy="24" r="6" fill="#f87171"/>
+      <circle cx="338" cy="24" r="6" fill="#fbbf24"/>
+      <circle cx="356" cy="24" r="6" fill="#34d399"/>
+      <text x="430" y="26" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="'JetBrains Mono',monospace">Excelで開いた場合</text>
+      <!-- Excelヘッダー行 -->
+      <rect x="300" y="38" width="260" height="20" fill="#2a3349"/>
+      <line x1="360" y1="38" x2="360" y2="170" stroke="#2a3349" stroke-width="1"/>
+      <line x1="420" y1="38" x2="420" y2="170" stroke="#2a3349" stroke-width="1"/>
+      <line x1="480" y1="38" x2="480" y2="170" stroke="#2a3349" stroke-width="1"/>
+      <text x="330" y="52" text-anchor="middle" fill="#38bdf8" font-size="9" font-family="'JetBrains Mono',monospace">choice</text>
+      <text x="390" y="52" text-anchor="middle" fill="#38bdf8" font-size="9" font-family="'JetBrains Mono',monospace">price</text>
+      <text x="450" y="52" text-anchor="middle" fill="#38bdf8" font-size="9" font-family="'JetBrains Mono',monospace">memory</text>
+      <text x="520" y="52" text-anchor="middle" fill="#38bdf8" font-size="9" font-family="'JetBrains Mono',monospace">panel</text>
+      <!-- データ行 -->
+      <line x1="300" y1="58" x2="560" y2="58" stroke="#2a3349" stroke-width="0.5"/>
+      <text x="330" y="72" text-anchor="middle" fill="#e2e8f5" font-size="9" font-family="'JetBrains Mono',monospace">1</text>
+      <text x="390" y="72" text-anchor="middle" fill="#e2e8f5" font-size="9" font-family="'JetBrains Mono',monospace">170</text>
+      <text x="450" y="72" text-anchor="middle" fill="#e2e8f5" font-size="9" font-family="'JetBrains Mono',monospace">4</text>
+      <text x="520" y="72" text-anchor="middle" fill="#e2e8f5" font-size="9" font-family="'JetBrains Mono',monospace">1</text>
+      <line x1="300" y1="78" x2="560" y2="78" stroke="#2a3349" stroke-width="0.5"/>
+      <text x="330" y="92" text-anchor="middle" fill="#e2e8f5" font-size="9" font-family="'JetBrains Mono',monospace">0</text>
+      <text x="390" y="92" text-anchor="middle" fill="#e2e8f5" font-size="9" font-family="'JetBrains Mono',monospace">100</text>
+      <text x="450" y="92" text-anchor="middle" fill="#e2e8f5" font-size="9" font-family="'JetBrains Mono',monospace">6</text>
+      <text x="520" y="92" text-anchor="middle" fill="#e2e8f5" font-size="9" font-family="'JetBrains Mono',monospace">0</text>
+      <line x1="300" y1="98" x2="560" y2="98" stroke="#2a3349" stroke-width="0.5"/>
+      <text x="330" y="112" text-anchor="middle" fill="#e2e8f5" font-size="9" font-family="'JetBrains Mono',monospace">0</text>
+      <text x="390" y="112" text-anchor="middle" fill="#e2e8f5" font-size="9" font-family="'JetBrains Mono',monospace">170</text>
+      <text x="450" y="112" text-anchor="middle" fill="#e2e8f5" font-size="9" font-family="'JetBrains Mono',monospace">4</text>
+      <text x="520" y="112" text-anchor="middle" fill="#e2e8f5" font-size="9" font-family="'JetBrains Mono',monospace">1</text>
+      <!-- 吹き出し -->
+      <rect x="330" y="130" width="180" height="28" rx="6" fill="#34d39920" stroke="#34d399" stroke-width="1"/>
+      <text x="420" y="148" text-anchor="middle" fill="#34d399" font-size="10" font-family="'Noto Sans JP',sans-serif" font-weight="700">表形式で表示できた！</text>
+    </svg>
+    <div class="svg-caption">図：CSVファイルの表示形式 — メモ帳 vs Excel（S03:p.53）</div>
+  </div>
+  <span class="pointer">← S03:p.52-53 / S02</span>
+</div>
+
+<!-- ライセンス -->
+<div id="license"></div>
+<div class="section">
+  <div class="section-title"><span class="icon">⚖️</span>留意点①：ライセンスを確認する</div>
+
+  <div class="block block-def">
+    <div class="block-label">ライセンスとは</div>
+    <strong>使用者が守るべきルールを文書化したもの</strong>
+  </div>
+
+  <div class="block block-audio">
+    <div class="block-label">🎤 音声補足</div>
+    「皆さんもインターネットで画像ですとか、あるいはインターネットのサイトなどをみたときに、このクリエイティブコモンズライセンスという表示をみたことがあると思います。」← S02
+  </div>
+
+  <h3>クリエイティブコモンズライセンス（CC）</h3>
+  <p>CCライセンスは、<strong>BY・NC・SA・NDの4種類の条件記号の組み合わせで表される。</strong></p>
+
+  <div class="table-wrap">
+    <table>
+      <tr><th>記号</th><th>名称</th><th>意味</th></tr>
+      <tr><td><span class="badge badge-accent">BY</span></td><td><strong>表示</strong></td><td>クレジットの表示が必要</td></tr>
+      <tr><td><span class="badge badge-mid">NC</span></td><td><strong>非営利</strong></td><td>営利目的での利用禁止</td></tr>
+      <tr><td><span class="badge badge-accent">SA</span></td><td><strong>継承</strong></td><td>元のデータと同じライセンスで配布</td></tr>
+      <tr><td><span class="badge badge-low">ND</span></td><td><strong>改変禁止</strong></td><td>改変しての使用禁止</td></tr>
+    </table>
+  </div>
+
+  <h3>CCライセンスの6種類とオープンデータ該当可否</h3>
+  <div class="table-wrap">
+    <table class="cc-table">
+      <tr><th>ライセンス</th><th>BY（表示）</th><th>NC（非営利）</th><th>SA（継承）</th><th>ND（改変禁止）</th><th>オープンデータ</th></tr>
+      <tr>
+        <td><code>CC BY</code></td>
+        <td>✓</td><td></td><td></td><td></td>
+        <td class="cc-open">✅ 該当</td>
+      </tr>
+      <tr>
+        <td><code>CC BY-SA</code></td>
+        <td>✓</td><td></td><td>✓</td><td></td>
+        <td class="cc-open">✅ 該当</td>
+      </tr>
+      <tr>
+        <td><code>CC BY-ND</code></td>
+        <td>✓</td><td></td><td></td><td>✓</td>
+        <td class="cc-notopen">❌ 改変禁止のため<br>オープンデータの条件を満たさない</td>
+      </tr>
+      <tr>
+        <td><code>CC BY-NC</code></td>
+        <td>✓</td><td>✓</td><td></td><td></td>
+        <td class="cc-notopen">❌ 本講義の定義では非営利限定は<br>「誰でも・どんな目的でも」に当てはまらない</td>
+      </tr>
+      <tr>
+        <td><code>CC BY-NC-SA</code></td>
+        <td>✓</td><td>✓</td><td>✓</td><td></td>
+        <td class="cc-notopen">❌ 同上：非営利限定のため非該当</td>
+      </tr>
+      <tr>
+        <td><code>CC BY-NC-ND</code></td>
+        <td>✓</td><td>✓</td><td></td><td>✓</td>
+        <td class="cc-notopen">❌ 非営利限定かつ改変禁止のため非該当</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="block block-warn">
+    <div class="block-label">⚠️ 重要まとめ</div>
+    <ul style="margin:0;padding-left:18px;">
+      <li>一般的にオープンデータとして扱われるのは <strong>CC BY</strong> と <strong>CC BY-SA</strong> の2種類</li>
+      <li><strong>「改変禁止（ND）」</strong> は、改変を伴う再利用ができないため、オープンデータの条件を満たさない</li>
+      <li><strong>「非営利（NC）」</strong> は、本講義の定義では「誰でも・どんな目的でも使用可能」に当てはまらないため、オープンデータに該当しない</li>
+    </ul>
+  </div>
+
+  <div class="svg-wrap">
+    <svg viewBox="0 0 620 260" xmlns="http://www.w3.org/2000/svg" width="620">
+      <!-- 凡例 -->
+      <text x="10" y="20" fill="#38bdf8" font-size="11" font-family="'Noto Sans JP',sans-serif" font-weight="700">CCライセンスの6種類</text>
+      <!-- 条件アイコン凡例 -->
+      <circle cx="170" cy="15" r="10" fill="#5b8dee"/>
+      <text x="170" y="19" text-anchor="middle" fill="#fff" font-size="8" font-family="sans-serif" font-weight="700">BY</text>
+      <text x="184" y="19" fill="#8a99b8" font-size="9" font-family="'Noto Sans JP',sans-serif">表示</text>
+      <circle cx="250" cy="15" r="10" fill="#f97316"/>
+      <text x="250" y="19" text-anchor="middle" fill="#fff" font-size="8" font-family="sans-serif" font-weight="700">NC</text>
+      <text x="264" y="19" fill="#8a99b8" font-size="9" font-family="'Noto Sans JP',sans-serif">非営利</text>
+      <circle cx="330" cy="15" r="10" fill="#a78bfa"/>
+      <text x="330" y="19" text-anchor="middle" fill="#fff" font-size="8" font-family="sans-serif" font-weight="700">SA</text>
+      <text x="344" y="19" fill="#8a99b8" font-size="9" font-family="'Noto Sans JP',sans-serif">継承</text>
+      <circle cx="410" cy="15" r="10" fill="#f87171"/>
+      <text x="410" y="19" text-anchor="middle" fill="#fff" font-size="8" font-family="sans-serif" font-weight="700">ND</text>
+      <text x="424" y="19" fill="#8a99b8" font-size="9" font-family="'Noto Sans JP',sans-serif">改変禁止</text>
+      <!-- 行1: CC BY -->
+      <rect x="10" y="35" width="290" height="50" rx="6" fill="#0d3328" stroke="#34d399" stroke-width="2"/>
+      <text x="26" y="55" fill="#34d399" font-size="10" font-family="'JetBrains Mono',monospace" font-weight="700">CC BY</text>
+      <circle cx="110" cy="55" r="10" fill="#5b8dee"/>
+      <text x="110" y="59" text-anchor="middle" fill="#fff" font-size="8" font-family="sans-serif" font-weight="700">BY</text>
+      <text x="26" y="75" fill="#8a99b8" font-size="9" font-family="'Noto Sans JP',sans-serif">クレジット表示のみ → 自由に使用可能</text>
+      <rect x="265" y="40" width="32" height="20" rx="4" fill="#34d399"/>
+      <text x="281" y="54" text-anchor="middle" fill="#0f1117" font-size="9" font-family="'Noto Sans JP',sans-serif" font-weight="700">OD✓</text>
+      <!-- 行1: CC BY-SA -->
+      <rect x="320" y="35" width="290" height="50" rx="6" fill="#0d3328" stroke="#34d399" stroke-width="2"/>
+      <text x="336" y="55" fill="#34d399" font-size="10" font-family="'JetBrains Mono',monospace" font-weight="700">CC BY-SA</text>
+      <circle cx="435" cy="55" r="10" fill="#5b8dee"/>
+      <text x="435" y="59" text-anchor="middle" fill="#fff" font-size="8" font-family="sans-serif" font-weight="700">BY</text>
+      <circle cx="452" cy="55" r="10" fill="#a78bfa"/>
+      <text x="452" y="59" text-anchor="middle" fill="#fff" font-size="8" font-family="sans-serif" font-weight="700">SA</text>
+      <text x="336" y="75" fill="#8a99b8" font-size="9" font-family="'Noto Sans JP',sans-serif">同じライセンスで継承すれば使用可能</text>
+      <rect x="575" y="40" width="32" height="20" rx="4" fill="#34d399"/>
+      <text x="591" y="54" text-anchor="middle" fill="#0f1117" font-size="9" font-family="'Noto Sans JP',sans-serif" font-weight="700">OD✓</text>
+      <!-- 行2: CC BY-ND -->
+      <rect x="10" y="100" width="290" height="50" rx="6" fill="#2a1a1a" stroke="#f87171" stroke-width="1.5"/>
+      <text x="26" y="120" fill="#f87171" font-size="10" font-family="'JetBrains Mono',monospace" font-weight="700">CC BY-ND</text>
+      <circle cx="120" cy="120" r="10" fill="#5b8dee"/>
+      <text x="120" y="124" text-anchor="middle" fill="#fff" font-size="8" font-family="sans-serif" font-weight="700">BY</text>
+      <circle cx="138" cy="120" r="10" fill="#f87171"/>
+      <text x="138" y="124" text-anchor="middle" fill="#fff" font-size="8" font-family="sans-serif" font-weight="700">ND</text>
+      <text x="26" y="140" fill="#8a99b8" font-size="9" font-family="'Noto Sans JP',sans-serif">改変禁止 → OD条件を満たさない</text>
+      <rect x="265" y="105" width="32" height="20" rx="4" fill="#f87171"/>
+      <text x="281" y="119" text-anchor="middle" fill="#fff" font-size="9" font-family="'Noto Sans JP',sans-serif" font-weight="700">OD✗</text>
+      <!-- 行2: CC BY-NC -->
+      <rect x="320" y="100" width="290" height="50" rx="6" fill="#2a1a1a" stroke="#f87171" stroke-width="1.5"/>
+      <text x="336" y="120" fill="#f87171" font-size="10" font-family="'JetBrains Mono',monospace" font-weight="700">CC BY-NC</text>
+      <circle cx="445" cy="120" r="10" fill="#5b8dee"/>
+      <text x="445" y="124" text-anchor="middle" fill="#fff" font-size="8" font-family="sans-serif" font-weight="700">BY</text>
+      <circle cx="462" cy="120" r="10" fill="#f97316"/>
+      <text x="462" y="124" text-anchor="middle" fill="#fff" font-size="8" font-family="sans-serif" font-weight="700">NC</text>
+      <text x="336" y="140" fill="#8a99b8" font-size="9" font-family="'Noto Sans JP',sans-serif">非営利限定 → 本講義定義では非該当</text>
+      <rect x="575" y="105" width="32" height="20" rx="4" fill="#f87171"/>
+      <text x="591" y="119" text-anchor="middle" fill="#fff" font-size="9" font-family="'Noto Sans JP',sans-serif" font-weight="700">OD✗</text>
+      <!-- 行3: CC BY-NC-SA -->
+      <rect x="10" y="165" width="290" height="50" rx="6" fill="#2a1a1a" stroke="#f87171" stroke-width="1.5"/>
+      <text x="26" y="185" fill="#f87171" font-size="10" font-family="'JetBrains Mono',monospace" font-weight="700">CC BY-NC-SA</text>
+      <circle cx="148" cy="185" r="10" fill="#5b8dee"/>
+      <text x="148" y="189" text-anchor="middle" fill="#fff" font-size="8" font-family="sans-serif" font-weight="700">BY</text>
+      <circle cx="166" cy="185" r="10" fill="#f97316"/>
+      <text x="166" y="189" text-anchor="middle" fill="#fff" font-size="8" font-family="sans-serif" font-weight="700">NC</text>
+      <circle cx="184" cy="185" r="10" fill="#a78bfa"/>
+      <text x="184" y="189" text-anchor="middle" fill="#fff" font-size="8" font-family="sans-serif" font-weight="700">SA</text>
+      <text x="26" y="205" fill="#8a99b8" font-size="9" font-family="'Noto Sans JP',sans-serif">非営利限定 → 本講義定義では非該当</text>
+      <rect x="265" y="170" width="32" height="20" rx="4" fill="#f87171"/>
+      <text x="281" y="184" text-anchor="middle" fill="#fff" font-size="9" font-family="'Noto Sans JP',sans-serif" font-weight="700">OD✗</text>
+      <!-- 行3: CC BY-NC-ND -->
+      <rect x="320" y="165" width="290" height="50" rx="6" fill="#2a1a1a" stroke="#f87171" stroke-width="1.5"/>
+      <text x="336" y="185" fill="#f87171" font-size="10" font-family="'JetBrains Mono',monospace" font-weight="700">CC BY-NC-ND</text>
+      <circle cx="460" cy="185" r="10" fill="#5b8dee"/>
+      <text x="460" y="189" text-anchor="middle" fill="#fff" font-size="8" font-family="sans-serif" font-weight="700">BY</text>
+      <circle cx="478" cy="185" r="10" fill="#f97316"/>
+      <text x="478" y="189" text-anchor="middle" fill="#fff" font-size="8" font-family="sans-serif" font-weight="700">NC</text>
+      <circle cx="496" cy="185" r="10" fill="#f87171"/>
+      <text x="496" y="189" text-anchor="middle" fill="#fff" font-size="8" font-family="sans-serif" font-weight="700">ND</text>
+      <text x="336" y="205" fill="#8a99b8" font-size="9" font-family="'Noto Sans JP',sans-serif">非営利+改変禁止 → 非該当</text>
+      <rect x="575" y="170" width="32" height="20" rx="4" fill="#f87171"/>
+      <text x="591" y="184" text-anchor="middle" fill="#fff" font-size="9" font-family="'Noto Sans JP',sans-serif" font-weight="700">OD✗</text>
+      <!-- 凡例説明 -->
+      <rect x="10" y="228" width="80" height="18" rx="3" fill="#34d399"/>
+      <text x="50" y="241" text-anchor="middle" fill="#0f1117" font-size="9" font-family="'Noto Sans JP',sans-serif" font-weight="700">OD✓ = オープンデータ該当</text>
+      <rect x="320" y="228" width="80" height="18" rx="3" fill="#f87171"/>
+      <text x="360" y="241" text-anchor="middle" fill="#fff" font-size="9" font-family="'Noto Sans JP',sans-serif" font-weight="700">OD✗ = 非該当</text>
+    </svg>
+    <div class="svg-caption">図：クリエイティブコモンズライセンス 6種類とオープンデータ該当可否（S03:p.55）</div>
+  </div>
+
+  <h3>実際の表示例（東京都オープンデータカタログ）</h3>
+  <p>「東京の労働力 統計データ」の画面にライセンス欄：「クリエイティブコモンズ表示（CC-BY）」と記載</p>
+  <p>→ CC-BY ＝ <strong>出典を明示すれば自由に使用可能</strong>なオープンデータ</p>
+  <div class="block block-audio">
+    <div class="block-label">🎤 音声補足</div>
+    「このようにですね、この東京都のオープンデータカタログサイトに関わらず、オープンデータを扱っているサイトには必ずこのようなライセンスが書いてあります。オープンデータを使う場合には、まずはこのようにライセンスを必ず確認するようにしましょう。」← S02
+  </div>
+  <span class="pointer">← S03:p.54-56 / S02</span>
+</div>
+
+<!-- 調査の概要 -->
+<div id="survey-overview"></div>
+<div class="section">
+  <div class="section-title"><span class="icon">🔍</span>留意点②：調査の概要を確認する</div>
+
+  <p><strong>信頼できるデータか？目的に応じたデータか？を考えてから使用</strong></p>
+
+  <div class="table-wrap">
+    <table>
+      <tr><th>確認すべき項目</th><th>理由</th></tr>
+      <tr><td><strong>データの収集時期</strong></td><td>古いデータを比較しても意味がない場合がある</td></tr>
+      <tr><td><strong>調査主体</strong></td><td>特定企業が都合のいいデータだけを集めていた場合、比較が無意味になる</td></tr>
+      <tr><td><strong>調査方法</strong></td><td>調査員調査・郵送調査・オンライン調査など</td></tr>
+      <tr><td><strong>サンプリング方法</strong></td><td>誰を対象にしたデータかが重要</td></tr>
+    </table>
+  </div>
+
+  <div class="block block-audio">
+    <div class="block-label">🎤 具体例（音声）</div>
+    <ul style="margin:0;padding-left:18px;">
+      <li>オープンデータが「昭和元年に取られたデータ」だったら → 今の時代と全く違うデータを比較することになり全く意味のない結論になる</li>
+      <li>ある企業が「自分の都合のいいデータだけを集めた」データをオープンデータとして公開していたら → 自分の調査データと比較しても全く意味のない結果になる</li>
+    </ul>
+  </div>
+
+  <div class="block block-def">
+    <div class="block-label">メタデータとは</div>
+    <strong>データの調査内容の詳しい情報（データに関するデータ）</strong>
+  </div>
+
+  <h3>e-Stat（政府統計の総合窓口）での表示例</h3>
+  <div class="table-wrap">
+    <table>
+      <tr><th>項目</th><th>例</th></tr>
+      <tr><td>調査単位</td><td>個人・世帯</td></tr>
+      <tr><td>選定の方法</td><td>無作為抽出</td></tr>
+      <tr><td>調査方法</td><td>調査員調査・郵送調査・オンライン調査</td></tr>
+      <tr><td>使用する統計基準</td><td>日本標準職業分類</td></tr>
+      <tr><td>調査周期</td><td>5年</td></tr>
+      <tr><td>承認年月日</td><td>2021-02-24</td></tr>
+    </table>
+  </div>
+  <div class="block block-audio">
+    <div class="block-label">🎤 音声補足</div>
+    「やはり詳しく書かれているということをまず確認し、そしてこれをみながら、本当に適切なデータがあるのか、そしてこのデータが自分の目的に向かっているのかというのをよく考えてから、オープンデータを扱うことにしましょう。」← S02
+  </div>
+  <span class="pointer">← S03:p.57-58 / S02</span>
+</div>
+
+<!-- ══════════════════════════════
+     第4章
+══════════════════════════════ -->
+<div class="chapter-divider">
+  <span class="chapter-number">第4章</span>
+  <span class="chapter-title">データ収集事例</span>
+  <span class="chapter-line"></span>
+</div>
+
+<!-- スクレイピング -->
+<div id="scraping"></div>
+<div class="section">
+  <div class="section-title"><span class="icon">🕷️</span>ウェブスクレイピングとは</div>
+
+  <div class="block block-def">
+    <div class="block-label">定義</div>
+    <strong>（データ）スクレイピング</strong> ＝ コンピューターでデータを抽出すること<br>
+    （一般に：プログラムを使用した自動抽出を指す）<br>
+    <strong>ウェブスクレイピング</strong> ＝ スクレイピングの対象がウェブサイトである場合
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <tr><th></th><th>内容</th></tr>
+      <tr><td><span class="check">メリット</span></td><td>データが公開されているサイトから自動的にデータを収集できる。非常に強力な方法</td></tr>
+      <tr><td><span class="cross">デメリット・留意点</span></td><td>プログラムが各サイトを回ってデータを引っ張ってくるため、<strong>ウェブサイトに負荷がかかる</strong></td></tr>
+    </table>
+  </div>
+
+  <div class="block block-warn">
+    <div class="block-label">⚠️ 重要</div>
+    ウェブサイトの管理者がウェブスクレイピングを<strong>禁止している場合がある</strong>。<br>
+    必ず対象サイトの<strong>利用規約を確認</strong>してから行うこと。
+  </div>
+  <div class="block block-audio">
+    <div class="block-label">🎤 音声補足</div>
+    「プログラムが各サイトを回ってデータを引っ張ってきてしまうので、その分ですね、そのウェブサイトに負荷がかかってしまう方法でもあります。ですので、場合によってはウェブサイトの管理者がこのウェブスクレイピングの対象にすること自体を禁止している場合もあります。」← S02
+  </div>
+  <span class="pointer">← S03:p.65 / S02</span>
+</div>
+
+<!-- WebAPI -->
+<div id="webapi"></div>
+<div class="section">
+  <div class="section-title"><span class="icon">🔌</span>WebAPIとは</div>
+
+  <div class="block block-def">
+    <div class="block-label">WebAPI（Web Application Program Interface）</div>
+    ウェブサイトの情報をやり取りする仕組み（<strong>HTTPプロトコル</strong>）を使い、アプリケーション間でデータをやり取りする仕組み。<br>
+    ウェブサイトの<strong>管理者側が提供</strong>する。<br>
+    ※ 音声では「HTMLプロトコル」と誤変換されていたが、正しくは「HTTPプロトコル」
+  </div>
+
+  <h3>仕組み</h3>
+  <div class="api-flow">
+    <div class="api-row">
+      <span style="font-size:12px;color:var(--text-muted);min-width:60px;">利用者側</span>
+      <span>こんなデータが欲しい（URLの形式でリクエスト）</span>
+      <span style="margin-left:auto;color:var(--accent);">→</span>
+      <span style="color:var(--accent);font-weight:700;">Web API</span>
+      <span style="color:var(--accent);">→</span>
+      <span>データベース</span>
+    </div>
+    <div class="api-row">
+      <span style="font-size:12px;color:var(--text-muted);min-width:60px;">データ返却</span>
+      <span>データを受け取る</span>
+      <span style="margin-left:auto;color:var(--green);">←</span>
+      <span style="color:var(--accent);font-weight:700;">Web API</span>
+      <span style="color:var(--green);">←</span>
+      <span>データベース</span>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <tr><th></th><th>内容</th></tr>
+      <tr><td><strong>利用者側のメリット</strong></td><td>比較的簡単に必要なデータが取得できる</td></tr>
+      <tr><td><strong>管理者側のメリット</strong></td><td>データのダウンロードを制御できる</td></tr>
+    </table>
+  </div>
+
+  <div class="svg-wrap">
+    <svg viewBox="0 0 580 160" xmlns="http://www.w3.org/2000/svg" width="580">
+      <defs>
+        <marker id="wa1" markerWidth="7" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#5b8dee"/></marker>
+        <marker id="wa2" markerWidth="7" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#34d399"/></marker>
+      </defs>
+      <!-- 利用者 -->
+      <rect x="20" y="40" width="120" height="80" rx="8" fill="#1a2e50" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="80" y="68" text-anchor="middle" fill="#e2e8f5" font-size="10" font-family="'Noto Sans JP',sans-serif" font-weight="700">利用者側</text>
+      <text x="80" y="84" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="'Noto Sans JP',sans-serif">こんなデータが</text>
+      <text x="80" y="97" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="'Noto Sans JP',sans-serif">欲しい（URL形式）</text>
+      <!-- Web API -->
+      <rect x="220" y="30" width="140" height="100" rx="8" fill="#1e2535" stroke="#fbbf24" stroke-width="2"/>
+      <text x="290" y="72" text-anchor="middle" fill="#fbbf24" font-size="13" font-family="'Noto Sans JP',sans-serif" font-weight="700">Web API</text>
+      <text x="290" y="90" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="'Noto Sans JP',sans-serif">ウェブサイト管理者が</text>
+      <text x="290" y="103" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="'Noto Sans JP',sans-serif">提供する仕組み</text>
+      <!-- データベース -->
+      <rect x="440" y="40" width="120" height="80" rx="8" fill="#1e2535" stroke="#34d399" stroke-width="1.5"/>
+      <text x="500" y="75" text-anchor="middle" fill="#e2e8f5" font-size="10" font-family="'Noto Sans JP',sans-serif" font-weight="700">データベース</text>
+      <text x="500" y="92" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="'Noto Sans JP',sans-serif">統計データ</text>
+      <!-- 矢印 リクエスト -->
+      <path d="M140,70 L220,70" stroke="#5b8dee" stroke-width="2" fill="none" marker-end="url(#wa1)"/>
+      <text x="180" y="62" text-anchor="middle" fill="#5b8dee" font-size="9" font-family="'Noto Sans JP',sans-serif">リクエスト</text>
+      <path d="M360,70 L440,70" stroke="#5b8dee" stroke-width="2" fill="none" marker-end="url(#wa1)"/>
+      <!-- レスポンス -->
+      <path d="M440,100 L360,100" stroke="#34d399" stroke-width="2" fill="none" marker-end="url(#wa2)"/>
+      <path d="M220,100 L140,100" stroke="#34d399" stroke-width="2" fill="none" marker-end="url(#wa2)"/>
+      <text x="180" y="118" text-anchor="middle" fill="#34d399" font-size="9" font-family="'Noto Sans JP',sans-serif">レスポンス（データ）</text>
+    </svg>
+    <div class="svg-caption">図：WebAPIのリクエスト・レスポンスの仕組み（S03:p.66）</div>
+  </div>
+
+  <div class="block block-audio">
+    <div class="block-label">🎤 音声補足</div>
+    「このような方法を使うことによって、ウェブサイト管理者はデータを渡すときの方法というのを管理することができるので、利用者側は比較的簡単に必要なデータが取得できます。逆にウェブサイト管理者側にとっては、データのダウンロードを制御できるというメリットがあります。」← S02
+  </div>
+  <span class="pointer">← S03:p.66 / S02</span>
+</div>
+
+<!-- デモ -->
+<div id="demo"></div>
+<div class="section">
+  <div class="section-title"><span class="icon">🖥️</span>統計ダッシュボード WebAPI デモ</div>
+
+  <p><strong>対象サイト：</strong>総務省統計局「統計ダッシュボード」　<code>https://dashboard.e-stat.go.jp/</code></p>
+
+  <h3>URLの構成：なぜ「ベースURL＋パラメーター名＋系列ID」を組み合わせるのか？</h3>
+  <p>WebAPIでは「どのデータが欲しいか」をURL形式で指定してリクエストを送る。このURLは以下の3パーツで構成される：</p>
+
+  <div class="api-flow">
+    <div class="api-row">
+      <span class="api-tag base">ベースURL</span>
+      <span style="font-size:12px;color:var(--text-muted);">「どのAPIサービスに」アクセスするか</span>
+    </div>
+    <div class="api-row">
+      <span class="api-tag param">パラメーター名</span>
+      <span style="font-size:12px;color:var(--text-muted);">「どの種類の条件で」データを絞り込むか</span>
+    </div>
+    <div class="api-row">
+      <span class="api-tag id">系列ID</span>
+      <span style="font-size:12px;color:var(--text-muted);">「具体的にどのデータを」取得するか</span>
+    </div>
+    <div class="api-result">https://dashboard.e-stat.go.jp/api/1.0/Csv/getData?IndicatorCode=0102010000000010010,0102010000000010020,0102010000000010030</div>
+  </div>
+
+  <h3>デモ手順</h3>
+
+  <div class="demo-step">
+    <div class="demo-step-num">①</div>
+    <div class="demo-step-body">
+      <div class="demo-step-title">利用規約を確認する</div>
+      <div class="demo-step-why">なぜ：オープンデータでも使用条件が定められており、違反すると法的問題になる可能性があるため</div>
+      <ul>
+        <li>出典の記載が必要（コンテンツ利用の際は出典を記載すること）</li>
+        <li>2次使用の場合は注意書きを追加</li>
+        <li>クリエイティブコモンズライセンスの<strong>CC-BYと互換性</strong>あり</li>
+      </ul>
+      <p>→ 出典を明示するCC-BYのみが課せられた<strong>オープンデータ</strong>であることが確認できる</p>
+      <span class="pointer">← S03:p.74 / S02</span>
+    </div>
+  </div>
+
+  <div class="demo-step">
+    <div class="demo-step-num">②</div>
+    <div class="demo-step-body">
+      <div class="demo-step-title">提供データ一覧でデータを探す</div>
+      <div class="demo-step-why">なぜ：欲しいデータの「系列ID」を取得するため。系列IDがないとAPIリクエストURLを組み立てられない</div>
+      <ul>
+        <li>「データで見る」→「提供データ一覧」へ</li>
+        <li>「分野（大分類）」で絞り込み（例：「国土・気象」）</li>
+        <li>「ダウンロード」で一覧データを取得</li>
+      </ul>
+      <span class="pointer">← S03:p.75</span>
+    </div>
+  </div>
+
+  <div class="demo-step">
+    <div class="demo-step-num">③</div>
+    <div class="demo-step-body">
+      <div class="demo-step-title">系列IDの確認</div>
+      <div class="demo-step-why">なぜ：APIリクエストのパラメーター値として使う19桁の識別番号。これがないと「どのデータが欲しいか」をAPIに伝えられない</div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>データ名</th><th>系列ID</th></tr>
+          <tr><td>年平均気温</td><td><code>0102010000000010010</code></td></tr>
+          <tr><td>最高気温（日最高気温の月平均の最高値）</td><td><code>0102010000000010020</code></td></tr>
+          <tr><td>最低気温（日最低気温の月平均の最低値）</td><td><code>0102010000000010030</code></td></tr>
+        </table>
+      </div>
+      <p style="font-size:12px;color:var(--text-muted);">💡 このIDは後でURLに組み込むために必要。テキストエディターにコピーして保存しておく。</p>
+      <span class="pointer">← S03:p.76-77</span>
+    </div>
+  </div>
+
+  <div class="demo-step">
+    <div class="demo-step-num">④</div>
+    <div class="demo-step-body">
+      <div class="demo-step-title">ベースURLの確認</div>
+      <div class="demo-step-why">なぜ：APIには複数の出力形式（XML・JSON・CSV）があり、今回はExcelやスプレッドシートで扱いやすいCSV形式を選ぶ</div>
+      <div class="api-result">https://dashboard.e-stat.go.jp/api/1.0/Csv/getData?</div>
+      <p style="font-size:12px;color:var(--red);margin-top:6px;">⚠️ 大文字・小文字を混同しないよう注意</p>
+      <span class="pointer">← S03:p.78</span>
+    </div>
+  </div>
+
+  <div class="demo-step">
+    <div class="demo-step-num">⑤</div>
+    <div class="demo-step-body">
+      <div class="demo-step-title">パラメーター名の確認</div>
+      <div class="demo-step-why">なぜ：パラメーター名を間違えるとAPIがリクエストを理解できず、データが返ってこないため</div>
+      <p>統計ダッシュボードには<strong>18個</strong>のリクエストパラメーターが準備されている</p>
+      <p>今回使用するパラメーター：<code>IndicatorCode</code>（系列コード）</p>
+      <span class="pointer">← S03:p.79</span>
+    </div>
+  </div>
+
+  <div class="demo-step">
+    <div class="demo-step-num">⑥</div>
+    <div class="demo-step-body">
+      <div class="demo-step-title">ベースURLと系列IDの結合</div>
+      <div class="demo-step-why">なぜ：ここで初めて「どのAPIに・どの条件で・どのデータを」という完全なリクエスト指示が1つのURLとして完成する</div>
+      <div class="api-flow" style="margin-top:10px;">
+        <div class="api-row">
+          <span class="api-tag base">ベースURL</span>
+          <span class="api-plus">+</span>
+          <span class="api-tag param">IndicatorCode=</span>
+          <span class="api-plus">+</span>
+          <span class="api-tag id">系列ID（複数はカンマでつなぐ）</span>
+        </div>
+        <div class="api-result">https://dashboard.e-stat.go.jp/api/1.0/Csv/getData?IndicatorCode=0102010000000010010,0102010000000010020,0102010000000010030</div>
+      </div>
+      <span class="pointer">← S03:p.69・80</span>
+    </div>
+  </div>
+
+  <div class="demo-step">
+    <div class="demo-step-num">⑦</div>
+    <div class="demo-step-body">
+      <div class="demo-step-title">Googleスプレッドシートを開く</div>
+      <div class="demo-step-why">なぜ：プログラムを使わずに、GoogleスプレッドシートのIMPORTDATA関数だけでAPIからデータを取得できるため。特別なプログラミング知識が不要</div>
+      <ul>
+        <li>ChromeからGoogleスプレッドシートを開く（Googleアカウントが必要）</li>
+        <li>「空白」を選択して新しいスプレッドシートを作成</li>
+      </ul>
+      <span class="pointer">← S03:p.81</span>
+    </div>
+  </div>
+
+  <div class="demo-step">
+    <div class="demo-step-num">⑧</div>
+    <div class="demo-step-body">
+      <div class="demo-step-title">IMPORTDATA関数でデータを取得</div>
+      <div class="demo-step-why">なぜ：IMPORTDATA関数は指定したURLからデータを自動取得するGoogleスプレッドシート専用関数。A1のURLを参照することで、URL変更時に自動更新される設計になっている</div>
+      <ul>
+        <li>A1のセルに⑥で作成したURLをコピー＆ペースト</li>
+        <li><strong>A2のセルに <code>=IMPORTDATA(A1)</code> と入力</strong></li>
+        <li>エンターを押す → Loadingの後、データが表示される</li>
+      </ul>
+      <span class="pointer">← S03:p.82</span>
+    </div>
+  </div>
+
+  <div class="demo-step">
+    <div class="demo-step-num">⑨</div>
+    <div class="demo-step-body">
+      <div class="demo-step-title">完成・データの確認</div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>行番号</th><th>内容</th></tr>
+          <tr><td>1行目</td><td>入力したURL</td></tr>
+          <tr><td>2〜31行目</td><td><strong>メタデータ</strong>（データに関するデータ：STAT_NAME、GOV_ORGなど）</td></tr>
+          <tr><td>32行目</td><td>ヘッダー行（indicatorCd, unitCd, statCd, regionCd…）</td></tr>
+          <tr><td><strong>33行目以降</strong></td><td><strong>実際のデータ本体</strong>（年・平均気温・最高気温・最低気温）</td></tr>
+        </table>
+      </div>
+      <div class="block block-tip" style="margin-top:10px;">
+        <div class="block-label">次回予告（音声）</div>
+        「次回以降では、このデータを使った簡単なデータ分析デモをお見せしていきます」← S02
+      </div>
+      <span class="pointer">← S03:p.83（スライド記載を正とする）</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     第2回まとめ
+══════════════════════════════ -->
+<div class="chapter-divider">
+  <span class="chapter-number">まとめ</span>
+  <span class="chapter-title">第2回 まとめ</span>
+  <span class="chapter-line"></span>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="icon">📌</span>第2回 目標の達成確認</div>
+  <div class="block block-exam">
+    <div class="block-label">⭐ 第2回の最重要ポイント（音声）</div>
+    <strong>「万能なデータ収集方法は存在しない。各調査方法のメリット・デメリットを比較しながら、適切な方法を選択できることが重要。」</strong> ← S02 / S03:p.71
+  </div>
+  <span class="pointer">← S03:p.71</span>
+</div>
+
+<!-- キーワード一覧 -->
+<div id="keywords"></div>
+<div class="chapter-divider">
+  <span class="chapter-number">補足A</span>
+  <span class="chapter-title">最重要ワード一覧</span>
+  <span class="chapter-line"></span>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="icon">⭐</span>最重要ワード一覧</div>
+  <div class="keyword-grid">
+    <div class="kw-card">
+      <div class="kw-term">量的データ</div>
+      <div class="kw-read">りょうてきでーた</div>
+      <div class="kw-def">数値自体に意味があるデータ</div>
+      <div class="kw-stars">★★★</div>
+    </div>
+    <div class="kw-card">
+      <div class="kw-term">質的データ</div>
+      <div class="kw-read">しつてきでーた</div>
+      <div class="kw-def">種類を区別するためのデータ</div>
+      <div class="kw-stars">★★★</div>
+    </div>
+    <div class="kw-card">
+      <div class="kw-term">Stevensの尺度水準</div>
+      <div class="kw-read">すてぃーぶんすのしゃくどすいじゅん</div>
+      <div class="kw-def">比率・間隔・順序・名義の4尺度からなるデータ分類方法（1946年提唱）</div>
+      <div class="kw-stars">★★★</div>
+    </div>
+    <div class="kw-card">
+      <div class="kw-term">比率尺度（比例尺度）</div>
+      <div class="kw-read">ひりつしゃくど</div>
+      <div class="kw-def">比率・差が評価でき原点0が必須。例：速度・重さ・貨幣</div>
+      <div class="kw-stars">★★★</div>
+    </div>
+    <div class="kw-card">
+      <div class="kw-term">間隔尺度</div>
+      <div class="kw-read">かんかくしゃくど</div>
+      <div class="kw-def">差が評価できるが原点0なし。例：西暦・摂氏・偏差値</div>
+      <div class="kw-stars">★★★</div>
+    </div>
+    <div class="kw-card">
+      <div class="kw-term">順序尺度</div>
+      <div class="kw-read">じゅんじょしゃくど</div>
+      <div class="kw-def">大小・順序関係のみ評価可。足し引き不可。例：成績評価・順位</div>
+      <div class="kw-stars">★★★</div>
+    </div>
+    <div class="kw-card">
+      <div class="kw-term">名義尺度</div>
+      <div class="kw-read">めいぎしゃくど</div>
+      <div class="kw-def">区別のみできる。演算不可。例：血液型・電話番号</div>
+      <div class="kw-stars">★★★</div>
+    </div>
+    <div class="kw-card">
+      <div class="kw-term">構造化データ</div>
+      <div class="kw-read">こうぞうかでーた</div>
+      <div class="kw-def">表形式で表現できるデータ。分析コスト低</div>
+      <div class="kw-stars">★★★</div>
+    </div>
+    <div class="kw-card">
+      <div class="kw-term">非構造化データ</div>
+      <div class="kw-read">ひこうぞうかでーた</div>
+      <div class="kw-def">表形式で表現できないデータ。分析コスト高</div>
+      <div class="kw-stars">★★★</div>
+    </div>
+    <div class="kw-card">
+      <div class="kw-term">母集団</div>
+      <div class="kw-read">ぼしゅうだん</div>
+      <div class="kw-def">調査対象となる数値や属性集団全体</div>
+      <div class="kw-stars">★★★</div>
+    </div>
+    <div class="kw-card">
+      <div class="kw-term">標本誤差</div>
+      <div class="kw-read">ひょうほんごさ</div>
+      <div class="kw-def">標本調査の推定値と母集団の値との差</div>
+      <div class="kw-stars">★★★</div>
+    </div>
+    <div class="kw-card">
+      <div class="kw-term">全数調査（悉皆調査）</div>
+      <div class="kw-read">ぜんすうちょうさ</div>
+      <div class="kw-def">母集団全員を調査。標本誤差なし・コスト高</div>
+      <div class="kw-stars">★★★</div>
+    </div>
+    <div class="kw-card">
+      <div class="kw-term">層別抽出法</div>
+      <div class="kw-read">そうべつちゅうしゅつほう</div>
+      <div class="kw-def">重ならない層に分けてランダム抽出。事前に母集団情報が必要</div>
+      <div class="kw-stars">★★★</div>
+    </div>
+    <div class="kw-card">
+      <div class="kw-term">オープンデータ</div>
+      <div class="kw-read">おーぷんでーた</div>
+      <div class="kw-def">誰でも・どんな目的でも・無償・再利用可・機械可読なデータ</div>
+      <div class="kw-stars">★★★</div>
+    </div>
+    <div class="kw-card">
+      <div class="kw-term">機械可読</div>
+      <div class="kw-read">きかいかどく</div>
+      <div class="kw-def">人の手を介さずコンピューターで直接処理可能なデータ</div>
+      <div class="kw-stars">★★★</div>
+    </div>
+    <div class="kw-card">
+      <div class="kw-term">CSV</div>
+      <div class="kw-read">しーえすぶい</div>
+      <div class="kw-def">Comma Separated Values。カンマ区切りの機械可読データ形式</div>
+      <div class="kw-stars">★★★</div>
+    </div>
+    <div class="kw-card">
+      <div class="kw-term">クリエイティブコモンズライセンス</div>
+      <div class="kw-read">くりえいてぃぶこもんずらいせんす</div>
+      <div class="kw-def">BY・NC・SA・NDの4条件記号の組み合わせからなる6種類のライセンス体系</div>
+      <div class="kw-stars">★★★</div>
+    </div>
+    <div class="kw-card">
+      <div class="kw-term">メタデータ</div>
+      <div class="kw-read">めたでーた</div>
+      <div class="kw-def">データに関するデータ（調査概要・属性情報）</div>
+      <div class="kw-stars">★★☆</div>
+    </div>
+    <div class="kw-card">
+      <div class="kw-term">WebAPI</div>
+      <div class="kw-read">うぇぶえーぴーあい</div>
+      <div class="kw-def">ウェブ管理者が提供するデータ取得の仕組み（HTTPプロトコル利用）</div>
+      <div class="kw-stars">★★☆</div>
+    </div>
+    <div class="kw-card">
+      <div class="kw-term">ウェブスクレイピング</div>
+      <div class="kw-read">うぇぶすくれいぴんぐ</div>
+      <div class="kw-def">プログラムでウェブサイトから自動的にデータを収集する方法</div>
+      <div class="kw-stars">★★☆</div>
+    </div>
+  </div>
+</div>
+
+<!-- 試験観点 -->
+<div id="exam"></div>
+<div class="chapter-divider">
+  <span class="chapter-number">補足C</span>
+  <span class="chapter-title">試験・レポートで重要な観点</span>
+  <span class="chapter-line"></span>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="icon">🎯</span>試験・レポート重要観点</div>
+  <div class="exam-grid">
+    <div class="exam-row">
+      <div class="exam-star">⭐</div>
+      <div class="exam-body">
+        <div class="exam-title">尺度と演算の対応</div>
+        <div class="exam-desc">比率尺度は全演算可、間隔尺度は掛割不可、順序尺度は足引き不可、名義尺度は演算すべて不可</div>
+      </div>
+    </div>
+    <div class="exam-row">
+      <div class="exam-star">⭐</div>
+      <div class="exam-body">
+        <div class="exam-title">比率尺度の別名</div>
+        <div class="exam-desc">「比例尺度」（スライド表記）＝「比率尺度」（統計学正式用語）。本ノートでは授業スライド表記を尊重して「比例尺度」を残しつつ「比率尺度」も併記。両方把握すること</div>
+      </div>
+    </div>
+    <div class="exam-row">
+      <div class="exam-star">⭐</div>
+      <div class="exam-body">
+        <div class="exam-title">誤った演算の例（頻出）</div>
+        <div class="exam-desc">「順序尺度に平均を適用する」は誤り。例：マラソン10人中5位＝平均の実力、は間違い</div>
+      </div>
+    </div>
+    <div class="exam-row">
+      <div class="exam-star">⭐</div>
+      <div class="exam-body">
+        <div class="exam-title">CCライセンス</div>
+        <div class="exam-desc">CC-BYとCC-BY-SAがオープンデータ該当。改変禁止(ND)はオープンデータの条件を満たさない。非営利(NC)は本講義の定義では「誰でも・どんな目的でも使用可能」に当てはまらないため非該当</div>
+      </div>
+    </div>
+    <div class="exam-row">
+      <div class="exam-star">⭐</div>
+      <div class="exam-body">
+        <div class="exam-title">全数調査 vs 標本調査</div>
+        <div class="exam-desc">全数調査＝コスト高・標本誤差なし。標本調査＝コスト低・標本誤差あり</div>
+      </div>
+    </div>
+    <div class="exam-row">
+      <div class="exam-star">⭐</div>
+      <div class="exam-body">
+        <div class="exam-title">オープンデータの3要素</div>
+        <div class="exam-desc">①誰でも・どんな目的でも使用可能、②再利用・再配布可、③機械可読</div>
+      </div>
+    </div>
+    <div class="exam-row">
+      <div class="exam-star">⭐</div>
+      <div class="exam-body">
+        <div class="exam-title">万能な収集方法は存在しない</div>
+        <div class="exam-desc">各方法のメリット・デメリットを比較して適切な方法を選択することが重要（第2回の最重要ポイント）</div>
+      </div>
+    </div>
+    <div class="exam-row">
+      <div class="exam-star">⭐</div>
+      <div class="exam-body">
+        <div class="exam-title">層別抽出法の特異性</div>
+        <div class="exam-desc">4つのサンプリング方法の中で「事前に母集団の情報が必要」という条件があるのは層別抽出法だけ</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 未確定 -->
+<div id="unknown"></div>
+<div class="chapter-divider">
+  <span class="chapter-number">未確定</span>
+  <span class="chapter-title">未確定事項・要確認リスト</span>
+  <span class="chapter-line"></span>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="icon">❓</span>未確定事項</div>
+  <div class="unknown-item">
+    <span class="uid">U01</span>
+    <div>
+      <strong>「比例尺度」vs「比率尺度」</strong> → <span style="color:var(--green)">ノートに両方を記載済み・解決</span><br>
+      <span style="font-size:12px;color:var(--text-muted);">授業スライドは「比例尺度」、統計学正式用語は「比率尺度」。本ノートでは両方を併記。</span>
+    </div>
+  </div>
+  <div class="unknown-item">
+    <span class="uid">U04</span>
+    <div>
+      <strong>非確率抽出法の詳細</strong> → <span style="color:var(--yellow)">内容不足（mid）</span><br>
+      <span style="font-size:12px;color:var(--text-muted);">本講義では非確率抽出法の詳細説明は行われていない。分類図で言及のみ。「ランダムを使わない標本抽出の総称」として把握しておけば十分。</span>
+    </div>
+  </div>
+</div>
+
+<!-- NEXT -->
+<div class="section">
+  <div class="section-title"><span class="icon">🔗</span>次回への接続</div>
+  <div class="next-card">
+    <div class="next-arrow">→</div>
+    <div class="next-body">
+      <div class="next-label">次回予告</div>
+      <div class="next-title">統計ダッシュボードのデータを使った簡単なデータ分析デモ</div>
+      <div class="next-desc">第2回でダウンロードした気温データを使った探索的データ解析へ ← S02</div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<script>
+// Active TOC highlight on scroll
+const sections = document.querySelectorAll('[id]');
+const tocItems = document.querySelectorAll('.toc-item');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      tocItems.forEach(item => item.classList.remove('active'));
+      const active = document.querySelector(`.toc-item[href="#${entry.target.id}"]`);
+      if (active) active.classList.add('active');
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+
+sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
