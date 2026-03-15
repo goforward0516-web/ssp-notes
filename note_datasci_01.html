@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>データサイエンス入門 第1回 統合ノート</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f1117;
+  --bg2: #161b22;
+  --bg3: #1c2230;
+  --border: #2d3748;
+  --text: #e2e8f0;
+  --text-sub: #94a3b8;
+  --accent: #38bdf8;
+  --accent2: #818cf8;
+  --green: #4ade80;
+  --yellow: #facc15;
+  --orange: #fb923c;
+  --red: #f87171;
+  --pink: #f472b6;
+
+  /* DS cycle colors (matching slides) */
+  --c-kadai: #38bdf8;
+  --c-data: #c084fc;
+  --c-tanzaku: #f97316;
+  --c-kaiseki: #eab308;
+  --c-teian: #86efac;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+/* ── Layout ── */
+.container { max-width: 960px; margin: 0 auto; padding: 40px 24px 80px; }
+
+/* ── Header ── */
+.doc-header {
+  border-left: 4px solid var(--accent);
+  padding: 20px 24px;
+  background: var(--bg2);
+  border-radius: 0 12px 12px 0;
+  margin-bottom: 40px;
+}
+.doc-header .course { color: var(--accent); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; }
+.doc-header h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+.doc-header .meta { color: var(--text-sub); font-size: 13px; }
+
+/* ── Section headers ── */
+.chapter {
+  margin: 48px 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.chapter-badge {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #0f1117;
+  font-weight: 700;
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+.chapter h2 { font-size: 20px; font-weight: 700; }
+
+.section-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--accent);
+  margin: 28px 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.section-title::before {
+  content: '';
+  display: block;
+  width: 3px;
+  height: 18px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+
+/* ── Cards ── */
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-bottom: 16px;
+}
+.card.highlight { border-color: var(--accent); }
+.card.warn { border-color: var(--yellow); }
+.card.success { border-color: var(--green); }
+
+/* ── Info boxes ── */
+.info-box {
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin: 14px 0;
+  font-size: 14px;
+}
+.warn-box {
+  background: rgba(250, 204, 21, 0.08);
+  border: 1px solid rgba(250, 204, 21, 0.3);
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin: 14px 0;
+  font-size: 14px;
+}
+
+/* ── Tables ── */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  margin: 14px 0;
+}
+th {
+  background: var(--bg3);
+  color: var(--accent);
+  text-align: left;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  font-weight: 600;
+  font-size: 13px;
+}
+td {
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  vertical-align: top;
+}
+tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+
+/* ── Tags ── */
+.tag {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  margin: 2px 3px;
+}
+.tag-blue  { background: rgba(56,189,248,.18); color: var(--accent); }
+.tag-purple{ background: rgba(129,140,248,.18); color: var(--accent2); }
+.tag-green { background: rgba(74,222,128,.18); color: var(--green); }
+.tag-orange{ background: rgba(251,146,60,.18); color: var(--orange); }
+.tag-yellow{ background: rgba(250,204,21,.18); color: var(--yellow); }
+.tag-red   { background: rgba(248,113,113,.18); color: var(--red); }
+
+/* ── Key term ── */
+.kw { color: var(--yellow); font-weight: 600; }
+.important { color: var(--accent); font-weight: 600; }
+
+/* ────────────────────────────────
+   DIAGRAMS
+──────────────────────────────── */
+
+/* 1. DS Cycle (5 nodes in a pentagon) */
+.ds-cycle-wrap {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 30px 20px;
+  margin: 20px 0;
+}
+.ds-cycle-svg { display: block; margin: 0 auto; }
+
+/* 2. Venn diagram (3 circles) */
+.venn-wrap {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  margin: 20px 0;
+}
+
+/* 3. CRISP-DM */
+.crisp-wrap {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  margin: 20px 0;
+}
+
+/* 4. Normal distribution */
+.norm-wrap {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  margin: 20px 0;
+}
+
+/* 5. Industrial revolution timeline */
+.timeline {
+  position: relative;
+  padding: 10px 0;
+  margin: 16px 0;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 120px;
+  top: 0; bottom: 0;
+  width: 2px;
+  background: var(--border);
+}
+.tl-item {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+  position: relative;
+}
+.tl-label {
+  width: 120px;
+  text-align: right;
+  font-size: 12px;
+  color: var(--text-sub);
+  padding-top: 2px;
+  flex-shrink: 0;
+}
+.tl-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  margin-top: 4px;
+  flex-shrink: 0;
+  position: relative;
+  left: -6px;
+}
+.tl-content { font-size: 14px; }
+.tl-content strong { display: block; font-weight: 600; margin-bottom: 4px; }
+
+/* 6. Hierarchical grouping tree */
+.tree-wrap {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  margin: 20px 0;
+  overflow-x: auto;
+}
+
+/* 7. Skill matrix table */
+.skill-matrix th:first-child { width: 160px; }
+
+/* 8. Bar chart for data traffic */
+.bar-wrap {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  margin: 20px 0;
+}
+
+/* ── Score table ── */
+.score-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+  margin: 16px 0;
+}
+.score-box {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  text-align: center;
+}
+.score-box .num { font-size: 36px; font-weight: 700; color: var(--accent); }
+.score-box .label { font-size: 12px; color: var(--text-sub); margin-top: 4px; }
+
+/* ── Unconfirmed ── */
+.unconf {
+  display: inline;
+  background: rgba(248,113,113,.15);
+  color: var(--red);
+  border: 1px solid rgba(248,113,113,.35);
+  border-radius: 4px;
+  padding: 0 6px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* ── Quote ── */
+blockquote {
+  border-left: 3px solid var(--accent2);
+  padding: 10px 16px;
+  margin: 12px 0;
+  color: var(--text-sub);
+  font-style: italic;
+  font-size: 14px;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .score-grid { grid-template-columns: 1fr; }
+}
+
+/* ── TOC ── */
+.toc {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-bottom: 36px;
+}
+.toc h3 { color: var(--accent); font-size: 13px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+.toc ol { padding-left: 20px; }
+.toc li { margin: 4px 0; font-size: 14px; color: var(--text-sub); }
+.toc li a { color: var(--text-sub); text-decoration: none; }
+.toc li a:hover { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- Header -->
+<div class="doc-header">
+  <div class="course">サイバー大学IT総合学部 ／ データサイエンス入門</div>
+  <h1>第1回 オリエンテーション — 統合ノート</h1>
+  <div class="meta">担当: 浅田 麻菜 ／ ソース: スライドPDF（72枚）+ AI変換テキスト（S05） ／ 生成日: 2026-03-10</div>
+</div>
+
+<!-- TOC -->
+<div class="toc">
+  <h3>目次</h3>
+  <ol>
+    <li><a href="#ch1">第1章 データサイエンスとは？</a></li>
+    <li><a href="#ch2">第2章 データサイエンスを学ぶ理由</a></li>
+    <li><a href="#ch3">第3章 データ分析プロセス</a></li>
+    <li><a href="#ch4">第4章 データ解析の目的</a></li>
+    <li><a href="#meta">科目メタ情報（授業構成・評価）</a></li>
+    <li><a href="#appendix">補足・用語集</a></li>
+  </ol>
+</div>
+
+<!-- ========== 第1章 ========== -->
+<div class="chapter" id="ch1">
+  <div class="chapter-badge">第1章</div>
+  <h2>データサイエンスとは？</h2>
+</div>
+
+<div class="section-title">定義</div>
+<div class="card">
+  <p>複数の定義が存在するが、本科目では以下を採用：</p>
+  <blockquote>「データをどうとり、どう分析して、知見を得つつ現象を解明するかということに関与するすべてのものを含んでいる」<br>— 林知己夫（2001）</blockquote>
+  <blockquote>「データの流れの上流から下流までを一貫して科学する」<br>— 柴田里程（2001）</blockquote>
+  <div class="info-box">
+    ➜ <strong>まとめ：データ収集から分析・問題解決までを総合的に扱う学問</strong>
+  </div>
+</div>
+
+<div class="section-title">データサイエンティストの3スキル領域</div>
+<p style="font-size:13px; color:var(--text-sub); margin-bottom:12px;">一般社団法人データサイエンティスト協会（2014）の定義。スキルチェックリストv4には計282項目。</p>
+
+<!-- Venn diagram -->
+<div class="venn-wrap">
+  <svg viewBox="0 0 520 320" width="100%" style="max-width:520px; display:block; margin:0 auto;">
+    <defs>
+      <filter id="glow">
+        <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+        <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+    <!-- Circles -->
+    <circle cx="260" cy="110" r="95" fill="rgba(56,189,248,.12)" stroke="#38bdf8" stroke-width="1.5" opacity="0.9"/>
+    <circle cx="175" cy="230" r="95" fill="rgba(129,140,248,.12)" stroke="#818cf8" stroke-width="1.5" opacity="0.9"/>
+    <circle cx="345" cy="230" r="95" fill="rgba(74,222,128,.12)" stroke="#4ade80" stroke-width="1.5" opacity="0.9"/>
+    <!-- Labels -->
+    <text x="260" y="72" text-anchor="middle" fill="#38bdf8" font-size="14" font-weight="700" font-family="'Noto Sans JP', sans-serif">ビジネス力</text>
+    <text x="260" y="90" text-anchor="middle" fill="#94a3b8" font-size="10" font-family="'Noto Sans JP', sans-serif">課題設定・コミュニケーション</text>
+    <text x="115" y="252" text-anchor="middle" fill="#818cf8" font-size="14" font-weight="700" font-family="'Noto Sans JP', sans-serif">データ</text>
+    <text x="115" y="270" text-anchor="middle" fill="#818cf8" font-size="14" font-weight="700" font-family="'Noto Sans JP', sans-serif">サイエンス力</text>
+    <text x="115" y="288" text-anchor="middle" fill="#94a3b8" font-size="10" font-family="'Noto Sans JP', sans-serif">統計・数学・機械学習</text>
+    <text x="400" y="252" text-anchor="middle" fill="#4ade80" font-size="14" font-weight="700" font-family="'Noto Sans JP', sans-serif">データ</text>
+    <text x="400" y="270" text-anchor="middle" fill="#4ade80" font-size="14" font-weight="700" font-family="'Noto Sans JP', sans-serif">エンジニア</text>
+    <text x="400" y="288" text-anchor="middle" fill="#4ade80" font-size="14" font-weight="700" font-family="'Noto Sans JP', sans-serif">リング力</text>
+    <text x="402" y="306" text-anchor="middle" fill="#94a3b8" font-size="10" font-family="'Noto Sans JP', sans-serif">DB・インフラ・実装</text>
+    <!-- Center label -->
+    <text x="260" y="183" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="700" font-family="'Noto Sans JP', sans-serif">データ</text>
+    <text x="260" y="198" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="700" font-family="'Noto Sans JP', sans-serif">サイエン</text>
+    <text x="260" y="213" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="700" font-family="'Noto Sans JP', sans-serif">ティスト</text>
+  </svg>
+  <p style="text-align:center; font-size:12px; color:var(--text-sub); margin-top:8px;">図：データサイエンティストの3スキル領域（スライドp10より）</p>
+</div>
+
+<div class="section-title">データサイエンスの学問的範囲</div>
+<div class="card">
+  <p><span class="kw">学際分野</span>：複数の学問領域が交わる</p>
+  <table>
+    <thead><tr><th>領域</th><th>主な内容</th></tr></thead>
+    <tbody>
+      <tr><td>統計学</td><td>探索的データ分析、有意差検定、視覚化、統計数理</td></tr>
+      <tr><td>情報学・計算機科学</td><td>機械学習、自然言語処理、画像処理、最適化</td></tr>
+      <tr><td>ドメイン知識</td><td>各業界・分野固有の専門知識（ビジネス力に対応）</td></tr>
+    </tbody>
+  </table>
+  <div class="warn-box">⚠ 「データ分析の専門家だけが学習すればよい」は誤り。現代社会を生きる全員に必要なスキル・素養。</div>
+</div>
+
+<div class="section-title">データリテラシー</div>
+<div class="card">
+  <p>定義：<span class="kw">「データを読み、扱い、分析し、データを使って議論する能力」</span></p>
+  <p>（R. Bhargava and C. D'Ignazio, 2015）</p>
+  <div class="info-box">2030年には企業において最も需要の高いスキルと予測（QlikTech調査）。<br>本科目の受講で <strong>MDASSリテラシーレベル</strong> 認定取得可能。</div>
+</div>
+
+
+<!-- ========== 第2章 ========== -->
+<div class="chapter" id="ch2">
+  <div class="chapter-badge">第2章</div>
+  <h2>データサイエンスを学ぶ理由</h2>
+</div>
+
+<div class="section-title">産業革命の変遷</div>
+
+<div class="timeline">
+  <div class="tl-item">
+    <div class="tl-label">第1次</div>
+    <div class="tl-dot" style="background:#fb923c;"></div>
+    <div class="tl-content">
+      <strong>蒸気機関の発明による工業化</strong>
+      手工業から機械工業へ
+    </div>
+  </div>
+  <div class="tl-item">
+    <div class="tl-label">第2次</div>
+    <div class="tl-dot" style="background:#facc15;"></div>
+    <div class="tl-content">
+      <strong>電気の発明による大量生産</strong>
+      電力・鉄鋼・化学産業の台頭
+    </div>
+  </div>
+  <div class="tl-item">
+    <div class="tl-label">第3次</div>
+    <div class="tl-dot" style="background:#4ade80;"></div>
+    <div class="tl-content">
+      <strong>パソコン・インターネットによる情報通信革命</strong>
+      デジタル化・グローバル化
+    </div>
+  </div>
+  <div class="tl-item">
+    <div class="tl-label">第4次 ⬅ 現在</div>
+    <div class="tl-dot" style="background:#38bdf8; box-shadow: 0 0 8px #38bdf8;"></div>
+    <div class="tl-content">
+      <strong>AI・ロボット技術の進化による社会構造の変化</strong>
+      <span class="tag tag-blue">GAFAM台頭</span>
+      <span class="tag tag-blue">データ＝21世紀の石油</span><br>
+      2021年: GAFA4社の時価総額が日本企業全体を超えた<br>
+      <span class="unconf">要確認: 「Facebook (Meta)」の社名変更時期の正確性</span>
+    </div>
+  </div>
+</div>
+
+<div class="section-title">データサイエンスが必要な2要因</div>
+
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:16px 0;">
+<div class="card highlight">
+  <div class="tag tag-green" style="margin-bottom:8px;">社会的要因</div>
+  <p style="font-size:13px; font-weight:700; margin-bottom:8px;">⇒ データ駆動型社会への移行</p>
+  <ul style="padding-left:18px; font-size:13px; line-height:1.9;">
+    <li><strong>労働力不足・知識継承問題</strong><br>生産年齢人口: 8726万人（1995）→ 7000万人（2032）→ 4535万人（2070）</li>
+    <li><strong>課題の複雑化</strong><br>考慮すべき変数が激増（SNS口コミ等）→ 人間の直感では限界</li>
+  </ul>
+</div>
+<div class="card success">
+  <div class="tag tag-blue" style="margin-bottom:8px;">技術的要因</div>
+  <p style="font-size:13px; font-weight:700; margin-bottom:8px;">⇒ 変化が技術的に可能になった</p>
+  <ul style="padding-left:18px; font-size:13px; line-height:1.9;">
+    <li>データ量の増加</li>
+    <li>記憶媒体の大容量化・低価格化</li>
+    <li>計算機の処理能力向上（ムーアの法則）</li>
+    <li>生成AIの急速な普及</li>
+  </ul>
+</div>
+</div>
+
+<div class="section-title">データ量の増加（スライド図より）</div>
+<div class="bar-wrap">
+  <p style="font-size:13px; color:var(--text-sub); margin-bottom:16px;">日本のデータトラフィック予測（2020年=1とした場合）三菱総合研究所 2023年調査</p>
+  <svg viewBox="0 0 580 160" width="100%" style="max-width:580px; display:block;">
+    <!-- 2020 bar -->
+    <text x="10" y="50" fill="#94a3b8" font-size="13" font-family="'Noto Sans JP',sans-serif">2020年</text>
+    <rect x="80" y="34" width="8" height="28" fill="#38bdf8" rx="2"/>
+    <text x="96" y="53" fill="#e2e8f0" font-size="13" font-family="'Noto Sans JP',sans-serif">1</text>
+    <!-- 2040 bar -->
+    <text x="10" y="110" fill="#94a3b8" font-size="13" font-family="'Noto Sans JP',sans-serif">2040年</text>
+    <!-- segments proportional: total=348 -->
+    <!-- 動画 ~60 -->
+    <rect x="80" y="88" width="100" height="28" fill="#818cf8" rx="2"/>
+    <text x="130" y="107" fill="white" font-size="9" text-anchor="middle" font-family="'Noto Sans JP',sans-serif">動画</text>
+    <!-- 自動車 ~30 -->
+    <rect x="180" y="88" width="50" height="28" fill="#fb923c" rx="0"/>
+    <text x="205" y="107" fill="white" font-size="9" text-anchor="middle" font-family="'Noto Sans JP',sans-serif">自動車</text>
+    <!-- メタバース ~70 -->
+    <rect x="230" y="88" width="118" height="28" fill="#4ade80" rx="0"/>
+    <text x="289" y="107" fill="#0f1117" font-size="9" text-anchor="middle" font-family="'Noto Sans JP',sans-serif">メタバース系</text>
+    <!-- センサー等 ~30 -->
+    <rect x="348" y="88" width="50" height="28" fill="#f472b6" rx="0"/>
+    <text x="373" y="107" fill="white" font-size="8" text-anchor="middle" font-family="'Noto Sans JP',sans-serif">センサー等</text>
+    <!-- 生成AI ~88 -->
+    <rect x="398" y="88" width="148" height="28" fill="#f87171" rx="0" rx="0 2 2 0"/>
+    <text x="472" y="104" fill="white" font-size="11" font-weight="700" text-anchor="middle" font-family="'Noto Sans JP',sans-serif">生成AI</text>
+    <!-- label 348 -->
+    <text x="552" y="107" fill="#facc15" font-size="14" font-weight="700" font-family="'Noto Sans JP',sans-serif">348</text>
+    <!-- axis -->
+    <line x1="80" y1="130" x2="560" y2="130" stroke="#2d3748" stroke-width="1"/>
+    <text x="80" y="148" fill="#94a3b8" font-size="11" font-family="'Noto Sans JP',sans-serif">0</text>
+    <text x="228" y="148" fill="#94a3b8" font-size="11" font-family="'Noto Sans JP',sans-serif">100</text>
+    <text x="388" y="148" fill="#94a3b8" font-size="11" font-family="'Noto Sans JP',sans-serif">300</text>
+    <text x="90" y="155" fill="#94a3b8" font-size="10" font-family="'Noto Sans JP',sans-serif">トラフィック（2020年=1）</text>
+  </svg>
+  <div class="info-box" style="margin-top:14px;">
+    📌 2040年には2020年の <strong>348倍（83ゼタバイト）</strong>に達すると予測。<br>
+    1 ZB = 10²¹ byte（1の後に21個の0）
+  </div>
+</div>
+
+<div class="section-title">ムーアの法則</div>
+<div class="card">
+  <p><span class="kw">ムーアの法則</span>：2年ごとに計算機の処理能力が2倍になる（半導体のトランジスタ数が2年で倍増）</p>
+  <div class="info-box">これにより、以前は不可能だった複雑な計算（深層学習など）が実行可能になった。</div>
+</div>
+
+<div class="section-title">生成AI市場の急拡大（スライド図より）</div>
+<div class="bar-wrap">
+  <p style="font-size:13px; color:var(--text-sub); margin-bottom:16px;">生成AIの世界的な市場規模（単位: 10億USD）2024年以降は予測 / statista 2024</p>
+  <svg viewBox="0 0 560 200" width="100%" style="max-width:560px; display:block;">
+    <defs>
+      <linearGradient id="barGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#38bdf8"/>
+        <stop offset="100%" stop-color="#818cf8"/>
+      </linearGradient>
+    </defs>
+    <!-- bars: years 2020-2030, scale: max 356.1 -> height 130px -->
+    <!-- helper: h = val/356.1*130 -->
+    <!-- 2020: 5.51 -> 2 -->
+    <rect x="30"  y="172" width="30" height="2"   fill="url(#barGrad)" rx="2 2 0 0"/>
+    <text x="45"  y="185" fill="#94a3b8" font-size="10" text-anchor="middle" font-family="'Noto Sans JP',sans-serif">2020</text>
+    <text x="45"  y="167" fill="#e2e8f0" font-size="9"  text-anchor="middle" font-family="'Noto Sans JP',sans-serif">5.5</text>
+    <!-- 2021: 7.70 -> 3 -->
+    <rect x="80"  y="171" width="30" height="3"   fill="url(#barGrad)" rx="2 2 0 0"/>
+    <text x="95"  y="185" fill="#94a3b8" font-size="10" text-anchor="middle" font-family="'Noto Sans JP',sans-serif">2021</text>
+    <text x="95"  y="166" fill="#e2e8f0" font-size="9"  text-anchor="middle" font-family="'Noto Sans JP',sans-serif">7.7</text>
+    <!-- 2022: 12.05 -> 4 -->
+    <rect x="130" y="170" width="30" height="4"   fill="url(#barGrad)" rx="2 2 0 0"/>
+    <text x="145" y="185" fill="#94a3b8" font-size="10" text-anchor="middle" font-family="'Noto Sans JP',sans-serif">2022</text>
+    <text x="145" y="164" fill="#facc15" font-size="9"  text-anchor="middle" font-family="'Noto Sans JP',sans-serif" font-weight="700">12.1★</text>
+    <!-- ChatGPT annotation -->
+    <line x1="145" y1="162" x2="145" y2="135" stroke="#facc15" stroke-width="1" stroke-dasharray="3,2"/>
+    <rect x="90" y="115" width="115" height="26" fill="rgba(250,204,21,.12)" stroke="#facc15" stroke-width="1" rx="5"/>
+    <text x="148" y="128" fill="#facc15" font-size="10" text-anchor="middle" font-family="'Noto Sans JP',sans-serif" font-weight="700">ChatGPT開始(2022/11)</text>
+    <!-- 2023: 20.48 -> 7 -->
+    <rect x="180" y="167" width="30" height="7"   fill="url(#barGrad)" rx="2 2 0 0"/>
+    <text x="195" y="185" fill="#94a3b8" font-size="10" text-anchor="middle" font-family="'Noto Sans JP',sans-serif">2023</text>
+    <text x="195" y="162" fill="#e2e8f0" font-size="9"  text-anchor="middle" font-family="'Noto Sans JP',sans-serif">20.5</text>
+    <!-- 2024: 36.06 -> 13 -->
+    <rect x="230" y="161" width="30" height="13"  fill="url(#barGrad)" rx="2 2 0 0"/>
+    <text x="245" y="185" fill="#94a3b8" font-size="10" text-anchor="middle" font-family="'Noto Sans JP',sans-serif">2024</text>
+    <text x="245" y="156" fill="#e2e8f0" font-size="9"  text-anchor="middle" font-family="'Noto Sans JP',sans-serif">36.1</text>
+    <!-- 2025: 62.72 -> 23 -->
+    <rect x="280" y="151" width="30" height="23"  fill="url(#barGrad)" rx="2 2 0 0" opacity="0.8"/>
+    <text x="295" y="185" fill="#94a3b8" font-size="10" text-anchor="middle" font-family="'Noto Sans JP',sans-serif">2025</text>
+    <text x="295" y="145" fill="#e2e8f0" font-size="9"  text-anchor="middle" font-family="'Noto Sans JP',sans-serif">62.7</text>
+    <!-- 2026: 103.5 -> 38 -->
+    <rect x="330" y="136" width="30" height="38"  fill="url(#barGrad)" rx="2 2 0 0" opacity="0.8"/>
+    <text x="345" y="185" fill="#94a3b8" font-size="10" text-anchor="middle" font-family="'Noto Sans JP',sans-serif">2026</text>
+    <text x="345" y="130" fill="#e2e8f0" font-size="9"  text-anchor="middle" font-family="'Noto Sans JP',sans-serif">103.5</text>
+    <!-- 2028: 215.4 -> 79 -->
+    <rect x="380" y="95"  width="30" height="79"  fill="url(#barGrad)" rx="2 2 0 0" opacity="0.8"/>
+    <text x="395" y="185" fill="#94a3b8" font-size="10" text-anchor="middle" font-family="'Noto Sans JP',sans-serif">2028</text>
+    <text x="395" y="89"  fill="#e2e8f0" font-size="9"  text-anchor="middle" font-family="'Noto Sans JP',sans-serif">215.4</text>
+    <!-- 2030: 356.1 -> 130 -->
+    <rect x="430" y="44"  width="30" height="130" fill="url(#barGrad)" rx="2 2 0 0" opacity="0.9"/>
+    <text x="445" y="185" fill="#94a3b8" font-size="10" text-anchor="middle" font-family="'Noto Sans JP',sans-serif">2030</text>
+    <text x="445" y="39"  fill="#38bdf8" font-size="11" text-anchor="middle" font-weight="700" font-family="'Noto Sans JP',sans-serif">356.1B$</text>
+    <!-- axis -->
+    <line x1="20" y1="174" x2="480" y2="174" stroke="#2d3748" stroke-width="1"/>
+    <text x="490" y="178" fill="#94a3b8" font-size="10" font-family="'Noto Sans JP',sans-serif">10億USD</text>
+  </svg>
+</div>
+
+<div class="section-title">日本のデータサイエンス教育の変化</div>
+<div class="card">
+  <table>
+    <thead><tr><th>時期</th><th>変化</th></tr></thead>
+    <tbody>
+      <tr><td>2020年〜</td><td>小学校でデータ関連教育開始</td></tr>
+      <tr><td>2022年〜</td><td>高校で「情報Ⅰ」必修化</td></tr>
+      <tr><td>2021年〜</td><td>大学「数理・DS・AI教育プログラム認定制度」（リテラシーレベル）</td></tr>
+      <tr><td>2022年〜</td><td>同・応用基礎レベル開始</td></tr>
+    </tbody>
+  </table>
+</div>
+
+
+<!-- ========== 第3章 ========== -->
+<div class="chapter" id="ch3">
+  <div class="chapter-badge">第3章</div>
+  <h2>データ分析プロセス</h2>
+</div>
+
+<div class="section-title">代表的なデータ分析プロセス</div>
+<div class="card">
+  <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px;">
+    <span class="tag tag-orange">データサイエンス・サイクル ←本科目の軸</span>
+    <span class="tag tag-blue">CRISP-DM</span>
+    <span class="tag tag-purple">PPDAC</span>
+    <span class="tag tag-green">SEMMA</span>
+    <span class="tag tag-yellow">KDDプロセス</span>
+  </div>
+  <p style="font-size:13px;">複数のモデルが存在するが、本質的には共通するサイクル構造を持つ。</p>
+</div>
+
+<div class="section-title">データサイエンス・サイクル（5ステップ）</div>
+
+<div class="ds-cycle-wrap">
+  <svg class="ds-cycle-svg" viewBox="0 0 540 400" width="100%" style="max-width:540px;">
+    <defs>
+      <marker id="arr" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+        <path d="M0,0 L8,4 L0,8 Z" fill="#4a5568"/>
+      </marker>
+    </defs>
+
+    <!-- 5 nodes arranged in a pentagon -->
+    <!-- positions (cx,cy):
+         1 kadai:     270, 60
+         2 data:      450, 195
+         3 tanzaku:   380, 360
+         4 kaiseki:   160, 360
+         5 teian:      90, 195
+    -->
+
+    <!-- Arrows (clockwise) -->
+    <path d="M310,80 Q390,100 430,170" stroke="#4a5568" stroke-width="2" fill="none" marker-end="url(#arr)"/>
+    <path d="M450,235 Q450,300 410,340" stroke="#4a5568" stroke-width="2" fill="none" marker-end="url(#arr)"/>
+    <path d="M345,370 Q255,385 200,370" stroke="#4a5568" stroke-width="2" fill="none" marker-end="url(#arr)"/>
+    <path d="M135,345 Q100,295 105,230" stroke="#4a5568" stroke-width="2" fill="none" marker-end="url(#arr)"/>
+    <path d="M110,170 Q165,95 230,68" stroke="#4a5568" stroke-width="2" fill="none" marker-end="url(#arr)"/>
+
+    <!-- Node 1: 課題発見 -->
+    <circle cx="270" cy="62" r="58" fill="#0f1820" stroke="#38bdf8" stroke-width="2.5"/>
+    <circle cx="270" cy="62" r="54" fill="rgba(56,189,248,.15)"/>
+    <text x="270" y="52" text-anchor="middle" fill="#38bdf8" font-size="13" font-weight="700" font-family="'Noto Sans JP',sans-serif">①</text>
+    <text x="270" y="68" text-anchor="middle" fill="#38bdf8" font-size="13" font-weight="700" font-family="'Noto Sans JP',sans-serif">課題発見</text>
+    <text x="270" y="82" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="'Noto Sans JP',sans-serif">課題の抽出・定式化</text>
+
+    <!-- Node 2: データ収集 -->
+    <circle cx="452" cy="200" r="58" fill="#0f1820" stroke="#c084fc" stroke-width="2.5"/>
+    <circle cx="452" cy="200" r="54" fill="rgba(192,132,252,.15)"/>
+    <text x="452" y="190" text-anchor="middle" fill="#c084fc" font-size="13" font-weight="700" font-family="'Noto Sans JP',sans-serif">②</text>
+    <text x="452" y="206" text-anchor="middle" fill="#c084fc" font-size="13" font-weight="700" font-family="'Noto Sans JP',sans-serif">データ収集</text>
+    <text x="452" y="220" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="'Noto Sans JP',sans-serif">取得・管理・加工</text>
+
+    <!-- Node 3: 探索的 -->
+    <circle cx="376" cy="356" r="58" fill="#0f1820" stroke="#f97316" stroke-width="2.5"/>
+    <circle cx="376" cy="356" r="54" fill="rgba(249,115,22,.15)"/>
+    <text x="376" y="342" text-anchor="middle" fill="#f97316" font-size="13" font-weight="700" font-family="'Noto Sans JP',sans-serif">③ 探索的</text>
+    <text x="376" y="358" text-anchor="middle" fill="#f97316" font-size="13" font-weight="700" font-family="'Noto Sans JP',sans-serif">データ解析</text>
+    <text x="376" y="374" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="'Noto Sans JP',sans-serif">全体像把握・可視化</text>
+
+    <!-- Node 4: データ解析 -->
+    <circle cx="164" cy="356" r="58" fill="#0f1820" stroke="#eab308" stroke-width="2.5"/>
+    <circle cx="164" cy="356" r="54" fill="rgba(234,179,8,.15)"/>
+    <text x="164" y="342" text-anchor="middle" fill="#eab308" font-size="13" font-weight="700" font-family="'Noto Sans JP',sans-serif">④ データ</text>
+    <text x="164" y="358" text-anchor="middle" fill="#eab308" font-size="13" font-weight="700" font-family="'Noto Sans JP',sans-serif">解析・推論</text>
+    <text x="164" y="374" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="'Noto Sans JP',sans-serif">モデル決定・評価</text>
+
+    <!-- Node 5: 提案・結果共有 -->
+    <circle cx="88" cy="200" r="58" fill="#0f1820" stroke="#86efac" stroke-width="2.5"/>
+    <circle cx="88" cy="200" r="54" fill="rgba(134,239,172,.15)"/>
+    <text x="88" y="187" text-anchor="middle" fill="#86efac" font-size="13" font-weight="700" font-family="'Noto Sans JP',sans-serif">⑤ 提案</text>
+    <text x="88" y="203" text-anchor="middle" fill="#86efac" font-size="13" font-weight="700" font-family="'Noto Sans JP',sans-serif">結果共有</text>
+    <text x="88" y="219" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="'Noto Sans JP',sans-serif">可視化・報告</text>
+
+    <!-- Center text -->
+    <text x="270" y="222" text-anchor="middle" fill="#4a5568" font-size="11" font-family="'Noto Sans JP',sans-serif">5ステップを</text>
+    <text x="270" y="238" text-anchor="middle" fill="#4a5568" font-size="11" font-family="'Noto Sans JP',sans-serif">繰り返す</text>
+  </svg>
+</div>
+
+<div class="section-title">各ステップの詳細・必要スキル</div>
+<table class="skill-matrix">
+  <thead>
+    <tr>
+      <th>ステップ</th>
+      <th>主な作業</th>
+      <th>必要スキル</th>
+      <th>本科目の対応回</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span style="color:#38bdf8; font-weight:700;">① 課題発見</span></td>
+      <td>目的の明確化・チーム共有<br>例：生産計画策定、レコメンドシステム</td>
+      <td>ドメイン知識<br>コミュニケーション</td>
+      <td>第1回<br>第6回（提案と重複）</td>
+    </tr>
+    <tr>
+      <td><span style="color:#c084fc; font-weight:700;">② データ収集</span></td>
+      <td>取得計画の立案<br>前処理（データクレンジング、非構造化データ加工）<br>⚠ <span class="kw">全工程の70〜90%</span>を占める</td>
+      <td>ドメイン知識<br>データベース<br>統計知識</td>
+      <td>第2回<br>第12〜13回</td>
+    </tr>
+    <tr>
+      <td><span style="color:#f97316; font-weight:700;">③ 探索的データ解析</span></td>
+      <td>全体像の把握<br>データの可視化</td>
+      <td>統計・数学知識<br>可視化<br>プログラミング</td>
+      <td>第3〜5回</td>
+    </tr>
+    <tr>
+      <td><span style="color:#eab308; font-weight:700;">④ データ解析・推論</span></td>
+      <td>分析モデルの決定<br>モデルの評価</td>
+      <td>統計・数学知識<br>各モデリング手法<br>プログラミング</td>
+      <td>第8〜11回、14回</td>
+    </tr>
+    <tr>
+      <td><span style="color:#86efac; font-weight:700;">⑤ 提案・結果共有</span></td>
+      <td>分析結果の整理・可視化<br>報告書・プレゼン資料作成</td>
+      <td>ドメイン知識<br>コミュニケーション<br>可視化</td>
+      <td>第6回</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="info-box">
+  📌 <strong>第7回・第15回は全ステップに関係</strong>（データを扱う心得、AI利活用）<br>
+  📌 課題発見・データ収集・提案共有は特にドメイン知識が必要
+</div>
+
+<div class="section-title">CRISP-DM との対応</div>
+
+<div class="crisp-wrap">
+  <svg viewBox="0 0 560 300" width="100%" style="max-width:560px; display:block; margin:0 auto;">
+    <!-- outer ring -->
+    <circle cx="180" cy="150" r="120" fill="none" stroke="#2d3748" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <!-- data cylinder center -->
+    <rect x="152" y="132" width="56" height="40" fill="var(--bg3)" stroke="#4a5568" stroke-width="1.5" rx="3"/>
+    <ellipse cx="180" cy="132" rx="28" ry="8" fill="var(--bg3)" stroke="#4a5568" stroke-width="1.5"/>
+    <text x="180" y="153" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="700" font-family="'Noto Sans JP',sans-serif">データ</text>
+
+    <!-- 6 boxes around ring -->
+    <!-- 1: ビジネス課題の理解 (top) -->
+    <rect x="110" y="14" width="140" height="36" fill="var(--bg3)" stroke="#38bdf8" stroke-width="1.5" rx="6"/>
+    <text x="180" y="32" text-anchor="middle" fill="#38bdf8" font-size="12" font-weight="700" font-family="'Noto Sans JP',sans-serif">ビジネス課題の理解</text>
+    <text x="180" y="44" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="'Noto Sans JP',sans-serif">≒ DSサイクル①課題発見</text>
+
+    <!-- 2: データ理解 (top-right) -->
+    <rect x="285" y="52" width="120" height="36" fill="var(--bg3)" stroke="#c084fc" stroke-width="1.5" rx="6"/>
+    <text x="345" y="70" text-anchor="middle" fill="#c084fc" font-size="12" font-weight="700" font-family="'Noto Sans JP',sans-serif">データ理解</text>
+    <text x="345" y="82" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="'Noto Sans JP',sans-serif">≒ DSサイクル②収集</text>
+
+    <!-- 3: データ準備 (bottom-right) -->
+    <rect x="285" y="158" width="120" height="36" fill="var(--bg3)" stroke="#c084fc" stroke-width="1.5" rx="6"/>
+    <text x="345" y="176" text-anchor="middle" fill="#c084fc" font-size="12" font-weight="700" font-family="'Noto Sans JP',sans-serif">データ準備</text>
+    <text x="345" y="188" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="'Noto Sans JP',sans-serif">≒ DSサイクル②③</text>
+
+    <!-- 4: モデル作成 (bottom-right inner) -->
+    <rect x="205" y="220" width="120" height="36" fill="var(--bg3)" stroke="#eab308" stroke-width="1.5" rx="6"/>
+    <text x="265" y="238" text-anchor="middle" fill="#eab308" font-size="12" font-weight="700" font-family="'Noto Sans JP',sans-serif">モデル作成</text>
+    <text x="265" y="250" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="'Noto Sans JP',sans-serif">≒ DSサイクル④</text>
+
+    <!-- 5: 評価 (bottom-left) -->
+    <rect x="60" y="220" width="100" height="36" fill="var(--bg3)" stroke="#86efac" stroke-width="1.5" rx="6"/>
+    <text x="110" y="238" text-anchor="middle" fill="#86efac" font-size="12" font-weight="700" font-family="'Noto Sans JP',sans-serif">評価</text>
+    <text x="110" y="250" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="'Noto Sans JP',sans-serif">≒ DSサイクル⑤</text>
+
+    <!-- 6: 展開 (left) -->
+    <rect x="10" y="133" width="90" height="36" fill="var(--bg3)" stroke="#86efac" stroke-width="1.5" rx="6"/>
+    <text x="55" y="151" text-anchor="middle" fill="#86efac" font-size="12" font-weight="700" font-family="'Noto Sans JP',sans-serif">展開</text>
+    <text x="55" y="163" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="'Noto Sans JP',sans-serif">≒ DSサイクル⑤</text>
+
+    <!-- Arrows -->
+    <path d="M250,32 Q290,32 285,60" stroke="#4a5568" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+    <path d="M345,88 L345,158" stroke="#4a5568" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+    <path d="M285,185 Q250,210 325,220" stroke="#4a5568" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+    <path d="M205,238 L160,238" stroke="#4a5568" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+    <path d="M75,220 L70,185" stroke="#4a5568" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+    <path d="M55,133 Q60,80 110,50" stroke="#4a5568" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+    <!-- zig outer arrow back to top -->
+    <path d="M405,100 Q480,60 480,20 Q480,-10 250,14" stroke="#4a5568" stroke-width="1.5" fill="none" stroke-dasharray="4,3" marker-end="url(#arr)"/>
+
+    <!-- Legend / explanation -->
+    <text x="430" y="200" fill="#e2e8f0" font-size="12" font-weight="700" font-family="'Noto Sans JP',sans-serif">CRISP-DM</text>
+    <text x="430" y="218" fill="#94a3b8" font-size="10" font-family="'Noto Sans JP',sans-serif">1999年提唱</text>
+    <text x="430" y="234" fill="#94a3b8" font-size="10" font-family="'Noto Sans JP',sans-serif">企業主導モデル</text>
+    <text x="430" y="250" fill="#94a3b8" font-size="10" font-family="'Noto Sans JP',sans-serif">6ステップ構成</text>
+    <text x="430" y="266" fill="#94a3b8" font-size="10" font-family="'Noto Sans JP',sans-serif">データマイニングと</text>
+    <text x="430" y="282" fill="#94a3b8" font-size="10" font-family="'Noto Sans JP',sans-serif">ほぼ同義で使われることも</text>
+  </svg>
+</div>
+
+
+<!-- ========== 第4章 ========== -->
+<div class="chapter" id="ch4">
+  <div class="chapter-badge">第4章</div>
+  <h2>データ解析の目的</h2>
+</div>
+
+<div class="info-box">データ解析手法を選択するには、まず<strong>目的を明確にする</strong>ことが第一歩（＝DSサイクルの課題発見フェーズ）</div>
+
+<div class="section-title">3つの主な目的</div>
+
+<div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; margin:16px 0;">
+  <div class="card" style="border-color:#38bdf8;">
+    <div class="tag tag-blue" style="margin-bottom:10px;">① 予測・推定</div>
+    <p style="font-size:13px; line-height:1.7;">データを使い、将来・全体を推定する<br>例：天気予報、株価、人口予測</p>
+    <p style="font-size:12px; color:var(--text-sub); margin-top:8px;">→ 利益最大化・危険回避に活用</p>
+  </div>
+  <div class="card" style="border-color:#c084fc;">
+    <div class="tag tag-purple" style="margin-bottom:10px;">② グループ分け</div>
+    <p style="font-size:13px; line-height:1.7;">類似度・階層で分類<br>例：顧客セグメント、地域分類</p>
+    <p style="font-size:12px; color:var(--text-sub); margin-top:8px;">→ 膨大なデータを要約可能</p>
+  </div>
+  <div class="card" style="border-color:#4ade80;">
+    <div class="tag tag-green" style="margin-bottom:10px;">③ 関係性の発見</div>
+    <p style="font-size:13px; line-height:1.7;">データ間の関係・傾向を見つける<br>例：商品レコメンド（A→B）、相関</p>
+    <p style="font-size:12px; color:var(--text-sub); margin-top:8px;">→ 膨大データに潜む傾向を発見</p>
+  </div>
+</div>
+
+<div class="section-title">① 予測・推定の2方法</div>
+
+<!-- Normal distribution diagram -->
+<div class="norm-wrap">
+  <p style="font-size:13px; color:var(--text-sub); margin-bottom:16px;">方法① 少数のデータから全体を推定（スライドp62より）</p>
+  <svg viewBox="0 0 520 200" width="100%" style="max-width:520px; display:block; margin:0 auto;">
+    <!-- left: histogram (sample) -->
+    <text x="120" y="18" text-anchor="middle" fill="#94a3b8" font-size="12" font-family="'Noto Sans JP',sans-serif">調査データ（標本）</text>
+    <!-- bars -->
+    <rect x="40"  y="130" width="20" height="30" fill="#818cf8" opacity="0.7" rx="2 2 0 0"/>
+    <rect x="62"  y="100" width="20" height="60" fill="#818cf8" opacity="0.7" rx="2 2 0 0"/>
+    <rect x="84"  y="70"  width="20" height="90" fill="#818cf8" opacity="0.8" rx="2 2 0 0"/>
+    <rect x="106" y="80"  width="20" height="80" fill="#818cf8" opacity="0.7" rx="2 2 0 0"/>
+    <rect x="128" y="110" width="20" height="50" fill="#818cf8" opacity="0.7" rx="2 2 0 0"/>
+    <rect x="150" y="140" width="20" height="20" fill="#818cf8" opacity="0.6" rx="2 2 0 0"/>
+    <!-- sample mean -->
+    <line x1="105" y1="30" x2="105" y2="160" stroke="#facc15" stroke-width="2" stroke-dasharray="4,3"/>
+    <text x="105" y="26" text-anchor="middle" fill="#facc15" font-size="10" font-family="'Noto Sans JP',sans-serif">標本平均</text>
+    <line x1="40" y1="160" x2="175" y2="160" stroke="#4a5568" stroke-width="1"/>
+
+    <!-- arrow -->
+    <path d="M185,100 L225,100" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#arr)"/>
+
+    <!-- right: normal distribution curve -->
+    <text x="375" y="18" text-anchor="middle" fill="#94a3b8" font-size="12" font-family="'Noto Sans JP',sans-serif">全体（母集団）の推定</text>
+    <!-- shaded area -->
+    <path d="M235,160 Q265,160 280,130 Q295,100 315,60 Q335,30 355,20 Q375,12 395,20 Q415,30 435,60 Q455,100 470,130 Q485,160 510,160 Z" fill="rgba(56,189,248,.12)"/>
+    <!-- curve -->
+    <path d="M235,160 Q265,160 280,130 Q295,100 315,60 Q335,30 355,20 Q375,12 395,20 Q415,30 435,60 Q455,100 470,130 Q485,160 510,160" fill="none" stroke="#38bdf8" stroke-width="2.5"/>
+    <!-- bars behind curve -->
+    <rect x="240" y="130" width="22" height="30" fill="#818cf8" opacity="0.4" rx="2 2 0 0"/>
+    <rect x="264" y="100" width="22" height="60" fill="#818cf8" opacity="0.4" rx="2 2 0 0"/>
+    <rect x="288" y="70"  width="22" height="90" fill="#818cf8" opacity="0.5" rx="2 2 0 0"/>
+    <rect x="312" y="80"  width="22" height="80" fill="#818cf8" opacity="0.4" rx="2 2 0 0"/>
+    <rect x="336" y="110" width="22" height="50" fill="#818cf8" opacity="0.4" rx="2 2 0 0"/>
+    <!-- population mean (slightly right of sample) -->
+    <line x1="375" y1="30" x2="375" y2="160" stroke="#f87171" stroke-width="2" stroke-dasharray="4,3"/>
+    <line x1="360" y1="30" x2="360" y2="160" stroke="#facc15" stroke-width="2" stroke-dasharray="4,3"/>
+    <text x="357" y="26" text-anchor="end" fill="#facc15" font-size="9" font-family="'Noto Sans JP',sans-serif">標本平均</text>
+    <text x="392" y="26" text-anchor="start" fill="#f87171" font-size="9" font-family="'Noto Sans JP',sans-serif">母集団平均（予測）</text>
+    <line x1="235" y1="160" x2="510" y2="160" stroke="#4a5568" stroke-width="1"/>
+  </svg>
+
+  <p style="font-size:13px; color:var(--text-sub); margin: 20px 0 12px;">方法② 過去のパターンから将来を予測（スライドp63より）</p>
+  <svg viewBox="0 0 500 160" width="100%" style="max-width:500px; display:block; margin:0 auto;">
+    <!-- LEFT: scatter + line -->
+    <text x="100" y="16" text-anchor="middle" fill="#94a3b8" font-size="11" font-family="'Noto Sans JP',sans-serif">過去のデータ + パターン</text>
+    <line x1="20" y1="140" x2="200" y2="140" stroke="#4a5568" stroke-width="1"/>
+    <line x1="20" y1="140" x2="20"  y2="20"  stroke="#4a5568" stroke-width="1"/>
+    <!-- scatter -->
+    <circle cx="35"  cy="130" r="4" fill="#818cf8"/>
+    <circle cx="55"  cy="115" r="4" fill="#818cf8"/>
+    <circle cx="75"  cy="100" r="4" fill="#818cf8"/>
+    <circle cx="80"  cy="85"  r="4" fill="#818cf8"/>
+    <circle cx="100" cy="90"  r="4" fill="#818cf8"/>
+    <circle cx="120" cy="70"  r="4" fill="#818cf8"/>
+    <circle cx="140" cy="65"  r="4" fill="#818cf8"/>
+    <circle cx="160" cy="50"  r="4" fill="#818cf8"/>
+    <!-- trend line -->
+    <line x1="30" y1="128" x2="195" y2="28" stroke="#f87171" stroke-width="2"/>
+
+    <!-- arrow -->
+    <path d="M210,80 L250,80" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#arr)"/>
+
+    <!-- RIGHT: same + future prediction -->
+    <text x="370" y="16" text-anchor="middle" fill="#94a3b8" font-size="11" font-family="'Noto Sans JP',sans-serif">将来のデータ予測</text>
+    <line x1="265" y1="140" x2="480" y2="140" stroke="#4a5568" stroke-width="1"/>
+    <line x1="265" y1="140" x2="265" y2="20"  stroke="#4a5568" stroke-width="1"/>
+    <!-- scatter (same points) -->
+    <circle cx="280" cy="130" r="4" fill="#818cf8"/>
+    <circle cx="300" cy="115" r="4" fill="#818cf8"/>
+    <circle cx="320" cy="100" r="4" fill="#818cf8"/>
+    <circle cx="325" cy="85"  r="4" fill="#818cf8"/>
+    <circle cx="345" cy="90"  r="4" fill="#818cf8"/>
+    <circle cx="365" cy="70"  r="4" fill="#818cf8"/>
+    <circle cx="385" cy="65"  r="4" fill="#818cf8"/>
+    <circle cx="405" cy="50"  r="4" fill="#818cf8"/>
+    <!-- trend extended -->
+    <line x1="275" y1="128" x2="475" y2="8" stroke="#f87171" stroke-width="2"/>
+    <!-- prediction point -->
+    <circle cx="450" cy="22" r="6" fill="#38bdf8" stroke="#0f1117" stroke-width="2"/>
+    <line x1="450" y1="22" x2="450" y2="140" stroke="#38bdf8" stroke-width="1" stroke-dasharray="3,2"/>
+    <text x="455" y="38" fill="#38bdf8" font-size="9" font-family="'Noto Sans JP',sans-serif">将来</text>
+    <text x="455" y="50" fill="#38bdf8" font-size="9" font-family="'Noto Sans JP',sans-serif">予測値</text>
+  </svg>
+</div>
+
+<div class="section-title">② グループ分け（クラスタリング）の方法</div>
+
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:16px 0;">
+<div class="card">
+  <p style="font-weight:700; margin-bottom:8px;">方法1：類似度によるグルーピング</p>
+  <svg viewBox="0 0 260 170" width="100%">
+    <!-- axes -->
+    <line x1="30" y1="150" x2="240" y2="150" stroke="#4a5568" stroke-width="1"/>
+    <line x1="30" y1="150" x2="30"  y2="20"  stroke="#4a5568" stroke-width="1"/>
+    <text x="135" y="165" text-anchor="middle" fill="#94a3b8" font-size="10" font-family="'Noto Sans JP',sans-serif">数学</text>
+    <text x="18"  y="85"  text-anchor="middle" fill="#94a3b8" font-size="10" font-family="'Noto Sans JP',sans-serif" transform="rotate(-90,18,85)">英語</text>
+    <!-- cluster 1 (英語得意) -->
+    <circle cx="70" cy="55" r="28" fill="none" stroke="#f87171" stroke-width="1.5" stroke-dasharray="4,2"/>
+    <circle cx="55" cy="50" r="4" fill="#f87171"/>
+    <circle cx="72" cy="45" r="4" fill="#f87171"/>
+    <circle cx="65" cy="60" r="4" fill="#f87171"/>
+    <circle cx="80" cy="55" r="4" fill="#f87171"/>
+    <text x="68" y="92" text-anchor="middle" fill="#f87171" font-size="9" font-family="'Noto Sans JP',sans-serif">英語得意</text>
+    <!-- cluster 2 (両方高) -->
+    <circle cx="175" cy="45" r="25" fill="none" stroke="#f87171" stroke-width="1.5" stroke-dasharray="4,2"/>
+    <circle cx="165" cy="40" r="4" fill="#f87171"/>
+    <circle cx="180" cy="38" r="4" fill="#f87171"/>
+    <circle cx="185" cy="52" r="4" fill="#f87171"/>
+    <text x="175" y="78" text-anchor="middle" fill="#f87171" font-size="9" font-family="'Noto Sans JP',sans-serif">両方高得点</text>
+    <!-- cluster 3 (両方低) -->
+    <circle cx="70" cy="120" r="25" fill="none" stroke="#f87171" stroke-width="1.5" stroke-dasharray="4,2"/>
+    <circle cx="58" cy="115" r="4" fill="#f87171"/>
+    <circle cx="72" cy="122" r="4" fill="#f87171"/>
+    <circle cx="82" cy="112" r="4" fill="#f87171"/>
+    <text x="70" y="152" text-anchor="middle" fill="#f87171" font-size="9" font-family="'Noto Sans JP',sans-serif">両方低</text>
+    <!-- cluster 4 (数学得意) -->
+    <circle cx="175" cy="115" r="25" fill="none" stroke="#f87171" stroke-width="1.5" stroke-dasharray="4,2"/>
+    <circle cx="162" cy="120" r="4" fill="#f87171"/>
+    <circle cx="177" cy="108" r="4" fill="#f87171"/>
+    <circle cx="188" cy="118" r="4" fill="#f87171"/>
+    <text x="175" y="148" text-anchor="middle" fill="#f87171" font-size="9" font-family="'Noto Sans JP',sans-serif">数学得意</text>
+  </svg>
+</div>
+<div class="card">
+  <p style="font-weight:700; margin-bottom:8px;">方法2：階層的グルーピング（デンドログラム）</p>
+  <svg viewBox="0 0 260 170" width="100%">
+    <!-- cities at bottom -->
+    <text x="30"  y="158" text-anchor="middle" fill="#e2e8f0" font-size="9" font-family="'Noto Sans JP',sans-serif">東京</text>
+    <text x="70"  y="158" text-anchor="middle" fill="#e2e8f0" font-size="9" font-family="'Noto Sans JP',sans-serif">福岡</text>
+    <text x="110" y="158" text-anchor="middle" fill="#e2e8f0" font-size="9" font-family="'Noto Sans JP',sans-serif">北京</text>
+    <text x="150" y="158" text-anchor="middle" fill="#e2e8f0" font-size="9" font-family="'Noto Sans JP',sans-serif">上海</text>
+    <text x="200" y="158" text-anchor="middle" fill="#e2e8f0" font-size="9" font-family="'Noto Sans JP',sans-serif">パリ</text>
+    <text x="240" y="158" text-anchor="middle" fill="#e2e8f0" font-size="9" font-family="'Noto Sans JP',sans-serif">ロンドン</text>
+    <!-- city level -->
+    <line x1="30" y1="148" x2="30" y2="125" stroke="#f87171" stroke-width="1.5"/>
+    <line x1="70" y1="148" x2="70" y2="125" stroke="#f87171" stroke-width="1.5"/>
+    <line x1="30" y1="125" x2="70" y2="125" stroke="#f87171" stroke-width="1.5"/>
+    <line x1="110" y1="148" x2="110" y2="125" stroke="#f87171" stroke-width="1.5"/>
+    <line x1="150" y1="148" x2="150" y2="125" stroke="#f87171" stroke-width="1.5"/>
+    <line x1="110" y1="125" x2="150" y2="125" stroke="#f87171" stroke-width="1.5"/>
+    <line x1="200" y1="148" x2="200" y2="125" stroke="#f87171" stroke-width="1.5"/>
+    <line x1="240" y1="148" x2="240" y2="125" stroke="#f87171" stroke-width="1.5"/>
+    <line x1="200" y1="125" x2="240" y2="125" stroke="#f87171" stroke-width="1.5"/>
+    <!-- labels -->
+    <text x="2" y="145" fill="#f87171" font-size="8" font-family="'Noto Sans JP',sans-serif">都市</text>
+    <line x1="2" y1="125" x2="250" y2="125" stroke="#f87171" stroke-width="0.5" stroke-dasharray="200,0" opacity="0.4"/>
+
+    <!-- country level -->
+    <line x1="50" y1="125" x2="50" y2="93" stroke="#38bdf8" stroke-width="1.5"/>
+    <line x1="130" y1="125" x2="130" y2="93" stroke="#38bdf8" stroke-width="1.5"/>
+    <line x1="220" y1="125" x2="220" y2="93" stroke="#38bdf8" stroke-width="1.5"/>
+    <text x="2" y="108" fill="#38bdf8" font-size="8" font-family="'Noto Sans JP',sans-serif">国</text>
+    <line x1="2" y1="93" x2="250" y2="93" stroke="#38bdf8" stroke-width="0.5" stroke-dasharray="200,0" opacity="0.4"/>
+
+    <!-- region level -->
+    <line x1="50" y1="93" x2="130" y2="93" stroke="#38bdf8" stroke-width="1.5"/>
+    <line x1="90" y1="93" x2="90" y2="60" stroke="#4ade80" stroke-width="1.5"/>
+    <line x1="220" y1="93" x2="220" y2="60" stroke="#4ade80" stroke-width="1.5"/>
+    <line x1="90" y1="60" x2="220" y2="60" stroke="#4ade80" stroke-width="1.5"/>
+    <line x1="155" y1="60" x2="155" y2="35" stroke="#4ade80" stroke-width="1.5"/>
+    <text x="2" y="72" fill="#4ade80" font-size="8" font-family="'Noto Sans JP',sans-serif">地域</text>
+    <line x1="2" y1="60" x2="250" y2="60" stroke="#4ade80" stroke-width="0.5" stroke-dasharray="200,0" opacity="0.4"/>
+  </svg>
+</div>
+</div>
+
+<div class="section-title">③ 関係性発見：購買データの例（スライドp68より）</div>
+<div class="card">
+  <div style="display:flex; gap:20px; align-items:center; flex-wrap:wrap; font-size:13px;">
+    <div style="text-align:center;">
+      <div style="font-size:11px; color:var(--text-sub); margin-bottom:8px;">取扱商品</div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
+        <div style="width:40px;height:40px;background:rgba(56,189,248,.3);border:2px solid #38bdf8;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;">A</div>
+        <div style="width:40px;height:40px;background:rgba(251,146,60,.3);border:2px solid #fb923c;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;">B</div>
+        <div style="width:40px;height:40px;background:rgba(129,140,248,.3);border:2px solid #818cf8;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;">C</div>
+        <div style="width:40px;height:40px;background:rgba(156,163,175,.3);border:2px solid #9ca3af;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;">D</div>
+      </div>
+    </div>
+    <div style="font-size:20px; color:var(--text-sub);">→</div>
+    <div style="font-size:12px; line-height:2;">
+      客1: A, C, D<br>
+      客2: A, C<br>
+      客3: A, B, D<br>
+      客4: A, B, C
+    </div>
+    <div style="font-size:20px; color:var(--text-sub);">→</div>
+    <div class="info-box" style="margin:0;">
+      <strong style="color:var(--green);">発見：A と C は同時購入が多い</strong><br>
+      ⇒ Aを買った人にCをレコメンドする<br>
+      ⇒ ショッピングサイトの「よく一緒に購入されている商品」
+    </div>
+  </div>
+</div>
+
+
+<!-- ========== 科目メタ情報 ========== -->
+<div class="chapter" id="meta">
+  <div class="chapter-badge">科目情報</div>
+  <h2>授業構成・評価制度</h2>
+</div>
+
+<div class="section-title">全15回の構成</div>
+<table>
+  <thead>
+    <tr><th>回</th><th>タイトル</th><th>DSサイクル対応</th></tr>
+  </thead>
+  <tbody>
+    <tr><td style="color:var(--text-sub);">1</td><td>オリエンテーション（本回）</td><td>①課題発見</td></tr>
+    <tr><td style="color:var(--text-sub);">2</td><td>データの分類と収集法</td><td>②データ収集</td></tr>
+    <tr><td style="color:var(--text-sub);">3〜5</td><td>データの全体像・比較・可視化(1)</td><td>③探索的</td></tr>
+    <tr><td style="color:var(--text-sub);">6</td><td>データの可視化(2)</td><td>⑤提案・共有</td></tr>
+    <tr style="background:rgba(248,113,113,.05);"><td style="color:var(--text-sub);">7</td><td>データを扱う心得</td><td>全ステップ</td></tr>
+    <tr><td style="color:var(--text-sub);">8〜9</td><td>データを使った予測(1)(2)</td><td>④解析・推論</td></tr>
+    <tr><td style="color:var(--text-sub);">10</td><td>データのグルーピング</td><td>④解析・推論</td></tr>
+    <tr><td style="color:var(--text-sub);">11</td><td>データの関係性の発見</td><td>④解析・推論</td></tr>
+    <tr><td style="color:var(--text-sub);">12〜13</td><td>テキスト・画像データの扱い</td><td>②データ収集</td></tr>
+    <tr><td style="color:var(--text-sub);">14</td><td>機械学習入門</td><td>④解析・推論</td></tr>
+    <tr style="background:rgba(248,113,113,.05);"><td style="color:var(--text-sub);">15</td><td>データ・AIの利活用</td><td>全ステップ</td></tr>
+  </tbody>
+</table>
+
+<div class="section-title">各回の構成パターン</div>
+<div class="card">
+  <p>第1〜3章：テーマに関する知識（理論）</p>
+  <p>第4章：デモ動画中心の「演習風」チャプター → <span class="kw">演習は不要。実際のデータ取り扱いを体感する</span></p>
+  <div class="info-box">ポイント：第4章は「3章までの学習内容の活かし方」に注目して視聴</div>
+</div>
+
+<div class="section-title">評価制度</div>
+<div class="score-grid">
+  <div class="score-box">
+    <div class="num">50</div>
+    <div class="label">各回の小テスト<br>（15回×8点=120点→50点換算）</div>
+  </div>
+  <div class="score-box">
+    <div class="num">50</div>
+    <div class="label">期末試験</div>
+  </div>
+  <div class="score-box">
+    <div class="num">100</div>
+    <div class="label">合計満点</div>
+  </div>
+</div>
+
+<div class="card">
+  <table>
+    <thead><tr><th>評価</th><th>条件</th></tr></thead>
+    <tbody>
+      <tr><td><span class="tag tag-blue">A評価</span></td><td>90点以上</td></tr>
+      <tr><td><span class="tag tag-green">B評価</span></td><td>80点以上</td></tr>
+      <tr><td><span class="tag tag-yellow">C評価</span></td><td>70点以上</td></tr>
+      <tr><td><span class="tag tag-orange">D評価</span></td><td>60点以上（単位修得）</td></tr>
+    </tbody>
+  </table>
+  <div class="warn-box">⚠ 小テストは最大5回受験可能（解答を確認しない場合）。遅刻受験は減点。</div>
+</div>
+
+
+<!-- ========== 補足 ========== -->
+<div class="chapter" id="appendix">
+  <div class="chapter-badge">補足</div>
+  <h2>用語集・未確定事項</h2>
+</div>
+
+<div class="section-title">用語集</div>
+<table>
+  <thead><tr><th>用語</th><th>説明</th></tr></thead>
+  <tbody>
+    <tr><td><span class="kw">データサイエンス</span></td><td>データ収集から分析・問題解決までを総合的に扱う学際分野</td></tr>
+    <tr><td><span class="kw">データリテラシー</span></td><td>データを読み・扱い・分析し・議論する能力（Bhargava 2015）</td></tr>
+    <tr><td><span class="kw">データサイエンティスト</span></td><td>ビジネス力・データサイエンス力・データエンジニアリング力を持つ人材</td></tr>
+    <tr><td><span class="kw">ビッグデータ</span></td><td>分析により新たな知見が得られる大規模データ。21世紀の石油とも呼ばれる</td></tr>
+    <tr><td><span class="kw">データ駆動型社会</span></td><td>ビッグデータ解析に基づく意思決定・課題解決・価値創造を行う社会</td></tr>
+    <tr><td><span class="kw">GAFAM</span></td><td>Google・Apple・Facebook(Meta)・Amazon・Microsoft の5大米IT企業</td></tr>
+    <tr><td><span class="kw">ムーアの法則</span></td><td>半導体トランジスタ数が約2年で2倍になる経験則</td></tr>
+    <tr><td><span class="kw">データサイエンス・サイクル</span></td><td>課題発見→収集→探索的解析→解析推論→提案共有の5ステップ反復</td></tr>
+    <tr><td><span class="kw">CRISP-DM</span></td><td>CRoss Industry Standard Process for Data Mining。1999年提唱の6ステップモデル</td></tr>
+    <tr><td><span class="kw">データマイニング</span></td><td>大量データから知識を発掘する手法。近年はデータサイエンスとほぼ同義</td></tr>
+    <tr><td><span class="kw">データクレンジング</span></td><td>不備のあるデータを修正・除去する前処理作業</td></tr>
+    <tr><td><span class="kw">非構造化データ</span></td><td>テキスト・画像・音声など、表形式でないデータ</td></tr>
+    <tr><td><span class="kw">ドメイン知識</span></td><td>特定の業界・分野固有の専門知識</td></tr>
+    <tr><td><span class="kw">探索的データ解析（EDA）</span></td><td>データの全体像を把握・可視化する分析フェーズ</td></tr>
+    <tr><td><span class="kw">グルーピング（クラスタリング）</span></td><td>類似度・階層などでデータを分類する手法</td></tr>
+  </tbody>
+</table>
+
+<div class="section-title">未確定事項・要確認</div>
+<div class="card warn">
+  <table>
+    <thead><tr><th>ID</th><th>内容</th><th>ステータス</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>U01</td>
+        <td>「Facebook (Meta)」の記述：スライドには「現 Meta Platforms」とあるが、MetaへのFacebook社のリブランド時期（2021年10月）との整合性</td>
+        <td><span class="unconf">要確認</span></td>
+      </tr>
+      <tr>
+        <td>U02</td>
+        <td>S05のAI変換テキストに「SPS（現在のIBM）」という記述 → SPSSの誤変換疑い（スライドPDFには記載なし）</td>
+        <td><span class="unconf">HIGH</span></td>
+      </tr>
+      <tr>
+        <td>U03</td>
+        <td>「2021年にGAFA4社の時価総額が日本企業全体を超えた」という数値の正確性</td>
+        <td><span class="unconf">要確認</span></td>
+      </tr>
+      <tr>
+        <td>U04</td>
+        <td>生成AI市場規模の数値：Statista予測値（2024年以降）は変動する可能性あり</td>
+        <td><span class="unconf">予測値</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="section-title">試験対策メモ</div>
+<div class="card success">
+  <ul style="padding-left:18px; line-height:2; font-size:14px;">
+    <li>データサイエンスの定義を2名の言葉で説明できるか</li>
+    <li>データサイエンティストの3スキル領域を言えるか</li>
+    <li>データサイエンスが必要な社会的・技術的要因を2つずつ挙げられるか</li>
+    <li>データサイエンス・サイクルの5ステップを順番に・各スキルと共に言えるか</li>
+    <li>CRISP-DMの6ステップ名と、サイクルとの対応を言えるか</li>
+    <li>データ解析の3目的（予測・グループ分け・関係性発見）の具体例を言えるか</li>
+    <li>評価制度（小テスト50点＋期末50点、60点以上で単位）を確認</li>
+  </ul>
+</div>
+
+<div style="margin-top:48px; padding:16px; border-top:1px solid var(--border); font-size:12px; color:var(--text-sub);">
+  ソース: スライドPDF（72枚、S03）+ AI変換テキスト（S05） ／ SSP v4.1 Step5-B HTML出力 ／ 生成: 2026-03-10<br>
+  ⚠ 要確認事項4件あり（U01〜U04）。スライドと突き合わせて確認のこと。
+</div>
+
+</div><!-- /container -->
+</body>
+</html>
