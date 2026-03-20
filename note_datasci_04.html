@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>データサイエンス入門 第4回｜データの比較</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:        #0f1117;
+  --bg2:       #161b27;
+  --bg3:       #1e2535;
+  --card:      #1a2032;
+  --border:    #2a3550;
+  --text:      #e2e8f5;
+  --text-sub:  #8a99b8;
+  --text-dim:  #5a6a88;
+  --accent:    #5b8dee;
+  --accent2:   #34d399;
+  --accent3:   #fbbf24;
+  --accent4:   #f87171;
+  --purple:    #a78bfa;
+  --orange:    #fb923c;
+  --mono:      'JetBrains Mono', monospace;
+  --sans:      'Noto Sans JP', sans-serif;
+  --serif:     'Noto Serif JP', serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.85;
+  display: flex;
+}
+
+/* ── サイドバー ── */
+#sidebar {
+  width: 260px;
+  min-height: 100vh;
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  flex-shrink: 0;
+  padding: 24px 0 40px;
+}
+#sidebar::-webkit-scrollbar { width: 4px; }
+#sidebar::-webkit-scrollbar-track { background: transparent; }
+#sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+.sidebar-header {
+  padding: 0 20px 20px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+.sidebar-header .course { font-size: 10px; color: var(--accent); letter-spacing: 0.12em; text-transform: uppercase; font-weight: 500; margin-bottom: 6px; }
+.sidebar-header .title { font-size: 13px; font-weight: 700; color: var(--text); line-height: 1.5; }
+.sidebar-header .lecture { font-size: 11px; color: var(--text-sub); margin-top: 4px; }
+
+.toc-section { margin-bottom: 4px; }
+.toc-chapter {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 20px;
+  font-size: 11px; font-weight: 700;
+  color: var(--text-sub);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: default;
+}
+.toc-chapter .ch-num {
+  width: 18px; height: 18px;
+  background: var(--bg3);
+  border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; font-weight: 700; color: var(--accent);
+  flex-shrink: 0;
+}
+.toc-item {
+  display: block;
+  padding: 5px 20px 5px 46px;
+  font-size: 12px; color: var(--text-sub);
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  transition: all 0.15s;
+  line-height: 1.5;
+}
+.toc-item:hover { color: var(--text); background: var(--bg3); border-left-color: var(--accent); }
+.toc-item.active { color: var(--accent); border-left-color: var(--accent); background: rgba(91,141,238,0.08); }
+
+/* ── メインコンテンツ ── */
+#main {
+  flex: 1;
+  max-width: 900px;
+  padding: 48px 52px 80px;
+  overflow-x: hidden;
+}
+
+/* ── ヘッダー ── */
+.page-header {
+  margin-bottom: 52px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+.page-header::before {
+  content: '';
+  position: absolute; top: -48px; left: -52px; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2), transparent);
+}
+.header-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(91,141,238,0.12);
+  border: 1px solid rgba(91,141,238,0.3);
+  border-radius: 6px;
+  padding: 4px 12px;
+  font-size: 11px; font-weight: 500; color: var(--accent);
+  letter-spacing: 0.08em;
+  margin-bottom: 16px;
+}
+.page-header h1 {
+  font-family: var(--serif);
+  font-size: 30px; font-weight: 700;
+  color: var(--text);
+  line-height: 1.4;
+  margin-bottom: 12px;
+}
+.page-header h1 span { color: var(--accent); }
+.header-meta {
+  display: flex; flex-wrap: wrap; gap: 16px;
+  font-size: 12px; color: var(--text-sub);
+}
+.header-meta span { display: flex; align-items: center; gap: 5px; }
+.header-meta .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--accent); }
+
+.goals-box {
+  margin-top: 24px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 8px;
+  padding: 16px 20px;
+}
+.goals-box .goals-label { font-size: 10px; font-weight: 700; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; }
+.goals-box ol { padding-left: 18px; }
+.goals-box li { font-size: 13px; color: var(--text); line-height: 1.7; }
+.goals-box li + li { margin-top: 4px; }
+
+/* ── セクション ── */
+.chapter {
+  margin-bottom: 60px;
+}
+.chapter-title {
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 28px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+.chapter-num {
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, var(--accent), #3b6fd4);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700; color: #fff;
+  flex-shrink: 0;
+}
+.chapter-title h2 {
+  font-family: var(--serif);
+  font-size: 20px; font-weight: 700; color: var(--text);
+}
+
+.section {
+  margin-bottom: 36px;
+}
+.section h3 {
+  font-size: 15px; font-weight: 700; color: var(--text);
+  margin-bottom: 14px;
+  display: flex; align-items: center; gap: 8px;
+}
+.section h3::before {
+  content: '';
+  width: 3px; height: 16px;
+  background: var(--accent);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+p { margin-bottom: 12px; color: var(--text); line-height: 1.85; }
+
+/* ── ブロック種別 ── */
+.block-voice {
+  background: rgba(91,141,238,0.07);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+  padding: 12px 16px;
+  margin: 12px 0;
+  font-size: 13.5px;
+}
+.block-voice .block-label { font-size: 10px; font-weight: 700; color: var(--accent); letter-spacing: 0.1em; margin-bottom: 6px; }
+
+.block-infer {
+  background: rgba(167,139,250,0.07);
+  border-left: 3px solid var(--purple);
+  border-radius: 0 8px 8px 0;
+  padding: 12px 16px;
+  margin: 12px 0;
+  font-size: 13.5px;
+}
+.block-infer .block-label { font-size: 10px; font-weight: 700; color: var(--purple); letter-spacing: 0.1em; margin-bottom: 6px; }
+
+.block-check {
+  background: rgba(251,191,36,0.07);
+  border-left: 3px solid var(--accent3);
+  border-radius: 0 8px 8px 0;
+  padding: 12px 16px;
+  margin: 12px 0;
+  font-size: 13.5px;
+}
+.block-check .block-label { font-size: 10px; font-weight: 700; color: var(--accent3); letter-spacing: 0.1em; margin-bottom: 6px; }
+
+.block-ext {
+  background: rgba(52,211,153,0.07);
+  border-left: 3px solid var(--accent2);
+  border-radius: 0 8px 8px 0;
+  padding: 12px 16px;
+  margin: 12px 0;
+  font-size: 13.5px;
+}
+.block-ext .block-label { font-size: 10px; font-weight: 700; color: var(--accent2); letter-spacing: 0.1em; margin-bottom: 6px; }
+
+/* 定義・例タグ */
+.tag-def, .tag-ex {
+  display: inline-block;
+  font-size: 10px; font-weight: 700;
+  padding: 1px 7px;
+  border-radius: 4px;
+  margin-right: 6px;
+  letter-spacing: 0.05em;
+}
+.tag-def { background: rgba(91,141,238,0.2); color: var(--accent); border: 1px solid rgba(91,141,238,0.3); }
+.tag-ex  { background: rgba(52,211,153,0.15); color: var(--accent2); border: 1px solid rgba(52,211,153,0.25); }
+
+/* ソースポインター */
+.ptr {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-dim);
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1px 6px;
+  margin-left: 6px;
+  white-space: nowrap;
+}
+
+/* ── テーブル ── */
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin: 16px 0;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.styled-table th {
+  background: var(--bg3);
+  color: var(--accent);
+  font-weight: 700;
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid var(--border);
+}
+.styled-table td {
+  padding: 9px 14px;
+  border-bottom: 1px solid rgba(42,53,80,0.5);
+  color: var(--text);
+  vertical-align: top;
+}
+.styled-table tr:last-child td { border-bottom: none; }
+.styled-table tr:hover td { background: rgba(91,141,238,0.04); }
+.styled-table td.highlight { color: var(--accent3); font-weight: 700; font-family: var(--mono); }
+.styled-table td.pos { color: var(--accent2); font-weight: 700; }
+.styled-table td.neg { color: var(--accent4); font-weight: 700; }
+.styled-table td.neutral { color: var(--text-sub); }
+
+/* 数式ブロック */
+.math-block {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin: 16px 0;
+  font-family: var(--mono);
+  font-size: 14px;
+  color: var(--accent3);
+  text-align: center;
+  letter-spacing: 0.03em;
+}
+.math-block .math-label {
+  font-family: var(--sans);
+  font-size: 10px;
+  color: var(--text-sub);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  text-align: left;
+}
+
+/* 強調ボックス */
+.emphasis-box {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin: 16px 0;
+}
+.emphasis-box.warn { border-color: rgba(251,191,36,0.4); background: rgba(251,191,36,0.05); }
+.emphasis-box.info { border-color: rgba(91,141,238,0.4); background: rgba(91,141,238,0.05); }
+.emphasis-box.success { border-color: rgba(52,211,153,0.4); background: rgba(52,211,153,0.05); }
+.emphasis-box .box-title { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; margin-bottom: 8px; }
+.emphasis-box.warn .box-title { color: var(--accent3); }
+.emphasis-box.info .box-title { color: var(--accent); }
+.emphasis-box.success .box-title { color: var(--accent2); }
+
+/* ── SVG図 ── */
+.svg-wrap {
+  margin: 20px 0;
+  text-align: center;
+}
+.svg-wrap figcaption {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-sub);
+  margin-top: 8px;
+}
+
+/* ── 末尾補足カード ── */
+.appendix { margin-top: 64px; border-top: 1px solid var(--border); padding-top: 40px; }
+.appendix-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 24px; }
+.appendix-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+}
+.appendix-card.full { grid-column: 1 / -1; }
+.appendix-card .card-header {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.appendix-card .card-icon { font-size: 18px; }
+.appendix-card .card-title { font-size: 13px; font-weight: 700; color: var(--text); }
+
+.term-row { display: flex; gap: 12px; padding: 8px 0; border-bottom: 1px solid rgba(42,53,80,0.5); font-size: 13px; }
+.term-row:last-child { border-bottom: none; }
+.term-name { font-weight: 700; color: var(--text); min-width: 150px; flex-shrink: 0; }
+.term-reading { font-size: 11px; color: var(--text-sub); min-width: 110px; flex-shrink: 0; }
+.term-def { color: var(--text); flex: 1; font-size: 12.5px; }
+.term-imp { font-family: var(--mono); font-size: 11px; color: var(--accent3); min-width: 40px; text-align: right; }
+
+.hint-item { padding: 8px 0; border-bottom: 1px solid rgba(42,53,80,0.5); font-size: 13px; }
+.hint-item:last-child { border-bottom: none; }
+.hint-num { font-family: var(--mono); font-size: 10px; color: var(--accent); font-weight: 700; margin-bottom: 3px; }
+
+/* 未確定事項 */
+.unknown-item {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 10px 14px;
+  background: rgba(248,113,113,0.05);
+  border: 1px solid rgba(248,113,113,0.2);
+  border-radius: 6px;
+  margin: 8px 0;
+  font-size: 13px;
+}
+.unknown-item .u-id { font-family: var(--mono); font-size: 10px; color: var(--accent4); font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+
+/* QC Badge */
+.qc-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(52,211,153,0.1);
+  border: 1px solid rgba(52,211,153,0.3);
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 13px; font-weight: 700; color: var(--accent2);
+  margin-top: 16px;
+}
+</style>
+</head>
+<body>
+
+<!-- ── サイドバー ── -->
+<nav id="sidebar">
+  <div class="sidebar-header">
+    <div class="course">Data Science Intro</div>
+    <div class="title">データサイエンス入門</div>
+    <div class="lecture">第4回｜データの比較</div>
+  </div>
+
+  <div class="toc-section">
+    <div class="toc-chapter"><span class="ch-num">0</span>復習・授業概要</div>
+    <a href="#review" class="toc-item">第3回の復習</a>
+    <a href="#goals" class="toc-item">学習目標</a>
+  </div>
+  <div class="toc-section">
+    <div class="toc-chapter"><span class="ch-num">1</span>複数データの扱い</div>
+    <a href="#ch1-context" class="toc-item">前回との繋がり</a>
+    <a href="#ch1-corresponding" class="toc-item">対応のあるデータ</a>
+    <a href="#ch1-dimension" class="toc-item">次元</a>
+    <a href="#ch1-crosstab" class="toc-item">クロス集計表</a>
+    <a href="#ch1-scatter" class="toc-item">散布図</a>
+    <a href="#ch1-outlier" class="toc-item">読み方①外れ値</a>
+    <a href="#ch1-group" class="toc-item">読み方②層別</a>
+  </div>
+  <div class="toc-section">
+    <div class="toc-chapter"><span class="ch-num">2</span>相関係数（1）</div>
+    <a href="#ch2-correlation" class="toc-item">相関とは</a>
+    <a href="#ch2-sign" class="toc-item">相関係数の符号</a>
+    <a href="#ch2-deviation" class="toc-item">偏差の復習・2次元</a>
+    <a href="#ch2-covariance" class="toc-item">共分散</a>
+    <a href="#ch2-sign-rule" class="toc-item">符号と相関の関係</a>
+  </div>
+  <div class="toc-section">
+    <div class="toc-chapter"><span class="ch-num">3</span>相関係数（2）</div>
+    <a href="#ch3-unit" class="toc-item">共分散の問題点</a>
+    <a href="#ch3-formula" class="toc-item">相関係数の定義</a>
+    <a href="#ch3-scale" class="toc-item">強さの目安</a>
+    <a href="#ch3-caution" class="toc-item">留意点3つ</a>
+  </div>
+  <div class="toc-section">
+    <div class="toc-chapter"><span class="ch-num">4</span>比較事例</div>
+    <a href="#ch4-tool" class="toc-item">計算機の活用</a>
+    <a href="#ch4-demo" class="toc-item">演習概要</a>
+    <a href="#ch4-result" class="toc-item">演習結果と考察</a>
+  </div>
+  <div class="toc-section">
+    <div class="toc-chapter"><span class="ch-num">★</span>補足・用語集</div>
+    <a href="#appendix-terms" class="toc-item">重要ワード一覧</a>
+    <a href="#appendix-hints" class="toc-item">試験・レポート観点</a>
+    <a href="#appendix-next" class="toc-item">関連概念・接続</a>
+    <a href="#appendix-unknown" class="toc-item">未確定事項</a>
+  </div>
+</nav>
+
+<!-- ── メイン ── -->
+<main id="main">
+
+  <!-- ヘッダー -->
+  <header class="page-header">
+    <div class="header-badge">📊 Lecture Note · SSP v4.2</div>
+    <h1>第4回｜<span>データの比較</span></h1>
+    <div class="header-meta">
+      <span><span class="dot"></span>データサイエンス入門</span>
+      <span><span class="dot"></span>担当：浅田 麻菜</span>
+      <span><span class="dot"></span>S03 + S05a + S05b</span>
+      <span><span class="dot"></span>QC PASS 95.8%</span>
+    </div>
+    <div class="goals-box">
+      <div class="goals-label">🎯 第4回 学習目標</div>
+      <ol>
+        <li>散布図・相関係数を使い、データの関係性を読み解ける</li>
+        <li>散布図・相関係数の留意点について理解し、説明ができる</li>
+      </ol>
+    </div>
+  </header>
+
+  <!-- 第3回復習 -->
+  <section class="chapter" id="review">
+    <div class="chapter-title">
+      <div class="chapter-num" style="background:linear-gradient(135deg,var(--text-dim),var(--text-sub))">R</div>
+      <h2>第3回の復習</h2>
+    </div>
+    <div class="section">
+      <p>冒頭で確認問題が出された。<span class="ptr">← S03:p.2-3</span></p>
+      <div class="emphasis-box info">
+        <div class="box-title">📬 Q. ある1週間に届いたメールの件数</div>
+        <table class="styled-table" style="margin:8px 0 12px">
+          <tr><th>曜日</th><th>月</th><th>火</th><th>水</th><th>木</th><th>金</th><th>土</th><th>日</th></tr>
+          <tr><td>件数</td><td>18</td><td>12</td><td>11</td><td>10</td><td>14</td><td>2</td><td>3</td></tr>
+        </table>
+        <p style="margin:0;font-size:13px">1週間のメール件数の<strong>平均</strong>・<strong>標準偏差</strong>を求めよ。</p>
+      </div>
+      <div class="math-block">
+        <div class="math-label">解答</div>
+        平均 x̄ = (18+12+11+10+14+2+3) / 7 = <strong>10（本）</strong><br>
+        標準偏差 σ = √[(18-10)²+(12-10)²+…+(3-10)²] / 7 ≈ <strong>5.32（本）</strong>
+      </div>
+      <div class="block-voice"><div class="block-label">🎤 音声補足 <span class="ptr">← S05a</span></div>
+        どちらも普段のデータでは計算機で計算することが多いが、非常に基本的な概念なので、自分でも簡単なデータの場合は計算できるようにしっかり覚えておくこと。
+      </div>
+    </div>
+  </section>
+
+  <!-- 授業構成 -->
+  <section class="chapter" id="goals">
+    <div class="chapter-title">
+      <div class="chapter-num" style="background:linear-gradient(135deg,var(--text-sub),var(--text-dim))">0</div>
+      <h2>第4回 授業構成</h2>
+    </div>
+    <p>第4回は引き続き<strong>探索的データ解析</strong>の範囲。今回は<strong>複数のデータの比較</strong>に焦点を当てる。<span class="ptr">← S03:p.4</span></p>
+
+    <!-- SVG: 授業構成フロー -->
+    <div class="svg-wrap">
+      <svg viewBox="0 0 680 120" xmlns="http://www.w3.org/2000/svg" style="max-width:680px;width:100%">
+        <defs>
+          <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#5b8dee"/>
+          </marker>
+        </defs>
+        <!-- cards -->
+        <rect x="10" y="30" width="140" height="56" rx="8" fill="#1e2535" stroke="#3b6fd4" stroke-width="1.5"/>
+        <text x="80" y="52" text-anchor="middle" fill="#5b8dee" font-size="10" font-family="Noto Sans JP" font-weight="700">第1章</text>
+        <text x="80" y="70" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="Noto Sans JP">複数データの扱い</text>
+        <line x1="150" y1="58" x2="176" y2="58" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <rect x="178" y="30" width="140" height="56" rx="8" fill="#1e2535" stroke="#22c55e" stroke-width="1.5"/>
+        <text x="248" y="52" text-anchor="middle" fill="#22c55e" font-size="10" font-family="Noto Sans JP" font-weight="700">第2章</text>
+        <text x="248" y="70" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="Noto Sans JP">相関係数（1）</text>
+        <line x1="318" y1="58" x2="344" y2="58" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <rect x="346" y="30" width="140" height="56" rx="8" fill="#1e2535" stroke="#fb923c" stroke-width="1.5"/>
+        <text x="416" y="52" text-anchor="middle" fill="#fb923c" font-size="10" font-family="Noto Sans JP" font-weight="700">第3章</text>
+        <text x="416" y="70" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="Noto Sans JP">相関係数（2）</text>
+        <line x1="486" y1="58" x2="512" y2="58" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <rect x="514" y="30" width="140" height="56" rx="8" fill="#1e2535" stroke="#f87171" stroke-width="1.5"/>
+        <text x="584" y="52" text-anchor="middle" fill="#f87171" font-size="10" font-family="Noto Sans JP" font-weight="700">第4章</text>
+        <text x="584" y="70" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="Noto Sans JP">データの比較事例</text>
+      </svg>
+      <figcaption>図：第4回 授業構成フロー　S03:p.4</figcaption>
+    </div>
+  </section>
+
+  <!-- 第1章 -->
+  <section class="chapter" id="ch1-context">
+    <div class="chapter-title">
+      <div class="chapter-num">1</div>
+      <h2>第1章　複数のデータの扱い</h2>
+    </div>
+
+    <div class="section">
+      <h3>1-1. 前回との繋がり</h3>
+      <p>第2回ではスマホゲームの満足度調査を題材に、<strong>年代で層別抽出したユーザーを対象にアンケート調査</strong>を行うことを学んだ。第3回では年齢データを例に1種類のデータの全体像を把握する手法（度数分布表・ヒストグラム・平均・中央値・分散・標準偏差）を学んだ。<span class="ptr">← S03:p.8-9</span></p>
+      <div class="block-voice"><div class="block-label">🎤 音声補足 <span class="ptr">← S05a</span></div>
+        アンケートデータを取った場合、年齢データだけでなく年齢・職業・プレイ時間・満足度など複数のデータを収集することになる。この複数のデータをどのように比較したらいいのかを考える必要が出てくる。
+      </div>
+    </div>
+
+    <div class="section" id="ch1-corresponding">
+      <h3>1-2. 対応のあるデータ</h3>
+      <p><span class="tag-def">定義</span><strong>対応のあるデータ</strong>: 同一の観測単位（人・場所等）から得られた複数のデータの組。<span class="ptr">← S03:p.10</span></p>
+      <div class="emphasis-box warn">
+        <div class="box-title">⚠️ 比較できるデータ・できないデータ</div>
+        <table class="styled-table" style="margin-top:8px">
+          <tr><th>組み合わせ</th><th>比較できる？</th><th>理由</th></tr>
+          <tr><td>Aさんの年齢 ↔ Aさんのプレイ時間</td><td class="pos">○ できる</td><td>「Aさん」という共通点あり</td></tr>
+          <tr><td>Aさんの年齢 ↔ Bさんのプレイ時間</td><td class="neg">× できない</td><td>共通点がなく比較の基準がない</td></tr>
+        </table>
+      </div>
+      <div class="block-voice"><div class="block-label">🎤 音声補足 <span class="ptr">← S05a</span></div>
+        第4回では全て「対応のあるデータ」を前提としてお話をするということを前提条件として覚えておいてください。
+      </div>
+    </div>
+
+    <div class="section" id="ch1-dimension">
+      <h3>1-3. 次元（データサイエンス文脈）</h3>
+      <p><span class="tag-def">定義</span><strong>次元</strong>: データの種類（組）の数。日常語の「2次元＝平面」とは異なる概念。<span class="ptr">← S03:p.11</span></p>
+      <p><span class="tag-ex">例</span> 年齢・職業・プレイ時間・満足度の4種類のデータ → <strong>4次元データ</strong></p>
+      <p>50人が回答したデータなら「<strong>4次元のデータが50個</strong>」と表現する。</p>
+      <div class="block-voice"><div class="block-label">🎤 音声補足 <span class="ptr">← S05a</span></div>
+        データサイエンスを勉強していると「多次元」という単語がたくさん出てくる。多次元という単語が出てきたら「複数のデータを比較しているんだな」とすぐに思い浮かべられるようにしましょう。
+      </div>
+    </div>
+
+    <div class="section" id="ch1-crosstab">
+      <h3>1-4. クロス集計表（クロス表）</h3>
+      <p><span class="tag-def">定義</span><strong>クロス集計表</strong>: 2種類以上のデータの組み合わせの度数を表形式で表現したもの。質的・量的データ両方に対応可能。<span class="ptr">← S03:p.14</span></p>
+
+      <p>例として年齢×プレイ時間のクロス集計表を見てみる。<span class="ptr">← S03:p.14-16</span></p>
+      <table class="styled-table">
+        <thead>
+          <tr><th></th><th>〜9時間</th><th>10〜20時間</th><th>21時間〜</th><th>計</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>10代</strong></td><td>2</td><td>0</td><td>6</td><td>8</td></tr>
+          <tr><td><strong>20代</strong></td><td>2</td><td class="highlight">5</td><td>10</td><td>17</td></tr>
+          <tr><td><strong>30代</strong></td><td>0</td><td>10</td><td>5</td><td>15</td></tr>
+          <tr><td><strong>40代</strong></td><td>1</td><td>4</td><td>0</td><td>5</td></tr>
+          <tr><td><strong>50代</strong></td><td>0</td><td>2</td><td>3</td><td>5</td></tr>
+          <tr><td><strong>計</strong></td><td>5</td><td>21</td><td>24</td><td>50</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:12.5px;color:var(--text-sub)">▲ 「20代の行」と「10〜20時間の列」が交差するセルの値5が、「20代でプレイ時間10〜20時間の人数（度数）」を表す。</p>
+      <div class="block-voice"><div class="block-label">🎤 音声補足 <span class="ptr">← S05a</span></div>
+        非常に簡単な表だが、直感的に2つのデータの関係性がうまく表現できている。ただし「この表を一言で説明してください」と言われると難しい。→ 視覚的に見るには<strong>散布図</strong>が有効。
+      </div>
+    </div>
+
+    <div class="section" id="ch1-scatter">
+      <h3>1-5. 散布図</h3>
+      <p><span class="tag-def">定義</span><strong>散布図</strong>: 量的データ2変数の分布を2次元座標上の点で可視化した図。<span class="ptr">← S03:p.17</span></p>
+      <div class="emphasis-box warn">
+        <div class="box-title">⚠️ 散布図は量的データ専用</div>
+        <p style="font-size:13px;margin:0">質的データ（性別・満足度など）を散布図で表現すると、複数のデータが同一座標に重なり分布が確認できない。自分で散布図を使う際は、<strong>表示したいデータが量的データであることをまず確認すること。</strong></p>
+      </div>
+      <div class="block-voice"><div class="block-label">🎤 音声補足 <span class="ptr">← S05a</span></div>
+        気象庁の報告書に掲載されている東京のスーパーマーケットにおける週平均気温とファミリーアイス販売数の散布図が実例として紹介された。赤い点が昇温期（2月〜7月、約100週分）、青い点が降温期（8月〜1月、約82週分）。
+      </div>
+    </div>
+
+    <div class="section" id="ch1-outlier">
+      <h3>1-6. 散布図の読み方① ― 外れ値への注目</h3>
+      <p>外れ値がある場合、<strong>計測ミスか特別な状況か</strong>を考察することでデータの概要が把握できる。<span class="ptr">← S03:p.20-21</span></p>
+      <div class="block-voice"><div class="block-label">🎤 音声補足（かまぼこの事例） <span class="ptr">← S05a</span></div>
+        かまぼこの販売数の散布図に寒い時期の外れ値が6個ある。3年間のデータなので毎年2週間ほど販売数が急上昇する時期がある。→ <strong>お正月の需要</strong>であることが一瞬で分かる。日本文化を知らない人がこのデータを見たら計測ミスと考えてしまうかもしれない。<strong>データ分析の知識だけでなく、そのデータに関する専門知識も重要。</strong>
+      </div>
+    </div>
+
+    <div class="section" id="ch1-group">
+      <h3>1-7. 散布図の読み方② ― グループ別（層別）の違いへの注目</h3>
+      <p>一見傾向が分からない散布図でも、<strong>グループ別（層別）に色分け</strong>すると意味が変わることがある。<span class="ptr">← S03:p.22-24</span></p>
+      <div class="block-voice"><div class="block-label">🎤 音声補足（鍋用つゆの事例） <span class="ptr">← S05a</span></div>
+        鍋用つゆの販売数を白黒散布図で見ると中央に輪っかのようなデータがあるだけ。しかし昇温期（赤）・降温期（青）に色分けすると、<strong>同じ平均気温でも温度が上がっている時期と下がっている時期では売れ方が違う</strong>ことが一瞬で分かる。何か傾向がありそうな散布図があったら「何かグループ分けができないか」を考えてみることも重要な視点。
+      </div>
+    </div>
+  </section>
+
+  <!-- 第2章 -->
+  <section class="chapter">
+    <div class="chapter-title">
+      <div class="chapter-num" style="background:linear-gradient(135deg,#22c55e,#15803d)">2</div>
+      <h2>第2章　相関係数（1）</h2>
+    </div>
+
+    <div class="section" id="ch2-correlation">
+      <h3>2-1. 相関とは</h3>
+      <p><span class="tag-def">定義</span><strong>相関</strong>: 2つのデータ間の関係のこと。特に<strong>直線関係に近い関係</strong>の場合に「相関関係にある」と表現する。<span class="ptr">← S03:p.29</span></p>
+
+      <!-- SVG: 相関の3種類 -->
+      <div class="svg-wrap">
+        <svg viewBox="0 0 680 180" xmlns="http://www.w3.org/2000/svg" style="max-width:680px;width:100%">
+          <!-- 正の相関 -->
+          <rect x="10" y="10" width="200" height="160" rx="10" fill="#1e2535" stroke="#34d399" stroke-width="1.5"/>
+          <text x="110" y="30" text-anchor="middle" fill="#34d399" font-size="11" font-family="Noto Sans JP" font-weight="700">正の相関</text>
+          <!-- 点群（右上がり） -->
+          <circle cx="40" cy="145" r="3" fill="#34d399" opacity="0.7"/>
+          <circle cx="55" cy="135" r="3" fill="#34d399" opacity="0.7"/>
+          <circle cx="70" cy="128" r="3" fill="#34d399" opacity="0.7"/>
+          <circle cx="85" cy="118" r="3" fill="#34d399" opacity="0.7"/>
+          <circle cx="100" cy="110" r="3" fill="#34d399" opacity="0.7"/>
+          <circle cx="115" cy="100" r="3" fill="#34d399" opacity="0.7"/>
+          <circle cx="130" cy="92" r="3" fill="#34d399" opacity="0.7"/>
+          <circle cx="145" cy="82" r="3" fill="#34d399" opacity="0.7"/>
+          <circle cx="160" cy="72" r="3" fill="#34d399" opacity="0.7"/>
+          <circle cx="175" cy="62" r="3" fill="#34d399" opacity="0.7"/>
+          <line x1="35" y1="150" x2="185" y2="55" stroke="#34d399" stroke-width="1.5" opacity="0.4" stroke-dasharray="4,3"/>
+          <text x="110" y="168" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP">一方↑ → 他方↑</text>
+
+          <!-- 無相関 -->
+          <rect x="240" y="10" width="200" height="160" rx="10" fill="#1e2535" stroke="#8a99b8" stroke-width="1.5"/>
+          <text x="340" y="30" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="Noto Sans JP" font-weight="700">無相関</text>
+          <circle cx="265" cy="80" r="3" fill="#8a99b8" opacity="0.7"/>
+          <circle cx="280" cy="130" r="3" fill="#8a99b8" opacity="0.7"/>
+          <circle cx="295" cy="65" r="3" fill="#8a99b8" opacity="0.7"/>
+          <circle cx="310" cy="110" r="3" fill="#8a99b8" opacity="0.7"/>
+          <circle cx="325" cy="90" r="3" fill="#8a99b8" opacity="0.7"/>
+          <circle cx="340" cy="140" r="3" fill="#8a99b8" opacity="0.7"/>
+          <circle cx="355" cy="70" r="3" fill="#8a99b8" opacity="0.7"/>
+          <circle cx="370" cy="105" r="3" fill="#8a99b8" opacity="0.7"/>
+          <circle cx="385" cy="85" r="3" fill="#8a99b8" opacity="0.7"/>
+          <circle cx="400" cy="125" r="3" fill="#8a99b8" opacity="0.7"/>
+          <text x="340" y="168" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP">一貫した関係がない</text>
+
+          <!-- 負の相関 -->
+          <rect x="470" y="10" width="200" height="160" rx="10" fill="#1e2535" stroke="#f87171" stroke-width="1.5"/>
+          <text x="570" y="30" text-anchor="middle" fill="#f87171" font-size="11" font-family="Noto Sans JP" font-weight="700">負の相関</text>
+          <circle cx="495" cy="62" r="3" fill="#f87171" opacity="0.7"/>
+          <circle cx="510" cy="72" r="3" fill="#f87171" opacity="0.7"/>
+          <circle cx="525" cy="82" r="3" fill="#f87171" opacity="0.7"/>
+          <circle cx="540" cy="92" r="3" fill="#f87171" opacity="0.7"/>
+          <circle cx="555" cy="102" r="3" fill="#f87171" opacity="0.7"/>
+          <circle cx="570" cy="112" r="3" fill="#f87171" opacity="0.7"/>
+          <circle cx="585" cy="122" r="3" fill="#f87171" opacity="0.7"/>
+          <circle cx="600" cy="132" r="3" fill="#f87171" opacity="0.7"/>
+          <circle cx="615" cy="142" r="3" fill="#f87171" opacity="0.7"/>
+          <line x1="490" y1="57" x2="620" y2="148" stroke="#f87171" stroke-width="1.5" opacity="0.4" stroke-dasharray="4,3"/>
+          <text x="570" y="168" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP">一方↑ → 他方↓</text>
+        </svg>
+        <figcaption>図：相関の3種類　S03:p.30</figcaption>
+      </div>
+
+      <div class="block-voice"><div class="block-label">🎤 音声補足 <span class="ptr">← S05a</span></div>
+        一次関数を覚えている人は、直線の傾きの値が正か負かに対応していると考えると非常に理解しやすい。「直線関係に近い関係」を数字で客観的に表現したものが<strong>相関係数</strong>。
+      </div>
+    </div>
+
+    <div class="section" id="ch2-sign">
+      <h3>2-2. 相関係数の符号</h3>
+      <p>相関係数は $r_{AB}$ と表記し、<strong>符号</strong>（正負）と<strong>値</strong>の2つで読む。第2章では符号のみを扱う。<span class="ptr">← S03:p.33</span></p>
+      <table class="styled-table">
+        <tr><th>相関の種類</th><th>相関係数の符号</th></tr>
+        <tr><td>正の相関</td><td class="pos">r<sub>AB</sub> = 正の値（+）</td></tr>
+        <tr><td>無相関</td><td class="neutral">r<sub>AB</sub> = 0</td></tr>
+        <tr><td>負の相関</td><td class="neg">r<sub>AB</sub> = 負の値（−）</td></tr>
+      </table>
+    </div>
+
+    <div class="section" id="ch2-deviation">
+      <h3>2-3. 偏差の復習と2次元への拡張</h3>
+      <p><span class="tag-def">定義</span><strong>偏差</strong>: 個々のデータが平均からどれくらい離れているか。偏差 = xᵢ − x̄<span class="ptr">← S03:p.34</span></p>
+      <p>2次元座標（散布図）上のデータでも同じ考え方が使える。<span class="ptr">← S03:p.35-39</span></p>
+      <div class="emphasis-box info">
+        <div class="box-title">📐 計算例：点 (2, 1)、平均 (4, 4) の場合</div>
+        <p style="font-size:13px;margin:4px 0">A方向の偏差: 2 − 4 = <strong>−2</strong></p>
+        <p style="font-size:13px;margin:0">B方向の偏差: 1 − 4 = <strong>−3</strong></p>
+      </div>
+    </div>
+
+    <div class="section" id="ch2-covariance">
+      <h3>2-4. 共分散</h3>
+      <p><span class="tag-def">定義</span><strong>共分散</strong>: 「(Aの偏差) × (Bの偏差) の和」の平均。2変数のばらつきの方向性を表す。<span class="ptr">← S03:p.40</span></p>
+      <div class="block-voice"><div class="block-label">🎤 音声補足 <span class="ptr">← S05a</span></div>
+        1変数の分散が「(偏差)×(偏差)の平均」だったのに対し、2変数では「(Aの偏差)×(Bの偏差)の平均」とする。もともとの「分散」が2つになったから「共分散」と考えれば大して変わった概念ではない。
+      </div>
+      <p>5つのデータ (2,1), (1,3), (4,5), (6,5), (7,6)、平均 (4,4) での計算例：<span class="ptr">← S03:p.42-44</span></p>
+      <table class="styled-table">
+        <thead><tr><th>点</th><th>Aの偏差</th><th>Bの偏差</th><th>積</th></tr></thead>
+        <tbody>
+          <tr><td>(2, 1)</td><td>−2</td><td>−3</td><td>6</td></tr>
+          <tr><td>(1, 3)</td><td>−3</td><td>−1</td><td>3</td></tr>
+          <tr><td>(6, 5)</td><td>2</td><td>1</td><td>2</td></tr>
+          <tr><td>(4, 5)</td><td>0</td><td>1</td><td>0</td></tr>
+          <tr><td>(7, 6)</td><td>3</td><td>2</td><td>6</td></tr>
+          <tr><td colspan="3"><strong>合計 ÷ 5（データ数）</strong></td><td class="highlight">3.4（共分散）</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section" id="ch2-sign-rule">
+      <h3>2-5. 共分散の符号と相関の関係</h3>
+      <!-- SVG: 符号エリア図 -->
+      <div class="svg-wrap">
+        <svg viewBox="0 0 500 260" xmlns="http://www.w3.org/2000/svg" style="max-width:500px;width:100%">
+          <!-- 軸 -->
+          <line x1="20" y1="130" x2="270" y2="130" stroke="#2a3550" stroke-width="1.5"/>
+          <line x1="145" y1="20" x2="145" y2="240" stroke="#2a3550" stroke-width="1.5"/>
+          <!-- 平均点 -->
+          <circle cx="145" cy="130" r="5" fill="#f87171"/>
+          <text x="150" y="148" fill="#f87171" font-size="10" font-family="JetBrains Mono">(Ā, B̄)</text>
+          <!-- 軸ラベル -->
+          <text x="265" y="145" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">データA</text>
+          <text x="148" y="17" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">データB</text>
+
+          <!-- 左下エリア（負の偏差エリア） -->
+          <rect x="21" y="131" width="123" height="108" rx="4" fill="rgba(91,141,238,0.12)" stroke="rgba(91,141,238,0.3)" stroke-width="1"/>
+          <text x="82" y="180" text-anchor="middle" fill="#5b8dee" font-size="10" font-family="Noto Sans JP">偏差が共に</text>
+          <text x="82" y="196" text-anchor="middle" fill="#5b8dee" font-size="10" font-family="Noto Sans JP" font-weight="700">負の値</text>
+          <!-- 右上エリア（正の偏差エリア） -->
+          <rect x="146" y="21" width="123" height="108" rx="4" fill="rgba(91,141,238,0.12)" stroke="rgba(91,141,238,0.3)" stroke-width="1"/>
+          <text x="207" y="68" text-anchor="middle" fill="#5b8dee" font-size="10" font-family="Noto Sans JP">偏差が共に</text>
+          <text x="207" y="84" text-anchor="middle" fill="#5b8dee" font-size="10" font-family="Noto Sans JP" font-weight="700">正の値</text>
+
+          <!-- 矢印と結果（正の相関） -->
+          <text x="82" y="218" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="JetBrains Mono">(-)×(-) = +</text>
+          <text x="207" y="148" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="JetBrains Mono">(+)×(+) = +</text>
+
+          <!-- 右側：結果 -->
+          <rect x="310" y="40" width="170" height="50" rx="8" fill="#1e2535" stroke="#34d399" stroke-width="1.5"/>
+          <text x="395" y="62" text-anchor="middle" fill="#34d399" font-size="11" font-family="Noto Sans JP" font-weight="700">共分散が正</text>
+          <text x="395" y="80" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="Noto Sans JP">→ 正の相関</text>
+          <line x1="270" y1="75" x2="308" y2="65" stroke="#34d399" stroke-width="1.5" marker-end="url(#arr)"/>
+
+          <rect x="310" y="170" width="170" height="50" rx="8" fill="#1e2535" stroke="#f87171" stroke-width="1.5"/>
+          <text x="395" y="192" text-anchor="middle" fill="#f87171" font-size="11" font-family="Noto Sans JP" font-weight="700">共分散が負</text>
+          <text x="395" y="210" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="Noto Sans JP">→ 負の相関</text>
+
+          <!-- 左上・右下エリア -->
+          <text x="82" y="80" text-anchor="middle" fill="#5a6a88" font-size="10" font-family="Noto Sans JP">負の値</text>
+          <text x="207" y="196" text-anchor="middle" fill="#5a6a88" font-size="10" font-family="Noto Sans JP">負の値</text>
+        </svg>
+        <figcaption>図：共分散の符号と相関の関係　S03:p.48-50</figcaption>
+      </div>
+      <div class="block-voice"><div class="block-label">🎤 音声補足 <span class="ptr">← S05a</span></div>
+        共分散がプラスかマイナスかが分かれば、その時点でデータが平均に対してどのエリアに散らばっているかが分かる。→ ただし、この共分散だけではまだ「相関係数」とは言えない。値の求め方は第3章へ。
+      </div>
+    </div>
+  </section>
+
+  <!-- 第3章 -->
+  <section class="chapter">
+    <div class="chapter-num" style="display:none">3</div>
+    <div class="chapter-title">
+      <div class="chapter-num" style="background:linear-gradient(135deg,var(--orange),#c2410c)">3</div>
+      <h2>第3章　相関係数（2）</h2>
+    </div>
+
+    <div class="section" id="ch3-unit">
+      <h3>3-1. 共分散の問題点：単位</h3>
+      <p>共分散には単位が残ってしまう。<span class="ptr">← S03:p.57</span></p>
+      <div class="emphasis-box warn">
+        <div class="box-title">⚠️ 単位が違うと比較できない</div>
+        <p style="font-size:13px;margin:4px 0">データAが身長(cm)、データBが体重(kg) → 共分散の単位は <code>cm × kg</code></p>
+        <p style="font-size:13px;margin:0">1組がcm計測・2組がm計測 → 単位の違いで共分散の値が変わり、<strong>2組間で比較できない</strong>。</p>
+      </div>
+      <p>→ <strong>単位の影響をなくす</strong>必要がある。そこで登場するのが<strong>相関係数</strong>。</p>
+    </div>
+
+    <div class="section" id="ch3-formula">
+      <h3>3-2. 相関係数の定義と計算</h3>
+      <p><span class="tag-def">定義</span><strong>相関係数</strong> $r_{AB}$: 共分散を2つのデータの標準偏差で割ったもの。単位が消え、−1から1の範囲に収まる。<span class="ptr">← S03:p.58</span></p>
+      <div class="math-block">
+        <div class="math-label">相関係数の式</div>
+        r<sub>AB</sub> = (データAとデータBの共分散) / (データAの標準偏差 × データBの標準偏差)
+      </div>
+      <div class="block-voice"><div class="block-label">🎤 音声補足（単位が消える理由） <span class="ptr">← S05a</span></div>
+        分子（共分散）の単位は cm×kg。分母（標準偏差の積）の単位も cm×kg。割り算すると単位が消える。つまりこの式にすることで共分散の符号は残しつつ、単位を削除することもできる便利な式になっている。
+      </div>
+      <p><strong>計算例（前章の続き）：</strong><span class="ptr">← S03:p.60-61</span></p>
+      <table class="styled-table">
+        <tr><td>共分散</td><td class="highlight">3.4</td></tr>
+        <tr><td>データAの標準偏差 σ<sub>A</sub></td><td>≈ 2.28</td></tr>
+        <tr><td>データBの標準偏差 σ<sub>B</sub></td><td>≈ 1.79</td></tr>
+        <tr><td><strong>相関係数 r<sub>AB</sub></strong></td><td class="highlight">= 3.4 / (2.28 × 1.79) ≈ <strong>0.83</strong>（強い正の相関）</td></tr>
+      </table>
+      <div class="block-voice"><div class="block-label">🎤 音声補足 <span class="ptr">← S05a</span></div>
+        「≈」（波線2つ）は「だいたいこれくらいの数字」という近似記号。小数点以下を丸めた数字であることを示す。
+      </div>
+    </div>
+
+    <div class="section" id="ch3-scale">
+      <h3>3-3. 相関係数の強さの目安</h3>
+      <p>※分野によって基準は異なる。以下はあくまで<strong>一例</strong>。<span class="ptr">← S03:p.62</span></p>
+      <table class="styled-table">
+        <thead><tr><th>相関係数の範囲</th><th>解釈</th></tr></thead>
+        <tbody>
+          <tr><td><code>0.7 &lt; r ≤ 1</code></td><td class="pos">強い正の相関</td></tr>
+          <tr><td><code>0.4 &lt; r ≤ 0.7</code></td><td class="pos">中程度の正の相関</td></tr>
+          <tr><td><code>0.2 &lt; r ≤ 0.4</code></td><td class="pos">弱い正の相関</td></tr>
+          <tr><td><code>−0.2 ≤ r ≤ 0.2</code></td><td class="neutral">無相関</td></tr>
+          <tr><td><code>−0.4 ≤ r &lt; −0.2</code></td><td class="neg">弱い負の相関</td></tr>
+          <tr><td><code>−0.7 ≤ r &lt; −0.4</code></td><td class="neg">中程度の負の相関</td></tr>
+          <tr><td><code>−1 ≤ r &lt; −0.7</code></td><td class="neg">強い負の相関</td></tr>
+        </tbody>
+      </table>
+      <div class="block-voice"><div class="block-label">🎤 音声補足 <span class="ptr">← S05a</span></div>
+        例えば0.4でも「相関がない」とみなす分野もある。どの程度の相関係数を持って相関があると認めるかは、扱うデータによって異なるので、ここの表は一例として捉えること。
+      </div>
+    </div>
+
+    <div class="section" id="ch3-caution">
+      <h3>3-4. 相関係数の留意点（3つ）</h3>
+      <p><span class="ptr">← S03:p.63-68</span></p>
+
+      <div class="emphasis-box info" style="margin-bottom:14px">
+        <div class="box-title">① 相関係数を求めたら必ず散布図を書く</div>
+        <p style="font-size:13px;margin:4px 0"><strong>理由1: 外れ値の影響を確認するため</strong></p>
+        <p style="font-size:13px;margin:0 0 8px">実際には無相関でも、外れ値が1点あるだけで平均の位置がずれ、相関係数が一気に大きくなる。共分散を求める際に平均を使うため、<strong>相関係数は外れ値に非常に弱い</strong>。</p>
+        <p style="font-size:13px;margin:4px 0"><strong>理由2: 直線関係でない散布図があるため</strong></p>
+        <p style="font-size:13px;margin:0">相関係数が0（無相関）でも、散布図がWの字・円・X字などのパターンを示す場合がある。そこからグループ別の影響を仮説として立てることができる。</p>
+      </div>
+
+      <div class="emphasis-box warn" style="margin-bottom:14px">
+        <div class="box-title">② データ数の不足に気をつける</div>
+        <p style="font-size:13px;margin:0">データが少ない（例：3点のみ）と、たまたまその点が負の相関の位置関係にあるだけで、全体は正の相関というケースがある。<strong>十分なデータ数があるか確認すること。</strong></p>
+      </div>
+
+      <div class="emphasis-box warn">
+        <div class="box-title">③ 疑似相関に気をつける</div>
+        <p style="font-size:13px;margin:4px 0"><span class="tag-def">定義</span><strong>疑似相関</strong>: 第三の変数（交絡変数）の影響で直接関係がないのに相関があるように見える現象。</p>
+        <p style="font-size:13px;margin:0"><span class="tag-ex">例</span> 子どもの身長↑ → 語彙数↑ に見えるが、実際は<strong>年齢</strong>が両方に影響しているだけ。</p>
+      </div>
+
+      <!-- SVG: 疑似相関 -->
+      <div class="svg-wrap" style="margin-top:16px">
+        <svg viewBox="0 0 400 130" xmlns="http://www.w3.org/2000/svg" style="max-width:400px;width:100%">
+          <rect x="10" y="45" width="100" height="40" rx="8" fill="#1e2535" stroke="#fbbf24" stroke-width="1.5"/>
+          <text x="60" y="68" text-anchor="middle" fill="#e2e8f5" font-size="12" font-family="Noto Sans JP" font-weight="700">身長</text>
+
+          <rect x="290" y="45" width="100" height="40" rx="8" fill="#1e2535" stroke="#fbbf24" stroke-width="1.5"/>
+          <text x="340" y="68" text-anchor="middle" fill="#e2e8f5" font-size="12" font-family="Noto Sans JP" font-weight="700">語彙数</text>
+
+          <!-- 直接関係なし -->
+          <line x1="112" y1="65" x2="288" y2="65" stroke="#f87171" stroke-width="1.5" stroke-dasharray="5,4"/>
+          <text x="200" y="55" text-anchor="middle" fill="#f87171" font-size="11" font-family="Noto Sans JP">直接的な関係なし ✗</text>
+
+          <!-- 年齢 -->
+          <rect x="150" y="88" width="100" height="36" rx="8" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+          <text x="200" y="110" text-anchor="middle" fill="#5b8dee" font-size="12" font-family="Noto Sans JP" font-weight="700">年齢（交絡変数）</text>
+
+          <!-- 矢印（年齢→身長、年齢→語彙数） -->
+          <line x1="150" y1="106" x2="112" y2="85" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#arr)"/>
+          <line x1="250" y1="106" x2="290" y2="85" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#arr)"/>
+        </svg>
+        <figcaption>図：疑似相関の構造（身長・語彙数・年齢の関係）　S03:p.68</figcaption>
+      </div>
+    </div>
+  </section>
+
+  <!-- 第4章 -->
+  <section class="chapter">
+    <div class="chapter-title">
+      <div class="chapter-num" style="background:linear-gradient(135deg,var(--accent4),#b91c1c)">4</div>
+      <h2>第4章　データの比較事例</h2>
+    </div>
+
+    <div class="section" id="ch4-tool">
+      <h3>4-1. 実際のデータ分析では計算機を使う</h3>
+      <p>相関係数の手計算は現実のデータ分析では行わない。理由：計算ミスの危険、データ数が膨大。<span class="ptr">← S03:p.74</span></p>
+      <table class="styled-table">
+        <thead><tr><th>ツール</th><th>関数名</th></tr></thead>
+        <tbody>
+          <tr><td>Excel・Googleスプレッドシート</td><td class="highlight">CORREL関数</td></tr>
+          <tr><td>Python</td><td class="highlight">Pandas の corr 関数</td></tr>
+          <tr><td>R</td><td class="highlight">cor 関数</td></tr>
+        </tbody>
+      </table>
+      <div class="block-voice"><div class="block-label">🎤 音声補足 <span class="ptr">← S05a</span></div>
+        一般に「相関係数」といえば<strong>ピアソンの積率相関係数</strong>を指すことが多い。他にスピアマンの順位相関係数なども有名だが、基本的には相関係数といえばピアソンを指すと考えてよい。
+      </div>
+    </div>
+
+    <div class="section" id="ch4-demo">
+      <h3>4-2. 演習概要</h3>
+      <p><strong>対象データ</strong>: 都道府県別・年平均気温・最高気温・最低気温（第2回第4章でWeb APIを使って収集）<span class="ptr">← S03:p.75</span></p>
+      <p><strong>使用ツール</strong>: Googleスプレッドシート</p>
+      <div class="block-check"><div class="block-label">📋 演習ステップ <span class="ptr">← S03:p.77-79</span></div>
+        <ol style="padding-left:18px;font-size:13.5px;line-height:2">
+          <li>データ整形: A列（調査年）・B列（都道府県）・C列（平均気温）・D列（最高気温）・E列（最低気温）</li>
+          <li>ピボットテーブルで最高気温（行）× 最低気温（列）を2.5℃間隔でグループ化しクロス集計表を作成</li>
+          <li>最高気温・最低気温の2列を選択し散布図を表示</li>
+          <li>CORREL関数で相関係数を算出</li>
+        </ol>
+        <p style="font-size:12px;color:var(--text-sub);margin-top:8px;margin-bottom:0">※実際に演習する必要はない。1〜3章の知識が実際のデータ分析でどのように使われるかを観察する。</p>
+      </div>
+    </div>
+
+    <div class="section" id="ch4-result">
+      <h3>4-3. 演習結果と考察</h3>
+      <p><span class="ptr">← S05a / S05b</span></p>
+      <table class="styled-table">
+        <thead><tr><th>データの範囲</th><th>相関係数</th><th>解釈</th><th>気づき</th></tr></thead>
+        <tbody>
+          <tr><td>全都道府県（沖縄含む）</td><td class="highlight">≈ 0.4</td><td>弱い正の相関</td><td>散布図に外れ値（沖縄県）あり</td></tr>
+          <tr><td>沖縄県を除外</td><td class="highlight">≈ 0.478</td><td>中程度の正の相関に近づく</td><td><strong>外れ値1つで相関係数が大きく変化</strong></td></tr>
+          <tr><td>福岡県のみ</td><td class="highlight">≈ −0.02</td><td>無相関</td><td>全国データと1県のみでは全く異なる</td></tr>
+        </tbody>
+      </table>
+      <div class="block-voice"><div class="block-label">🎤 音声補足 <span class="ptr">← S05a</span></div>
+        データを表示する際にどのデータを使うかという判断だけでも、データの相関係数は変わってしまう。相関係数は外れ値に弱いということを授業で学んだが、<strong>どのデータを表示させるかという判断だけでもデータの概要が変わってしまう</strong>ことも忘れずに。
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 末尾補足 ── -->
+  <div class="appendix">
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:8px">
+      <h2 style="font-family:var(--serif);font-size:20px;color:var(--text)">【補足・重要ワードまとめ】</h2>
+      <div class="qc-badge">✅ QC PASS 95.8%</div>
+    </div>
+
+    <div class="appendix-grid">
+
+      <!-- 補足A: 用語集 -->
+      <div class="appendix-card full" id="appendix-terms">
+        <div class="card-header">
+          <span class="card-icon">⭐</span>
+          <span class="card-title">補足A: 最重要ワード一覧</span>
+        </div>
+        <div class="term-row"><span class="term-name">散布図</span><span class="term-reading">さんぷず</span><span class="term-def">量的データ2変数の分布を2次元座標上の点で可視化した図</span><span class="term-imp">★★★</span></div>
+        <div class="term-row"><span class="term-name">相関</span><span class="term-reading">そうかん</span><span class="term-def">2つのデータ間の関係。特に直線関係に近い場合に「相関関係にある」と言う</span><span class="term-imp">★★★</span></div>
+        <div class="term-row"><span class="term-name">正の相関</span><span class="term-reading">せいのそうかん</span><span class="term-def">一方が大きくなるともう一方も大きくなる関係</span><span class="term-imp">★★★</span></div>
+        <div class="term-row"><span class="term-name">無相関</span><span class="term-reading">むそうかん</span><span class="term-def">2つのデータ間に一貫した関係がない状態</span><span class="term-imp">★★★</span></div>
+        <div class="term-row"><span class="term-name">負の相関</span><span class="term-reading">ふのそうかん</span><span class="term-def">一方が大きくなるともう一方が小さくなる関係</span><span class="term-imp">★★★</span></div>
+        <div class="term-row"><span class="term-name">共分散</span><span class="term-reading">きょうぶんさん</span><span class="term-def">「(Aの偏差)×(Bの偏差)の和」の平均。2変数のばらつきの方向性を表す</span><span class="term-imp">★★★</span></div>
+        <div class="term-row"><span class="term-name">相関係数</span><span class="term-reading">そうかんけいすう</span><span class="term-def">共分散÷(2つの標準偏差の積)。−1から1の値をとる</span><span class="term-imp">★★★</span></div>
+        <div class="term-row"><span class="term-name">疑似相関</span><span class="term-reading">ぎじそうかん</span><span class="term-def">第三の変数（交絡変数）の影響で直接関係のない2変数に相関があるように見える現象</span><span class="term-imp">★★★</span></div>
+        <div class="term-row"><span class="term-name">クロス集計表</span><span class="term-reading">くろすしゅうけいひょう</span><span class="term-def">2種類以上のデータの組み合わせの度数を表形式で表現したもの</span><span class="term-imp">★★★</span></div>
+        <div class="term-row"><span class="term-name">対応のあるデータ</span><span class="term-reading">たいおうのある−</span><span class="term-def">同一の観測単位から得られた複数のデータの組</span><span class="term-imp">★★☆</span></div>
+        <div class="term-row"><span class="term-name">次元（DS文脈）</span><span class="term-reading">じげん</span><span class="term-def">データの種類（組）の数。4種類のデータ=4次元データ</span><span class="term-imp">★★☆</span></div>
+        <div class="term-row"><span class="term-name">CORREL関数</span><span class="term-reading">これるかんすう</span><span class="term-def">Excel/Googleスプレッドシートで相関係数を算出する関数</span><span class="term-imp">★★☆</span></div>
+      </div>
+
+      <!-- 補足C: 試験観点 -->
+      <div class="appendix-card" id="appendix-hints">
+        <div class="card-header">
+          <span class="card-icon">🎯</span>
+          <span class="card-title">補足C: 試験・レポートで重要な観点</span>
+        </div>
+        <div class="hint-item"><div class="hint-num">01</div>相関係数の式（共分散÷標準偏差の積）と、なぜ単位が消えるかの理由を説明できるか</div>
+        <div class="hint-item"><div class="hint-num">02</div>相関係数の留意点3つ（散布図確認・データ数不足・疑似相関）を自分の言葉で説明できるか</div>
+        <div class="hint-item"><div class="hint-num">03</div>疑似相関の具体例（身長と語彙数）と交絡変数（年齢）の関係を説明できるか</div>
+        <div class="hint-item"><div class="hint-num">04</div>散布図を必ず書く理由（外れ値の影響・直線関係でないパターン）</div>
+        <div class="hint-item"><div class="hint-num">05</div>クロス集計表の読み方（層別・度数の意味）</div>
+        <div class="hint-item"><div class="hint-num">06</div>相関係数の強さの目安（0.7超=強い/0.4〜0.7=中程度/0.2〜0.4=弱い）</div>
+      </div>
+
+      <!-- 補足D: 関連概念 -->
+      <div class="appendix-card" id="appendix-next">
+        <div class="card-header">
+          <span class="card-icon">🔗</span>
+          <span class="card-title">補足D: 関連概念・次回への接続</span>
+        </div>
+        <div class="hint-item"><div class="hint-num">発展</div>相関係数はあくまで線形関係の強さを測る指標。非線形の関係には対応しない</div>
+        <div class="hint-item"><div class="hint-num">発展</div>ピアソン以外に<strong>スピアマンの順位相関係数</strong>（順位データ向け）も有名</div>
+        <div class="hint-item"><div class="hint-num">注意</div>相関関係は<strong>因果関係ではない</strong>（疑似相関でも言及）</div>
+        <div class="hint-item"><div class="hint-num">接続</div>今回は探索的データ解析（EDA）の中の「2変数間の関係」を学んだ。次回以降で疑似相関の検証方法・交絡変数の制御方法が出てくる可能性あり</div>
+      </div>
+
+      <!-- 未確定事項 -->
+      <div class="appendix-card full" id="appendix-unknown">
+        <div class="card-header">
+          <span class="card-icon">❓</span>
+          <span class="card-title">未確定事項・要確認リスト</span>
+        </div>
+        <div class="unknown-item">
+          <span class="u-id">U01<br>解決済</span>
+          <div>
+            <strong>S05b「標準偏差は常に1000になる値」の正しい内容</strong><br>
+            <span style="font-size:12.5px;color:var(--accent2)">✅ 音声確認により「この共分散は<strong>正の相関</strong>である」と判明。S03:p.56照合でも一致。</span><br>
+            <span style="font-size:11.5px;color:var(--text-sub)">次回Step 0の既知誤変換パターンに「1000の相関 → 正の相関」を追記すること。</span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /appendix-grid -->
+  </div><!-- /appendix -->
+
+</main>
+
+<script>
+// アクティブTOCの追跡
+const sections = document.querySelectorAll('[id]');
+const tocLinks = document.querySelectorAll('.toc-item');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      tocLinks.forEach(link => link.classList.remove('active'));
+      const active = document.querySelector(`.toc-item[href="#${entry.target.id}"]`);
+      if (active) active.classList.add('active');
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+
+sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
