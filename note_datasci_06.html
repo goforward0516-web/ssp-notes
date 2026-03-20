@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>データサイエンス入門 第6回 — データの可視化（2）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&family=Zen+Kaku+Gothic+New:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0d1117;--bg2:#161b22;--bg3:#1c2333;--bg4:#22303f;--text:#e6edf3;--sub:#8b949e;--muted:#484f58;--bdr:#21262d;--blue:#58a6ff;--bdim:rgba(88,166,255,.1);--green:#3fb950;--gdim:rgba(63,185,80,.1);--yellow:#e3b341;--ydim:rgba(227,179,65,.1);--purple:#bc8cff;--pdim:rgba(188,140,255,.1);--orange:#f0883e;--odim:rgba(240,136,62,.1);--red:#f85149;--rdim:rgba(248,81,73,.1);--sw:252px;--r:6px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text);font-size:14.5px;line-height:1.85;display:flex}
+#toc{width:var(--sw);min-height:100vh;background:var(--bg2);border-right:1px solid var(--bdr);position:fixed;top:0;left:0;overflow-y:auto;padding-bottom:48px;z-index:50}
+.toc-head{padding:18px 14px 14px;border-bottom:1px solid var(--bdr)}
+.toc-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--blue);letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px}
+.toc-title{font-size:13px;font-weight:700;color:var(--text);line-height:1.35}
+.toc-sub{font-size:11px;color:var(--sub);margin-top:3px}
+.toc-nav{padding:8px 0}
+.toc-section{padding:8px 14px 3px;font-size:10px;font-family:'JetBrains Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.toc-nav a{display:block;padding:4px 14px 4px 18px;font-size:12.5px;color:var(--sub);text-decoration:none;border-left:2px solid transparent;transition:all .12s;line-height:1.5}
+.toc-nav a:hover,.toc-nav a.active{color:var(--blue);border-left-color:var(--blue);background:var(--bdim)}
+.toc-nav a.sub{padding-left:26px;font-size:12px}
+#main{margin-left:var(--sw);flex:1;padding:40px 52px 80px;max-width:880px}
+.hero{background:linear-gradient(135deg,#162032 0%,#0d1117 65%);border:1px solid var(--bdr);border-radius:10px;padding:32px 36px;margin-bottom:48px;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;background:radial-gradient(circle,rgba(88,166,255,.08) 0%,transparent 70%);pointer-events:none}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--blue);background:var(--bdim);border:1px solid rgba(88,166,255,.25);padding:2px 10px;border-radius:20px;margin-bottom:12px;letter-spacing:.05em}
+.hero h1{font-family:'Zen Kaku Gothic New',sans-serif;font-size:24px;font-weight:900;color:var(--text);line-height:1.3;margin-bottom:8px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:16px;margin-top:12px}
+.hero-meta span{font-size:12px;color:var(--sub);display:flex;align-items:center;gap:5px}
+.hero-meta span::before{content:'·';color:var(--blue)}
+.chapter{margin-bottom:52px}
+.chapter-hd{display:flex;align-items:center;gap:12px;margin-bottom:24px;padding-bottom:14px;border-bottom:1px solid var(--bdr)}
+.ch-badge{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--blue);background:var(--bdim);border:1px solid rgba(88,166,255,.2);padding:2px 8px;border-radius:4px;white-space:nowrap;letter-spacing:.05em}
+.chapter-hd h2{font-size:19px;font-weight:700;color:var(--text)}
+.section{margin-bottom:32px}
+.section h3{font-size:15.5px;font-weight:700;color:var(--text);margin-bottom:12px;padding-left:11px;border-left:3px solid var(--blue)}
+.section h4{font-size:13.5px;font-weight:700;color:var(--blue);margin:16px 0 9px}
+p{margin-bottom:10px}
+.src{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);background:var(--bg3);border:1px solid var(--bdr);padding:1px 5px;border-radius:3px;margin-left:3px;vertical-align:middle}
+.audio{border-left:3px solid var(--blue);background:var(--bdim);border-radius:0 var(--r) var(--r) 0;padding:10px 14px;margin:10px 0;font-size:13.5px}
+.ext{border-left:3px solid var(--green);background:var(--gdim);border-radius:0 var(--r) var(--r) 0;padding:10px 14px;margin:10px 0;font-size:13.5px}
+.warn{border-left:3px solid var(--orange);background:var(--odim);border-radius:0 var(--r) var(--r) 0;padding:10px 14px;margin:10px 0;font-size:13.5px}
+.def{background:var(--pdim);border:1px solid rgba(188,140,255,.2);border-radius:var(--r);padding:12px 16px;margin:12px 0}
+.blabel{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px}
+.audio .blabel{color:var(--blue)}.ext .blabel{color:var(--green)}.warn .blabel{color:var(--orange)}.def .blabel{color:var(--purple)}
+.def-term{font-weight:700;color:var(--purple)}
+.tw{overflow-x:auto;margin:12px 0}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead tr{background:var(--bg3);border-bottom:2px solid var(--blue)}
+thead th{padding:9px 12px;text-align:left;font-weight:700;color:var(--blue);font-size:11.5px;white-space:nowrap;letter-spacing:.03em}
+tbody tr{border-bottom:1px solid var(--bdr);transition:background .1s}
+tbody tr:hover{background:var(--bg3)}
+tbody td{padding:8px 12px;vertical-align:top}
+.tc{text-align:center}
+.cs{color:var(--green);font-weight:700}.co{color:var(--blue)}.cw{color:var(--yellow)}.cx{color:var(--red)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+.card{background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--r);padding:14px 16px}
+.card-title{font-size:12px;font-weight:700;color:var(--blue);margin-bottom:7px}
+figure{margin:16px 0;background:var(--bg2);border:1px solid var(--bdr);border-radius:var(--r);padding:18px;text-align:center}
+figcaption{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-top:8px}
+.steps{display:flex;flex-direction:column;gap:6px;margin:10px 0}
+.step{display:flex;align-items:flex-start;gap:10px}
+.step-n{min-width:24px;height:24px;background:var(--blue);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace;flex-shrink:0;margin-top:3px}
+.step-n.arr{background:var(--bg4);color:var(--orange)}
+.step-c{flex:1;font-size:13.5px}
+ul,ol{padding-left:20px;margin:8px 0}
+li{margin-bottom:4px;font-size:13.5px}
+.appendix{margin-top:56px;border-top:1px solid var(--bdr);padding-top:40px}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:3px}
+hr{border:none;border-top:1px solid var(--bdr);margin:28px 0}
+</style>
+</head>
+<body>
+<nav id="toc">
+  <div class="toc-head">
+    <div class="toc-label">SSP · datasci-06</div>
+    <div class="toc-title">データサイエンス入門</div>
+    <div class="toc-sub">第6回 · データの可視化（2）</div>
+  </div>
+  <div class="toc-nav">
+    <div class="toc-section">概要</div>
+    <a href="#overview">授業構成・学習目標</a>
+    <a href="#review">第5回 復習</a>
+    <div class="toc-section">第1章 可視化の要素</div>
+    <a href="#ch1">概要</a>
+    <a href="#visual-what" class="sub">視覚変数とは</a>
+    <a href="#visual-7" class="sub">7種類の視覚変数</a>
+    <a href="#visual-data" class="sub">データ種類との対応</a>
+    <a href="#color-div" class="sub">多様な色覚</a>
+    <a href="#color-resp" class="sub">3つの対応方法</a>
+    <div class="toc-section">第2章 伝えるための可視化</div>
+    <a href="#ch2">概要</a>
+    <a href="#chartize" class="sub">図解表現とは</a>
+    <a href="#ex-user" class="sub">具体例</a>
+    <a href="#mapgraph" class="sub">①地図グラフ</a>
+    <a href="#pictograph" class="sub">②絵グラフ</a>
+    <a href="#interactive" class="sub">③インタラクティブ</a>
+    <a href="#animated" class="sub">④動くグラフ</a>
+    <div class="toc-section">第3章 可視化の留意点</div>
+    <a href="#ch3">概要</a>
+    <a href="#bar-warn" class="sub">棒グラフ</a>
+    <a href="#line-warn" class="sub">折れ線グラフ</a>
+    <a href="#pie-warn" class="sub">パイチャート</a>
+    <a href="#3d-warn" class="sub">3Dグラフ</a>
+    <a href="#pic-warn" class="sub">絵グラフ</a>
+    <a href="#other-warn" class="sub">その他</a>
+    <div class="toc-section">第4章 可視化事例</div>
+    <a href="#ch4">概要</a>
+    <a href="#bi" class="sub">BIツール</a>
+    <a href="#excel-demo" class="sub">Excel実演</a>
+    <div class="toc-section">補足</div>
+    <a href="#words">⭐ 最重要ワード</a>
+    <a href="#exam">🎯 試験・レポート観点</a>
+  </div>
+</nav>
+<main id="main">
+<div class="hero">
+  <div class="hero-badge">第6回 · データサイエンス入門</div>
+  <h1>データの可視化（2）</h1>
+  <div class="hero-meta">
+    <span>担当：浅田 麻菜</span>
+    <span>サイバー大学 IT総合学部 専門基礎科目</span>
+    <span>S03スライド（93p）+ S05音声テキスト 完全照合版</span>
+  </div>
+</div>
+
+<!-- OVERVIEW -->
+<section class="chapter" id="overview">
+  <div class="chapter-hd"><span class="ch-badge">授業構成</span><h2>第6回 授業構成と学習目標</h2></div>
+  <div class="tw"><table>
+    <thead><tr><th>章</th><th>タイトル</th></tr></thead>
+    <tbody>
+      <tr><td>第1章</td><td>可視化の要素</td></tr>
+      <tr><td>第2章</td><td>伝えるための可視化</td></tr>
+      <tr><td>第3章</td><td>可視化の留意点</td></tr>
+      <tr><td>第4章</td><td>データの可視化事例（2）</td></tr>
+    </tbody>
+  </table></div>
+  <div class="ext"><div class="blabel">データ分析のフロー</div>課題発見 → データ収集 → 探索的データ解析 → データ解析・推測 → <strong>提案・結果共有 ← 今回</strong> <span class="src">S03:p.4</span></div>
+  <p style="margin-top:10px;font-size:13.5px;"><span class="src">S03:p.5</span> <strong>学習目標：</strong> ①データを伝えるための可視化について説明ができる　②データの可視化の留意点について説明ができる</p>
+</section>
+
+<!-- REVIEW -->
+<section class="chapter" id="review">
+  <div class="chapter-hd"><span class="ch-badge">復習</span><h2>第5回 復習</h2></div>
+  <p><strong>Q. データを可視化するメリットを説明してください。</strong> <span class="src">S03:p.3</span></p>
+  <div class="tw"><table>
+    <thead><tr><th>#</th><th>メリット</th><th>対応フェーズ</th></tr></thead>
+    <tbody>
+      <tr><td>①</td><td>データの全体像を把握できる</td><td>探索的データ解析（EDA）</td></tr>
+      <tr><td>②</td><td>外れ値・異常値／新たな仮説を発見できる</td><td>探索的データ解析（EDA）</td></tr>
+      <tr><td>③</td><td>他者にデータの分析結果を伝えやすくなる</td><td><strong style="color:var(--blue)">提案・結果共有 ← 今回</strong></td></tr>
+    </tbody>
+  </table></div>
+  <div class="audio"><div class="blabel">🎙 音声補足 ← S05</div>「①②は探索的データ解析と呼ばれる非常に重要なフェーズ。今回は③のコミュニケーション部分を詳しく扱う」</div>
+</section>
+
+<!-- CH1 -->
+<section class="chapter" id="ch1">
+  <div class="chapter-hd"><span class="ch-badge">第1章</span><h2>可視化の要素</h2></div>
+
+  <div class="section" id="visual-what">
+    <h3>視覚変数とは <span class="src">S03:p.10〜11</span></h3>
+    <p>色や面積情報等を追加することで表示可能なデータの次元数をプラス1できる。この「色や面積情報」のことを<strong>視覚変数</strong>という。</p>
+    <div class="def"><div class="blabel">定義</div><p><span class="def-term">視覚変数（視覚属性）</span>：対象や値を表現できる視覚的要素。具体的にはドットの形状・線・色などが該当する。</p></div>
+    <div class="grid2">
+      <div class="card"><div class="card-title" style="color:var(--green)">✅ 適切な視覚変数を選択</div><p style="font-size:13px;">効果的な可視化が可能</p></div>
+      <div class="card"><div class="card-title" style="color:var(--red)">⚠️ 不適切な視覚変数を選択</div><p style="font-size:13px;">間違った意図を伝える可能性がある</p></div>
+    </div>
+    <div class="audio"><div class="blabel">🎙 音声補足 ← S05</div>現代はExcelやPowerPointで誰でも簡単に可視化できる。こういった知識がないとせっかく作ったグラフが他の人に間違って伝わってしまうこともある。</div>
+    <p style="font-size:12px;color:var(--muted);margin-top:6px;">参考文献：Jacques Bertin（訳：森田喬）『図の記号学』地図情報センター（1982）/ 三末和夫『情報視覚化入門』森北出版（2021）<span class="src">S03:p.11</span></p>
+  </div>
+
+  <div class="section" id="visual-7">
+    <h3>視覚変数の7種類 <span class="src">S03:p.12〜14</span></h3>
+    <figure>
+      <svg viewBox="0 0 714 160" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:714px;">
+        <defs><style>.vl{fill:#e6edf3;font-family:'Noto Sans JP',sans-serif;font-size:12px;text-anchor:middle;} .vs{fill:#8b949e;font-family:'Noto Sans JP',sans-serif;font-size:10px;text-anchor:middle;}</style></defs>
+        <!-- 位置 -->
+        <rect x="2" y="8" width="92" height="76" rx="5" fill="#1c2333" stroke="#58a6ff" stroke-width="1.2"/>
+        <line x1="12" y1="76" x2="86" y2="76" stroke="#58a6ff" stroke-width="1"/><line x1="12" y1="14" x2="12" y2="76" stroke="#58a6ff" stroke-width="1"/>
+        <circle cx="35" cy="38" r="3.5" fill="#58a6ff"/><circle cx="58" cy="52" r="3.5" fill="#58a6ff"/><circle cx="74" cy="28" r="3.5" fill="#58a6ff"/>
+        <text x="48" y="100" class="vl">位置</text><text x="48" y="114" class="vs">x・y座標</text>
+        <!-- 大きさ -->
+        <rect x="102" y="8" width="92" height="76" rx="5" fill="#1c2333" stroke="#58a6ff" stroke-width="1.2"/>
+        <circle cx="128" cy="62" r="6" fill="none" stroke="#58a6ff" stroke-width="1.5"/><circle cx="154" cy="55" r="12" fill="none" stroke="#58a6ff" stroke-width="1.5"/><circle cx="181" cy="46" r="19" fill="none" stroke="#58a6ff" stroke-width="1.5"/>
+        <text x="148" y="100" class="vl">大きさ</text><text x="148" y="114" class="vs">長さ・太さ</text>
+        <!-- 方向 -->
+        <rect x="202" y="8" width="92" height="76" rx="5" fill="#1c2333" stroke="#58a6ff" stroke-width="1.2"/>
+        <line x1="218" y1="78" x2="236" y2="18" stroke="#58a6ff" stroke-width="2.5"/><line x1="242" y1="78" x2="250" y2="46" stroke="#58a6ff" stroke-width="2.5"/><line x1="265" y1="78" x2="285" y2="30" stroke="#58a6ff" stroke-width="2.5"/>
+        <text x="248" y="100" class="vl">方向</text><text x="248" y="114" class="vs">傾き</text>
+        <!-- きめ -->
+        <rect x="302" y="8" width="92" height="76" rx="5" fill="#1c2333" stroke="#58a6ff" stroke-width="1.2"/>
+        <rect x="308" y="14" width="22" height="64" rx="2" fill="#22303f"/>
+        <rect x="334" y="14" width="22" height="64" rx="2" fill="#1c2333"/>
+        <line x1="336" y1="16" x2="336" y2="76" stroke="#58a6ff" stroke-width="0.8" stroke-dasharray="2,3"/>
+        <line x1="341" y1="16" x2="341" y2="76" stroke="#58a6ff" stroke-width="0.8" stroke-dasharray="2,3"/>
+        <line x1="346" y1="16" x2="346" y2="76" stroke="#58a6ff" stroke-width="0.8" stroke-dasharray="2,3"/>
+        <rect x="360" y="14" width="22" height="64" rx="2" fill="#22303f"/>
+        <line x1="362" y1="16" x2="380" y2="76" stroke="#58a6ff" stroke-width="0.8"/><line x1="368" y1="16" x2="382" y2="66" stroke="#58a6ff" stroke-width="0.8"/>
+        <text x="348" y="100" class="vl">きめ</text><text x="348" y="114" class="vs">模様・テクスチャー</text>
+        <!-- 色 -->
+        <rect x="402" y="8" width="92" height="76" rx="5" fill="#1c2333" stroke="#58a6ff" stroke-width="1.2"/>
+        <rect x="408" y="16" width="16" height="60" rx="2" fill="#f85149"/><rect x="428" y="16" width="16" height="60" rx="2" fill="#e3b341"/><rect x="448" y="16" width="16" height="60" rx="2" fill="#3fb950"/><rect x="468" y="16" width="16" height="60" rx="2" fill="#58a6ff"/>
+        <text x="448" y="100" class="vl">色（色相）</text><text x="448" y="114" class="vs">種類の区別</text>
+        <!-- 明度彩度 -->
+        <rect x="502" y="8" width="92" height="76" rx="5" fill="#1c2333" stroke="#58a6ff" stroke-width="1.2"/>
+        <rect x="508" y="16" width="16" height="60" rx="2" fill="#0d3b6e"/><rect x="528" y="16" width="16" height="60" rx="2" fill="#1a5fa8"/><rect x="548" y="16" width="16" height="60" rx="2" fill="#3a8de0"/><rect x="568" y="16" width="16" height="60" rx="2" fill="#8ab8f0"/>
+        <text x="548" y="100" class="vl">明度・彩度</text><text x="548" y="114" class="vs">濃淡</text>
+        <!-- 形 -->
+        <rect x="602" y="8" width="110" height="76" rx="5" fill="#1c2333" stroke="#58a6ff" stroke-width="1.2"/>
+        <rect x="614" y="34" width="16" height="16" rx="2" fill="none" stroke="#58a6ff" stroke-width="1.5"/>
+        <circle cx="650" cy="42" r="8" fill="none" stroke="#58a6ff" stroke-width="1.5"/>
+        <polygon points="676,52 686,30 696,52" fill="none" stroke="#58a6ff" stroke-width="1.5"/>
+        <text x="655" y="100" class="vl">形</text><text x="655" y="114" class="vs">形状</text>
+      </svg>
+      <figcaption>図：7種類の視覚変数 <span class="src">S03:p.12</span></figcaption>
+    </figure>
+    <div class="tw"><table>
+      <thead><tr><th>視覚変数</th><th>主な使用例</th></tr></thead>
+      <tbody>
+        <tr><td><strong>位置</strong>（x・y座標）</td><td>ほぼ全てのグラフ</td></tr>
+        <tr><td><strong>大きさ</strong>（長さ・太さ）</td><td>棒グラフの棒の長さ、バブルチャートの面積</td></tr>
+        <tr><td><strong>方向</strong>（傾き）</td><td>折れ線グラフの傾き、平行座標プロットの傾向比較</td></tr>
+        <tr><td><strong>きめ</strong>（模様・テクスチャー）</td><td>パイチャートの領域区別、棒グラフのデータ種別区別</td></tr>
+        <tr><td><strong>色（色相）</strong></td><td>ヒートマップの大小関係表現、多くのグラフの種類区別</td></tr>
+        <tr><td><strong>明度・彩度</strong>（濃淡）</td><td>ヒートマップの大小関係表現</td></tr>
+        <tr><td><strong>形</strong>（形状）</td><td>散布図での種類の区別（丸・三角・四角）</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="section" id="visual-data">
+    <h3>視覚変数とデータの種類の対応 <span class="src">S03:p.17〜21</span></h3>
+    <div class="card" style="margin-bottom:12px;">
+      <div class="card-title">判断基準</div>
+      <table style="font-size:13px;"><tbody>
+        <tr><td style="padding:4px 10px 4px 0;font-weight:700;">量的データ</td><td>「数字を使わずに<strong>大小</strong>の表現は可能か？」</td></tr>
+        <tr><td style="padding:4px 10px 4px 0;font-weight:700;">順序尺度</td><td>「数字を使わずに<strong>順序</strong>の表現は可能か？」</td></tr>
+        <tr><td style="padding:4px 10px 4px 0;font-weight:700;">名義尺度</td><td>「文字を使わずに<strong>区別</strong>は可能か？」</td></tr>
+      </tbody></table>
+    </div>
+    <div class="tw"><table>
+      <thead><tr><th>視覚変数</th><th class="tc">量的データ</th><th class="tc">順序尺度</th><th class="tc">名義尺度</th></tr></thead>
+      <tbody>
+        <tr><td>位置</td><td class="tc cs">◎</td><td class="tc cs">◎</td><td class="tc cs">◎</td></tr>
+        <tr><td>大きさ（長さ）</td><td class="tc cs">◎</td><td class="tc cw">△</td><td class="tc cw">△</td></tr>
+        <tr><td>方向（傾き）</td><td class="tc co">○</td><td class="tc cw">△</td><td class="tc cw">△</td></tr>
+        <tr><td>きめ（柄）</td><td class="tc cx">×</td><td class="tc cw">△</td><td class="tc co">○</td></tr>
+        <tr><td>色（色相）</td><td class="tc co">○</td><td class="tc co">○</td><td class="tc cs">◎</td></tr>
+        <tr><td>明度・彩度</td><td class="tc co">○</td><td class="tc cs">◎</td><td class="tc cw">△</td></tr>
+        <tr><td>形</td><td class="tc cx">×</td><td class="tc cx">×</td><td class="tc co">○</td></tr>
+      </tbody>
+    </table></div>
+    <p style="font-size:11.5px;color:var(--muted);margin-top:4px;"><span class="cs">◎おすすめ</span> / <span class="co">○適切</span> / <span class="cw">△可能だが避ける</span> / <span class="cx">×不適</span></p>
+    <div class="audio"><div class="blabel">🎙 音声補足 ← S05</div>「形（丸・三角・四角）では、どれが大きい・どれが小さいかが直感的にわからない。視覚変数と直感的に伝わるものがつながらないものは不適切」</div>
+  </div>
+
+  <div class="section" id="color-div">
+    <h3>多様な色覚 <span class="src">S03:p.22</span></h3>
+    <p>色の見え方は人によって異なる。要因：先天的な遺伝・加齢・病気による影響。</p>
+    <div class="tw"><table>
+      <thead><tr><th>集団</th><th>男性</th><th>女性</th></tr></thead>
+      <tbody>
+        <tr><td>日本人</td><td><strong>約5%</strong>（約20人に1人）</td><td>約0.2%</td></tr>
+        <tr><td>コーカソイド系</td><td><strong>約8%</strong></td><td>約0.4%</td></tr>
+      </tbody>
+    </table></div>
+    <p style="font-size:11.5px;color:var(--muted);margin-top:6px;">出典：[1]国土交通省「色覚障害者の移動等円滑化に関する調査研究」[2]Jennifer Birch, J. Opt. Soc. Am. A 29, 313-320 (2012) <span class="src">S03:p.22</span></p>
+    <div class="ext"><div class="blabel">外部補足</div>D型（2型）色覚では赤と緑が見分けにくい見え方になる（スライドp.22のチューリップ写真参照）。</div>
+  </div>
+
+  <div class="section" id="color-resp">
+    <h3>多様な色覚への3つの対応方法 <span class="src">S03:p.23〜25</span></h3>
+    <div class="card" style="margin-bottom:10px;">
+      <div class="card-title">対応① 推奨カラーパレットを使用する <span class="src">S03:p.23</span></div>
+      <p style="font-size:13px;">多様な色覚を持つ人も判別できるよう設計されたカラーパレットを使用する。</p>
+      <p style="font-size:12px;color:var(--sub);margin-top:5px;">カラーユニバーサルデザイン推奨配色セットガイドブック（第2版）— DICグラフィックス<br>https://www.dic-graphics.co.jp/navi/color/ud.html</p>
+    </div>
+    <div class="card" style="margin-bottom:10px;">
+      <div class="card-title">対応② カラーチェッカーツールを使用する <span class="src">S03:p.24</span></div>
+      <p style="font-size:13px;"><strong>Adobe Color</strong>「アクセシビリティツール」→「多様な色覚対応」で色覚シミュレーションができる。グラフで使う色を入力することで見分けのチェックが可能。</p>
+      <p style="font-size:12px;color:var(--sub);">https://color.adobe.com/ja/create/color-accessibility</p>
+    </div>
+    <div class="card">
+      <div class="card-title">対応③ 色以外の視覚変数や文字を併用する <span class="src">S03:p.25</span></div>
+      <p style="font-size:13px;">柄（きめ）・濃淡・文字ラベルを組み合わせる。</p>
+      <p style="font-size:12.5px;color:var(--sub);margin-top:5px;">【例】P型（1型）色覚ではカラフルなパイチャートでA社とC社が同色に見えてしまう → 濃淡でエリアを分け、凡例を図中に移動し、文字を追加することで改善</p>
+    </div>
+  </div>
+</section>
+
+<!-- CH2 -->
+<section class="chapter" id="ch2">
+  <div class="chapter-hd"><span class="ch-badge">第2章</span><h2>伝えるための可視化</h2></div>
+
+  <div class="section" id="chartize">
+    <h3>図解表現（チャート化）とは <span class="src">S03:p.31</span></h3>
+    <div class="def"><div class="blabel">定義</div><p><span class="def-term">図解表現（チャート化）</span>：グラフのみの場合よりも、より直感的にデータの主張・言いたいことを伝えるための表現方法。</p></div>
+    <div class="grid2">
+      <div class="card"><div class="card-title">主な特徴</div><ul style="font-size:13px;"><li>高いメッセージ性</li><li>シンプルな表現</li><li>短時間で理解可能</li><li>「厳密さ」より「<strong>印象</strong>」を重視</li></ul></div>
+      <div class="card"><div class="card-title">使う場面・使わない場面</div><ul style="font-size:13px;"><li>✅ 広告・報道・プレゼン</li><li>❌ 科学論文・実験レポート</li></ul><p style="font-size:12px;color:var(--sub);margin-top:6px;">何のために可視化しているかで判断する</p></div>
+    </div>
+  </div>
+
+  <div class="section" id="ex-user">
+    <h3>具体例：ユーザー数分析レポート <span class="src">S03:p.32〜34</span></h3>
+    <p style="font-size:13.5px;">「6月から7月の総ユーザー数はほぼ同数。しかし国内は0.5万人減少、海外は0.6万人増加。→ 国内ユーザー向けの対応策が必要」という主張を伝える場面。</p>
+    <div class="warn"><div class="blabel">通常グラフの限界 S03:p.33</div>情報は正確に伝わるが「国内対応が必要」という主張まで伝わりにくい。</div>
+    <div class="card" style="margin-top:10px;">
+      <div class="card-title" style="color:var(--green)">図解表現（プレゼン向け）<span class="src">S03:p.34</span></div>
+      <table style="font-size:14px;margin-top:6px;"><tbody>
+        <tr><td style="padding:4px 12px 4px 0;">海外</td><td style="color:var(--green);font-weight:700;">+8.6%</td></tr>
+        <tr><td style="padding:4px 12px 4px 0;">国内</td><td style="color:var(--red);font-weight:700;">-16.8%</td></tr>
+      </tbody></table>
+      <p style="font-size:12px;color:var(--sub);margin-top:8px;">メリット：主張が明確 / デメリット：「総数はほぼ同数」という情報が失われる</p>
+    </div>
+    <div class="warn" style="margin-top:10px;"><div class="blabel">⚠️ 留意点 S03:p.35</div>「1つの図には1つのメッセージ」が原則。ただし表示範囲の操作等で伝えたい主張を<strong>誤解させるリスク</strong>もある（例：棒グラフの表示範囲操作で30%の値が50%超に見える）。</div>
+  </div>
+
+  <div class="section">
+    <h3>よくある図解表現の4種類 <span class="src">S03:p.36</span></h3>
+    <div id="mapgraph" style="margin-bottom:20px;">
+      <h4>① 地図グラフ <span class="src">S03:p.37〜38</span></h4>
+      <div class="def"><div class="blabel">定義</div><p><span class="def-term">地図グラフ</span>：ヒートマップやグラフを地図に重ねてデータを表現する図解表現。</p></div>
+      <div class="grid2">
+        <div class="card"><div class="card-title" style="color:var(--green)">✅ 得意</div><p style="font-size:13px;">位置とデータを容易に比較可能（例：東京vs北海道の通勤時間を瞬時に比較）</p></div>
+        <div class="card"><div class="card-title" style="color:var(--yellow)">⚠️ 苦手</div><p style="font-size:13px;">詳細なデータの比較は困難（同じ階級内での順位等はわからない）</p></div>
+      </div>
+      <p style="font-size:13px;margin-top:8px;"><strong>使える視覚変数：</strong>色（色相）・棒の高さ・円の大きさ・イラスト（形） <span class="src">S03:p.38</span></p>
+    </div>
+    <div id="pictograph" style="margin-bottom:20px;">
+      <h4>② 絵グラフ <span class="src">S03:p.39</span></h4>
+      <div class="def"><div class="blabel">定義</div><p><span class="def-term">絵グラフ</span>：イラストとグラフの組み合わせでデータを表現する方法。</p></div>
+      <ul style="font-size:13.5px;margin-top:8px;"><li>イラストで属性等を表現 → <strong>直感的な理解を促進</strong></li><li><strong>イラストの選択が理解に大きく影響する</strong></li></ul>
+      <div class="audio"><div class="blabel">🎙 音声補足 ← S05</div>「男性のイラストをスポーツ選手に変えると、男女別データではなくスポーツ選手の割合に見えてしまう可能性がある。どのようなイラストを選択するかが理解の鍵」</div>
+    </div>
+    <div id="interactive" style="margin-bottom:20px;">
+      <h4>③ インタラクティブなグラフ <span class="src">S03:p.40</span></h4>
+      <div class="def"><div class="blabel">定義</div><p><span class="def-term">インタラクティブなグラフ</span>：マウスの移動などのユーザーの動きに応じて、表示情報が変化するグラフ。</p></div>
+      <div class="grid2" style="margin-top:8px;">
+        <div class="card"><div class="card-title">通常表示</div><p style="font-size:13px;">シンプルな全体像</p></div>
+        <div class="card"><div class="card-title">カーソル移動時</div><p style="font-size:13px;">四分位数・中央値・最大最小値などを追加表示</p></div>
+      </div>
+      <p style="font-size:13px;margin-top:8px;color:var(--sub);">利用場面：<strong>ウェブサイトで特に有効</strong>（紙の報告書では実現不可）</p>
+    </div>
+    <div id="animated">
+      <h4>④ 動くグラフ <span class="src">S03:p.41〜42</span></h4>
+      <div class="def"><div class="blabel">定義</div><p><span class="def-term">動くグラフ</span>：各時点におけるグラフを連続的に表示し、時系列の傾向を視覚的に表現するもの。各時点のグラフをパラパラ漫画のように動画で見せるイメージ。</p></div>
+      <ul style="font-size:13.5px;margin-top:8px;"><li><strong>動くことで視線の注意を集めやすい</strong></li><li>ウェブサイトで特に有効（インタラクティブなグラフとの組み合わせも効果的）</li></ul>
+      <div class="audio"><div class="blabel">🎙 音声補足 ← S05</div>「人間は動いているものに対してとても敏感。主張したいデータをしっかり見てもらえる効果がある」</div>
+      <p style="font-size:13px;margin-top:8px;"><strong>例：Gapminder</strong> — 収入と平均寿命の時系列変化を動くバブルチャートで表現（円の面積は人口）<br>https://www.gapminder.org/tools/#$chart-type=bubbles&url=v1 <span class="src">S03:p.42</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- CH3 -->
+<section class="chapter" id="ch3">
+  <div class="chapter-hd"><span class="ch-badge">第3章</span><h2>可視化の留意点</h2></div>
+  <div class="warn" style="margin-bottom:20px;"><div class="blabel">なぜ留意が必要か <span class="src">S03:p.47〜48</span></div><strong>送り手として：</strong>不適切なグラフ選択・視覚変数の操作 → 受け手に意図しないメッセージを伝えてしまう<br><strong>受け手として：</strong>データとは異なる「印象」から → 誤った判断・結論を下す可能性がある</div>
+  <div class="tw" style="margin-bottom:24px;"><table>
+    <thead><tr><th>グラフの種類</th><th>主な留意点</th></tr></thead>
+    <tbody>
+      <tr><td>棒グラフ</td><td>①原点のない棒グラフ　②質的データの値を線でつながない</td></tr>
+      <tr><td>折れ線グラフ</td><td>①縦横比の変更によるデータの歪曲　②質的データで使用しない</td></tr>
+      <tr><td>パイチャート（円グラフ）</td><td>割合以外で使用しない</td></tr>
+      <tr><td>3Dグラフ</td><td>①死角の発生や認識への影響　②投影法の変更等によるデータの歪曲</td></tr>
+      <tr><td>絵グラフ</td><td>イラストの面積による解釈への影響</td></tr>
+      <tr><td>その他</td><td>①データの一部が削除されていないか　②複数のグラフの比較</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="section" id="bar-warn">
+    <h3>棒グラフの留意点 <span class="src">S03:p.51〜53</span></h3>
+    <div class="card" style="margin-bottom:10px;">
+      <div class="card-title" style="color:var(--orange)">⚠️ 留意点① 原点のない棒グラフ <span class="src">S03:p.52</span></div>
+      <p style="font-size:13px;">原点０を削除すると → 差異を<strong>過大に</strong>感じさせる視覚効果が生じる。</p>
+      <figure style="margin-top:10px;">
+        <svg viewBox="0 0 460 140" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:460px;">
+          <text x="96" y="13" text-anchor="middle" fill="#3fb950" font-size="11" font-family="Noto Sans JP">✅ 原点0あり（正しい）</text>
+          <rect x="10" y="16" width="1" height="100" fill="#58a6ff"/><rect x="10" y="116" width="175" height="1" fill="#58a6ff"/>
+          <text x="7" y="118" text-anchor="end" fill="#8b949e" font-size="10">0</text>
+          <rect x="18" y="28" width="26" height="88" fill="#3fb950" rx="2"/><text x="31" y="24" text-anchor="middle" fill="#e6edf3" font-size="10">93</text>
+          <rect x="52" y="17" width="26" height="99" fill="#3fb950" rx="2"/><text x="65" y="13" text-anchor="middle" fill="#e6edf3" font-size="10">110</text>
+          <rect x="86" y="13" width="26" height="103" fill="#3fb950" rx="2"/><text x="99" y="9" text-anchor="middle" fill="#e6edf3" font-size="10">116</text>
+          <rect x="120" y="3" width="26" height="113" fill="#3fb950" rx="2"/><text x="133" y="-1" text-anchor="middle" fill="#e6edf3" font-size="10">158</text>
+          <text x="31" y="132" text-anchor="middle" fill="#8b949e" font-size="9">東京</text><text x="65" y="132" text-anchor="middle" fill="#8b949e" font-size="9">大阪</text>
+          <text x="99" y="132" text-anchor="middle" fill="#8b949e" font-size="9">福岡</text><text x="133" y="132" text-anchor="middle" fill="#8b949e" font-size="9">沖縄</text>
+          <line x1="185" y1="5" x2="185" y2="130" stroke="#21262d" stroke-width="1"/>
+          <text x="340" y="13" text-anchor="middle" fill="#f85149" font-size="11" font-family="Noto Sans JP">❌ 原点80から（NG）</text>
+          <rect x="193" y="16" width="1" height="100" fill="#58a6ff"/><rect x="193" y="116" width="260" height="1" fill="#58a6ff"/>
+          <text x="190" y="118" text-anchor="end" fill="#8b949e" font-size="10">80</text>
+          <rect x="201" y="88" width="26" height="28" fill="#f85149" rx="2"/><text x="214" y="84" text-anchor="middle" fill="#e6edf3" font-size="10">93</text>
+          <rect x="235" y="36" width="26" height="80" fill="#f85149" rx="2"/><text x="248" y="32" text-anchor="middle" fill="#e6edf3" font-size="10">110</text>
+          <rect x="269" y="22" width="26" height="94" fill="#f85149" rx="2"/><text x="282" y="18" text-anchor="middle" fill="#e6edf3" font-size="10">116</text>
+          <rect x="303" y="3" width="26" height="113" fill="#f85149" rx="2"/><text x="316" y="-1" text-anchor="middle" fill="#e6edf3" font-size="10">158</text>
+          <text x="214" y="132" text-anchor="middle" fill="#8b949e" font-size="9">東京</text><text x="248" y="132" text-anchor="middle" fill="#8b949e" font-size="9">大阪</text>
+          <text x="282" y="132" text-anchor="middle" fill="#8b949e" font-size="9">福岡</text><text x="316" y="132" text-anchor="middle" fill="#8b949e" font-size="9">沖縄</text>
+        </svg>
+        <figcaption>図：原点0の有無による印象の違い（年間降水日数）<span class="src">S03:p.52</span></figcaption>
+      </figure>
+      <div class="audio" style="margin-top:8px;"><div class="blabel">🎙 音声補足 ← S05</div>「棒グラフを描く場合は絶対に原点0は削除しないよう気をつける。0が削除されているグラフがあったら怪しいという視点で確認すること」</div>
+    </div>
+    <div class="card"><div class="card-title" style="color:var(--orange)">⚠️ 留意点② 質的データの値を線でつながない <span class="src">S03:p.53</span></div><p style="font-size:13px;">名義尺度（質的データ）の棒グラフを線でつなぐと意味のない「増減」を感じさせてしまう。</p><p style="font-size:12.5px;color:var(--sub);margin-top:6px;">【例】製品E(600)・A(450)・C(350)・B(220)・F(125)・D(80)を売れ筋順に並べた棒グラフを線でつなぐ → 「販売数が下落している」ように見えてしまう（実際は順位の表示のため線に意味なし）</p></div>
+  </div>
+
+  <div class="section" id="line-warn">
+    <h3>折れ線グラフの留意点 <span class="src">S03:p.54〜58</span></h3>
+    <div class="card" style="margin-bottom:10px;"><div class="card-title" style="color:var(--orange)">⚠️ 留意点① 縦横比の変更によるデータの歪曲 <span class="src">S03:p.55〜57</span></div><p style="font-size:13px;">折れ線グラフは「<strong>方向</strong>」の視覚変数（傾きで増減を表現）を使用しているため、<strong>縦横比を変えるだけで印象が大きく変わる</strong>。</p><div class="grid2" style="margin-top:8px;"><div class="card"><div class="card-title">縦長グラフ</div><p style="font-size:12px;">「急激に」減少しているように見える</p></div><div class="card"><div class="card-title">横長（縦0.5倍・横2倍）</div><p style="font-size:12px;">「変化が緩やか」に見える</p></div></div><div class="warn" style="margin-top:8px;"><div class="blabel">重要</div>折れ線グラフを見るときは<strong>増減の傾向の把握に留め</strong>、「激増」「大幅に変化」のような強い値評価は避けること <span class="src">S03:p.57</span></div></div>
+    <div class="card"><div class="card-title" style="color:var(--orange)">⚠️ 留意点② 質的データで使用しない <span class="src">S03:p.58</span></div><p style="font-size:13px;">棒グラフの留意点②と同じ理由から、質的データに折れ線グラフを使うと意味のない増減を表現してしまう。</p></div>
+  </div>
+
+  <div class="section" id="pie-warn">
+    <h3>パイチャートの留意点 <span class="src">S03:p.59〜60</span></h3>
+    <div class="warn"><div class="blabel">⚠️ 割合のデータ以外で使用しない</div>パイチャートは<strong>角度・面積で割合を表現</strong>する手法。割合でないデータには本質的に不適。</div>
+    <div class="card" style="margin-top:10px;"><div class="card-title">具体例：「50m走の上位5人のタイム（秒）」<span class="src">S03:p.60</span></div><p style="font-size:13px;">1位:7.59秒、2位:8.01秒、3位:8.15秒、4位:8.24秒、5位:9.03秒 → パイチャートで表示すると：</p><ul style="font-size:13px;margin-top:6px;"><li>問題①：6位以下を加えると各スライスの角度が変化してしまう（割合データでないため）</li><li>問題②：別のデータとの比較が困難</li></ul></div>
+  </div>
+
+  <div class="section" id="3d-warn">
+    <h3>3Dグラフの留意点 <span class="src">S03:p.61〜70</span></h3>
+    <div class="card" style="margin-bottom:10px;"><div class="card-title" style="color:var(--orange)">⚠️ 留意点①-1 死角の発生 <span class="src">S03:p.62〜63</span></div><p style="font-size:13px;">x軸の回転角度を変えるだけで、後ろのデータが前のデータに隠れて見えなくなる。→ データの存在自体に気づかない可能性がある。</p><div class="audio" style="margin-top:8px;"><div class="blabel">🎙 音声補足 ← S05</div>「3D棒グラフで前に大きなデータがあって後ろが見えないグラフがあったら、何か隠れているのではないかという視点で見ること」</div></div>
+    <div class="card" style="margin-bottom:10px;"><div class="card-title" style="color:var(--orange)">⚠️ 留意点①-2 視覚効果による認識への影響 <span class="src">S03:p.64</span></div><ul style="font-size:13px;"><li><strong>見上げる構図</strong>：最も手前の棒が「より高く」感じる錯視</li><li><strong>三角錐形状</strong>：2番目と3番目の差異が全く見えなくなる</li></ul></div>
+    <div class="card"><div class="card-title" style="color:var(--orange)">⚠️ 留意点② 投影法の変更等によるデータの歪曲 <span class="src">S03:p.65〜70</span></div>
+      <p style="font-size:13px;margin-bottom:8px;">例：「平日12:45〜13:00の行動内容」— 正しい数値：食事26.94%・仕事25.44%・その他27.43%・休養12.42%・テレビ等7.78%（3項目がほぼ均等）<span class="src">S03:p.66</span></p>
+      <p style="font-size:13px;">以下の操作を組み合わせると「日本人は昼休憩もとらず仕事をしている」という印象に変えられる：</p>
+      <div class="steps" style="margin-top:8px;">
+        <div class="step"><div class="step-n">1</div><div class="step-c">元のパイチャート（3項目ほぼ均等）</div></div>
+        <div class="step"><div class="step-n">2</div><div class="step-c">3D化 ＋「仕事」を手前に移動</div></div>
+        <div class="step"><div class="step-n">3</div><div class="step-c">回転（x:30°、y:40°）</div></div>
+        <div class="step"><div class="step-n">4</div><div class="step-c">透視投影（50°）</div></div>
+        <div class="step"><div class="step-n">5</div><div class="step-c">分離 ＋ 数値消去</div></div>
+        <div class="step"><div class="step-n arr">→</div><div class="step-c" style="color:var(--red);">「透視投影と分離」の組み合わせで「仕事」の面積が実際より大幅に大きく見える問題のある3Dパイチャートが完成 <span class="src">S03:p.70</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="pic-warn">
+    <h3>絵グラフの留意点 <span class="src">S03:p.71〜73</span></h3>
+    <div class="warn"><div class="blabel">⚠️ イラストの面積比により実際より大きな値を認識してしまう</div>【例】「地域別積雪量」A地点100cm・B地点230cm <span class="src">S03:p.72</span><br>高さの比率：2.3倍 → しかし雪だるまイラストの面積比：<strong>4倍以上</strong><br><br><strong>対策：</strong>イラストを積み上げることで面積比を保ちながら高さを表現できる <span class="src">S03:p.73</span></div>
+  </div>
+
+  <div class="section" id="other-warn">
+    <h3>その他の留意点 <span class="src">S03:p.74〜79</span></h3>
+    <div class="card" style="margin-bottom:10px;"><div class="card-title" style="color:var(--orange)">⚠️ データの一部が削除されていないか <span class="src">S03:p.75〜77</span></div><p style="font-size:13px;">【例】7〜12月の折れ線グラフで12月に急落するデータがある。12月のデータを削除するだけで「7〜11月は常に上昇傾向」のグラフに変わってしまう。</p></div>
+    <div class="card"><div class="card-title" style="color:var(--orange)">⚠️ 複数グラフを比較する場合 <span class="src">S03:p.78〜79</span></div><p style="font-size:13px;"><strong>比較のための基準（表示範囲・単位）が揃っているか</strong>確認する。</p><p style="font-size:12.5px;color:var(--sub);margin-top:6px;">【例】新潟県と岡山県の年間降雨日数（2010〜2020年）を別々のグラフで示すと「同程度の値」に見えるが、縦軸スケールが異なるため実際には新潟が約2倍多い。</p></div>
+  </div>
+</section>
+
+<!-- CH4 -->
+<section class="chapter" id="ch4">
+  <div class="chapter-hd"><span class="ch-badge">第4章</span><h2>データの可視化事例（2）</h2></div>
+
+  <div class="section" id="bi">
+    <h3>BIツールとは <span class="src">S03:p.86〜87</span></h3>
+    <div class="def"><div class="blabel">定義</div><p><span class="def-term">BI（Business Intelligence）ツール</span>：主に企業の持つデータを集約・分析・可視化するツール。</p></div>
+    <div class="tw" style="margin-top:10px;"><table>
+      <thead><tr><th>種類</th><th>説明</th></tr></thead>
+      <tbody>
+        <tr><td><strong>エンタープライズBI</strong></td><td>専門部署が使用するBIツール。専門的な知識が必要。依頼→レポート受け取り型の運用。</td></tr>
+        <tr><td><strong>セルフBI</strong></td><td>データの加工・操作等を容易にしたことで、ユーザー自身が分析・可視化できるようにしたBIツール。専門部署への依頼不要。</td></tr>
+      </tbody>
+    </table></div>
+    <div class="card" style="margin-top:10px;">
+      <div class="card-title">BIツールの主な機能 <span class="src">S03:p.87</span></div>
+      <ul style="font-size:13px;"><li><strong>レポーティング機能</strong>：分析した結果を図や表の形式で<strong>ダッシュボード</strong>にまとめて可視化</li><li>データマイニング（データの法則性を発見）</li><li>プランニング（将来の予測）</li></ul>
+    </div>
+    <div class="ext"><div class="blabel">外部補足</div>代表的なBIツール例：Tableau（スライドp.87参照）、Microsoft Power BI、Google Looker Studio等</div>
+  </div>
+
+  <div class="section" id="excel-demo">
+    <h3>事例：Excelによる地図グラフ作成 <span class="src">S03:p.88〜91</span></h3>
+    <p style="font-size:13.5px;"><strong>対象データ：</strong>都道府県別の降水量・年間降雨日数（1975〜2020年）<br><strong>使用ツール：</strong>Microsoft Excel（2016以上・Office 365・インターネット接続必要）<br><strong>データ出典：</strong>e-stat「社会・人口統計体系」https://www.e-stat.go.jp/regional-statistics/ssdsview</p>
+    <div class="warn" style="margin-top:8px;"><div class="blabel">注意</div>実際に演習をする必要はない。第1〜3章で学んだ知識が実際のデータ可視化でどう生きるかに注目する。<span class="src">S03:p.89</span> 詳細な操作手順は「デモ動画資料」を参照。<span class="src">S03:p.90</span></div>
+    <h4>事例①：塗り分けマップ</h4>
+    <p style="font-size:13.5px;">平均気温を<strong>ヒートマップ表現（色という視覚変数）</strong>で日本地図上に表示する。</p>
+    <h4>事例②：3Dマップ（動くグラフ）</h4>
+    <p style="font-size:13.5px;">都道府県別の降雨日数を棒グラフで日本地図上に表示。年を時間フィールドに設定することで<strong>時系列で動くグラフ</strong>として表現できる。</p>
+    <div class="audio"><div class="blabel">🎙 音声補足 ← S05</div>3Dマップでは第3章で学んだ3Dグラフの死角問題が実際に発生する。レイヤーのオプションで<strong>不透明度を下げる</strong>ことで棒グラフを半透明にし、改善できる。</div>
+  </div>
+</section>
+
+<!-- APPENDIX -->
+<div class="appendix">
+  <section class="chapter" id="words">
+    <div class="chapter-hd"><span class="ch-badge">補足A</span><h2>⭐ 最重要ワード一覧</h2></div>
+    <div class="tw"><table>
+      <thead><tr><th>用語</th><th>定義</th><th>重要度</th></tr></thead>
+      <tbody>
+        <tr><td><strong>視覚変数（視覚属性）</strong></td><td>対象や値を表現できる視覚的要素（ドットの形状・線・色など）</td><td>★★★</td></tr>
+        <tr><td><strong>カラーユニバーサルデザイン</strong></td><td>多様な色覚に留意した配色デザイン</td><td>★★★</td></tr>
+        <tr><td><strong>図解表現（チャート化）</strong></td><td>直感的にデータの主張を伝えるための表現方法。厳密さより印象を重視</td><td>★★★</td></tr>
+        <tr><td><strong>BIツール</strong>（Business Intelligence）</td><td>企業データを集約・分析・可視化するツール</td><td>★★☆</td></tr>
+        <tr><td><strong>セルフBI</strong></td><td>ユーザー自身がデータ分析・可視化できるBIツール</td><td>★★☆</td></tr>
+        <tr><td><strong>ダッシュボード</strong></td><td>複数グラフ・表を1画面に集約して可視化する機能</td><td>★★☆</td></tr>
+        <tr><td><strong>投影法（透視投影）</strong></td><td>3Dオブジェクトを2D画面に映す方法。変更するとパイチャートの印象が大きく変わる</td><td>★★☆</td></tr>
+        <tr><td><strong>地図グラフ</strong></td><td>ヒートマップやグラフを地図に重ねてデータを表現する図解表現</td><td>★★☆</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+  <section class="chapter" id="exam">
+    <div class="chapter-hd"><span class="ch-badge">補足C</span><h2>🎯 試験・レポートで重要な観点</h2></div>
+    <ol style="font-size:13.5px;line-height:2.2;">
+      <li>視覚変数7種類を列挙し、グラフでの使用例を説明できる</li>
+      <li>量的データ・順序尺度・名義尺度それぞれに適した（/不適切な）視覚変数を判断できる</li>
+      <li>カラーユニバーサルデザインの3つの対応方法を説明できる</li>
+      <li>図解表現の特徴（高いメッセージ性・シンプル・短時間理解）と使う場面を説明できる</li>
+      <li>各グラフ種別の留意点を1〜2つずつ説明できる（特に：原点なし棒グラフ、縦横比の折れ線グラフ、3Dパイチャートの投影法問題）</li>
+      <li>エンタープライズBIとセルフBIの違いを説明できる</li>
+    </ol>
+  </section>
+</div>
+</main>
+<script>
+const ids=document.querySelectorAll('[id]');
+const links=document.querySelectorAll('#toc a');
+const ob=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){links.forEach(l=>l.classList.remove('active'));const a=document.querySelector('#toc a[href="#'+e.target.id+'"]');if(a)a.classList.add('active');}});},{rootMargin:'-15% 0px -75% 0px'});
+ids.forEach(el=>ob.observe(el));
+</script>
+</body>
+</html>
