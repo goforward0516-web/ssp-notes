@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>データサイエンス入門 第3回 — データの全体像</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f1117;
+  --bg2: #151820;
+  --card: #1a1f2e;
+  --card2: #1e2535;
+  --border: #2a3249;
+  --text: #e2e8f5;
+  --text2: #8a99b8;
+  --accent1: #5b8dee;
+  --accent2: #34d399;
+  --accent3: #fbbf24;
+  --accent4: #f472b6;
+  --tag-audio: #3b82f6;
+  --tag-infer: #8b5cf6;
+  --tag-check: #f59e0b;
+  --tag-ext: #10b981;
+  --tag-undet: #ef4444;
+  --mono: 'JetBrains Mono', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 15px;
+  line-height: 1.8;
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ===== SIDEBAR ===== */
+#sidebar {
+  position: fixed;
+  left: 0; top: 0;
+  width: 260px;
+  height: 100vh;
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  z-index: 100;
+  padding: 0 0 2rem 0;
+}
+
+#sidebar-header {
+  padding: 1.2rem 1rem;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(135deg, #1a2540 0%, #0f1117 100%);
+}
+
+#sidebar-header .subject {
+  font-size: 11px;
+  color: var(--accent1);
+  font-family: var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.3rem;
+}
+
+#sidebar-header .title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.4;
+}
+
+#sidebar nav { padding: 0.8rem 0; }
+
+.nav-chapter {
+  padding: 0.5rem 1rem 0.2rem;
+  font-size: 10px;
+  color: var(--text2);
+  font-family: var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-top: 0.5rem;
+}
+
+.nav-item {
+  display: block;
+  padding: 0.35rem 1rem 0.35rem 1.4rem;
+  font-size: 12.5px;
+  color: var(--text2);
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  transition: all 0.15s;
+  line-height: 1.4;
+}
+
+.nav-item:hover {
+  color: var(--text);
+  background: rgba(91,141,238,0.08);
+  border-left-color: var(--accent1);
+}
+
+.nav-item.active {
+  color: var(--accent1);
+  border-left-color: var(--accent1);
+  background: rgba(91,141,238,0.12);
+}
+
+.nav-sub {
+  padding-left: 2rem;
+  font-size: 11.5px;
+}
+
+/* ===== MAIN ===== */
+#main {
+  margin-left: 260px;
+  flex: 1;
+  max-width: 900px;
+  padding: 2rem 2.5rem 4rem;
+}
+
+/* ===== HEADER ===== */
+.page-header {
+  background: linear-gradient(135deg, #1a2540 0%, #0f1117 100%);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 2rem 2.5rem;
+  margin-bottom: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.page-header::before {
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 180px; height: 180px;
+  background: radial-gradient(circle, rgba(91,141,238,0.15) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.page-header .meta-badge {
+  display: inline-block;
+  background: rgba(91,141,238,0.2);
+  border: 1px solid rgba(91,141,238,0.4);
+  color: var(--accent1);
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 0.2rem 0.7rem;
+  border-radius: 4px;
+  margin-bottom: 0.8rem;
+  letter-spacing: 0.05em;
+}
+
+.page-header h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
+}
+
+.page-header .subtitle {
+  color: var(--text2);
+  font-size: 13px;
+}
+
+.meta-table {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.6rem;
+  margin-top: 1.2rem;
+}
+
+.meta-item {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.5rem 0.8rem;
+}
+
+.meta-item .label {
+  font-size: 10px;
+  color: var(--text2);
+  font-family: var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.meta-item .value {
+  font-size: 12.5px;
+  font-weight: 500;
+  margin-top: 0.1rem;
+}
+
+/* ===== CARDS ===== */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.5rem 1.8rem;
+  margin-bottom: 1.2rem;
+}
+
+.card-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.card-title .chapter-badge {
+  background: var(--accent1);
+  color: #fff;
+  font-size: 10px;
+  font-family: var(--mono);
+  padding: 0.15rem 0.5rem;
+  border-radius: 3px;
+  font-weight: 500;
+}
+
+/* ===== SECTION HEADERS ===== */
+h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  padding: 0.6rem 0 0.6rem 0.8rem;
+  border-left: 4px solid var(--accent1);
+  margin: 2rem 0 1rem;
+  scroll-margin-top: 2rem;
+}
+
+h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--accent2);
+  margin: 1.4rem 0 0.6rem;
+  scroll-margin-top: 2rem;
+}
+
+h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--accent3);
+  margin: 1rem 0 0.4rem;
+}
+
+/* ===== SOURCE BLOCK TYPES ===== */
+.block-audio {
+  border-left: 3px solid var(--tag-audio);
+  background: rgba(59,130,246,0.07);
+  padding: 0.8rem 1rem;
+  border-radius: 0 6px 6px 0;
+  margin: 0.8rem 0;
+}
+
+.block-infer {
+  border-left: 3px solid var(--tag-infer);
+  background: rgba(139,92,246,0.07);
+  padding: 0.8rem 1rem;
+  border-radius: 0 6px 6px 0;
+  margin: 0.8rem 0;
+}
+
+.block-check {
+  border-left: 3px solid var(--tag-check);
+  background: rgba(245,158,11,0.07);
+  padding: 0.8rem 1rem;
+  border-radius: 0 6px 6px 0;
+  margin: 0.8rem 0;
+}
+
+.block-ext {
+  border-left: 3px solid var(--tag-ext);
+  background: rgba(16,185,129,0.07);
+  padding: 0.8rem 1rem;
+  border-radius: 0 6px 6px 0;
+  margin: 0.8rem 0;
+}
+
+.block-def {
+  border-left: 3px solid var(--accent1);
+  background: rgba(91,141,238,0.08);
+  padding: 0.8rem 1rem;
+  border-radius: 0 6px 6px 0;
+  margin: 0.8rem 0;
+}
+
+.block-important {
+  border: 1px solid rgba(251,191,36,0.4);
+  background: rgba(251,191,36,0.06);
+  padding: 0.8rem 1rem;
+  border-radius: 6px;
+  margin: 0.8rem 0;
+}
+
+/* ===== TAGS ===== */
+.tag {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 10px;
+  padding: 0.1rem 0.4rem;
+  border-radius: 3px;
+  margin-right: 0.3rem;
+  font-weight: 500;
+  vertical-align: middle;
+}
+
+.tag-audio { background: rgba(59,130,246,0.25); color: #60a5fa; border: 1px solid rgba(59,130,246,0.3); }
+.tag-ext   { background: rgba(16,185,129,0.2);  color: #34d399; border: 1px solid rgba(16,185,129,0.3); }
+.tag-def   { background: rgba(91,141,238,0.2);  color: #93b4f5; border: 1px solid rgba(91,141,238,0.3); }
+.tag-ex    { background: rgba(251,191,36,0.2);  color: #fbbf24; border: 1px solid rgba(251,191,36,0.3); }
+.tag-check { background: rgba(245,158,11,0.2);  color: #f59e0b; border: 1px solid rgba(245,158,11,0.3); }
+
+/* ===== POINTER BADGE ===== */
+.ptr {
+  font-family: var(--mono);
+  font-size: 10px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--border);
+  color: var(--text2);
+  padding: 0.1rem 0.5rem;
+  border-radius: 3px;
+  margin-left: 0.4rem;
+}
+
+/* ===== TABLES ===== */
+.tbl-wrap { overflow-x: auto; margin: 0.8rem 0; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+
+th {
+  background: rgba(91,141,238,0.15);
+  color: var(--accent1);
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+td {
+  padding: 0.5rem 0.8rem;
+  border-bottom: 1px solid rgba(42,50,73,0.5);
+  vertical-align: top;
+}
+
+tr:hover td { background: rgba(255,255,255,0.02); }
+
+/* ===== FORMULA ===== */
+.formula {
+  background: var(--card2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1rem 1.5rem;
+  margin: 0.8rem 0;
+  font-family: var(--mono);
+  font-size: 14px;
+  text-align: center;
+  color: var(--accent3);
+  overflow-x: auto;
+}
+
+/* ===== FLOW CHART (CSS/div) ===== */
+.flow {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin: 0.8rem 0;
+}
+
+.flow-box {
+  background: var(--card2);
+  border: 1px solid var(--accent1);
+  border-radius: 6px;
+  padding: 0.4rem 0.8rem;
+  font-size: 12.5px;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.flow-arrow {
+  color: var(--text2);
+  font-size: 1.1rem;
+}
+
+/* ===== SVG figures ===== */
+figure {
+  margin: 1rem 0;
+  text-align: center;
+}
+
+figure figcaption {
+  font-size: 11px;
+  color: var(--text2);
+  font-family: var(--mono);
+  margin-top: 0.4rem;
+}
+
+/* ===== SUPPLEMENT CARDS ===== */
+.supp-card {
+  border-radius: 10px;
+  padding: 1.3rem 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.supp-star  { background: rgba(251,191,36,0.08); border: 1px solid rgba(251,191,36,0.25); }
+.supp-book  { background: rgba(91,141,238,0.07); border: 1px solid rgba(91,141,238,0.2); }
+.supp-target{ background: rgba(244,114,182,0.07); border: 1px solid rgba(244,114,182,0.2); }
+.supp-link  { background: rgba(52,211,153,0.07); border: 1px solid rgba(52,211,153,0.2); }
+
+.supp-card h3 {
+  font-size: 0.95rem;
+  margin-bottom: 0.8rem;
+  color: var(--text);
+}
+
+.supp-card table { font-size: 12.5px; }
+
+/* ===== UNCONFIRMED TABLE ===== */
+.undet-card {
+  background: rgba(239,68,68,0.06);
+  border: 1px solid rgba(239,68,68,0.25);
+  border-radius: 8px;
+  padding: 1.2rem 1.5rem;
+  margin-bottom: 1rem;
+}
+
+/* ===== MISC ===== */
+p { margin-bottom: 0.6rem; }
+ul, ol { padding-left: 1.4rem; margin-bottom: 0.6rem; }
+li { margin-bottom: 0.3rem; }
+
+strong { color: var(--accent3); font-weight: 700; }
+em { color: var(--accent2); font-style: normal; }
+code { font-family: var(--mono); font-size: 12px; background: rgba(255,255,255,0.07); padding: 0.1rem 0.4rem; border-radius: 3px; }
+
+hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- ===== SIDEBAR ===== -->
+<aside id="sidebar">
+  <div id="sidebar-header">
+    <div class="subject">データサイエンス入門</div>
+    <div class="title">第3回 データの全体像</div>
+  </div>
+  <nav>
+    <div class="nav-chapter">概要</div>
+    <a class="nav-item" href="#header">授業メタ情報</a>
+    <a class="nav-item" href="#review">第2回 復習問題</a>
+    <a class="nav-item" href="#goal">第3回 学習目標</a>
+
+    <div class="nav-chapter">第1章 度数分布表</div>
+    <a class="nav-item" href="#ch1-intro">事例と概要</a>
+    <a class="nav-item nav-sub" href="#ch1-elements">7つの要素</a>
+    <a class="nav-item nav-sub" href="#ch1-hist">ヒストグラム</a>
+    <a class="nav-item nav-sub" href="#ch1-summary">第1章まとめ</a>
+
+    <div class="nav-chapter">第2章 代表値</div>
+    <a class="nav-item" href="#ch2-intro">代表値の必要性</a>
+    <a class="nav-item nav-sub" href="#ch2-mean">算術平均</a>
+    <a class="nav-item nav-sub" href="#ch2-median">メジアン</a>
+    <a class="nav-item nav-sub" href="#ch2-mode">モード</a>
+    <a class="nav-item nav-sub" href="#ch2-relation">3値の関係</a>
+
+    <div class="nav-chapter">第3章 ばらつき</div>
+    <a class="nav-item" href="#ch3-intro">ばらつきの必要性</a>
+    <a class="nav-item nav-sub" href="#ch3-hensa">偏差・平均偏差</a>
+    <a class="nav-item nav-sub" href="#ch3-bunsan">分散</a>
+    <a class="nav-item nav-sub" href="#ch3-std">標準偏差</a>
+    <a class="nav-item nav-sub" href="#ch3-excel">VAR.P / VAR.S</a>
+
+    <div class="nav-chapter">第4章 要約事例</div>
+    <a class="nav-item" href="#ch4-eda">探索的データ分析</a>
+    <a class="nav-item nav-sub" href="#ch4-pivot">ピボットテーブル事例</a>
+
+    <div class="nav-chapter">補足</div>
+    <a class="nav-item" href="#supp-a">⭐ 重要ワード一覧</a>
+    <a class="nav-item" href="#supp-b">📚 背景知識</a>
+    <a class="nav-item" href="#supp-c">🎯 試験重要観点</a>
+    <a class="nav-item" href="#supp-d">🔗 関連・次回接続</a>
+    <a class="nav-item" href="#undet">❓ 未確定事項</a>
+  </nav>
+</aside>
+
+<!-- ===== MAIN ===== -->
+<main id="main">
+
+<!-- HEADER -->
+<div class="page-header" id="header">
+  <div class="meta-badge">SSP NOTE — datasci_03</div>
+  <h1>データの全体像</h1>
+  <div class="subtitle">データサイエンス入門 第3回</div>
+  <div class="meta-table">
+    <div class="meta-item"><div class="label">科目</div><div class="value">データサイエンス入門</div></div>
+    <div class="meta-item"><div class="label">担当教員</div><div class="value">浅田 麻菜</div></div>
+    <div class="meta-item"><div class="label">第N回</div><div class="value">第3回</div></div>
+    <div class="meta-item"><div class="label">S03</div><div class="value">スライドPDF（71p）</div></div>
+    <div class="meta-item"><div class="label">S05</div><div class="value">hynote.ai文字起こし</div></div>
+    <div class="meta-item"><div class="label">QC状態</div><div class="value" style="color:var(--accent3)">未実施</div></div>
+  </div>
+</div>
+
+<!-- REVIEW -->
+<section id="review">
+<h2>第2回 復習問題</h2>
+<div class="card">
+  <p>次のデータは、<strong>比例尺度・間隔尺度・順序尺度・名義尺度</strong>のどれに分類されるか？ <span class="ptr">← S03:p.2-3</span></p>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>データ</th><th>分類</th></tr></thead>
+    <tbody>
+      <tr><td>① 学籍番号</td><td><strong>名義尺度</strong></td></tr>
+      <tr><td>② 期末試験の点数</td><td><strong>比例尺度</strong></td></tr>
+      <tr><td>③ 成績評価（1〜5の5段階）</td><td><strong>順序尺度</strong></td></tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+</section>
+
+<!-- GOAL -->
+<section id="goal">
+<h2>第3回 学習目標</h2>
+<div class="card">
+  <p><span class="ptr">← S03:p.4-5</span></p>
+  <ol>
+    <li><strong>1種類のデータ</strong>に対し、統計量を用いてデータの全体像を把握できる</li>
+    <li>データの全体像の確認事例から、データの<strong>要約作業</strong>を体感する</li>
+  </ol>
+  <div class="block-audio" style="margin-top:0.8rem">
+    <span class="tag tag-audio">S05</span> 第3回は「探索的データ分析」に位置づけられており、第1〜3章で学んだ手法を使って第4章で実際の分析事例を体感する構成になっている。<span class="ptr">← S05:L007</span>
+  </div>
+  <div style="margin-top:1rem">
+    <div class="flow">
+      <div class="flow-box">第1章<br><small>度数分布表</small></div>
+      <div class="flow-arrow">▶</div>
+      <div class="flow-box">第2章<br><small>データの代表値</small></div>
+      <div class="flow-arrow">＋</div>
+      <div class="flow-box">第3章<br><small>データのばらつき</small></div>
+      <div class="flow-arrow">▶</div>
+      <div class="flow-box" style="border-color:var(--accent3); color:var(--accent3)">第4章<br><small>データの要約事例</small></div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- CH1 INTRO -->
+<h2 id="ch1-intro"><span style="color:var(--accent1)">第1章</span> 度数分布表</h2>
+
+<div class="card">
+  <div class="card-title"><span class="chapter-badge">CH1</span> 度数分布表とは</div>
+  <p><strong>事例:</strong> ゲームアプリの満足度調査（第2回の続き） <span class="ptr">← S03:p.8</span></p>
+  <p>第2回で設計した調査では、層別抽出法で各年代の割合を母集団から算出し、合計50人を対象にアンケートを実施した。</p>
+
+  <div class="block-audio">
+    <span class="tag tag-audio">S05</span> <strong>比例配分法:</strong> 特に前回は説明しなかったが、母集団の各層の比率に応じて調査対象数を決める方法を層別抽出法の中でも特に<strong>比例配分法</strong>と呼ぶ。<span class="ptr">← S05:L010</span>
+  </div>
+
+  <div class="block-ext">
+    <span class="tag tag-ext">外部補足</span> 層別抽出法とは、母集団をあらかじめいくつかの層（グループ）に分けてから各層から標本を抽出する方法。代表性の高いサンプルが得られる利点がある。
+  </div>
+
+  <p>アンケート結果として50人分の年齢データが得られた。生データの状態（羅列）では概要が把握しにくく、これを要約して見やすくするのが度数分布表の役割。 <span class="ptr">← S03:p.9</span></p>
+
+  <div class="block-def">
+    <span class="tag tag-def">生データ（50人分）</span> <span class="ptr">← S03:p.9</span><br>
+    <code style="font-size:12px; display:block; margin-top:0.4rem; line-height:1.7">
+18, 32, 24, 21, 19, 45, 22, 21, 20, 22,<br>
+33, 27, 35, 23, 51, 42, 20, 19, 24, 35,<br>
+27, 26, 18, 29, 28, 33, 18, 21, 23, 31,<br>
+16, 32, 46, 19, 31, 32, 50, 41, 30, 42,<br>
+21, 31, 50, 51, 35, 37, 15, 36, 33, 51
+    </code>
+  </div>
+</div>
+
+<!-- CH1 ELEMENTS -->
+<div class="card" id="ch1-elements">
+  <div class="card-title"><span class="chapter-badge">CH1</span> 度数分布表の7要素</div>
+
+  <h4>① 階級と度数</h4>
+  <div class="block-def">
+    <span class="tag tag-def">定義</span> <strong>階級</strong>: データが取りうる値に対し、一定の幅ごとに区切ったグループ <span class="ptr">← S03:p.10</span>
+  </div>
+  <div class="block-def">
+    <span class="tag tag-def">定義</span> <strong>度数</strong>: それぞれの階級に当てはまるデータの個数 <span class="ptr">← S03:p.10</span>
+  </div>
+
+  <div class="block-audio">
+    <span class="tag tag-audio">S05</span> 「10歳以上20歳未満」という表記は「××以上、〇〇未満」という書き方が正式。表ではよく「10歳〜20歳」と略記される。<span class="ptr">← S05:L014</span>
+  </div>
+
+  <h4>② 階級幅と階級値</h4>
+  <div class="block-def">
+    <span class="tag tag-def">定義</span> <strong>階級幅</strong>: 1つの階級に含まれるデータの範囲 <span class="ptr">← S03:p.11</span>
+  </div>
+  <div class="block-def">
+    <span class="tag tag-def">定義</span> <strong>階級値</strong>: 階級を代表する値。一般に階級の中央の値（上限値 + 下限値）÷ 2 <span class="ptr">← S03:p.11</span>
+  </div>
+  <div class="block-audio">
+    <span class="tag tag-ex">例</span> 10歳〜20歳の場合: 階級幅 = 20 - 10 = <strong>10歳</strong>、階級値 = (20 + 10) ÷ 2 = <strong>15歳</strong> <span class="ptr">← S05:L018-L019</span>
+  </div>
+
+  <h4>③ 累積度数</h4>
+  <div class="block-def">
+    <span class="tag tag-def">定義</span> <strong>累積度数</strong>: 度数を最小の階級から順に足し合わせていった値 <span class="ptr">← S03:p.13</span>
+  </div>
+  <div class="block-audio">
+    <span class="tag tag-audio">S05</span> 「下の階級」とは表の下の行ではなく、値が最も小さい階級のこと。<span class="ptr">← S05:L021</span>
+  </div>
+
+  <h4>④ 相対度数</h4>
+  <div class="block-def">
+    <span class="tag tag-def">定義</span> <strong>相対度数</strong>: 各階級に属する度数を、度数の合計（全データ数）で割った割合 <span class="ptr">← S03:p.15</span>
+  </div>
+  <div class="formula">相対度数 = 度数 ÷ 全データ数　例：17 ÷ 50 = 0.34</div>
+
+  <h4>⑤ 累積相対度数</h4>
+  <div class="block-def">
+    <span class="tag tag-def">定義</span> <strong>累積相対度数</strong>: 最小の階級から特定の階級までの相対度数の合計 <span class="ptr">← S03:p.16</span>
+  </div>
+
+  <!-- COMPLETE TABLE -->
+  <h4 style="margin-top:1rem">完成した度数分布表</h4>
+  <p style="font-size:12px; color:var(--text2)">度数分布表には「階級値」「度数」「累積度数」「相対度数」「累積相対度数」を記載するのが一般的 <span class="ptr">← S03:p.18</span></p>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>階級</th><th>階級値</th><th>度数</th><th>累積度数</th><th>相対度数</th><th>累積相対度数</th></tr></thead>
+    <tbody>
+      <tr><td>10歳〜20歳</td><td>15</td><td>8</td><td>8</td><td>0.16</td><td>0.16</td></tr>
+      <tr><td>20歳〜30歳</td><td>25</td><td>17</td><td>25</td><td>0.34</td><td>0.50</td></tr>
+      <tr><td>30歳〜40歳</td><td>35</td><td>15</td><td>40</td><td>0.30</td><td>0.80</td></tr>
+      <tr><td>40歳〜50歳</td><td>45</td><td>5</td><td>45</td><td>0.10</td><td>0.90</td></tr>
+      <tr><td>50歳〜60歳</td><td>55</td><td>5</td><td>50</td><td>0.10</td><td>1.00</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="block-important">
+    <span class="tag tag-check">重要</span> 累積相対度数が0.80 → <strong>アンケート回答者の8割は40歳未満</strong>であることが一目でわかる。<span class="ptr">← S03:p.17</span>
+  </div>
+
+  <!-- SVG FIGURE: 度数分布表の構造 -->
+  <figure style="margin-top:1.2rem">
+    <svg viewBox="0 0 700 120" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;background:#1e2535;border-radius:8px;border:1px solid #2a3249">
+      <!-- 7 boxes -->
+      <g font-family="Noto Sans JP, sans-serif" font-size="11" fill="#e2e8f5">
+        <!-- box1: 階級 -->
+        <rect x="10" y="35" width="90" height="50" rx="5" fill="#22304a" stroke="#5b8dee" stroke-width="1.5"/>
+        <text x="55" y="57" text-anchor="middle" fill="#93b4f5" font-weight="700">階級</text>
+        <text x="55" y="72" text-anchor="middle" fill="#8a99b8" font-size="9">10〜20歳…</text>
+        <!-- box2: 階級幅 -->
+        <rect x="115" y="35" width="90" height="50" rx="5" fill="#22304a" stroke="#5b8dee" stroke-width="1"/>
+        <text x="160" y="57" text-anchor="middle" fill="#93b4f5">階級幅</text>
+        <text x="160" y="72" text-anchor="middle" fill="#8a99b8" font-size="9">10歳</text>
+        <!-- box3: 階級値 -->
+        <rect x="220" y="35" width="90" height="50" rx="5" fill="#22304a" stroke="#5b8dee" stroke-width="1"/>
+        <text x="265" y="57" text-anchor="middle" fill="#93b4f5">階級値</text>
+        <text x="265" y="72" text-anchor="middle" fill="#8a99b8" font-size="9">15, 25, 35…</text>
+        <!-- box4: 度数 -->
+        <rect x="325" y="35" width="80" height="50" rx="5" fill="#22304a" stroke="#34d399" stroke-width="1.5"/>
+        <text x="365" y="57" text-anchor="middle" fill="#34d399" font-weight="700">度数</text>
+        <text x="365" y="72" text-anchor="middle" fill="#8a99b8" font-size="9">8, 17, 15…</text>
+        <!-- box5: 累積度数 -->
+        <rect x="420" y="10" width="90" height="50" rx="5" fill="#22304a" stroke="#34d399" stroke-width="1"/>
+        <text x="465" y="32" text-anchor="middle" fill="#34d399">累積度数</text>
+        <text x="465" y="47" text-anchor="middle" fill="#8a99b8" font-size="9">8, 25, 40…</text>
+        <!-- box6: 相対度数 -->
+        <rect x="420" y="70" width="90" height="50" rx="5" fill="#22304a" stroke="#fbbf24" stroke-width="1"/>
+        <text x="465" y="92" text-anchor="middle" fill="#fbbf24">相対度数</text>
+        <text x="465" y="107" text-anchor="middle" fill="#8a99b8" font-size="9">0.16, 0.34…</text>
+        <!-- box7: 累積相対度数 -->
+        <rect x="525" y="35" width="100" height="50" rx="5" fill="#22304a" stroke="#fbbf24" stroke-width="1.5"/>
+        <text x="575" y="57" text-anchor="middle" fill="#fbbf24" font-weight="700">累積相対</text>
+        <text x="575" y="72" text-anchor="middle" fill="#fbbf24">度数</text>
+        <!-- arrows -->
+        <line x1="405" y1="60" x2="418" y2="37" stroke="#2a3249" stroke-width="1.5" marker-end="url(#arr)"/>
+        <line x1="405" y1="60" x2="418" y2="83" stroke="#2a3249" stroke-width="1.5" marker-end="url(#arr)"/>
+        <line x1="510" y1="35" x2="523" y2="45" stroke="#2a3249" stroke-width="1.5" marker-end="url(#arr)"/>
+        <line x1="510" y1="95" x2="523" y2="75" stroke="#2a3249" stroke-width="1.5" marker-end="url(#arr)"/>
+        <defs><marker id="arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 z" fill="#5b8dee"/></marker></defs>
+      </g>
+    </svg>
+    <figcaption>図：度数分布表の7要素の関係 <span class="ptr">S03:p.10-18</span></figcaption>
+  </figure>
+</div>
+
+<!-- CH1 HISTOGRAM -->
+<div class="card" id="ch1-hist">
+  <div class="card-title"><span class="chapter-badge">CH1</span> ヒストグラム</div>
+
+  <div class="block-def">
+    <span class="tag tag-def">定義</span> <strong>ヒストグラム</strong>: 度数を棒の高さで表現することで、視覚的にデータを説明できる可視化方法の一つ <span class="ptr">← S03:p.19</span>
+  </div>
+
+  <div class="block-audio">
+    <span class="tag tag-audio">S05</span> <strong>ビン（bin）</strong>: ヒストグラムの各棒のこと。Excelなどでヒストグラムを作成するとビンの数を指定する表示が出てくる。ぜひ覚えておくこと。<span class="ptr">← S05:L034</span>
+  </div>
+
+  <!-- SVG histogram -->
+  <figure>
+    <svg viewBox="0 0 480 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:480px;background:#1e2535;border-radius:8px;border:1px solid #2a3249">
+      <g font-family="Noto Sans JP, sans-serif" font-size="11" fill="#e2e8f5">
+        <!-- axes -->
+        <line x1="50" y1="180" x2="440" y2="180" stroke="#2a3249" stroke-width="1.5"/>
+        <line x1="50" y1="20" x2="50" y2="185" stroke="#2a3249" stroke-width="1.5"/>
+        <!-- y labels -->
+        <text x="40" y="183" text-anchor="end" fill="#8a99b8" font-size="10">0</text>
+        <text x="40" y="155" text-anchor="end" fill="#8a99b8" font-size="10">5</text>
+        <text x="40" y="127" text-anchor="end" fill="#8a99b8" font-size="10">10</text>
+        <text x="40" y="99" text-anchor="end" fill="#8a99b8" font-size="10">15</text>
+        <text x="40" y="71" text-anchor="end" fill="#8a99b8" font-size="10">17</text>
+        <line x1="48" y1="67" x2="52" y2="67" stroke="#8a99b8" stroke-width="1"/>
+        <line x1="48" y1="95" x2="52" y2="95" stroke="#8a99b8" stroke-width="1"/>
+        <!-- bars: 8, 17, 15, 5, 5 -->
+        <!-- scale: max=17 → height ~110px. 1 unit = 110/17 ≈ 6.47px -->
+        <!-- bar 10-20: 8 → height 51.8 -->
+        <rect x="60" y="128" width="68" height="52" rx="2" fill="#5b8dee" opacity="0.8"/>
+        <text x="94" y="125" text-anchor="middle" fill="#e2e8f5" font-size="11" font-weight="700">8</text>
+        <!-- bar 20-30: 17 → height 110 -->
+        <rect x="137" y="70" width="68" height="110" rx="2" fill="#5b8dee"/>
+        <text x="171" y="67" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="700">17</text>
+        <!-- bar 30-40: 15 → height 97 -->
+        <rect x="214" y="83" width="68" height="97" rx="2" fill="#5b8dee" opacity="0.9"/>
+        <text x="248" y="80" text-anchor="middle" fill="#e2e8f5" font-size="11" font-weight="700">15</text>
+        <!-- bar 40-50: 5 → height 32 -->
+        <rect x="291" y="148" width="68" height="32" rx="2" fill="#5b8dee" opacity="0.7"/>
+        <text x="325" y="145" text-anchor="middle" fill="#e2e8f5" font-size="11" font-weight="700">5</text>
+        <!-- bar 50-60: 5 → height 32 -->
+        <rect x="368" y="148" width="68" height="32" rx="2" fill="#5b8dee" opacity="0.7"/>
+        <text x="402" y="145" text-anchor="middle" fill="#e2e8f5" font-size="11" font-weight="700">5</text>
+        <!-- x labels -->
+        <text x="94" y="195" text-anchor="middle" fill="#8a99b8" font-size="10">10〜20</text>
+        <text x="171" y="195" text-anchor="middle" fill="#8a99b8" font-size="10">20〜30</text>
+        <text x="248" y="195" text-anchor="middle" fill="#8a99b8" font-size="10">30〜40</text>
+        <text x="325" y="195" text-anchor="middle" fill="#8a99b8" font-size="10">40〜50</text>
+        <text x="402" y="195" text-anchor="middle" fill="#8a99b8" font-size="10">50〜60</text>
+        <!-- axis labels -->
+        <text x="245" y="214" text-anchor="middle" fill="#8a99b8" font-size="10">年齢（歳）</text>
+        <text x="14" y="100" text-anchor="middle" fill="#8a99b8" font-size="10" transform="rotate(-90,14,100)">度数（人）</text>
+        <!-- "ビン" label -->
+        <rect x="215" y="83" width="4" height="97" fill="none"/>
+        <line x1="283" y1="130" x2="310" y2="105" stroke="#f472b6" stroke-width="1" stroke-dasharray="3,2"/>
+        <text x="312" y="104" fill="#f472b6" font-size="10">ビン</text>
+      </g>
+    </svg>
+    <figcaption>図：年齢データのヒストグラム（縦軸: 度数） <span class="ptr">S03:p.19</span></figcaption>
+  </figure>
+
+  <p>縦軸を度数から相対度数に変えてもグラフの形は同じ。<strong>相対度数で表現する方が一瞬でわかるグラフになるのでおすすめ。</strong> <span class="ptr">← S03:p.20, S05:L036</span></p>
+
+  <h4>ヒストグラムの特徴</h4>
+  <p><span class="ptr">← S03:p.21, S05:L038-L039</span></p>
+  <ul>
+    <li><strong>階級幅が一定でない場合も表現できる</strong>（例: 100万円刻みと200万円刻みが混在する家計調査のヒストグラム）</li>
+    <li><strong>上限値が定まらない場合も表現できる</strong>（例: 「4000万円以上」という上限なしの階級）</li>
+  </ul>
+
+  <h4>ヒストグラムの注意点：離散値 vs 連続値</h4>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>データの種類</th><th>ビン間の空白</th><th>例</th></tr></thead>
+    <tbody>
+      <tr><td><strong>離散値</strong></td><td>空白を入れる</td><td>人数、5段階評価</td></tr>
+      <tr><td><strong>連続値</strong></td><td>空白を入れない</td><td>お金、速度、時間</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="block-audio">
+    <span class="tag tag-audio">S05</span> 同じ「1, 2, 3, 4, 5」というデータでも、作成者が離散値として扱うか連続値として扱うかは判断による部分もある。自分でヒストグラムを作るときは、扱うデータの性質を考えてビン間の空白の有無を判断すること。<span class="ptr">← S05:L041</span>
+  </div>
+</div>
+
+<div class="card" id="ch1-summary" style="background:rgba(91,141,238,0.05)">
+  <strong>第1章まとめ</strong> <span class="ptr">← S03:p.23</span>
+  <ul style="margin-top:0.5rem">
+    <li>度数分布表を構成する7要素: <strong>階級、階級幅、階級値、度数、累積度数、相対度数、累積相対度数</strong></li>
+    <li>ヒストグラム: 階級幅が一定の場合・一定でない場合の表現方法、離散値・連続値での書き分け</li>
+  </ul>
+</div>
+
+<!-- CH2 -->
+<h2 id="ch2-intro"><span style="color:var(--accent2)">第2章</span> データの代表値</h2>
+
+<div class="card">
+  <p>ヒストグラムは視覚的に優れているが、人の視覚能力に依存するため人によって捉え方が異なる可能性がある。そこでデータを<strong>数字で</strong>表現することで、さらに的確にデータの概要を伝えることができる。 <span class="ptr">← S03:p.27, S05:L043</span></p>
+
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>代表値</th><th>別名</th><th>特徴</th></tr></thead>
+    <tbody>
+      <tr><td><strong>算術平均</strong></td><td>相加平均</td><td>重心の意味。外れ値に弱い</td></tr>
+      <tr><td><strong>メジアン</strong></td><td>中位数・中央値</td><td>外れ値の影響を受けにくい</td></tr>
+      <tr><td><strong>モード</strong></td><td>最頻値</td><td>度数が最多の階級値。外れ値を考慮しない</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="block-ext">
+    <span class="tag tag-ext">外部補足</span> このほかにも幾何平均（掛け算に基づく平均）、調和平均（逆数の平均の逆数）、加重平均（重みを付けた平均）などがある。本授業では算術平均のみ扱う。
+  </div>
+</div>
+
+<!-- MEAN -->
+<div class="card" id="ch2-mean">
+  <div class="card-title"><span class="chapter-badge">CH2</span> 算術平均（相加平均）</div>
+
+  <div class="block-def">
+    <span class="tag tag-def">定義</span> <strong>算術平均（相加平均）</strong>: N個のデータの総和をNで割った値 <span class="ptr">← S03:p.29</span>
+  </div>
+  <div class="formula">x̄ = (x₁ + x₂ + ⋯ + xₙ) ÷ N</div>
+
+  <div class="block-audio">
+    <span class="tag tag-audio">S05</span> 「相加（そうか）」の「加」は「加えていく」の意味。次々とデータを加えていくことで求める平均であることを表す。「相」は「相続」の「相」と同じく「次々と」の意味。<span class="ptr">← S05:L046</span>
+  </div>
+
+  <h4>生データからの計算</h4>
+  <div class="formula">x̄ = (18 + 32 + 24 + ⋯ + 33 + 51) ÷ 50 = <strong>30.12（歳）</strong></div>
+  <p><span class="ptr">← S03:p.30</span></p>
+
+  <h4>度数分布表からの概算</h4>
+  <p>各階級の「階級値 × 度数」を全階級分合計し、データ数で割る。 <span class="ptr">← S03:p.31</span></p>
+  <div class="formula">x̄ = (15×8 + 25×17 + 35×15 + 45×5 + 55×5) ÷ 50 = <strong>31.4（歳）</strong></div>
+  <p>→ 生データの平均30.12歳に近い値が得られる。<strong>度数分布表のみからでも平均の概算が可能。</strong> <span class="ptr">← S05:L050</span></p>
+
+  <h4>算術平均の意味：重心</h4>
+  <div class="block-audio">
+    <span class="tag tag-audio">S05</span> 5個のデータ（15, 20, 24, 51, 55）の平均 = 33。数直線上に重さ1の重りを各データの位置に載せると、33の位置で左右のバランスが釣り合う（重心）。算術平均は<strong>重心</strong>の意味を持つ。<span class="ptr">← S05:L051</span>
+  </div>
+
+  <!-- SVG numberline -->
+  <figure>
+    <svg viewBox="0 0 500 80" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:500px;background:#1e2535;border-radius:8px;border:1px solid #2a3249">
+      <g font-family="Noto Sans JP, sans-serif">
+        <!-- numberline -->
+        <line x1="30" y1="50" x2="480" y2="50" stroke="#2a3249" stroke-width="2"/>
+        <!-- scale: 10-60 → 30-480 (range 50=450px → 1unit=9px, offset: x=30-10*9=30-90=-60 → x=val*9-60 -->
+        <!-- 15→75, 20→120, 24→156, 33→237, 51→399, 55→435 -->
+        <circle cx="75"  cy="50" r="7" fill="#5b8dee"/>
+        <circle cx="120" cy="50" r="7" fill="#5b8dee"/>
+        <circle cx="156" cy="50" r="7" fill="#5b8dee"/>
+        <circle cx="399" cy="50" r="7" fill="#5b8dee"/>
+        <circle cx="435" cy="50" r="7" fill="#5b8dee"/>
+        <!-- mean line -->
+        <line x1="237" y1="20" x2="237" y2="58" stroke="#fbbf24" stroke-width="2"/>
+        <polygon points="232,58 242,58 237,66" fill="#fbbf24"/>
+        <!-- labels -->
+        <text x="75"  y="30" text-anchor="middle" fill="#8a99b8" font-size="10">15</text>
+        <text x="120" y="30" text-anchor="middle" fill="#8a99b8" font-size="10">20</text>
+        <text x="156" y="30" text-anchor="middle" fill="#8a99b8" font-size="10">24</text>
+        <text x="399" y="30" text-anchor="middle" fill="#8a99b8" font-size="10">51</text>
+        <text x="435" y="30" text-anchor="middle" fill="#8a99b8" font-size="10">55</text>
+        <text x="237" y="16" text-anchor="middle" fill="#fbbf24" font-size="10" font-weight="700">重心: 33</text>
+        <!-- axis labels -->
+        <text x="30"  y="64" fill="#8a99b8" font-size="9">10</text>
+        <text x="390" y="64" fill="#8a99b8" font-size="9">50</text>
+      </g>
+    </svg>
+    <figcaption>図：算術平均は重心の意味を持つ <span class="ptr">S03:p.32</span></figcaption>
+  </figure>
+
+  <h4>平均の問題点</h4>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>問題の種類</th><th>説明</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>① 複数データを組み合わせた場合</td>
+        <td>年齢とプレイ時間など複数の変数を組み合わせると、全ての変数が同時に平均になる対象は存在しない場合がある（平均値の周辺にデータが存在しない）。<span class="ptr">← S03:p.34</span></td>
+      </tr>
+      <tr>
+        <td>② 外れ値が存在する場合</td>
+        <td>2021年所得金額の例: 視覚的には100〜400万円の人が多いが、平均所得金額は<strong>564.3万円</strong>（中央値440万円）。2000万円以上の外れ値が平均を押し上げている。<strong>平均は外れ値に弱い。</strong><span class="ptr">← S03:p.35</span></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<!-- MEDIAN -->
+<div class="card" id="ch2-median">
+  <div class="card-title"><span class="chapter-badge">CH2</span> メジアン（中位数・中央値）</div>
+
+  <div class="block-def">
+    <span class="tag tag-def">定義</span> <strong>メジアン</strong>: データを昇順（降順）に並び替えたときに中央にくる値 <span class="ptr">← S03:p.36</span>
+  </div>
+
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>データ数</th><th>計算方法</th></tr></thead>
+    <tbody>
+      <tr><td><strong>奇数個</strong></td><td>データの中央の値（例: 3個なら2番目）</td></tr>
+      <tr><td><strong>偶数個</strong></td><td>データの中央の2値の平均値（例: 50個なら25番目と26番目の平均）</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h4>生データからの計算</h4>
+  <p>データ数50個（偶数）→ 25番目（29）と26番目（30）の平均 <span class="ptr">← S03:p.37, S05:L058</span></p>
+  <div class="formula">メジアン = (29 + 30) ÷ 2 = <strong>29.5（歳）</strong></div>
+
+  <div class="block-important">
+    <span class="tag tag-check">重要</span> 所得金額の例: 平均564.3万円 vs 中央値<strong>440万円</strong>。ボリュームゾーン（100〜400万円）に近い中央値の方が実態を反映している。<strong>メジアンは外れ値の影響を受けにくい。</strong><span class="ptr">← S03:p.38, S05:L060</span>
+  </div>
+
+  <h4>度数分布表からの概算</h4>
+  <p>データ数が偶数の場合、25番目と26番目が属する階級の階級値の平均を求める。 <span class="ptr">← S03:p.39-40</span></p>
+  <ul>
+    <li>25番目 → 累積度数25の「20歳〜30歳」に属する → 階級値 <strong>25</strong></li>
+    <li>26番目 → 「30歳〜40歳」に属する → 階級値 <strong>35</strong></li>
+  </ul>
+  <div class="formula">メジアン ≈ (25 + 35) ÷ 2 = <strong>30（歳）</strong>　※生データのメジアン29.5歳に近い</div>
+  <p><strong>度数分布表のみからでもメジアンの概算が可能。</strong></p>
+</div>
+
+<!-- MODE -->
+<div class="card" id="ch2-mode">
+  <div class="card-title"><span class="chapter-badge">CH2</span> モード（最頻値）</div>
+
+  <div class="block-def">
+    <span class="tag tag-def">定義</span> <strong>モード</strong>: 度数が最も多い階級の階級値（最頻値） <span class="ptr">← S03:p.41</span>
+  </div>
+
+  <p>外れ値を考慮しないため、外れ値の影響がない。</p>
+  <div class="block-audio">
+    <span class="tag tag-ex">例</span> 度数が最も多いのは「20歳〜30歳」（度数17） → 階級値 <strong>25</strong> がモード。<span class="ptr">← S05:L065</span>
+  </div>
+
+  <h4>モードが不適切な場合</h4>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>状況</th><th>問題</th></tr></thead>
+    <tbody>
+      <tr><td>全階級の度数が均一</td><td>モードが存在しない</td></tr>
+      <tr><td>ヒストグラムが多峰（山が複数）</td><td>1つのモードでデータ全体を表現できない</td></tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<!-- 3 VALUES RELATION -->
+<div class="card" id="ch2-relation">
+  <div class="card-title"><span class="chapter-badge">CH2</span> 算術平均・メジアン・モードの関係</div>
+  <p>3つの値の大小関係からヒストグラムの概形がわかる。 <span class="ptr">← S03:p.43, S05:L067</span></p>
+
+  <!-- SVG: 3 histograms -->
+  <figure>
+    <svg viewBox="0 0 660 160" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:660px;background:#1e2535;border-radius:8px;border:1px solid #2a3249">
+      <g font-family="Noto Sans JP, sans-serif">
+        <!-- Chart 1: Symmetric -->
+        <g transform="translate(10,10)">
+          <text x="100" y="14" text-anchor="middle" fill="#34d399" font-size="11" font-weight="700">平均=メジアン≈モード</text>
+          <line x1="10" y1="140" x2="190" y2="140" stroke="#2a3249" stroke-width="1"/>
+          <rect x="15"  y="120" width="24" height="20" fill="#5b8dee" opacity="0.6"/>
+          <rect x="43"  y="95"  width="24" height="45" fill="#5b8dee" opacity="0.7"/>
+          <rect x="71"  y="70"  width="24" height="70" fill="#5b8dee"/>
+          <rect x="99"  y="90"  width="24" height="50" fill="#5b8dee" opacity="0.8"/>
+          <rect x="127" y="110" width="24" height="30" fill="#5b8dee" opacity="0.6"/>
+          <rect x="155" y="125" width="24" height="15" fill="#5b8dee" opacity="0.5"/>
+          <line x1="83" y1="55" x2="83" y2="140" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="3,2"/>
+          <text x="83" y="50" text-anchor="middle" fill="#fbbf24" font-size="9">↑中央</text>
+        </g>
+        <!-- Chart 2: Right skew (平均>メジアン>モード) -->
+        <g transform="translate(230,10)">
+          <text x="100" y="14" text-anchor="middle" fill="#f472b6" font-size="11" font-weight="700">平均 &gt; メジアン &gt; モード</text>
+          <line x1="10" y1="140" x2="190" y2="140" stroke="#2a3249" stroke-width="1"/>
+          <rect x="15"  y="60"  width="24" height="80" fill="#5b8dee"/>
+          <rect x="43"  y="80"  width="24" height="60" fill="#5b8dee" opacity="0.85"/>
+          <rect x="71"  y="100" width="24" height="40" fill="#5b8dee" opacity="0.7"/>
+          <rect x="99"  y="115" width="24" height="25" fill="#5b8dee" opacity="0.6"/>
+          <rect x="127" y="125" width="24" height="15" fill="#5b8dee" opacity="0.5"/>
+          <rect x="155" y="130" width="24" height="10" fill="#5b8dee" opacity="0.4"/>
+          <line x1="27"  y1="45" x2="27"  y2="140" stroke="#34d399" stroke-width="1.5" stroke-dasharray="3,2"/>
+          <line x1="65"  y1="45" x2="65"  y2="140" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="3,2"/>
+          <line x1="95"  y1="45" x2="95"  y2="140" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="3,2"/>
+          <text x="27"  y="42" text-anchor="middle" fill="#34d399" font-size="8">モード</text>
+          <text x="65"  y="42" text-anchor="middle" fill="#fbbf24" font-size="8">中央値</text>
+          <text x="95"  y="42" text-anchor="middle" fill="#ef4444" font-size="8">平均</text>
+          <text x="95"  y="28" text-anchor="middle" fill="#8a99b8" font-size="8">右裾が長い</text>
+        </g>
+        <!-- Chart 3: Left skew (平均<メジアン<モード) -->
+        <g transform="translate(450,10)">
+          <text x="100" y="14" text-anchor="middle" fill="#f59e0b" font-size="11" font-weight="700">平均 &lt; メジアン &lt; モード</text>
+          <line x1="10" y1="140" x2="190" y2="140" stroke="#2a3249" stroke-width="1"/>
+          <rect x="15"  y="130" width="24" height="10" fill="#5b8dee" opacity="0.4"/>
+          <rect x="43"  y="125" width="24" height="15" fill="#5b8dee" opacity="0.5"/>
+          <rect x="71"  y="115" width="24" height="25" fill="#5b8dee" opacity="0.6"/>
+          <rect x="99"  y="100" width="24" height="40" fill="#5b8dee" opacity="0.7"/>
+          <rect x="127" y="80"  width="24" height="60" fill="#5b8dee" opacity="0.85"/>
+          <rect x="155" y="60"  width="24" height="80" fill="#5b8dee"/>
+          <line x1="27"  y1="45" x2="27"  y2="140" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="3,2"/>
+          <line x1="105" y1="45" x2="105" y2="140" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="3,2"/>
+          <line x1="167" y1="45" x2="167" y2="140" stroke="#34d399" stroke-width="1.5" stroke-dasharray="3,2"/>
+          <text x="27"  y="42" text-anchor="middle" fill="#ef4444" font-size="8">平均</text>
+          <text x="105" y="42" text-anchor="middle" fill="#fbbf24" font-size="8">中央値</text>
+          <text x="167" y="42" text-anchor="middle" fill="#34d399" font-size="8">モード</text>
+          <text x="95"  y="28" text-anchor="middle" fill="#8a99b8" font-size="8">左裾が長い</text>
+        </g>
+      </g>
+    </svg>
+    <figcaption>図：平均・メジアン・モードの大小関係とヒストグラムの概形 <span class="ptr">S03:p.43</span></figcaption>
+  </figure>
+
+  <div class="block-ext">
+    <span class="tag tag-ext">外部補足</span> 右裾が長い（右に外れ値がある）分布を「右に歪んだ（右歪）分布」という。所得分布などに多い。このとき平均が最も大きく、モードが最も小さくなる。
+  </div>
+</div>
+
+<!-- CH3 -->
+<h2 id="ch3-intro"><span style="color:var(--accent3)">第3章</span> データのばらつき</h2>
+
+<div class="card">
+  <div class="block-audio">
+    <span class="tag tag-ex">例</span> AさんとBさんの5科目テスト（平均点は共に65点）: <span class="ptr">← S03:p.48</span>
+  </div>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th></th><th>科目1</th><th>科目2</th><th>科目3</th><th>科目4</th><th>科目5</th><th>平均</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Aさん</strong></td><td>100点</td><td>90点</td><td>25点</td><td>10点</td><td>100点</td><td><strong>65点</strong></td></tr>
+      <tr><td><strong>Bさん</strong></td><td>65点</td><td>75点</td><td>55点</td><td>50点</td><td>80点</td><td><strong>65点</strong></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="block-important">
+    <span class="tag tag-check">重要</span> 同じ平均でもばらつきを見ることで、AさんとBさんの勉強の戦略の違いが明らかになる。<strong>ばらつきは平均だけでは見えない情報を与えてくれる。</strong><span class="ptr">← S05:L071</span>
+  </div>
+</div>
+
+<!-- HENSA -->
+<div class="card" id="ch3-hensa">
+  <div class="card-title"><span class="chapter-badge">CH3</span> 偏差と平均偏差</div>
+
+  <div class="block-def">
+    <span class="tag tag-def">定義</span> <strong>偏差</strong>: 個々のデータから平均を引いた値（平均からの距離） <span class="ptr">← S03:p.49</span>
+  </div>
+
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>データ</th><th>計算</th><th>偏差</th></tr></thead>
+    <tbody>
+      <tr><td>15</td><td>15 - 33</td><td>-18</td></tr>
+      <tr><td>20</td><td>20 - 33</td><td>-13</td></tr>
+      <tr><td>24</td><td>24 - 33</td><td>-9</td></tr>
+      <tr><td>51</td><td>51 - 33</td><td>+18</td></tr>
+      <tr><td>55</td><td>55 - 33</td><td>+22</td></tr>
+      <tr><td colspan="2"><em>合計</em></td><td><strong>0</strong></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="block-important">
+    <span class="tag tag-check">重要</span> 偏差を全て足すと必ず<strong>0</strong>になる → このままではばらつきの指標として使えない。<span class="ptr">← S03:p.50, S05:L074</span>
+  </div>
+
+  <div class="block-def">
+    <span class="tag tag-def">定義</span> <strong>平均偏差</strong>: 偏差の絶対値の平均 <span class="ptr">← S03:p.50-51</span>
+  </div>
+  <div class="formula">平均偏差 = (|-18| + |-13| + |-9| + |18| + |22|) ÷ 5 = 80 ÷ 5 = <strong>16</strong></div>
+
+  <div class="block-audio">
+    <span class="tag tag-audio">S05</span> 平均偏差の問題点: 絶対値の計算はプログラムで実装する場合に条件分岐（if文）が必要となり、処理が複雑になる。どんな値に対しても同じ処理で正の数にできる方法が必要。<span class="ptr">← S05:L076</span>
+  </div>
+</div>
+
+<!-- BUNSAN -->
+<div class="card" id="ch3-bunsan">
+  <div class="card-title"><span class="chapter-badge">CH3</span> 分散（σ²）</div>
+
+  <div class="block-def">
+    <span class="tag tag-def">定義</span> <strong>分散（σ²）</strong>: 偏差の2乗の平均 <span class="ptr">← S03:p.52</span>
+  </div>
+
+  <div class="block-audio">
+    <span class="tag tag-audio">S05</span> 2乗すれば負の数も正になるため、絶対値と同様に条件分岐なしで処理できる。これが昔の偉い人が考えた解決方法。<span class="ptr">← S05:L077</span>
+  </div>
+
+  <div class="formula">σ² = [(-18)² + (-13)² + (-9)² + (18)² + (22)²] ÷ 5 = 1382 ÷ 5 = <strong>276.4（歳²）</strong></div>
+
+  <div class="block-important">
+    <span class="tag tag-check">注意</span> 2乗したため単位が「歳²」になり、平均（単位: 歳）と直接比較できない。→ 標準偏差で解決。<span class="ptr">← S05:L079</span>
+  </div>
+
+  <!-- ばらつきの指標の流れ SVG -->
+  <figure>
+    <svg viewBox="0 0 600 80" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:600px;background:#1e2535;border-radius:8px;border:1px solid #2a3249">
+      <g font-family="Noto Sans JP, sans-serif">
+        <rect x="10"  y="20" width="100" height="40" rx="5" fill="#22304a" stroke="#5b8dee" stroke-width="1.5"/>
+        <text x="60"  y="38" text-anchor="middle" fill="#93b4f5" font-size="11" font-weight="700">偏差</text>
+        <text x="60"  y="53" text-anchor="middle" fill="#8a99b8" font-size="9">そのまま合計=0</text>
+        <text x="118" y="43" text-anchor="middle" fill="#8a99b8" font-size="13">→</text>
+        <rect x="130" y="20" width="120" height="40" rx="5" fill="#22304a" stroke="#fbbf24" stroke-width="1.5"/>
+        <text x="190" y="38" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="700">平均偏差</text>
+        <text x="190" y="53" text-anchor="middle" fill="#8a99b8" font-size="9">|偏差|の平均（条件分岐必要）</text>
+        <text x="258" y="43" text-anchor="middle" fill="#8a99b8" font-size="13">→</text>
+        <rect x="270" y="20" width="100" height="40" rx="5" fill="#22304a" stroke="#f472b6" stroke-width="1.5"/>
+        <text x="320" y="38" text-anchor="middle" fill="#f472b6" font-size="11" font-weight="700">分散（σ²）</text>
+        <text x="320" y="53" text-anchor="middle" fill="#8a99b8" font-size="9">偏差²の平均（単位が²）</text>
+        <text x="378" y="43" text-anchor="middle" fill="#8a99b8" font-size="13">→</text>
+        <rect x="390" y="20" width="120" height="40" rx="5" fill="#22304a" stroke="#34d399" stroke-width="2"/>
+        <text x="450" y="38" text-anchor="middle" fill="#34d399" font-size="11" font-weight="700">標準偏差（σ）</text>
+        <text x="450" y="53" text-anchor="middle" fill="#8a99b8" font-size="9">√分散（単位が戻る）</text>
+      </g>
+    </svg>
+    <figcaption>図：ばらつきの指標の発展系</figcaption>
+  </figure>
+</div>
+
+<!-- STANDARD DEVIATION -->
+<div class="card" id="ch3-std">
+  <div class="card-title"><span class="chapter-badge">CH3</span> 標準偏差（σ）</div>
+
+  <div class="block-def">
+    <span class="tag tag-def">定義</span> <strong>標準偏差（σ）</strong>: 分散の平方根。平均と同じ単位でばらつきを表す <span class="ptr">← S03:p.54</span>
+  </div>
+  <div class="formula">σ = √σ² = √276.4 ≈ <strong>16.63（歳）</strong></div>
+
+  <div class="block-important">
+    <span class="tag tag-check">重要</span> <strong>「平均 ± 標準偏差」</strong> でデータ全体像を表現: <code>33 ± 16.63（歳）</code><br>
+    「このデータは33歳を中心に、±16.63歳の範囲にほとんどのデータが入っている」<br>
+    ※「平均 ± 分散」（33 ± 276.4）とは書かない（単位が異なるため）。<span class="ptr">← S03:p.54</span>
+  </div>
+
+  <h4>計算例: Aさんと Bさん</h4>
+  <div class="formula">σ_A = √[(100-65)² + (90-65)² + (25-65)² + (10-65)² + (100-65)²] ÷ 5 = <strong>39.24（点）</strong></div>
+  <div class="formula">σ_B = <strong>11.40（点）</strong></div>
+  <p>→ σ_A（39.24）＞ σ_B（11.40） → <strong>AさんのほうがBさんより点数のばらつきが大きい。</strong> <span class="ptr">← S03:p.55, S05:L083</span></p>
+
+  <h4>度数分布表からの概算（平均 = 31.4）</h4>
+  <div class="formula">σ² = [(15-31.4)²×8 + (25-31.4)²×17 + (35-31.4)²×15 + (45-31.4)²×5 + (55-31.4)²×5] ÷ 50 = <strong>135.04（歳²）</strong></div>
+  <div class="formula">σ = √135.04 ≈ <strong>11.62（歳）</strong></div>
+  <p><span class="ptr">← S03:p.56-57</span></p>
+</div>
+
+<!-- VAR.P / VAR.S -->
+<div class="card" id="ch3-excel">
+  <div class="card-title"><span class="chapter-badge">CH3</span> （補足）VAR.P と VAR.S の違い</div>
+  <p><span class="ptr">← S03:p.58, S05:L087-L089</span></p>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>関数</th><th>割り算</th><th>使用場面</th><th>式</th></tr></thead>
+    <tbody>
+      <tr><td><code>VAR.P</code></td><td>N で割る</td><td><strong>全数調査（悉皆調査）</strong></td><td>σ² = Σ(xᵢ - x̄)² ÷ N</td></tr>
+      <tr><td><code>VAR.S</code></td><td>N-1 で割る</td><td><strong>サンプル調査</strong></td><td>σ² = Σ(xᵢ - x̄)² ÷ (N-1)</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="block-audio">
+    <span class="tag tag-audio">S05</span> なぜN-1を使うか: サンプル数が1のとき、データのばらつきは定義できない（分散は存在しない）。しかしVAR.P（Nで割る）で計算すると、存在しない分散の値が出てしまう。それを防ぐためにN-1で割る。<br>
+    サンプル数が大きくなるほど、NとN-1の差は無視できるほど小さくなる（例: 100000 vs 99999）。<span class="ptr">← S05:L088-L089</span>
+  </div>
+</div>
+
+<!-- CH4 -->
+<h2 id="ch4-eda"><span style="color:var(--accent4)">第4章</span> データの要約事例</h2>
+
+<div class="card">
+  <div class="card-title"><span class="chapter-badge">CH4</span> 探索的データ分析の意義</div>
+  <p><span class="ptr">← S03:p.64</span></p>
+  <p><strong>データの全体像の確認はデータ分析の重要なステップ。</strong> 確認で発見できること:</p>
+  <ul>
+    <li><strong>データの取得漏れ</strong></li>
+    <li><strong>外れ値・欠損値の存在</strong>
+      <ul>
+        <li>計測機器の故障</li>
+        <li>不誠実な回答者</li>
+        <li>設問自体の問題</li>
+      </ul>
+    </li>
+  </ul>
+
+  <h4>データの分析環境</h4>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>種類</th><th>例</th></tr></thead>
+    <tbody>
+      <tr><td>プログラミング言語</td><td>Python、R</td></tr>
+      <tr><td>表計算ソフト</td><td>Microsoft Excel、Google スプレッドシート</td></tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<div class="card" id="ch4-pivot">
+  <div class="card-title"><span class="chapter-badge">CH4</span> ピボットテーブルを用いたデータ要約事例</div>
+  <p><strong>対象データ:</strong> 都道府県別 年平均気温・最高気温・最低気温（第2回第4章でWeb APIを使って収集） <span class="ptr">← S03:p.66</span></p>
+  <p><strong>使用ツール:</strong> Google スプレッドシート</p>
+
+  <div class="block-check">
+    <span class="tag tag-check">注意</span> 授業の演習動画は視聴用。実際に操作する必要はない。<strong>1〜3章で学んだ知識がどのように活用されているかに着目すること。</strong> <span class="ptr">← S03:p.67, S05:L093</span>
+  </div>
+
+  <h4>操作手順の概要</h4>
+  <div class="flow" style="flex-direction:column; align-items:flex-start; gap:0.3rem">
+    <div style="display:flex;align-items:center;gap:0.4rem">
+      <div class="flow-box">① ピボットテーブル作成</div>
+      <span style="color:var(--text2)">A〜D列を選択 → 挿入 → ピボットテーブル</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:0.4rem">
+      <div class="flow-box">② フィルター設定</div>
+      <span style="color:var(--text2)">平均気温のみを分析対象に設定</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:0.4rem">
+      <div class="flow-box">③ 調査年を行に設定</div>
+      <span style="color:var(--text2)">A列に調査年が自動入力される</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:0.4rem">
+      <div class="flow-box">④ 集計関数を変更</div>
+      <span style="color:var(--text2)">SUM → MEDIAN → AVERAGE → STDEVP の順に確認</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:0.4rem">
+      <div class="flow-box">⑤ ヒストグラム作成</div>
+      <span style="color:var(--text2)">平均気温・標準偏差それぞれのヒストグラムを表示</span>
+    </div>
+  </div>
+
+  <div class="block-audio">
+    <span class="tag tag-audio">S05</span> <strong>標準偏差のヒストグラムで何がわかるか:</strong> 都道府県間の気温差は地理的関係に基づき毎年似た傾向になるはず → ヒストグラムが安定していることを確認。<br>
+    外れ値があった場合は、入力ミス（例: 16°Cを160°Cと誤入力）か特殊な気象現象を疑い、該当年のデータを詳細確認する。<span class="ptr">← S05:L108-L110</span>
+  </div>
+
+  <div class="block-important">
+    <span class="tag tag-check">重要</span> 関数を入力するだけで平均・標準偏差が計算できるが、<strong>各値の意味（定義）を理解した上で使うことが重要。</strong> データの意味を考えながら全体像を見る作業は、データの正確性を確認するという意味でも非常に重要。<span class="ptr">← S05:L110</span>
+  </div>
+</div>
+
+<!-- SUMMARY -->
+<div class="card" style="background:rgba(91,141,238,0.05); border-color:rgba(91,141,238,0.3)">
+  <strong>第3回まとめ</strong> <span class="ptr">← S03:p.70</span>
+  <p><strong>目標1: 1種類のデータに対し、統計量を用いてデータの全体像を把握できる</strong></p>
+  <ul>
+    <li>代表値: <strong>算術平均・メジアン・モード</strong></li>
+    <li>ばらつき: <strong>偏差・平均偏差・分散・標準偏差</strong></li>
+    <li>視覚化: <strong>ヒストグラム</strong></li>
+  </ul>
+  <p><strong>目標2: データの全体像の確認事例から、データの要約作業を体感する</strong></p>
+  <ul>
+    <li>Google スプレッドシートのピボットテーブルによる実例</li>
+  </ul>
+  <div class="block-audio" style="margin-top:0.8rem">
+    <span class="tag tag-audio">次回予告</span> 第3回では1種類のデータに着目したが、<strong>2種類のデータを組み合わせた場合</strong>はどのようにデータ全体を表現すればよいか → 第4回で学ぶ。
+  </div>
+</div>
+
+<hr>
+
+<!-- SUPP A -->
+<div class="supp-card supp-star" id="supp-a">
+  <h3>⭐ 補足A: 最重要ワード一覧</h3>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>用語</th><th>読み</th><th>定義（スライド原文から）</th><th>重要度</th></tr></thead>
+    <tbody>
+      <tr><td><strong>度数分布表</strong></td><td>どすうぶんぷひょう</td><td>階級と度数を表形式にしたもの（7要素から構成）</td><td>★★★</td></tr>
+      <tr><td><strong>階級</strong></td><td>かいきゅう</td><td>データが取りうる値に対し、一定の幅ごとに区切ったグループ</td><td>★★★</td></tr>
+      <tr><td><strong>階級値</strong></td><td>かいきゅうち</td><td>階級を代表する値、一般に階級の中央の値</td><td>★★★</td></tr>
+      <tr><td><strong>度数</strong></td><td>どすう</td><td>それぞれの階級に当てはまるデータの個数</td><td>★★★</td></tr>
+      <tr><td><strong>累積度数</strong></td><td>るいせきどすう</td><td>度数を下の階級から順に足し合わせていった度数の値</td><td>★★★</td></tr>
+      <tr><td><strong>相対度数</strong></td><td>そうたいどすう</td><td>各階級に属する度数の、度数の合計に対する割合</td><td>★★★</td></tr>
+      <tr><td><strong>累積相対度数</strong></td><td>るいせきそうたいどすう</td><td>最小の級数から特定の級数までの相対度数の合計</td><td>★★★</td></tr>
+      <tr><td><strong>算術平均</strong></td><td>さんじゅつへいきん</td><td>N個の観測値の総和をNで割った値（重心の意味）</td><td>★★★</td></tr>
+      <tr><td><strong>メジアン</strong></td><td>めじあん</td><td>データを昇順に並べたときに中央にくる値（外れ値に強い）</td><td>★★★</td></tr>
+      <tr><td><strong>モード</strong></td><td>もーど</td><td>度数の最も多い数字の階級値のこと（最頻値）</td><td>★★★</td></tr>
+      <tr><td><strong>偏差</strong></td><td>へんさ</td><td>個々のデータと平均の差</td><td>★★★</td></tr>
+      <tr><td><strong>分散（σ²）</strong></td><td>ぶんさん</td><td>偏差の2乗の平均（単位が2乗になる）</td><td>★★★</td></tr>
+      <tr><td><strong>標準偏差（σ）</strong></td><td>ひょうじゅんへんさ</td><td>分散の平方根（平均と同じ単位でばらつきを表す）</td><td>★★★</td></tr>
+      <tr><td>ビン</td><td>びん</td><td>ヒストグラムの各棒のこと</td><td>★★☆</td></tr>
+      <tr><td>比例配分法</td><td>ひれいはいぶんほう</td><td>層別抽出法の中でも母集団の比率に応じて調査対象数を決める方法</td><td>★★☆</td></tr>
+      <tr><td>VAR.P / VAR.S</td><td>-</td><td>Excelの分散関数。全数調査→VAR.P（N）、サンプル調査→VAR.S（N-1）</td><td>★★☆</td></tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<!-- SUPP B -->
+<div class="supp-card supp-book" id="supp-b">
+  <h3>📚 補足B: 知っておくべき背景知識</h3>
+  <p><strong>偏差の合計が0になる理由:</strong> 平均は「重心」であるため、平均より大きい値の偏差の合計と小さい値の偏差の合計が必ず釣り合い、合計すると0になる。</p>
+  <p><strong>なぜN-1で割るか（ベッセルの補正）:</strong> サンプルから計算した分散は、真の母分散を過小評価する傾向がある。N-1で割ることでこの偏りを補正する（不偏分散）。</p>
+  <p><strong>ヒストグラムと棒グラフの違い:</strong> 棒グラフはカテゴリ変数の比較に使い棒の間に空白がある。ヒストグラムは連続変数の分布を表し、連続値の場合は棒の間に空白がない。</p>
+  <p style="font-size:11px;color:var(--text2)">[外部補足]</p>
+</div>
+
+<!-- SUPP C -->
+<div class="supp-card supp-target" id="supp-c">
+  <h3>🎯 補足C: 試験・レポートで重要な観点</h3>
+  <ol>
+    <li><strong>度数分布表の各要素を計算できるか</strong>（特に相対度数・累積相対度数の計算式）</li>
+    <li><strong>生データから平均・メジアン・モードを算出できるか</strong>（特にメジアンの偶数/奇数の場合分け）</li>
+    <li><strong>度数分布表から平均・メジアン・分散・標準偏差の概算ができるか</strong></li>
+    <li><strong>偏差→平均偏差→分散→標準偏差の流れと、なぜ各ステップが必要かを説明できるか</strong></li>
+    <li><strong>VAR.PとVAR.Sの使い分けの理由を説明できるか</strong></li>
+    <li><strong>外れ値が平均に与える影響と、メジアンが外れ値に強い理由を説明できるか</strong></li>
+    <li><strong>平均・メジアン・モードの大小関係からヒストグラムの概形を読み取れるか</strong></li>
+  </ol>
+</div>
+
+<!-- SUPP D -->
+<div class="supp-card supp-link" id="supp-d">
+  <h3>🔗 補足D: 関連概念・次回への接続</h3>
+  <ul>
+    <li><strong>第4回の予告:</strong> 1種類のデータの全体像把握→今回学習。<strong>2種類のデータの組み合わせ</strong>（相関関係など）→第4回</li>
+    <li><strong>第2回との接続:</strong> 層別抽出法・比例配分法（データ収集）→度数分布表・ヒストグラム（データ要約）という流れ</li>
+    <li><strong>Web API（第2回第4章）:</strong> ダウンロードした気温データが今回の第4章のデモ事例で活用</li>
+  </ul>
+</div>
+
+<!-- UNCONFIRMED -->
+<div class="undet-card" id="undet">
+  <strong style="color:#ef4444">❓ 未確定事項・要確認リスト</strong>
+  <div class="tbl-wrap" style="margin-top:0.8rem">
+  <table>
+    <thead><tr><th>ID</th><th>内容</th><th>種別</th><th>優先度</th></tr></thead>
+    <tbody>
+      <tr><td>U01</td><td><s>S05のL037「組織」は「貯蓄」の誤変換と思われるが確定できない</s><br><span style="color:var(--accent2)">✅ 解消: 「貯蓄」で確定（第2の文字起こしソースで明示確認）</span></td><td>AI変換要確認</td><td><span style="color:var(--accent2)">解消済み</span></td></tr>
+      <tr><td>U02</td><td>第4章のデモ動画の詳細操作手順は「デモ動画資料」に別途まとめられている</td><td>次回確認</td><td>low</td></tr>
+      <tr><td>U03</td><td>度数分布表からのメジアン（30歳）と生データのメジアン（29.5歳）に差が生じる理由の説明が授業で省略（階級値による近似のため）</td><td>内容不足</td><td>low</td></tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+</main>
+
+<script>
+// Sidebar active link highlighting
+const navItems = document.querySelectorAll('.nav-item');
+const sections = document.querySelectorAll('section, h2, [id]');
+
+window.addEventListener('scroll', () => {
+  let current = '';
+  document.querySelectorAll('[id]').forEach(el => {
+    if (el.getBoundingClientRect().top <= 80) current = el.id;
+  });
+  navItems.forEach(item => {
+    item.classList.remove('active');
+    if (item.getAttribute('href') === '#' + current) item.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
