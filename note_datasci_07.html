@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>データサイエンス入門 第7回｜データを扱う心得</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --bg2: #161b27;
+    --bg3: #1e2535;
+    --card: #1a2236;
+    --border: #2a3550;
+    --accent-blue: #5b8dee;
+    --accent-green: #34d399;
+    --accent-yellow: #fbbf24;
+    --accent-orange: #fb923c;
+    --accent-purple: #a78bfa;
+    --accent-red: #f87171;
+    --text: #e2e8f5;
+    --text-muted: #8a99b8;
+    --text-dim: #5a6a88;
+    --audio-border: #3b82f6;
+    --audio-bg: #1a2c4a;
+    --infer-border: #7c3aed;
+    --infer-bg: #1e1a3a;
+    --warn-border: #f59e0b;
+    --warn-bg: #2a2010;
+    --ext-border: #059669;
+    --ext-bg: #0f2a1f;
+    --sidebar-w: 260px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 15px;
+    line-height: 1.85;
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ── SIDEBAR ── */
+  #sidebar {
+    width: var(--sidebar-w);
+    min-width: var(--sidebar-w);
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    padding: 24px 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    flex-shrink: 0;
+  }
+
+  #sidebar .logo {
+    padding: 0 20px 20px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+  #sidebar .logo .label {
+    font-size: 10px;
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  #sidebar .logo .title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent-blue);
+    margin-top: 4px;
+  }
+
+  #sidebar nav a {
+    display: block;
+    padding: 6px 20px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 12.5px;
+    transition: all 0.15s;
+    border-left: 2px solid transparent;
+    line-height: 1.5;
+  }
+  #sidebar nav a:hover {
+    color: var(--text);
+    border-left-color: var(--accent-blue);
+    background: rgba(91,141,238,0.06);
+  }
+  #sidebar nav .chapter-head {
+    padding: 12px 20px 4px;
+    font-size: 10px;
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  #sidebar nav .sub {
+    padding-left: 30px;
+    font-size: 11.5px;
+  }
+
+  /* ── MAIN ── */
+  #main {
+    flex: 1;
+    padding: 40px 48px 80px;
+    max-width: 900px;
+    min-width: 0;
+  }
+
+  /* ── HEADER ── */
+  .page-header {
+    background: linear-gradient(135deg, #1e2c4a 0%, #1a2535 60%, #1e1a3a 100%);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px 36px;
+    margin-bottom: 36px;
+    position: relative;
+    overflow: hidden;
+  }
+  .page-header::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 180px; height: 180px;
+    background: radial-gradient(circle, rgba(91,141,238,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .page-header .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .page-header h1 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.4;
+  }
+  .page-header h1 span { color: var(--accent-blue); }
+  .page-header .goals {
+    margin-top: 20px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .page-header .goal-tag {
+    background: rgba(91,141,238,0.12);
+    border: 1px solid rgba(91,141,238,0.3);
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 12px;
+    color: var(--accent-blue);
+  }
+
+  /* ── SECTION ── */
+  .section {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 28px 32px;
+    margin-bottom: 24px;
+  }
+
+  .chapter-banner {
+    background: linear-gradient(90deg, rgba(91,141,238,0.15), transparent);
+    border-left: 3px solid var(--accent-blue);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 24px;
+    margin-bottom: 20px;
+  }
+  .chapter-banner h2 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--accent-blue);
+  }
+  .chapter-banner .ch-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-bottom: 4px;
+  }
+
+  h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--accent-green);
+    margin: 24px 0 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  h3::before { content: '§'; color: var(--text-dim); font-size: 12px; }
+
+  h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--accent-yellow);
+    margin: 18px 0 8px;
+  }
+
+  p { margin-bottom: 10px; color: var(--text); }
+
+  /* ── DEFINITION BOX ── */
+  .def-box {
+    background: rgba(91,141,238,0.07);
+    border: 1px solid rgba(91,141,238,0.25);
+    border-left: 3px solid var(--accent-blue);
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin: 12px 0;
+  }
+  .def-box .def-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--accent-blue);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .def-box .def-term {
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  /* ── AUDIO BLOCK ── */
+  .audio-block {
+    background: var(--audio-bg);
+    border-left: 3px solid var(--audio-border);
+    border-radius: 0 6px 6px 0;
+    padding: 10px 16px;
+    margin: 10px 0;
+    font-size: 13.5px;
+    color: #93b4f5;
+    position: relative;
+  }
+  .audio-block::before {
+    content: '🎧 音声補足';
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--audio-border);
+    margin-bottom: 4px;
+    letter-spacing: 0.5px;
+  }
+
+  /* ── EXTERNAL SUPPLEMENT ── */
+  .ext-block {
+    background: var(--ext-bg);
+    border-left: 3px solid var(--ext-border);
+    border-radius: 0 6px 6px 0;
+    padding: 10px 16px;
+    margin: 10px 0;
+    font-size: 13.5px;
+    color: #6ee7b7;
+  }
+  .ext-block::before {
+    content: '🌐 外部補足';
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--ext-border);
+    margin-bottom: 4px;
+  }
+
+  /* ── WARN / IMPORTANT ── */
+  .warn-block {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-border);
+    border-radius: 0 6px 6px 0;
+    padding: 10px 16px;
+    margin: 10px 0;
+    font-size: 13.5px;
+    color: #fcd34d;
+  }
+  .warn-block::before {
+    content: '⚠️ 注意';
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--warn-border);
+    margin-bottom: 4px;
+  }
+
+  /* ── SOURCE BADGE ── */
+  .src {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    background: var(--bg3);
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1px 6px;
+    margin-left: 6px;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+
+  /* ── TABLE ── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0;
+    font-size: 13.5px;
+  }
+  th {
+    background: var(--bg3);
+    color: var(--accent-blue);
+    padding: 9px 14px;
+    text-align: left;
+    border: 1px solid var(--border);
+    font-weight: 600;
+    font-size: 12.5px;
+  }
+  td {
+    padding: 8px 14px;
+    border: 1px solid var(--border);
+    color: var(--text);
+    vertical-align: top;
+  }
+  tr:hover td { background: rgba(91,141,238,0.04); }
+
+  /* ── EXAMPLE BOX ── */
+  .example {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin: 8px 0;
+    font-size: 13.5px;
+  }
+  .example .ex-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--accent-yellow);
+    margin-bottom: 4px;
+    letter-spacing: 0.5px;
+  }
+
+  /* ── SVG FIGURE ── */
+  figure {
+    margin: 20px 0;
+    text-align: center;
+  }
+  figcaption {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 8px;
+  }
+  svg { max-width: 100%; }
+
+  /* ── CIA BOX ── */
+  .cia-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .cia-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+  }
+  .cia-card .cia-letter {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .cia-card.c .cia-letter { color: var(--accent-blue); }
+  .cia-card.i .cia-letter { color: var(--accent-green); }
+  .cia-card.a .cia-letter { color: var(--accent-yellow); }
+  .cia-card .cia-en { font-size: 11px; color: var(--text-dim); margin-bottom: 4px; }
+  .cia-card .cia-jp { font-size: 13px; font-weight: 700; }
+  .cia-card.c .cia-jp { color: var(--accent-blue); }
+  .cia-card.i .cia-jp { color: var(--accent-green); }
+  .cia-card.a .cia-jp { color: var(--accent-yellow); }
+  .cia-card .cia-def { font-size: 12px; color: var(--text-muted); margin-top: 6px; }
+
+  /* ── OECD GRID ── */
+  .oecd-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin: 14px 0;
+  }
+  .oecd-item {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 12px 14px;
+  }
+  .oecd-item .oecd-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--accent-orange);
+    margin-bottom: 3px;
+  }
+  .oecd-item .oecd-name {
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .oecd-item .oecd-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* ── BIAS FLOW ── */
+  .bias-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 16px 0;
+  }
+  .bias-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+  }
+  .bias-card .b-tag {
+    display: inline-block;
+    background: rgba(91,141,238,0.15);
+    color: var(--accent-blue);
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-size: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    margin-bottom: 8px;
+  }
+  .bias-card .b-name { font-weight: 700; font-size: 13px; margin-bottom: 6px; }
+  .bias-card .b-timing {
+    font-size: 11px;
+    color: var(--accent-orange);
+    font-family: 'JetBrains Mono', monospace;
+    margin-bottom: 6px;
+  }
+  .bias-card .b-def { font-size: 12px; color: var(--text-muted); line-height: 1.6; }
+
+  /* ── SUPPLEMENT SECTION ── */
+  .supp-section {
+    margin-bottom: 24px;
+  }
+  .supp-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .supp-header .supp-icon {
+    font-size: 20px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg3);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+  .supp-header h2 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .supp-header .supp-sub {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  /* ── GLOSSARY TABLE ── */
+  .star-3 { color: var(--accent-red); }
+  .star-2 { color: var(--accent-yellow); }
+  .star-1 { color: var(--text-muted); }
+
+  /* ── NOTICE / OPEN DATA ── */
+  .notice {
+    background: rgba(52,211,153,0.06);
+    border: 1px solid rgba(52,211,153,0.2);
+    border-radius: 6px;
+    padding: 10px 16px;
+    font-size: 13px;
+    color: #a7f3d0;
+    margin: 10px 0;
+  }
+
+  ul, ol { padding-left: 20px; }
+  li { margin-bottom: 4px; }
+
+  .tag-muted {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 1px 5px;
+  }
+
+  strong { color: var(--text); }
+  em { color: var(--accent-yellow); font-style: normal; }
+
+  @media (max-width: 768px) {
+    #sidebar { display: none; }
+    #main { padding: 20px 16px; }
+    .cia-grid { grid-template-columns: 1fr; }
+    .oecd-grid { grid-template-columns: 1fr; }
+    .bias-cards { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div id="sidebar">
+  <div class="logo">
+    <div class="label">SSP Note</div>
+    <div class="title">データサイエンス入門<br>第7回</div>
+  </div>
+  <nav>
+    <div class="chapter-head">Overview</div>
+    <a href="#top">学習目標・前回復習</a>
+    <div class="chapter-head">第1章 データ倫理</div>
+    <a href="#elsi">ELSI</a>
+    <a href="#data-ethics">データ倫理</a>
+    <a href="#bias" class="sub">バイアス（3種）</a>
+    <a href="#optinout" class="sub">オプトイン・アウト</a>
+    <a href="#misconduct" class="sub">研究不正（3類型）</a>
+    <div class="chapter-head">第2章 セキュリティ</div>
+    <a href="#info-asset">情報資産</a>
+    <a href="#cia">情報セキュリティのCIA</a>
+    <a href="#confidentiality" class="sub">機密性</a>
+    <a href="#integrity" class="sub">完全性</a>
+    <a href="#availability" class="sub">可用性</a>
+    <div class="chapter-head">第3章 プライバシー1</div>
+    <a href="#privacy">プライバシーと個人情報</a>
+    <a href="#privacy-cases" class="sub">侵害事例</a>
+    <a href="#oecd">OECD8原則</a>
+    <div class="chapter-head">第4章 プライバシー2</div>
+    <a href="#pii-law">個人情報保護法</a>
+    <a href="#pii-def" class="sub">個人情報の定義</a>
+    <a href="#sensitive" class="sub">要配慮個人情報</a>
+    <a href="#anonymize" class="sub">匿名加工・仮名加工</a>
+    <a href="#gdpr">越境データ・GDPR</a>
+    <div class="chapter-head">補足</div>
+    <a href="#glossary">最重要ワード一覧</a>
+    <a href="#exam">試験重要観点</a>
+    <a href="#connection">次回への接続</a>
+  </nav>
+</div>
+
+<!-- MAIN -->
+<div id="main">
+
+  <!-- HEADER -->
+  <div id="top" class="page-header">
+    <div class="meta">CS103 · 第7回 · データサイエンス入門 · 浅田 麻菜</div>
+    <h1>データを<span>扱う心得</span></h1>
+    <div class="goals">
+      <div class="goal-tag">① データ倫理に留意してデータを扱うことができる</div>
+      <div class="goal-tag">② 基本的なセキュリティ・プライバシー対策ができる</div>
+    </div>
+  </div>
+
+  <!-- 前回の復習 -->
+  <div class="section">
+    <h3>前回の復習</h3>
+    <p><strong>Q.</strong> 右のような可視化方法（3D円グラフ）について問題点を説明してください。</p>
+    <div class="def-box">
+      <div class="def-label">Answer</div>
+      <div>3Dグラフにおける<strong>チャートジャンク</strong>の例。<strong>死角の発生</strong>によりデータの比較が困難になる。C社は3Dでは12%・2位のように見えるが、通常の2D円グラフにすると実際には4位である。<span class="src">S03:p.2-3</span></div>
+    </div>
+    <div class="audio-block">3Dグラフにすることで見える範囲が異なったり、視覚の発生によってデータの比較が困難になり、判断が間違ってしまうことがある。 <span class="tag-muted">← S05</span></div>
+  </div>
+
+  <!-- ============ 第1章 ============ -->
+  <div class="chapter-banner">
+    <div class="ch-num">CHAPTER 01</div>
+    <h2>データ倫理</h2>
+  </div>
+
+  <div class="section">
+    <div id="elsi">
+      <h3>ELSI（エルシー）</h3>
+      <div class="def-box">
+        <div class="def-label">定義</div>
+        <span class="def-term">ELSI</span>：<strong>Ethical, Legal and Social Issues</strong>（倫理的問題・法的問題・社会的問題）の頭文字。技術の進歩により発生する問題の総称。 <span class="src">S03:p.8</span>
+      </div>
+      <ul>
+        <li>当初は<strong>生命科学分野</strong>で注目</li>
+        <li>近年は<strong>データサイエンス・AI分野</strong>でも特に注目されている</li>
+      </ul>
+    </div>
+
+    <div id="data-ethics">
+      <h3>データ倫理</h3>
+      <div class="def-box">
+        <div class="def-label">定義</div>
+        <span class="def-term">データ倫理</span>：明確な定義はないが、一般的に「データの収集・共有および利活用によって、人びとおよび社会に対して<strong>負の影響を与える可能性のあるデータ実務を評価するもの</strong>」とされる。 <span class="src">S03:p.9</span>
+      </div>
+      <div class="warn-block">データ倫理が守られない場合、どれほど素晴らしい分析をしても<strong>データ分析が全て無駄になる可能性がある</strong>。</div>
+      <div class="audio-block">例えば、使ってはいけないデータを使っていた場合、データ分析の全フェーズが無駄になる可能性がある。この授業では15回のうち1回分をまるごとデータ倫理の説明に割いている。 <span class="tag-muted">← S05</span></div>
+
+      <h4>データ分析プロセスとデータ倫理の関係</h4>
+      <table>
+        <thead><tr><th>プロセス</th><th>倫理的観点</th><th>対応章</th></tr></thead>
+        <tbody>
+          <tr><td>データ収集時</td><td>適切な対象・方法で収集・管理しているか</td><td>第1・2章</td></tr>
+          <tr><td>データ分析時<br>（探索的解析・推測）</td><td>研究不正に該当する操作をしていないか</td><td>第1章</td></tr>
+          <tr><td>課題発見・提案・<br>結果共有時</td><td>社会や個人に対して負の影響がある目的・結果になっていないか</td><td>第3・4章</td></tr>
+        </tbody>
+      </table>
+      <span class="src">S03:p.10-11</span>
+    </div>
+
+    <div id="bias">
+      <h3>データ収集時の留意点①：バイアス</h3>
+      <div class="def-box">
+        <div class="def-label">定義</div>
+        <span class="def-term">バイアス</span>：偶然ではないデータの誤差や偏り <span class="src">S03:p.12</span>
+      </div>
+
+      <!-- バイアス SVG -->
+      <figure>
+        <svg viewBox="0 0 700 140" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#5b8dee"/>
+            </marker>
+          </defs>
+          <!-- 選択バイアス -->
+          <rect x="10" y="10" width="200" height="120" rx="8" fill="#1e2535" stroke="#5b8dee" stroke-width="1"/>
+          <text x="110" y="36" text-anchor="middle" fill="#5b8dee" font-size="12" font-family="Noto Sans JP" font-weight="700">選択バイアス</text>
+          <text x="110" y="55" text-anchor="middle" fill="#fb923c" font-size="10" font-family="JetBrains Mono">計画段階で発生</text>
+          <text x="22" y="78" fill="#8a99b8" font-size="10.5" font-family="Noto Sans JP">調査対象の偏りの影響で</text>
+          <text x="22" y="96" fill="#8a99b8" font-size="10.5" font-family="Noto Sans JP">収集データに偏りが出る</text>
+          <text x="22" y="118" fill="#6ee7b7" font-size="10" font-family="Noto Sans JP">例：固定電話のみの世論調査</text>
+
+          <!-- 情報バイアス -->
+          <rect x="250" y="10" width="200" height="120" rx="8" fill="#1e2535" stroke="#a78bfa" stroke-width="1"/>
+          <text x="350" y="36" text-anchor="middle" fill="#a78bfa" font-size="12" font-family="Noto Sans JP" font-weight="700">情報バイアス</text>
+          <text x="350" y="55" text-anchor="middle" fill="#fb923c" font-size="10" font-family="JetBrains Mono">実施段階で発生</text>
+          <text x="262" y="78" fill="#8a99b8" font-size="10.5" font-family="Noto Sans JP">調査方法が原因でデータに</text>
+          <text x="262" y="96" fill="#8a99b8" font-size="10.5" font-family="Noto Sans JP">偏りが出る</text>
+          <text x="262" y="118" fill="#6ee7b7" font-size="10" font-family="Noto Sans JP">例：体重の対面調査</text>
+
+          <!-- 測定バイアス -->
+          <rect x="490" y="10" width="200" height="120" rx="8" fill="#1e2535" stroke="#fbbf24" stroke-width="1"/>
+          <text x="590" y="36" text-anchor="middle" fill="#fbbf24" font-size="12" font-family="Noto Sans JP" font-weight="700">測定バイアス</text>
+          <text x="590" y="55" text-anchor="middle" fill="#fb923c" font-size="10" font-family="JetBrains Mono">情報バイアスの一種</text>
+          <text x="502" y="78" fill="#8a99b8" font-size="10.5" font-family="Noto Sans JP">計測機器・担当者の癖に</text>
+          <text x="502" y="96" fill="#8a99b8" font-size="10.5" font-family="Noto Sans JP">よる偏った誤差</text>
+          <text x="502" y="118" fill="#6ee7b7" font-size="10" font-family="Noto Sans JP">例：温度計の読み方の違い</text>
+        </svg>
+        <figcaption>図：バイアスの3種類 <span class="src">S03:p.13-15</span></figcaption>
+      </figure>
+
+      <h4>① 選択バイアス（計画段階で発生）</h4>
+      <div class="example">
+        <div class="ex-label">例</div>
+        <ul>
+          <li>固定電話による世論調査 → 固定電話を持つ世代の意見しか反映されない</li>
+          <li>高齢者の意識調査をインターネット調査のみで実施 → 高齢者が対象から漏れる</li>
+        </ul>
+      </div>
+      <div class="audio-block">男女両方いる集団にも関わらず、データの収集方法が適切でなく女性にしかデータが取れなかった場合、そのデータを分析すると女性の意見しか反映できないものになってしまう。 <span class="tag-muted">← S05</span></div>
+
+      <h4>② 情報バイアス（実施段階で発生）</h4>
+      <div class="example">
+        <div class="ex-label">例①：体重の対面調査</div>
+        <p>「体重を教えてください」を対面調査で実施 → 答えにくい質問のため、実際より軽い値を答えてしまい、データ全体が実際より軽くなってしまう</p>
+      </div>
+      <div class="example">
+        <div class="ex-label">例②：AIタグ付けへの先入観</div>
+        <p>「今回は猫の画像の方が多い」と事前情報を与えると、判断が難しい画像を猫と分類しやすくなり、実際の比率と異なるデータが生成される</p>
+      </div>
+
+      <h4>③ 測定バイアス（情報バイアスの一種）</h4>
+      <p>計測機器や担当者の癖によって一定方向に偏る誤差。ランダムに入り込む誤差はデータ数が十分あれば問題ないが、測定バイアスは問題になる。 <span class="src">S03:p.15</span></p>
+      <div class="audio-block">温度計を上から見るか目線の位置で見るかによって読み取り値が変わる。同じ計測機器を使っても担当者の癖や機器自体の癖によってデータにバイアスが出る可能性がある。 <span class="tag-muted">← S05</span></div>
+    </div>
+
+    <div id="optinout">
+      <h3>データ収集時の留意点②：オプトイン・オプトアウト</h3>
+      <table>
+        <thead><tr><th></th><th>オプトイン（Opt-in）</th><th>オプトアウト（Opt-out）</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>意味</td>
+            <td>自ら参加を選択してデータ収集に同意</td>
+            <td>掲示等での同意後、後から拒否できる</td>
+          </tr>
+          <tr>
+            <td>方法</td>
+            <td>文書・口頭で事前説明し同意を得てから収集</td>
+            <td>掲示等により同意取得。本人がデータ使用を後から拒否できる</td>
+          </tr>
+          <tr>
+            <td>使用例</td>
+            <td>心理学の実験・薬の試験など</td>
+            <td>防犯カメラの映像データを研究に使用する場合など</td>
+          </tr>
+        </tbody>
+      </table>
+      <span class="src">S03:p.16</span>
+      <div class="audio-block">データを集める場合はオプトインまたはオプトアウトどちらかの方法を必ず取り、後から拒否できる方法で必ずログを取る必要がある。手続きを取っていないと、分析が最後まで完了したのに「このデータを使ってほしくなかった」と言われて分析結果が全て無駄になってしまう。 <span class="tag-muted">← S05</span></div>
+    </div>
+
+    <div id="misconduct">
+      <h3>データ分析時の留意点：研究不正</h3>
+      <p>研究不正に該当する主な行為は3つ。 <span class="src">S03:p.17-19</span></p>
+
+      <h4>① 捏造（ねつぞう）</h4>
+      <div class="def-box">
+        <div class="def-label">定義</div>
+        存在しないデータを存在するかのように<strong>意図的に作り出す</strong>行為
+      </div>
+      <div class="example">
+        <div class="ex-label">例</div>
+        <p>アンケートを100人に取りたかったが99件しか集まらなかったため、1件分を自分で適当に埋めた</p>
+      </div>
+
+      <h4>② 改ざん</h4>
+      <div class="def-box">
+        <div class="def-label">定義</div>
+        データや分析過程等の<strong>意図的な改変</strong>
+      </div>
+      <div class="example">
+        <div class="ex-label">例</div>
+        <p>予測精度が15%しかなかったが、締め切りが近いからと50%と報告した</p>
+      </div>
+      <div class="audio-block">悪いものを良く見せかけたいという心理は誰にでもあるが、悪かったと報告するのも1つの研究成果といえる。 <span class="tag-muted">← S05</span></div>
+
+      <h4>③ 盗用（とうよう）</h4>
+      <div class="def-box">
+        <div class="def-label">定義</div>
+        他人の作成したデータや分析結果を<strong>自分の成果として報告</strong>する行為
+      </div>
+      <div class="example">
+        <div class="ex-label">例</div>
+        <p>他の人が作成した分析報告書を自分の名前で発表した / 他社が収集したデータを自社で集めたかのように分析・報告した</p>
+      </div>
+      <div class="notice">
+        💡 <strong>オープンデータについて</strong>：利用規約に従って適切に利用し、自分で分析した結果を発表することは盗用にあたらない。 <span class="src">S05</span>
+      </div>
+      <div class="audio-block">研究不正というと「自分は研究者じゃないから関係ない」と思うかもしれないが、大学でレポートを出すときや会社で分析プロジェクトを行うときも常に関わってくる問題。研究不正に当たる行為をすると、大学では単位取り消し、会社では解雇になる可能性もある。 <span class="tag-muted">← S05</span></div>
+    </div>
+  </div>
+
+  <!-- ============ 第2章 ============ -->
+  <div class="chapter-banner">
+    <div class="ch-num">CHAPTER 02</div>
+    <h2>セキュリティ</h2>
+  </div>
+
+  <div class="section">
+    <div id="info-asset">
+      <h3>情報資産</h3>
+      <div class="def-box">
+        <div class="def-label">定義</div>
+        <span class="def-term">情報資産</span>：データおよびそれを管理・活用するための機器・システム・ノウハウ全般 <span class="src">S03:p.24</span>
+      </div>
+      <ul>
+        <li>各種データ（個人データを含む）</li>
+        <li>データを管理するためのハード・ソフト・ネットワーク</li>
+        <li>データを収集・分析するためのシステム・ノウハウ</li>
+      </ul>
+      <div class="audio-block">データは「21世紀の石油」といわれ、企業にとっては資産。誤った扱いをすると資産価値が下がったり、なくなってしまう可能性がある。情報資産を正しく保護しないと企業価値の低下や社会的・法的責任が発生してしまう。 <span class="tag-muted">← S05</span></div>
+
+      <h4>情報資産保護への対策</h4>
+      <table>
+        <thead><tr><th>対策</th><th>内容</th></tr></thead>
+        <tbody>
+          <tr><td><strong>セキュリティ対策</strong></td><td>データの漏洩・破損防止、システムが使用できない状態にしないための対策</td></tr>
+          <tr><td><strong>プライバシー対策</strong></td><td>変化するプライバシー意識への対応、個人情報関連法律への対応</td></tr>
+        </tbody>
+      </table>
+      <div class="warn-block">対策が不足すると…社会的・法的責任の発生 → 企業・サービスへの信頼の喪失 → 売上・営業成績の低下</div>
+    </div>
+
+    <div id="cia">
+      <h3>情報セキュリティのCIA</h3>
+      <div class="def-box">
+        <div class="def-label">定義</div>
+        <span class="def-term">ISO/IEC 27001</span>：ISO（国際標準化機構）とIEC（国際電気標準会議）が共同で制定した情報セキュリティマネジメントシステムの国際規格。情報の<strong>機密性・完全性・可用性</strong>の維持を定める。 <span class="src">S03:p.26</span>
+      </div>
+      <div class="ext-block">ISOはクレジットカードのサイズなど製品の基準を決めることで、世界中での取引を円滑にする国際標準化機構。IECは国際電気標準会議。</div>
+
+      <!-- CIA Cards -->
+      <div class="cia-grid">
+        <div class="cia-card c">
+          <div class="cia-letter">C</div>
+          <div class="cia-en">Confidentiality</div>
+          <div class="cia-jp">機密性</div>
+          <div class="cia-def">アクセス許可のある人・システムだけがアクセスできる状態</div>
+        </div>
+        <div class="cia-card i">
+          <div class="cia-letter">I</div>
+          <div class="cia-en">Integrity</div>
+          <div class="cia-jp">完全性</div>
+          <div class="cia-def">情報が意図通りの状態で維持されている状態</div>
+        </div>
+        <div class="cia-card a">
+          <div class="cia-letter">A</div>
+          <div class="cia-en">Availability</div>
+          <div class="cia-jp">可用性</div>
+          <div class="cia-def">いつでも利用でき、問題が出てもすぐに復旧できる状態</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="confidentiality">
+      <h3>機密性（Confidentiality）</h3>
+      <p><strong>機密性の確保が不足すると…</strong>不正アクセス（データの改ざん・改編）の発生 / データの内部・外部流出</p>
+      <h4>機密性を確保するための対策</h4>
+      <table>
+        <thead><tr><th>対策</th><th>内容</th></tr></thead>
+        <tbody>
+          <tr><td>閲覧権限の設定</td><td>スプレッドシート等でアクセスできるユーザーと権限を設定</td></tr>
+          <tr><td>端末・ネットワークの制限</td><td>特定のパソコンや部屋からしかアクセスできない設定</td></tr>
+          <tr><td>情報の暗号化</td><td>暗号化により、万一データが盗まれても内容を判読不可にする</td></tr>
+        </tbody>
+      </table>
+      <span class="src">S03:p.28-30</span>
+    </div>
+
+    <div id="integrity">
+      <h3>完全性（Integrity）</h3>
+      <p><strong>完全性の確保が不足すると…</strong>情報の改ざん・破壊によるサービスの停止 / データの質低下による不適切な分析結果 / 誤入力による作業の手戻り</p>
+      <h4>完全性を確保するための対策</h4>
+      <table>
+        <thead><tr><th>対策</th><th>内容</th></tr></thead>
+        <tbody>
+          <tr><td>編集ログの保存</td><td>いつ誰がデータを変更したかを記録に残す</td></tr>
+          <tr><td>規定外入力のシステム制限</td><td>郵便番号欄に数字以外は入力できないようにする等</td></tr>
+          <tr><td>デジタル署名によるデータ保証</td><td>送信元がデジタル署名付きメールを作成し、受信先が改変がないことを確認</td></tr>
+        </tbody>
+      </table>
+      <span class="src">S03:p.32-34</span>
+      <div class="audio-block">紙のアンケートをパソコンに入力する際に誤入力があると、分析時に発覚して入力作業からやり直す「作業の手戻り」が発生し、通常の分析プロセスにさらに時間がかかる。 <span class="tag-muted">← S05</span></div>
+    </div>
+
+    <div id="availability">
+      <h3>可用性（Availability）</h3>
+      <p><em>機密性・完全性の維持が前提</em>。その状態でいつでもデータが利用でき、問題が出てもすぐに復旧できる状態。 <span class="src">S03:p.35</span></p>
+      <p><strong>可用性の確保が不足すると…</strong>必要なタイミングでデータが利用できず営業機会を損失 / システム故障による欠損データ発生・前処理手順の増加</p>
+      <h4>可用性を確保するための対策</h4>
+      <ul>
+        <li><strong>システムやデータのバックアップ</strong>：定期的に取る・分散させる</li>
+        <li>身近な例：ファイルの定期的な保存・データバックアップ・落雷対策機器</li>
+      </ul>
+      <span class="src">S03:p.36</span>
+      <div class="audio-block">会社のデータを一箇所のデータセンターに集めていた場合、地震などでそのデータセンターが被害を受けると全く営業できなくなる可能性がある。そのためデータセンターを複数箇所・日本以外の地域にも設置するという対策もある。情報セキュリティのCIAは企業だけでなく個人レベルでも関係する話。 <span class="tag-muted">← S05</span></div>
+    </div>
+  </div>
+
+  <!-- ============ 第3章 ============ -->
+  <div class="chapter-banner">
+    <div class="ch-num">CHAPTER 03</div>
+    <h2>プライバシー（1）</h2>
+  </div>
+
+  <div class="section">
+    <div id="privacy">
+      <h3>プライバシーと個人情報の違い</h3>
+      <div class="def-box">
+        <div class="def-label">定義</div>
+        <span class="def-term">プライバシー</span>：「私人の秘密、他人の干渉を許さない各個人の私生活上の自由のこと」。近年は「<strong>自分の情報をコントロールする権利</strong>」も含まれるとされる。 <span class="src">S03:p.41</span>
+      </div>
+      <table>
+        <thead><tr><th></th><th>プライバシー</th><th>個人情報</th></tr></thead>
+        <tbody>
+          <tr><td>定義</td><td>明確な定義はない</td><td>個人情報保護法により明確に定義</td></tr>
+          <tr><td>変化</td><td>時代・社会とともに変化する社会通念</td><td>法律改正に伴い変化</td></tr>
+          <tr><td>対応</td><td>常に知識の更新が必要</td><td>法律の改正に合わせた対応が必要</td></tr>
+        </tbody>
+      </table>
+      <span class="src">S03:p.42</span>
+    </div>
+
+    <div id="privacy-cases">
+      <h3>プライバシー侵害の事例</h3>
+      <p>インターネット時代の典型的なプライバシー侵害の例。 <span class="src">S03:p.43-45</span></p>
+
+      <h4>① 個人データを無許可で公表</h4>
+      <div class="example">
+        <div class="ex-label">例</div>
+        <p>SNSに無許可で写真を投稿 → 写真をきっかけに友人の住所がバレたり、付きまとわれる可能性</p>
+      </div>
+
+      <h4>② デマ・誤情報等によるプライバシーの侵害</h4>
+      <div class="example">
+        <div class="ex-label">例</div>
+        <p>全く関係のない事件の関係者としてネット上でデマが拡散 → 被害者への大きな被害、拡散した側も損害賠償を求められる可能性</p>
+      </div>
+
+      <h4>③ プライバシー情報の分析による不利益の発生</h4>
+      <div class="example">
+        <div class="ex-label">例</div>
+        <p>学生の内定辞退率を本人の同意なく分析し外部に販売 → 他社がその情報を見て内定を出さないなど就職活動での不利益</p>
+      </div>
+      <div class="warn-block">③の事例は<strong>データ収集時の目的とデータ使用時の目的が不一致</strong>であることから起こるプライバシー侵害の典型例。</div>
+    </div>
+
+    <div id="oecd">
+      <h3>OECD8原則</h3>
+      <div class="def-box">
+        <div class="def-label">定義</div>
+        <span class="def-term">OECD8原則</span>：1980年にOECD（経済協力開発機構）がまとめたプライバシーガイドライン。2013年に改定。各国の個人情報保護関連法に大きな影響を与えている。 <span class="src">S03:p.46</span>
+      </div>
+      <p>1980年→2013年改定の背景：インターネットの普及（1992年個人向けサービス開始）・遺伝子研究の進歩による集団プライバシー問題の発生</p>
+
+      <!-- OECD 8 Grid -->
+      <div class="oecd-grid">
+        <div class="oecd-item">
+          <div class="oecd-num">① 目的明確化の原則</div>
+          <div class="oecd-desc">収集前に収集目的を明確にする。データの利用は目的と一致する場合のみ</div>
+        </div>
+        <div class="oecd-item">
+          <div class="oecd-num">② 利用制限の原則</div>
+          <div class="oecd-desc">収集目的以外の用途にデータを使用しない（本人同意済み・法令に基づく場合を除く）</div>
+        </div>
+        <div class="oecd-item">
+          <div class="oecd-num">③ 収集制限の原則</div>
+          <div class="oecd-desc">適法かつ公正な手段で収集する。本人に通知または同意を得て収集する</div>
+        </div>
+        <div class="oecd-item">
+          <div class="oecd-num">④ データ内容の原則</div>
+          <div class="oecd-desc">利用目的達成に必要な範囲内で、正確・安全・最新の内容に維持する</div>
+        </div>
+        <div class="oecd-item">
+          <div class="oecd-num">⑤ 安全保護の原則</div>
+          <div class="oecd-desc">合理的な安全保護措置により、滅失・改ざん・漏洩等から保護する</div>
+        </div>
+        <div class="oecd-item">
+          <div class="oecd-num">⑥ 公開の原則</div>
+          <div class="oecd-desc">データの取り扱い方針等を公開し、利用目的・データ管理者等を明記する</div>
+        </div>
+        <div class="oecd-item">
+          <div class="oecd-num">⑦ 個人参加の原則</div>
+          <div class="oecd-desc">自己のデータの有無と内容を確認する権利、開示拒否時に異議申し立てができる権利</div>
+        </div>
+        <div class="oecd-item">
+          <div class="oecd-num">⑧ 責任の原則</div>
+          <div class="oecd-desc">データ管理者は①〜⑦の原則を実施するための措置を遵守する責任がある</div>
+        </div>
+      </div>
+      <span class="src">S03:p.47-55</span>
+
+      <p><strong>他の章との対応：</strong>③収集制限 ＝ オプトイン・オプトアウト / ④データ内容 ＝ 可用性と関連 / ⑤安全保護 ＝ 完全性と関連</p>
+
+      <h4>③収集制限の原則の実施例：Cookieの同意取得</h4>
+      <div class="def-box">
+        <div class="def-label">用語</div>
+        <span class="def-term">Cookie（クッキー）</span>：ウェブサイトのアクセス情報（前回訪問時の情報）を一時的にテキストデータとして保存し、2回目以降のアクセス時に読み取ることでIDの自動ログインや適切な情報提案に活用されるもの。ID・パスワード・閲覧履歴等の個人データが含まれるため、近年はウェブサイトで明示的な同意取得が一般的になっている。 <span class="src">S03:p.49</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 第4章 ============ -->
+  <div class="chapter-banner">
+    <div class="ch-num">CHAPTER 04</div>
+    <h2>プライバシー（2）</h2>
+  </div>
+
+  <div class="section">
+    <div id="pii-law">
+      <h3>日本における個人情報保護法</h3>
+      <p>日本の個人情報は<strong>「個人情報の保護に関する法律（個人情報保護法）」</strong>で守られている。 <span class="src">S03:p.60-61</span></p>
+      <table>
+        <thead><tr><th>年</th><th>出来事</th></tr></thead>
+        <tbody>
+          <tr><td>2003年</td><td>個人情報保護法 公布・一部施行</td></tr>
+          <tr><td>2015年改正（2017年施行）</td><td>3年毎の見直し規定 / 事業者定義変更（5000件以上保有条件が撤廃）/ <strong>要配慮個人情報・匿名加工情報</strong>の規定新設 / <strong>個人情報保護委員会</strong>の新設</td></tr>
+          <tr><td>2020年改正（2022年施行）</td><td><strong>仮名加工情報</strong>の新設 / 漏えい時の報告・本人通知の義務化 / 不適正利用の禁止の明確化</td></tr>
+        </tbody>
+      </table>
+      <div class="warn-block">個人情報の世界は変化が非常に速いため、<strong>個人情報保護委員会（https://www.ppc.go.jp/）</strong>のウェブサイト等で常に最新情報にアップデートすることが最も重要。</div>
+    </div>
+
+    <div id="pii-def">
+      <h3>個人情報とは</h3>
+      <div class="def-box">
+        <div class="def-label">定義</div>
+        <span class="def-term">個人情報</span>：生存する個人に関する情報で、<strong>特定の個人を識別できる情報</strong>、または<strong>個人識別符号が含まれる情報</strong> <span class="src">S03:p.63</span>
+      </div>
+      <p><strong>個人情報の例：</strong>氏名・住所・顔写真・生年月日・電話番号 / 指紋認証データ・静脈認証データ / マイナンバー・パスポート番号・保険証番号・運転免許証番号（＝個人識別符号）</p>
+      <div class="notice">
+        💡 <strong>個人データ</strong>：個人情報データベースを構成する個人情報（住所・生年月日・性別など）。単独では個人を識別できない情報でも、データベースとして組み合わせることで個人情報となりうる。 <span class="src">S03:p.66</span>
+      </div>
+    </div>
+
+    <div id="sensitive">
+      <h3>要配慮個人情報</h3>
+      <div class="def-box">
+        <div class="def-label">定義</div>
+        <span class="def-term">要配慮個人情報</span>：個人情報の中でも特に取り扱いに注意が必要な個人情報。その情報に紐づくことで<strong>差別や偏見が生じる可能性</strong>のある個人情報。 <span class="src">S03:p.67</span>
+      </div>
+      <p><strong>例：</strong>人種・信条・病歴・ゲノム情報・犯罪歴・犯罪の被害にあった事実 など</p>
+      <table>
+        <thead><tr><th>ルール</th><th>内容</th></tr></thead>
+        <tbody>
+          <tr><td>取得時</td><td>必ず本人の同意が必要</td></tr>
+          <tr><td>第三者提供</td><td><strong>オプトアウト方式は禁止</strong>（オプトイン方式のみ可）</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div id="anonymize">
+      <h3>匿名加工情報と仮名加工情報</h3>
+      <table>
+        <thead><tr><th></th><th>匿名加工情報</th><th>仮名加工情報</th></tr></thead>
+        <tbody>
+          <tr><td>加工の程度</td><td>個人識別情報が<strong>復元できない</strong>程度に加工</td><td>他の情報と照合しない限り識別できない程度に加工（照合すれば復元可能）</td></tr>
+          <tr><td>第三者提供</td><td><strong>本人の同意なしで提供可</strong></td><td><strong>原則として禁止</strong></td></tr>
+          <tr><td>利用目的</td><td>収集時の目的に縛られる</td><td>利用目的変更の制限等から除外（<strong>目的外の分析が可能</strong>）</td></tr>
+        </tbody>
+      </table>
+      <span class="src">S03:p.68</span>
+
+      <!-- Anonymize SVG -->
+      <figure>
+        <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg">
+          <!-- 加工前 -->
+          <rect x="10" y="10" width="290" height="180" rx="8" fill="#1e2535" stroke="#2a3550" stroke-width="1"/>
+          <text x="155" y="34" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="JetBrains Mono">加工前</text>
+          <!-- Header -->
+          <rect x="22" y="42" width="266" height="22" rx="3" fill="#2a3550"/>
+          <text x="55" y="57" fill="#5b8dee" font-size="10" font-family="Noto Sans JP">名前</text>
+          <text x="110" y="57" fill="#5b8dee" font-size="10" font-family="Noto Sans JP">住所</text>
+          <text x="185" y="57" fill="#5b8dee" font-size="10" font-family="Noto Sans JP">生年月日</text>
+          <text x="260" y="57" fill="#5b8dee" font-size="10" font-family="Noto Sans JP">性別</text>
+          <!-- Row 1 -->
+          <text x="35" y="80" fill="#f87171" font-size="10" font-family="Noto Sans JP">才羽太郎</text>
+          <text x="110" y="80" fill="#f87171" font-size="10" font-family="Noto Sans JP">東京都新宿区…</text>
+          <text x="185" y="80" fill="#f87171" font-size="10" font-family="Noto Sans JP">2003/4/5</text>
+          <text x="265" y="80" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP">男</text>
+          <!-- Row 2 -->
+          <text x="35" y="100" fill="#f87171" font-size="10" font-family="Noto Sans JP">柴葉花子</text>
+          <text x="110" y="100" fill="#f87171" font-size="10" font-family="Noto Sans JP">福岡県福岡市…</text>
+          <text x="185" y="100" fill="#f87171" font-size="10" font-family="Noto Sans JP">1998/9/10</text>
+          <text x="265" y="100" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP">女</text>
+
+          <!-- Arrow -->
+          <text x="345" y="108" text-anchor="middle" fill="#5b8dee" font-size="24">→</text>
+          <text x="345" y="125" text-anchor="middle" fill="#34d399" font-size="9" font-family="JetBrains Mono">匿名加工</text>
+
+          <!-- 加工後 -->
+          <rect x="400" y="10" width="290" height="180" rx="8" fill="#1e2535" stroke="#34d399" stroke-width="1"/>
+          <text x="545" y="34" text-anchor="middle" fill="#34d399" font-size="11" font-family="JetBrains Mono">匿名加工後</text>
+          <rect x="412" y="42" width="266" height="22" rx="3" fill="#2a3550"/>
+          <text x="440" y="57" fill="#5b8dee" font-size="10" font-family="Noto Sans JP">氏名</text>
+          <text x="490" y="57" fill="#5b8dee" font-size="10" font-family="Noto Sans JP">住所</text>
+          <text x="560" y="57" fill="#5b8dee" font-size="10" font-family="Noto Sans JP">世代</text>
+          <text x="630" y="57" fill="#5b8dee" font-size="10" font-family="Noto Sans JP">性別</text>
+          <text x="440" y="80" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">−</text>
+          <text x="490" y="80" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP">東京都</text>
+          <text x="560" y="80" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP">10代</text>
+          <text x="635" y="80" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP">男</text>
+          <text x="440" y="100" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">−</text>
+          <text x="490" y="100" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP">福岡県</text>
+          <text x="560" y="100" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP">20代</text>
+          <text x="635" y="100" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP">女</text>
+          <text x="545" y="155" text-anchor="middle" fill="#fbbf24" font-size="10" font-family="Noto Sans JP">⚠ 外れ値（110代等）に注意</text>
+          <text x="545" y="175" text-anchor="middle" fill="#8a99b8" font-size="9.5" font-family="Noto Sans JP">過疎地域では特定のリスクあり</text>
+        </svg>
+        <figcaption>図：匿名加工情報の例 <span class="src">S03:p.69-70</span></figcaption>
+      </figure>
+      <div class="audio-block">仮名加工情報を使うメリットは目的外の分析ができるようになること。個人情報保護法はデータに対する規制だけでなく、加工を通じて新しいサービスやイノベーションを生み出すためのサポートもしている。 <span class="tag-muted">← S05</span></div>
+    </div>
+
+    <div id="gdpr">
+      <h3>越境データとGDPR</h3>
+      <div class="def-box">
+        <div class="def-label">定義</div>
+        <span class="def-term">越境データ</span>：国境を越えてやり取りされるデータ（通信・取引・映像・企業間データなど） <span class="src">S03:p.72</span>
+      </div>
+
+      <h4>越境データ量の推移</h4>
+      <table>
+        <thead><tr><th>年</th><th>データ量</th></tr></thead>
+        <tbody>
+          <tr><td>2005年</td><td>4.7 Tbps</td></tr>
+          <tr><td>2015年</td><td>154 Tbps（約33倍）</td></tr>
+          <tr><td>2020年</td><td>718 Tbps（2005年比約153倍）</td></tr>
+        </tbody>
+      </table>
+
+      <h4>GDPR（一般データ保護規則）</h4>
+      <div class="def-box">
+        <div class="def-label">定義</div>
+        <span class="def-term">GDPR</span>（General Data Protection Regulation）：2016年4月制定・2018年5月施行。EU域内の個人データの保護が目的。 <span class="src">S03:p.74</span>
+      </div>
+      <ul>
+        <li><strong>EU域外</strong>でも、EU域内の個人に対してサービスを提供する場合は対象（例：EU向けに輸出した車の走行データが日本に送られる場合も対象）</li>
+        <li>越境データ（EU域外へのデータ持ち出し）には<strong>十分性認定</strong>が必要</li>
+        <li>日本はEUの十分性認定を受けている</li>
+      </ul>
+      <div class="def-box">
+        <div class="def-label">定義</div>
+        <span class="def-term">十分性認定</span>：EUと同等レベルの個人情報保護ルールが整備されているとEUが認定すること
+      </div>
+      <div class="audio-block">GDPRが改正されたら日本の制度も変えないといけない形になるため、データというのは一国の問題ではなく世界的なトレンドや世界的な個人情報の扱いを常にチェックしていくことが重要。 <span class="tag-muted">← S05</span></div>
+    </div>
+  </div>
+
+  <!-- ============ 補足 ============ -->
+  <div class="supp-section" id="glossary">
+    <div class="supp-header">
+      <div class="supp-icon">⭐</div>
+      <div>
+        <h2>補足A：最重要ワード一覧</h2>
+        <div class="supp-sub">★★★最重要 / ★★☆重要 / ★☆☆補助</div>
+      </div>
+    </div>
+    <div class="section" style="padding: 16px;">
+      <table>
+        <thead><tr><th>用語</th><th>読み</th><th>定義（要旨）</th><th>重要度</th></tr></thead>
+        <tbody>
+          <tr><td><strong>ELSI</strong></td><td>エルシー</td><td>技術の進歩により発生する倫理的・法的・社会的問題の総称</td><td class="star-3">★★★</td></tr>
+          <tr><td><strong>データ倫理</strong></td><td>—</td><td>データの利活用によって負の影響を与える可能性のあるデータ実務を評価するもの</td><td class="star-3">★★★</td></tr>
+          <tr><td><strong>選択バイアス</strong></td><td>せんたく〜</td><td>調査対象の偏りの影響で収集データに偏りが出ること（計画段階）</td><td class="star-3">★★★</td></tr>
+          <tr><td><strong>情報バイアス</strong></td><td>じょうほう〜</td><td>調査方法が原因でデータに偏りが出ること（実施段階）</td><td class="star-3">★★★</td></tr>
+          <tr><td><strong>測定バイアス</strong></td><td>そくてい〜</td><td>データ作成時に入り込む偏った誤差（情報バイアスの一種）</td><td class="star-2">★★☆</td></tr>
+          <tr><td><strong>オプトイン</strong></td><td>—</td><td>事前説明・同意を得てからデータ収集する方法</td><td class="star-3">★★★</td></tr>
+          <tr><td><strong>オプトアウト</strong></td><td>—</td><td>掲示等で同意を得て収集されたデータに対し、後から本人が使用拒否できる方法</td><td class="star-3">★★★</td></tr>
+          <tr><td><strong>捏造</strong></td><td>ねつぞう</td><td>存在しないデータを意図的に作り出す研究不正行為</td><td class="star-3">★★★</td></tr>
+          <tr><td><strong>改ざん</strong></td><td>かいざん</td><td>データや分析過程等の意図的な改変</td><td class="star-3">★★★</td></tr>
+          <tr><td><strong>盗用</strong></td><td>とうよう</td><td>他人のデータや分析結果を自分の成果として報告する行為</td><td class="star-3">★★★</td></tr>
+          <tr><td><strong>情報セキュリティのCIA</strong></td><td>—</td><td>機密性・完全性・可用性の頭文字。ISO/IEC 27001で定められた3要素</td><td class="star-3">★★★</td></tr>
+          <tr><td><strong>機密性</strong></td><td>きみつせい</td><td>アクセス許可のある人・システムだけがアクセスできる状態</td><td class="star-3">★★★</td></tr>
+          <tr><td><strong>完全性</strong></td><td>かんぜんせい</td><td>情報が意図通りの状態で維持されている状態</td><td class="star-3">★★★</td></tr>
+          <tr><td><strong>可用性</strong></td><td>かようせい</td><td>いつでも利用でき、問題が出てもすぐに復旧できる状態</td><td class="star-3">★★★</td></tr>
+          <tr><td><strong>OECD8原則</strong></td><td>—</td><td>目的明確化・利用制限・収集制限・データ内容・安全保護・公開・個人参加・責任の8原則</td><td class="star-3">★★★</td></tr>
+          <tr><td><strong>Cookie</strong></td><td>クッキー</td><td>ウェブサイトのアクセス情報を一時保存するテキストデータ</td><td class="star-2">★★☆</td></tr>
+          <tr><td><strong>個人情報</strong></td><td>こじんじょうほう</td><td>生存する個人に関する情報で特定個人を識別できる情報</td><td class="star-3">★★★</td></tr>
+          <tr><td><strong>個人識別符号</strong></td><td>こじんしきべつふごう</td><td>マイナンバー・パスポート番号等、個人を識別する公的番号</td><td class="star-2">★★☆</td></tr>
+          <tr><td><strong>要配慮個人情報</strong></td><td>ようはいりょ〜</td><td>差別・偏見が生じる可能性のある個人情報。オプトアウト提供禁止</td><td class="star-3">★★★</td></tr>
+          <tr><td><strong>匿名加工情報</strong></td><td>とくめいかこう〜</td><td>個人識別情報を復元できない程度に加工した情報。第三者提供可</td><td class="star-3">★★★</td></tr>
+          <tr><td><strong>仮名加工情報</strong></td><td>かめいかこう〜</td><td>照合しない限り識別できない程度に加工した情報。第三者提供原則禁止</td><td class="star-3">★★★</td></tr>
+          <tr><td><strong>越境データ</strong></td><td>えっきょう〜</td><td>国境を越えてやり取りされるデータ</td><td class="star-2">★★☆</td></tr>
+          <tr><td><strong>GDPR</strong></td><td>ジーディーピーアール</td><td>General Data Protection Regulation。EUの一般データ保護規則（2018年施行）</td><td class="star-3">★★★</td></tr>
+          <tr><td><strong>十分性認定</strong></td><td>じゅうぶんせいにんてい</td><td>EUと同等レベルの個人情報保護ルールが整備されているとEUが認定すること</td><td class="star-2">★★☆</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section" id="exam">
+    <div class="supp-header">
+      <div class="supp-icon">🎯</div>
+      <div><h2 style="color:var(--text)">補足C：試験・レポートで重要な観点</h2></div>
+    </div>
+    <ol>
+      <li><strong>バイアスの種類と発生タイミング</strong>：選択バイアス（計画段階）・情報バイアス（実施段階）・測定バイアス（情報バイアスの一種）の違いを説明できること</li>
+      <li><strong>オプトインとオプトアウトの違い</strong>：具体例を含めて説明できること</li>
+      <li><strong>研究不正の3類型</strong>：捏造・改ざん・盗用の定義と具体例を説明できること</li>
+      <li><strong>情報セキュリティのCIA</strong>：3つを定義と対策とともに説明できること<br><em>機密性→権限設定・端末制限・暗号化 / 完全性→ログ・入力制限・デジタル署名 / 可用性→バックアップ・分散</em></li>
+      <li><strong>OECD8原則の名称と内容</strong>：8つを説明できること（特に①目的明確化・②利用制限・③収集制限は最重要）</li>
+      <li><strong>匿名加工情報と仮名加工情報の違い</strong>：復元可能性・第三者提供の可否・利用目的の制限の3点で比較できること</li>
+      <li><strong>要配慮個人情報</strong>：定義・例・オプトアウト禁止の理由を説明できること</li>
+    </ol>
+  </div>
+
+  <div class="section" id="connection">
+    <div class="supp-header">
+      <div class="supp-icon">🔗</div>
+      <div><h2 style="color:var(--text)">補足D：関連概念・次回への接続</h2></div>
+    </div>
+    <p>今回学んだ<strong>データ倫理・セキュリティ・プライバシー</strong>は、データ分析プロセス全体に関わる「心得」として位置づけられる。第1〜6回で学んだデータの収集・可視化・分析の技術は、第7回の倫理・法律の知識と組み合わせて初めて適切に活用できる。</p>
+    <div class="ext-block">技術面の力をつけるだけでなく、常にELSI（倫理的・法的・社会的問題）の視点を持ち続けることが、真のデータサイエンティストに求められる姿勢といえる。</div>
+  </div>
+
+</div><!-- /main -->
+</body>
+</html>
