@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>データサイエンス入門 第9回 | 回帰分析</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --bg-card: #1a1f2e;
+    --bg-card2: #1e2535;
+    --border: #2a3352;
+    --text: #e2e8f5;
+    --text-sub: #8a99b8;
+    --accent-blue: #5b8dee;
+    --accent-green: #34d399;
+    --accent-yellow: #fbbf24;
+    --accent-purple: #a78bfa;
+    --accent-orange: #f97316;
+    --accent-red: #f87171;
+    --sidebar-w: 260px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 15px;
+    line-height: 1.8;
+    display: flex;
+  }
+
+  /* ── Sidebar ── */
+  #sidebar {
+    width: var(--sidebar-w);
+    min-height: 100vh;
+    background: var(--bg-card);
+    border-right: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    overflow-y: auto;
+    flex-shrink: 0;
+    padding: 20px 0;
+  }
+  #sidebar h2 {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--text-sub);
+    padding: 0 18px 8px;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 10px;
+  }
+  #sidebar ul { list-style: none; }
+  #sidebar ul li a {
+    display: block;
+    padding: 6px 18px;
+    color: var(--text-sub);
+    text-decoration: none;
+    font-size: 13px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+  }
+  #sidebar ul li a:hover,
+  #sidebar ul li a.active {
+    color: var(--accent-blue);
+    border-left-color: var(--accent-blue);
+    background: rgba(91,141,238,0.06);
+  }
+  #sidebar ul li.sub a { padding-left: 32px; font-size: 12px; }
+
+  /* ── Main ── */
+  #main {
+    flex: 1;
+    max-width: 880px;
+    padding: 40px 36px;
+    overflow-x: hidden;
+  }
+
+  /* ── Header ── */
+  .page-header {
+    margin-bottom: 40px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .page-header .badge {
+    display: inline-block;
+    background: var(--accent-blue);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-bottom: 12px;
+    letter-spacing: 0.05em;
+  }
+  .page-header h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+  .page-header .meta { color: var(--text-sub); font-size: 13px; }
+  .page-header .meta span { margin-right: 18px; }
+
+  .learning-goals {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent-blue);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-top: 20px;
+  }
+  .learning-goals h3 { font-size: 13px; color: var(--accent-blue); margin-bottom: 8px; letter-spacing: 0.05em; }
+  .learning-goals ol { padding-left: 20px; }
+  .learning-goals li { font-size: 14px; margin-bottom: 4px; }
+
+  /* ── Section ── */
+  .section { margin-bottom: 48px; }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-num {
+    background: var(--accent-blue);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .section h2 { font-size: 20px; font-weight: 700; }
+
+  .subsection { margin-bottom: 28px; }
+  .subsection h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--accent-blue);
+    margin-bottom: 12px;
+    padding-left: 10px;
+    border-left: 3px solid var(--accent-blue);
+  }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 22px;
+    margin-bottom: 16px;
+  }
+
+  /* ── Supplement Blocks ── */
+  .supp-audio {
+    border-left: 4px solid var(--accent-blue);
+    background: rgba(91,141,238,0.07);
+    border-radius: 0 6px 6px 0;
+    padding: 12px 16px;
+    margin: 10px 0;
+    font-size: 14px;
+  }
+  .supp-audio::before {
+    content: "🎙 音声補足";
+    display: block;
+    font-size: 11px;
+    color: var(--accent-blue);
+    font-weight: 700;
+    margin-bottom: 6px;
+    letter-spacing: 0.05em;
+  }
+  .supp-infer {
+    border-left: 4px solid var(--accent-purple);
+    background: rgba(167,139,250,0.07);
+    border-radius: 0 6px 6px 0;
+    padding: 12px 16px;
+    margin: 10px 0;
+    font-size: 14px;
+  }
+  .supp-warn {
+    border-left: 4px solid var(--accent-orange);
+    background: rgba(249,115,22,0.07);
+    border-radius: 0 6px 6px 0;
+    padding: 12px 16px;
+    margin: 10px 0;
+    font-size: 14px;
+  }
+  .supp-warn::before {
+    content: "⚠ 要確認";
+    display: block;
+    font-size: 11px;
+    color: var(--accent-orange);
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .supp-ext {
+    border-left: 4px solid var(--accent-green);
+    background: rgba(52,211,153,0.07);
+    border-radius: 0 6px 6px 0;
+    padding: 12px 16px;
+    margin: 10px 0;
+    font-size: 14px;
+  }
+  .supp-ext::before {
+    content: "💡 外部補足";
+    display: block;
+    font-size: 11px;
+    color: var(--accent-green);
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  /* ── Source pointer ── */
+  .src {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-sub);
+    background: var(--bg-card2);
+    border: 1px solid var(--border);
+    padding: 1px 5px;
+    border-radius: 3px;
+    margin-left: 6px;
+    white-space: nowrap;
+  }
+
+  /* ── Definition box ── */
+  .def-box {
+    background: var(--bg-card2);
+    border: 1px solid var(--accent-blue);
+    border-radius: 6px;
+    padding: 14px 18px;
+    margin: 12px 0;
+  }
+  .def-box .def-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent-blue);
+    letter-spacing: 0.08em;
+    margin-bottom: 6px;
+  }
+  .def-box .def-title { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+  .def-box .def-body { font-size: 14px; color: var(--text-sub); }
+
+  /* ── Emphasis box ── */
+  .emph {
+    background: rgba(251,191,36,0.1);
+    border: 1px solid rgba(251,191,36,0.3);
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 14px;
+    color: var(--accent-yellow);
+  }
+  .emph::before { content: "⭐ "; }
+
+  /* ── Table ── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0;
+    font-size: 13px;
+  }
+  th {
+    background: var(--bg-card2);
+    color: var(--accent-blue);
+    font-weight: 600;
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    text-align: left;
+  }
+  td {
+    padding: 7px 12px;
+    border: 1px solid var(--border);
+    color: var(--text-sub);
+  }
+  tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+
+  /* ── SVG container ── */
+  .svg-wrap {
+    background: var(--bg-card2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    margin: 16px 0;
+    overflow-x: auto;
+  }
+  figcaption {
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-sub);
+    margin-top: 8px;
+  }
+
+  /* ── Appendix ── */
+  .appendix {
+    margin-top: 60px;
+    padding-top: 30px;
+    border-top: 2px solid var(--border);
+  }
+  .appendix h2 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    color: var(--accent-yellow);
+  }
+  .app-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+  }
+  .app-card h3 {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .app-card.a { border-top: 3px solid var(--accent-yellow); }
+  .app-card.a h3 { color: var(--accent-yellow); }
+  .app-card.b { border-top: 3px solid var(--accent-blue); }
+  .app-card.b h3 { color: var(--accent-blue); }
+  .app-card.c { border-top: 3px solid var(--accent-red); }
+  .app-card.c h3 { color: var(--accent-red); }
+  .app-card.d { border-top: 3px solid var(--accent-green); }
+  .app-card.d h3 { color: var(--accent-green); }
+  .app-card.e { border-top: 3px solid var(--accent-purple); }
+  .app-card.e h3 { color: var(--accent-purple); }
+
+  p { margin-bottom: 10px; }
+  ul, ol { padding-left: 22px; margin-bottom: 10px; }
+  li { margin-bottom: 4px; }
+  strong { color: var(--text); font-weight: 600; }
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--bg-card2);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 13px;
+    color: var(--accent-green);
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    #sidebar { display: none; }
+    #main { padding: 20px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════ SIDEBAR ═══════════════════════════════════════ -->
+<nav id="sidebar">
+  <h2>📖 目次</h2>
+  <ul>
+    <li><a href="#review">前回の復習</a></li>
+    <li><a href="#ch1">第1章 回帰分析の基礎</a></li>
+    <li class="sub"><a href="#ch1-predict">予測とは</a></li>
+    <li class="sub"><a href="#ch1-regression">回帰分析とは</a></li>
+    <li class="sub"><a href="#ch1-simple">単回帰分析</a></li>
+    <li class="sub"><a href="#ch1-terms">用語集</a></li>
+    <li class="sub"><a href="#ch1-read">回帰直線の読み方</a></li>
+    <li><a href="#ch2">第2章 最小二乗法</a></li>
+    <li class="sub"><a href="#ch2-linear">一次関数の復習</a></li>
+    <li class="sub"><a href="#ch2-ols">最小二乗法</a></li>
+    <li class="sub"><a href="#ch2-calc">計算例</a></li>
+    <li class="sub"><a href="#ch2-feat">回帰直線の特徴</a></li>
+    <li><a href="#ch3">第3章 回帰分析の留意点</a></li>
+    <li class="sub"><a href="#ch3-1">① 予測の向き</a></li>
+    <li class="sub"><a href="#ch3-2">② 外挿と内挿</a></li>
+    <li class="sub"><a href="#ch3-3">③ 外れ値</a></li>
+    <li class="sub"><a href="#ch3-4">④ 可視化</a></li>
+    <li><a href="#ch4">第4章 データ分析事例</a></li>
+    <li><a href="#appendix">📎 末尾補足</a></li>
+  </ul>
+</nav>
+
+<!-- ═══════════════════════════════════════ MAIN ═══════════════════════════════════════ -->
+<main id="main">
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="badge">データサイエンス入門</div>
+  <h1>第9回 データを使った予測（2）</h1>
+  <div class="meta">
+    <span>🎓 浅田 麻菜</span>
+    <span>📅 サイバー大学</span>
+    <span>📌 回帰分析・最小二乗法</span>
+    <span style="color:#34d399;font-weight:600;">✅ QC PASS 89.6%</span>
+  </div>
+  <div class="learning-goals">
+    <h3>🎯 学習目標</h3>
+    <ol>
+      <li>回帰分析の基礎的な概念を説明できる</li>
+      <li>回帰分析の留意点を理解し、基礎的な解釈が正しくできる</li>
+    </ol>
+  </div>
+</div>
+
+<!-- ═══ REVIEW ═══ -->
+<section class="section" id="review">
+  <div class="section-header">
+    <span class="section-num">復習</span>
+    <h2>前回の復習：統計的検定</h2>
+  </div>
+
+  <div class="card">
+    <p><strong>問題：</strong>あるテストについて全国平均が60点、標準偏差10点でした。このテストを受けたあるクラスの平均点は75点でした。「全国平均より高い」と主張するための帰無仮説・対立仮説は何か？<span class="src">S03:p.2</span></p>
+  </div>
+
+  <div class="card">
+    <table>
+      <thead><tr><th>仮説</th><th>内容</th></tr></thead>
+      <tbody>
+        <tr><td><strong>帰無仮説（H₀）</strong></td><td>平均点は全国平均と差がない</td></tr>
+        <tr><td><strong>対立仮説（H₁）</strong></td><td>平均点は全国平均と差がある</td></tr>
+      </tbody>
+    </table>
+    <span class="src">S03:p.3</span>
+  </div>
+
+  <div class="supp-audio">
+    今回の主張（証明したいこと）は対立仮説に該当する。帰無仮説が棄却（否定）されることで、対立仮説が採択されるというのが統計的検定の考え方である。<span class="src">S05:A</span>
+  </div>
+
+  <div class="supp-ext">
+    統計的検定では「直接主張したいことを証明する」のではなく、「その反対の仮定（帰無仮説）が成り立たないことを示す」という間接的な方法を用いる。これを背理法的推論という。
+  </div>
+</section>
+
+<!-- ═══ CHAPTER 1 ═══ -->
+<section class="section" id="ch1">
+  <div class="section-header">
+    <span class="section-num">Ch.1</span>
+    <h2>回帰分析の基礎</h2>
+  </div>
+
+  <p style="color: var(--text-sub); font-size: 13px; margin-bottom: 20px;">この授業ではデータ解析を4回に分けて学習する。第8回：統計的推測、<strong>第9回：過去のパターンを使った予測</strong>、第10回：グループ分け、第11回：関係性の発見。<span class="src">S03:p.8</span></p>
+
+  <!-- 身近な予測 -->
+  <div class="subsection" id="ch1-predict">
+    <h3>予測とはなにか</h3>
+
+    <div class="card">
+      <p>予測が必要な場面は大きく2種類ある。<span class="src">S03:p.10</span></p>
+      <ul>
+        <li><strong>「将来起こること」を予測したい</strong> — 天気・スポーツの勝敗・テストの点数・売り上げ など</li>
+        <li><strong>「データの"穴"」を予測したい</strong> — 記録の欠損・紛失 など</li>
+      </ul>
+    </div>
+
+    <div class="supp-audio">
+      例えば毎日植物の成長を記録していたのに、ある日たまたまデータを取り忘れてしまったとき、その日にどれくらい成長していたかをデータから予測したい、というケースもある。このように「データの穴を予測する」ことも予測の一つである。<span class="src">S05:A</span>
+    </div>
+
+    <div class="card">
+      <p><strong>予測の基本的なアプローチ</strong>：過去のパターンを元に、将来に何が起こるか、あるいは欠損したデータがどのような値だったかを推定する。<span class="src">S03:p.11</span></p>
+      <p>そのために重要な2つのポイント：</p>
+      <ol>
+        <li>その<strong>過去のパターン</strong>はどのようなパターンか</li>
+        <li>そのパターンの予測には<strong>どのような要因</strong>が影響しているか</li>
+      </ol>
+    </div>
+
+    <!-- Example 1 -->
+    <div class="card">
+      <p><strong>例1：広告額 → 来客数の予測</strong><span class="src">S03:p.12-14</span></p>
+      <ul>
+        <li>X軸（説明変数）：広告額</li>
+        <li>Y軸（目的変数）：来客数</li>
+        <li>データを散布図にすると右肩上がりの直線関係がある</li>
+        <li>パターン：<strong>直線状</strong></li>
+        <li>予測に影響する要素：<strong>広告額</strong></li>
+      </ul>
+    </div>
+
+    <div class="supp-audio">
+      広告額が10万円から30万円に増加したとき、来客数が50人から60人に増えた。この直線をさらに延長することで、将来の来客数も同様に右肩上がりで増えていくことが予測できる。<span class="src">S05:A</span>
+    </div>
+
+    <!-- Example 2 -->
+    <div class="card">
+      <p><strong>例2：勉強時間 → 試験の合否の予測</strong><span class="src">S03:p.15-16</span></p>
+      <ul>
+        <li>X軸（説明変数）：勉強時間</li>
+        <li>Y軸（目的変数）：合否（合格 / 不合格）</li>
+        <li>パターン：<strong>S字の曲線（ロジスティック曲線）</strong></li>
+        <li>予測に影響する要素：<strong>勉強時間</strong></li>
+      </ul>
+    </div>
+
+    <div class="supp-audio">
+      10時間の勉強では合格・不合格の両方の受験生がいる。しかし20時間では合格者しかいない。18時間勉強した受験生がきた場合、この曲線に従えば合格できそうだと予測できる。<span class="src">S05:A</span>
+    </div>
+
+    <!-- SVG: 2つの予測パターン比較 -->
+    <div class="svg-wrap">
+      <svg viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;display:block;margin:auto;">
+        <!-- 例1: 直線 -->
+        <text x="175" y="20" text-anchor="middle" fill="#8a99b8" font-size="12" font-family="Noto Sans JP">例1：直線モデル（単回帰）</text>
+        <rect x="40" y="30" width="270" height="200" rx="6" fill="#1e2535" stroke="#2a3352"/>
+        <line x1="60" y1="210" x2="290" y2="210" stroke="#2a3352" stroke-width="1.5"/>
+        <line x1="60" y1="210" x2="60" y2="40" stroke="#2a3352" stroke-width="1.5"/>
+        <text x="180" y="228" text-anchor="middle" fill="#8a99b8" font-size="10">広告額</text>
+        <text x="45" y="130" text-anchor="middle" fill="#8a99b8" font-size="10" transform="rotate(-90 45 130)">来客数</text>
+        <!-- data points -->
+        <circle cx="80" cy="185" r="4" fill="#5b8dee"/>
+        <circle cx="110" cy="165" r="4" fill="#5b8dee"/>
+        <circle cx="140" cy="145" r="4" fill="#5b8dee"/>
+        <circle cx="160" cy="130" r="4" fill="#5b8dee"/>
+        <circle cx="190" cy="115" r="4" fill="#5b8dee"/>
+        <circle cx="220" cy="100" r="4" fill="#5b8dee"/>
+        <circle cx="240" cy="90" r="4" fill="#5b8dee"/>
+        <!-- regression line -->
+        <line x1="65" y1="200" x2="300" y2="70" stroke="#34d399" stroke-width="2"/>
+        <!-- prediction extension -->
+        <line x1="240" y1="90" x2="295" y2="64" stroke="#f97316" stroke-width="2" stroke-dasharray="5,3"/>
+        <text x="250" y="58" fill="#f97316" font-size="10">予測</text>
+        <text x="110" y="250" text-anchor="middle" fill="#34d399" font-size="10">直線パターン</text>
+
+        <!-- 例2: 曲線 -->
+        <text x="525" y="20" text-anchor="middle" fill="#8a99b8" font-size="12" font-family="Noto Sans JP">例2：曲線モデル（ロジスティック）</text>
+        <rect x="390" y="30" width="270" height="200" rx="6" fill="#1e2535" stroke="#2a3352"/>
+        <line x1="410" y1="210" x2="640" y2="210" stroke="#2a3352" stroke-width="1.5"/>
+        <line x1="410" y1="210" x2="410" y2="40" stroke="#2a3352" stroke-width="1.5"/>
+        <text x="525" y="228" text-anchor="middle" fill="#8a99b8" font-size="10">勉強時間</text>
+        <text x="400" y="130" text-anchor="middle" fill="#8a99b8" font-size="10" transform="rotate(-90 400 130)">合否</text>
+        <!-- labels -->
+        <text x="420" y="205" fill="#8a99b8" font-size="9">不合格</text>
+        <text x="420" y="85" fill="#8a99b8" font-size="9">合格</text>
+        <!-- data points -->
+        <circle cx="430" cy="200" r="4" fill="#5b8dee"/>
+        <circle cx="445" cy="200" r="4" fill="#5b8dee"/>
+        <circle cx="460" cy="198" r="4" fill="#5b8dee"/>
+        <circle cx="495" cy="195" r="4" fill="#5b8dee"/>
+        <circle cx="510" cy="80" r="4" fill="#34d399"/>
+        <circle cx="530" cy="80" r="4" fill="#34d399"/>
+        <circle cx="555" cy="78" r="4" fill="#34d399"/>
+        <circle cx="580" cy="78" r="4" fill="#34d399"/>
+        <!-- S-curve -->
+        <path d="M420 200 Q480 198 495 190 Q510 120 525 82 Q535 78 640 76" stroke="#fbbf24" stroke-width="2" fill="none"/>
+        <!-- prediction point -->
+        <circle cx="518" cy="80" r="5" fill="#f97316" stroke="#fff" stroke-width="1.5"/>
+        <text x="512" y="72" fill="#f97316" font-size="9">予測</text>
+        <text x="480" y="250" text-anchor="middle" fill="#fbbf24" font-size="10">S字曲線パターン</text>
+      </svg>
+      <figcaption>図1: 2つの予測モデルの例（左：直線回帰、右：ロジスティック回帰） <span class="src">S03:p.12-16</span></figcaption>
+    </div>
+  </div>
+
+  <!-- 回帰分析 -->
+  <div class="subsection" id="ch1-regression">
+    <h3>回帰分析とは</h3>
+
+    <div class="def-box">
+      <div class="def-label">【定義】</div>
+      <div class="def-title">回帰分析（Regression Analysis）</div>
+      <div class="def-body">ある変数と目的となる変数の関係を分析する手法。将来の予測や状況の説明に利用される。<span class="src">S03:p.17</span></div>
+    </div>
+
+    <p><strong>回帰分析の種類：</strong><span class="src">S03:p.17-18</span></p>
+    <table>
+      <thead><tr><th>手法</th><th>概要</th><th>対象</th></tr></thead>
+      <tbody>
+        <tr><td><strong>単回帰分析</strong></td><td>1つの説明変数と目的変数の直線関係</td><td>連続値（数値）</td></tr>
+        <tr><td>重回帰分析</td><td>複数の説明変数を使った予測</td><td>連続値</td></tr>
+        <tr><td>ロジスティック回帰</td><td>2値（合否・YesNo）の予測</td><td>カテゴリ値</td></tr>
+        <tr><td>多項式回帰</td><td>曲線による関係表現</td><td>連続値</td></tr>
+        <tr><td>リッジ回帰・Lasso回帰</td><td>過学習を防ぐ正則化手法</td><td>連続値</td></tr>
+      </tbody>
+    </table>
+
+    <div class="supp-audio">
+      この授業では、回帰分析の中でも最も基礎となる単回帰分析について学習する。重回帰分析やロジスティック回帰はその発展形である。<span class="src">S05:A</span>
+    </div>
+  </div>
+
+  <!-- 単回帰分析 -->
+  <div class="subsection" id="ch1-simple">
+    <h3>単回帰分析とは</h3>
+
+    <div class="def-box">
+      <div class="def-label">【定義】</div>
+      <div class="def-title">単回帰分析（Simple Linear Regression）</div>
+      <div class="def-body">ある1つの変数と目的となる変数の関係を<strong>直線</strong>で表現した分析方法。目的変数は連続値（試験の点数・身長・体重など）であることが必要。<span class="src">S03:p.19</span></div>
+    </div>
+
+    <div class="supp-audio">
+      目的変数が「連続値」であることが重要。合否のように2つの状態しかないデータを予測したい場合は、単回帰分析ではなくロジスティック回帰を用いる。<span class="src">S05:A</span>
+    </div>
+  </div>
+
+  <!-- 用語 -->
+  <div class="subsection" id="ch1-terms">
+    <h3>重要用語</h3>
+
+    <div class="emph">
+      以下の3用語は必ず覚えること。<span class="src">S03:p.20-21</span>
+    </div>
+
+    <table>
+      <thead><tr><th>用語</th><th>読み</th><th>意味</th><th>別名</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>目的変数</strong></td>
+          <td>もくてきへんすう</td>
+          <td>予測したいデータ（y軸）</td>
+          <td>被説明変数・従属変数・応答変数・内生変数</td>
+        </tr>
+        <tr>
+          <td><strong>説明変数</strong></td>
+          <td>せつめいへんすう</td>
+          <td>予測に使う要因データ（x軸）</td>
+          <td>独立変数・予測変数・外生変数</td>
+        </tr>
+        <tr>
+          <td><strong>回帰直線</strong></td>
+          <td>かいきちょくせん</td>
+          <td>データの傾向を表す直線</td>
+          <td>—</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="supp-audio">
+      教科書によって用語の名前が変わる場合があるが、対応関係を見ると理解しやすい。「目的変数＝被説明変数」「説明変数＝独立変数」というように対になっている。<span class="src">S05:A</span>
+    </div>
+  </div>
+
+  <!-- 回帰直線の読み方 -->
+  <div class="subsection" id="ch1-read">
+    <h3>回帰直線の読み方</h3>
+
+    <div class="card">
+      <p><strong>例：</strong>来客数 = 広告額 × 0.5 + 45<span class="src">S03:p.22-23</span></p>
+      <p>広告額（説明変数）= 50万円のとき：</p>
+      <p style="text-align:center; font-family:'JetBrains Mono',monospace; font-size:14px; color:var(--accent-green); padding:8px;">
+        来客数 = 50 × 0.5 + 45 = <strong>70人</strong>
+      </p>
+      <p>→ 説明変数の値が決まれば、回帰直線から目的変数の値が予測できる。</p>
+    </div>
+
+    <div class="emph">
+      <strong>単回帰分析の方向は「説明変数 → 目的変数」のみ。逆方向の予測は不可。</strong><span class="src">S03:p.24-26</span>
+    </div>
+
+    <div class="supp-audio">
+      「来客数が決まれば広告額も予測できるのでは？」と思うかもしれないが、これはNGである。単回帰分析では必ず説明変数から目的変数を予測するという方向性が定められており、その逆は行えない。なぜかは第3章で詳しく学ぶ。<span class="src">S05:A</span>
+    </div>
+
+    <!-- Summary Ch1 -->
+    <div class="card" style="border-left: 3px solid var(--accent-green);">
+      <p style="color:var(--accent-green);font-weight:600;margin-bottom:8px;">第1章 まとめ<span class="src">S03:p.27</span></p>
+      <ul>
+        <li>目的変数：予測対象の変数（y）</li>
+        <li>説明変数：目的変数に影響する変数（x）</li>
+        <li>回帰直線：目的変数と説明変数の関係を直線で表現</li>
+        <li>単回帰分析：1つの説明変数と目的変数の直線関係</li>
+        <li>予測の方向：説明変数 → 目的変数（逆方向は不可）</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CHAPTER 2 ═══ -->
+<section class="section" id="ch2">
+  <div class="section-header">
+    <span class="section-num">Ch.2</span>
+    <h2>最小二乗法</h2>
+  </div>
+
+  <p style="color: var(--text-sub); font-size: 13px; margin-bottom: 16px;"><strong>学習目標：</strong>最小二乗法を用いた回帰直線の導出方法が説明できる。<span class="src">S03:p.30</span></p>
+
+  <!-- 一次関数復習 -->
+  <div class="subsection" id="ch2-linear">
+    <h3>一次関数の復習</h3>
+
+    <div class="card">
+      <p>回帰直線は一次関数 <code>y = ax + b</code> の形で表現される。<span class="src">S03:p.32-33</span></p>
+      <ul>
+        <li><strong>a</strong>：傾き（xが1増えるとyがa増える）</li>
+        <li><strong>b</strong>：y切片（直線とy軸の交点のy座標）</li>
+      </ul>
+    </div>
+
+    <div class="supp-audio">
+      統計学の教科書によっては <code>y = β₀ + β₁x</code> や <code>y = bx + a</code> のように書かれることもあるが、この授業では馴染み深い <code>y = ax + b</code> の形を用いる。<span class="src">S05:A</span>
+    </div>
+
+    <div class="card">
+      <p><strong>一次関数と点の距離（y軸方向）</strong><span class="src">S03:p.34</span></p>
+      <p>直線 <code>y = x + 3</code> と点 (10, 5) のy軸方向の距離：</p>
+      <p>x=10のとき、直線上のy = 10 + 3 = 13</p>
+      <p style="font-family:'JetBrains Mono',monospace; color:var(--accent-green);">距離 = |13 - 5| = 8</p>
+      <p>絶対値をとるのは、点が直線の上下どちらにあっても距離が正の値になるようにするため。</p>
+    </div>
+  </div>
+
+  <!-- 最小二乗法 -->
+  <div class="subsection" id="ch2-ols">
+    <h3>最小二乗法（Ordinary Least Squares）</h3>
+
+    <div class="card">
+      <p>3つの標本データ (1,1), (2,3), (3,2) に対して回帰直線を求める場合、どの直線が「適切」かという基準が必要。<span class="src">S03:p.35-36</span></p>
+    </div>
+
+    <div class="def-box">
+      <div class="def-label">【定義】</div>
+      <div class="def-title">残差（Residual）</div>
+      <div class="def-body">回帰直線（一次関数）と各データ点との<strong>y軸方向の距離</strong>。<br>
+      例：点 (2, 3) と直線 y = ax + b の残差 d₂ = |(2a + b) - 3|<span class="src">S03:p.37-39</span></div>
+    </div>
+
+    <div class="def-box">
+      <div class="def-label">【定義】</div>
+      <div class="def-title">最小二乗法（Least Squares Method）</div>
+      <div class="def-body">
+        全データ点の<strong>残差の二乗の和が最小</strong>になるように回帰直線の傾き a と y切片 b を決める手法。<br>
+        <br>
+        最小化する式：<br>
+        <code style="font-size:13px;">(a+b-1)² + (2a+b-3)² + (3a+b-2)²</code>
+        <span class="src">S03:p.40</span>
+      </div>
+    </div>
+
+    <div class="supp-audio">
+      絶対値が付いていると計算が面倒になる。分散を求めるときにも同じ問題があったが、その解決策と同様に「二乗して常に正にすればよい」というアイデアから「最小二乗法」という名前がついている。<span class="src">S05:A</span>
+    </div>
+
+    <!-- SVG: 残差の視覚化 -->
+    <div class="svg-wrap">
+      <svg viewBox="0 0 500 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:500px;display:block;margin:auto;">
+        <rect x="50" y="20" width="420" height="240" rx="6" fill="#1e2535" stroke="#2a3352"/>
+        <!-- axes -->
+        <line x1="80" y1="240" x2="440" y2="240" stroke="#3a4465" stroke-width="1.5"/>
+        <line x1="80" y1="240" x2="80" y2="30" stroke="#3a4465" stroke-width="1.5"/>
+        <text x="450" y="244" fill="#8a99b8" font-size="11">x</text>
+        <text x="75" y="26" fill="#8a99b8" font-size="11">y</text>
+        <!-- grid lines -->
+        <line x1="80" y1="190" x2="440" y2="190" stroke="#2a3352" stroke-dasharray="3,3"/>
+        <line x1="80" y1="140" x2="440" y2="140" stroke="#2a3352" stroke-dasharray="3,3"/>
+        <line x1="80" y1="90" x2="440" y2="90" stroke="#2a3352" stroke-dasharray="3,3"/>
+        <!-- x-axis labels -->
+        <text x="160" y="255" text-anchor="middle" fill="#8a99b8" font-size="11">1</text>
+        <text x="250" y="255" text-anchor="middle" fill="#8a99b8" font-size="11">2</text>
+        <text x="340" y="255" text-anchor="middle" fill="#8a99b8" font-size="11">3</text>
+        <!-- y-axis labels -->
+        <text x="65" y="194" text-anchor="end" fill="#8a99b8" font-size="11">1</text>
+        <text x="65" y="144" text-anchor="end" fill="#8a99b8" font-size="11">2</text>
+        <text x="65" y="94" text-anchor="end" fill="#8a99b8" font-size="11">3</text>
+        <!-- regression line y = 0.5x + 1 -->
+        <!-- at x=1: y=1.5 → y_pixel = 240 - 1.5*50 = 165 -->
+        <!-- at x=3: y=2.5 → y_pixel = 240 - 2.5*50 = 115 -->
+        <line x1="80" y1="215" x2="440" y2="115" stroke="#34d399" stroke-width="2.5"/>
+        <text x="355" y="108" fill="#34d399" font-size="12" font-family="JetBrains Mono">y = ½x + 1</text>
+        <!-- data points -->
+        <!-- (1,1): x_pix=160, y_pix=240-1*50=190 -->
+        <circle cx="160" cy="190" r="6" fill="#5b8dee"/>
+        <!-- (2,3): x_pix=250, y_pix=240-3*50=90 -->
+        <circle cx="250" cy="90" r="6" fill="#5b8dee"/>
+        <!-- (3,2): x_pix=340, y_pix=240-2*50=140 -->
+        <circle cx="340" cy="140" r="6" fill="#5b8dee"/>
+        <!-- residuals -->
+        <!-- (1,1) on line: y=1.5 → 165. residual line: 190 to 165 -->
+        <line x1="160" y1="190" x2="160" y2="165" stroke="#f97316" stroke-width="2" stroke-dasharray="4,2"/>
+        <text x="168" y="180" fill="#f97316" font-size="10">d₁</text>
+        <!-- (2,3) on line: y=2 → 140. residual: 90 to 140 -->
+        <line x1="250" y1="90" x2="250" y2="140" stroke="#f97316" stroke-width="2" stroke-dasharray="4,2"/>
+        <text x="258" y="120" fill="#f97316" font-size="10">d₂</text>
+        <!-- (3,2) on line: y=2.5 → 115. residual: 140 to 115 -->
+        <line x1="340" y1="140" x2="340" y2="115" stroke="#f97316" stroke-width="2" stroke-dasharray="4,2"/>
+        <text x="348" y="130" fill="#f97316" font-size="10">d₃</text>
+        <!-- legend -->
+        <circle cx="95" cy="45" r="5" fill="#5b8dee"/>
+        <text x="105" y="49" fill="#8a99b8" font-size="11">標本データ</text>
+        <line x1="200" y1="45" x2="225" y2="45" stroke="#34d399" stroke-width="2"/>
+        <text x="230" y="49" fill="#8a99b8" font-size="11">回帰直線</text>
+        <line x1="320" y1="45" x2="345" y2="45" stroke="#f97316" stroke-width="2" stroke-dasharray="4,2"/>
+        <text x="350" y="49" fill="#8a99b8" font-size="11">残差</text>
+      </svg>
+      <figcaption>図2: 最小二乗法のイメージ — 残差 d₁, d₂, d₃ の二乗和を最小化 <span class="src">S03:p.37-44</span></figcaption>
+    </div>
+  </div>
+
+  <!-- 計算例 -->
+  <div class="subsection" id="ch2-calc">
+    <h3>回帰係数の計算式</h3>
+
+    <div class="card">
+      <p>回帰直線 y = ax + b の傾き a と y切片 b は以下の式で求まる。<span class="src">S03:p.42</span></p>
+      <table>
+        <thead><tr><th>係数</th><th>計算式</th><th>備考</th></tr></thead>
+        <tbody>
+          <tr><td><strong>傾き a</strong></td><td>共分散(x,y) ÷ xの分散</td><td>※標本データなのでN-1で割る</td></tr>
+          <tr><td><strong>y切片 b</strong></td><td>yの平均値 − xの平均値 × a</td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="supp-audio">
+      傾きを求めるために使われているのが「共分散」である。これは第4回第2章で学習した概念で、xの偏差とyの偏差の積の平均値のことである。共分散は回帰直線の傾きを求める際にも登場する重要な統計量である。<span class="src">S05:A</span>
+    </div>
+
+    <!-- 計算例 -->
+    <div class="card">
+      <p><strong>具体計算例：</strong>標本データ (1,1), (2,3), (3,2)<span class="src">S03:p.43</span></p>
+      <table>
+        <tbody>
+          <tr><td>xの平均</td><td>(1+2+3)/3 = <strong>2</strong></td></tr>
+          <tr><td>yの平均</td><td>(1+3+2)/3 = <strong>2</strong></td></tr>
+          <tr><td>共分散</td><td>[(1-2)(1-2) + (2-2)(3-2) + (3-2)(2-2)] / (3-1) = <strong>1/2</strong></td></tr>
+          <tr><td>xの分散</td><td>[(1-2)² + (2-2)² + (3-2)²] / (3-1) = <strong>1</strong></td></tr>
+          <tr><td>傾き a</td><td>(1/2) / 1 = <strong>1/2</strong></td></tr>
+          <tr><td>y切片 b</td><td>2 − 2 × (1/2) = <strong>1</strong></td></tr>
+        </tbody>
+      </table>
+      <p style="margin-top: 12px; font-family:'JetBrains Mono',monospace; font-size:14px; color:var(--accent-green); text-align:center;">回帰直線：y = ½x + 1</p>
+    </div>
+
+    <div class="supp-audio">
+      実際のデータ分析ではデータ数が100・200どころか1万個になることもある。手計算は不可能であり、プログラミング言語や表計算ソフトを使って計算することが前提である。この授業では計算の流れを理解することが目的であり、手で計算できることは求めていない。<span class="src">S05:A</span>
+    </div>
+  </div>
+
+  <!-- 回帰直線の特徴 -->
+  <div class="subsection" id="ch2-feat">
+    <h3>回帰直線の重要な特徴</h3>
+
+    <div class="emph">
+      回帰直線は必ず点 (x̄, ȳ)（xの平均値, yの平均値）を通る。<span class="src">S03:p.45</span>
+    </div>
+
+    <div class="supp-audio">
+      これはy切片の公式 b = ȳ − ax̄ を変形すると、ȳ = ax̄ + b となり、回帰直線の式そのものになるからである。つまり平均値が変われば回帰直線も変わる。外れ値のような平均値を大きく動かすデータがあると、回帰直線もその影響を受けて大きく変わってしまう可能性がある。<span class="src">S05:A</span>
+    </div>
+
+    <div class="card" style="border-left: 3px solid var(--accent-green);">
+      <p style="color:var(--accent-green);font-weight:600;margin-bottom:8px;">第2章 まとめ<span class="src">S03:p.46</span></p>
+      <ul>
+        <li>最小二乗法：残差の二乗の和が最小になる傾きとy切片を求める方法</li>
+        <li>傾き = 共分散 ÷ xの分散</li>
+        <li>y切片 = yの平均 − xの平均 × 傾き</li>
+        <li>回帰直線は必ず (x̄, ȳ) を通る</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CHAPTER 3 ═══ -->
+<section class="section" id="ch3">
+  <div class="section-header">
+    <span class="section-num">Ch.3</span>
+    <h2>回帰分析の留意点</h2>
+  </div>
+
+  <p style="color: var(--text-sub); font-size: 13px; margin-bottom: 20px;"><strong>学習目標：</strong>回帰分析の留意点に注意して分析結果を正しく解釈できる。<span class="src">S03:p.49</span></p>
+
+  <!-- 4つの留意点の概観 -->
+  <div class="svg-wrap" style="margin-bottom:24px;">
+    <svg viewBox="0 0 700 120" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;display:block;margin:auto;">
+      <!-- Card 1 -->
+      <rect x="10" y="10" width="160" height="100" rx="8" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="90" y="38" text-anchor="middle" fill="#5b8dee" font-size="22" font-weight="bold">①</text>
+      <text x="90" y="62" text-anchor="middle" fill="#e2e8f5" font-size="12" font-family="Noto Sans JP">目的変数と</text>
+      <text x="90" y="78" text-anchor="middle" fill="#e2e8f5" font-size="12" font-family="Noto Sans JP">説明変数を</text>
+      <text x="90" y="94" text-anchor="middle" fill="#e2e8f5" font-size="12" font-family="Noto Sans JP">逆にしない</text>
+      <!-- Card 2 -->
+      <rect x="185" y="10" width="160" height="100" rx="8" fill="#1e2535" stroke="#34d399" stroke-width="1.5"/>
+      <text x="265" y="38" text-anchor="middle" fill="#34d399" font-size="22" font-weight="bold">②</text>
+      <text x="265" y="62" text-anchor="middle" fill="#e2e8f5" font-size="12" font-family="Noto Sans JP">外挿と内挿に</text>
+      <text x="265" y="78" text-anchor="middle" fill="#e2e8f5" font-size="12" font-family="Noto Sans JP">留意する</text>
+      <!-- Card 3 -->
+      <rect x="360" y="10" width="160" height="100" rx="8" fill="#1e2535" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="440" y="38" text-anchor="middle" fill="#fbbf24" font-size="22" font-weight="bold">③</text>
+      <text x="440" y="62" text-anchor="middle" fill="#e2e8f5" font-size="12" font-family="Noto Sans JP">外れ値に</text>
+      <text x="440" y="78" text-anchor="middle" fill="#e2e8f5" font-size="12" font-family="Noto Sans JP">留意する</text>
+      <!-- Card 4 -->
+      <rect x="535" y="10" width="160" height="100" rx="8" fill="#1e2535" stroke="#a78bfa" stroke-width="1.5"/>
+      <text x="615" y="38" text-anchor="middle" fill="#a78bfa" font-size="22" font-weight="bold">④</text>
+      <text x="615" y="62" text-anchor="middle" fill="#e2e8f5" font-size="12" font-family="Noto Sans JP">分析前に</text>
+      <text x="615" y="78" text-anchor="middle" fill="#e2e8f5" font-size="12" font-family="Noto Sans JP">可視化する</text>
+    </svg>
+    <figcaption>図3: 回帰分析の4つの留意点 <span class="src">S03:p.50</span></figcaption>
+  </div>
+
+  <!-- 留意点① -->
+  <div class="subsection" id="ch3-1">
+    <h3>留意点① 予測の向きを逆にしない</h3>
+
+    <div class="card">
+      <p>単回帰分析では<strong>「説明変数 → 目的変数」</strong>の方向のみ予測が可能。逆方向の予測は行えない。<span class="src">S03:p.51</span></p>
+    </div>
+
+    <div class="supp-audio">
+      最小二乗法は「y軸方向の残差（目的変数方向）が最小になるa, bを求める」方法である。逆に目的変数から説明変数を予測しようとすると、「x軸方向の距離を残差とする」ことになり、残差の向きが変わるため、回帰直線の式自体が変わってしまう。そのため同じ回帰直線を使って逆方向の予測はできない。<span class="src">S05:A</span>
+    </div>
+
+    <div class="card">
+      <p><strong>具体例：</strong>データ (2,1), (3,6), (7,5) の場合<span class="src">S03:p.53</span></p>
+      <table>
+        <thead><tr><th>残差の向き</th><th>回帰直線</th></tr></thead>
+        <tbody>
+          <tr><td>y軸方向（通常・説明→目的）</td><td><code>y = ½x + 2</code></td></tr>
+          <tr><td>x軸方向（逆・目的→説明）</td><td><code>y = 2x − 4</code></td></tr>
+        </tbody>
+      </table>
+      <p style="margin-top:8px;font-size:13px;color:var(--text-sub);">→ 残差の方向が違うだけで全く異なる直線になる。</p>
+    </div>
+  </div>
+
+  <!-- 留意点② -->
+  <div class="subsection" id="ch3-2">
+    <h3>留意点② 外挿（Extrapolation）と内挿（Interpolation）に注意</h3>
+
+    <div class="card">
+      <table>
+        <thead><tr><th>用語</th><th>定義</th><th>推奨</th></tr></thead>
+        <tbody>
+          <tr><td><strong>内挿（内插）</strong></td><td>標本データが存在する範囲での予測</td><td>✅ 適切</td></tr>
+          <tr><td><strong>外挿（外插）</strong></td><td>標本データが存在しない範囲での予測</td><td>⚠️ 慎重に</td></tr>
+        </tbody>
+      </table>
+      <span class="src">S03:p.55-58</span>
+    </div>
+
+    <!-- SVG: 外挿と内挿 -->
+    <div class="svg-wrap">
+      <svg viewBox="0 0 560 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:560px;display:block;margin:auto;">
+        <rect x="10" y="10" width="540" height="175" rx="6" fill="#1e2535" stroke="#2a3352"/>
+        <!-- x-axis -->
+        <line x1="60" y1="160" x2="530" y2="160" stroke="#3a4465" stroke-width="1.5"/>
+        <line x1="60" y1="160" x2="60" y2="20" stroke="#3a4465" stroke-width="1.5"/>
+        <text x="535" y="164" fill="#8a99b8" font-size="10">広告額</text>
+        <text x="50" y="18" fill="#8a99b8" font-size="10">来客数</text>
+        <!-- 内挿帯 -->
+        <rect x="160" y="20" width="200" height="140" fill="rgba(52,211,153,0.08)" rx="3"/>
+        <text x="260" y="100" text-anchor="middle" fill="#34d399" font-size="12" font-weight="bold">内挿</text>
+        <!-- 外挿帯 left -->
+        <rect x="60" y="20" width="100" height="140" fill="rgba(249,115,22,0.08)" rx="3"/>
+        <text x="110" y="100" text-anchor="middle" fill="#f97316" font-size="12" font-weight="bold">外挿</text>
+        <text x="110" y="120" text-anchor="middle" fill="#f87171" font-size="9">広告額が</text>
+        <text x="110" y="132" text-anchor="middle" fill="#f87171" font-size="9">マイナス？</text>
+        <!-- 外挿帯 right -->
+        <rect x="360" y="20" width="160" height="140" fill="rgba(249,115,22,0.08)" rx="3"/>
+        <text x="440" y="100" text-anchor="middle" fill="#f97316" font-size="12" font-weight="bold">外挿</text>
+        <text x="440" y="120" text-anchor="middle" fill="#f87171" font-size="9">来客数が</text>
+        <text x="440" y="132" text-anchor="middle" fill="#f87171" font-size="9">無限に増加？</text>
+        <!-- data points -->
+        <circle cx="175" cy="140" r="4" fill="#5b8dee"/>
+        <circle cx="210" cy="120" r="4" fill="#5b8dee"/>
+        <circle cx="245" cy="110" r="4" fill="#5b8dee"/>
+        <circle cx="280" cy="95" r="4" fill="#5b8dee"/>
+        <circle cx="315" cy="85" r="4" fill="#5b8dee"/>
+        <circle cx="350" cy="72" r="4" fill="#5b8dee"/>
+        <!-- regression line -->
+        <line x1="60" y1="165" x2="530" y2="45" stroke="#5b8dee" stroke-width="2.5"/>
+        <!-- extrapolation extension markers -->
+        <line x1="160" y1="20" x2="160" y2="165" stroke="#34d399" stroke-width="1" stroke-dasharray="4,3"/>
+        <line x1="360" y1="20" x2="360" y2="165" stroke="#34d399" stroke-width="1" stroke-dasharray="4,3"/>
+      </svg>
+      <figcaption>図4: 内挿（データ範囲内）と外挿（データ範囲外）の比較 <span class="src">S03:p.56-58</span></figcaption>
+    </div>
+
+    <div class="supp-audio">
+      外挿では、例えば広告額がマイナスになっても来客数が予測できてしまう（現実には不可能）。また広告額が増えるほど来客数が無限に増加し続けると予測してしまうが、実際には上限がある。データが存在しない範囲での予測には根拠がなく、場合によっては都合のいい結論を得てしまう危険性がある。<span class="src">S05:A</span>
+    </div>
+
+    <div class="supp-ext">
+      外挿が許容される場合もある。例えば、データは少ないが理論的にこのまま線形に増加することが確実に予想される場合などは外挿も使える。ただし「基本的には内挿で予測を行い、外挿は慎重に判断する」というルールを守ることが重要である。
+    </div>
+  </div>
+
+  <!-- 留意点③ -->
+  <div class="subsection" id="ch3-3">
+    <h3>留意点③ 外れ値に注意</h3>
+
+    <div class="card">
+      <p>最小二乗法は残差のみに注目する手法であるため、<strong>残差が極端に大きい外れ値があると回帰直線の算出結果に影響が出る。</strong><span class="src">S03:p.59-60</span></p>
+    </div>
+
+    <div class="supp-audio">
+      例えば3つの標本データ (2,1), (3,6), (7,5) から引いた回帰直線（黒い線）に対して、新たなデータ (4,6) を追加した場合はほとんど変化しない。しかし外れ値 (4,0) を追加すると、元の直線からかなり離れた位置に新しい回帰直線が引かれてしまう。これは (4,0) の残差が他のデータと比べて極端に大きいためである。<span class="src">S05:A</span>
+    </div>
+
+    <div class="card">
+      <p><strong>外れ値への対処方法：</strong><span class="src">S05:A</span></p>
+      <ul>
+        <li>外れ値にも意味があると判断 → そのまま標本データとして扱い計算に使う</li>
+        <li>機械の故障や計測ミスが原因 → 外れ値を除いて回帰直線を計算する</li>
+      </ul>
+      <p style="margin-top:8px;font-size:13px;color:var(--text-sub);">→ 極端に残差が大きいデータは<strong>外れ値として除外するか否かを検討してから分析</strong>する。</p>
+    </div>
+  </div>
+
+  <!-- 留意点④ -->
+  <div class="subsection" id="ch3-4">
+    <h3>留意点④ 分析前に必ず可視化する</h3>
+
+    <div class="card">
+      <p>アンスコムのカルテット（Anscombe's Quartet）の例：<span class="src">S03:p.62-63</span></p>
+      <p>4つの全く異なるデータセットが、以下の統計量がほぼ同じになる：</p>
+      <ul>
+        <li>xの平均 = 9、yの平均 = 7.5</li>
+        <li>xの分散 = 10、yの分散 = 3.75</li>
+        <li>相関係数 ≈ 0.816</li>
+        <li><strong>共分散も同じ → 回帰直線も同じ式 y = 0.5x + 3</strong></li>
+      </ul>
+    </div>
+
+    <div class="supp-audio">
+      共分散と分散が同じであれば、回帰直線の式は同じになる。つまり4つの全く異なるデータパターンが、まったく同じ回帰直線になってしまう。<br>
+      そのため分析方法が本当にデータに適しているかどうか、外れ値がないかどうかを確認するには、データを必ず散布図として可視化することが不可欠である。<span class="src">S05:A</span>
+    </div>
+
+    <div class="supp-ext">
+      アンスコムのカルテットは1973年にF.J. Anscombeが発表した例。この4つのデータは「データを可視化せずに統計量だけで判断することの危険性」を示す教育的事例として今も広く引用される。<br>
+      特にデータIIは放物線状（二次関数）、データIVは外れ値1点が全体を決定している形であり、いずれも単回帰分析は不適切なモデルである。
+    </div>
+
+    <div class="emph">
+      どのような分析手法を使う場合でも、<strong>まずデータを散布図で可視化してから分析方法を決定する</strong>ことが最も重要。<span class="src">S03:p.63</span>
+    </div>
+
+    <div class="card" style="border-left: 3px solid var(--accent-green);">
+      <p style="color:var(--accent-green);font-weight:600;margin-bottom:8px;">第3章 まとめ<span class="src">S03:p.64</span></p>
+      <ul>
+        <li>① 予測の向き：「説明変数 → 目的変数」の方向のみ。逆方向は解釈不可。</li>
+        <li>② 内挿と外挿：標本データの範囲外（外挿）は慎重な判断が必要。</li>
+        <li>③ 外れ値：残差確認により外れ値の影響を評価し、除外するか検討する。</li>
+        <li>④ 可視化：散布図で確認してから分析方法が妥当かを判断する。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CHAPTER 4 ═══ -->
+<section class="section" id="ch4">
+  <div class="section-header">
+    <span class="section-num">Ch.4</span>
+    <h2>データ分析事例</h2>
+  </div>
+
+  <p style="color: var(--text-sub); font-size: 13px; margin-bottom: 16px;"><strong>学習目標：</strong>計算機を用いたデータ分析事例よりデータの扱いを体感する。<span class="src">S03:p.67</span></p>
+
+  <div class="subsection">
+    <h3>回帰分析の実行ツール</h3>
+
+    <div class="card">
+      <p>実際の回帰分析はプログラミング言語や表計算ソフトを使って実行する。<span class="src">S03:p.68</span></p>
+      <table>
+        <thead><tr><th>ツール</th><th>方法</th></tr></thead>
+        <tbody>
+          <tr><td>Excel</td><td>アドイン「分析ツール」（事前にアドイン追加が必要）</td></tr>
+          <tr><td>Google スプレッドシート</td><td>拡張機能「XLMiner Analysis ToolPak」</td></tr>
+          <tr><td>R</td><td>関数 <code>lm()</code> など</td></tr>
+          <tr><td>Python</td><td>scikit-learn の <code>LinearRegression</code> クラス</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="supp-audio">
+      ツールを使えばボタン一つで簡単に分析ができてしまう。だからこそ、どのように結果を見ればよいか、そしてその分析方法がデータに合っているかを判断できることが重要である。<span class="src">S05:A</span>
+    </div>
+  </div>
+
+  <div class="subsection">
+    <h3>分析結果の読み方：Excel「分析ツール」の出力</h3>
+
+    <div class="card">
+      <p>Excel等の分析ツールで回帰分析を行うと3つの表が出力される。重要な項目は以下の通り。<span class="src">S03:p.69</span></p>
+      <table>
+        <thead><tr><th>出力項目</th><th>意味</th><th>確認方法</th></tr></thead>
+        <tbody>
+          <tr><td><strong>係数</strong>（Coefficient）</td><td>回帰直線の傾き（説明変数の列）とy切片（Intercept）</td><td>3番目の表の左列</td></tr>
+          <tr><td><strong>R²（決定係数）</strong></td><td>説明変数が目的変数の変動をどれだけ説明できるか（0〜1）</td><td>1番目の表</td></tr>
+          <tr><td><strong>P値</strong></td><td>帰無仮説「係数=0（影響なし）」を統計的検定した結果</td><td>3番目の表</td></tr>
+          <tr><td><strong>95%信頼区間</strong>（下限・上限）</td><td>係数の95%信頼区間</td><td>3番目の表の右列</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="def-box">
+      <div class="def-label">【定義】</div>
+      <div class="def-title">決定係数（R²：R-squared）</div>
+      <div class="def-body">作成された回帰式の妥当性を判断するための指標。目的変数の値の変動のうち、説明変数がどれくらい影響するかを0〜1で表す。<br>例：R² = 0.499 → 目的変数の変動の約50%を説明変数が説明している。<span class="src">S05:A</span></div>
+    </div>
+
+    <div class="supp-ext">
+      P値の解釈：P値が有意水準（通常0.05 = 5%）より小さい場合、帰無仮説「係数=0」は棄却される。つまりその係数は統計的に有意に回帰直線に影響を与えていると判断できる。
+    </div>
+  </div>
+
+  <div class="subsection">
+    <h3>デモ：東京都データを用いた単回帰分析</h3>
+
+    <div class="card">
+      <p><strong>対象データ：</strong>都道府県別の気温・降水量データ（東京都抽出）<span class="src">S03:p.70</span></p>
+      <p>使用ツール：Google スプレッドシート + XLMiner Analysis ToolPak</p>
+    </div>
+
+    <div class="card">
+      <p><strong>分析①：降雨日数（目的変数）× 年間降水量（説明変数）</strong><span class="src">S05:A</span></p>
+      <p>回帰式：<code>降雨日数 = 0.029 × 年間降水量 + 56.29</code></p>
+      <table>
+        <thead><tr><th>指標</th><th>値</th><th>解釈</th></tr></thead>
+        <tbody>
+          <tr><td>R²（決定係数）</td><td>0.499</td><td>年間降水量は降雨日数の約50%を説明</td></tr>
+          <tr><td>P値（年間降水量）</td><td>0.05未満</td><td>有意：係数は0ではないと判断可能 → 有用な回帰式</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <p><strong>分析②：最高気温（目的変数）× 最低気温（説明変数）</strong><span class="src">S05:A</span></p>
+      <p>回帰式：<code>最高気温 = 0.207 × 最低気温 + 30.96</code></p>
+      <table>
+        <thead><tr><th>指標</th><th>値</th><th>解釈</th></tr></thead>
+        <tbody>
+          <tr><td>R²（決定係数）</td><td>0.02</td><td>最低気温は最高気温のわずか2%しか説明できない</td></tr>
+          <tr><td>P値（最低気温）</td><td>0.329</td><td>有意でない：係数=0の可能性が高い → 意味のある回帰式ではない</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="emph">
+      回帰式は「ボタン1つ」で簡単に求まる。しかし得られた式が予測に有用かどうかは、<strong>決定係数とP値を確認してデータ分析者自身が判断しなければならない。</strong><span class="src">S05:A</span>
+    </div>
+
+    <div class="card" style="border-left: 3px solid var(--accent-green);">
+      <p style="color:var(--accent-green);font-weight:600;margin-bottom:8px;">第4章 まとめ<span class="src">S03:p.73</span></p>
+      <ul>
+        <li>Google スプレッドシートで単回帰分析を実施できる</li>
+        <li>係数（傾き・y切片）、R²（決定係数）、P値を読み取れるようになることが重要</li>
+        <li>分析ツールを使いこなすより「結果を正しく解釈する能力」が最重要</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ APPENDIX ═══ -->
+<div class="appendix" id="appendix">
+  <h2>📎 末尾補足</h2>
+
+  <!-- 補足A -->
+  <div class="app-card a">
+    <h3>⭐ 補足A：最重要ワード一覧</h3>
+    <table>
+      <thead><tr><th>用語</th><th>読み</th><th>定義</th><th>重要度</th></tr></thead>
+      <tbody>
+        <tr><td><strong>回帰分析</strong></td><td>かいきぶんせき</td><td>ある変数と目的変数の関係を分析し、予測や状況説明に使う手法</td><td>★★★</td></tr>
+        <tr><td><strong>単回帰分析</strong></td><td>たんかいきぶんせき</td><td>1つの説明変数と目的変数の直線関係を分析する手法</td><td>★★★</td></tr>
+        <tr><td><strong>目的変数</strong></td><td>もくてきへんすう</td><td>予測したい変数（y）。別名：被説明変数・従属変数</td><td>★★★</td></tr>
+        <tr><td><strong>説明変数</strong></td><td>せつめいへんすう</td><td>予測に使う変数（x）。別名：独立変数・外生変数</td><td>★★★</td></tr>
+        <tr><td><strong>回帰直線</strong></td><td>かいきちょくせん</td><td>説明変数と目的変数の関係を表す直線 y = ax + b</td><td>★★★</td></tr>
+        <tr><td><strong>最小二乗法</strong></td><td>さいしょうにじょうほう</td><td>残差の二乗の和が最小になるよう回帰直線のa, bを決める手法</td><td>★★★</td></tr>
+        <tr><td><strong>残差</strong></td><td>ざんさ</td><td>各データ点と回帰直線のy軸方向の距離</td><td>★★☆</td></tr>
+        <tr><td><strong>決定係数（R²）</strong></td><td>けっていけいすう</td><td>回帰式の妥当性指標。説明変数が目的変数の変動を何%説明するか</td><td>★★☆</td></tr>
+        <tr><td><strong>内挿</strong></td><td>ないそう</td><td>標本データが存在する範囲での予測（推奨）</td><td>★★☆</td></tr>
+        <tr><td><strong>外挿</strong></td><td>がいそう</td><td>標本データが存在しない範囲での予測（要注意）</td><td>★★☆</td></tr>
+        <tr><td><strong>アンスコムのカルテット</strong></td><td>—</td><td>統計量が同じでも散布図が異なる4データセット。可視化の重要性を示す</td><td>★★☆</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 補足B -->
+  <div class="app-card b">
+    <h3>📚 補足B：知っておくべき背景知識</h3>
+    <ul>
+      <li><strong>共分散（Covariance）：</strong>xの偏差×yの偏差の平均。2変数の連動具合を表す（第4回第2章で学習済み）。回帰直線の傾きを求める際に必要。</li>
+      <li><strong>偏差（Deviation）：</strong>各データ値 − 平均値。分散・共分散・標準偏差の計算の基礎。</li>
+      <li><strong>標本データと母集団の違い：</strong>回帰分析は標本データを使うため、分散・共分散の計算では N ではなく <strong>N-1（不偏推定量）</strong>で割る。</li>
+      <li><strong>ロジスティック回帰：</strong>目的変数が2値（0/1, 合否）のときに使う。S字型の曲線（シグモイド関数）を用いる。</li>
+    </ul>
+  </div>
+
+  <!-- 補足C -->
+  <div class="app-card c">
+    <h3>🎯 補足C：試験・レポートで重要な観点</h3>
+    <ul>
+      <li>「目的変数と説明変数はどちらか」を正しく判断できるか（予測の向き）</li>
+      <li>残差の定義（「y軸方向の距離」であることに注意。x軸方向ではない）</li>
+      <li>最小二乗法の考え方：なぜ「二乗」するか（絶対値の計算が面倒なため＆分散との類比）</li>
+      <li>傾き a の計算式（共分散 ÷ xの分散）を説明できるか</li>
+      <li>回帰直線が必ず (x̄, ȳ) を通ることの証明</li>
+      <li>内挿・外挿の違いと外挿が危険な理由</li>
+      <li>アンスコムのカルテット：可視化が必要な理由の具体例として説明できるか</li>
+      <li>R² と P値の解釈（「この回帰式は有用か」を判断できるか）</li>
+    </ul>
+  </div>
+
+  <!-- 補足D -->
+  <div class="app-card d">
+    <h3>🔗 補足D：関連概念・次回への接続</h3>
+    <ul>
+      <li><strong>第10回（次回）：</strong>クラスタリング（グループ分け）— k-meansなどのグループ化手法を学ぶ</li>
+      <li><strong>第11回：</strong>関係性の発見（アソシエーション分析）— 同時購買パターンなど</li>
+      <li><strong>重回帰分析への発展：</strong>説明変数が複数になった場合。傾きはベクトル（回帰係数ベクトル）になる。</li>
+      <li><strong>機械学習との関係：</strong>線形回帰はもっともシンプルな機械学習モデルとして位置づけられる。Ridge回帰・Lasso回帰は正則化を加えた発展形。</li>
+      <li><strong>相関係数との違い：</strong>相関係数は「関係の強さ」、回帰分析は「予測の式」を求める。相関関係は因果関係ではない。</li>
+    </ul>
+  </div>
+
+  <!-- 補足E: 未確定事項 -->
+  <div class="app-card e">
+    <h3>❓ 未確定事項・要確認リスト</h3>
+    <table>
+      <thead><tr><th>ID</th><th>内容</th><th>種別</th><th>優先度</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>U01</td>
+          <td>デモで使用した東京都気象データの出典期間（1975〜2020年）は講師発言ではなくスライドの記載に基づく。音声では言及なし。</td>
+          <td>AI変換要確認</td>
+          <td>低</td>
+        </tr>
+        <tr>
+          <td>U02</td>
+          <td>S05（AI変換）の誤変換パターン（解気直線・単階分析・最小2情報・外装/内装 等11種）は全件本文内での修正を自動チェックで確認済み。残存口語表現も「してしまう」「なので」の2件のみで内容正確性に影響なし。<strong>→ 解決済み</strong></td>
+          <td>AI変換確認済み</td>
+          <td>低</td>
+        </tr>
+        <tr>
+          <td>U03</td>
+          <td>第4章デモの降雨日数の英語表記は不明。スライドには「降雨日数」のみ記載。</td>
+          <td>内容不足</td>
+          <td>低</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+</main>
+
+<script>
+// Active sidebar link on scroll
+const sections = document.querySelectorAll('section[id], div[id]');
+const links = document.querySelectorAll('#sidebar a');
+window.addEventListener('scroll', () => {
+  let cur = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 80) cur = s.id;
+  });
+  links.forEach(a => {
+    a.classList.remove('active');
+    if (a.getAttribute('href') === '#' + cur) a.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
