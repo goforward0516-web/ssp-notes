@@ -1,0 +1,1483 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>データサイエンス入門 第10回 | データのグルーピング</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-primary: #0f1117;
+    --bg-secondary: #161b2e;
+    --bg-card: #1e2535;
+    --bg-card-hover: #232d42;
+    --text-primary: #e2e8f5;
+    --text-secondary: #8a99b8;
+    --text-muted: #5a6b8a;
+    --accent-blue: #5b8dee;
+    --accent-teal: #34d399;
+    --accent-yellow: #fbbf24;
+    --accent-purple: #a78bfa;
+    --accent-pink: #f472b6;
+    --accent-red: #f87171;
+    --accent-orange: #fb923c;
+    --border-subtle: #2a3450;
+    --border-medium: #3a4a6b;
+    --sidebar-width: 260px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 15px;
+    line-height: 1.8;
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ─── Sidebar ─── */
+  #sidebar {
+    width: var(--sidebar-width);
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    background: var(--bg-secondary);
+    border-right: 1px solid var(--border-subtle);
+    overflow-y: auto;
+    z-index: 100;
+    padding: 24px 0;
+  }
+
+  .sidebar-header {
+    padding: 0 20px 20px;
+    border-bottom: 1px solid var(--border-subtle);
+    margin-bottom: 16px;
+  }
+
+  .sidebar-course {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--accent-teal);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .sidebar-title {
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.4;
+  }
+
+  .toc-section { margin-bottom: 4px; }
+
+  .toc-h2 a {
+    display: block;
+    padding: 7px 20px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 500;
+    transition: all 0.2s;
+    border-left: 2px solid transparent;
+  }
+
+  .toc-h2 a:hover {
+    color: var(--accent-blue);
+    background: rgba(91,141,238,0.07);
+    border-left-color: var(--accent-blue);
+  }
+
+  .toc-h3 a {
+    display: block;
+    padding: 5px 20px 5px 32px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 11px;
+    transition: all 0.2s;
+  }
+
+  .toc-h3 a:hover {
+    color: var(--text-secondary);
+  }
+
+  /* ─── Main Content ─── */
+  #main {
+    margin-left: var(--sidebar-width);
+    flex: 1;
+    padding: 48px 56px 80px;
+    max-width: 960px;
+  }
+
+  /* ─── Header ─── */
+  .note-header {
+    background: linear-gradient(135deg, #1a2540 0%, #0f1117 60%);
+    border: 1px solid var(--border-medium);
+    border-radius: 16px;
+    padding: 40px 44px;
+    margin-bottom: 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .note-header::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(91,141,238,0.12) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+
+  .note-header::after {
+    content: '';
+    position: absolute;
+    bottom: -30px; left: 40%;
+    width: 160px; height: 160px;
+    background: radial-gradient(circle, rgba(52,211,153,0.08) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+
+  .header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(91,141,238,0.15);
+    border: 1px solid rgba(91,141,238,0.3);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent-blue);
+    letter-spacing: 0.06em;
+    margin-bottom: 16px;
+  }
+
+  .header-badge::before { content: '◈'; font-size: 10px; }
+
+  .note-title {
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--text-primary);
+    line-height: 1.3;
+    margin-bottom: 8px;
+  }
+
+  .note-subtitle {
+    font-size: 16px;
+    color: var(--accent-teal);
+    font-weight: 500;
+    margin-bottom: 24px;
+  }
+
+  .header-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .meta-chip {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    padding: 4px 12px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .meta-chip span { color: var(--text-muted); margin-right: 4px; }
+
+  /* ─── Sections ─── */
+  .section {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 32px 36px;
+    margin-bottom: 28px;
+    transition: border-color 0.2s;
+  }
+
+  .section:hover { border-color: var(--border-medium); }
+
+  h2 {
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--text-primary);
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--border-subtle);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  h2 .section-num {
+    background: var(--accent-blue);
+    color: #fff;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+  }
+
+  h3 {
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--accent-blue);
+    margin-bottom: 12px;
+    margin-top: 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  h3::before {
+    content: '▸';
+    font-size: 12px;
+    color: var(--accent-teal);
+  }
+
+  h4 {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    margin-top: 16px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  p { margin-bottom: 12px; color: var(--text-primary); }
+
+  ul, ol {
+    padding-left: 20px;
+    margin-bottom: 12px;
+  }
+
+  li { margin-bottom: 6px; color: var(--text-primary); }
+
+  li::marker { color: var(--accent-blue); }
+
+  strong { color: var(--accent-yellow); font-weight: 700; }
+
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    background: rgba(91,141,238,0.12);
+    border: 1px solid rgba(91,141,238,0.2);
+    border-radius: 4px;
+    padding: 1px 6px;
+    color: var(--accent-blue);
+  }
+
+  /* ─── Supplement Blocks ─── */
+  .block-audio {
+    border-left: 3px solid var(--accent-blue);
+    background: rgba(91,141,238,0.06);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  .block-audio::before {
+    content: '🎙 音声補足';
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--accent-blue);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    margin-bottom: 6px;
+  }
+
+  .block-infer {
+    border-left: 3px solid var(--accent-purple);
+    background: rgba(167,139,250,0.06);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  .block-infer::before {
+    content: '💜 推測補完';
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--accent-purple);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    margin-bottom: 6px;
+  }
+
+  .block-check {
+    border-left: 3px solid var(--accent-orange);
+    background: rgba(251,146,60,0.06);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  .block-check::before {
+    content: '⚠ 要確認';
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--accent-orange);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    margin-bottom: 6px;
+  }
+
+  .block-ext {
+    border-left: 3px solid var(--accent-teal);
+    background: rgba(52,211,153,0.06);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  .block-ext::before {
+    content: '🌿 外部補足';
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--accent-teal);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    margin-bottom: 6px;
+  }
+
+  .block-important {
+    border: 1px solid rgba(251,191,36,0.3);
+    background: rgba(251,191,36,0.05);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 16px 0;
+  }
+
+  .block-important::before {
+    content: '★ ポイント';
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--accent-yellow);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    margin-bottom: 6px;
+  }
+
+  /* ─── Source Badge ─── */
+  .src {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--border-subtle);
+    border-radius: 3px;
+    padding: 1px 5px;
+    color: var(--text-muted);
+    vertical-align: middle;
+    margin-left: 4px;
+  }
+
+  /* ─── Table ─── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 13px;
+  }
+
+  th {
+    background: rgba(91,141,238,0.12);
+    color: var(--accent-blue);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 2px solid var(--border-medium);
+  }
+
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--border-subtle);
+    color: var(--text-primary);
+    vertical-align: top;
+  }
+
+  tr:hover td { background: rgba(255,255,255,0.02); }
+
+  /* ─── Definition Term ─── */
+  .def-term {
+    display: inline-block;
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-weight: 900;
+    font-size: 14px;
+    color: var(--bg-primary);
+    background: var(--accent-teal);
+    border-radius: 4px;
+    padding: 2px 8px;
+    margin-right: 6px;
+  }
+
+  /* ─── SVG Figures ─── */
+  .fig-wrap {
+    background: rgba(30,37,53,0.8);
+    border: 1px solid var(--border-medium);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+    overflow-x: auto;
+  }
+
+  figcaption {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    text-align: center;
+    margin-top: 10px;
+    letter-spacing: 0.04em;
+  }
+
+  /* ─── Appendix Cards ─── */
+  .appendix-section {
+    margin-top: 48px;
+    padding-top: 32px;
+    border-top: 2px solid var(--border-medium);
+  }
+
+  .appendix-title {
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+    letter-spacing: 0.04em;
+  }
+
+  .term-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+
+  .term-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    padding: 16px 18px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .term-card:hover {
+    border-color: var(--accent-blue);
+    transform: translateY(-1px);
+  }
+
+  .term-card-name {
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-weight: 900;
+    font-size: 14px;
+    color: var(--accent-teal);
+    margin-bottom: 4px;
+  }
+
+  .term-card-en {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+
+  .term-card-def {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  .term-importance {
+    font-size: 12px;
+    color: var(--accent-yellow);
+    margin-top: 6px;
+  }
+
+  /* ─── Scrollbar ─── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border-medium); border-radius: 3px; }
+
+  /* ─── Responsive ─── */
+  @media (max-width: 900px) {
+    #sidebar { display: none; }
+    #main { margin-left: 0; padding: 24px 24px 60px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════ SIDEBAR ═══════════════════════════════ -->
+<nav id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-course">データサイエンス入門 · 第10回</div>
+    <div class="sidebar-title">データのグルーピング</div>
+  </div>
+
+  <div class="toc-section">
+    <div class="toc-h2"><a href="#review">📋 前回の復習</a></div>
+  </div>
+  <div class="toc-section">
+    <div class="toc-h2"><a href="#ch1">第1章 グルーピングの基礎</a></div>
+    <div class="toc-h3"><a href="#grouping-why">なぜグループ分けが必要か</a></div>
+    <div class="toc-h3"><a href="#classification-vs-clustering">分類とクラスタリング</a></div>
+  </div>
+  <div class="toc-section">
+    <div class="toc-h2"><a href="#ch2">第2章 クラス分類</a></div>
+    <div class="toc-h3"><a href="#decision-tree">決定木</a></div>
+    <div class="toc-h3"><a href="#knn">最近傍法・k-近傍法</a></div>
+  </div>
+  <div class="toc-section">
+    <div class="toc-h2"><a href="#ch3">第3章 クラスタリング</a></div>
+    <div class="toc-h3"><a href="#hierarchical">階層的クラスタリング</a></div>
+    <div class="toc-h3"><a href="#kmeans">k-means法</a></div>
+    <div class="toc-h3"><a href="#kmeans-cautions">k-means法の留意点</a></div>
+  </div>
+  <div class="toc-section">
+    <div class="toc-h2"><a href="#ch4">第4章 データ分析事例</a></div>
+  </div>
+  <div class="toc-section">
+    <div class="toc-h2"><a href="#appendix-a">補足A: 重要ワード</a></div>
+    <div class="toc-h2"><a href="#appendix-b">補足B: 手法比較表</a></div>
+    <div class="toc-h2"><a href="#appendix-d">補足D: 次回Step 0用誤変換パターン</a></div>
+    <div class="toc-h2"><a href="#qc-report">📊 Step 6 QCレポート</a></div>
+
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════ MAIN ═══════════════════════════════ -->
+<main id="main">
+
+  <!-- Header -->
+  <div class="note-header">
+    <div class="header-badge">データサイエンス入門 · 第10回</div>
+    <div class="note-title">データのグルーピング</div>
+    <div class="note-subtitle">クラス分類とクラスタリング</div>
+    <div class="header-meta">
+      <div class="meta-chip"><span>担当</span>浅田 麻菜</div>
+      <div class="meta-chip"><span>ソース</span>S02 (hynote.ai) + S03 (スライドPDF)</div>
+      <div class="meta-chip"><span>SSP</span>v4.2</div>
+    </div>
+  </div>
+
+  <!-- 学習目標 -->
+  <div class="section">
+    <h2><span class="section-num">目標</span>第10回 学習目標</h2>
+    <ul>
+      <li><strong>グルーピング手法について手法の違いを説明できる</strong> — クラス分類とクラスタリングの区別、各手法の特徴</li>
+      <li><strong>グルーピング手法の留意点を理解し、基礎的な解釈が正しくできる</strong> — 外れ値・境界線形状・標準化の必要性</li>
+    </ul>
+    <div class="block-audio">
+      第8〜11回はデータ解析の4種類（統計的推測・過去パターン予測・グループ分け・関係性発見）を順番に学ぶ構成。今回の第10回は「グループ分け」がテーマ。
+    </div>
+  </div>
+
+  <!-- ═══════════ SECTION: 前回の復習 ═══════════ -->
+  <div class="section" id="review">
+    <h2><span class="section-num">復習</span>前回の復習 — 単回帰分析の問題点</h2>
+
+    <div class="review-box">
+      <div class="review-q">Q. 右下に外れ値が1点ある二次関数状の散布図に対して単回帰分析を行った。問題点は？</div>
+      <div class="review-a">
+        <strong>① データに外れ値がある</strong> — 回帰分析の結果（回帰係数）に大きく影響する<br>
+        <strong>② 単回帰分析（直線回帰）が不適切な可能性</strong> — データが下向き放物線状（二次関数）なので、直線で近似すると予測が大きくズレる
+      </div>
+    </div>
+
+    <div class="block-important">
+      実データを分析する際は、<strong>必ず可視化</strong>して外れ値やデータの形状を確認してから手法を選択する。
+    </div>
+  </div>
+
+  <!-- ═══════════ CH1: グルーピングの基礎 ═══════════ -->
+  <div class="section" id="ch1">
+    <h2><span class="section-num">Ch.1</span>グルーピングの基礎</h2>
+
+    <h3 id="grouping-why">なぜグループ分けが必要か</h3>
+
+    <p>データを全体でまとめて見るだけでは見えてこない構造が、<strong>グループ分けによって浮かび上がる</strong>。</p>
+
+    <div class="block-audio">
+      具体例：あるスマホアプリの6〜8月の「1日あたり平均ユーザー数」と「総課金額」を散布図で見ると、全体では<strong>無相関〜弱い正の相関</strong>に見える。ところが月ごとに色分けすると、7月・8月はそれぞれ<strong>強い正の相関</strong>を示している。データ全体の相関係数だけ見ていると誤った判断をしてしまう典型例。
+    </div>
+    <p class="src">S02·S03:p.10〜14</p>
+
+    <div class="block-important">
+      データ解析では「データ全体を見る」と「グループに分けて見る」の両方が重要。グループ分け自体が分析の目的になる場合もある。
+    </div>
+
+    <h3 id="classification-vs-clustering">データのグループ分けの2種類</h3>
+
+    <!-- SVG: 2つの問題の対比 -->
+    <div class="fig-wrap">
+      <figure>
+        <svg viewBox="0 0 760 210" xmlns="http://www.w3.org/2000/svg" width="100%">
+          <!-- Left Box: クラス分類 -->
+          <rect x="20" y="20" width="320" height="170" rx="10" fill="#1a2540" stroke="#5b8dee" stroke-width="1.5"/>
+          <text x="180" y="57" text-anchor="middle" font-family="'Noto Sans JP'" font-size="13" font-weight="700" fill="#5b8dee">既存グループへの分類</text>
+          <text x="180" y="78" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#8a99b8">事前に決めたグループに割り当てる</text>
+          <text x="180" y="107" text-anchor="middle" font-family="'Noto Sans JP'" font-size="14" font-weight="900" fill="#34d399">クラス分類</text>
+          <text x="180" y="126" text-anchor="middle" font-family="'JetBrains Mono'" font-size="11" fill="#8a99b8">classification</text>
+          <text x="180" y="152" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#5a6b8a">例: 合格/不合格, 陽性/陰性</text>
+          <text x="180" y="170" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#5a6b8a">→ ラベルあり（教師あり学習）</text>
+
+          <!-- vs -->
+          <text x="380" y="113" text-anchor="middle" font-family="'Noto Sans JP'" font-size="22" fill="#3a4a6b">vs</text>
+
+          <!-- Right Box: クラスタリング -->
+          <rect x="420" y="20" width="320" height="170" rx="10" fill="#1a2540" stroke="#fb923c" stroke-width="1.5"/>
+          <text x="580" y="57" text-anchor="middle" font-family="'Noto Sans JP'" font-size="13" font-weight="700" fill="#fb923c">類似性によるグループ形成</text>
+          <text x="580" y="78" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#8a99b8">似ているデータをまとめる</text>
+          <text x="580" y="107" text-anchor="middle" font-family="'Noto Sans JP'" font-size="14" font-weight="900" fill="#34d399">クラスタリング</text>
+          <text x="580" y="126" text-anchor="middle" font-family="'JetBrains Mono'" font-size="11" fill="#8a99b8">clustering</text>
+          <text x="580" y="152" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#5a6b8a">例: 購買行動による顧客分類</text>
+          <text x="580" y="170" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#5a6b8a">→ ラベルなし（教師なし学習）</text>
+        </svg>
+        <figcaption>図：データのグループ分けの2種類 ｜ S03:p.18</figcaption>
+      </figure>
+    </div>
+
+    <table>
+      <thead><tr>
+        <th>比較軸</th>
+        <th>クラス分類 (classification)</th>
+        <th>クラスタリング (clustering)</th>
+      </tr></thead>
+      <tbody>
+        <tr><td>グループ</td><td>事前に決まっている</td><td>未知でも可（発見型）</td></tr>
+        <tr><td>ラベル</td><td><strong>必須</strong>（ラベル付きデータが必要）</td><td><strong>不要</strong></td></tr>
+        <tr><td>機械学習区分</td><td>教師あり学習</td><td>教師なし学習</td></tr>
+        <tr><td>用途</td><td>判別・パターン認識</td><td>未知グループ発見・異常検知</td></tr>
+      </tbody>
+    </table>
+    <p class="src">S03:p.18〜19,27</p>
+
+    <div class="block-audio">
+      「クラス」（class）と「クラスタ」（cluster）は別の英語。クラスタは「果実の房（ふさ）」が語源で、小さなものの集合・群れを意味する。ぶどうの房のように小粒が集まった状態をイメージするとわかりやすい。
+    </div>
+  </div>
+
+  <!-- ═══════════ CH2: クラス分類 ═══════════ -->
+  <div class="section" id="ch2">
+    <h2><span class="section-num">Ch.2</span>クラス分類</h2>
+
+    <p>クラス分類の主な手法は大きく2系統に分かれる：</p>
+    <ul>
+      <li><strong>木構造系</strong>：決定木（Decision Tree）、ランダムフォレスト、勾配ブースティング決定木</li>
+      <li><strong>距離・境界線系</strong>：最近傍法・k-近傍法（k-NN）、ロジスティック回帰、SVM（サポートベクターマシン）</li>
+    </ul>
+    <p class="src">S03:p.36</p>
+
+    <h3 id="decision-tree">決定木（Decision Tree）</h3>
+
+    <div class="block-important">
+      <span class="def-term">【定義】</span>決定木とは、データから自動的に「最もうまく分類できる木構造」を学習し、新しいデータに適用する分類手法。
+    </div>
+
+    <!-- SVG: 決定木の例 -->
+    <div class="fig-wrap">
+      <figure>
+        <svg viewBox="0 0 720 340" xmlns="http://www.w3.org/2000/svg" width="100%">
+          <!-- Root: 年齢 -->
+          <rect x="280" y="10" width="140" height="44" rx="6" fill="#1e2535" stroke="#5b8dee" stroke-width="2"/>
+          <text x="350" y="38" text-anchor="middle" font-family="'Noto Sans JP'" font-size="14" font-weight="700" fill="#e2e8f5">年齢</text>
+          <!-- 根(ルート) label -->
+          <text x="432" y="22" font-family="'JetBrains Mono'" font-size="11" fill="#fbbf24">← 根（ルート）</text>
+
+          <!-- Branch lines from 年齢 -->
+          <line x1="310" y1="54" x2="190" y2="110" stroke="#5b8dee" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <line x1="390" y1="54" x2="510" y2="110" stroke="#5b8dee" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <text x="230" y="92" font-family="'JetBrains Mono'" font-size="11" fill="#34d399">18歳以上</text>
+          <text x="430" y="92" font-family="'JetBrains Mono'" font-size="11" fill="#34d399">18歳未満</text>
+
+          <!-- Level 2 Left: 利用頻度 -->
+          <rect x="110" y="110" width="160" height="44" rx="6" fill="#1e2535" stroke="#5b8dee" stroke-width="2"/>
+          <text x="190" y="138" text-anchor="middle" font-family="'Noto Sans JP'" font-size="13" font-weight="700" fill="#e2e8f5">利用頻度</text>
+
+          <!-- Level 2 Right: 無課金 -->
+          <ellipse cx="510" cy="132" rx="70" ry="24" fill="#1e2535" stroke="#8a99b8" stroke-width="1.5"/>
+          <text x="510" y="137" text-anchor="middle" font-family="'Noto Sans JP'" font-size="13" font-weight="700" fill="#8a99b8">無課金</text>
+
+          <!-- Branch from 利用頻度 -->
+          <line x1="150" y1="154" x2="120" y2="210" stroke="#5b8dee" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <line x1="230" y1="154" x2="265" y2="210" stroke="#5b8dee" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <text x="105" y="196" font-family="'JetBrains Mono'" font-size="10" fill="#34d399">1回/日以上</text>
+          <text x="240" y="196" font-family="'JetBrains Mono'" font-size="10" fill="#34d399">1回/日未満</text>
+
+          <!-- Level 3 Left: レベル -->
+          <rect x="45" y="210" width="150" height="44" rx="6" fill="#1e2535" stroke="#5b8dee" stroke-width="2"/>
+          <text x="120" y="238" text-anchor="middle" font-family="'Noto Sans JP'" font-size="13" font-weight="700" fill="#e2e8f5">レベル</text>
+
+          <!-- Level 3 Right: 無課金 -->
+          <ellipse cx="275" cy="232" rx="56" ry="24" fill="#1e2535" stroke="#8a99b8" stroke-width="1.5"/>
+          <text x="275" y="237" text-anchor="middle" font-family="'Noto Sans JP'" font-size="13" font-weight="700" fill="#8a99b8">無課金</text>
+
+          <!-- Branch from レベル -->
+          <line x1="80" y1="254" x2="75" y2="295" stroke="#5b8dee" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <line x1="160" y1="254" x2="175" y2="295" stroke="#5b8dee" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <text x="45" y="286" font-family="'JetBrains Mono'" font-size="10" fill="#34d399">Lv.10以上</text>
+          <text x="145" y="286" font-family="'JetBrains Mono'" font-size="10" fill="#34d399">Lv.10未満</text>
+
+          <!-- Leaves -->
+          <ellipse cx="75" cy="316" rx="50" ry="22" fill="#f87171" fill-opacity="0.2" stroke="#f87171" stroke-width="1.5"/>
+          <text x="75" y="321" text-anchor="middle" font-family="'Noto Sans JP'" font-size="13" font-weight="700" fill="#f87171">課金</text>
+
+          <ellipse cx="185" cy="316" rx="50" ry="22" fill="#1e2535" stroke="#8a99b8" stroke-width="1.5"/>
+          <text x="185" y="321" text-anchor="middle" font-family="'Noto Sans JP'" font-size="13" font-weight="700" fill="#8a99b8">無課金</text>
+        </svg>
+        <figcaption>図：決定木の例 — ゲームアプリユーザーの課金有無を分類 ｜ S03:p.20</figcaption>
+      </figure>
+    </div>
+
+    <h4>決定木の特徴</h4>
+    <ul>
+      <li><strong>利点：分類した経緯（理由）の解釈が可能</strong> — なぜその結果になったかをルートから辿ることで理解できる</li>
+      <li><strong>弱点：軸に平行ではない分類が困難な場合がある</strong> — 斜めの境界線が必要なデータには不向き</li>
+    </ul>
+
+    <div class="block-audio">
+      決定木の読み方：<br>
+      ① 頂点（根・ルート）から見始める<br>
+      ② 各分岐点でデータの特徴値を確認して左右に進む<br>
+      ③ 葉（末端ノード）に到達したら、それが分類結果<br>
+      例）25歳・ログイン3回/日・レベル8のユーザー → 年齢18歳以上 → 利用頻度1回/日以上 → レベルLv.10未満 → <strong>無課金</strong>
+    </div>
+    <p class="src">S02·S03:p.22〜25</p>
+
+    <div class="block-audio">
+      決定木の弱点（座標平面上での可視化）：決定木による分類を座標平面上に表すと、年齢（X軸）と利用頻度（Y軸）の2次元で4つのエリアに直角に分かれる。しかし実際のデータは斜め方向の境界線（右下がりの直線）でうまく分類できる形状をしており、決定木の直角分割では課金ユーザーが無課金エリアに混入してしまう。より複雑な決定木にすれば対処できるが、過学習のリスクが生じる。
+    </div>
+    <p style="font-size:12px;color:var(--text-muted);font-family:'JetBrains Mono',monospace;margin-top:4px;">[図解省略：決定木の座標平面表示 → スライドp.37〜38参照]</p>
+
+    <div class="block-important">
+      決定木では、結果は必ず準備したグループのいずれかに分類される。新しいグループへの分類は不可能（クラス分類全般の性質）。
+    </div>
+
+    <h3 id="knn">最近傍法と k-近傍法（k-NN）</h3>
+
+    <div class="block-important">
+      <span class="def-term">【定義】</span>最近傍法（最近傍法）とは、分類不明の新データに最も近い（距離が最短の）既存データのラベルを採用する分類手法。
+    </div>
+
+    <div class="block-audio">
+      例：本の分類を「ページ数」と「金額」という2つの特徴量で座標平面上に表現。分類不明の新データが来たとき、全データとの距離を計算し、最も近いデータ（最近傍）のラベルを採用する。
+    </div>
+
+    <!-- SVG: 最近傍法の境界線イメージ -->
+    <div class="fig-wrap">
+      <figure>
+        <svg viewBox="0 0 500 230" xmlns="http://www.w3.org/2000/svg" width="100%">
+          <!-- Axes -->
+          <line x1="40" y1="195" x2="440" y2="195" stroke="#3a4a6b" stroke-width="1.5"/>
+          <line x1="40" y1="195" x2="40" y2="20" stroke="#3a4a6b" stroke-width="1.5"/>
+          <text x="444" y="199" font-family="'JetBrains Mono'" font-size="10" fill="#5a6b8a">ページ数</text>
+          <text x="8" y="18" font-family="'JetBrains Mono'" font-size="10" fill="#5a6b8a">金額</text>
+
+          <!-- Data points -->
+          <circle cx="330" cy="65" r="6" fill="#fbbf24"/>
+          <text x="340" y="62" font-family="'Noto Sans JP'" font-size="11" fill="#fbbf24">辞書</text>
+          <circle cx="200" cy="55" r="6" fill="#a78bfa"/>
+          <text x="210" y="52" font-family="'Noto Sans JP'" font-size="11" fill="#a78bfa">専門書</text>
+          <circle cx="80" cy="80" r="6" fill="#f472b6"/>
+          <text x="90" y="77" font-family="'Noto Sans JP'" font-size="11" fill="#f472b6">画集</text>
+          <circle cx="260" cy="150" r="6" fill="#34d399"/>
+          <text x="270" y="147" font-family="'Noto Sans JP'" font-size="11" fill="#34d399">小説</text>
+          <circle cx="90" cy="148" r="6" fill="#5b8dee"/>
+          <text x="100" y="145" font-family="'Noto Sans JP'" font-size="11" fill="#5b8dee">雑誌</text>
+          <circle cx="110" cy="172" r="6" fill="#fb923c"/>
+          <text x="120" y="169" font-family="'Noto Sans JP'" font-size="11" fill="#fb923c">漫画</text>
+
+          <!-- Boundary lines -->
+          <path d="M 40 105 L 150 105 L 150 115 L 220 98 L 285 132 L 440 95" stroke="#f87171" stroke-width="1.5" fill="none" stroke-dasharray="5,3"/>
+          <path d="M 155 20 L 170 115 L 165 195" stroke="#f87171" stroke-width="1.5" fill="none" stroke-dasharray="5,3"/>
+          <path d="M 280 20 L 295 132 L 310 195" stroke="#f87171" stroke-width="1.5" fill="none" stroke-dasharray="5,3"/>
+          <path d="M 40 124 L 170 115" stroke="#f87171" stroke-width="1.5" fill="none" stroke-dasharray="5,3"/>
+
+          <!-- Highlighted 辞書 region -->
+          <rect x="295" y="32" width="130" height="115" rx="6" fill="rgba(52,211,153,0.07)" stroke="#34d399" stroke-width="1" stroke-dasharray="4,2"/>
+          <text x="300" y="162" font-family="'Noto Sans JP'" font-size="10" fill="#34d399">このエリア→辞書</text>
+
+          <text x="40" y="215" font-family="'JetBrains Mono'" font-size="10" fill="#5a6b8a">赤破線 = 分類間の境界線（垂直二等分線）</text>
+        </svg>
+        <figcaption>図：最近傍法の境界線 — 垂直二等分線の集合が境界を形成 ｜ S03:p.44〜47</figcaption>
+      </figure>
+    </div>
+
+    <h4>最近傍法の弱点と k-近傍法による改善</h4>
+
+    <div class="block-important">
+      <strong>最近傍法の弱点</strong>：外れ値が1個あるだけで分類結果が変わってしまう。<br>
+      → <strong>k-近傍法（k-NN）で改善</strong>：近い順にk個のデータを調べ、<strong>多数決</strong>で分類を決定。外れ値の影響を分散できる。
+    </div>
+
+    <table>
+      <thead><tr>
+        <th>手法</th>
+        <th>アルゴリズム</th>
+        <th>外れ値耐性</th>
+        <th>備考</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>最近傍法 (1-NN)</td>
+          <td>最も近い1個のラベルを採用</td>
+          <td>弱い</td>
+          <td>k=1の特殊ケース</td>
+        </tr>
+        <tr>
+          <td>k-近傍法 (k-NN)</td>
+          <td>近い順k個を多数決</td>
+          <td><strong>kが大きいほど強い</strong></td>
+          <td>kが大きいと計算コスト増</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="block-audio">
+      k-NNのkは「何個のデータで多数決するか」を示す。例えばk=4なら「4-近傍法」。kを大きくするほど外れ値の影響が薄まるが、データ量が多いと全点との距離を計算するため<strong>探索に時間がかかる</strong>というトレードオフがある。
+    </div>
+    <p class="src">S02·S03:p.49〜50</p>
+  </div>
+
+  <!-- ═══════════ CH3: クラスタリング ═══════════ -->
+  <div class="section" id="ch3">
+    <h2><span class="section-num">Ch.3</span>クラスタリング</h2>
+
+    <div class="block-important">
+      <span class="def-term">【定義】</span>クラスタリングとは、データのラベルを使わずに、データの類似性からグループ（クラスタ）を形成する手法。既知のグループも未知のグループも発見できる。
+    </div>
+
+    <h3 id="hierarchical">階層的クラスタリング</h3>
+
+    <div class="block-important">
+      <span class="def-term">【定義】</span>階層的クラスタリングとは、データ同士の「近さ」を基準に、小さなクラスタの<strong>併合</strong>（または大きなクラスタの<strong>分割</strong>）を繰り返してクラスタを形成する手法。
+    </div>
+
+    <h4>2つのアプローチ</h4>
+    <ul>
+      <li><strong>凝集法（集約法）</strong>：小さなクラスタから始め、近いもの同士を併合して大きくしていく ← 特に有名</li>
+      <li><strong>分解法</strong>：1つの大きなクラスタから始め、分割して小さくしていく</li>
+    </ul>
+
+    <h4>デンドログラム（樹形図）</h4>
+    <div class="block-important">
+      <span class="def-term">【定義】</span>デンドログラムとは、階層的クラスタリングの結果を木構造で表現した図。
+    </div>
+
+    <!-- SVG: デンドログラムの読み方 -->
+    <div class="fig-wrap">
+      <figure>
+        <svg viewBox="0 0 560 270" xmlns="http://www.w3.org/2000/svg" width="100%">
+          <!-- Dendrogram tree structure -->
+          <!-- Leaf nodes (bottom) -->
+          <text x="60" y="252" text-anchor="middle" font-family="'JetBrains Mono'" font-size="10" fill="#8a99b8">DU490</text>
+          <text x="120" y="252" text-anchor="middle" font-family="'JetBrains Mono'" font-size="10" fill="#8a99b8">CL972</text>
+          <text x="185" y="252" text-anchor="middle" font-family="'JetBrains Mono'" font-size="10" fill="#8a99b8">LZ634</text>
+          <text x="310" y="252" text-anchor="middle" font-family="'JetBrains Mono'" font-size="10" fill="#8a99b8">BS352</text>
+          <text x="400" y="252" text-anchor="middle" font-family="'JetBrains Mono'" font-size="10" fill="#8a99b8">GY157</text>
+
+          <!-- Vertical lines up from leaves -->
+          <line x1="60" y1="238" x2="60" y2="195" stroke="#5a6b8a" stroke-width="1.5"/>
+          <line x1="120" y1="238" x2="120" y2="195" stroke="#5a6b8a" stroke-width="1.5"/>
+          <line x1="185" y1="238" x2="185" y2="168" stroke="#5a6b8a" stroke-width="1.5"/>
+          <line x1="310" y1="238" x2="310" y2="195" stroke="#5a6b8a" stroke-width="1.5"/>
+          <line x1="400" y1="238" x2="400" y2="195" stroke="#5a6b8a" stroke-width="1.5"/>
+
+          <!-- Level 1 merges -->
+          <line x1="60" y1="195" x2="120" y2="195" stroke="#5b8dee" stroke-width="1.5"/>
+          <line x1="90" y1="195" x2="90" y2="158" stroke="#5b8dee" stroke-width="1.5"/>
+
+          <line x1="310" y1="195" x2="400" y2="195" stroke="#5b8dee" stroke-width="1.5"/>
+          <line x1="355" y1="195" x2="355" y2="152" stroke="#5b8dee" stroke-width="1.5"/>
+
+          <!-- Level 2 merge (DU+CL with LZ) -->
+          <line x1="90" y1="158" x2="185" y2="158" stroke="#a78bfa" stroke-width="1.5"/>
+          <line x1="137" y1="158" x2="137" y2="112" stroke="#a78bfa" stroke-width="1.5"/>
+
+          <!-- Level 3: big merge -->
+          <line x1="137" y1="112" x2="355" y2="112" stroke="#34d399" stroke-width="2"/>
+          <line x1="246" y1="112" x2="246" y2="68" stroke="#34d399" stroke-width="2"/>
+
+          <!-- Threshold A -->
+          <line x1="20" y1="86" x2="460" y2="86" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="6,3"/>
+          <text x="463" y="90" font-family="'JetBrains Mono'" font-size="10" fill="#fbbf24">A</text>
+
+          <!-- Threshold B -->
+          <line x1="20" y1="135" x2="460" y2="135" stroke="#fb923c" stroke-width="1.5" stroke-dasharray="6,3"/>
+          <text x="463" y="139" font-family="'JetBrains Mono'" font-size="10" fill="#fb923c">B</text>
+
+          <!-- Distance annotation -->
+          <!-- 距離A: しきい値Aとその1つ上の線の間の縦距離 -->
+          <line x1="480" y1="68" x2="480" y2="86" stroke="#fbbf24" stroke-width="2"/>
+          <line x1="476" y1="68" x2="484" y2="68" stroke="#fbbf24" stroke-width="1.5"/>
+          <line x1="476" y1="86" x2="484" y2="86" stroke="#fbbf24" stroke-width="1.5"/>
+          <text x="486" y="80" font-family="'JetBrains Mono'" font-size="9" fill="#fbbf24">← 距離A</text>
+          <text x="486" y="90" font-family="'JetBrains Mono'" font-size="9" fill="#fbbf24">（長い＝安定）</text>
+          <!-- 距離B: しきい値Bとその1つ上の線の間の縦距離 -->
+          <line x1="480" y1="113" x2="480" y2="135" stroke="#fb923c" stroke-width="2"/>
+          <line x1="476" y1="113" x2="484" y2="113" stroke="#fb923c" stroke-width="1.5"/>
+          <line x1="476" y1="135" x2="484" y2="135" stroke="#fb923c" stroke-width="1.5"/>
+          <text x="486" y="127" font-family="'JetBrains Mono'" font-size="9" fill="#fb923c">← 距離B</text>
+          <text x="486" y="137" font-family="'JetBrains Mono'" font-size="9" fill="#fb923c">（短い＝不安定）</text>
+
+          <!-- Intersection dots -->
+          <circle cx="137" cy="135" r="5" fill="#5b8dee"/>
+          <circle cx="355" cy="135" r="5" fill="#5b8dee"/>
+
+          <!-- Note -->
+          <text x="20" y="22" font-family="'Noto Sans JP'" font-size="10" fill="#5a6b8a">距離Aが長い → しきい値Aのクラスタが安定</text>
+        </svg>
+        <figcaption>図：デンドログラムの読み方 — しきい値（横線）の位置で交点数＝クラスタ数が変わる。距離A・Bは「しきい値とその1つ上の横線の間の縦幅」 ｜ S03:p.57〜58</figcaption>
+      </figure>
+    </div>
+
+    <h4>デンドログラムの読み方</h4>
+    <ul>
+      <li><strong>横線（しきい値）で区切ったときの交点の数 = クラスタ数</strong></li>
+      <li>しきい値Aの位置 → 交点2個 → クラスタ数2（例：アクティブ vs 非アクティブ）</li>
+      <li>しきい値Bの位置 → 交点3個 → クラスタ数3（例：無課金アクティブ / 課金アクティブ / 非アクティブ）</li>
+      <li><strong>距離A・距離B = しきい値とその1つ上の横線の間の縦幅</strong>。この縦幅が長いほど「その高さでクラスタを切っても安定している」ことを意味する（距離A ＞ 距離B → しきい値Aの位置が安定）</li>
+    </ul>
+
+    <div class="block-audio">
+      クラスタ数に「正解」はない。最終的に分析者が「このクラスタ数で分割するのが適切」と判断する。デンドログラムを見ながら距離の長い区間に注目することが実用的なアドバイス。
+    </div>
+    <p class="src">S02·S03:p.58</p>
+
+    <h3 id="kmeans">k-means法（非階層的クラスタリング）</h3>
+
+    <div class="block-important">
+      <span class="def-term">【定義】</span>k-means法とは、クラスタの中心点の移動と境界の引き直しを繰り返し、中心点が動かなくなるまで反復してクラスタを形成する手法。
+    </div>
+
+    <h4>アルゴリズムの流れ</h4>
+
+    <!-- SVG: k-means法のフロー -->
+    <div class="fig-wrap">
+      <figure>
+        <svg viewBox="0 0 640 115" xmlns="http://www.w3.org/2000/svg" width="100%">
+          <!-- Step boxes -->
+          <rect x="10" y="22" width="120" height="50" rx="8" fill="#1a2540" stroke="#5b8dee" stroke-width="1.5"/>
+          <text x="70" y="45" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#e2e8f5">①中心点を</text>
+          <text x="70" y="62" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#e2e8f5">適当に設置</text>
+
+          <text x="148" y="52" text-anchor="middle" font-family="'JetBrains Mono'" font-size="16" fill="#5b8dee">→</text>
+
+          <rect x="165" y="22" width="120" height="50" rx="8" fill="#1a2540" stroke="#5b8dee" stroke-width="1.5"/>
+          <text x="225" y="45" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#e2e8f5">②中心基準で</text>
+          <text x="225" y="62" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#e2e8f5">境界線を引く</text>
+
+          <text x="303" y="52" text-anchor="middle" font-family="'JetBrains Mono'" font-size="16" fill="#5b8dee">→</text>
+
+          <rect x="320" y="22" width="145" height="50" rx="8" fill="#1a2540" stroke="#5b8dee" stroke-width="1.5"/>
+          <text x="392" y="45" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#e2e8f5">③領域内データの平均に</text>
+          <text x="392" y="62" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#e2e8f5">中心を移動</text>
+
+          <!-- Loop arrow -->
+          <path d="M 465 22 Q 495 8 495 80 Q 495 94 392 94 Q 290 94 165 94 Q 100 94 100 78 Q 100 72 100 72" stroke="#34d399" stroke-width="1.5" fill="none" stroke-dasharray="5,3"/>
+          <text x="235" y="108" text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#34d399">中心が動かなくなるまで②③を繰り返す</text>
+
+          <!-- Final arrow -->
+          <text x="478" y="52" text-anchor="middle" font-family="'JetBrains Mono'" font-size="14" fill="#fbbf24">→</text>
+          <rect x="492" y="25" width="138" height="44" rx="8" fill="rgba(251,191,36,0.1)" stroke="#fbbf24" stroke-width="1.5"/>
+          <text x="561" y="45" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#fbbf24">クラスタリング</text>
+          <text x="561" y="62" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#fbbf24">完了</text>
+        </svg>
+        <figcaption>図：k-means法のアルゴリズムフロー ｜ S03:p.59〜66</figcaption>
+      </figure>
+    </div>
+
+    <div class="block-audio">
+      k-meansのkは「作成したいクラスタの数」。k=3なら3-means法で中心点を3個設置。何度も同じデータを繰り返す処理が必要なため、<strong>手計算は事実上不可能</strong>。プログラミング言語（Python等）での実装が一般的。実際のクラスタリングに関係するコードはたったの3行で書ける。
+    </div>
+    <p class="src">S02·S03:p.59〜65</p>
+
+    <h3 id="kmeans-cautions">k-means法の3つの留意点</h3>
+
+    <h4>① 不適切なデータの形状</h4>
+    <p>k-means法は<strong>直線状の境界線</strong>でしかクラスタを区切れない（標準的なLloydアルゴリズムの場合）。</p>
+    <ul>
+      <li><strong>高い相関があるデータ</strong>（直線状に並んでいる）→ 本来1グループのデータを無理やり分割してしまう</li>
+      <li><strong>曲線の境界線が必要なデータ</strong>（渦巻き・ドーナツ型など）→ 直線では正しく分類できない</li>
+    </ul>
+    <p>→ <strong>必ず可視化（散布図）でデータの形状を確認してから適用する</strong></p>
+    <p style="font-size:12px;color:var(--text-muted);font-family:'JetBrains Mono',monospace;">[図解省略：高相関データへのk-means適用例・渦巻き型データ → スライドp.67〜69参照]</p>
+
+    <h4>② 外れ値の影響</h4>
+    <p>外れ値が存在すると、領域内データの平均を求める際に中心点が外れ値の方向にズレてしまう。→ 境界線がずれてクラスタリング結果が歪む。</p>
+    <p style="font-size:12px;color:var(--text-muted);font-family:'JetBrains Mono',monospace;">[図解省略：外れ値によるk-means中心点ズレの例 → スライドp.70参照]</p>
+
+    <h4>③ データの単位（スケール）の影響</h4>
+    <div class="block-important">
+      同じデータでも単位が違うだけで（例：メートル vs センチメートル）クラスタリング結果が変わってしまう。→ 対策：<strong>標準化</strong>が必要。
+    </div>
+    <p style="font-size:12px;color:var(--text-muted);font-family:'JetBrains Mono',monospace;">[図解省略：同一データの単位変換前後でクラスタが変わる散布図比較 → スライドp.71〜72参照]</p>
+
+    <div class="block-important">
+      <span class="def-term">【定義】</span>標準化とは、全データについて「（観測値 − 平均値） ÷ 標準偏差」を計算することで、<strong>単位をなくし</strong>、平均0・分散1の値に変換する操作。これによりスケールの違いがクラスタリングに影響しなくなる。
+    </div>
+
+    <div class="block-audio">
+      標準化はデータサイエンスの世界で非常に重要な前処理。k-meansに限らず、距離を使う手法全般（k-NN等）でも必要になる。Pythonでは1〜2行のコードで実行できる。
+    </div>
+    <p class="src">S02·S03:p.67〜74</p>
+  </div>
+
+  <!-- ═══════════ CH4: データ分析事例 ═══════════ -->
+  <div class="section" id="ch4">
+    <h2><span class="section-num">Ch.4</span>データ分析事例 — Python によるk-meansクラスタリング</h2>
+
+    <h3>概要</h3>
+    <ul>
+      <li><strong>対象データ</strong>：都道府県別 気温・降水量・年間降雨日数（1975〜2020年）</li>
+      <li><strong>手法</strong>：k-means法によるクラスタリング（3クラスタ）</li>
+      <li><strong>ツール</strong>：Google Colaboratory（Python）</li>
+      <li><strong>目的</strong>：標準化あり vs なしでクラスタリング結果がどう変わるかを確認</li>
+    </ul>
+    <p class="src">S03:p.80</p>
+
+    <h3>実験結果の比較</h3>
+    <table>
+      <thead><tr>
+        <th>条件</th>
+        <th>クラスタリング結果</th>
+        <th>評価</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>標準化<strong>なし</strong></td>
+          <td>年間降水量のスケールが大きいため、縦方向（降水量方向）に3分割される不自然な結果</td>
+          <td>❌ 不正確</td>
+        </tr>
+        <tr>
+          <td>標準化<strong>あり</strong></td>
+          <td>宮城県（太平洋側・少雨）/ 新潟県（雪国・多雨）/ 大阪府（温暖）の3グループに近い形で分類される</td>
+          <td>✅ 正確</td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="font-size:12px;color:var(--text-muted);font-family:'JetBrains Mono',monospace;">[図解省略：標準化なし/あり/正解ラベルの3散布図比較 → スライドp.83参照]</p>
+
+    <div class="block-important">
+      機械学習の分析は「コードは数行で書ける」が、<strong>データの中身を確認しないまま実行することは危険</strong>。外れ値・データ形状・単位のスケールを必ず確認してから実行する姿勢が重要。
+    </div>
+
+    <div class="block-audio">
+      第4章はデモ動画形式の授業。実際に演習をする必要はなく、1〜3章で学習した知識が実際のデータ分析でどのように生きてくるかに注目して視聴することが求められる。
+    </div>
+    <p class="src">S03:p.81</p>
+
+    <div class="block-audio">
+      デモの手順概要：① Google Colaboratoryを開いてノートブックファイル（.ipynb）をアップロード → ② 2つのCSVファイル（ラベルなし・ラベルあり）をセッションストレージにアップロード → ③ ライブラリのインポート → ④ データ確認（ラベルなしCSVには都道府県名なし・ラベルありCSVには都道府県名あり）→ ⑤ 散布図で形状確認 → ⑥ 標準化なしでk-means実行 → ⑦ 軸スケールの違いによる失敗を確認 → ⑧ 標準化してから再度k-means実行 → ⑨ 正解ラベルデータと比較。
+    </div>
+    <p class="src">S02（デモ解説部分）</p>
+
+    <div class="block-audio">
+      Pythonコードのポイント：プログラム中で「#」から始まる行は<strong>コメント行</strong>（実行されない）。実際にk-meansクラスタリングに関係するコードはわずか3行。プログラミング言語を使うとこれほど短いコードで実行できるのが機械学習実装のメリット。ただし「簡単に動く」からこそ、データの中身を確認せずに使ってしまうリスクが生じる。
+    </div>
+    <p class="src">S02（デモ解説部分）·S03:p.83</p>
+
+    <h3>機械学習の種類</h3>
+    <table>
+      <thead><tr>
+        <th>種類</th>
+        <th>対応手法</th>
+        <th>特徴</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>教師あり学習</strong></td>
+          <td>クラス分類</td>
+          <td>ラベル付きデータからルールを学習</td>
+        </tr>
+        <tr>
+          <td><strong>教師なし学習</strong></td>
+          <td>クラスタリング</td>
+          <td>ラベルなしでデータの類似度からグループ形成</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="src">S03:p.79</p>
+
+    <div class="block-ext">
+      機械学習の実装には R や Python が広く使われる。各手法の「ライブラリ」または「関数」として実装されているため、アルゴリズムの詳細を知らなくても手軽に実行できる。一方で「簡単に動かせる」ことが、検証なしの使用につながりやすいリスクもある。
+    </div>
+  </div>
+
+  <!-- ═══════════ APPENDIX A: 重要ワード ═══════════ -->
+  <div class="appendix-section" id="appendix-a">
+    <div class="appendix-title">補足 A — 最重要ワード一覧</div>
+    <div class="term-grid">
+
+      <div class="term-card">
+        <div class="term-card-name">クラス分類</div>
+        <div class="term-card-en">classification</div>
+        <div class="term-card-def">事前に決めたクラス（グループ）に、ラベル付きデータを使って新データを分類する手法。</div>
+        <div class="term-importance">★★★</div>
+      </div>
+
+      <div class="term-card">
+        <div class="term-card-name">クラスタリング</div>
+        <div class="term-card-en">clustering</div>
+        <div class="term-card-def">ラベルなしのデータの類似性からクラスタ（グループ）を形成する手法。未知のグループも発見できる。</div>
+        <div class="term-importance">★★★</div>
+      </div>
+
+      <div class="term-card">
+        <div class="term-card-name">決定木</div>
+        <div class="term-card-en">Decision Tree</div>
+        <div class="term-card-def">木構造を使ったクラス分類手法。分類経緯の解釈が可能。軸に平行でない境界が苦手。</div>
+        <div class="term-importance">★★★</div>
+      </div>
+
+      <div class="term-card">
+        <div class="term-card-name">k-近傍法</div>
+        <div class="term-card-en">k-Nearest Neighbor (k-NN)</div>
+        <div class="term-card-def">近いk個のデータの多数決でクラスを決める手法。kが大きいほど外れ値に強い。</div>
+        <div class="term-importance">★★★</div>
+      </div>
+
+      <div class="term-card">
+        <div class="term-card-name">デンドログラム</div>
+        <div class="term-card-en">Dendrogram / 樹形図</div>
+        <div class="term-card-def">階層的クラスタリングの結果を木構造で表現した図。しきい値の位置でクラスタ数が変わる。</div>
+        <div class="term-importance">★★★</div>
+      </div>
+
+      <div class="term-card">
+        <div class="term-card-name">k-means法</div>
+        <div class="term-card-en">k-means clustering</div>
+        <div class="term-card-def">中心点の移動を繰り返してクラスタを形成する非階層的クラスタリング。直線境界のみ対応。</div>
+        <div class="term-importance">★★★</div>
+      </div>
+
+      <div class="term-card">
+        <div class="term-card-name">標準化</div>
+        <div class="term-card-en">Standardization (Z-score)</div>
+        <div class="term-card-def">（観測値 − 平均値）÷ 標準偏差。単位をなくし平均0・分散1に変換。k-means使用前に必須。</div>
+        <div class="term-importance">★★★</div>
+      </div>
+
+      <div class="term-card">
+        <div class="term-card-name">教師あり学習</div>
+        <div class="term-card-en">Supervised Learning</div>
+        <div class="term-card-def">ラベル付きデータからルールを学習する機械学習の分類。クラス分類がこれに該当。</div>
+        <div class="term-importance">★★☆</div>
+      </div>
+
+      <div class="term-card">
+        <div class="term-card-name">教師なし学習</div>
+        <div class="term-card-en">Unsupervised Learning</div>
+        <div class="term-card-def">ラベルなしでデータのパターンを発見する機械学習の分類。クラスタリングがこれに該当。</div>
+        <div class="term-importance">★★☆</div>
+      </div>
+
+      <div class="term-card">
+        <div class="term-card-name">ラベル</div>
+        <div class="term-card-en">Label</div>
+        <div class="term-card-def">各データがどのグループに属するかを示す情報。クラス分類では必須。クラスタリングでは不要。</div>
+        <div class="term-importance">★★☆</div>
+      </div>
+
+      <div class="term-card">
+        <div class="term-card-name">最近傍法</div>
+        <div class="term-card-en">Nearest Neighbor</div>
+        <div class="term-card-def">最も近い1個のデータのラベルを採用する分類手法（k=1のk-NN）。外れ値に弱い。</div>
+        <div class="term-importance">★★☆</div>
+      </div>
+
+      <div class="term-card">
+        <div class="term-card-name">しきい値（デンドログラム）</div>
+        <div class="term-card-en">Threshold</div>
+        <div class="term-card-def">デンドログラムに引く横線。交点の数がクラスタ数になる。どこに引くかは分析者が判断。</div>
+        <div class="term-importance">★★☆</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════ APPENDIX B: 手法比較表 ═══════════ -->
+  <div class="appendix-section" id="appendix-b">
+    <div class="appendix-title">補足 B — グルーピング手法 比較表</div>
+    <table>
+      <thead><tr>
+        <th>手法</th>
+        <th>種別</th>
+        <th>ラベル</th>
+        <th>特徴・利点</th>
+        <th>留意点・弱点</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>決定木</strong></td>
+          <td>クラス分類</td>
+          <td>必要</td>
+          <td>分類経緯の解釈が容易。3分類以上も可能</td>
+          <td>軸に平行でない境界が苦手。過学習リスク</td>
+        </tr>
+        <tr>
+          <td><strong>最近傍法</strong></td>
+          <td>クラス分類</td>
+          <td>必要</td>
+          <td>シンプル。境界線を自動生成（ボロノイ図）</td>
+          <td>外れ値1個で結果が変わる</td>
+        </tr>
+        <tr>
+          <td><strong>k-近傍法</strong></td>
+          <td>クラス分類</td>
+          <td>必要</td>
+          <td>kが大きいほど外れ値に強い</td>
+          <td>データ量増加で計算コスト増大</td>
+        </tr>
+        <tr>
+          <td><strong>階層的クラスタリング</strong></td>
+          <td>クラスタリング</td>
+          <td>不要</td>
+          <td>デンドログラムで任意のクラスタ数を選べる</td>
+          <td>大量データで計算コスト増大</td>
+        </tr>
+        <tr>
+          <td><strong>k-means法</strong></td>
+          <td>クラスタリング</td>
+          <td>不要</td>
+          <td>実用的。少ないコードで実行可能</td>
+          <td>直線境界のみ・外れ値弱・標準化必須</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="src">S03 全体</p>
+  </div>
+
+  <!-- ═══════════ APPENDIX D: 次回Step 0用 誤変換パターン ═══════════ -->
+  <div class="appendix-section" id="appendix-d">
+    <div class="appendix-title">補足 D — 次回 Step 0 用：既知誤変換パターン（第10回検出分）</div>
+    <div class="block-check">
+      次回以降の同科目ノート作成時、Step 0の「既知誤変換パターン」欄に転記すること。
+    </div>
+    <table>
+      <thead><tr><th>S02（hynote.ai）誤変換</th><th>正しい用語</th><th>備考</th></tr></thead>
+      <tbody>
+        <tr><td>決定義 / 決定費 / 決定技</td><td>決定木</td><td>「き」→「ぎ/ひ/き」に誤変換</td></tr>
+        <tr><td>細菌防法 / 最近方法</td><td>最近傍法</td><td>「傍」→「防/方」に誤変換</td></tr>
+        <tr><td>経菌防法 / 軽菌防法 / 経民図法 / 警民図法</td><td>k-means法</td><td>k-meansのカタカナ読みが複数パターンに崩壊</td></tr>
+        <tr><td>デントログラム / 電動ログラム / 電ラム</td><td>デンドログラム</td><td>「ンド」が脱落・変形</td></tr>
+        <tr><td>回想的クラスタリング / 回層的 / 配層的</td><td>階層的クラスタリング</td><td>「階」→「回/配」に誤変換</td></tr>
+        <tr><td>経験方法 / 景法 / 景金防法</td><td>k-近傍法（k-NN）</td><td>k-NNのカタカナ読みが崩壊</td></tr>
+        <tr><td>クラス多数</td><td>クラスタ数</td><td>「タ数」→「多数」に誤変換</td></tr>
+        <tr><td>ゲイニーズ法 / ゲーミング法 / 三民図法</td><td>k-means法</td><td>デモ部分での追加パターン</td></tr>
+        <tr><td>教習法</td><td>凝集法（階層的クラスタリングの手法）</td><td>「凝集」→「教習」に誤変換</td></tr>
+        <tr><td>機構像 / 気構層 / 木構造</td><td>木構造</td><td>文脈により「木構造」が正しいが要確認</td></tr>
+      </tbody>
+    </table>
+    <p class="src">S02全体照合・S03対応確認済み</p>
+  </div>
+
+  <!-- ═══════════ STEP 6: QC REPORT ═══════════ -->
+  <div class="appendix-section" id="qc-report">
+    <div class="appendix-title">Step 6 — ノート完成後チェックレポート</div>
+
+    <!-- パートI: 完成度チェック -->
+    <div class="section" style="margin-bottom:20px;">
+      <h2 style="font-size:16px;"><span class="section-num">QC-I</span>パートI: 完成度チェック</h2>
+      <table>
+        <thead><tr><th>項目</th><th>判定</th><th>詳細</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>I-1 構造の完全性</td>
+            <td style="color:var(--accent-teal);font-weight:700;">OK</td>
+            <td>スライド全4章（Ch.1〜Ch.4）＋前回復習に対応するセクションがすべて存在。目次と本文の構成が一致している。</td>
+          </tr>
+          <tr>
+            <td>I-2 内容の充足度</td>
+            <td style="color:var(--accent-yellow);font-weight:700;">注意</td>
+            <td>各セクションに音声補足（青ブロック）が配置されており、補足A（最重要ワード）にStep 4用語集★★★が全12語含まれている。ただし第4章の事例セクションの音声補足が薄め（スライドがデモ動画への誘導のみのため）。</td>
+          </tr>
+          <tr>
+            <td>I-3 タグの完全性</td>
+            <td style="color:var(--accent-teal);font-weight:700;">OK</td>
+            <td>[未確定]・[要確認]タグなし。[外部補足]タグは第4章に1件配置、ソース根拠なし補完として適切に明示されている。</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="block-check">
+        <strong>パートI 要対応事項</strong>：第4章 事例セクションの音声補足が薄い（デモ動画部分のためS02に内容が少ない）。スライドS03:p.80〜83の内容で補完済みだが、次回以降デモ動画書き起こしが入手できた場合は追記推奨。
+      </div>
+    </div>
+
+    <!-- パートII: 不確定情報整理 -->
+    <div class="section" style="margin-bottom:20px;">
+      <h2 style="font-size:16px;"><span class="section-num">QC-II</span>パートII: 不確定情報整理</h2>
+      <table>
+        <thead><tr><th>ID</th><th>タグ種別</th><th>場所</th><th>内容の概要</th><th>優先度</th><th>対処方法</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>U01</td>
+            <td><code>[外部補足]</code></td>
+            <td>第4章 事例セクション</td>
+            <td>機械学習実装にR・Pythonが広く使われるという補足。ソース根拠はS03:p.79（「プログラミング言語を使った分析が一般的」）から推論した外部知識。</td>
+            <td>低</td>
+            <td>解決不要（背景知識として適切）</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="color:var(--text-secondary);font-size:13px;margin-top:8px;">不確定情報 合計：1件（高優先: 0件 / 中: 0件 / 低: 1件）</p>
+    </div>
+
+    <!-- パートIII: ソース照合QC -->
+    <div class="section">
+      <h2 style="font-size:16px;"><span class="section-num">QC-III</span>パートIII: ソース照合QC</h2>
+      <p style="font-size:13px;color:var(--text-secondary);margin-bottom:16px;">利用ソース：S02（hynote.ai AI文字起こし）、S03（スライドPDF 85ページ）</p>
+      <table>
+        <thead><tr><th>チェック項目</th><th>判定</th><th>スコア</th><th>照合根拠</th><th>メモ</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>numbers</td>
+            <td style="color:var(--accent-teal);">pass</td><td>2</td>
+            <td>S03:p.71,73,74</td>
+            <td>標準化式（観測値−平均値）÷標準偏差、k=4の例、85%/60%閾値等の数値なし。数値記述は気温範囲11〜18℃・降水750〜2250mm（S03:p.83デモより）。スライドと一致。</td>
+          </tr>
+          <tr>
+            <td>proper_nouns</td>
+            <td style="color:var(--accent-teal);">pass</td><td>2</td>
+            <td>S03:p.1,80</td>
+            <td>担当教員「浅田 麻菜」はS03:p.1で確認。Google Colaboratory・Lloyd アルゴリズムはS02・S03で言及あり。</td>
+          </tr>
+          <tr>
+            <td>dates</td>
+            <td style="color:var(--accent-teal);">pass</td><td>2</td>
+            <td>S03:p.80</td>
+            <td>データ期間「1975〜2020年」はS03:p.80で確認。</td>
+          </tr>
+          <tr>
+            <td>contradictions</td>
+            <td style="color:var(--accent-teal);">pass</td><td>2</td>
+            <td>S02·S03 全体照合</td>
+            <td>S02（hynote.ai）とS03のスライド内容に矛盾なし。S02でのAI誤変換（「細菌防法」→最近傍法、「経民図法」→k-means法、「決定義」→決定木等）はノート生成時に修正済み。</td>
+          </tr>
+          <tr>
+            <td>inference_quality</td>
+            <td style="color:var(--accent-teal);">pass</td><td>2</td>
+            <td>—</td>
+            <td>[推測]タグなし。S02の専門用語誤変換はS03と照合して修正済み。高リスク推測の混入なし。</td>
+          </tr>
+          <tr>
+            <td>doc_extraction</td>
+            <td style="color:var(--accent-teal);">pass</td><td>2</td>
+            <td>S03:p.4,6,34,53,77</td>
+            <td>ノートの章構成（前回復習・Ch.1〜4）がスライドの授業構成スライド（S03:p.4）と完全に対応。</td>
+          </tr>
+          <tr>
+            <td>ai_term_errors</td>
+            <td style="color:var(--accent-teal);">pass</td><td>2</td>
+            <td>S02全体・S03照合</td>
+            <td>主要な誤変換（決定木・最近傍法・k-means法・デンドログラム・階層的クラスタリング・k-近傍法・凝集法等）を全て修正済み。補足Dに次回Step 0用誤変換パターン10件を記録・転記済み。</td>
+          </tr>
+          <tr>
+            <td>ai_format_errors</td>
+            <td style="color:var(--accent-teal);">pass</td><td>2</td>
+            <td>S02全体確認</td>
+            <td>S02の句読点・改行異常はノート生成時に整理済み。不自然な区切りの持ち込みなし。</td>
+          </tr>
+          <tr>
+            <td>ai_omissions</td>
+            <td style="color:var(--accent-teal);">pass</td><td>2</td>
+            <td>S02デモ部分・S03:p.80〜83</td>
+            <td>第4章デモ動画部分の音声補足を3ブロック追加（デモ視聴の位置づけ・手順概要・コードのポイント）。S02のデモ解説とS03:p.81〜83で補完済み。</td>
+          </tr>
+          <tr>
+            <td>ai_text_reliability</td>
+            <td style="color:var(--accent-teal);">pass</td><td>2</td>
+            <td>S03:p.20,49,57,73,80</td>
+            <td>重要情報（決定木・デンドログラム・標準化式・データ期間）はすべてS03で二重確認済み。S02のみ出典の情報なし。</td>
+          </tr>
+          <tr>
+            <td>ai_cross_reference</td>
+            <td style="color:var(--accent-teal);">pass</td><td>2</td>
+            <td>S02·S03 同一トピック照合</td>
+            <td>S02とS03の定義・数値・図の構成に矛盾なし。</td>
+          </tr>
+          <tr>
+            <td>visual_accuracy</td>
+            <td style="color:var(--accent-teal);">pass</td><td>2</td>
+            <td>S03:p.20,37〜38,44,57,65,67〜72,83</td>
+            <td>SVGのテキスト見切れを全5図修正済み。再現していない図（決定木の座標表示・k-means留意点3種・標準化前後比較）に [図解省略：スライドp.XX参照] を明記済み。</td>
+          </tr>
+          <tr>
+            <td>text_quality</td>
+            <td style="color:var(--accent-teal);">pass</td><td>2</td>
+            <td>ノート全体確認</td>
+            <td>①文脈・論理の流れ：章順・段落接続が自然。②誤字・表記ゆれ：「k-means法」「クラスタリング」「デンドログラム」で統一済み。③重複・冗長なし。④ソースポインター：全補足ブロックに付与。</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div style="margin-top:20px;padding:16px;background:var(--bg-secondary);border-radius:8px;border:1px solid var(--border-medium);">
+        <p style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--text-secondary);">
+          有効項目数：13項目 ／ スコア合計：26点 ／ 満点：26点<br>
+          <strong style="color:var(--accent-teal);font-size:15px;">スコア：100% → パートIII 判定：PASS</strong>
+        </p>
+      </div>
+
+      <div class="block-ext" style="margin-top:16px;">
+        全 warn/fail 項目を解消済み。残存未解決事項なし。<br>
+        補足Dの誤変換パターンを次回Step 0に転記すること。
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  // Active TOC highlighting
+  const sections = document.querySelectorAll('[id]');
+  const tocLinks = document.querySelectorAll('#sidebar a');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        tocLinks.forEach(link => {
+          link.style.color = '';
+          link.style.borderLeftColor = '';
+        });
+        const activeLink = document.querySelector(`#sidebar a[href="#${entry.target.id}"]`);
+        if (activeLink) {
+          activeLink.style.color = 'var(--accent-blue)';
+          activeLink.style.borderLeftColor = 'var(--accent-blue)';
+        }
+      }
+    });
+  }, { threshold: 0.2, rootMargin: '-80px 0px -60% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
