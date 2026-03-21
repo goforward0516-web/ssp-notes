@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>データサイエンス入門 第11回 — データの関係性の発見</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-base:     #0d1117;
+    --bg-card:     #141b26;
+    --bg-card2:    #1a2236;
+    --bg-hover:    #1e2c42;
+    --border:      #263350;
+    --border-bright: #3d5a99;
+    --text-main:   #e2e8f5;
+    --text-sub:    #8a99b8;
+    --text-muted:  #556280;
+    --accent-blue: #5b8dee;
+    --accent-teal: #34d399;
+    --accent-amber:#fbbf24;
+    --accent-purple:#a78bfa;
+    --accent-rose: #fb7185;
+    --accent-orange:#f97316;
+    --tag-audio:   #1e3a5f;
+    --tag-audio-b: #3b82f6;
+    --tag-infer:   #2d1b69;
+    --tag-infer-b: #7c3aed;
+    --tag-warn:    #3d2000;
+    --tag-warn-b:  #f59e0b;
+    --tag-ext:     #0d3322;
+    --tag-ext-b:   #10b981;
+    --sidebar-w:   260px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background: var(--bg-base);
+    color: var(--text-main);
+    font-size: 15px;
+    line-height: 1.8;
+    min-height: 100vh;
+  }
+
+  /* ─── SIDEBAR ─── */
+  #sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    width: var(--sidebar-w);
+    height: 100vh;
+    background: var(--bg-card);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    z-index: 100;
+    padding: 28px 0 40px;
+    transition: transform 0.3s;
+  }
+  #sidebar .logo {
+    padding: 0 20px 20px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+  #sidebar .logo .badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--accent-blue);
+    letter-spacing: .08em;
+    background: rgba(91,141,238,.12);
+    padding: 2px 8px;
+    border-radius: 3px;
+    display: inline-block;
+    margin-bottom: 8px;
+  }
+  #sidebar .logo h2 {
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-weight: 900;
+    font-size: 13px;
+    color: var(--text-main);
+    line-height: 1.5;
+  }
+  #sidebar nav a {
+    display: block;
+    padding: 7px 20px;
+    font-size: 12.5px;
+    color: var(--text-sub);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    transition: all .2s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  #sidebar nav a:hover, #sidebar nav a.active {
+    color: var(--accent-blue);
+    border-left-color: var(--accent-blue);
+    background: rgba(91,141,238,.07);
+  }
+  #sidebar nav .toc-h2 { padding-left: 28px; font-size: 12px; }
+  #sidebar nav .toc-h3 { padding-left: 42px; font-size: 11.5px; color: var(--text-muted); }
+
+  /* ─── MAIN ─── */
+  main {
+    margin-left: var(--sidebar-w);
+    padding: 48px 56px 80px;
+    max-width: 900px;
+  }
+
+  /* ─── HEADER ─── */
+  .page-header {
+    margin-bottom: 48px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--border);
+  }
+  .page-header .meta {
+    display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px;
+  }
+  .page-header .meta span {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 4px;
+    border: 1px solid var(--border-bright);
+    color: var(--text-sub);
+  }
+  .page-header h1 {
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-weight: 900;
+    font-size: 2rem;
+    color: var(--text-main);
+    line-height: 1.35;
+    margin-bottom: 12px;
+  }
+  .page-header .subtitle {
+    color: var(--text-sub);
+    font-size: 14px;
+  }
+
+  /* ─── LEARNING GOALS BOX ─── */
+  .goals-box {
+    background: linear-gradient(135deg, rgba(91,141,238,.12), rgba(52,211,153,.08));
+    border: 1px solid rgba(91,141,238,.3);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 40px;
+  }
+  .goals-box h3 {
+    font-size: 13px;
+    color: var(--accent-teal);
+    letter-spacing: .05em;
+    margin-bottom: 10px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .goals-box ul { padding-left: 18px; }
+  .goals-box li { color: var(--text-main); font-size: 14px; margin-bottom: 4px; }
+
+  /* ─── SECTION CARDS ─── */
+  .section-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px 36px;
+    margin-bottom: 32px;
+  }
+  .section-card:hover {
+    border-color: var(--border-bright);
+    transition: border-color .25s;
+  }
+
+  h2 {
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-weight: 900;
+    font-size: 1.35rem;
+    color: var(--text-main);
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--border);
+    display: flex; align-items: center; gap: 10px;
+  }
+  h2 .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent-blue);
+    background: rgba(91,141,238,.15);
+    padding: 2px 8px;
+    border-radius: 3px;
+  }
+  h3 {
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--accent-amber);
+    margin: 24px 0 10px;
+  }
+  h4 {
+    font-weight: 500;
+    font-size: .95rem;
+    color: var(--accent-teal);
+    margin: 18px 0 8px;
+  }
+
+  p { margin-bottom: 12px; color: var(--text-main); }
+  ul, ol { padding-left: 20px; margin-bottom: 12px; }
+  li { margin-bottom: 5px; }
+
+  /* ─── SUPPLEMENT BLOCKS ─── */
+  .audio-block {
+    background: var(--tag-audio);
+    border-left: 3px solid var(--tag-audio-b);
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+  .audio-block .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--tag-audio-b);
+    letter-spacing: .06em;
+    margin-bottom: 4px;
+  }
+  .ext-block {
+    background: var(--tag-ext);
+    border-left: 3px solid var(--tag-ext-b);
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+  .ext-block .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--tag-ext-b);
+    letter-spacing: .06em;
+    margin-bottom: 4px;
+  }
+  .warn-block {
+    background: var(--tag-warn);
+    border-left: 3px solid var(--tag-warn-b);
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+  .warn-block .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--tag-warn-b);
+    letter-spacing: .06em;
+    margin-bottom: 4px;
+  }
+
+  /* ─── DEFINITION BOX ─── */
+  .def-box {
+    background: var(--bg-card2);
+    border: 1px solid var(--border-bright);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 14px 0;
+  }
+  .def-box .def-term {
+    font-weight: 700;
+    color: var(--accent-blue);
+    font-size: 15px;
+    margin-bottom: 4px;
+  }
+  .def-box .def-body { color: var(--text-main); font-size: 14px; }
+
+  /* ─── TABLES ─── */
+  .tbl-wrap { overflow-x: auto; margin: 16px 0; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+  }
+  th {
+    background: var(--bg-hover);
+    color: var(--accent-blue);
+    font-weight: 600;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    text-align: left;
+  }
+  td {
+    padding: 9px 14px;
+    border: 1px solid var(--border);
+    color: var(--text-main);
+    vertical-align: top;
+  }
+  tr:nth-child(even) td { background: rgba(255,255,255,.02); }
+
+  /* ─── FORMULA BOX ─── */
+  .formula-box {
+    background: var(--bg-card2);
+    border: 1px solid var(--accent-teal);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 14px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: var(--accent-teal);
+    line-height: 2;
+  }
+  .formula-box .formula-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    font-family: 'Noto Sans JP', sans-serif;
+  }
+
+  /* ─── SVG FIGURE ─── */
+  .fig-wrap {
+    margin: 20px 0;
+    text-align: center;
+  }
+  .fig-wrap svg { max-width: 100%; }
+  .fig-wrap figcaption {
+    font-size: 11.5px;
+    color: var(--text-muted);
+    margin-top: 6px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ─── SOURCE POINTER ─── */
+  .src {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    background: rgba(255,255,255,.05);
+    padding: 1px 6px;
+    border-radius: 3px;
+    margin-left: 6px;
+  }
+
+  /* ─── APPENDIX ─── */
+  .appendix-card {
+    background: var(--bg-card2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px 28px;
+    margin-bottom: 24px;
+  }
+  .appendix-card h3 {
+    color: var(--accent-purple);
+    margin-top: 0;
+  }
+  .appendix-card.amber h3 { color: var(--accent-amber); }
+  .appendix-card.teal  h3 { color: var(--accent-teal); }
+  .appendix-card.rose  h3 { color: var(--accent-rose); }
+
+  /* ─── REVIEW Q ─── */
+  .review-q {
+    background: rgba(251,191,36,.08);
+    border: 1px solid rgba(251,191,36,.25);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 16px 0;
+  }
+  .review-q .q { color: var(--accent-amber); font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+  .review-q .a { color: var(--text-main); font-size: 14px; }
+
+  /* ─── HIGHLIGHT ─── */
+  .hl { color: var(--accent-amber); font-weight: 600; }
+  .hl-teal { color: var(--accent-teal); font-weight: 600; }
+  .hl-blue { color: var(--accent-blue); font-weight: 600; }
+  .hl-rose { color: var(--accent-rose); font-weight: 600; }
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    background: rgba(255,255,255,.07);
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-size: 13px;
+    color: var(--accent-teal);
+  }
+
+  /* ─── SCROLLBAR ─── */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg-base); }
+  ::-webkit-scrollbar-thumb { background: var(--border-bright); border-radius: 3px; }
+
+  @media (max-width: 860px) {
+    #sidebar { transform: translateX(-100%); }
+    main { margin-left: 0; padding: 24px 20px 60px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════
+     SIDEBAR
+════════════════════════════════════════════════ -->
+<aside id="sidebar">
+  <div class="logo">
+    <div class="badge">SSP · S03 + S05</div>
+    <h2>データサイエンス入門<br>第11回</h2>
+  </div>
+  <nav>
+    <a href="#overview"    class="toc-h1">📋 授業概要</a>
+    <a href="#review"      class="toc-h1">🔄 前回の復習</a>
+    <a href="#ch1"         class="toc-h1">第1章 データの関係性</a>
+    <a href="#bivariate"   class="toc-h2">二変量データとは</a>
+    <a href="#three-rel"   class="toc-h2">3種の関係性</a>
+    <a href="#corr-vs-reg" class="toc-h2">相関 vs 回帰</a>
+    <a href="#discovery"   class="toc-h2">関係性の発見</a>
+    <a href="#causality"   class="toc-h2">因果関係の注意点</a>
+    <a href="#ch2"         class="toc-h1">第2章 関係性の発見</a>
+    <a href="#pos"         class="toc-h2">POSデータ</a>
+    <a href="#assoc-rule"  class="toc-h2">アソシエーションルール</a>
+    <a href="#support"     class="toc-h2">支持度・信頼度・リフト値</a>
+    <a href="#result-view" class="toc-h2">結果の見方</a>
+    <a href="#ch3"         class="toc-h1">第3章 関係性の活用</a>
+    <a href="#recommend"   class="toc-h2">レコメンド</a>
+    <a href="#collab"      class="toc-h2">協調フィルタリング</a>
+    <a href="#user-based"  class="toc-h2">ユーザベース</a>
+    <a href="#item-based"  class="toc-h2">アイテムベース</a>
+    <a href="#ch4"         class="toc-h1">第4章 データ分析事例</a>
+    <a href="#appendix"    class="toc-h1">📚 補足</a>
+  </nav>
+</aside>
+
+<!-- ═══════════════════════════════════════════════
+     MAIN
+════════════════════════════════════════════════ -->
+<main>
+
+<!-- ── HEADER ── -->
+<header class="page-header" id="overview">
+  <div class="meta">
+    <span>データサイエンス入門</span>
+    <span>第11回</span>
+    <span>浅田 麻菜</span>
+  </div>
+  <h1>データの関係性の発見</h1>
+  <p class="subtitle">相関・回帰・因果関係の理解、アソシエーション分析、協調フィルタリングによるレコメンド</p>
+</header>
+
+<!-- ── LEARNING GOALS ── -->
+<div class="goals-box">
+  <h3>🎯 LEARNING GOALS</h3>
+  <ul>
+    <li>データの関係性を発見する方法とその<span class="hl">留意点</span>を説明できる</li>
+    <li><span class="hl">アソシエーション分析</span>とその応用（レコメンド）について説明できる</li>
+  </ul>
+</div>
+
+<!-- ─────────────────────────────────────────────
+     前回の復習
+───────────────────────────────────────────── -->
+<section class="section-card" id="review">
+  <h2><span class="num">REVIEW</span>前回（第10回）の復習</h2>
+
+  <div class="review-q">
+    <div class="q">Q. クラス分類とクラスタリングの違いについて説明してください。</div>
+    <div class="a">
+      <strong>クラス分類：</strong>既存のグループに対し、新しいデータをどのグループに入れるかを決める方法。<br>
+      <span class="src">← S03:p.3</span><br>
+      例）写真の生き物が哺乳類か魚類かに分ける。グループ自体（哺乳類・魚類）はあらかじめ定義されている。<br>
+      使用手法：決定木・k近傍法（kNN）・ナイーブベイズ等
+      <div class="audio-block" style="margin-top:8px;">
+        <div class="label">🎙 AUDIO SUPPLEMENT</div>
+        クラス分類では「既存のグループに分ける方法を決める」のに対し、クラスタリングは「分析してみて初めてグループが決まる」点が根本的に異なる。クラスタリングの例：価格帯によって「高価格群・低価格群」に分かれた場合、このグループ分けは分析前には存在しなかった。<span class="src">← S05</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="audio-block">
+    <div class="label">🎙 AUDIO SUPPLEMENT</div>
+    クラスタリング手法として<strong>階層的クラスタリング</strong>と<strong>k-means法（k平均法）</strong>を前回学習した。<span class="src">← S05</span>
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────────
+     第1章
+───────────────────────────────────────────── -->
+<section class="section-card" id="ch1">
+  <h2><span class="num">CH.1</span>データの関係性</h2>
+
+  <h3 id="bivariate">二変量データとは</h3>
+  <div class="def-box">
+    <div class="def-term">二変量データ（2変量データ）</div>
+    <div class="def-body">
+      1つの観測対象（個人・店舗など）に対して <strong>2種類のデータ</strong>が存在する形式。<br>
+      表記：<code>n 組の (x₁, y₁), (x₂, y₂) … (xₙ, yₙ)</code>
+    </div>
+  </div>
+  <span class="src">← S03:p.10</span>
+
+  <div class="audio-block">
+    <div class="label">🎙 AUDIO SUPPLEMENT</div>
+    例：Aさんの（体重, 身長）、Bさんの（体重, 身長）のように、一人に対して2種類の数値がある場合が二変量データ。3種類あれば三変量、4種類あれば四変量データとなる。3変量以上をまとめて<span class="hl">多変量データ</span>と呼ぶ。<span class="src">← S05</span>
+  </div>
+
+  <h3 id="three-rel">データ間の3種の関係性</h3>
+  <p>n組の二変量データ (x, y) の間には、以下の3つの関係が特に有名。<span class="src">← S03:p.11</span></p>
+
+  <div class="fig-wrap">
+    <svg viewBox="0 0 740 180" xmlns="http://www.w3.org/2000/svg" font-family="Noto Sans JP, sans-serif">
+      <defs>
+        <marker id="ah" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#5b8dee"/>
+        </marker>
+        <marker id="ah2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#34d399"/>
+        </marker>
+        <marker id="ah3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#fbbf24"/>
+        </marker>
+        <marker id="ahL" markerWidth="8" markerHeight="8" refX="2" refY="3" orient="auto-start-reverse">
+          <path d="M8,0 L8,6 L0,3 z" fill="#5b8dee"/>
+        </marker>
+      </defs>
+      <!-- 相関 -->
+      <rect x="10" y="10" width="225" height="160" rx="10" fill="#141b26" stroke="#5b8dee" stroke-width="1.2"/>
+      <text x="122" y="38" text-anchor="middle" fill="#5b8dee" font-size="15" font-weight="700">相関関係</text>
+      <ellipse cx="80"  cy="105" rx="36" ry="36" fill="#1a2236" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="80"  y="109" text-anchor="middle" fill="#e2e8f5" font-size="13">身長</text>
+      <ellipse cx="164" cy="105" rx="36" ry="36" fill="#1a2236" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="164" y="109" text-anchor="middle" fill="#e2e8f5" font-size="13">体重</text>
+      <line x1="116" y1="105" x2="128" y2="105" stroke="#5b8dee" stroke-width="2" marker-end="url(#ah)" marker-start="url(#ahL)"/>
+      <text x="122" y="158" text-anchor="middle" fill="#8a99b8" font-size="11">双方向・相互影響</text>
+
+      <!-- 回帰 -->
+      <rect x="257" y="10" width="225" height="160" rx="10" fill="#141b26" stroke="#34d399" stroke-width="1.2"/>
+      <text x="370" y="38" text-anchor="middle" fill="#34d399" font-size="15" font-weight="700">回帰関係</text>
+      <ellipse cx="315" cy="105" rx="36" ry="36" fill="#1a2236" stroke="#34d399" stroke-width="1.5"/>
+      <text x="315" y="102" text-anchor="middle" fill="#e2e8f5" font-size="12">気温</text>
+      <text x="315" y="116" text-anchor="middle" fill="#8a99b8" font-size="10">(説明変数)</text>
+      <ellipse cx="425" cy="105" rx="36" ry="36" fill="#1a2236" stroke="#34d399" stroke-width="1.5"/>
+      <text x="425" y="102" text-anchor="middle" fill="#e2e8f5" font-size="12">売上</text>
+      <text x="425" y="116" text-anchor="middle" fill="#8a99b8" font-size="10">(目的変数)</text>
+      <line x1="351" y1="105" x2="389" y2="105" stroke="#34d399" stroke-width="2" marker-end="url(#ah2)"/>
+      <text x="370" y="158" text-anchor="middle" fill="#8a99b8" font-size="11">一方向・一方的影響</text>
+
+      <!-- 因果 -->
+      <rect x="504" y="10" width="225" height="160" rx="10" fill="#141b26" stroke="#fbbf24" stroke-width="1.2"/>
+      <text x="617" y="38" text-anchor="middle" fill="#fbbf24" font-size="15" font-weight="700">因果関係</text>
+      <rect x="520" y="78" width="80" height="36" rx="6" fill="#1a2236" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="560" y="100" text-anchor="middle" fill="#e2e8f5" font-size="12">原因</text>
+      <rect x="628" y="78" width="80" height="36" rx="6" fill="#1a2236" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="668" y="100" text-anchor="middle" fill="#e2e8f5" font-size="12">結果</text>
+      <line x1="600" y1="96" x2="628" y2="96" stroke="#fbbf24" stroke-width="2" marker-end="url(#ah3)"/>
+      <text x="617" y="145" text-anchor="middle" fill="#8a99b8" font-size="11">操作→結果の直結</text>
+      <text x="617" y="158" text-anchor="middle" fill="#fbbf24" font-size="11">★証明が最も難しい</text>
+    </svg>
+    <figcaption>図：データ間の3種の関係性　S03:p.11–p.14</figcaption>
+  </div>
+
+  <h3 id="corr-vs-reg">相関関係 vs 回帰関係（混同に注意！）</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th></th><th>相関関係</th><th>回帰関係</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>変量の役割</td><td>2変量とも<strong>目的変数</strong></td><td>説明変数 x → 目的変数 y</td></tr>
+        <tr><td>影響の方向</td><td>双方向（相互に影響し合う）</td><td>一方向（x が y に影響）</td></tr>
+        <tr><td>使いたい場面</td><td>2変量の<strong>関係を表現</strong>したい</td><td>x から y を<strong>予測</strong>したい</td></tr>
+        <tr><td>例</td><td>身長と体重（どちらも観測値）</td><td>気温（x）→ 売上（y）</td></tr>
+        <tr><td>学習回</td><td>第4回（相関係数）</td><td>第9回（回帰分析）</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <span class="src">← S03:p.14</span>
+
+  <div class="audio-block">
+    <div class="label">🎙 AUDIO SUPPLEMENT</div>
+    相関の例：「身長が伸びれば体重が増えるし、逆に体重が増えれば身長が伸びる」という双方向の想定をしているのが相関。回帰の例：「売上から気温を予測することは回帰関係ではできない」——方向性が一方通行である点が決定的な違い。<span class="src">← S05</span>
+  </div>
+
+  <h3 id="discovery">データの関係性の発見</h3>
+  <div class="def-box">
+    <div class="def-term">データの関係性の発見</div>
+    <div class="def-body">変量間の<strong>相関・連関</strong>を見つけること。<span class="src">← S03:p.15</span></div>
+  </div>
+
+  <div class="audio-block">
+    <div class="label">🎙 AUDIO SUPPLEMENT — 相関と連関の使い分け</div>
+    統計の世界では、量的データ（身長・体重など）の相関関係を求めることを<strong>相関</strong>、質的データ（血液型・職業など）の相関関係のことを<strong>連関</strong>と呼んで区別する。参考書によっては両方まとめて「相関」と書いたり、連関を「関連」と表記することもあるが、この授業では<strong>相関（量的データ）・連関（質的データ）</strong>で統一する。<span class="src">← S05</span>
+  </div>
+
+  <h4>関係性の発見が必要な場面</h4>
+  <ul>
+    <li><strong>アンケート調査</strong>：年齢・性別・職業・商品の好み等、多数の調査項目間の関係を分析したい時</li>
+    <li><strong>小売店</strong>：取り扱い数千種類の商品の間で「この商品が売れたらあの商品も売れる」を把握したい時</li>
+    <li><strong>医療</strong>：薬品間の関係を分析したい時</li>
+  </ul>
+  <span class="src">← S03:p.15</span>
+
+  <h4>関係性発見のための2つの方法</h4>
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th>方法</th><th>対象</th><th>特徴</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>相関分析</strong>（相関行列）</td>
+          <td>2変量間の関係</td>
+          <td>多変量データでも2変量ずつの組み合わせで相関係数を計算できる（相関行列）。ただし2変量間の分析に限られる。</td>
+        </tr>
+        <tr>
+          <td><strong>アソシエーション分析</strong><br>（バスケット分析）</td>
+          <td>多変量間の関係</td>
+          <td>組み合わせ爆発を回避し、計算機で効率的に多変量間の関係を分析できる。</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <span class="src">← S03:p.16</span>
+
+  <div class="audio-block">
+    <div class="label">🎙 AUDIO SUPPLEMENT</div>
+    相関行列の例：数学・国語・英語・化学の4科目（4変量）について、任意の2科目の組み合わせ（数学×国語、数学×英語 …）ごとに相関係数を表形式にまとめたもの。ただし「おにぎり＋お茶＋お手拭き」のような<strong>3つ以上の関係</strong>を調べたい場合には使えない。そこでアソシエーション分析が必要になる。<span class="src">← S05</span>
+  </div>
+
+  <div class="warn-block">
+    <div class="label">⚠️ 組み合わせ爆発（combinatorial explosion）</div>
+    取り扱い商品数が増えると、全組み合わせ数が爆発的に増加し人手での計算が不可能になること。例：コンビニの約3,000種類の商品から3個の組み合わせを列挙すると約<strong>45億通り</strong>になる。アソシエーション分析はこの問題を計算機で効率的に解決する。<span class="src">← S05</span>
+  </div>
+
+  <h3 id="causality">因果関係と疑似相関（重要な留意点）</h3>
+
+  <div class="def-box">
+    <div class="def-term">因果関係</div>
+    <div class="def-body">何らかの<strong>操作が原因</strong>となって、結果に影響が出ること。<br>
+    「コップを落とした（原因）→ コップが割れた（結果）」← これは因果関係あり<br>
+    「犬が吠えた（行動）→ 試験に合格した（結果）」← これは因果関係なし</div>
+  </div>
+  <span class="src">← S03:p.17</span>
+
+  <div class="warn-block">
+    <div class="label">⚠️ 最重要注意点</div>
+    <strong>相関関係・回帰関係から、因果関係を導くことはできない。</strong><br>
+    データ分析の究極の目標は因果関係の存在をデータから示すことだが、これは非常に難しい（統計的因果推論という専門分野がある）。<span class="src">← S03:p.18</span>
+  </div>
+
+  <div class="audio-block">
+    <div class="label">🎙 AUDIO SUPPLEMENT — 疑似相関の例</div>
+    「全国の市区町村の病院の数と死亡率の間に正の相関があった。→ 病院の数を減らせば死亡率が下がる」という主張は誤り。<br>
+    実際は<strong>人口減少</strong>という共通の原因が存在しており、「人口が減った → 経営が成り立たなくなり病院が減った」かつ「人口が減った → 病院が少なくなり他の市区町村で亡くなる人が増え、この地域の死亡率が下がった」という2つの結果の間に疑似相関が生じている。<span class="src">← S05</span>
+    <br>また相関は双方向の関係なので、「病院の数 → 死亡率」の方向だけを主張するのも不適切（逆方向「死亡率 → 病院の数」も説明しなければならない）。
+  </div>
+
+  <div class="ext-block">
+    <div class="label">🌐 EXTERNAL SUPPLEMENT</div>
+    <strong>疑似相関（spurious correlation）</strong>とは、2変量間に直接の因果関係がないにも関わらず、第3の変数（交絡因子）の影響で相関があるように見える現象。有名な例として「アイスクリームの売上と溺死事故件数は正の相関がある」（実際の原因は気温の高さ）がある。
+  </div>
+
+  <div class="def-box" style="border-color: var(--accent-teal);">
+    <div class="def-term" style="color: var(--accent-teal);">第1章 まとめ</div>
+    <div class="def-body">
+      <ul>
+        <li>データ間の関係性：<strong>相関関係</strong>（双方向）、<strong>回帰関係</strong>（一方向）、<strong>因果関係</strong>（原因→結果）</li>
+        <li>2変量間の関係を<em>表現</em>したい → <strong>相関</strong>　／　<em>予測</em>したい → <strong>回帰</strong></li>
+        <li><strong class="hl">相関・回帰から因果関係は導けない</strong>（最重要）</li>
+        <li>関係性の発見手法：相関分析（2変量）、アソシエーション分析（多変量）</li>
+      </ul>
+    </div>
+  </div>
+  <span class="src">← S03:p.19</span>
+</section>
+
+<!-- ─────────────────────────────────────────────
+     第2章
+───────────────────────────────────────────── -->
+<section class="section-card" id="ch2">
+  <h2><span class="num">CH.2</span>関係性の発見</h2>
+
+  <h3 id="pos">POSデータ</h3>
+
+  <div class="def-box">
+    <div class="def-term">POS（Point of Sales）システム</div>
+    <div class="def-body">小売業における<strong>販売実績データの蓄積システム</strong>。コンビニエンスストアやスーパーマーケットで「いつ・どんなものが・誰に販売されたか」を記録・蓄積する仕組み。<span class="src">← S03:p.23</span></div>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th>種類</th><th>内容</th><th>含まれるデータ</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>POSデータ</strong></td>
+          <td>販売実績データ（レシート相当）</td>
+          <td>購入店舗・購入日時・購入商品名・金額・数量</td>
+        </tr>
+        <tr>
+          <td><strong>ID付きPOSデータ</strong></td>
+          <td>POSデータ + 顧客データ</td>
+          <td>上記 + ポイントカード・電子マネーに紐づく個人情報（年代・性別等）</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <span class="src">← S03:p.23</span>
+
+  <div class="audio-block">
+    <div class="label">🎙 AUDIO SUPPLEMENT — ID付きPOSデータの活用例</div>
+    コンビニでポイントカードや電子マネーで支払うと、その決済データに紐づく個人情報（年代・性別等）と購入商品の記録が結びつく。これがID付きPOSデータ。たとえばお店側は「この時間帯は30代ぐらいの人が来てお弁当を買ってくれる」という傾向を把握できるようになる。通常のPOSデータでは「何が売れたか」しかわからないが、ID付きにすることで「誰が」「どんな組み合わせで」買ったかも分かる点が大きな違い。<span class="src">← S05</span>
+  </div>
+
+  <div class="audio-block">
+    <div class="label">🎙 AUDIO SUPPLEMENT</div>
+    POSデータを活用することで「商品Aと商品Bはいつも一緒に買われるから近くに置こう」という<strong>商品配置</strong>や<strong>新商品開発</strong>に生かせる。コンビニは約3,000種類以上の商品を扱うため、商品の組み合わせ（3個の組み合わせで約45億通り）を人間の頭で考えるのは不可能 → アソシエーション分析が必要。<span class="src">← S05</span>
+  </div>
+
+  <h3 id="assoc-rule">アソシエーションルール</h3>
+
+  <div class="def-box">
+    <div class="def-term">アソシエーションルール（相関ルール）</div>
+    <div class="def-body">「<strong>商品Aを買っている人は、商品Bも同時に買っている</strong>」という組み合わせを表すルール。<br>
+    表記：<code>{条件部} ⇒ {結論部}</code><br>
+    例：<code>{商品A} ⇒ {商品B}</code>　／　<code>{商品A, 商品B} ⇒ {商品C}</code></div>
+  </div>
+  <span class="src">← S03:p.25</span>
+
+  <div class="audio-block">
+    <div class="label">🎙 AUDIO SUPPLEMENT — 方向性に注意</div>
+    アソシエーションルールは<strong>一方向の関係</strong>（← 相関関係とは異なる！）。<code>{商品A} ⇒ {商品B}</code> と <code>{商品B} ⇒ {商品A}</code> は別のルールとして扱う。漫画の例：「1巻を買った人が2巻を買う」は意味があるが、「2巻を買った人が1巻を買う」はあまり意味がない。<span class="src">← S05</span>
+    <br>※「相関ルール」という別名があるが、これは前述の「相関関係」ではなく、単に複数商品の間に「関係がある」ことを指す用語。本授業ではアソシエーションルールで統一する。
+  </div>
+
+  <div class="audio-block">
+    <div class="label">🎙 AUDIO SUPPLEMENT — 取り扱い商品が3つの場合の組み合わせ例</div>
+    商品A・B・Cの3種類でも、考えられるアソシエーションルールは12通りある（2項目ルール6通り + 多対1・1対多のルール6通り）。実際のコンビニでは数千種類あるため組み合わせ爆発が起きる。<span class="src">← S05</span>
+  </div>
+
+  <h3 id="support">3つの指標：支持度・信頼度・リフト値</h3>
+
+  <p>「意味ある組み合わせ」を判断するために以下の3指標を使う。<span class="src">← S03:p.26</span></p>
+
+  <!-- POSデータ例テーブル -->
+  <h4>POSデータ例（以下の計算で参照）</h4>
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th></th><th>商品A (🍰)</th><th>商品B (🍓ケーキ)</th><th>商品C (🍫)</th><th>商品D (🍮)</th><th>商品E (🍩焼き菓子)</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>客1</td><td>○</td><td>○</td><td></td><td></td><td>○</td></tr>
+        <tr><td>客2</td><td></td><td></td><td></td><td>○</td><td></td></tr>
+        <tr><td>客3</td><td>○</td><td>○</td><td></td><td></td><td>○</td></tr>
+        <tr><td>客4</td><td>○</td><td></td><td>○</td><td></td><td>○</td></tr>
+        <tr><td>客5</td><td></td><td>○</td><td></td><td>○</td><td>○</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <span class="src">← S03:p.27</span>
+
+  <!-- 支持度 -->
+  <h4>① 支持度（support）</h4>
+  <div class="def-box">
+    <div class="def-term">支持度（support）</div>
+    <div class="def-body">「<strong>頻繁に出現する商品の組み合わせ</strong>」の指標。<br>客全体に対し、X と Y を<strong>両方とも購入した人の割合</strong>。</div>
+  </div>
+  <div class="formula-box">
+    <div class="formula-label">計算式</div>
+    支持度({A}⇒{B}) = (A と B を両方購入した客数) ÷ (総客数)<br>
+    = 2 ÷ 5 = <strong>0.4</strong>　（客1・客3がA・B両方購入）
+  </div>
+  <div class="audio-block">
+    <div class="label">🎙 AUDIO SUPPLEMENT</div>
+    支持度が大きい → よくある組み合わせ。支持度が小さい → そもそも不人気商品なので検討対象外。<span class="src">← S05</span>
+  </div>
+  <span class="src">← S03:p.28</span>
+
+  <!-- 信頼度 -->
+  <h4>② 信頼度（confidence）</h4>
+  <div class="def-box">
+    <div class="def-term">信頼度（confidence / 確信度）</div>
+    <div class="def-body">「<strong>ルールの強さ</strong>」の指標。<br>X を購入した人に対し、X と Y を<strong>両方とも購入した人の割合</strong>。</div>
+  </div>
+  <div class="formula-box">
+    <div class="formula-label">計算式</div>
+    信頼度({A}⇒{B}) = (A と B を両方購入した客数) ÷ (A を購入した客数)<br>
+    = 2 ÷ 3 = <strong>2/3 ≒ 0.67</strong>　（Aを買った3人のうち2人がBも購入）
+  </div>
+  <div class="audio-block">
+    <div class="label">🎙 AUDIO SUPPLEMENT — 支持度と信頼度の比較例</div>
+    <strong>{A}⇒{E}：</strong>支持度 = 3/5、信頼度 = 1（Aを買った人全員がEも購入）→ 共に高い → 検討対象<br>
+    <strong>{C}⇒{A}：</strong>支持度 = 1/5、信頼度 = 1 → 信頼度は高いがそもそも商品Cが不人気なので検討対象外<span class="src">← S05</span>
+  </div>
+  <span class="src">← S03:p.29,30,31</span>
+
+  <!-- リフト値 -->
+  <h4>③ リフト値（lift）</h4>
+  <div class="def-box">
+    <div class="def-term">リフト値（lift）</div>
+    <div class="def-body">「<strong>売れ筋商品かどうか</strong>」の指標。<br>X との同時購入で、Y の購入者が何倍になったか？</div>
+  </div>
+  <div class="formula-box">
+    <div class="formula-label">計算式</div>
+    リフト値({A}⇒{B}) = 信頼度({A}⇒{B}) ÷ (B の購入者割合)<br>
+    = (2/3) ÷ (3/5) = 10/9 ≒ <strong>1.11</strong>
+  </div>
+
+  <div class="tbl-wrap" style="margin-top:12px;">
+    <table>
+      <thead>
+        <tr><th>リフト値の値</th><th>解釈</th><th>例</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong class="hl-teal">1 以上</strong></td><td>商品B は 商品A との<strong>組み合わせで売れる</strong></td><td>{A}⇒{B} = 10/9</td></tr>
+        <tr><td><strong class="hl-rose">1 未満</strong></td><td>商品E は 商品D に<strong>関係なく売れる</strong>（独立して売れる）</td><td>{D}⇒{E} = 5/8</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="audio-block">
+    <div class="label">🎙 AUDIO SUPPLEMENT</div>
+    リフト値1未満の商品はビニール袋のようなもの——どの商品を買っても必ず一緒に買う商品。このような商品まで分析対象にすると「どの商品とどの商品の関係が重要か」が分からなくなってしまう。だからリフト値でこれを除外する。<span class="src">← S05</span>
+  </div>
+  <span class="src">← S03:p.32,33,34,35</span>
+
+  <h3 id="result-view">アソシエーション分析の結果の見方</h3>
+
+  <p>分析結果は以下の形式で出力される：<span class="src">← S03:p.36</span></p>
+  <div class="formula-box">
+    {条件部} ⇒ {結論部}　,　支持度　,　信頼度　,　リフト値
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th>{条件部} ⇒ {結論部}</th><th>支持度</th><th>信頼度</th><th>リフト値</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>{b}⇒{a}</td><td>0.4</td><td>0.67</td><td>1.11</td></tr>
+        <tr><td>{a}⇒{b}</td><td>0.4</td><td>0.67</td><td>1.11</td></tr>
+        <tr style="background: rgba(52,211,153,.08);"><td>{b}⇒{e}</td><td>0.6</td><td>1</td><td>1.25</td></tr>
+        <tr><td>{e}⇒{b}</td><td>0.6</td><td>0.75</td><td>1.25</td></tr>
+        <tr style="background: rgba(52,211,153,.08);"><td>{a}⇒{e}</td><td>0.6</td><td>1</td><td>1.25</td></tr>
+        <tr><td>{e}⇒{a}</td><td>0.6</td><td>0.75</td><td>1.25</td></tr>
+        <tr style="background: rgba(52,211,153,.08);"><td>{a, b}⇒{e}</td><td>0.4</td><td>1</td><td>1.25</td></tr>
+        <tr><td>{b, e}⇒{a}</td><td>0.4</td><td>0.67</td><td>1.11</td></tr>
+        <tr><td>{a, e}⇒{b}</td><td>0.4</td><td>0.67</td><td>1.11</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:13px; color: var(--accent-teal);">★ 緑ハイライト行：支持度≥0.4・信頼度=1・リフト値=1.25 → 検討対象</p>
+  <span class="src">← S03:p.37</span>
+
+  <div class="audio-block">
+    <div class="label">🎙 AUDIO SUPPLEMENT — 結果の解釈例</div>
+    緑ハイライトのルールを見ると「商品A・Bのいずれかまたは両方を買うと商品E（焼き菓子）も買う」というパターンが浮かび上がる。分析者はここから「商品A・Bはお母さん同士の集まりへの手土産用で、商品Eは自宅用のついで買いではないか」という<strong>仮説</strong>を立て、「焼き菓子をケーキの近くに移動しよう」という施策に活かす。<span class="src">← S05</span>
+  </div>
+
+  <div class="warn-block">
+    <div class="label">⚠️ アソシエーション分析の性質</div>
+    第8〜10回で学んだ分析手法は「分析結果がそのまま結論」だったが、アソシエーション分析は<strong>仮説を作るための探索的な分析</strong>。結果から関係性を自分で考え → 仮説を立て → 検証するという流れが必要。<span class="src">← S05</span>
+  </div>
+
+  <h4>しきい値（検討対象の基準）は自分で決定する</h4>
+  <p>「支持度が高い」「信頼度が高い」の基準（しきい値）はデータや目的に応じて分析者自身が設定する。<span class="src">← S03:p.39</span></p>
+</section>
+
+<!-- ─────────────────────────────────────────────
+     第3章
+───────────────────────────────────────────── -->
+<section class="section-card" id="ch3">
+  <h2><span class="num">CH.3</span>関係性の活用</h2>
+
+  <h3 id="recommend">レコメンド</h3>
+
+  <div class="def-box">
+    <div class="def-term">レコメンド（recommendation / 推薦）</div>
+    <div class="def-body">ある商品を購入（選択）した顧客に対し、<strong>別の商品を提案</strong>すること。</div>
+  </div>
+  <span class="src">← S03:p.45</span>
+
+  <div class="audio-block">
+    <div class="label">🎙 AUDIO SUPPLEMENT</div>
+    例：ネットショッピングの「よく一緒に購入されている商品」、動画配信サービスの「次にこの動画はいかがですか？」。動画配信では実際に検索して動画を見る人は全体の約<strong>2割</strong>で、残り<strong>8割</strong>は提案された動画を見ているとされる。そのためインターネットサービスではレコメンドが非常に重要な技術。<span class="src">← S05</span>
+  </div>
+
+  <h3 id="collab">協調フィルタリング（Collaborative Filtering）</h3>
+
+  <div class="def-box">
+    <div class="def-term">協調フィルタリング</div>
+    <div class="def-body">過去の購入履歴・評価履歴などを使用し、<strong>類似の購入行動が再び起こる</strong>と仮定してレコメンドを作成する手法。</div>
+  </div>
+  <span class="src">← S03:p.46</span>
+
+  <div class="fig-wrap">
+    <svg viewBox="0 0 680 130" xmlns="http://www.w3.org/2000/svg" font-family="Noto Sans JP, sans-serif">
+      <defs>
+        <marker id="ah4" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#5b8dee"/>
+        </marker>
+      </defs>
+      <!-- 協調フィルタリング種別 -->
+      <rect x="240" y="10" width="200" height="44" rx="8" fill="#141b26" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="340" y="36" text-anchor="middle" fill="#e2e8f5" font-size="14" font-weight="700">協調フィルタリング</text>
+      <!-- ユーザベース -->
+      <rect x="40"  y="80" width="240" height="40" rx="8" fill="#1a2236" stroke="#a78bfa" stroke-width="1.5"/>
+      <text x="160" y="98" text-anchor="middle" fill="#a78bfa" font-size="13" font-weight="600">ユーザベース協調フィルタリング</text>
+      <text x="160" y="112" text-anchor="middle" fill="#8a99b8" font-size="11">「類似の他のユーザ」に着目</text>
+      <!-- アイテムベース -->
+      <rect x="400" y="80" width="240" height="40" rx="8" fill="#1a2236" stroke="#34d399" stroke-width="1.5"/>
+      <text x="520" y="98" text-anchor="middle" fill="#34d399" font-size="13" font-weight="600">アイテムベース協調フィルタリング</text>
+      <text x="520" y="112" text-anchor="middle" fill="#8a99b8" font-size="11">「類似の商品」に着目</text>
+      <!-- 線 -->
+      <line x1="280" y1="54" x2="160" y2="80" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#ah4)"/>
+      <line x1="400" y1="54" x2="520" y2="80" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#ah4)"/>
+    </svg>
+    <figcaption>図：協調フィルタリングの2種類　S03:p.46</figcaption>
+  </div>
+
+  <h3 id="user-based">ユーザベース協調フィルタリング</h3>
+  <p>「対象顧客と似た購入行動をとる他のユーザ（類似ユーザ）」の購入商品をレコメンドする。<span class="src">← S03:p.47,48</span></p>
+
+  <h4>手順（アソシエーション分析を使った方法）</h4>
+  <ol>
+    <li><strong>類似ユーザの抽出：</strong>対象顧客の購入済み商品を条件部として、他の各顧客に対する<strong>信頼度</strong>を計算。信頼度が最も高い顧客 = 類似ユーザ</li>
+    <li><strong>レコメンドの作成：</strong>類似ユーザが購入している商品（対象顧客が未購入）をレコメンド候補とする</li>
+  </ol>
+
+  <div class="audio-block">
+    <div class="label">🎙 AUDIO SUPPLEMENT — 具体例</div>
+    客1（商品A・B購入済み）へのレコメンド：<br>
+    {客2}⇒{客1} の信頼度 = 0（客2はA・B両方買っていない）<br>
+    {客3}⇒{客1} の信頼度 = 1（客3はA・B両方買っている）→ <strong>客3 = 類似ユーザ</strong><br>
+    客3は商品Eを買っているので → <strong>客1に商品Eをレコメンド</strong><span class="src">← S05</span>
+    <br><br>
+    ※使うデータは購入履歴だけでなく、「いいね」やブックマークなどの嗜好データも利用可能。
+  </div>
+
+  <h3 id="item-based">アイテムベース協調フィルタリング</h3>
+  <p>「対象顧客が購入済みの商品と似た購入傾向を持つ商品（類似商品）」をレコメンドする。「似た商品 = 似た購入行動をされている商品」と定義（商品の属性情報は使わない）。<span class="src">← S03:p.53,54</span></p>
+
+  <h4>手順（アソシエーション分析を使った方法）</h4>
+  <ol>
+    <li><strong>類似商品のスコア算出：</strong>対象顧客（客1）を除いた他の客のデータを使い、客1の「購入済み商品 ⇒ 未購入商品」の各アソシエーションルールの信頼度を計算し、未購入商品ごとに信頼度の合計（スコア）を算出</li>
+    <li><strong>レコメンドの作成：</strong>最もスコアが高い未購入商品をレコメンド</li>
+  </ol>
+
+  <div class="audio-block">
+    <div class="label">🎙 AUDIO SUPPLEMENT — 具体例</div>
+    客1（商品A・B購入済み）へのレコメンド（客2〜5のデータを使用）：<br>
+    {A}⇒{E} の信頼度 = 1.0<br>
+    {B}⇒{E} の信頼度 = 1.0<br>
+    {A,B}⇒{E} の信頼度 = 1.0<br>
+    → 商品E のスコア = <strong>3.0</strong><br>
+    （商品C・商品D のスコアはそれぞれ 0.5）<br>
+    → <strong>商品E をレコメンド</strong><span class="src">← S05</span>
+  </div>
+
+  <h3>協調フィルタリングの特徴</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th></th><th>内容</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong class="hl-teal">利点</strong></td>
+          <td>商品自体の属性情報（製造国・メーカー・色・サイズ等）が<strong>なくてもレコメンドを作成できる</strong></td>
+        </tr>
+        <tr>
+          <td><strong class="hl-rose">問題点①</strong></td>
+          <td>新商品や不人気商品は購入履歴がないため、<strong>レコメンドを作ることが困難</strong></td>
+        </tr>
+        <tr>
+          <td><strong class="hl-rose">問題点②</strong></td>
+          <td>精度の高いレコメンドには<strong>大規模なデータベース</strong>が必要。オープンしたての店やサービス開始直後は使えない</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <span class="src">← S03:p.57</span>
+
+  <div class="ext-block">
+    <div class="label">🌐 EXTERNAL SUPPLEMENT — 他のレコメンド手法（補足）</div>
+    協調フィルタリングの問題点を補うために他の手法と組み合わせることが多い。<br>
+    <strong>コンテンツベースフィルタリング：</strong>商品の属性情報（価格・色・ジャンル等）を使ったフィルタリング。新商品にも対応可能。<br>
+    その他：行列分解・グラフニューラルネットワーク・深層強化学習等（S03:p.58）
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────────
+     第4章
+───────────────────────────────────────────── -->
+<section class="section-card" id="ch4">
+  <h2><span class="num">CH.4</span>データ分析事例</h2>
+
+  <p>Google Colaboratory（Python）を使ったアソシエーション分析のデモ。映画の評価データ（<a href="https://grouplens.org/datasets/movielens/latest/" target="_blank" style="color:var(--accent-blue);">GroupLens MovieLens</a>）を使用。</p>
+
+  <div class="audio-block">
+    <div class="label">🎙 AUDIO SUPPLEMENT — データの概要</div>
+    評価は星0.5〜5.0（0.5刻み）。授業では星4以上の高評価データのみを抽出して使用。ファイル構成：<code>movies_4stars.csv</code>（評価データ）、<code>movies.csv</code>（映画ID・タイトル・ジャンル）。<span class="src">← S05</span>
+  </div>
+
+  <h3>分析の流れ</h3>
+  <ol>
+    <li><strong>データ読み込み・加工：</strong>縦持ちデータを横持ちデータ（行=ユーザID、列=MovieID）に変換</li>
+    <li><strong>支持度の計算：</strong>Aprioriアルゴリズムを使用（支持度≥0.15の組み合わせ → 125件）</li>
+    <li><strong>信頼度・リフト値の計算：</strong>リフト値≥2に絞るとルールは52件に絞られる</li>
+    <li><strong>結果の考察</strong></li>
+  </ol>
+
+  <div class="def-box">
+    <div class="def-term">Aprioriアルゴリズム</div>
+    <div class="def-body">アソシエーション分析で支持度・信頼度・リフト値を<strong>高速に計算できるアルゴリズム</strong>。組み合わせ爆発を効率的に処理する。<span class="src">← S05</span></div>
+  </div>
+
+  <h4>考察：リフト値上位のルール分析</h4>
+  <div class="audio-block">
+    <div class="label">🎙 AUDIO SUPPLEMENT — ロード・オブ・ザ・リング</div>
+    リフト値上位5件の条件部・結論部はすべて Movie ID 7153・5952・4993 の3本 → どれも「ロード・オブ・ザ・リング」シリーズ。結論：「シリーズ全作の評価が高い映画は1本視聴させれば続編視聴の確率が高くなる → 売上アップ効果が期待できる」という仮説が立てられる。<span class="src">← S05</span>
+  </div>
+  <div class="audio-block">
+    <div class="label">🎙 AUDIO SUPPLEMENT — アカデミー賞受賞作ルール</div>
+    Movie ID 318（ショーシャンクの空に・支持度が最も高い）・296（パルプ・フィクション）・50（ユージュアル・サスペクツ）が同一ルールに含まれる。3本はジャンルが異なるが<strong>全てアカデミー賞で複数部門ノミネート</strong>された作品。→「ジャンルは違っても話題作を中心にしたルール」という解釈。→「アカデミー賞複数部門ノミネート作品特集ページを作れば連動視聴が見込める」という仮説が立てられる。<span class="src">← S05</span>
+  </div>
+
+  <div class="warn-block">
+    <div class="label">⚠️ ドメイン知識の重要性</div>
+    アソシエーション分析はデータ分析の知識だけでなく、<strong>ドメイン知識</strong>（今回は映画に関する知識）と組み合わせることで初めて意味のある仮説が立てられる。<span class="src">← S05</span>
+  </div>
+
+  <h3>データ解析の目的と手法の全体像（第8〜11回まとめ）</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th>回</th><th>目的</th><th>代表手法</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>第8回</td><td>母集団の推測をしたい</td><td>統計的推測・統計的検定</td></tr>
+        <tr><td>第9回</td><td>説明変数から目的変数を予測したい</td><td>単回帰分析（重回帰分析・ロジスティック回帰）</td></tr>
+        <tr><td>第10回</td><td>データをグループ分けしたい（要約も）</td><td>クラス分類・クラスタリング（主成分分析）</td></tr>
+        <tr><td><strong>第11回</strong></td><td><strong>関係性を発見したい</strong></td><td><strong>アソシエーション分析・協調フィルタリング</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <span class="src">← S03:p.63,64</span>
+
+  <div class="audio-block">
+    <div class="label">🎙 AUDIO SUPPLEMENT</div>
+    この授業の目標は分析手法を「使えるようになる」ことではなく、「分析方法が存在することを知り、分析結果を正しく解釈できること」。どんな目的に対してどんな分析方法があるかの概念理解と、結果を見るときに何に注意しなければならないかを理解することが第8〜11回のゴール。<span class="src">← S05</span>
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────────
+     APPENDIX
+───────────────────────────────────────────── -->
+<section id="appendix">
+  <h2><span class="num">APP</span>補足</h2>
+
+  <!-- 補足A: 最重要ワード -->
+  <div class="appendix-card">
+    <h3>⭐ 補足A: 最重要ワード一覧</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th>用語</th><th>読み</th><th>定義</th><th>重要度</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>アソシエーションルール</td><td>あそしえーしょんるーる</td><td>「商品Aを買う人は商品Bも買う」という組み合わせを{条件部}⇒{結論部}で表したルール（一方向）</td><td>★★★</td></tr>
+          <tr><td>支持度（support）</td><td>しじど</td><td>客全体に対し、X と Y を両方購入した人の割合。頻出度の指標</td><td>★★★</td></tr>
+          <tr><td>信頼度（confidence）</td><td>しんらいど</td><td>X を購入した人に対し、XとY両方を購入した人の割合。ルールの強さの指標</td><td>★★★</td></tr>
+          <tr><td>リフト値（lift）</td><td>りふとち</td><td>Xとの同時購入でYの購入者が何倍になるかの指標。1以上なら組み合わせで売れる</td><td>★★★</td></tr>
+          <tr><td>POSデータ</td><td>ぽすでーた</td><td>小売業の販売実績データ（レシート情報を顧客ごとに蓄積したもの）</td><td>★★★</td></tr>
+          <tr><td>協調フィルタリング</td><td>きょうちょうふぃるたりんぐ</td><td>過去の購入履歴・嗜好データから類似ユーザ/類似商品を見つけてレコメンドを作成する手法</td><td>★★★</td></tr>
+          <tr><td>疑似相関</td><td>ぎじそうかん</td><td>第3の変数（交絡因子）が原因で、直接関係のない2変量間に相関があるように見える現象</td><td>★★★</td></tr>
+          <tr><td>組み合わせ爆発</td><td>くみあわせばくはつ</td><td>変量数が増えると全組み合わせ数が爆発的に増加し計算困難になること</td><td>★★☆</td></tr>
+          <tr><td>二変量データ</td><td>にへんりょうでーた</td><td>1つの観測対象に対して2種類のデータが存在するデータ形式</td><td>★★☆</td></tr>
+          <tr><td>連関</td><td>れんかん</td><td>質的データ間の相関関係（量的データの相関関係と区別するための用語）</td><td>★★☆</td></tr>
+          <tr><td>ユーザベース協調フィルタリング</td><td>ゆーざべーすきょうちょうふぃるたりんぐ</td><td>類似ユーザの購入商品を使ってレコメンドを作成する手法</td><td>★★☆</td></tr>
+          <tr><td>アイテムベース協調フィルタリング</td><td>あいてむべーすきょうちょうふぃるたりんぐ</td><td>類似商品（類似購入傾向を持つ商品）を使ってレコメンドを作成する手法</td><td>★★☆</td></tr>
+          <tr><td>しきい値</td><td>しきいち</td><td>アソシエーション分析で「検討対象」とするための支持度・信頼度・リフト値の下限値。分析者が設定する</td><td>★★☆</td></tr>
+          <tr><td>Aprioriアルゴリズム</td><td>あぷりおりあるごりずむ</td><td>アソシエーション分析の指標（支持度・信頼度・リフト値等）を効率的に計算するアルゴリズム</td><td>★☆☆</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 補足B: 背景知識 -->
+  <div class="appendix-card teal">
+    <h3>📚 補足B: 知っておくべき背景知識</h3>
+    <ul>
+      <li><strong>統計的因果推論：</strong>相関関係からは因果関係を導けないことは広く知られており、因果関係の証明を統計的に行う「統計的因果推論」という専門分野がある（本授業の範囲外）。</li>
+      <li><strong>コサイン類似度・Jaccard係数：</strong>協調フィルタリングで「類似度」を計算する方法として、アソシエーション分析の信頼度以外にも有名な指標がある。</li>
+      <li><strong>横持ちデータ vs 縦持ちデータ：</strong>横持ち = 行にユーザ・列に商品（アソシエーション分析に適した形式）、縦持ち = 一取引一行の形式（通常のPOSデータの保存形式）。</li>
+    </ul>
+  </div>
+
+  <!-- 補足C: 試験・レポート -->
+  <div class="appendix-card amber">
+    <h3>🎯 補足C: 試験・レポートで重要な観点</h3>
+    <ul>
+      <li>「<strong>相関関係から因果関係は導けない</strong>」は頻出。疑似相関の例（病院数と死亡率）を説明できるようにする。</li>
+      <li>支持度・信頼度・リフト値の<strong>計算方法と解釈</strong>（どんな時に検討対象か、リフト値1未満の意味）を覚える。</li>
+      <li>ユーザベース vs アイテムベース協調フィルタリングの違いと、どちらも「信頼度」を指標に使う点。</li>
+      <li>協調フィルタリングの<strong>利点と問題点</strong>（新商品対応不可、大規模データが必要）。</li>
+      <li>相関 vs 回帰の違い（双方向 vs 一方向）。</li>
+    </ul>
+  </div>
+
+  <!-- 補足D: 次回接続 -->
+  <div class="appendix-card rose">
+    <h3>🔗 補足D: 関連概念・次回への接続</h3>
+    <ul>
+      <li>第8〜11回でデータ解析の4目的（統計的推測・予測・グループ分け・関係性発見）が完成。</li>
+      <li>より発展した分析手法：重回帰分析・ロジスティック回帰（予測）、主成分分析（要約）、グラフニューラルネットワーク・深層強化学習（レコメンド）など。</li>
+      <li>アソシエーション分析は仮説生成ツール → 仮説検証には別の分析（例：統計的検定）が必要。</li>
+    </ul>
+  </div>
+
+  <!-- 未確定事項 -->
+  <div class="appendix-card" style="border-color: var(--accent-orange);">
+    <h3 style="color: var(--accent-orange);">❓ 未確定事項・要確認リスト</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th>ID</th><th>内容</th><th>種別</th><th>優先度</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>U01</td><td>S05で「細菌方法」「経菌方法」と誤変換されている箇所 → コンテキストから「k近傍法（kNN）」と判定。スライドでは「景金防法」とあり、「k近傍法」として処理。</td><td>AI変換誤変換（処理済み）</td><td>low</td></tr>
+          <tr><td>U02</td><td>S05で「強調フィルタリング」→「協調フィルタリング」（S03:p.46で確認済み）</td><td>AI変換誤変換（処理済み）</td><td>low</td></tr>
+          <tr><td>U03</td><td>アイテムベース協調フィルタリングの説明でS05に「ルジ/ルイスの商品」という表現があるが「類似の商品」の誤変換と判定。</td><td>AI変換誤変換（処理済み）</td><td>low</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<script>
+// Active nav highlight on scroll
+const sections = document.querySelectorAll('[id]');
+const navLinks = document.querySelectorAll('#sidebar nav a');
+window.addEventListener('scroll', () => {
+  let cur = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 120) cur = s.id;
+  });
+  navLinks.forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + cur);
+  });
+}, { passive: true });
+</script>
+</body>
+</html>
