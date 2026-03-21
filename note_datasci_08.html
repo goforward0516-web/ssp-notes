@@ -1,0 +1,1801 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>データサイエンス入門 第8回｜データを使った予測（1）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&family=Zen+Kaku+Gothic+New:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f1117;
+  --bg2: #161b27;
+  --bg3: #1e2535;
+  --bg4: #252d3d;
+  --text: #e2e8f5;
+  --text2: #8a99b8;
+  --text3: #5b6f8a;
+  --accent-blue: #5b8dee;
+  --accent-blue-dim: #2a3f6b;
+  --accent-green: #34d399;
+  --accent-green-dim: #1a3d2e;
+  --accent-orange: #fbbf24;
+  --accent-orange-dim: #3d2e0a;
+  --accent-purple: #a78bfa;
+  --accent-purple-dim: #2e1f5e;
+  --accent-red: #f87171;
+  --accent-red-dim: #3d1515;
+  --border: #2a3348;
+  --sidebar-w: 260px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 15px;
+  line-height: 1.8;
+  display: flex;
+}
+
+/* ===== SIDEBAR ===== */
+#sidebar {
+  width: var(--sidebar-w);
+  min-height: 100vh;
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  position: fixed;
+  top: 0; left: 0;
+  overflow-y: auto;
+  padding: 24px 0 40px;
+  z-index: 100;
+}
+
+.sidebar-header {
+  padding: 0 20px 20px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+
+.sidebar-subject {
+  font-size: 10px;
+  color: var(--accent-blue);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-family: 'JetBrains Mono', monospace;
+  margin-bottom: 6px;
+}
+
+.sidebar-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.4;
+}
+
+.sidebar-meta {
+  font-size: 11px;
+  color: var(--text3);
+  margin-top: 4px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.toc-section {
+  padding: 0 12px;
+}
+
+.toc-chapter {
+  margin-bottom: 4px;
+}
+
+.toc-chapter-link {
+  display: block;
+  padding: 7px 10px;
+  border-radius: 6px;
+  color: var(--text2);
+  text-decoration: none;
+  font-size: 12.5px;
+  font-weight: 500;
+  transition: all 0.15s;
+}
+.toc-chapter-link:hover { background: var(--bg3); color: var(--text); }
+.toc-chapter-link.active { background: var(--accent-blue-dim); color: var(--accent-blue); }
+
+.toc-sub {
+  padding-left: 8px;
+}
+.toc-sub-link {
+  display: block;
+  padding: 4px 10px;
+  border-radius: 4px;
+  color: var(--text3);
+  text-decoration: none;
+  font-size: 11.5px;
+  transition: all 0.15s;
+}
+.toc-sub-link:hover { color: var(--text2); background: var(--bg3); }
+
+/* ===== MAIN ===== */
+#main {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  max-width: 900px;
+  padding: 48px 48px 80px;
+}
+
+/* ===== HEADER ===== */
+.lecture-header {
+  background: linear-gradient(135deg, var(--bg3) 0%, var(--bg2) 100%);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent-blue);
+  border-radius: 10px;
+  padding: 28px 32px;
+  margin-bottom: 40px;
+}
+
+.lh-subject {
+  font-size: 11px;
+  color: var(--accent-blue);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-family: 'JetBrains Mono', monospace;
+  margin-bottom: 8px;
+}
+
+.lh-title {
+  font-size: 26px;
+  font-weight: 700;
+  font-family: 'Zen Kaku Gothic New', sans-serif;
+  color: var(--text);
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+
+.lh-goals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.lh-goal {
+  background: var(--accent-blue-dim);
+  border: 1px solid var(--accent-blue);
+  border-radius: 4px;
+  padding: 4px 10px;
+  font-size: 12px;
+  color: var(--accent-blue);
+}
+
+.lh-meta {
+  font-size: 12px;
+  color: var(--text3);
+  font-family: 'JetBrains Mono', monospace;
+  margin-top: 10px;
+}
+
+/* ===== SECTION / CARD ===== */
+.section {
+  margin-bottom: 48px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.section-num {
+  background: var(--accent-blue);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  padding: 3px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.section-title {
+  font-size: 20px;
+  font-weight: 700;
+  font-family: 'Zen Kaku Gothic New', sans-serif;
+  color: var(--text);
+}
+
+.subsection {
+  margin-bottom: 28px;
+}
+
+.subsection-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--accent-blue);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.subsection-title::before {
+  content: '';
+  display: inline-block;
+  width: 4px;
+  height: 16px;
+  background: var(--accent-blue);
+  border-radius: 2px;
+}
+
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px 24px;
+  margin-bottom: 16px;
+}
+
+p { margin-bottom: 10px; }
+p:last-child { margin-bottom: 0; }
+
+/* ===== BLOCKS ===== */
+.block-audio {
+  background: var(--bg3);
+  border-left: 3px solid var(--accent-blue);
+  border-radius: 0 6px 6px 0;
+  padding: 12px 16px;
+  margin: 12px 0;
+  font-size: 14px;
+}
+
+.block-audio-label {
+  font-size: 10px;
+  color: var(--accent-blue);
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.1em;
+  margin-bottom: 6px;
+}
+
+.block-infer {
+  background: var(--bg3);
+  border-left: 3px solid var(--accent-purple);
+  border-radius: 0 6px 6px 0;
+  padding: 12px 16px;
+  margin: 12px 0;
+  font-size: 14px;
+}
+
+.block-check {
+  background: var(--bg3);
+  border-left: 3px solid var(--accent-orange);
+  border-radius: 0 6px 6px 0;
+  padding: 12px 16px;
+  margin: 12px 0;
+  font-size: 14px;
+}
+
+.block-external {
+  background: var(--bg3);
+  border-left: 3px solid var(--accent-green);
+  border-radius: 0 6px 6px 0;
+  padding: 12px 16px;
+  margin: 12px 0;
+  font-size: 14px;
+}
+
+.block-label {
+  font-size: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.1em;
+  margin-bottom: 6px;
+}
+.block-external .block-label { color: var(--accent-green); }
+.block-check .block-label { color: var(--accent-orange); }
+.block-infer .block-label { color: var(--accent-purple); }
+
+/* ===== DEFINITION / EXAMPLE BOX ===== */
+.def-box {
+  background: var(--bg3);
+  border: 1px solid var(--accent-blue);
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin: 14px 0;
+}
+
+.def-box-label {
+  font-size: 10px;
+  color: var(--accent-blue);
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.1em;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.def-box-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.def-box p { font-size: 14px; color: var(--text2); }
+
+.ex-box {
+  background: var(--bg4);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin: 12px 0;
+}
+
+.ex-box-label {
+  font-size: 10px;
+  color: var(--accent-green);
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.1em;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+/* ===== BADGE ===== */
+.src-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  background: var(--bg4);
+  color: var(--text3);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 1px 6px;
+  margin-left: 6px;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+/* ===== KEY FORMULA / HIGHLIGHT ===== */
+.formula-box {
+  background: var(--bg4);
+  border: 1px solid var(--accent-orange);
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin: 16px 0;
+  font-size: 14px;
+}
+
+.formula-box .formula-label {
+  font-size: 10px;
+  color: var(--accent-orange);
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.1em;
+  margin-bottom: 8px;
+}
+
+.formula-box .formula-content {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 15px;
+  color: var(--accent-orange);
+}
+
+/* ===== IMPORTANT BOX ===== */
+.important-box {
+  background: linear-gradient(135deg, #1a2642 0%, #1e2535 100%);
+  border: 1px solid var(--accent-blue);
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin: 16px 0;
+}
+
+/* ===== SVG FIGURE ===== */
+.fig-wrap {
+  margin: 20px 0;
+  text-align: center;
+}
+
+.fig-caption {
+  font-size: 11px;
+  color: var(--text3);
+  font-family: 'JetBrains Mono', monospace;
+  margin-top: 8px;
+}
+
+/* ===== TABLE ===== */
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+  margin: 14px 0;
+}
+
+.styled-table th {
+  background: var(--bg4);
+  color: var(--accent-blue);
+  font-weight: 600;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  text-align: left;
+  font-size: 12px;
+}
+
+.styled-table td {
+  padding: 9px 14px;
+  border: 1px solid var(--border);
+  color: var(--text2);
+  vertical-align: top;
+}
+
+.styled-table tr:nth-child(even) td { background: var(--bg3); }
+.styled-table tr:hover td { background: var(--bg4); }
+
+/* ===== HIGHLIGHT TEXT ===== */
+.hl { color: var(--accent-blue); font-weight: 600; }
+.hl-g { color: var(--accent-green); font-weight: 600; }
+.hl-o { color: var(--accent-orange); font-weight: 600; }
+.hl-p { color: var(--accent-purple); }
+
+/* ===== STEP LIST ===== */
+.step-list {
+  list-style: none;
+  counter-reset: step;
+  margin: 12px 0;
+}
+
+.step-list li {
+  counter-increment: step;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+}
+.step-list li:last-child { border-bottom: none; }
+
+.step-list li::before {
+  content: counter(step);
+  background: var(--accent-blue);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  min-width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+}
+
+/* ===== SUMMARY ===== */
+.summary-section {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--accent-blue);
+  border-radius: 8px;
+  padding: 20px 24px;
+  margin: 16px 0;
+}
+
+.summary-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent-blue);
+  margin-bottom: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.05em;
+}
+
+/* ===== FOOTER SECTIONS ===== */
+.appendix {
+  margin-top: 56px;
+  padding-top: 32px;
+  border-top: 2px solid var(--border);
+}
+
+.appendix-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.appendix-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 18px 20px;
+}
+
+.appendix-card-title {
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.appendix-card.blue { border-top: 2px solid var(--accent-blue); }
+.appendix-card.blue .appendix-card-title { color: var(--accent-blue); }
+.appendix-card.green { border-top: 2px solid var(--accent-green); }
+.appendix-card.green .appendix-card-title { color: var(--accent-green); }
+.appendix-card.orange { border-top: 2px solid var(--accent-orange); }
+.appendix-card.orange .appendix-card-title { color: var(--accent-orange); }
+.appendix-card.purple { border-top: 2px solid var(--accent-purple); }
+.appendix-card.purple .appendix-card-title { color: var(--accent-purple); }
+
+.appendix-card li { font-size: 13px; color: var(--text2); margin-bottom: 6px; }
+
+/* ===== NOTE WARN BOX ===== */
+.warn-box {
+  background: var(--accent-orange-dim);
+  border: 1px solid var(--accent-orange);
+  border-radius: 6px;
+  padding: 12px 16px;
+  font-size: 13.5px;
+  margin: 12px 0;
+  color: var(--text);
+}
+
+.warn-box-label {
+  font-size: 10px;
+  color: var(--accent-orange);
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.1em;
+  margin-bottom: 6px;
+}
+
+/* ===== REVIEW QUIZ ===== */
+.quiz-box {
+  background: var(--bg3);
+  border: 1px solid var(--accent-purple);
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin: 16px 0;
+}
+.quiz-box .quiz-q { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+.quiz-box .quiz-a { font-size: 13.5px; color: var(--text2); border-top: 1px solid var(--border); padding-top: 8px; margin-top: 4px; }
+
+@media (max-width: 900px) {
+  #sidebar { display: none; }
+  #main { margin-left: 0; padding: 24px 16px 60px; }
+  .appendix-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== SIDEBAR ===== -->
+<nav id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-subject">データサイエンス入門</div>
+    <div class="sidebar-title">第8回 データを使った予測（1）</div>
+    <div class="sidebar-meta">浅田 麻菜</div>
+  </div>
+  <div class="toc-section">
+    <div class="toc-chapter">
+      <a href="#review" class="toc-chapter-link">前回の復習</a>
+    </div>
+    <div class="toc-chapter">
+      <a href="#overview" class="toc-chapter-link">授業概要・学習目標</a>
+    </div>
+    <div class="toc-chapter">
+      <a href="#ch1" class="toc-chapter-link">第1章　正規分布</a>
+      <div class="toc-sub">
+        <a href="#histogram" class="toc-sub-link">ヒストグラムと確率分布</a>
+        <a href="#normal-dist" class="toc-sub-link">正規分布とは</a>
+        <a href="#normal-feature1" class="toc-sub-link">特徴①：σによる面積</a>
+        <a href="#normal-feature2" class="toc-sub-link">特徴②：自然界への適用</a>
+        <a href="#ch1-summary" class="toc-sub-link">第1章まとめ</a>
+      </div>
+    </div>
+    <div class="toc-chapter">
+      <a href="#ch2" class="toc-chapter-link">第2章　統計的推測（1）</a>
+      <div class="toc-sub">
+        <a href="#stat-inference" class="toc-sub-link">統計的推測とは</a>
+        <a href="#estimation" class="toc-sub-link">推定（点推定・区間推定）</a>
+        <a href="#clt" class="toc-sub-link">中心極限定理</a>
+        <a href="#ch2-summary" class="toc-sub-link">第2章まとめ</a>
+      </div>
+    </div>
+    <div class="toc-chapter">
+      <a href="#ch3" class="toc-chapter-link">第3章　統計的推測（2）</a>
+      <div class="toc-sub">
+        <a href="#hypothesis-test" class="toc-sub-link">統計的仮説検定</a>
+        <a href="#test-image" class="toc-sub-link">検定のイメージ</a>
+        <a href="#significance" class="toc-sub-link">有意水準・p値・t値</a>
+        <a href="#t-test" class="toc-sub-link">t検定</a>
+        <a href="#t-example" class="toc-sub-link">t検定の例（ケーキ）</a>
+        <a href="#ch3-summary" class="toc-sub-link">第3章まとめ</a>
+      </div>
+    </div>
+    <div class="toc-chapter">
+      <a href="#ch4" class="toc-chapter-link">第4章　データ分析事例</a>
+    </div>
+    <div class="toc-chapter">
+      <a href="#appendix" class="toc-chapter-link">補足（用語・試験等）</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== MAIN ===== -->
+<main id="main">
+
+<!-- HEADER -->
+<div class="lecture-header">
+  <div class="lh-subject">DATA SCIENCE INTRO · LECTURE 08</div>
+  <div class="lh-title">データを使った予測（1）</div>
+  <div class="lh-goals">
+    <span class="lh-goal">① 統計的推測の種類と概念を説明できる</span>
+    <span class="lh-goal">② 統計的仮説検定の概念を理解し結果を正しく解釈できる</span>
+  </div>
+  <div class="lh-meta">担当: 浅田 麻菜 ｜ S03:p.1-5 ← S05</div>
+</div>
+
+
+<!-- ===== 前回の復習 ===== -->
+<section class="section" id="review">
+  <div class="section-header">
+    <span class="section-num">REVIEW</span>
+    <h2 class="section-title">前回の復習</h2>
+  </div>
+
+  <div class="quiz-box">
+    <div class="quiz-q">Q. 匿名加工情報と仮名加工情報の違いについて説明してください。</div>
+    <div class="quiz-a">
+      <p><span class="hl">匿名加工情報</span>：個人の特定が不可能なレベルまで加工したデータ。第三者への提供が可能。<span class="src-badge">S03:p.3</span></p>
+      <p><span class="hl">仮名加工情報</span>：他の情報と照合すれば個人の特定が可能になるデータ。第三者への提供は不可だが、利用目的以外の分析が可能というメリットがある。<span class="src-badge">S03:p.3</span></p>
+    </div>
+  </div>
+
+  <div class="block-audio">
+    <div class="block-audio-label">🎙 AUDIO SUPPLEMENT</div>
+    <p>仮名加工情報の例：名前をIDに置き換えたデータでも、「ID↔名前」の対応表（名簿）が別途存在すれば個人特定が可能になる。そのためデータを取り扱う際は法律や社会の動向に特に注意する必要がある。<span class="src-badge">← S05</span></p>
+  </div>
+</section>
+
+
+<!-- ===== 授業概要 ===== -->
+<section class="section" id="overview">
+  <div class="section-header">
+    <span class="section-num">OVERVIEW</span>
+    <h2 class="section-title">授業概要・データ解析の目的</h2>
+  </div>
+
+  <div class="card">
+    <p>第8〜11回にかけて、<span class="hl">データ解析の4つの目的</span>について順番に学習する。<span class="src-badge">S03:p.8</span></p>
+  </div>
+
+  <div class="fig-wrap">
+    <svg viewBox="0 0 760 180" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;background:#1e2535;border-radius:8px;padding:8px;">
+      <!-- 矢印 -->
+      <defs>
+        <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#5b8dee"/>
+        </marker>
+      </defs>
+      <!-- Box 1 (今回) -->
+      <rect x="20" y="40" width="160" height="100" rx="8" fill="#2a3f6b" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="100" y="68" text-anchor="middle" fill="#5b8dee" font-size="11" font-family="Noto Sans JP">予測①</text>
+      <text x="100" y="88" text-anchor="middle" fill="#e2e8f5" font-size="12" font-weight="bold" font-family="Noto Sans JP">統計的推測</text>
+      <text x="100" y="108" text-anchor="middle" fill="#34d399" font-size="10" font-family="JetBrains Mono">第8回（今回）</text>
+      <text x="100" y="128" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP">点推定・区間推定・検定</text>
+      <!-- Arrow -->
+      <line x1="190" y1="90" x2="215" y2="90" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#arr)"/>
+      <!-- Box 2 -->
+      <rect x="220" y="40" width="140" height="100" rx="8" fill="#1e2535" stroke="#2a3348" stroke-width="1"/>
+      <text x="290" y="68" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">予測②</text>
+      <text x="290" y="88" text-anchor="middle" fill="#8a99b8" font-size="12" font-weight="bold" font-family="Noto Sans JP">過去パターン</text>
+      <text x="290" y="108" text-anchor="middle" fill="#5b6f8a" font-size="10" font-family="JetBrains Mono">第9回</text>
+      <text x="290" y="128" text-anchor="middle" fill="#5b6f8a" font-size="9" font-family="Noto Sans JP">単回帰分析など</text>
+      <!-- Arrow -->
+      <line x1="370" y1="90" x2="395" y2="90" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#arr)"/>
+      <!-- Box 3 -->
+      <rect x="400" y="40" width="140" height="100" rx="8" fill="#1e2535" stroke="#2a3348" stroke-width="1"/>
+      <text x="470" y="68" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">グループ分け</text>
+      <text x="470" y="88" text-anchor="middle" fill="#8a99b8" font-size="12" font-weight="bold" font-family="Noto Sans JP">クラスタリング</text>
+      <text x="470" y="108" text-anchor="middle" fill="#5b6f8a" font-size="10" font-family="JetBrains Mono">第10回</text>
+      <!-- Arrow -->
+      <line x1="550" y1="90" x2="575" y2="90" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#arr)"/>
+      <!-- Box 4 -->
+      <rect x="580" y="40" width="150" height="100" rx="8" fill="#1e2535" stroke="#2a3348" stroke-width="1"/>
+      <text x="655" y="68" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">関係性の発見</text>
+      <text x="655" y="88" text-anchor="middle" fill="#8a99b8" font-size="12" font-weight="bold" font-family="Noto Sans JP">相関・回帰</text>
+      <text x="655" y="108" text-anchor="middle" fill="#5b6f8a" font-size="10" font-family="JetBrains Mono">第11回</text>
+    </svg>
+    <div class="fig-caption">図：データ解析の4目的と授業の対応 ← S03:p.8-12</div>
+  </div>
+</section>
+
+
+<!-- ===== 第1章 正規分布 ===== -->
+<section class="section" id="ch1">
+  <div class="section-header">
+    <span class="section-num">第1章</span>
+    <h2 class="section-title">正規分布</h2>
+  </div>
+
+  <div class="card">
+    <p><strong>学習目標</strong>：正規分布の特徴や性質について説明できる <span class="src-badge">S03:p.7</span></p>
+  </div>
+
+  <!-- ヒストグラムと確率分布 -->
+  <div class="subsection" id="histogram">
+    <div class="subsection-title">ヒストグラムと確率分布</div>
+
+    <div class="block-audio">
+      <div class="block-audio-label">🎙 AUDIO — ヒストグラムの復習（第3回）</div>
+      <p><span class="hl">ヒストグラム</span>は度数や相対度数を<span class="hl">ビン（bin）</span>の高さで表現したグラフ。ビンの横幅×高さ＝<strong>面積</strong>に注目するのが重要。また、平均・メジアン・モードの位置関係で分布の形（左右対称 / 右偏 / 左偏）が読み取れる。<span class="src-badge">← S05 / S03:p.13</span></p>
+    </div>
+
+    <div class="important-box">
+      <p>相対度数のヒストグラムにおいて、<span class="hl">全ビンの面積の合計は必ず 1</span> になる（累積相対度数が1になることに対応）。<span class="src-badge">S03:p.14</span></p>
+    </div>
+
+    <p>ビンの横幅をどんどん細かくし、データ数を増やすと、ヒストグラムは<span class="hl">滑らかな曲線（確率分布）</span>に近づく。この曲線で囲まれた面積＝確率という関係が成立する。<span class="src-badge">S03:p.14</span></p>
+
+    <div class="ex-box">
+      <div class="ex-box-label">EXAMPLE — お茶碗のお米の重量</div>
+      <p>適当にお茶碗にお米をよそった場合の重量に確率分布があるとする。140g〜160gで囲まれたエリアの面積が 0.55 であれば、「次に盛った場合も55%の確率で140〜160gの範囲に入る」と言える。<span class="src-badge">← S05 / S03:p.15</span></p>
+    </div>
+  </div>
+
+  <!-- 正規分布とは -->
+  <div class="subsection" id="normal-dist">
+    <div class="subsection-title">正規分布とは</div>
+
+    <div class="def-box">
+      <div class="def-box-label">DEFINITION</div>
+      <div class="def-box-title">正規分布（Normal Distribution）</div>
+      <p>統計学で最も重要な確率分布の一種。形状の特徴は以下の通り。<span class="src-badge">S03:p.16-17</span></p>
+      <ul style="margin-top:8px;padding-left:20px;font-size:14px;color:#8a99b8;">
+        <li>左右対称の釣鐘型（ベル型）</li>
+        <li>平均値 = 中央値 = 最頻値（一致）</li>
+        <li><span class="hl">分散（σ²）と平均（μ）によって形が完全に決まる</span>（最重要）</li>
+      </ul>
+    </div>
+
+    <div class="block-audio">
+      <div class="block-audio-label">🎙 AUDIO — 正規分布の式について</div>
+      <p>正規分布の確率密度関数は授業では暗記不要。ただし、式の中に分散 σ² と平均 μ がしっかり含まれている、という点だけ確認しておくこと。また、以降のスライドでは標準偏差 √σ² を <span class="hl">σ（シグマ）</span>と略記している（標準偏差は分散の正の平方根）。<span class="src-badge">← S05 / S03:p.17</span></p>
+    </div>
+
+    <p>σ（標準偏差）が大きくなるほど分布は平べったく（横に広く）なる。これは標準偏差がデータのばらつきを表す指標であることに対応する。<span class="src-badge">S03:p.18-20</span></p>
+
+    <div class="fig-wrap">
+      <svg viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;background:#1e2535;border-radius:8px;padding:12px 20px;">
+        <!-- 軸 -->
+        <line x1="50" y1="180" x2="560" y2="180" stroke="#2a3348" stroke-width="1.5"/>
+        <line x1="305" y1="180" x2="305" y2="20" stroke="#2a3348" stroke-width="1" stroke-dasharray="4,4"/>
+        <text x="310" y="175" fill="#5b6f8a" font-size="10" font-family="JetBrains Mono">μ=0</text>
+        <!-- σ=1（赤、最も細い） -->
+        <path d="M160,180 Q180,170 200,155 Q220,130 240,90 Q260,50 280,30 Q290,20 305,18 Q320,20 330,30 Q350,50 370,90 Q390,130 410,155 Q430,170 450,180" 
+              fill="none" stroke="#f87171" stroke-width="2"/>
+        <text x="295" y="14" text-anchor="middle" fill="#f87171" font-size="10" font-family="JetBrains Mono">σ=1</text>
+        <!-- σ=2（青、中） -->
+        <path d="M100,180 Q140,175 190,160 Q230,140 265,110 Q285,85 305,75 Q325,85 345,110 Q380,140 420,160 Q470,175 510,180"
+              fill="none" stroke="#5b8dee" stroke-width="2"/>
+        <text x="410" y="92" fill="#5b8dee" font-size="10" font-family="JetBrains Mono">σ=2</text>
+        <!-- σ=3（緑、最も平べったい） -->
+        <path d="M60,180 Q120,178 180,170 Q230,160 270,140 Q290,125 305,120 Q320,125 340,140 Q380,160 430,170 Q490,178 550,180"
+              fill="none" stroke="#34d399" stroke-width="2"/>
+        <text x="490" y="148" fill="#34d399" font-size="10" font-family="JetBrains Mono">σ=3</text>
+        <!-- 標準正規分布ラベル -->
+        <rect x="10" y="195" width="120" height="18" rx="3" fill="#2a1515" stroke="#f87171" stroke-width="0.5"/>
+        <text x="70" y="207" text-anchor="middle" fill="#f87171" font-size="9" font-family="Noto Sans JP">標準正規分布（σ=1, μ=0）</text>
+      </svg>
+      <div class="fig-caption">図：σの違いによる正規分布の形状変化 ← S03:p.18-21</div>
+    </div>
+
+    <div class="def-box">
+      <div class="def-box-label">DEFINITION</div>
+      <div class="def-box-title">標準正規分布（Standard Normal Distribution）</div>
+      <p>σ = 1、μ = 0 の正規分布を特別に<span class="hl">標準正規分布</span>と呼ぶ。統計学で特によく登場する。<span class="src-badge">S03:p.21</span></p>
+    </div>
+  </div>
+
+  <!-- 特徴① -->
+  <div class="subsection" id="normal-feature1">
+    <div class="subsection-title">正規分布の特徴①：σによって確率が決まる</div>
+
+    <p>正規分布では、平均 μ と標準偏差 σ が分かれば、任意の範囲に含まれるデータの割合（確率）が計算できる。<span class="src-badge">S03:p.22-27</span></p>
+
+    <div class="fig-wrap">
+      <svg viewBox="0 0 620 200" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;background:#1e2535;border-radius:8px;padding:12px 20px;">
+        <!-- 曲線 -->
+        <path d="M50,185 Q100,182 160,170 Q210,155 250,128 Q275,108 305,98 Q335,108 360,128 Q400,155 450,170 Q510,182 560,185"
+              fill="none" stroke="#5b8dee" stroke-width="1.5"/>
+        <!-- 68.3% エリア (1σ) -->
+        <path d="M225,185 Q250,150 270,118 Q290,100 305,98 Q320,100 340,118 Q360,150 385,185 Z"
+              fill="#2a3f6b" opacity="0.6"/>
+        <!-- 95.4% エリア (2σ) -->
+        <path d="M160,185 Q190,175 220,160 Q245,140 265,120 Q285,100 305,98 Q325,100 345,120 Q365,140 390,160 Q420,175 450,185 Z"
+              fill="#1e3050" opacity="0.5"/>
+        <!-- 99.7% エリア (3σ) -->
+        <path d="M90,185 Q130,183 170,174 Q210,160 245,138 Q270,120 290,108 Q300,102 305,98 Q310,102 320,108 Q340,120 365,138 Q400,160 440,174 Q480,183 520,185 Z"
+              fill="#151e30" opacity="0.4"/>
+        <!-- 軸ラベル -->
+        <text x="305" y="197" text-anchor="middle" fill="#5b6f8a" font-size="10" font-family="JetBrains Mono">μ</text>
+        <text x="225" y="197" text-anchor="middle" fill="#5b6f8a" font-size="9" font-family="JetBrains Mono">-σ</text>
+        <text x="385" y="197" text-anchor="middle" fill="#5b6f8a" font-size="9" font-family="JetBrains Mono">+σ</text>
+        <text x="160" y="197" text-anchor="middle" fill="#5b6f8a" font-size="9" font-family="JetBrains Mono">-2σ</text>
+        <text x="450" y="197" text-anchor="middle" fill="#5b6f8a" font-size="9" font-family="JetBrains Mono">+2σ</text>
+        <text x="90" y="197" text-anchor="middle" fill="#5b6f8a" font-size="9" font-family="JetBrains Mono">-3σ</text>
+        <text x="520" y="197" text-anchor="middle" fill="#5b6f8a" font-size="9" font-family="JetBrains Mono">+3σ</text>
+        <!-- % labels -->
+        <text x="305" y="130" text-anchor="middle" fill="#e2e8f5" font-size="12" font-weight="bold" font-family="Noto Sans JP">68.3%</text>
+        <text x="230" y="155" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP">95.4%</text>
+        <text x="145" y="170" text-anchor="middle" fill="#5b6f8a" font-size="9" font-family="Noto Sans JP">99.7%</text>
+      </svg>
+      <div class="fig-caption">図：正規分布の面積（σ範囲と確率の関係）← S03:p.22-26</div>
+    </div>
+
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>範囲</th>
+          <th>データの割合</th>
+          <th>ポイント</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code class="hl">μ ± σ</code></td>
+          <td><span class="hl">68.3%</span></td>
+          <td>約2/3のデータが含まれる</td>
+        </tr>
+        <tr>
+          <td><code class="hl">μ ± 2σ</code></td>
+          <td><span class="hl">95.4%</span></td>
+          <td>ほぼ全てのデータが含まれる</td>
+        </tr>
+        <tr>
+          <td><code class="hl">μ ± 3σ</code></td>
+          <td><span class="hl">99.7%</span></td>
+          <td>ほぼ確実に含まれる</td>
+        </tr>
+        <tr>
+          <td><code class="hl-o">μ ± 1.96σ</code></td>
+          <td><span class="hl-o">95.0%（ちょうど）</span></td>
+          <td>★検定で頻出する数値</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="formula-box">
+      <div class="formula-label">KEY NUMBER — 覚えておく数値</div>
+      <div class="formula-content">1.96σ = 95% エリアの境界</div>
+      <p style="font-size:13px;color:#8a99b8;margin-top:8px;">2σ（≈95.4%）よりも少しだけ中心寄りの値。第3章の検定でも繰り返し登場する。<span class="src-badge">← S05 / S03:p.27</span></p>
+    </div>
+  </div>
+
+  <!-- 特徴② -->
+  <div class="subsection" id="normal-feature2">
+    <div class="subsection-title">正規分布の特徴②：自然界・人間の特性によく当てはまる</div>
+
+    <p>正規分布が統計学で重要な理由は、人間の行動・身体特性・自然現象が正規分布に従うことが多いためである。<span class="src-badge">S03:p.28</span></p>
+
+    <div class="ex-box">
+      <div class="ex-box-label">EXAMPLE — 身長の分布</div>
+      <p>20歳以上の日本人男性の身長：<span class="hl">平均 167.7cm、標準偏差 6.7cm</span>（厚生労働省「令和元年 国民健康・栄養調査」）<span class="src-badge">S03:p.29</span></p>
+      <ul style="margin-top:8px;padding-left:20px;font-size:14px;color:#8a99b8;">
+        <li>μ ± σ = 167.7 ± 6.7 cm → <strong>68.3%</strong> の男性が含まれる</li>
+        <li>μ ± 2σ = 167.7 ± 13.4 cm → <strong>95.4%</strong></li>
+        <li>μ ± 3σ = 167.7 ± 20.1 cm → <strong>99.7%</strong></li>
+        <li>μ ± 1.96σ = 167.7 ± 13.1 cm → <strong>95%</strong>（154.6〜180.8 cm）</li>
+      </ul>
+      <div class="block-audio">
+        <div class="block-audio-label">🎙 AUDIO — 実用的な意義</div>
+        <p>この知識があると例えば洋服メーカーが「どのサイズの服を何枚作れば何%の人をカバーできるか」という問いに答えられる。正規分布を使って母集団全体を予測するのが統計学の重要な考え方。<span class="src-badge">← S05</span></p>
+      </div>
+    </div>
+
+    <div class="block-audio">
+      <div class="block-audio-label">🎙 AUDIO — 「出やすい・出にくい」という見方</div>
+      <p>平均付近の値（μ周辺）は<span class="hl-g">出やすいエリア</span>。μ ± 1.96σ より外側の裾の部分は<span class="hl-o">滅多に起こらない（出にくい）エリア</span>。この対比が第2・3章の推定・検定で活用される。<span class="src-badge">← S05 / S03:p.32</span></p>
+    </div>
+  </div>
+
+  <!-- 第1章まとめ -->
+  <div class="subsection" id="ch1-summary">
+    <div class="summary-section">
+      <div class="summary-title">📋 第1章 まとめ</div>
+      <ul style="padding-left:20px;font-size:14px;color:#8a99b8;">
+        <li>正規分布：左右対称の釣鐘型 / 平均値＝中央値＝最頻値</li>
+        <li><strong>最重要：分散（σ²）と平均（μ）で形が決まる</strong></li>
+        <li>分散が大きい → 分布が平べったくなる</li>
+        <li>分散が決まれば確率が決まる（σ範囲 → 面積が確定）</li>
+        <li>μ ± 1.96σ の範囲に 95% のデータが含まれる（★頻出）</li>
+      </ul>
+      <div class="src-badge" style="display:inline-block;margin-top:8px;">S03:p.33</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===== 第2章 統計的推測（1） ===== -->
+<section class="section" id="ch2">
+  <div class="section-header">
+    <span class="section-num">第2章</span>
+    <h2 class="section-title">統計的推測（1）</h2>
+  </div>
+
+  <div class="card">
+    <p><strong>学習目標</strong>：① 統計的推測の種類について説明できる　② 点推定・区間推定の基本的な概念について説明できる <span class="src-badge">S03:p.36</span></p>
+  </div>
+
+  <!-- 統計的推測とは -->
+  <div class="subsection" id="stat-inference">
+    <div class="subsection-title">統計的推測とは</div>
+
+    <div class="def-box">
+      <div class="def-box-label">DEFINITION</div>
+      <div class="def-box-title">統計的推測（Statistical Inference）</div>
+      <p><span class="hl">標本データ</span>から<span class="hl">母集団分布のパラメータ</span>を調べること。<span class="src-badge">S03:p.37</span></p>
+    </div>
+
+    <div class="block-audio">
+      <div class="block-audio-label">🎙 AUDIO — 用語の整理</div>
+      <p>「標本データから母集団を推測する」という枠組みは第2回で学んだ全数調査 vs 標本調査の話と同じ。全数調査（国勢調査など）は大規模で実施困難なため、一部を取り出してデータ分析する方法をとる。正規分布に従う母集団なら、形を決めるパラメータは<span class="hl">母平均（μ）と母分散（σ²）</span>の2つ。しかし実際には母平均・母分散は不明であることがほとんど。<span class="src-badge">← S05 / S03:p.38-39</span></p>
+    </div>
+
+    <div class="fig-wrap">
+      <svg viewBox="0 0 600 140" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;background:#1e2535;border-radius:8px;padding:12px 20px;">
+        <defs>
+          <marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#5b8dee"/>
+          </marker>
+          <marker id="arr3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#34d399"/>
+          </marker>
+        </defs>
+        <!-- 母集団 -->
+        <rect x="20" y="20" width="200" height="100" rx="8" fill="#1a2642" stroke="#5b8dee" stroke-width="1.5"/>
+        <text x="120" y="50" text-anchor="middle" fill="#5b8dee" font-size="12" font-family="Noto Sans JP" font-weight="bold">母集団</text>
+        <text x="120" y="72" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">母平均 μ</text>
+        <text x="120" y="90" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">母分散 σ²</text>
+        <text x="120" y="108" text-anchor="middle" fill="#f87171" font-size="10" font-family="Noto Sans JP">← 不明</text>
+        <!-- 矢印：抽出 -->
+        <line x1="230" y1="55" x2="330" y2="55" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#arr2)"/>
+        <text x="280" y="48" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP">抽出</text>
+        <!-- 標本 -->
+        <rect x="335" y="30" width="130" height="80" rx="8" fill="#1e2535" stroke="#2a3348" stroke-width="1"/>
+        <text x="400" y="58" text-anchor="middle" fill="#8a99b8" font-size="12" font-family="Noto Sans JP" font-weight="bold">標本</text>
+        <text x="400" y="80" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">標本平均 x̄</text>
+        <text x="400" y="98" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">標本分散 s²</text>
+        <!-- 矢印：母集団を推測 -->
+        <line x1="330" y1="90" x2="230" y2="90" stroke="#34d399" stroke-width="1.5" marker-end="url(#arr3)"/>
+        <text x="280" y="110" text-anchor="middle" fill="#34d399" font-size="10" font-family="Noto Sans JP">母集団を推測</text>
+      </svg>
+      <div class="fig-caption">図：標本から母集団を推測する統計的推測の枠組み ← S03:p.37-39</div>
+    </div>
+
+    <p>統計的推測で「調べること」は2種類ある。<span class="src-badge">S03:p.40-41</span></p>
+    <ol style="padding-left:24px;margin:8px 0;font-size:14px;color:#8a99b8;">
+      <li style="margin-bottom:6px;"><span class="hl">推定</span>：母集団分布のパラメータ自体を求める（例：100人の身長データから日本人全体の平均身長を知りたい）</li>
+      <li><span class="hl">検定</span>：母集団分布のパラメータに関する仮説を検証する（例：販売促進企画の効果があったと言えるか？）→ 第3章で詳述</li>
+    </ol>
+  </div>
+
+  <!-- 推定 -->
+  <div class="subsection" id="estimation">
+    <div class="subsection-title">推定：点推定と区間推定</div>
+
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>種類</th>
+          <th>概念</th>
+          <th>例（母平均の場合）</th>
+          <th>特徴</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="hl">点推定</span></td>
+          <td>パラメータを<strong>1点</strong>で推定</td>
+          <td>「母平均は 0.5」</td>
+          <td>シンプルだが外れやすい</td>
+        </tr>
+        <tr>
+          <td><span class="hl">区間推定</span></td>
+          <td>パラメータを<strong>区間（幅）</strong>で推定</td>
+          <td>「母平均は 0.3〜0.7 の間」</td>
+          <td>確率と組み合わせて信頼区間を示せる</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="block-audio">
+      <div class="block-audio-label">🎙 AUDIO — 点推定 vs 区間推定のイメージ</div>
+      <p>「明日の最高気温は何度？」と聞かれて「25度」（点推定）と答えるよりも、「23〜28度ぐらい」（区間推定）と答えた方が当たる確率が高い、という直感がそのまま当てはまる。<span class="src-badge">← S05</span></p>
+    </div>
+
+    <div class="ex-box">
+      <div class="ex-box-label">EXAMPLE — ケーキ屋のケーキの重さ（区間推定のイメージ）</div>
+      <p>あるケーキ屋のケーキは「1個100g」と書かれている。毎日全部買い占めることは不可能なので、毎日3個ずつサンプリングして標本平均を記録し続ける。</p>
+      <ul style="margin-top:8px;padding-left:20px;font-size:13.5px;color:#8a99b8;">
+        <li>3/1：標本平均 98g、3/2：101g、3/3：98g、3/4：105g … と積み上げる</li>
+        <li>大量のデータが集まると → <span class="hl">正規分布</span>に近づく（中心極限定理）</li>
+        <li>点推定：最もデータが多い 100g を母平均と推定</li>
+        <li>区間推定：「99〜102gの間に母平均がある」と推定 → これが<span class="hl-g">95%信頼区間</span>になる</li>
+      </ul>
+      <div class="src-badge" style="display:inline-block;margin-top:8px;">← S05 / S03:p.44-55</div>
+    </div>
+  </div>
+
+  <!-- 中心極限定理 -->
+  <div class="subsection" id="clt">
+    <div class="subsection-title">中心極限定理（Central Limit Theorem）</div>
+
+    <div class="def-box">
+      <div class="def-box-label">DEFINITION</div>
+      <div class="def-box-title">中心極限定理</div>
+      <p>母集団の分布にかかわらず、<span class="hl">標本を多数集めると標本平均の分布は正規分布に近づく</span>という性質。<span class="src-badge">S03:p.53</span></p>
+    </div>
+
+    <div class="block-audio">
+      <div class="block-audio-label">🎙 AUDIO</div>
+      <p>ケーキの例では、毎日のサンプル平均（標本平均）をプロットし続けると、やがてそれ自体が正規分布の形になった。この現象が中心極限定理。これによって、母集団の分布が不明でも、標本平均については正規分布の性質（第1章で学んだ面積と確率の関係）を使える。<span class="src-badge">← S05</span></p>
+    </div>
+
+    <div class="important-box">
+      <p><span class="hl">95%信頼区間</span>：区間推定で使う区間に95%の標本が含まれる場合、その区間を<strong>95%信頼区間</strong>と呼ぶ。「新しいデータが来ても95%の確率でその区間に収まる」という意味。<span class="src-badge">S03:p.55</span></p>
+    </div>
+  </div>
+
+  <!-- 第2章まとめ -->
+  <div class="subsection" id="ch2-summary">
+    <div class="summary-section">
+      <div class="summary-title">📋 第2章 まとめ</div>
+      <ul style="padding-left:20px;font-size:14px;color:#8a99b8;">
+        <li><strong>統計的推測</strong>：標本から母集団のパラメータを調べること</li>
+        <li><strong>推定の2種類</strong>：点推定（1点）/ 区間推定（幅を持って）</li>
+        <li><strong>検定</strong>：第3章で詳述</li>
+        <li><strong>中心極限定理</strong>：標本を多数集めると標本平均の分布は正規分布に近づく</li>
+        <li><strong>95%信頼区間</strong>：95%の標本が含まれる推定区間</li>
+      </ul>
+      <div class="src-badge" style="display:inline-block;margin-top:8px;">S03:p.56</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===== 第3章 統計的推測（2） ===== -->
+<section class="section" id="ch3">
+  <div class="section-header">
+    <span class="section-num">第3章</span>
+    <h2 class="section-title">統計的推測（2）</h2>
+  </div>
+
+  <div class="card">
+    <p><strong>学習目標</strong>：① 統計的仮説検定について結果から正しく結論を導ける　② t検定について概要を説明できる <span class="src-badge">S03:p.59</span></p>
+  </div>
+
+  <!-- 統計的仮説検定 -->
+  <div class="subsection" id="hypothesis-test">
+    <div class="subsection-title">統計的仮説検定（Statistical Hypothesis Testing）</div>
+
+    <div class="def-box">
+      <div class="def-box-label">DEFINITION</div>
+      <div class="def-box-title">統計的仮説検定</div>
+      <p><span class="hl">標本データのばらつきが偶然かどうかを確率的に調べる</span>こと。<span class="src-badge">S03:p.60</span></p>
+    </div>
+
+    <p>検定で使う3つの重要用語：<span class="src-badge">S03:p.60-61</span></p>
+
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>用語</th>
+          <th>英語</th>
+          <th>定義</th>
+          <th>ポイント</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="hl">帰無仮説</span> H₀</td>
+          <td>Null Hypothesis</td>
+          <td>主張したい内容とは<strong>逆</strong>の仮説</td>
+          <td>否定されることを期待する仮説</td>
+        </tr>
+        <tr>
+          <td><span class="hl">対立仮説</span> H₁</td>
+          <td>Alternative Hypothesis</td>
+          <td>帰無仮説の逆</td>
+          <td>主張したい内容</td>
+        </tr>
+        <tr>
+          <td><span class="hl-o">有意確率（p値）</span></td>
+          <td>p-value</td>
+          <td>帰無仮説が正しい場合に、偶然その値になる確率</td>
+          <td>p値 &lt; 有意水準 → 帰無仮説を棄却</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="block-audio">
+      <div class="block-audio-label">🎙 AUDIO — 検定のロジック</div>
+      <p>「主張したい内容を直接証明するのではなく、まずその逆（帰無仮説）を仮定し、それが間違いだと示すことで主張の正当性を示す」という論法を使う。<br>帰無仮説が「棄却（rejected）される」→ 対立仮説が採択される。<br>帰無仮説が「棄却されない（保留）」→ 判断がつかない（「主張が正しい」という結論にはならない）。<span class="src-badge">← S05 / S03:p.61</span></p>
+    </div>
+  </div>
+
+  <!-- 検定のイメージ -->
+  <div class="subsection" id="test-image">
+    <div class="subsection-title">検定のイメージ：くじ引きキャンペーンの例</div>
+
+    <div class="ex-box">
+      <div class="ex-box-label">EXAMPLE — キャンペーン効果の検定</div>
+      <p><strong>問い</strong>：客単価向上のためにくじ引きキャンペーンを実施した。これが客単価に本当に貢献したか？</p>
+      <ul style="margin-top:10px;padding-left:20px;font-size:14px;color:#8a99b8;">
+        <li><strong>帰無仮説 H₀</strong>：キャンペーンに効果はなかった</li>
+        <li><strong>対立仮説 H₁</strong>：キャンペーンに効果はあった（← 主張したい内容）</li>
+      </ul>
+      <div class="src-badge" style="display:inline-block;margin-top:8px;">S03:p.62</div>
+    </div>
+
+    <div class="block-audio">
+      <div class="block-audio-label">🎙 AUDIO — 検定の手順（前提）</div>
+      <p>キャンペーン期間外の平均客単価が 500円、標準偏差 50円 で正規分布に従うとわかっているとする。この場合 μ ± 1.96σ = 500 ± 98円 = 402〜598円の範囲に営業日の95%の平均客単価が入る。<span class="src-badge">← S05 / S03:p.63</span></p>
+    </div>
+
+    <div class="fig-wrap">
+      <svg viewBox="0 0 600 180" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;background:#1e2535;border-radius:8px;padding:12px 20px;">
+        <!-- 95%エリア -->
+        <path d="M120,165 Q170,160 220,145 Q260,128 290,108 Q305,98 320,98 Q335,108 360,128 Q400,148 440,160 Q490,165 540,165"
+              fill="#2a3f6b" opacity="0.5"/>
+        <!-- 曲線 -->
+        <path d="M80,165 Q130,162 180,150 Q220,135 255,112 Q275,100 305,93 Q335,100 355,112 Q390,135 430,150 Q480,162 550,165"
+              fill="none" stroke="#5b8dee" stroke-width="2"/>
+        <!-- 棄却域（左） -->
+        <path d="M80,165 Q100,164 120,163 Q140,160 160,148 Q175,138 180,150"
+              fill="#3d1515" opacity="0.7"/>
+        <!-- 棄却域（右） -->
+        <path d="M440,160 Q460,148 480,150 Q510,160 540,163 Q560,164 580,165"
+              fill="#3d1515" opacity="0.7"/>
+        <!-- 垂直線 -->
+        <line x1="305" y1="93" x2="305" y2="165" stroke="#2a3348" stroke-width="1" stroke-dasharray="3,3"/>
+        <!-- ±1.96σ 境界線 -->
+        <line x1="180" y1="92" x2="180" y2="165" stroke="#5b6f8a" stroke-width="1" stroke-dasharray="3,3"/>
+        <line x1="440" y1="92" x2="440" y2="165" stroke="#5b6f8a" stroke-width="1" stroke-dasharray="3,3"/>
+        <!-- ラベル -->
+        <text x="305" y="175" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="JetBrains Mono">500円(μ)</text>
+        <text x="175" y="175" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="JetBrains Mono">402円(-1.96σ)</text>
+        <text x="450" y="175" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="JetBrains Mono">598円(+1.96σ)</text>
+        <text x="305" y="65" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="Noto Sans JP">95%</text>
+        <text x="115" y="155" text-anchor="middle" fill="#f87171" font-size="9" font-family="Noto Sans JP">棄却域 2.5%</text>
+        <text x="505" y="155" text-anchor="middle" fill="#f87171" font-size="9" font-family="Noto Sans JP">棄却域 2.5%</text>
+        <!-- 570円マーク（保留） -->
+        <circle cx="375" cy="140" r="6" fill="#fbbf24" opacity="0.8"/>
+        <text x="375" y="128" text-anchor="middle" fill="#fbbf24" font-size="9" font-family="JetBrains Mono">570円</text>
+        <text x="375" y="118" text-anchor="middle" fill="#fbbf24" font-size="8" font-family="Noto Sans JP">95%内→保留</text>
+        <!-- 620円マーク（棄却） -->
+        <circle cx="500" cy="158" r="6" fill="#f87171" opacity="0.9"/>
+        <text x="500" y="140" text-anchor="middle" fill="#f87171" font-size="9" font-family="JetBrains Mono">620円</text>
+        <text x="500" y="130" text-anchor="middle" fill="#f87171" font-size="8" font-family="Noto Sans JP">棄却域→棄却</text>
+      </svg>
+      <div class="fig-caption">図：検定のイメージ（570円→保留 vs 620円→帰無仮説棄却）← S03:p.63-65</div>
+    </div>
+
+    <div class="block-audio">
+      <div class="block-audio-label">🎙 AUDIO — 2つのケースの解釈</div>
+      <p><strong>客単価570円の場合</strong>：キャンペーンなしの95%の範囲（402〜598円）内に入っている → 「滅多に起こらないとは言えない」→ <span class="hl-o">帰無仮説は棄却されない（保留）</span> → 判断つかない。</p>
+      <p style="margin-top:8px;"><strong>客単価620円の場合</strong>：95%の範囲外（棄却域）に入っている → 「キャンペーンなしでも5%以下の確率でしか起きない」→ 滅多に起こらない → <span class="hl">帰無仮説が棄却される</span> → 対立仮説採択 → 「キャンペーンに効果があった」と結論。<span class="src-badge">← S05 / S03:p.63-65</span></p>
+    </div>
+  </div>
+
+  <!-- 有意水準・p値・t値 -->
+  <div class="subsection" id="significance">
+    <div class="subsection-title">有意水準・p値・t値</div>
+
+    <div class="def-box">
+      <div class="def-box-label">DEFINITION</div>
+      <div class="def-box-title">有意水準（Significance Level）</div>
+      <p>偶然かどうかを判断する基準となる確率のしきい値。<span class="hl">5%（0.05）</span>が慣習的によく使われる。分野によっては1%や0.1%を使うこともある。<span class="src-badge">S03:p.66</span></p>
+    </div>
+
+    <div class="block-audio">
+      <div class="block-audio-label">🎙 AUDIO — 「5%」の意味</div>
+      <p>この5%という数字に特別な理由はなく、慣習的に使われているもの。「5%だったら滅多に起こらない基準として使っている」と考えればよい。<span class="src-badge">← S05</span></p>
+    </div>
+
+    <div class="important-box">
+      <p><strong>両側検定と片側検定の注意</strong>：有意水準5%を「両側」で設定する場合は、分布の両端に各2.5%ずつ配置される（合計5%）。「片側5%」とは異なるため、データを見るときは区別する。<span class="src-badge">S03:p.66 ← S05</span></p>
+    </div>
+
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>指標</th>
+          <th>注目しているもの</th>
+          <th>判断基準</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="hl">t値（検定統計量）</span></td>
+          <td>横軸（数値）</td>
+          <td>t値が棄却域に入っているか</td>
+        </tr>
+        <tr>
+          <td><span class="hl-o">p値（有意確率）</span></td>
+          <td>面積（確率）</td>
+          <td>p値 &lt; 有意水準（例：0.05）か</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="block-audio">
+      <div class="block-audio-label">🎙 AUDIO — t値とp値の関係</div>
+      <p>t値とp値は注目している軸が違うだけで、<span class="hl">結論は同じ</span>。t値が棄却域に入っている ⟺ p値が有意水準（0.05）を下回っている、という対応関係がある。一般的には<span class="hl-o">p値で議論することが多い</span>。<span class="src-badge">← S05 / S03:p.76-78</span></p>
+    </div>
+  </div>
+
+  <!-- t検定 -->
+  <div class="subsection" id="t-test">
+    <div class="subsection-title">t検定（t-test）</div>
+
+    <div class="def-box">
+      <div class="def-box-label">DEFINITION</div>
+      <div class="def-box-title">t検定</div>
+      <p><span class="hl">母分散が不明</span>、かつ<span class="hl">データ数が少ない（小標本）</span>場合に使用する検定。<span class="hl">t分布</span>を使った検定。<span class="src-badge">S03:p.68</span></p>
+    </div>
+
+    <p>t分布の特徴：<span class="src-badge">S03:p.68-69</span></p>
+    <ul style="padding-left:20px;font-size:14px;color:#8a99b8;margin:8px 0;">
+      <li><span class="hl">標本数が増えれば増えるほど正規分布に近づく</span></li>
+      <li>正規分布に比べて<span class="hl">95%の幅が広い</span>（より保守的な判断）</li>
+      <li>自由度 ＝ 標本数 − 1</li>
+    </ul>
+
+    <div class="fig-wrap">
+      <svg viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;background:#1e2535;border-radius:8px;padding:12px 20px;">
+        <!-- 標準正規分布（赤） -->
+        <path d="M100,180 Q160,175 210,158 Q255,135 280,108 Q295,90 305,82 Q315,90 330,108 Q355,135 400,158 Q450,175 510,180"
+              fill="none" stroke="#f87171" stroke-width="2"/>
+        <text x="400" y="100" fill="#f87171" font-size="10" font-family="JetBrains Mono">標準正規分布</text>
+        <text x="405" y="112" fill="#f87171" font-size="9" font-family="JetBrains Mono">±1.96σ = 95%</text>
+        <!-- t分布 自由度5（青） -->
+        <path d="M60,180 Q120,177 175,165 Q220,150 260,128 Q283,110 305,100 Q327,110 350,128 Q390,150 435,165 Q490,177 550,180"
+              fill="none" stroke="#5b8dee" stroke-width="2"/>
+        <text x="120" y="130" fill="#5b8dee" font-size="10" font-family="JetBrains Mono">t分布(自由度5)</text>
+        <text x="120" y="142" fill="#5b8dee" font-size="9" font-family="JetBrains Mono">±2.57σ = 95%</text>
+        <!-- 垂直線 ±1.96 -->
+        <line x1="215" y1="82" x2="215" y2="180" stroke="#f87171" stroke-width="1" stroke-dasharray="4,4" opacity="0.6"/>
+        <line x1="395" y1="82" x2="395" y2="180" stroke="#f87171" stroke-width="1" stroke-dasharray="4,4" opacity="0.6"/>
+        <!-- 垂直線 ±2.57 -->
+        <line x1="160" y1="82" x2="160" y2="180" stroke="#5b8dee" stroke-width="1" stroke-dasharray="4,4" opacity="0.6"/>
+        <line x1="450" y1="82" x2="450" y2="180" stroke="#5b8dee" stroke-width="1" stroke-dasharray="4,4" opacity="0.6"/>
+        <!-- 軸ラベル -->
+        <text x="215" y="192" text-anchor="middle" fill="#f87171" font-size="8" font-family="JetBrains Mono">-1.96</text>
+        <text x="395" y="192" text-anchor="middle" fill="#f87171" font-size="8" font-family="JetBrains Mono">+1.96</text>
+        <text x="155" y="192" text-anchor="middle" fill="#5b8dee" font-size="8" font-family="JetBrains Mono">-2.57</text>
+        <text x="455" y="192" text-anchor="middle" fill="#5b8dee" font-size="8" font-family="JetBrains Mono">+2.57</text>
+        <text x="305" y="192" text-anchor="middle" fill="#5b6f8a" font-size="8" font-family="JetBrains Mono">0</text>
+      </svg>
+      <div class="fig-caption">図：標準正規分布 vs t分布（自由度5）の95%幅の違い ← S03:p.69</div>
+    </div>
+
+    <div class="block-audio">
+      <div class="block-audio-label">🎙 AUDIO — なぜ幅が広いか</div>
+      <p>t分布は正規分布より少し裾が広い（95%の範囲が ±1.96σ ではなく ±2.57σ 程度）。これはデータが少ないときの不確実性を考慮した、より安全な検定になっている。標本数が増えるにつれ、自由度が大きくなり、t分布は正規分布に近づく。<span class="src-badge">← S05</span></p>
+    </div>
+  </div>
+
+  <!-- t検定の例 -->
+  <div class="subsection" id="t-example">
+    <div class="subsection-title">t検定の例：ケーキの重さ（6個）</div>
+
+    <div class="ex-box">
+      <div class="ex-box-label">PROBLEM</div>
+      <p>あるケーキ店のケーキは「1個100g」と書かれているが、ある日買った6個の重さは：<br>
+      <span class="hl">102g, 98g, 95g, 104g, 99g, 93g</span>
+      だった。これをもとに「100gではない」と言えるか？<span class="src-badge">S03:p.70</span></p>
+    </div>
+
+    <p>t検定の手順 5ステップ：</p>
+
+    <ol class="step-list">
+      <li>
+        <div>
+          <strong>標本データの確認</strong>（標本数・標本平均・標本分散）<br>
+          <span style="font-size:13.5px;color:#8a99b8;">
+          標本数 n = 6 / 標本平均 x̄ = (102+98+95+104+99+93)/6 = <span class="hl">98.5g</span><br>
+          標本分散 s² = Σ(xᵢ − x̄)² / (n−1) = <span class="hl">17.1</span>
+          </span>
+          <div class="block-audio" style="margin-top:8px;">
+            <div class="block-audio-label">🎙 AUDIO — (n−1)で割る理由</div>
+            <p>サンプル調査では標本数−1で割る（不偏分散）。これによって「データが1個だけなのに分散が出てしまう」という矛盾を回避できる。<span class="src-badge">← S05</span></p>
+          </div>
+          <div class="src-badge" style="display:inline-block;margin-top:4px;">S03:p.71</div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>帰無仮説・対立仮説の設定</strong><br>
+          <span style="font-size:13.5px;color:#8a99b8;">
+          H₀（帰無仮説）：重さの母平均は100gである<br>
+          H₁（対立仮説）：重さの母平均は100gではない ← 主張したい内容
+          </span>
+          <div class="src-badge" style="display:inline-block;margin-top:4px;">S03:p.72</div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>棄却域の設定</strong>（有意水準 0.05 = 5%）<br>
+          <span style="font-size:13.5px;color:#8a99b8;">
+          自由度5（n−1=5）のt分布の両側5%の棄却域：<span class="hl">t ≤ −2.57 または t ≥ +2.57</span>
+          </span>
+          <div class="src-badge" style="display:inline-block;margin-top:4px;">S03:p.73</div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>検定統計量（t値）の計算</strong><br>
+          <div class="formula-box" style="margin:8px 0;">
+            <div class="formula-label">FORMULA — t値</div>
+            <div class="formula-content">t = (x̄ − μ) / √(s²/n) = (98.5 − 100) / √(17.1/6) ≈ <span style="color:#fbbf24;">−0.889</span></div>
+          </div>
+          <div class="src-badge" style="display:inline-block;">S03:p.74（本科目では公式の暗記不要）</div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>棄却域とt値を比較し結論</strong><br>
+          <span style="font-size:13.5px;color:#8a99b8;">
+          t値 = −0.889 は棄却域（≤−2.57 または ≥+2.57）の<strong>外側</strong>にある<br>
+          → p値 = 0.415 &gt; 0.05（両側5%の中に入っていない）<br>
+          → <span class="hl-o">帰無仮説は棄却されない（保留）</span><br>
+          → 結論：「100gではない」とは言えない（判断できない）
+          </span>
+          <div class="src-badge" style="display:inline-block;margin-top:4px;">S03:p.75-80</div>
+        </div>
+      </li>
+    </ol>
+
+    <div class="warn-box">
+      <div class="warn-box-label">⚠️ 重要な注意</div>
+      <p>帰無仮説が棄却されない場合（保留）は「100gではないとは言えない」であり、「帰無仮説を採択して『母平均は100gである』」という結論にはならない。保留とは「わからない」という意味。<span class="src-badge">S03:p.79-80</span></p>
+    </div>
+
+    <div class="fig-wrap">
+      <svg viewBox="0 0 560 140" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;background:#1e2535;border-radius:8px;padding:12px 20px;">
+        <!-- 帰無仮説ボックス -->
+        <rect x="140" y="15" width="270" height="50" rx="6" fill="#252d3d" stroke="#5b8dee" stroke-width="1"/>
+        <text x="275" y="36" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">帰無仮説 H₀：重さの母平均は100gである</text>
+        <!-- 棄却 矢印 -->
+        <line x1="195" y1="65" x2="120" y2="95" stroke="#f87171" stroke-width="1.5" marker-end="url(#arr)"/>
+        <!-- 棄却されない矢印 -->
+        <line x1="355" y1="65" x2="430" y2="95" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#arr)"/>
+        <!-- 棄却ラベル -->
+        <text x="145" y="88" text-anchor="middle" fill="#f87171" font-size="10" font-family="Noto Sans JP">棄却</text>
+        <!-- 棄却されないラベル -->
+        <text x="405" y="88" text-anchor="middle" fill="#fbbf24" font-size="10" font-family="Noto Sans JP">棄却されない（保留）</text>
+        <!-- 棄却された場合の結果 -->
+        <rect x="10" y="100" width="210" height="35" rx="5" fill="#2a1515" stroke="#f87171" stroke-width="1"/>
+        <text x="115" y="114" text-anchor="middle" fill="#f87171" font-size="10" font-family="Noto Sans JP">対立仮説 H₁ が採択</text>
+        <text x="115" y="127" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP">「100gではない」と結論</text>
+        <!-- 保留の場合の結果 -->
+        <rect x="330" y="100" width="220" height="35" rx="5" fill="#3d2e0a" stroke="#fbbf24" stroke-width="1"/>
+        <text x="440" y="114" text-anchor="middle" fill="#fbbf24" font-size="10" font-family="Noto Sans JP">結論：「100gではない」とも言えない</text>
+        <text x="440" y="127" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP">（≠「100gである」ではない！）</text>
+      </svg>
+      <div class="fig-caption">図：検定の結論の導き方 ← S03:p.79</div>
+    </div>
+
+    <div class="block-audio">
+      <div class="block-audio-label">🎙 AUDIO — t検定の用途（2標本の場合など）</div>
+      <p>t検定は1標本だけでなく2標本（2群間の差の検定）でもよく使われる。例：アンケートで男女間に差があるか、2つの練習方法の効果に差があるか。さらに第9回の単回帰分析のモデル評価でも使われる。<span class="src-badge">← S05 / S03:p.85</span></p>
+    </div>
+  </div>
+
+  <!-- 第3章まとめ -->
+  <div class="subsection" id="ch3-summary">
+    <div class="summary-section">
+      <div class="summary-title">📋 第3章 まとめ</div>
+      <ul style="padding-left:20px;font-size:14px;color:#8a99b8;">
+        <li><strong>帰無仮説が棄却される</strong> → 対立仮説が採択される</li>
+        <li><strong>帰無仮説が棄却されない（保留）</strong> → 対立仮説とは言えない（判断できない）</li>
+        <li>t検定の流れ：① 標本データ確認 → ② 帰無仮説・対立仮説設定 → ③ 棄却域設定 → ④ 検定統計量（t値）計算 → ⑤ 比較 → ⑥ 結論</li>
+        <li>t値（横軸に注目）とp値（面積に注目）は注目する軸が違うだけで結論は同じ</li>
+      </ul>
+      <div class="src-badge" style="display:inline-block;margin-top:8px;">S03:p.81</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===== 第4章 データ分析事例 ===== -->
+<section class="section" id="ch4">
+  <div class="section-header">
+    <span class="section-num">第4章</span>
+    <h2 class="section-title">データ分析事例</h2>
+  </div>
+
+  <div class="card">
+    <p><strong>学習目標</strong>：計算機を用いたデータ分析事例により、データの扱いを体感する <span class="src-badge">S03:p.84</span></p>
+    <p style="margin-top:6px;color:#8a99b8;font-size:13.5px;">※演習は不要。第1〜3章で学んだ知識がどのように活用されるかを確認することが目的。</p>
+  </div>
+
+  <div class="subsection">
+    <div class="subsection-title">Google スプレッドシートを使ったt検定デモ</div>
+
+    <p><strong>使用データ</strong>：都道府県別・平均気温・降水量データ（1975〜2020年）<span class="src-badge">S03:p.87</span></p>
+
+    <div class="ex-box">
+      <div class="ex-box-label">EXAMPLE — 東京の気温は本当に昔より暑くなったか？</div>
+      <p><strong>検証内容</strong>：1975〜1989年（古い15年）と 2006〜2020年（新しい15年）の東京都の平均気温に有意な差があると言えるか？<span class="src-badge">← S05 / S03:p.87</span></p>
+      <ul style="margin-top:8px;padding-left:20px;font-size:13.5px;color:#8a99b8;">
+        <li>帰無仮説 H₀：平均気温に違いはない</li>
+        <li>対立仮説 H₁：平均気温に違いがある（← 主張したい内容）</li>
+        <li>手法：2標本t検定（等分散を仮定しない）</li>
+        <li>有意水準：α = 0.05</li>
+      </ul>
+    </div>
+
+    <div class="block-audio">
+      <div class="block-audio-label">🎙 AUDIO — ツールの使い方（XLMiner アドオン）</div>
+      <p>Google スプレッドシートで「拡張機能 → アドオン → アドオンを取得 → "XLMiner Analysis ToolPak"」をインストールする。Excel でも「データ分析」アドインで同等機能が使える。<span class="src-badge">← S05</span></p>
+    </div>
+
+    <p>検定結果の表の見方（XLMinerの出力）：<span class="src-badge">S03:p.88-89 ← S05</span></p>
+
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>項目</th>
+          <th>内容</th>
+          <th>確認すべきこと</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Mean（平均）</td>
+          <td>Variable 1・2の標本平均</td>
+          <td>数値を確認</td>
+        </tr>
+        <tr>
+          <td>Variance（分散）</td>
+          <td>標本分散</td>
+          <td>数値を確認</td>
+        </tr>
+        <tr>
+          <td>Observations（n）</td>
+          <td>標本数</td>
+          <td>各15</td>
+        </tr>
+        <tr>
+          <td>df（自由度）</td>
+          <td>等分散を仮定しない場合は別の計算式</td>
+          <td>参考値</td>
+        </tr>
+        <tr>
+          <td><span class="hl">t Stat</span></td>
+          <td>t値（検定統計量）</td>
+          <td>棄却域に入っているか確認</td>
+        </tr>
+        <tr>
+          <td><span class="hl-o">P(T&lt;=t) two-tail</span></td>
+          <td>p値（両側）</td>
+          <td>0.05より小さければ帰無仮説を棄却</td>
+        </tr>
+        <tr>
+          <td>t Critical two-tail</td>
+          <td>棄却域の境界値</td>
+          <td>t値と比較する値</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="block-audio">
+      <div class="block-audio-label">🎙 AUDIO — 結果の解釈</div>
+      <p>今回のデモでは t値が棄却域に入っており、p値が 0.05 未満だったため、帰無仮説を棄却 → 「平均気温に違いがある」という対立仮説が採択された。つまり「東京は昔より今の方が暑くなっている」という結論が統計的に支持された。<span class="src-badge">← S05</span></p>
+    </div>
+
+    <div class="block-external">
+      <div class="block-label">🌐 外部補足</div>
+      <p>「等分散を仮定しない」t検定（Welchのt検定）は、等分散の場合にも使用可能で汎用性が高い。本来は F検定で等分散かどうかを先に確認してから t検定の種類を選ぶが、実務ではWelchの t検定がデフォルトで選ばれることが多い。[外部補足]</p>
+    </div>
+
+    <div class="important-box">
+      <p>統計やデータサイエンスに関する資格試験（ITパスポート、統計検定など）でも検定結果の表の見方が出題されることがある。<span class="src-badge">← S05</span></p>
+    </div>
+  </div>
+
+  <div class="subsection">
+    <div class="subsection-title">検定の使用上の注意</div>
+
+    <div class="block-audio">
+      <div class="block-audio-label">🎙 AUDIO — 検定の種類（目的に応じて使い分ける）</div>
+      <p>今回はt検定（母平均に関する検定）を扱ったが、目的・前提に応じて使う検定が異なる：<span class="src-badge">← S05 / S03:p.86</span></p>
+    </div>
+
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>目的</th>
+          <th>使用する検定</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>母平均に関する検定（大標本・母分散既知）</td>
+          <td>z検定</td>
+        </tr>
+        <tr>
+          <td>母平均に関する検定（小標本・母分散不明）</td>
+          <td><span class="hl">t検定</span></td>
+        </tr>
+        <tr>
+          <td>母分散に関する検定</td>
+          <td>χ²検定、F検定</td>
+        </tr>
+        <tr>
+          <td>3群以上の比較</td>
+          <td>多重比較検定、一元配置分散分析</td>
+        </tr>
+        <tr>
+          <td>正規分布を前提としない場合</td>
+          <td>ノンパラメトリック検定</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="summary-section">
+    <div class="summary-title">📋 第4章 まとめ</div>
+    <ul style="padding-left:20px;font-size:14px;color:#8a99b8;">
+      <li>Google スプレッドシートでt検定を実施するデモを確認</li>
+      <li>検定結果の表の読み方：<span class="hl">t値</span>と<span class="hl-o">p値（P two-tail）</span>を有意水準（0.05）と比較して判断</li>
+      <li>検定の種類は目的・前提によって異なる</li>
+    </ul>
+    <div class="src-badge" style="display:inline-block;margin-top:8px;">S03:p.90</div>
+  </div>
+</section>
+
+
+<!-- ===== APPENDIX ===== -->
+<section class="appendix" id="appendix">
+  <div class="section-header">
+    <span class="section-num">APPENDIX</span>
+    <h2 class="section-title">補足</h2>
+  </div>
+
+  <!-- 補足A: 用語集 -->
+  <h3 style="font-size:15px;font-weight:700;color:#5b8dee;margin-bottom:14px;">⭐ 補足A: 最重要ワード一覧</h3>
+  <table class="styled-table" style="margin-bottom:32px;">
+    <thead>
+      <tr>
+        <th>用語</th>
+        <th>読み</th>
+        <th>定義・ポイント</th>
+        <th>重要度</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>正規分布</td>
+        <td>せいきぶんぷ</td>
+        <td>左右対称の釣鐘型。分散と平均で形が決まる</td>
+        <td>★★★</td>
+      </tr>
+      <tr>
+        <td>標準正規分布</td>
+        <td>ひょうじゅんせいき〜</td>
+        <td>σ=1、μ=0 の正規分布</td>
+        <td>★★☆</td>
+      </tr>
+      <tr>
+        <td>確率分布</td>
+        <td>かくりつぶんぷ</td>
+        <td>ヒストグラムのビンを細かくした滑らかな曲線。面積=確率</td>
+        <td>★★★</td>
+      </tr>
+      <tr>
+        <td>統計的推測</td>
+        <td>とうけいてきすいそく</td>
+        <td>標本データから母集団分布のパラメータを調べること</td>
+        <td>★★★</td>
+      </tr>
+      <tr>
+        <td>母集団 / 標本</td>
+        <td>ぼしゅうだん / ひょうほん</td>
+        <td>調べたい全体 / 取り出した一部</td>
+        <td>★★★</td>
+      </tr>
+      <tr>
+        <td>母平均 / 母分散</td>
+        <td>ぼへいきん / ぼぶんさん</td>
+        <td>母集団全体の平均・分散（通常は不明）</td>
+        <td>★★★</td>
+      </tr>
+      <tr>
+        <td>点推定</td>
+        <td>てんすいてい</td>
+        <td>パラメータを1点で推定</td>
+        <td>★★☆</td>
+      </tr>
+      <tr>
+        <td>区間推定</td>
+        <td>くかんすいてい</td>
+        <td>パラメータを幅を持って推定</td>
+        <td>★★☆</td>
+      </tr>
+      <tr>
+        <td>中心極限定理</td>
+        <td>ちゅうしんきょくげんていり</td>
+        <td>標本を多数集めると標本平均の分布は正規分布に近づく</td>
+        <td>★★★</td>
+      </tr>
+      <tr>
+        <td>95%信頼区間</td>
+        <td>しんらいくかん</td>
+        <td>95%の標本が含まれる推定区間</td>
+        <td>★★☆</td>
+      </tr>
+      <tr>
+        <td>帰無仮説 H₀</td>
+        <td>きむかせつ</td>
+        <td>主張したい内容とは逆の仮説。否定されることを期待</td>
+        <td>★★★</td>
+      </tr>
+      <tr>
+        <td>対立仮説 H₁</td>
+        <td>たいりつかせつ</td>
+        <td>主張したい内容。帰無仮説が棄却されたときに採択</td>
+        <td>★★★</td>
+      </tr>
+      <tr>
+        <td>棄却 / 保留</td>
+        <td>ききゃく / ほりゅう</td>
+        <td>帰無仮説を否定する / 判断できない</td>
+        <td>★★★</td>
+      </tr>
+      <tr>
+        <td>有意水準</td>
+        <td>ゆういすいじゅん</td>
+        <td>偶然かどうかを判断する基準（通常5%）</td>
+        <td>★★★</td>
+      </tr>
+      <tr>
+        <td>p値（有意確率）</td>
+        <td>ぴーち</td>
+        <td>帰無仮説が正しい場合に偶然その値になる確率</td>
+        <td>★★★</td>
+      </tr>
+      <tr>
+        <td>t値（検定統計量）</td>
+        <td>てぃーち</td>
+        <td>横軸の値。棄却域と比較する</td>
+        <td>★★☆</td>
+      </tr>
+      <tr>
+        <td>t検定</td>
+        <td>てぃーけんてい</td>
+        <td>母分散不明・小標本の場合の検定。t分布を使う</td>
+        <td>★★★</td>
+      </tr>
+      <tr>
+        <td>自由度</td>
+        <td>じゆうど</td>
+        <td>標本数 − 1（t検定の場合）</td>
+        <td>★★☆</td>
+      </tr>
+      <tr>
+        <td>1.96σ</td>
+        <td>いっていきゅーろくしぐま</td>
+        <td>正規分布で95%を含む境界値（★頻出数値）</td>
+        <td>★★★</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="appendix-grid">
+    <!-- 補足B -->
+    <div class="appendix-card green">
+      <div class="appendix-card-title">📚 補足B: 背景知識</div>
+      <ul>
+        <li>正規分布の確率密度関数は覚えなくてよい（授業で明言）</li>
+        <li>標準偏差＝分散の正の平方根（σ = √σ²）は第3回の復習</li>
+        <li>Welchのt検定：等分散を仮定しないt検定。汎用性が高い</li>
+        <li>χ²検定・F検定：母分散の検定で使う（今回は範囲外）</li>
+      </ul>
+    </div>
+    <!-- 補足C -->
+    <div class="appendix-card orange">
+      <div class="appendix-card-title">🎯 補足C: 試験・レポートで重要な観点</div>
+      <ul>
+        <li>帰無仮説が保留＝「帰無仮説の採択」ではないことに注意</li>
+        <li>p値 &lt; 有意水準 → 帰無仮説を棄却、対立仮説採択</li>
+        <li>1.96σ ≈ 95%（正確に95%となる境界）を即答できるように</li>
+        <li>検定結果の表（t値・p値・t Critical）の読み方</li>
+        <li>t分布は正規分布より95%の幅が広い理由を説明できるか</li>
+      </ul>
+    </div>
+    <!-- 補足D -->
+    <div class="appendix-card purple">
+      <div class="appendix-card-title">🔗 補足D: 次回（第9回）への接続</div>
+      <ul>
+        <li>第9回：過去のパターンを使った予測（単回帰分析）</li>
+        <li>単回帰分析のモデル評価にもt検定が登場する</li>
+        <li>第10回：グループ分け（クラスタリング）</li>
+        <li>第11回：データ間の関係性の発見（相関・回帰）</li>
+      </ul>
+    </div>
+    <!-- 補足A続 -->
+    <div class="appendix-card blue">
+      <div class="appendix-card-title">⭐ 補足A²: 覚えるべき数値</div>
+      <ul>
+        <li><strong>1.96σ → 95%</strong>（最頻出）</li>
+        <li>1σ → 68.3%</li>
+        <li>2σ → 95.4%</li>
+        <li>3σ → 99.7%</li>
+        <li>有意水準：慣習的に <strong>5%（0.05）</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 未確定事項 -->
+  <h3 style="font-size:15px;font-weight:700;color:#fbbf24;margin:24px 0 12px;">❓ 未確定事項・要確認リスト</h3>
+  <table class="styled-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>内容</th>
+        <th>種別</th>
+        <th>優先度</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>U01</td>
+        <td>S05テキストで「気務仮説」「義務仮説」等の表記が混在 → 「帰無仮説」に統一済み</td>
+        <td>AI変換修正</td>
+        <td>確認済</td>
+      </tr>
+      <tr>
+        <td>U02</td>
+        <td>デモ動画の実際の検定結果の数値（t値・p値の具体値）はスライドに未記載</td>
+        <td>内容不足</td>
+        <td>low</td>
+      </tr>
+      <tr>
+        <td>U03</td>
+        <td>S05で「G検定」と表記されている箇所 → 「t検定」に修正済み</td>
+        <td>AI変換修正</td>
+        <td>確認済</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p style="font-size:12px;color:#5b6f8a;font-family:'JetBrains Mono',monospace;margin-top:24px;text-align:right;">
+    SSP v4.2 | note_datasci_08.html | Sources: S03（92p）+ S05（hynote.ai）
+  </p>
+</section>
+
+</main>
+
+<script>
+// アクティブなTOCリンクのハイライト
+const sections = document.querySelectorAll('section[id], div[id]');
+const tocLinks = document.querySelectorAll('.toc-chapter-link, .toc-sub-link');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      tocLinks.forEach(link => link.classList.remove('active'));
+      const active = document.querySelector(`.toc-chapter-link[href="#${entry.target.id}"], .toc-sub-link[href="#${entry.target.id}"]`);
+      if (active) active.classList.add('active');
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+
+document.querySelectorAll('[id]').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
