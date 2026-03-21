@@ -1,0 +1,1508 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>データサイエンス入門 第12回 — テキストデータの扱い</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --bg2: #161b27;
+    --bg3: #1e2535;
+    --card: #1a2030;
+    --border: #2a3350;
+    --text: #e2e8f5;
+    --text-sub: #8a99b8;
+    --accent-blue: #5b8dee;
+    --accent-green: #34d399;
+    --accent-yellow: #fbbf24;
+    --accent-purple: #a78bfa;
+    --accent-orange: #fb923c;
+    --accent-red: #f87171;
+    --audio-border: #3b82f6;
+    --infer-border: #8b5cf6;
+    --warn-border: #f59e0b;
+    --ext-border: #10b981;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 15px;
+    line-height: 1.8;
+    display: flex;
+  }
+
+  /* ── サイドバー ── */
+  #sidebar {
+    width: 260px;
+    min-width: 260px;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    overflow-y: auto;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    padding: 20px 16px;
+    font-size: 13px;
+  }
+  #sidebar h2 { font-size: 11px; color: var(--text-sub); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 10px; }
+  #sidebar ul { list-style: none; }
+  #sidebar li { margin-bottom: 4px; }
+  #sidebar a { color: var(--text-sub); text-decoration: none; display: block; padding: 4px 8px; border-radius: 5px; transition: all .15s; }
+  #sidebar a:hover { color: var(--text); background: var(--bg3); }
+  #sidebar .toc-h2 { font-weight: 600; color: var(--accent-blue); margin-top: 10px; }
+  #sidebar .toc-h3 { padding-left: 14px; font-size: 12px; }
+
+  /* ── メインコンテンツ ── */
+  #main {
+    flex: 1;
+    max-width: 900px;
+    padding: 40px 48px;
+    overflow-x: hidden;
+  }
+
+  /* ── ヘッダー ── */
+  .note-header {
+    background: linear-gradient(135deg, #1a2540 0%, #0f1117 100%);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent-blue);
+    border-radius: 10px;
+    padding: 28px 32px;
+    margin-bottom: 36px;
+  }
+  .note-header .course { font-size: 13px; color: var(--accent-blue); font-weight: 500; letter-spacing: .05em; margin-bottom: 8px; }
+  .note-header h1 { font-size: 26px; font-weight: 700; color: var(--text); margin-bottom: 10px; }
+  .note-header .meta { font-size: 12px; color: var(--text-sub); display: flex; gap: 20px; flex-wrap: wrap; }
+  .note-header .meta span { display: flex; align-items: center; gap: 5px; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 10px; background: var(--bg3); color: var(--accent-blue); border: 1px solid var(--border); }
+
+  /* ── セクション・カード ── */
+  .section { margin-bottom: 48px; }
+  .section-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--accent-blue);
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 10px;
+    margin-bottom: 24px;
+    scroll-margin-top: 20px;
+  }
+  .section-title .num { font-family: 'JetBrains Mono', monospace; color: var(--text-sub); margin-right: 8px; font-size: 14px; }
+  .subsection { margin-bottom: 30px; }
+  .subsection-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--accent-green);
+    margin-bottom: 12px;
+    scroll-margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .subsection-title::before { content: '▶'; font-size: 10px; color: var(--accent-green); }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 22px;
+    margin-bottom: 14px;
+  }
+
+  /* ── 補足ブロック ── */
+  .block-audio {
+    border-left: 4px solid var(--audio-border);
+    background: #1a2540;
+    border-radius: 0 6px 6px 0;
+    padding: 12px 16px;
+    margin: 10px 0;
+  }
+  .block-infer {
+    border-left: 4px solid var(--infer-border);
+    background: #1f1a35;
+    border-radius: 0 6px 6px 0;
+    padding: 12px 16px;
+    margin: 10px 0;
+  }
+  .block-ext {
+    border-left: 4px solid var(--ext-border);
+    background: #192a25;
+    border-radius: 0 6px 6px 0;
+    padding: 12px 16px;
+    margin: 10px 0;
+  }
+  .block-warn {
+    border-left: 4px solid var(--warn-border);
+    background: #2a2010;
+    border-radius: 0 6px 6px 0;
+    padding: 12px 16px;
+    margin: 10px 0;
+  }
+  .block-label {
+    font-size: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    letter-spacing: .08em;
+    margin-bottom: 6px;
+  }
+  .label-audio { color: var(--audio-border); }
+  .label-infer { color: var(--infer-border); }
+  .label-ext { color: var(--ext-border); }
+  .label-warn { color: var(--warn-border); }
+  .src { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-sub); background: var(--bg3); padding: 1px 6px; border-radius: 3px; margin-left: 6px; }
+
+  /* ── テーブル ── */
+  table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 13.5px; }
+  th { background: var(--bg3); color: var(--accent-blue); font-weight: 600; padding: 10px 12px; text-align: left; border: 1px solid var(--border); }
+  td { padding: 9px 12px; border: 1px solid var(--border); color: var(--text); vertical-align: top; }
+  tr:nth-child(even) td { background: rgba(255,255,255,.02); }
+
+  /* ── 強調・定義 ── */
+  .def-box {
+    background: var(--bg3);
+    border: 1px solid var(--accent-blue);
+    border-radius: 6px;
+    padding: 14px 18px;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+  .def-box .def-label { font-size: 10px; color: var(--accent-blue); font-family: 'JetBrains Mono', monospace; font-weight: 700; margin-bottom: 5px; letter-spacing: .08em; }
+  strong { color: var(--accent-yellow); }
+  em { color: var(--accent-purple); font-style: normal; }
+  code { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; background: var(--bg3); padding: 1px 6px; border-radius: 3px; color: var(--accent-green); }
+
+  ul, ol { padding-left: 20px; margin: 8px 0; }
+  li { margin-bottom: 5px; }
+  p { margin: 8px 0; }
+
+  /* ── 数式ブロック ── */
+  .formula {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px 20px;
+    margin: 12px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: var(--accent-yellow);
+    overflow-x: auto;
+  }
+
+  /* ── SVG コンテナ ── */
+  .svg-wrap { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin: 16px 0; overflow-x: auto; }
+  figcaption { font-size: 11px; color: var(--text-sub); text-align: center; margin-top: 8px; }
+
+  /* ── 末尾補足 ── */
+  .appendix { margin-top: 60px; border-top: 2px solid var(--border); padding-top: 30px; }
+  .appendix-title { font-size: 18px; font-weight: 700; margin-bottom: 20px; }
+  .appendix-title .icon { margin-right: 8px; }
+
+  /* ── 目標バッジ ── */
+  .goal-box {
+    background: #151f35;
+    border: 1px solid var(--accent-blue);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+  }
+  .goal-box ul { list-style: none; padding: 0; }
+  .goal-box li { padding: 4px 0; color: var(--text); }
+  .goal-box li::before { content: '✓ '; color: var(--accent-green); font-weight: 700; }
+
+  /* ── 重要度 ── */
+  .star3 { color: var(--accent-yellow); }
+  .star2 { color: var(--accent-blue); }
+  .star1 { color: var(--text-sub); }
+
+  h1,h2,h3,h4 { scroll-margin-top: 20px; }
+
+  @media (max-width: 900px) {
+    #sidebar { display: none; }
+    #main { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── サイドバー目次 ── -->
+<nav id="sidebar">
+  <h2>目次</h2>
+  <ul>
+    <li><a href="#overview" class="toc-h2">授業概要</a></li>
+    <li><a href="#review" class="toc-h2">前回の復習</a></li>
+    <li><a href="#ch1" class="toc-h2">第1章 ことばをデータに</a></li>
+    <li><a href="#text-data" class="toc-h3">テキストデータとは</a></li>
+    <li><a href="#nlp" class="toc-h3">自然言語処理（NLP）</a></li>
+    <li><a href="#preprocessing" class="toc-h3">前処理の3ステップ</a></li>
+    <li><a href="#cleansing" class="toc-h3">クリーニング処理</a></li>
+    <li><a href="#tokenize" class="toc-h3">トークン化・形態素解析</a></li>
+    <li><a href="#vectorize" class="toc-h3">ベクトル化・BoW</a></li>
+    <li><a href="#ch1-summary" class="toc-h3">第1章まとめ</a></li>
+    <li><a href="#ch2" class="toc-h2">第2章 ベクトルの基礎</a></li>
+    <li><a href="#vector-basics" class="toc-h3">ベクトルと行列</a></li>
+    <li><a href="#vector-calc" class="toc-h3">ベクトルの計算</a></li>
+    <li><a href="#dot-product" class="toc-h3">内積</a></li>
+    <li><a href="#vector-space" class="toc-h3">ベクトル空間</a></li>
+    <li><a href="#ch2-summary" class="toc-h3">第2章まとめ</a></li>
+    <li><a href="#ch3" class="toc-h2">第3章 ベクトルの活用</a></li>
+    <li><a href="#cosine" class="toc-h3">コサイン類似度</a></li>
+    <li><a href="#cosine-example" class="toc-h3">コサイン類似度の活用例</a></li>
+    <li><a href="#word2vec" class="toc-h3">単語の分散表現</a></li>
+    <li><a href="#analogy" class="toc-h3">アナロジー</a></li>
+    <li><a href="#ch3-summary" class="toc-h3">第3章まとめ</a></li>
+    <li><a href="#ch4" class="toc-h2">第4章 データ分析事例</a></li>
+    <li><a href="#deep-learning" class="toc-h3">NLPの発展と前処理</a></li>
+    <li><a href="#demo" class="toc-h3">Word2Vec デモ</a></li>
+    <li><a href="#ch4-summary" class="toc-h3">第4章まとめ</a></li>
+    <li><a href="#appendix-a" class="toc-h2">補足A: 最重要ワード</a></li>
+    <li><a href="#appendix-b" class="toc-h2">補足B: 背景知識</a></li>
+    <li><a href="#appendix-c" class="toc-h2">補足C: 試験・レポート</a></li>
+    <li><a href="#appendix-d" class="toc-h2">補足D: 次回への接続</a></li>
+    <li><a href="#uncertain" class="toc-h2">✅ 未確定事項（解消記録）</a></li>
+  </ul>
+</nav>
+
+<!-- ── メインコンテンツ ── -->
+<main id="main">
+
+  <!-- ヘッダー -->
+  <div class="note-header">
+    <div class="course">データサイエンス入門 / Introduction to Data Science</div>
+    <h1>第12回：テキストデータの扱い</h1>
+    <div class="meta">
+      <span>担当: 浅田 麻菜</span>
+      <span>サイバー大学 IT総合学部 専門基礎科目</span>
+      <span><span class="badge">S03</span>スライドPDF</span>
+      <span><span class="badge">S05</span>AI文字起こし×2</span>
+    </div>
+  </div>
+
+  <!-- 授業概要 -->
+  <section class="section" id="overview">
+    <h2 class="section-title"><span class="num">00.</span>第12回 授業概要</h2>
+
+    <div class="goal-box">
+      <p style="font-size:12px;color:var(--text-sub);margin-bottom:8px;">【学習目標】</p>
+      <ul>
+        <li>テキストデータに関する基本的な概念について説明ができる</li>
+        <li>ベクトルに関する基礎的な概念を理解し、テキストデータへの利活用方法について説明ができる</li>
+      </ul>
+    </div>
+
+    <!-- 授業構成フロー図 -->
+    <div class="svg-wrap">
+      <svg viewBox="0 0 700 90" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;display:block;margin:auto;">
+        <!-- 第1章 -->
+        <rect x="10" y="20" width="150" height="50" rx="8" fill="#1e3055" stroke="#5b8dee" stroke-width="1.5"/>
+        <text x="85" y="40" text-anchor="middle" fill="#5b8dee" font-size="10" font-weight="bold" font-family="'Noto Sans JP',sans-serif">第1章</text>
+        <text x="85" y="58" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="'Noto Sans JP',sans-serif">ことばをデータに</text>
+        <!-- 矢印 -->
+        <text x="173" y="48" fill="#8a99b8" font-size="18">→</text>
+        <!-- 第2章 -->
+        <rect x="195" y="20" width="150" height="50" rx="8" fill="#1e3530" stroke="#34d399" stroke-width="1.5"/>
+        <text x="270" y="40" text-anchor="middle" fill="#34d399" font-size="10" font-weight="bold" font-family="'Noto Sans JP',sans-serif">第2章</text>
+        <text x="270" y="58" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="'Noto Sans JP',sans-serif">ベクトルの基礎</text>
+        <!-- 矢印 -->
+        <text x="358" y="48" fill="#8a99b8" font-size="18">→</text>
+        <!-- 第3章 -->
+        <rect x="380" y="20" width="150" height="50" rx="8" fill="#2a2040" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="455" y="40" text-anchor="middle" fill="#a78bfa" font-size="10" font-weight="bold" font-family="'Noto Sans JP',sans-serif">第3章</text>
+        <text x="455" y="58" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="'Noto Sans JP',sans-serif">ベクトルの活用</text>
+        <!-- 矢印 -->
+        <text x="543" y="48" fill="#8a99b8" font-size="18">→</text>
+        <!-- 第4章 -->
+        <rect x="565" y="20" width="130" height="50" rx="8" fill="#2d1b1b" stroke="#f87171" stroke-width="1.5"/>
+        <text x="630" y="40" text-anchor="middle" fill="#f87171" font-size="10" font-weight="bold" font-family="'Noto Sans JP',sans-serif">第4章</text>
+        <text x="630" y="58" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="'Noto Sans JP',sans-serif">データ分析事例</text>
+      </svg>
+      <figcaption>図：第12回 授業構成 <span class="src">← S03:p.4</span></figcaption>
+    </div>
+  </section>
+
+  <!-- 前回の復習 -->
+  <section class="section" id="review">
+    <h2 class="section-title"><span class="num">01.</span>前回の復習</h2>
+    <div class="card">
+      <p><strong>Q: アソシエーション分析のメリット・特徴をあげてください。</strong></p>
+      <ul style="margin-top:10px;">
+        <li>組み合わせ爆発を回避した分析が可能</li>
+        <li>意味のある組み合わせを「<strong>支持度（Support）</strong>・<strong>信頼度（Confidence）</strong>・<strong>リフト値（Lift）</strong>」を指標に抽出する手法</li>
+        <li>分析結果から新たな仮説を生成し、次の分析につなげる（<strong>仮説→分析→新仮説の繰り返しサイクル</strong>）</li>
+      </ul>
+      <span class="src">← S03:p.3</span>
+    </div>
+    <div class="block-audio">
+      <div class="block-label label-audio">🎤 音声補足</div>
+      <p>支持度・信頼度・リフト値の「3つの指標」で意味のある組み合わせを絞り込むことがポイント。さらに、アソシエーション分析は一回の分析で完結せず、結果から新しい仮説を立てて再度分析するという<strong>反復サイクルを持つ分析手法</strong>として説明された。スライドに「分析結果から、新たな仮説を生成し、次の分析につなげる」と明記されている。<span class="src">← S03:p.3, S05</span></p>
+    </div>
+  </section>
+
+  <!-- =============================== -->
+  <!-- 第1章 -->
+  <!-- =============================== -->
+  <section class="section" id="ch1">
+    <h2 class="section-title"><span class="num">02.</span>第1章：ことばをデータにする</h2>
+
+    <div class="goal-box">
+      <p style="font-size:12px;color:var(--text-sub);margin-bottom:8px;">【第1章 学習目標】</p>
+      <ul>
+        <li>テキストデータの基本的な前処理について説明ができる</li>
+        <li>テキストデータのベクトル化のメリットについて説明ができる</li>
+      </ul>
+    </div>
+
+    <!-- テキストデータとは -->
+    <div class="subsection" id="text-data">
+      <h3 class="subsection-title">テキストデータとは</h3>
+
+      <div class="def-box">
+        <div class="def-label">【定義】テキストデータ</div>
+        <p><strong>自然言語</strong>で書かれたデータのこと。</p>
+      </div>
+
+      <div class="def-box">
+        <div class="def-label">【定義】自然言語 vs 人工言語</div>
+        <p>
+          <strong>自然言語</strong>：人間が日常的に話す言語（日本語・英語など）<br>
+          <strong>人工言語</strong>：人間が意図的に作った言語（プログラミング言語など）
+        </p>
+      </div>
+
+      <p><strong>テキストデータの例：</strong>アンケート調査の自由記述・SNS上のやりとり・ニュースサイトの記事など、インターネット上に大量に存在する。<span class="src">← S03:p.9</span></p>
+
+      <div class="card">
+        <p><strong>テキストデータの特徴</strong>（構造化データと異なる点）</p>
+        <ul style="margin-top:8px;">
+          <li>データの長さが一定ではない（「こんにちは」1語も、長い文章も、どちらも「1文」）</li>
+          <li>要素の並び順に文法による制限がある（語順が意味を変える）</li>
+        </ul>
+        <span class="src">← S03:p.9</span>
+      </div>
+
+      <div class="block-audio">
+        <div class="block-label label-audio">🎤 音声補足</div>
+        <p>コンピュータは0と1（数値）しか扱えない。しかし画像・言葉・音声・音楽といった<strong>非構造化データ</strong>は基本的に0と1では表現されていない。そのため、コンピュータで処理できるようにする「工夫」が必要であり、その工夫に数学が必要になる。<span class="src">← S05</span></p>
+      </div>
+
+      <div class="block-ext">
+        <div class="block-label label-ext">📚 外部補足</div>
+        <p><strong>構造化データ</strong>とは、表（行×列）で整理されたデータのこと（例：Excelの表、CSVファイル）。これに対して、テキスト・画像・音声などは構造が決まっておらず<strong>非構造化データ</strong>と呼ばれる。データサイエンスで扱うデータ量の約80〜90%は非構造化データと言われている。</p>
+      </div>
+    </div>
+
+    <!-- データサイエンスと数学 -->
+    <div class="subsection">
+      <h3 class="subsection-title">データサイエンスに必要な数学</h3>
+      <div class="card">
+        <table>
+          <thead>
+            <tr><th>数学分野</th><th>内容</th><th>本回との関連</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>確率・統計</strong></td><td>確率論、統計的推定</td><td>—（過去回で扱い済み）</td></tr>
+            <tr><td><strong>線形代数</strong></td><td>ベクトル・行列</td><td>★ <strong>今回（第12・13回）のメインテーマ</strong></td></tr>
+            <tr><td><strong>解析学</strong></td><td>微分・積分</td><td>—（機械学習で重要）</td></tr>
+          </tbody>
+        </table>
+        <span class="src">← S03:p.8, S05</span>
+      </div>
+      <div class="block-audio">
+        <div class="block-label label-audio">🎤 音声補足</div>
+        <p>今回と第13回では、線形代数のベクトル・行列を「知っていることでデータサイエンスがどのように便利になるか」を体感してもらうことが目的。詳しい証明などは扱わない。<span class="src">← S05</span></p>
+      </div>
+    </div>
+
+    <!-- NLP -->
+    <div class="subsection" id="nlp">
+      <h3 class="subsection-title">自然言語処理（NLP）</h3>
+
+      <div class="def-box">
+        <div class="def-label">【定義】自然言語処理（NLP: Natural Language Processing）</div>
+        <p>コンピュータでテキストデータを扱うための技術の総称。</p>
+      </div>
+
+      <div class="card">
+        <p><strong>NLPの応用例：</strong></p>
+        <ul style="margin-top:6px;">
+          <li>かな漢字変換・文法訂正・自然言語生成</li>
+          <li>検索・<strong>機械翻訳</strong>・レコメンドシステム・質問応答（対話システム）</li>
+          <li>文書の要約・分類・情報抽出・キーワード抽出</li>
+        </ul>
+        <span class="src">← S03:p.10</span>
+      </div>
+
+      <div class="block-audio">
+        <div class="block-label label-audio">🎤 音声補足</div>
+        <p>スマホのフリック入力で数文字打つと次の単語が候補として出てくる「予測変換」や、英語→日本語の機械翻訳の精度が昔より大幅に向上しているのも、NLP研究の成果。<span class="src">← S05</span></p>
+      </div>
+    </div>
+
+    <!-- 前処理の3ステップ -->
+    <div class="subsection" id="preprocessing">
+      <h3 class="subsection-title">テキストデータの前処理（3ステップ）</h3>
+
+      <!-- フロー図 -->
+      <div class="svg-wrap">
+        <svg viewBox="0 0 700 120" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;display:block;margin:auto;">
+          <!-- データ収集 -->
+          <rect x="10" y="30" width="110" height="50" rx="6" fill="#1a2030" stroke="#8a99b8" stroke-width="1"/>
+          <text x="65" y="52" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="'Noto Sans JP',sans-serif">データの収集</text>
+          <!-- 矢印 -->
+          <text x="130" y="60" fill="#5b8dee" font-size="16">→</text>
+          <!-- 前処理ボックス（破線） -->
+          <rect x="150" y="10" width="390" height="100" rx="8" fill="none" stroke="#5b8dee" stroke-dasharray="5,3" stroke-width="1.5"/>
+          <text x="220" y="25" fill="#5b8dee" font-size="10" font-family="'Noto Sans JP',sans-serif">前処理</text>
+          <!-- クリーニング -->
+          <rect x="165" y="35" width="110" height="50" rx="6" fill="#1e3055" stroke="#5b8dee" stroke-width="1.5"/>
+          <text x="220" y="56" text-anchor="middle" fill="#5b8dee" font-size="11" font-weight="bold" font-family="'Noto Sans JP',sans-serif">クリーニング</text>
+          <text x="220" y="72" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="'Noto Sans JP',sans-serif">表記統一・個人情報除去</text>
+          <!-- 矢印 -->
+          <text x="283" y="64" fill="#5b8dee" font-size="16">→</text>
+          <!-- トークン化 -->
+          <rect x="300" y="35" width="100" height="50" rx="6" fill="#1e3530" stroke="#34d399" stroke-width="1.5"/>
+          <text x="350" y="56" text-anchor="middle" fill="#34d399" font-size="11" font-weight="bold" font-family="'Noto Sans JP',sans-serif">トークン化</text>
+          <text x="350" y="72" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="'Noto Sans JP',sans-serif">形態素解析 等</text>
+          <!-- 矢印 -->
+          <text x="408" y="64" fill="#5b8dee" font-size="16">→</text>
+          <!-- ベクトル化 -->
+          <rect x="425" y="35" width="100" height="50" rx="6" fill="#2a2040" stroke="#a78bfa" stroke-width="2"/>
+          <text x="475" y="56" text-anchor="middle" fill="#a78bfa" font-size="11" font-weight="bold" font-family="'Noto Sans JP',sans-serif">ベクトル化</text>
+          <text x="475" y="72" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="'Noto Sans JP',sans-serif">BoW 等</text>
+          <!-- 矢印 -->
+          <text x="535" y="64" fill="#5b8dee" font-size="16">→</text>
+          <!-- データ解析 -->
+          <rect x="558" y="35" width="100" height="50" rx="6" fill="#1a2030" stroke="#8a99b8" stroke-width="1"/>
+          <text x="608" y="60" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="'Noto Sans JP',sans-serif">データ解析</text>
+        </svg>
+        <figcaption>図：テキストデータ分析の流れ（前処理の3ステップ） <span class="src">← S03:p.11</span></figcaption>
+      </div>
+
+      <div class="card">
+        <p><strong>前処理が重要な理由：</strong></p>
+        <ul style="margin-top:6px;">
+          <li>データをコンピュータで<strong>分析しやすい形に整理</strong>する</li>
+          <li>データの「特徴」が明確になり、<strong>精度の高い分析結果</strong>につながる</li>
+          <li>分析全体にかかる時間の中で<strong>高い割合</strong>を占める（重要かつ必須の工程）</li>
+        </ul>
+        <span class="src">← S03:p.11</span>
+      </div>
+
+      <div class="block-audio">
+        <div class="block-label label-audio">🎤 音声補足</div>
+        <p>人によっては分析時間全体の<strong>8〜9割</strong>がこの前処理にかかると言われるほど、大変手間のかかる作業。しかし、この前処理の精度がそのまま最終的な分析精度に直結する。<span class="src">← S05</span></p>
+      </div>
+
+      <!-- 前処理後のイメージ -->
+      <div class="block-ext">
+        <div class="block-label label-ext">📊 前処理後の完成イメージ</div>
+        <p>例：文書 d₁「今日、私はデータサイエンスの授業を受けた。早朝に受けようと思ったが、急遽用事ができて…」</p>
+        <p style="margin-top:8px;">前処理後 →</p>
+        <div class="formula">
+d₁ = [1, 1, 1, …, 2, 2, 1, 0, …]
+       ↑今日 ↑私  ↑DS    ↑受け ↑た ↑早朝 ↑明日
+        </div>
+        <p>テキストが数値のベクトルで表現される。<span class="src">← S03:p.12</span></p>
+      </div>
+    </div>
+
+    <!-- クリーニング -->
+    <div class="subsection" id="cleansing">
+      <h3 class="subsection-title">ステップ①：テキストクレンジング</h3>
+
+      <div class="def-box">
+        <div class="def-label">【定義】テキストクレンジング</div>
+        <p>分析の目的に応じて、表記の統一や不要な情報の削除・置換を行う処理。</p>
+      </div>
+
+      <div class="card">
+        <p><strong>処理内容の例：</strong></p>
+        <table style="margin-top:10px;">
+          <thead>
+            <tr><th>種別</th><th>具体例</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>表記の統一</strong></td>
+              <td>「ことば」⇔「言葉」を一方に統一 / 半角「ﾃﾞｰﾀ」→全角「データ」</td>
+            </tr>
+            <tr>
+              <td><strong>分析対象外の文字・記号の除去</strong></td>
+              <td>「今日《きょう》は、」→「今日は」</td>
+            </tr>
+            <tr>
+              <td><strong>個人情報・機密情報の除去・置換</strong></td>
+              <td>「電話番号 080-1234-…」→「電話番号 000-0000-…」</td>
+            </tr>
+          </tbody>
+        </table>
+        <span class="src">← S03:p.13</span>
+      </div>
+
+      <div class="block-audio">
+        <div class="block-label label-audio">🎤 音声補足</div>
+        <p>個人情報の置換を行わないと、例えば文章生成モデルを作った際に電話番号がそのまま出力されてしまう危険性がある。クレンジングは情報漏洩防止という意味でも非常に重要なステップ。<span class="src">← S05</span></p>
+      </div>
+    </div>
+
+    <!-- トークン化 -->
+    <div class="subsection" id="tokenize">
+      <h3 class="subsection-title">ステップ②：トークン化（Tokenization）</h3>
+
+      <div class="def-box">
+        <div class="def-label">【定義】トークン化</div>
+        <p>文章や文書に含まれる単語等を、<strong>意味の通る最小単位（トークン）</strong>に分割する処理。</p>
+      </div>
+
+      <div class="card">
+        <p><strong>言語による違い：</strong></p>
+        <table style="margin-top:10px;">
+          <thead>
+            <tr><th>言語</th><th>特徴</th><th>処理方法</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>英語</strong></td>
+              <td>単語間がスペースで区切られている</td>
+              <td>スペースで分割すればよい（容易）</td>
+            </tr>
+            <tr>
+              <td><strong>日本語・中国語</strong></td>
+              <td>語の区切りが不明確</td>
+              <td><em>形態素解析</em>が必要（専用ツール使用）</td>
+            </tr>
+          </tbody>
+        </table>
+        <span class="src">← S03:p.14</span>
+      </div>
+
+      <div class="def-box">
+        <div class="def-label">【定義】形態素解析（Morphological Analysis）</div>
+        <p>文章を意味のある最小の単位（＝<strong>形態素</strong>）に区切る処理。<br>
+        「分かち書き」の結果と各形態素の品詞等が返される。</p>
+      </div>
+
+      <div class="card">
+        <p><strong>形態素解析の例（MeCabを使用）：</strong></p>
+        <p style="margin:8px 0;">入力：「今日私はデータサイエンスの授業を受けた」</p>
+        <table style="margin-top:6px;font-size:12px;">
+          <thead>
+            <tr><th>番号</th><th>形態素</th><th>品詞</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>今日</td><td>名詞</td></tr>
+            <tr><td>2</td><td>私</td><td>名詞</td></tr>
+            <tr><td>3</td><td>は</td><td>助詞</td></tr>
+            <tr><td>4</td><td>データ</td><td>名詞</td></tr>
+            <tr><td>5</td><td>サイエンス</td><td>名詞</td></tr>
+            <tr><td>6</td><td>の</td><td>助詞</td></tr>
+            <tr><td>7</td><td>授業</td><td>名詞</td></tr>
+            <tr><td>8</td><td>を</td><td>助詞</td></tr>
+            <tr><td>9</td><td>受け</td><td>動詞</td></tr>
+            <tr><td>10</td><td>た</td><td>助動詞</td></tr>
+          </tbody>
+        </table>
+        <span class="src">← S03:p.15</span>
+      </div>
+
+      <div class="block-ext">
+        <div class="block-label label-ext">📚 外部補足</div>
+        <p>日本語形態素解析の有名なツール：<br>
+        <strong>MeCab</strong>（めかぶ）・<strong>Janome</strong>・<strong>JUMAN</strong> など。<br>
+        Pythonからも <code>mecab-python3</code> などを通じて使用できる。</p>
+      </div>
+    </div>
+
+    <!-- ベクトル化・BoW -->
+    <div class="subsection" id="vectorize">
+      <h3 class="subsection-title">ステップ③：ベクトル化（Vectorization）</h3>
+
+      <div class="def-box">
+        <div class="def-label">【定義】ベクトル化</div>
+        <p>非構造化データを<strong>数値（ベクトル）</strong>に変換することで、計算機で処理ができる状態にすること。</p>
+      </div>
+
+      <div class="def-box">
+        <div class="def-label">【定義】Bag of Words（BoW）</div>
+        <p>ある文書や文章に含まれるトークンの<strong>出現回数をカウント</strong>して数値化する手法。非構造化データをベクトル化するための基本的な方法の一つ。</p>
+      </div>
+
+      <div class="card">
+        <p><strong>BoWの例：</strong>「今日私はデータサイエンスの授業を受けた」</p>
+        <div class="formula">
+形態素解析
+→ 「今日」「私」「は」「データサイエンス」「の」「授業」「を」「受け」「た」
+
+出現回数カウント（BoW）
+→「今日」=1, 「私」=1, 「は」=1, 「データサイエンス」=1, …
+        </div>
+        <span class="src">← S03:p.17</span>
+      </div>
+
+      <div class="card">
+        <p><strong>スカラーからベクトルへ：</strong></p>
+        <div class="formula">
+数字1つ1つ = スカラー   例: 1, 2, 3, 5
+1列に並べる = ベクトル   例: [1, 2, 3, 5]ᵀ
+
+文書 d₁ = [1, 1, 1, 1, 1, 1, 1, 1, 1]ᵀ
+            ↑今日 ↑私 ↑は ↑DS ↑の ↑授業 ↑を ↑受け ↑た
+        </div>
+        <p>文書は単語の集合 → 数字の集合であるベクトルで表現するのが相性がよい。<span class="src">← S03:p.18-19</span></p>
+      </div>
+
+      <div class="card">
+        <p><strong>ベクトル化のメリット①：情報の圧縮・内容推定</strong></p>
+        <div class="formula">
+文書 d₂ = [1(猫), 1(犬), 1(爬虫類), 1(飼育), 1(人気), …]
+        </div>
+        <p>→ ベクトルの要素を見るだけで「最近人気のペットに関する内容」と予測できる。<br>
+        単語情報があればある程度文書内容を予測できる＝情報を圧縮できる。<span class="src">← S03:p.20</span></p>
+      </div>
+
+      <div class="card">
+        <p><strong>ベクトル化のメリット②：文書間の類似度計算</strong></p>
+        <div class="formula">
+文書 d₂  = [猫, 犬, 爬虫類, 飼育,  人気, …]
+文書 d₂' = [室内, 飼う,   健康,   餌,   動物, …]
+        </div>
+        <p>→ 似た文章には似た単語が使用されている → 単語同士の類似度を計算することで<strong>文書間の類似度</strong>を計算できる。<span class="src">← S03:p.21</span></p>
+      </div>
+    </div>
+
+    <!-- 第1章まとめ -->
+    <div class="subsection" id="ch1-summary">
+      <h3 class="subsection-title">第1章まとめ</h3>
+      <div class="card">
+        <table>
+          <thead><tr><th>学習目標</th><th>対応内容</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>テキストデータの基本的な前処理について説明ができる</td>
+              <td>クリーニング（表記統一・個人情報除去）→ トークン化（形態素解析）→ ベクトル化</td>
+            </tr>
+            <tr>
+              <td>テキストデータのベクトル化のメリットについて説明ができる</td>
+              <td>①情報の圧縮・内容推定が可能、②文書間の類似度計算が可能</td>
+            </tr>
+          </tbody>
+        </table>
+        <span class="src">← S03:p.22</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================== -->
+  <!-- 第2章 -->
+  <!-- =============================== -->
+  <section class="section" id="ch2">
+    <h2 class="section-title"><span class="num">03.</span>第2章：ベクトルの基礎</h2>
+
+    <div class="goal-box">
+      <p style="font-size:12px;color:var(--text-sub);margin-bottom:8px;">【第2章 学習目標】</p>
+      <ul>
+        <li>ベクトルの簡単な演算ができる</li>
+        <li>ベクトル空間について簡単な説明ができる</li>
+      </ul>
+    </div>
+
+    <!-- ベクトルと行列 -->
+    <div class="subsection" id="vector-basics">
+      <h3 class="subsection-title">ベクトルと行列の基本</h3>
+
+      <div class="def-box">
+        <div class="def-label">【定義】スカラー・ベクトル・行列</div>
+        <p>
+          <strong>スカラー</strong>：数値1つ1つがバラバラな状態（例: 1, 3, 5）<br>
+          <strong>ベクトル</strong>：スカラーを<em>1列に並べた</em>もの。<strong>方向と大きさ（長さ）</strong>を持つ。<br>
+          <strong>行列</strong>：1列に並べた複数のベクトルを横に結合したもの（第13回で扱う）
+        </p>
+      </div>
+
+      <!-- ベクトル次元 -->
+      <div class="def-box">
+        <div class="def-label">【定義】ベクトルの次元</div>
+        <p>ベクトルの<strong>要素の数</strong>のこと（空間的な「次元」とは異なる概念）。</p>
+        <div class="formula">
+[2, 3]ᵀ         → 2次元ベクトル（要素が2個）
+[1, 2, 3]ᵀ      → 3次元ベクトル（要素が3個）
+[1, 2, 3, 4]ᵀ  → 4次元ベクトル（要素が4個）
+        </div>
+        <span class="src">← S03:p.27</span>
+      </div>
+
+      <div class="block-audio">
+        <div class="block-label label-audio">🎤 音声補足</div>
+        <p>「2次元は平面、3次元は空間」というイメージがあるかもしれないが、ここでは<strong>空間的な意味は一切ない</strong>。ベクトルの要素数がそのまま次元数。まずはこの理解で十分。<span class="src">← S05</span></p>
+      </div>
+
+      <!-- 構造化データとの対応 -->
+      <div class="card">
+        <p><strong>構造化データもベクトルの集まりとして見られる：</strong></p>
+        <table style="margin-top:10px;font-size:13px;">
+          <thead>
+            <tr><th></th><th>Aさん</th><th>Bさん</th><th>Cさん</th><th>Dさん</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>身長</td><td>157</td><td>165</td><td>180</td><td>172</td></tr>
+            <tr><td>体重</td><td>45</td><td>62</td><td>82</td><td>65</td></tr>
+            <tr><td>性別</td><td>1</td><td>0</td><td>0</td><td>1</td></tr>
+            <tr><td>握力</td><td>22</td><td>46</td><td>53</td><td>31</td></tr>
+            <tr><td>50m走</td><td>8.2</td><td>6.8</td><td>7.2</td><td>7.6</td></tr>
+            <tr><td>幅とび</td><td>153</td><td>237</td><td>221</td><td>167</td></tr>
+          </tbody>
+        </table>
+        <div class="formula" style="margin-top:12px;">
+Aさんのベクトル = [157, 45, 1, 22, 8.2, 153]ᵀ  （6次元ベクトル）
+        </div>
+        <span class="src">← S03:p.28-29</span>
+      </div>
+
+      <!-- 表記方法 -->
+      <div class="card">
+        <p><strong>大学レベルのベクトル表記：</strong></p>
+        <div class="formula">
+ベクトル → 太文字 a（高校では矢印付き）
+要素    → 細文字 a₁, a₂, …, aₙ
+        </div>
+        <p>かっこは [ ] でも ( ) でも同じ。転置記号 ᵀ を使って行ベクトルを列ベクトルとして表記することもある。<span class="src">← S03:p.30</span></p>
+      </div>
+    </div>
+
+    <!-- ベクトルの計算 -->
+    <div class="subsection" id="vector-calc">
+      <h3 class="subsection-title">ベクトルの計算（足し算・定数倍）</h3>
+
+      <div class="card">
+        <p><strong>① 足し算（ベクトルの和）</strong></p>
+        <div class="formula">
+[a₁]   [b₁]   [a₁+b₁]
+[a₂] + [b₂] = [a₂+b₂]
+[⋮ ]   [⋮ ]   [  ⋮  ]
+[aₙ]   [bₙ]   [aₙ+bₙ]
+
+⚠️ 同じ次元のベクトルどうしでしか計算できない（2次元+3次元は不可）
+
+図形的な意味：各ベクトルをつなぎ合わせたときの「最短距離」がベクトルの和
+        </div>
+        <span class="src">← S03:p.31, 33-34</span>
+      </div>
+
+      <div class="card">
+        <p><strong>② 定数倍（スカラー倍）</strong></p>
+        <div class="formula">
+     [b₁]   [αb₁]
+α ×  [b₂] = [αb₂]
+     [⋮ ]   [ ⋮ ]
+     [bₙ]   [αbₙ]
+
+各要素にαを掛けるだけ。
+図形的な意味：方向はそのまま、長さがα倍になる。
+             マイナス倍の場合は180°逆方向になる。
+        </div>
+        <span class="src">← S03:p.32, 35-36</span>
+      </div>
+
+      <div class="block-audio">
+        <div class="block-label label-audio">🎤 音声補足</div>
+        <p>高校でベクトルを習ったとき「ベクトルはどこにあっても同じ」という説明があったと思う。ベクトルは<strong>長さと方向だけを持つ</strong>ので、要素は座標の意味ではない。場所を移動しても、長さと方向が同じなら同じベクトル。<span class="src">← S05</span></p>
+      </div>
+
+      <!-- 計算例 -->
+      <div class="card">
+        <p><strong>計算例：</strong></p>
+        <div class="formula">
+a = [2, 1]ᵀ,  b = [1, 3]ᵀ  の場合
+
+a + b = [2+1, 1+3]ᵀ = [3, 4]ᵀ
+
+a = [1, 1]ᵀ  を2倍すると
+
+2a = [2, 2]ᵀ
+        </div>
+        <span class="src">← S03:p.38-39</span>
+      </div>
+    </div>
+
+    <!-- 内積 -->
+    <div class="subsection" id="dot-product">
+      <h3 class="subsection-title">ベクトルの計算③：内積（Dot Product）</h3>
+
+      <div class="def-box">
+        <div class="def-label">【定義】内積</div>
+        <p>2つのベクトルの各要素を掛け合わせて和を取る演算。結果はスカラー値（1つの数値）になる。</p>
+      </div>
+
+      <div class="card">
+        <p><strong>要素による計算（ドット記号で表記）：</strong></p>
+        <div class="formula">
+a · b = a₁b₁ + a₂b₂ + … + aₙbₙ
+
+例) [1,2,3] · [5,4,1] = 1×5 + 2×4 + 3×1 = 5 + 8 + 3 = 16
+        </div>
+        <span class="src">← S03:p.40, 43-44</span>
+      </div>
+
+      <div class="card">
+        <p><strong>長さと角度による計算：</strong></p>
+        <div class="formula">
+a · b = ‖a‖ × ‖b‖ × cosθ
+
+ここで ‖a‖ = √(a₁² + a₂² + … + aₙ²)  ← ノルム（ベクトルの長さ）
+
+例) ‖a‖ = 3, ‖b‖ = 2, 成す角θ = 30°のとき
+  a · b = 3 × 2 × cos30° = 6 × (√3/2) = 3√3
+        </div>
+        <span class="src">← S03:p.40-44</span>
+      </div>
+
+      <!-- コサインの説明 -->
+      <div class="svg-wrap">
+        <svg viewBox="0 0 350 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:350px;display:block;margin:auto;">
+          <!-- 円 -->
+          <circle cx="175" cy="105" r="80" fill="none" stroke="#5b8dee" stroke-width="1.5"/>
+          <!-- x軸 -->
+          <line x1="80" y1="105" x2="270" y2="105" stroke="#8a99b8" stroke-width="1"/>
+          <!-- y軸 -->
+          <line x1="175" y1="15" x2="175" y2="195" stroke="#8a99b8" stroke-width="1"/>
+          <!-- 角度θの弧 -->
+          <path d="M 205 105 A 30 30 0 0 0 193 78" fill="none" stroke="#fbbf24" stroke-width="1.5"/>
+          <!-- θラベル -->
+          <text x="208" y="92" fill="#fbbf24" font-size="13" font-family="serif">θ</text>
+          <!-- 半径線 -->
+          <line x1="175" y1="105" x2="233" y2="48" stroke="#34d399" stroke-width="2"/>
+          <!-- 点A -->
+          <circle cx="233" cy="48" r="4" fill="#34d399"/>
+          <text x="238" y="45" fill="#34d399" font-size="13" font-family="serif">A</text>
+          <!-- cosθの投影 -->
+          <line x1="233" y1="48" x2="233" y2="105" stroke="#a78bfa" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <!-- cosθラベル -->
+          <line x1="175" y1="110" x2="233" y2="110" stroke="#a78bfa" stroke-width="2"/>
+          <text x="185" y="125" fill="#a78bfa" font-size="11" font-family="serif">cosθ</text>
+          <!-- 説明 -->
+          <text x="20" y="170" fill="#8a99b8" font-size="10" font-family="'Noto Sans JP',sans-serif">半径1の円周上の点Aと原点を結ぶ直線の</text>
+          <text x="20" y="185" fill="#8a99b8" font-size="10" font-family="'Noto Sans JP',sans-serif">x軸とのなす角がθのとき，AのX軸方向の大きさがcosθ</text>
+          <text x="260" y="115" fill="#8a99b8" font-size="10">1</text>
+          <text x="82" y="115" fill="#8a99b8" font-size="10">-1</text>
+        </svg>
+        <figcaption>図：コサイン（cosθ）の定義 <span class="src">← S03:p.42</span></figcaption>
+      </div>
+
+      <div class="block-audio">
+        <div class="block-label label-audio">🎤 音声補足</div>
+        <p>内積は「要素を使った計算」と「長さと角度を使った計算」の2通りがある。両方が等しいことを使うと、<strong>cosθを求めること（＝ベクトル間の角度を求めること）</strong>ができる。これがこの後のコサイン類似度につながる重要なポイント。<span class="src">← S05</span></p>
+      </div>
+    </div>
+
+    <!-- ベクトル空間 -->
+    <div class="subsection" id="vector-space">
+      <h3 class="subsection-title">ベクトル空間</h3>
+
+      <div class="def-box">
+        <div class="def-label">【定義】ベクトル空間</div>
+        <p>複数のベクトルの根本を1か所にまとめたベクトルの集合。<br>
+        空間内のベクトルはすべて<strong>同じ次元</strong>（要素数）でなければならない。</p>
+      </div>
+
+      <!-- ベクトル空間の図 -->
+      <div class="svg-wrap">
+        <svg viewBox="0 0 500 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:500px;display:block;margin:auto;">
+          <!-- 矢印版 -->
+          <text x="30" y="20" fill="#5b8dee" font-size="11" font-family="'Noto Sans JP',sans-serif" font-weight="bold">矢印で表したとき</text>
+          <line x1="75" y1="160" x2="55" y2="80" stroke="#34d399" stroke-width="2" marker-end="url(#ah1)"/>
+          <line x1="75" y1="160" x2="130" y2="70" stroke="#34d399" stroke-width="2" marker-end="url(#ah1)"/>
+          <line x1="75" y1="160" x2="155" y2="130" stroke="#34d399" stroke-width="2" marker-end="url(#ah1)"/>
+          <line x1="75" y1="160" x2="80" y2="155" stroke="#34d399" stroke-width="2" marker-end="url(#ah1)"/>
+          <line x1="75" y1="160" x2="40" y2="140" stroke="#34d399" stroke-width="2" marker-end="url(#ah1)"/>
+          <!-- 点版 -->
+          <text x="270" y="20" fill="#5b8dee" font-size="11" font-family="'Noto Sans JP',sans-serif" font-weight="bold">点で表したとき（ベクトル空間）</text>
+          <line x1="270" y1="40" x2="480" y2="40" stroke="#2a3350" stroke-width="1"/>
+          <line x1="270" y1="40" x2="270" y2="190" stroke="#2a3350" stroke-width="1"/>
+          <circle cx="310" cy="80" r="5" fill="#f87171"/>
+          <text x="315" y="77" fill="#e2e8f5" font-size="11" font-family="serif">b</text>
+          <circle cx="340" cy="120" r="5" fill="#f87171"/>
+          <text x="345" y="117" fill="#e2e8f5" font-size="11" font-family="serif">a</text>
+          <circle cx="390" cy="100" r="5" fill="#f87171"/>
+          <text x="395" y="97" fill="#e2e8f5" font-size="11" font-family="serif">e</text>
+          <circle cx="420" cy="130" r="5" fill="#f87171"/>
+          <text x="425" y="127" fill="#e2e8f5" font-size="11" font-family="serif">c</text>
+          <circle cx="350" cy="165" r="5" fill="#f87171"/>
+          <text x="355" y="162" fill="#e2e8f5" font-size="11" font-family="serif">d</text>
+          <defs>
+            <marker id="ah1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#34d399"/>
+            </marker>
+          </defs>
+        </svg>
+        <figcaption>図：ベクトル空間の表現（矢印 → 点で表すのが一般的）<span class="src">← S03:p.45-47</span></figcaption>
+      </div>
+
+      <div class="card">
+        <p><strong>テキストデータとベクトル空間：</strong></p>
+        <p>前処理でテキストデータをベクトル化することの目的は、文書や単語を<strong>ベクトル空間上に配置</strong>するため。これにより、自然言語の解析や応用的な処理が可能になる。<span class="src">← S03:p.48</span></p>
+      </div>
+    </div>
+
+    <!-- 第2章まとめ -->
+    <div class="subsection" id="ch2-summary">
+      <h3 class="subsection-title">第2章まとめ</h3>
+      <div class="card">
+        <table>
+          <thead><tr><th>学習目標</th><th>対応内容</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>ベクトルの簡単な演算ができる</td>
+              <td>足し算・定数倍・内積（要素計算 + 長さ×角度計算）</td>
+            </tr>
+            <tr>
+              <td>ベクトル空間について説明ができる</td>
+              <td>同じ次元のベクトルの集合。文書・単語をここに配置するのが前処理の目標</td>
+            </tr>
+          </tbody>
+        </table>
+        <span class="src">← S03:p.49</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================== -->
+  <!-- 第3章 -->
+  <!-- =============================== -->
+  <section class="section" id="ch3">
+    <h2 class="section-title"><span class="num">04.</span>第3章：ベクトルの活用</h2>
+
+    <div class="goal-box">
+      <p style="font-size:12px;color:var(--text-sub);margin-bottom:8px;">【第3章 学習目標】</p>
+      <ul>
+        <li>コサイン類似度の意味と活用例について説明ができる</li>
+        <li>ベクトルを用いたアナロジーについて簡単な説明ができる</li>
+      </ul>
+    </div>
+
+    <!-- コサイン類似度 -->
+    <div class="subsection" id="cosine">
+      <h3 class="subsection-title">コサイン類似度（Cosine Similarity）</h3>
+
+      <div class="block-audio">
+        <div class="block-label label-audio">🎤 第2章の復習ポイント</div>
+        <p>内積の2つの計算式（要素版・長さ×角度版）が等しいことを使うと、cosθが求まる。<br>
+        a·b = ‖a‖‖b‖cosθ → cosθ = a·b / (‖a‖‖b‖)<span class="src">← S05</span></p>
+      </div>
+
+      <div class="def-box">
+        <div class="def-label">【定義】コサイン類似度</div>
+        <p>2つのベクトル間の角度θのcosθ値を使って、類似度を表現したもの。</p>
+        <div class="formula">
+コサイン類似度 = cosθ = (a · b) / (‖a‖ × ‖b‖)
+
+値域：-1 ≤ cosθ ≤ 1
+・cosθ → 1  （角度 → 0°）：2ベクトルが同じ方向 → 類似度が高い
+・cosθ → -1 （角度 → 180°）：2ベクトルが逆方向 → 類似度が低い
+        </div>
+        <span class="src">← S03:p.54-55</span>
+      </div>
+
+      <div class="block-audio">
+        <div class="block-label label-audio">🎤 音声補足</div>
+        <p>内積の計算式をcosθについて式変形しただけだが、わざわざ「コサイン類似度」という名前がつくほど重要な概念。<strong>ベクトル間の角度で類似度を評価</strong>できるという発想は、データ分析の中で非常に重要。<span class="src">← S05</span></p>
+      </div>
+    </div>
+
+    <!-- コサイン類似度の活用 -->
+    <div class="subsection" id="cosine-example">
+      <h3 class="subsection-title">コサイン類似度の活用例</h3>
+
+      <div class="card">
+        <p><strong>設定：</strong>3種の文書A・B・CについてBoWで「ケーキ」と「ゲーム」の出現頻度をカウントしてベクトル化した。</p>
+        <div class="formula">
+文書 a = [1, 2]ᵀ  （ゲーム:1回, ケーキ:2回）
+文書 b = [3, 4]ᵀ  （ゲーム:3回, ケーキ:4回）
+文書 c = [2, 1]ᵀ  （ゲーム:2回, ケーキ:1回）
+        </div>
+        <p style="margin-top:8px;">→ 「内容が最も似ている文書はどれか？」をコサイン類似度で判断する。<span class="src">← S03:p.56</span></p>
+      </div>
+
+      <!-- ベクトル空間の図 -->
+      <div class="svg-wrap">
+        <svg viewBox="0 0 350 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:350px;display:block;margin:auto;">
+          <!-- 軸 -->
+          <line x1="40" y1="230" x2="320" y2="230" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#arrowX)"/>
+          <line x1="40" y1="230" x2="40" y2="20" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#arrowY)"/>
+          <text x="325" y="234" fill="#5b8dee" font-size="12" font-family="'Noto Sans JP',sans-serif">ゲーム</text>
+          <text x="10" y="18" fill="#5b8dee" font-size="12" font-family="'Noto Sans JP',sans-serif">ケーキ</text>
+          <!-- 目盛り -->
+          <text x="35" y="244" fill="#8a99b8" font-size="9">0</text>
+          <text x="103" y="244" fill="#8a99b8" font-size="9">1</text>
+          <text x="168" y="244" fill="#8a99b8" font-size="9">2</text>
+          <text x="233" y="244" fill="#8a99b8" font-size="9">3</text>
+          <!-- ベクトルa=[1,2] -->
+          <line x1="40" y1="230" x2="105" y2="100" stroke="#fbbf24" stroke-width="2" marker-end="url(#arrowA)"/>
+          <circle cx="105" cy="100" r="5" fill="#fbbf24"/>
+          <text x="85" y="95" fill="#fbbf24" font-size="13" font-family="serif" font-weight="bold">a</text>
+          <text x="62" y="104" fill="#fbbf24" font-size="10">[1,2]</text>
+          <!-- ベクトルb=[3,4] -->
+          <line x1="40" y1="230" x2="235" y2="28" stroke="#34d399" stroke-width="2" marker-end="url(#arrowB)"/>
+          <circle cx="235" cy="28" r="5" fill="#34d399"/>
+          <text x="242" y="30" fill="#34d399" font-size="13" font-family="serif" font-weight="bold">b</text>
+          <text x="177" y="70" fill="#34d399" font-size="10">[3,4]</text>
+          <!-- ベクトルc=[2,1] -->
+          <line x1="40" y1="230" x2="170" y2="165" stroke="#a78bfa" stroke-width="2" marker-end="url(#arrowC)"/>
+          <circle cx="170" cy="165" r="5" fill="#a78bfa"/>
+          <text x="175" y="162" fill="#a78bfa" font-size="13" font-family="serif" font-weight="bold">c</text>
+          <text x="155" y="200" fill="#a78bfa" font-size="10">[2,1]</text>
+          <defs>
+            <marker id="arrowX" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#5b8dee"/></marker>
+            <marker id="arrowY" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#5b8dee"/></marker>
+            <marker id="arrowA" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#fbbf24"/></marker>
+            <marker id="arrowB" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#34d399"/></marker>
+            <marker id="arrowC" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#a78bfa"/></marker>
+          </defs>
+        </svg>
+        <figcaption>図：3文書のベクトル空間 <span class="src">← S03:p.56</span></figcaption>
+      </div>
+
+      <div class="card">
+        <p><strong>各文書間のコサイン類似度の計算：</strong></p>
+        <div class="formula">
+AとBのコサイン類似度:
+  a·b = 1×3 + 2×4 = 11
+  ‖a‖ = √(1²+2²) = √5,  ‖b‖ = √(3²+4²) = 5
+  cosθ_AB = 11 / (√5 × 5) = 11/(5√5) ≈ 0.98
+
+AとCのコサイン類似度:
+  a·c = 1×2 + 2×1 = 4
+  ‖a‖ = ‖c‖ = √5
+  cosθ_AC = 4 / (√5 × √5) = 4/5 = 0.8
+
+BとCのコサイン類似度:
+  b·c = 3×2 + 4×1 = 10
+  ‖b‖ = 5, ‖c‖ = √5
+  cosθ_BC = 10 / (5√5) = 2/√5 ≈ 0.89
+        </div>
+        <span class="src">← S03:p.57-59</span>
+      </div>
+
+      <div class="card">
+        <p><strong>結論：</strong></p>
+        <table>
+          <thead><tr><th>文書ペア</th><th>コサイン類似度</th><th>評価</th></tr></thead>
+          <tbody>
+            <tr><td>A と B</td><td style="color:var(--accent-yellow);font-weight:bold;">≈ 0.98</td><td style="color:var(--accent-green);">★ 最も類似度が高い</td></tr>
+            <tr><td>B と C</td><td>≈ 0.89</td><td>—</td></tr>
+            <tr><td>A と C</td><td>= 0.80</td><td>最も低い</td></tr>
+          </tbody>
+        </table>
+        <p style="margin-top:8px;">→ <strong>文書Aと文書Bが「内容が最も似ている文書ペア」</strong>とみなせる。<span class="src">← S03:p.60</span></p>
+      </div>
+
+      <div class="block-audio">
+        <div class="block-label label-audio">🎤 音声補足</div>
+        <p>文書Aは「ゲーム1回・ケーキ2回」、文書Bは「ゲーム3回・ケーキ4回」。Bはケーキの話題に重点があるという点でAと同じ傾向。文書が長くなっただけで内容は同じようなもの → コサイン類似度が高くなった。<span class="src">← S05</span></p>
+      </div>
+
+      <div class="block-ext">
+        <div class="block-label label-ext">📚 外部補足</div>
+        <p>コサイン類似度はテキストデータだけでなく、<strong>協調フィルタリング（レコメンドシステム）</strong>にも応用できる。ユーザーの行動履歴をベクトル化し、コサイン類似度でユーザー間の類似度を計算することで「あなたへのおすすめ」を実現できる。</p>
+      </div>
+    </div>
+
+    <!-- 単語の分散表現 -->
+    <div class="subsection" id="word2vec">
+      <h3 class="subsection-title">単語の分散表現・Word2Vec</h3>
+
+      <div class="card">
+        <p><strong>BoWの問題点：</strong></p>
+        <p>例：「<em>家</em>を探している」と「<em>物件</em>を探している」は同じ意味だが、BoWでは<strong>別の単語として扱われ類似度が低く</strong>なってしまう。</p>
+        <p>→ 単語そのものの意味（意味的類似性）を考慮した手法が必要。<span class="src">← S03:p.61</span></p>
+      </div>
+
+      <div class="def-box">
+        <div class="def-label">【定義】単語の分散表現（Distributed Representation）</div>
+        <p>単語をベクトルで表現したもの。<strong>似た単語が近くに配置</strong>されるようにベクトルを作成する。</p>
+      </div>
+
+      <div class="def-box">
+        <div class="def-label">【定義】Word2Vec</div>
+        <p>単語をベクトルに変換する手法の総称（word <strong>to</strong> vector）。<br>
+        2つの代表的なモデル：<strong>CBOW（Continuous Bag of Words）</strong>と<strong>Skip-gram</strong>。</p>
+      </div>
+
+      <div class="card">
+        <p><strong>Word2Vecの効果：</strong></p>
+        <p>似た単語（例: ショートケーキ・チョコケーキ・モンブランなど）がベクトル空間上で<strong>近くにまとまって配置</strong>される。情報端末（スマートフォン・パソコン等）も同様に近くにまとまる。<span class="src">← S03:p.61</span></p>
+      </div>
+    </div>
+
+    <!-- アナロジー -->
+    <div class="subsection" id="analogy">
+      <h3 class="subsection-title">アナロジー（類推）とベクトル計算</h3>
+
+      <div class="def-box">
+        <div class="def-label">【定義】アナロジー（Analogy / 類推）</div>
+        <p>ある単語間の関係から、似た関係にある他の単語を導くこと。</p>
+      </div>
+
+      <div class="card">
+        <p><strong>例：</strong>「日本では東京」の場合、「フランスでは何？」</p>
+        <p>→ 「ある国の首都」という関係 → 答えは「<strong>パリ</strong>」</p>
+        <p style="margin-top:8px;">Word2Vecを使うとこれをベクトル計算で導出できる。<span class="src">← S03:p.62</span></p>
+      </div>
+
+      <!-- アナロジーのベクトル図 -->
+      <div class="svg-wrap">
+        <svg viewBox="0 0 500 240" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:500px;display:block;margin:auto;">
+          <!-- 軸 -->
+          <line x1="40" y1="210" x2="470" y2="210" stroke="#2a3350" stroke-width="1"/>
+          <line x1="40" y1="210" x2="40" y2="20" stroke="#2a3350" stroke-width="1"/>
+          <!-- 日本 -->
+          <circle cx="100" cy="70" r="5" fill="#fbbf24"/>
+          <text x="70" y="65" fill="#fbbf24" font-size="13" font-family="'Noto Sans JP',sans-serif" font-weight="bold">日本</text>
+          <!-- 東京 -->
+          <circle cx="260" cy="110" r="5" fill="#fbbf24"/>
+          <text x="263" y="107" fill="#fbbf24" font-size="13" font-family="'Noto Sans JP',sans-serif" font-weight="bold">東京</text>
+          <!-- フランス -->
+          <circle cx="100" cy="150" r="5" fill="#34d399"/>
+          <text x="60" y="145" fill="#34d399" font-size="13" font-family="'Noto Sans JP',sans-serif" font-weight="bold">フランス</text>
+          <!-- パリ -->
+          <circle cx="260" cy="190" r="5" fill="#34d399"/>
+          <text x="263" y="187" fill="#34d399" font-size="13" font-family="'Noto Sans JP',sans-serif" font-weight="bold">パリ</text>
+          <!-- ベクトルb （日本→東京） -->
+          <line x1="100" y1="70" x2="255" y2="113" stroke="#5b8dee" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrowBlue)"/>
+          <text x="155" y="82" fill="#5b8dee" font-size="11" font-family="serif" font-style="italic">b</text>
+          <!-- ベクトルc（フランス→パリ） -->
+          <line x1="100" y1="150" x2="255" y2="188" stroke="#5b8dee" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrowBlue)"/>
+          <text x="155" y="178" fill="#5b8dee" font-size="11" font-family="serif" font-style="italic">c (= b)</text>
+          <!-- a日本 -->
+          <line x1="40" y1="210" x2="98" y2="73" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#arrowY2)"/>
+          <!-- a東京 -->
+          <line x1="40" y1="210" x2="258" y2="113" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#arrowY2)"/>
+          <!-- a_france -->
+          <line x1="40" y1="210" x2="98" y2="153" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrowG)"/>
+          <!-- a_paris -->
+          <line x1="40" y1="210" x2="258" y2="192" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrowG)"/>
+          <defs>
+            <marker id="arrowBlue" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#5b8dee"/></marker>
+            <marker id="arrowY2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#fbbf24"/></marker>
+            <marker id="arrowG" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#34d399"/></marker>
+          </defs>
+        </svg>
+        <figcaption>図：アナロジーのベクトル空間表現 <span class="src">← S03:p.63-66</span></figcaption>
+      </div>
+
+      <div class="card">
+        <p><strong>数式によるアナロジーの表現：</strong></p>
+        <div class="formula">
+【日本と東京の関係】
+  a_日本 + b = a_東京
+  ∴ b = a_東京 - a_日本   … ①
+
+【フランスとパリの関係】
+  a_フランス + c = a_パリ
+  ∴ c = a_パリ - a_フランス  … ②
+
+【b = c と仮定（同じ関係）】
+  a_東京 - a_日本 = a_パリ - a_フランス
+
+  整理すると：
+  a_フランス - a_日本 + a_東京 = a_パリ  ← アナロジー完成
+
+→ Word2Vecのベクトル空間に
+  「フランス - 日本 + 東京」を入力すると「パリ」が出てくる！
+        </div>
+        <span class="src">← S03:p.64-66</span>
+      </div>
+
+      <div class="block-audio">
+        <div class="block-label label-audio">🎤 音声補足</div>
+        <p>言葉で「日本では東京の場合、フランスでは何？」という問いが、数式として「フランス - 日本 + 東京 = ?」で表現できる。これが<strong>テキストデータをベクトル化することのすごさ</strong>。問題文の中に「パリ」という答えは一切出てきていないのに、ベクトル計算で導出できる。<span class="src">← S05</span></p>
+      </div>
+    </div>
+
+    <!-- 第3章まとめ -->
+    <div class="subsection" id="ch3-summary">
+      <h3 class="subsection-title">第3章まとめ</h3>
+      <div class="card">
+        <table>
+          <thead><tr><th>学習目標</th><th>対応内容</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>コサイン類似度の意味と活用例</td>
+              <td>2ベクトル間の角度（cosθ）で類似度を評価。複数文書の2文書間を計算し類似文書を検索できる</td>
+            </tr>
+            <tr>
+              <td>ベクトルを用いたアナロジー</td>
+              <td>Word2Vecで単語を分散表現にすることで、ベクトル計算としてアナロジーが可能になる</td>
+            </tr>
+          </tbody>
+        </table>
+        <span class="src">← S03:p.67</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================== -->
+  <!-- 第4章 -->
+  <!-- =============================== -->
+  <section class="section" id="ch4">
+    <h2 class="section-title"><span class="num">05.</span>第4章：データ分析事例</h2>
+
+    <div class="goal-box">
+      <p style="font-size:12px;color:var(--text-sub);margin-bottom:8px;">【第4章 学習目標】</p>
+      <ul>
+        <li>計算機を用いたデータ分析事例よりデータの扱いを体感する</li>
+      </ul>
+    </div>
+
+    <!-- NLPの発展 -->
+    <div class="subsection" id="deep-learning">
+      <h3 class="subsection-title">自然言語処理の発展とディープラーニング</h3>
+
+      <div class="card">
+        <p><strong>2010年頃からの変化：</strong></p>
+        <p>ディープラーニングの登場を機に、自然言語処理の性能が急激に向上。機械翻訳・文章理解・文章生成・対話システムなどの精度が大幅に改善した。<span class="src">← S03:p.71</span></p>
+      </div>
+
+      <div class="block-audio">
+        <div class="block-label label-audio">🎤 音声補足</div>
+        <p>なぜ性能が向上したかというと、ディープラーニングは<strong>前処理（ベクトル化を含む）を内包</strong>しているため。これまで別途行っていたクリーニング・トークン化・ベクトル化を含めて文章理解・機械翻訳ができるモデルが登場したことが背景にある。<span class="src">← S05</span></p>
+      </div>
+
+      <div class="block-audio">
+        <div class="block-label label-audio">🎤 音声補足（実務的な重要性）</div>
+        <p>一方、<strong>実務レベル（アンケート分析・顧客の声の分析など）では、今回学んだような従来型の前処理の知識も依然として重要</strong>。ディープラーニングを使った最新手法と、前処理の両方を抑えていくことが大切。<span class="src">← S05</span></p>
+      </div>
+    </div>
+
+    <!-- Word2Vecデモ -->
+    <div class="subsection" id="demo">
+      <h3 class="subsection-title">Word2Vec を用いたアナロジーの実行例（Python / Google Colab）</h3>
+
+      <div class="card">
+        <p><strong>概要：</strong></p>
+        <ul>
+          <li>使用ツール：Google Colaboratory（Python）</li>
+          <li>使用ライブラリ：<code>Gensim</code>（自然言語処理向けPythonライブラリ）</li>
+          <li>使用コーパス：<code>ja.text8</code>（日本語Wikipediaから作成した日本語版text8コーパス）<br>
+            <span style="font-size:12px;color:var(--text-sub);">※ S05の「JA テキスト8」「JA .tist 8」は <code>ja.text8</code> の誤変換と確定。GitHubリポジトリ <code>Hironsan/ja.text8</code> が出典。日本語WikipediaダンプをWikiextractorでクリーニングし100MB分切り出したもの。前処理（トークン化・ノイズ除去）済み。<span class="src">← S05照合済み・Web検索確認済み</span></span></li>
+          <li>参照ファイル：<code>DS入門_第12回_第4章.ipynb</code></li>
+        </ul>
+        <span class="src">← S03:p.72, S05</span>
+      </div>
+
+      <div class="block-audio">
+        <div class="block-label label-audio">🎤 デモの手順（概要）</div>
+        <p><strong>ステップ1: ライブラリのインポート</strong><br>
+        Gensimをインポート。Google Colabでは追加インストール不要。自分のPCで試す場合はインストールが必要。<span class="src">← S05</span></p>
+        <p style="margin-top:8px;"><strong>ステップ2: コーパスから単語の分散表現を作成</strong><br>
+        URLから<code>ja.text8</code>を直接ダウンロードして使用。コーパスの冒頭を確認すると、単語がトークン化済みで、URLやタグなどの不要情報が除去されていることが確認できる。<span class="src">← S05</span></p>
+        <p style="margin-top:8px;"><strong>Word2Vecの設定：</strong><br>
+        <code>vector_size=300</code>（300次元ベクトル）、<code>sg=1</code>（<strong>Skip-gram</strong>モデルを選択）<br>
+        ※計算に約12分かかる（小さいコーパスでも300次元で12分）<span class="src">← S05</span></p>
+      </div>
+
+      <div class="card">
+        <p><strong>アナロジー実行例①：「男性と女性」の関係は「王様と何の関係か？」</strong></p>
+        <div class="formula">
+positive: [王様, 女]
+negative: [男]
+（計算: 王様 + 女 - 男 = ?）
+
+期待される答え: 女王
+→ 今回作成した小さいコーパスでは上位には出現しなかった。
+  （コーパスが小さいため学習が不十分）
+        </div>
+        <span class="src">← S05</span>
+      </div>
+
+      <div class="card">
+        <p><strong>アナロジー実行例②：「日本に対する東京」は「フランスに対する何か？」</strong></p>
+        <div class="formula">
+positive: [フランス, 東京]
+negative: [日本]
+（計算: フランス - 日本 + 東京 = ?）
+
+結果: 1位 → パリ  ← 正しくアナロジーが機能！
+        </div>
+        <span class="src">← S05</span>
+      </div>
+
+      <div class="card">
+        <p><strong>ステップ3: 事前学習済みモデル（chiive）の利用</strong></p>
+        <p>大規模日本語単語ベクトルの学習済みモデル「chiive」をダウンロードして使用。</p>
+        <ul style="margin-top:8px;">
+          <li>「スマホ」に類似した単語の上位10件 → スマートフォン・iPhone・携帯など正しく出力</li>
+          <li>小さいコーパスでは「スマホ」がベクトル未登録でエラーになるが、chiiveでは正常に動作</li>
+          <li>「男性と女性の関係 → 王様と何？」→ <strong>女王</strong>が上位に出現（chiiveでは成功）</li>
+        </ul>
+        <span class="src">← S05</span>
+      </div>
+
+      <div class="block-audio">
+        <div class="block-label label-audio">🎤 音声補足（自作 vs 学習済みモデル）</div>
+        <p>コーパスから自分で分散表現を作成するか、学習済みモデルを使うかは<strong>用途による</strong>。<br>
+        小さい・古いコーパスでは単語が未登録になる可能性がある。分析目的に応じてコーパスや手法を選択することが大切。<span class="src">← S05</span></p>
+      </div>
+    </div>
+
+    <!-- 第4章まとめ -->
+    <div class="subsection" id="ch4-summary">
+      <h3 class="subsection-title">第4章まとめ</h3>
+      <div class="card">
+        <p>PythonのGensimライブラリを用いてWord2Vecによる<strong>単語分散表現の作成</strong>を実施し、作成した単語分散表現を用いた<strong>アナロジー（類推）</strong>の実行例を確認した。<span class="src">← S03:p.74</span></p>
+      </div>
+    </div>
+
+    <!-- 第12回まとめ -->
+    <div class="card" style="border-color:var(--accent-yellow);margin-top:20px;">
+      <p style="font-size:16px;font-weight:700;color:var(--accent-yellow);margin-bottom:12px;">第12回まとめ</p>
+      <table>
+        <thead><tr><th>学習目標</th><th>対応内容</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>テキストデータに関する基本的な概念</td>
+            <td>前処理（クリーニング・形態素解析等）によりテキストデータを計算可能なベクトル表現にする。ベクトル表現により様々な応用が可能になる。</td>
+          </tr>
+          <tr>
+            <td>ベクトルの基礎的な概念とテキストデータへの利活用</td>
+            <td>足し算・定数倍・内積の3種の演算。コサイン類似度とアナロジーへの応用。</td>
+          </tr>
+        </tbody>
+      </table>
+      <span class="src">← S03:p.75</span>
+    </div>
+  </section>
+
+  <!-- =============================== -->
+  <!-- 末尾補足 -->
+  <!-- =============================== -->
+  <div class="appendix">
+
+    <!-- 補足A -->
+    <section id="appendix-a" class="section">
+      <h2 class="appendix-title"><span class="icon">⭐</span>補足A：最重要ワード一覧</h2>
+      <table>
+        <thead>
+          <tr><th>用語</th><th>読み</th><th>定義</th><th>重要度</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>テキストデータ</strong></td><td>てきすとでーた</td><td>自然言語で書かれたデータのこと</td><td class="star3">★★★</td></tr>
+          <tr><td><strong>自然言語</strong></td><td>しぜんげんご</td><td>人間が日常的に話す言語（⇔プログラミング言語などの人工言語）</td><td class="star3">★★★</td></tr>
+          <tr><td><strong>自然言語処理（NLP）</strong></td><td>しぜんげんごしょり</td><td>コンピュータでテキストデータを扱うための技術の総称</td><td class="star3">★★★</td></tr>
+          <tr><td><strong>前処理</strong></td><td>まえしょり</td><td>データ分析前に行う整形・変換工程。テキストでは特に重要（分析時間の8〜9割を占める場合も）</td><td class="star3">★★★</td></tr>
+          <tr><td><strong>テキストクレンジング</strong></td><td>てきすとくれんじんぐ</td><td>表記の統一・個人情報除去など、分析目的に応じた不要情報の削除・置換</td><td class="star3">★★★</td></tr>
+          <tr><td><strong>トークン化</strong></td><td>とーくんか</td><td>文章を意味の通る最小単位（トークン）に分割する処理</td><td class="star3">★★★</td></tr>
+          <tr><td><strong>形態素解析</strong></td><td>けいたいそかいせき</td><td>日本語・中国語などスペースで語が区切られない言語でのトークン化に必要な処理</td><td class="star3">★★★</td></tr>
+          <tr><td><strong>ベクトル化</strong></td><td>べくとるか</td><td>非構造化データを数値（ベクトル）に変換して計算機で処理できる状態にすること</td><td class="star3">★★★</td></tr>
+          <tr><td><strong>Bag of Words（BoW）</strong></td><td>ばっぐおぶわーず</td><td>文書中のトークンの出現回数をカウントしてベクトル化する基本的な手法</td><td class="star3">★★★</td></tr>
+          <tr><td><strong>スカラー</strong></td><td>すからー</td><td>数値1つ1つがバラバラになっている状態</td><td class="star2">★★☆</td></tr>
+          <tr><td><strong>ベクトル</strong></td><td>べくとる</td><td>スカラーを1列に並べたもの。方向と大きさ（長さ）を持つ数学的表現</td><td class="star3">★★★</td></tr>
+          <tr><td><strong>ベクトルの次元</strong></td><td>べくとるのじげん</td><td>ベクトルの要素の数（空間的な次元とは異なる）</td><td class="star3">★★★</td></tr>
+          <tr><td><strong>ノルム</strong></td><td>のるむ</td><td>ベクトルの長さを表す記号 ‖a‖ = √(a₁²+a₂²+…+aₙ²)</td><td class="star3">★★★</td></tr>
+          <tr><td><strong>内積</strong></td><td>ないせき</td><td>a·b = Σ(aᵢbᵢ) = ‖a‖‖b‖cosθ。2ベクトルの各要素を掛け合わせた和</td><td class="star3">★★★</td></tr>
+          <tr><td><strong>ベクトル空間</strong></td><td>べくとるくうかん</td><td>複数のベクトルの根本を1か所にまとめたベクトルの集合（同じ次元のみ）</td><td class="star3">★★★</td></tr>
+          <tr><td><strong>コサイン類似度</strong></td><td>こさいんるいじど</td><td>cosθ = a·b/(‖a‖‖b‖)。2ベクトル間の角度で類似度を表現。値域-1〜1</td><td class="star3">★★★</td></tr>
+          <tr><td><strong>単語の分散表現</strong></td><td>たんごのぶんさんひょうげん</td><td>単語をベクトルで表現したもの。似た単語が近くに配置される</td><td class="star3">★★★</td></tr>
+          <tr><td><strong>Word2Vec</strong></td><td>わーどつーべく</td><td>単語をベクトルに変換する手法の総称。CBOWとSkip-gramの2モデルがある</td><td class="star3">★★★</td></tr>
+          <tr><td><strong>アナロジー（類推）</strong></td><td>あなろじー</td><td>ある単語間の関係から似た関係にある他の単語を導くこと。Word2Vecでベクトル計算として実現</td><td class="star3">★★★</td></tr>
+          <tr><td><strong>コーパス</strong></td><td>こーぱす</td><td>テキストデータを集めてデータベース化したもの</td><td class="star3">★★★</td></tr>
+          <tr><td><strong>MeCab</strong></td><td>めかぶ</td><td>日本語形態素解析の代表的なツール</td><td class="star2">★★☆</td></tr>
+          <tr><td><strong>Gensim</strong></td><td>げんしむ</td><td>Pythonの自然言語処理ライブラリ。Word2Vec実装に使用</td><td class="star2">★★☆</td></tr>
+          <tr><td><strong>Skip-gram</strong></td><td>すきっぷぐらむ</td><td>Word2Vecの学習モデルの1つ（今回のデモで使用。中心単語から周辺単語を予測）</td><td class="star2">★★☆</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 補足B -->
+    <section id="appendix-b" class="section">
+      <h2 class="appendix-title"><span class="icon">📚</span>補足B：知っておくべき背景知識</h2>
+      <div class="block-ext">
+        <div class="block-label label-ext">📚 外部補足</div>
+        <ul>
+          <li><strong>非構造化データ</strong>：画像・音声・テキストなど。世界のデータの約80〜90%を占めるとされる。</li>
+          <li><strong>MeCab以外の形態素解析ツール</strong>：Janome（純Pythonで使いやすい）・JUMAN・SudachiなどもPythonから利用可能。</li>
+          <li><strong>Word2Vecの発表</strong>：2013年、GoogleのTomas Mikolov らによって発表された。</li>
+          <li><strong>より進んだ単語の分散表現</strong>：GloVe・fastText・BERTなどがある。特にBERT（2018年）以降、文脈を考慮した表現が可能になり精度がさらに向上。</li>
+          <li><strong>協調フィルタリング</strong>：ユーザーの行動履歴（購買・閲覧等）をベクトル化し、コサイン類似度等で類似ユーザーを探してレコメンドを行う手法。Amazonや Netflix のレコメンドで広く使われている。</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 補足C -->
+    <section id="appendix-c" class="section">
+      <h2 class="appendix-title"><span class="icon">🎯</span>補足C：試験・レポートで重要な観点</h2>
+      <div class="card" style="border-color:var(--accent-orange);">
+        <ul>
+          <li>前処理の3ステップ（クリーニング→トークン化→ベクトル化）を順番と内容込みで説明できること</li>
+          <li>ベクトルの次元の定義（要素の数）を空間的次元と混同しないこと</li>
+          <li>内積の2通りの計算方法（要素版・長さ×角度版）を両方使えること</li>
+          <li>コサイン類似度の式 <code>cosθ = a·b / (‖a‖‖b‖)</code> と値域（-1〜1）・解釈を説明できること</li>
+          <li>アナロジーをベクトル計算で表現できること（例：フランス - 日本 + 東京 = パリ）</li>
+          <li>BoWの仕組みと、BoWだけでは解決できない問題（単語の意味を考慮できない）を説明できること</li>
+          <li>日本語でトークン化に形態素解析が必要な理由を説明できること</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 補足D -->
+    <section id="appendix-d" class="section">
+      <h2 class="appendix-title"><span class="icon">🔗</span>補足D：関連概念・次回への接続</h2>
+      <div class="card">
+        <p><strong>第13回（次回）：「行列」の基礎</strong></p>
+        <ul style="margin-top:8px;">
+          <li>行列はベクトルを横に複数並べたもの。ベクトルの延長として理解できる。</li>
+          <li>行列演算（行列積等）を使うことで、大規模データの処理が効率化される。</li>
+          <li>ニューラルネットワーク・ディープラーニングの内部でも行列計算が中心的な役割を担う。</li>
+        </ul>
+      </div>
+      <div class="card">
+        <p><strong>これまでとの接続：</strong></p>
+        <ul style="margin-top:8px;">
+          <li>第10回 クラスタリング：距離（ユークリッド距離等）で類似度を評価 → <strong>今回はコサイン類似度による評価</strong>（角度ベース）</li>
+          <li>第11回 アソシエーション分析・協調フィルタリング → <strong>今回のコサイン類似度を使った協調フィルタリング</strong>に接続</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 未確定事項 -->
+    <section id="uncertain" class="section">
+      <h2 class="appendix-title"><span class="icon">✅</span>未確定事項・解消記録</h2>
+
+      <div class="block-ext" style="margin-bottom:14px;">
+        <div class="block-label label-ext">✅ 全件解消済み</div>
+        <p>今回の未確定事項はソース間照合によりすべて解消されました。</p>
+      </div>
+
+      <table>
+        <thead>
+          <tr><th>ID</th><th>元の疑問</th><th>解消内容</th><th>根拠ソース</th><th>状態</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>U01</td>
+            <td>S05中「MARS用の分析方法」の意味が不明確</td>
+            <td>
+              S05の音声誤変換と判断。スライドS03:p.3に「分析結果から、新たな仮説を生成し、次の分析につなげる」と明記されており、<strong>仮説→分析→新仮説の反復サイクル</strong>を指す表現と確定。ノート本文（前回の復習セクション）に反映済み。
+            </td>
+            <td><span class="src">← S03:p.3（スライド本文と照合）</span></td>
+            <td style="color:var(--accent-green);font-weight:bold;">✅ 解消</td>
+          </tr>
+          <tr>
+            <td>U02</td>
+            <td>S05中「JA .tist 8」「JATextEat」の正式名称が不明</td>
+            <td>
+              Web検索で<strong>正式名称 <code>ja.text8</code> と確定</strong>。GitHubリポジトリ <code>Hironsan/ja.text8</code> が出典。日本語WikipediaのダンプデータをWikiextractorでクリーニングし100MB分切り出した前処理済みコーパスで、GensimのWord2Vecチュートリアルで標準的に使われる。ノート内の表記をすべて <code>ja.text8</code> に修正済み。
+            </td>
+            <td><span class="src">← GitHub: Hironsan/ja.text8（Web検索確認済み）</span></td>
+            <td style="color:var(--accent-green);font-weight:bold;">✅ 完全解消</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+  </div><!-- /.appendix -->
+
+</main>
+</body>
+</html>
