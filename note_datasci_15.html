@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>データサイエンス入門 第15回 — データ・AIの利活用</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --bg2: #161b27;
+    --bg3: #1e2535;
+    --card: #1a2035;
+    --border: #2a3450;
+    --text: #e2e8f5;
+    --text2: #8a99b8;
+    --accent-blue: #5b8dee;
+    --accent-green: #34d399;
+    --accent-yellow: #fbbf24;
+    --accent-purple: #a78bfa;
+    --accent-red: #f87171;
+    --accent-orange: #fb923c;
+    --sidebar-w: 260px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.75;
+    display: flex;
+  }
+
+  /* Sidebar */
+  #sidebar {
+    width: var(--sidebar-w);
+    min-height: 100vh;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    position: fixed;
+    top: 0; left: 0;
+    overflow-y: auto;
+    padding: 24px 0 40px;
+    z-index: 100;
+  }
+  #sidebar .toc-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text2);
+    padding: 0 20px 12px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 12px;
+  }
+  #sidebar a {
+    display: block;
+    padding: 5px 20px;
+    color: var(--text2);
+    text-decoration: none;
+    font-size: 13px;
+    transition: all 0.15s;
+    border-left: 2px solid transparent;
+  }
+  #sidebar a:hover { color: var(--text); border-left-color: var(--accent-blue); background: rgba(91,141,238,0.06); }
+  #sidebar a.h2 { font-weight: 600; color: var(--text); font-size: 13px; margin-top: 4px; }
+  #sidebar a.h3 { padding-left: 32px; font-size: 12px; }
+
+  /* Main */
+  #main {
+    margin-left: var(--sidebar-w);
+    flex: 1;
+    max-width: 900px;
+    padding: 48px 40px 80px;
+  }
+
+  /* Header */
+  .page-header {
+    background: linear-gradient(135deg, #1a2a5e 0%, #0f1117 100%);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px 36px;
+    margin-bottom: 36px;
+  }
+  .page-header .course { font-size: 12px; color: var(--accent-blue); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+  .page-header h1 { font-size: 26px; font-weight: 700; margin-bottom: 12px; }
+  .page-header .meta { display: flex; gap: 16px; flex-wrap: wrap; }
+  .page-header .meta span { font-size: 12px; color: var(--text2); font-family: 'JetBrains Mono', monospace; }
+
+  /* Section Cards */
+  .section-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 28px 32px;
+    margin-bottom: 24px;
+  }
+  .section-card h2 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--accent-blue);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-card h2 .num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px; height: 28px;
+    background: var(--accent-blue);
+    color: #fff;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .section-card h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--accent-yellow);
+    margin: 20px 0 10px;
+  }
+  .section-card h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--accent-green);
+    margin: 14px 0 8px;
+  }
+  p { margin-bottom: 10px; }
+  ul, ol { padding-left: 20px; margin-bottom: 10px; }
+  li { margin-bottom: 4px; }
+
+  /* Blocks */
+  .block-audio {
+    background: rgba(91,141,238,0.08);
+    border-left: 3px solid var(--accent-blue);
+    border-radius: 0 6px 6px 0;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+  .block-audio .block-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent-blue);
+    margin-bottom: 4px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .block-external {
+    background: rgba(52,211,153,0.07);
+    border-left: 3px solid var(--accent-green);
+    border-radius: 0 6px 6px 0;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+  .block-external .block-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-green); margin-bottom: 4px; font-family: 'JetBrains Mono', monospace; }
+  .block-caution {
+    background: rgba(251,191,36,0.07);
+    border-left: 3px solid var(--accent-yellow);
+    border-radius: 0 6px 6px 0;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+  .block-caution .block-label { font-size: 10px; font-weight: 700; color: var(--accent-yellow); margin-bottom: 4px; font-family: 'JetBrains Mono', monospace; }
+  .block-def {
+    background: rgba(167,139,250,0.08);
+    border: 1px solid rgba(167,139,250,0.3);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 14px 0;
+  }
+  .block-def .def-label { font-size: 10px; font-weight: 700; color: var(--accent-purple); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; font-family: 'JetBrains Mono', monospace; }
+
+  /* Source pointer badge */
+  .src { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text2); background: var(--bg3); padding: 1px 6px; border-radius: 4px; margin-left: 4px; border: 1px solid var(--border); vertical-align: middle; }
+
+  /* Table */
+  table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 13px; }
+  th { background: var(--bg3); color: var(--accent-blue); padding: 8px 12px; text-align: left; font-weight: 600; border: 1px solid var(--border); }
+  td { padding: 8px 12px; border: 1px solid var(--border); vertical-align: top; }
+  tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+
+  /* Callout */
+  .callout {
+    background: var(--bg3);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 14px 0;
+    font-size: 14px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .callout .icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+
+  /* Footer cards */
+  .footer-card {
+    border-radius: 10px;
+    padding: 24px 28px;
+    margin-bottom: 20px;
+  }
+  .footer-card.blue { background: rgba(91,141,238,0.08); border: 1px solid rgba(91,141,238,0.3); }
+  .footer-card.green { background: rgba(52,211,153,0.07); border: 1px solid rgba(52,211,153,0.25); }
+  .footer-card.yellow { background: rgba(251,191,36,0.07); border: 1px solid rgba(251,191,36,0.25); }
+  .footer-card.purple { background: rgba(167,139,250,0.08); border: 1px solid rgba(167,139,250,0.25); }
+  .footer-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 14px; }
+  .footer-card.blue h3 { color: var(--accent-blue); }
+  .footer-card.green h3 { color: var(--accent-green); }
+  .footer-card.yellow h3 { color: var(--accent-yellow); }
+  .footer-card.purple h3 { color: var(--accent-purple); }
+
+  /* Learning goals */
+  .goals { display: flex; flex-direction: column; gap: 8px; margin: 14px 0; }
+  .goal-item { background: var(--bg3); border-radius: 6px; padding: 10px 14px; font-size: 14px; display: flex; gap: 10px; align-items: center; }
+  .goal-num { width: 22px; height: 22px; background: var(--accent-blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+
+  /* SVG container */
+  .svg-wrap { margin: 18px 0; }
+  figcaption { font-size: 11px; color: var(--text2); margin-top: 6px; font-family: 'JetBrains Mono', monospace; }
+
+  /* Review Q&A */
+  .qa-box { background: rgba(91,141,238,0.06); border: 1px solid rgba(91,141,238,0.25); border-radius: 8px; overflow: hidden; margin: 14px 0; }
+  .qa-q { background: rgba(91,141,238,0.15); padding: 10px 16px; font-weight: 600; font-size: 14px; display: flex; gap: 8px; }
+  .qa-q .q-tag { color: var(--accent-blue); font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; }
+  .qa-a { padding: 10px 16px; font-size: 14px; }
+  .qa-a .a-tag { color: var(--accent-green); font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; }
+
+  /* DX scale diagram */
+  .dx-scale { display: flex; flex-direction: column; gap: 6px; margin: 14px 0; }
+  .dx-item { display: flex; align-items: center; gap: 12px; background: var(--bg3); border-radius: 6px; padding: 10px 14px; border-left: 3px solid; }
+  .dx-item.digitization { border-color: #64748b; }
+  .dx-item.digitalization { border-color: var(--accent-blue); }
+  .dx-item.dx { border-color: var(--accent-yellow); }
+  .dx-item .dx-label { font-weight: 700; font-size: 13px; min-width: 180px; }
+  .dx-item .dx-desc { font-size: 13px; color: var(--text2); }
+  .dx-arrow { text-align: center; color: var(--text2); font-size: 20px; }
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<nav id="sidebar">
+  <div class="toc-title">目次</div>
+  <a class="h2" href="#review">前回の復習</a>
+  <a class="h2" href="#goals">第15回 学習目標</a>
+  <a class="h2" href="#ch1">第1章 データ・AIの利活用例</a>
+  <a class="h3" href="#ch1-why">利活用の必要性</a>
+  <a class="h3" href="#ch1-dx1">DXとは①②③</a>
+  <a class="h3" href="#ch1-dx2">DXの具体例（狭義）</a>
+  <a class="h3" href="#ch1-dx3">DXの具体例（広義・業種別）</a>
+  <a class="h3" href="#ch1-sum">第1章まとめ</a>
+  <a class="h2" href="#ch2">第2章 データ・AIと倫理</a>
+  <a class="h3" href="#ch2-trouble">トラブル例3件</a>
+  <a class="h3" href="#ch2-law">倫理が必要な理由</a>
+  <a class="h3" href="#ch2-salganik">Salganikの4原理</a>
+  <a class="h3" href="#ch2-sum">第2章まとめ</a>
+  <a class="h2" href="#ch3">第3章 生成AI</a>
+  <a class="h3" href="#ch3-what">生成AIとは</a>
+  <a class="h3" href="#ch3-mech">仕組み</a>
+  <a class="h3" href="#ch3-use">活用方法</a>
+  <a class="h3" href="#ch3-caution">留意点5つ</a>
+  <a class="h3" href="#ch3-sum">第3章まとめ</a>
+  <a class="h2" href="#ch4">第4章 今後の学習</a>
+  <a class="h3" href="#ch4-level">本科目の学習レベル</a>
+  <a class="h3" href="#ch4-ds">①データサイエンス力</a>
+  <a class="h3" href="#ch4-de">②データエンジニアリング力</a>
+  <a class="h3" href="#ch4-biz">③ビジネス力</a>
+  <a class="h2" href="#footer-a">補足A: 最重要ワード</a>
+  <a class="h2" href="#footer-b">補足B: 背景知識</a>
+  <a class="h2" href="#footer-c">補足C: 試験・レポート観点</a>
+  <a class="h2" href="#footer-d">補足D: 関連概念</a>
+</nav>
+
+<!-- Main Content -->
+<main id="main">
+
+<!-- Header -->
+<header class="page-header">
+  <div class="course">データサイエンス入門 — サイバー大学 IT総合学部 専門基礎科目</div>
+  <h1>第15回：データ・AIの利活用</h1>
+  <div class="meta">
+    <span>担当：浅田 麻菜</span>
+    <span>SSP v4.3 生成</span>
+    <span>S03 + S05×2 統合</span>
+  </div>
+</header>
+
+<!-- 前回の復習 -->
+<section class="section-card" id="review">
+  <h2><span class="num">0</span>前回の復習（第14回：統計的機械学習）</h2>
+  <div class="qa-box">
+    <div class="qa-q"><span class="q-tag">Q.</span> 深層学習の特徴（メリット・デメリット）について説明してください。</div>
+    <div class="qa-a">
+      <div style="margin-bottom: 4px;"><span class="a-tag">A.</span></div>
+      <p><strong>メリット:</strong> エンドツーエンド学習（End-to-End Learning）により、人間によるパラメータの指定が不要。<br>
+      ← 従来の自然言語処理では「前処理 → テキストのトークン化 → ベクトル化 → 分析」と各段階で人間が特徴量を設計する必要があったが、深層学習はこれを自動的に学習する。</p>
+      <p><strong>デメリット:</strong></p>
+      <ul>
+        <li>結果の解釈性に課題がある（なぜその出力が得られたか説明が難しい）</li>
+        <li>学習に大量のデータと十分な計算資源が必要</li>
+      </ul>
+      <div class="block-audio"><div class="block-label">音声補足</div>これらのデメリットがあっても、深層学習は現在の人工知能を大きく支える重要な技術。さらに深く学びたい場合は自主的に学習することを推奨。 <span class="src">← S05</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 学習目標 -->
+<section class="section-card" id="goals">
+  <h2><span class="num">★</span>第15回 学習目標</h2>
+  <div class="goals">
+    <div class="goal-item"><span class="goal-num">1</span>データ・AIの利活用例と問題、その対応策について説明ができる</div>
+    <div class="goal-item"><span class="goal-num">2</span>本科目での学習内容の説明と今後の学習方針の計画ができる</div>
+  </div>
+  <p style="font-size:13px; color: var(--text2);">授業構成: 第1章 データ・AIの利活用例 → 第2章 データ・AIと倫理 → 第3章 生成AI → 第4章 今後の学習 <span class="src">← S03:p.4,5</span></p>
+</section>
+
+<!-- ===== 第1章 ===== -->
+<section class="section-card" id="ch1">
+  <h2><span class="num">1</span>第1章 データ・AIの利活用例</h2>
+  <p style="color:var(--accent-yellow); font-size:13px; font-weight:600;">📌 学習目標: データ・AIの利活用事例について説明できる <span class="src">← S03:p.7</span></p>
+
+  <h3 id="ch1-why">データ・AI利活用の必要性</h3>
+  <p>第1回第2章の復習として、社会的要因を中心に確認する。<span class="src">← S03:p.8</span></p>
+  <table>
+    <tr><th>社会的要因の分類</th><th>具体的な問題</th><th>データ・AIによる対応</th></tr>
+    <tr><td><strong>社会問題への対応</strong></td><td>労働力不足</td><td>単純作業の自動化</td></tr>
+    <tr><td></td><td>知識継承問題</td><td>習得支援システム・データ保管</td></tr>
+    <tr><td><strong>課題の複雑化</strong></td><td>データ件数・考慮すべき変数が増大</td><td>高精度な需要予測</td></tr>
+    <tr><td></td><td>SDGs（食品ロス削減、廃棄削減）</td><td>需要予測でロス削減</td></tr>
+  </table>
+  <div class="block-audio"><div class="block-label">音声補足</div>小売店の例: かつては近隣客の来店予測だけで十分だったが、現在はSNSでの突然のブームで急増する来店者数も考慮が必要。SDGsの観点から食品ロスを減らすために精度の高い需要予測が社会的に求められている。 <span class="src">← S05</span></div>
+
+  <h3 id="ch1-dx1">DXとは（定義）</h3>
+
+  <div class="block-def">
+    <div class="def-label">【定義】DX（Digital Transformation）</div>
+    <p>企業がビジネス環境の激しい変化に対応し、<strong>データとデジタル技術を活用して</strong>、顧客や社会のニーズを基に、製品やサービス、ビジネスモデルを変革するとともに、業務そのものや、組織、プロセス、企業文化・風土を変革し、競争上の優位性を確立すること。</p>
+    <p style="font-size:12px; color:var(--text2);">出典: 経済産業省「デジタルガバナンス・コード2.0」 <span class="src">← S03:p.9</span></p>
+  </div>
+
+  <div class="callout">
+    <span class="icon">💡</span>
+    <div>DXの<strong>主眼は組織文化の変化（＝経営の問題）</strong>。データやデジタル技術はその<strong>実現手段</strong>として利活用されるものであり、手段そのものが目的ではない。 <span class="src">← S03:p.9</span></div>
+  </div>
+
+  <p><strong>DXという表記について:</strong> "Transformation"の "Trans" を "X" と表記し、頭文字をとって "DX"。 <span class="src">← S05</span></p>
+
+  <h3 id="ch1-dx1b">DXに関係する取り組みの4フェーズ</h3>
+  <table>
+    <tr><th>フェーズ</th><th>名称</th><th>概要</th></tr>
+    <tr><td>①</td><td><strong>デジタイゼーション</strong>（Digitization）</td><td>アナログ・物理データのデジタル化<br>例: 紙の書類を電子データ化する（領収書の電子化）</td></tr>
+    <tr><td>②</td><td><strong>デジタライゼーション</strong>（Digitalization）</td><td>業務の効率化による生産性の向上<br>データやAIを活用して業務プロセスを改善</td></tr>
+    <tr><td>③</td><td rowspan="2"><strong>DX</strong>（Digital Transformation）</td><td>新規製品・サービスの創出</td></tr>
+    <tr><td>④</td><td>顧客起点の価値創出によるビジネスモデルの根本的な変革</td></tr>
+  </table>
+  <div class="block-caution"><div class="block-label">⚠ 注意</div>「デジタイゼーション」と「デジタライゼーション」は1文字違いだが意味が異なる。混同しないよう注意が必要。 <span class="src">← S03:p.10, S05</span></div>
+
+  <div class="block-def">
+    <div class="def-label">【定義】RPA（Robotic Process Automation）</div>
+    ロボティック・プロセス・オートメーション。コンピューター上で行われるルーティン業務（データ入力・転記・チェックなど）をソフトウェアロボットが自動的に実行する技術。デジタライゼーション（業務の効率化）の代表的な手段の一つ。部門単位でも導入可能。 <span class="src">← S03:p.11, [外部補足]</span>
+  </div>
+
+  <div class="block-audio"><div class="block-label">音声補足（DX取組企業の増加）</div>日本のDX取り組み企業割合は急増。2021年度調査: <strong>55.8%</strong> → 2022年: <strong>69.3%</strong>（たった1年間で約14%増加）。<br>出典: 情報処理推進機構「DX白書2023-進み始めた「デジタル」、進まない「トランスフォーメーション」」p.9, (2023). <span class="src">← S03:p.10脚注[3]</span></div>
+
+  <h3 id="ch1-dx1c">広義のDXと変革規模</h3>
+
+  <!-- SVG: DXの変革規模 -->
+  <div class="svg-wrap">
+    <svg viewBox="0 0 680 160" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:680px;">
+      <!-- デジタイゼーション -->
+      <rect x="10" y="55" width="180" height="50" rx="8" fill="#1e2535" stroke="#64748b" stroke-width="1.5"/>
+      <text x="100" y="74" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#94a3b8" font-weight="700">デジタイゼーション</text>
+      <text x="100" y="92" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#64748b">アナログ→デジタル化</text>
+      <text x="100" y="106" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#475569">変革規模: 部門単位</text>
+      <!-- 矢印1 -->
+      <line x1="195" y1="80" x2="225" y2="80" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#arr)"/>
+      <!-- デジタライゼーション -->
+      <rect x="230" y="40" width="190" height="80" rx="8" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="325" y="62" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#5b8dee" font-weight="700">デジタライゼーション</text>
+      <text x="325" y="80" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">業務効率化・生産性向上</text>
+      <text x="325" y="98" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#475569">変革規模: 組織単位</text>
+      <text x="325" y="113" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#475569">例: RPA導入</text>
+      <!-- 矢印2 -->
+      <line x1="425" y1="80" x2="455" y2="80" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#arr2)"/>
+      <!-- DX -->
+      <rect x="460" y="20" width="210" height="120" rx="8" fill="#1e2535" stroke="#fbbf24" stroke-width="2"/>
+      <text x="565" y="50" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="14" fill="#fbbf24" font-weight="700">DX</text>
+      <text x="565" y="70" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#e2e8f5">新規製品・サービスの創出</text>
+      <text x="565" y="87" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#e2e8f5">ビジネスモデルの根本変革</text>
+      <text x="565" y="107" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#64748b">変革規模:</text>
+      <text x="565" y="122" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#64748b">企業・社会構造全体</text>
+      <!-- 変革規模矢印 -->
+      <text x="340" y="155" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8">変革規模: デジタイゼーション ＜ デジタライゼーション ＜ DX</text>
+      <!-- Arrow defs -->
+      <defs>
+        <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#5b8dee"/>
+        </marker>
+        <marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#fbbf24"/>
+        </marker>
+      </defs>
+    </svg>
+    <figcaption>図: デジタイゼーション・デジタライゼーション・DXの変革規模の比較 — S03:p.10,11</figcaption>
+  </div>
+
+  <div class="block-audio"><div class="block-label">音声補足</div>広義のDX = デジタイゼーション + デジタライゼーション + DX（狭義）を包含したもの。デジタイゼーション・デジタライゼーションは部門単位でも実行可能だが、DXは企業全体・関連企業・社会構造全体に影響を及ぼす。 <span class="src">← S03:p.11, S05</span></div>
+
+  <h3 id="ch1-dx2">DXの具体例（狭義のDX）</h3>
+
+  <h4>① フードデリバリーサービス</h4>
+  <p>従来は店舗ごとに配達員を雇用しフードデリバリーを行っていた。フードデリバリーサービスの登場により、各店舗が個別に人を雇う負担と配達機材の確保が不要になり、専門業者に集約することでお客への利便性向上と店舗の運営効率が実現。社会構造自体が大きく変化した（＝DX）。 <span class="src">← S03:p.12, S05</span></p>
+  <div class="block-audio"><div class="block-label">データ・AIの利活用内容</div>
+    <ul>
+      <li>注文管理: 全てオンライン上で処理</li>
+      <li>配達員の最適割り当て: 最適化計算を実行して依頼</li>
+    </ul>
+    <span class="src">← S03:p.12, S05</span>
+  </div>
+
+  <h4>② サブスク（サブスクリプション）サービス</h4>
+  <p>従来: CDを買い切り（音楽1曲・1アルバムを購入）。現在: 月額定額を支払うだけで提供される音楽を何度でも聴き放題。買い切りモデルからサブスクモデルへのビジネスモデルの根本変革（＝DX）。 <span class="src">← S03:p.12, S05</span></p>
+  <div class="block-audio"><div class="block-label">データ・AIの利活用内容</div>
+    <ul>
+      <li>商品（楽曲）の管理・在庫管理</li>
+      <li>レコメンド: ユーザーの好みに合った楽曲・商品を推薦</li>
+    </ul>
+    <span class="src">← S03:p.12, S05</span>
+  </div>
+
+  <h4>③ 介護施設における見守りシステムの導入</h4>
+  <p>従来: 介護スタッフが一人ひとりの入居者に目を配り、食事・体調などを手動で確認・記録する必要があった。センサーやカメラで入居者の状態を自動集約することで、スタッフ間の情報共有が円滑になり業務プロセスが変革（＝DX）。 <span class="src">← S03:p.13, S05</span></p>
+  <div class="block-audio"><div class="block-label">データ・AIの利活用内容</div>
+    <ul>
+      <li>画像認識等による入居者の状態の確認</li>
+      <li>介護記録の電子化</li>
+    </ul>
+    空いた時間をスタッフ間・入居者とのコミュニケーションに充てることで、質の高い介護を提供できる。 <span class="src">← S03:p.13, S05</span>
+  </div>
+
+  <h3 id="ch1-dx3">DXの具体例（広義・業種別）</h3>
+  <table>
+    <tr><th>業種</th><th>主な技術</th><th>具体的な活用例</th></tr>
+    <tr><td>製造業</td><td>主に画像認識</td><td>・商品の検品作業の自動化（傷・凹みの検出）<br>・部品在庫の自動管理<br>→ 検品担当者を他の作業へ移動</td></tr>
+    <tr><td>サービス業</td><td>構造化データ分析、自然言語処理、画像認識など</td><td>・顧客データの活用（より良い製品・サービスの提供）<br>・施設管理業務の無人化（経費削減 + サービスレベル維持）</td></tr>
+    <tr><td>飲食業</td><td>需要予測</td><td>・来店予測と食品ロスの削減<br>・食材の自動発注</td></tr>
+    <tr><td>農業・漁業</td><td>画像認識、センサーデータ</td><td>・生育状況の遠隔管理（カメラ+画像認識）<br>・土壌センサーによる水分量確認と自動水まき<br>・ドローンを活用した作業効率化</td></tr>
+  </table>
+  <span class="src">← S03:p.14,15, S05</span>
+
+  <div class="block-external"><div class="block-label">外部補足</div>農業・漁業はこれまでデジタル化が難しいとされてきた「アナログ産業」の代表例。近年は「スマート農業」「スマート漁業」としてAI・IoT活用が積極的に進んでいる。</div>
+
+  <h3 id="ch1-sum">第1章 まとめ</h3>
+  <div class="callout" style="background: rgba(91,141,238,0.08); border: 1px solid rgba(91,141,238,0.3); border-radius: 8px;">
+    <span class="icon">✅</span>
+    <div>
+      <strong>DX = データ・AIを手段とした、ビジネスモデルの変革等が目的</strong><br>
+      広義には、デジタイゼーション・デジタライゼーションを含む。DX実現に向け、様々なデータ・AIの利活用方法が併用される。
+      <br><span style="font-size:13px; color:var(--text2);">具体例: フードデリバリー、サブスクサービス、介護施設の見守りシステム</span>
+      <span class="src">← S03:p.16</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 第2章 ===== -->
+<section class="section-card" id="ch2">
+  <h2><span class="num">2</span>第2章 データ・AIと倫理</h2>
+  <p style="color:var(--accent-yellow); font-size:13px; font-weight:600;">📌 学習目標: データ・AIの利活用時に倫理的判断が必要な理由を説明できる <span class="src">← S03:p.19</span></p>
+
+  <h3 id="ch2-trouble">データ・AIの利活用とトラブル例</h3>
+  <p>倫理の話に入る前に、実際のトラブル例を通して「なぜ倫理が必要か」を理解する。<span class="src">← S05</span></p>
+
+  <h4>例1: 精度が高すぎるレコメンドのリスク</h4>
+  <div class="block-def">
+    <div class="def-label">シナリオ</div>
+    過去の購入歴からレコメンドを作成し、特定商品を紹介するダイレクトメールを郵送。<span class="src">← S03:p.20</span>
+  </div>
+  <table>
+    <tr><th>利点</th><th>問題</th></tr>
+    <tr><td>顧客満足度向上、売上アップ</td><td>レコメンド内容・方法によっては、嗜好・病気等が公になる可能性（プライバシー侵害）</td></tr>
+  </table>
+  <div class="block-audio"><div class="block-label">音声補足（具体的なトラブル事例）</div>あるベビー用品に関するダイレクトメールを未成年の女性に郵送 → 同居する父から「なぜそのようなDMを送るのか」とクレームが入った。後に判明したのは、その女性が妊娠していたが家族に隠していたこと。精度が高すぎるレコメンドを属性に配慮せずダイレクトメール（家族全員が見られる媒体）で送ったことで、本人が隠したかった事実が公になってしまった。 <span class="src">← S05</span></div>
+
+  <h4>例2: 人事採用における書類選考の自動化リスク</h4>
+  <div class="block-def">
+    <div class="def-label">シナリオ</div>
+    過去の社員データから「出世する/しない」のクラス分類モデルを作成 → 履歴書が「出世する」に分類された場合のみ書類選考を通過とする自動化。<span class="src">← S03:p.21</span>
+  </div>
+  <table>
+    <tr><th>利点</th><th>問題</th></tr>
+    <tr><td>採用可否の自動化による時間短縮（採用担当者・応募者双方のメリット）</td><td>使用したデータの偏りが採用に直接反映 → <strong>意図しない差別の発生</strong></td></tr>
+  </table>
+  <div class="block-audio"><div class="block-label">音声補足（具体的な差別の発生）</div>例: もともと男性社員が多い企業で「出世する社員のデータ = ほぼ男性データ」となっている場合、そのデータでクラス分類モデルを作ると、どんなに優秀な女性の履歴書でも「出世するデータに当てはまらない」として書類選考で落とされる → <strong>性別による差別が発生</strong>。どんな便利なAIでも、入れるデータが偏っていれば偏った結果が出る。 <span class="src">← S05</span></div>
+
+  <h4>例3: 画像認識技術における深層学習のリスク</h4>
+  <div class="block-def">
+    <div class="def-label">シナリオ</div>
+    深層学習による画像認識の精度向上 → 様々なサービスへ活用。<span class="src">← S03:p.22</span>
+  </div>
+  <table>
+    <tr><th>利点</th><th>問題</th></tr>
+    <tr><td>様々なサービスが実現（自動運転、顔認証、画像検索など）</td><td>学習データの偏りにより、<strong>画像認識結果に人種差別的な出力</strong> → 特定の人種に不利益・偏見を助長</td></tr>
+  </table>
+  <div class="block-audio"><div class="block-label">音声補足（実際の事例）</div>ある画像認識サービスに「手に持つタイプの温度計を持った手」の画像を認識させたところ、<strong>黒い肌</strong>だと「銃器」と認識し、<strong>白い肌</strong>だと「単眼鏡（別の道具）」と認識するという問題が発生。学習データに人種的な偏見が含まれていたため、リリース後に人種差別的な出力をしてしまった。 <span class="src">← S05</span></div>
+
+  <h3 id="ch2-law">倫理が必要な理由：法律だけでは不十分</h3>
+
+  <div class="block-def">
+    <div class="def-label">データサイエンスは「諸刃の剣」</div>
+    データ・AIの利活用は大きな利益をもたらす可能性がある一方、使い方次第では不利益・課題（プライバシー侵害、個人情報漏えい、偏見の助長）をもたらす可能性もある。 <span class="src">← S03:p.23</span>
+  </div>
+
+  <p>「法律や制度を守ればよい」という考え方では不十分な理由が3つある:</p>
+
+  <!-- SVG: 法律と新技術の3パターン -->
+  <div class="svg-wrap">
+    <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:700px;">
+      <!-- Box 1 -->
+      <rect x="10" y="20" width="210" height="160" rx="8" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="115" y="48" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#5b8dee" font-weight="700">① 法律が未整備</text>
+      <text x="115" y="68" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">新技術開発段階では</text>
+      <text x="115" y="84" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">法律がない場合がある</text>
+      <text x="115" y="104" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#475569">例: 1996年 哺乳類初の体細胞クローン作成</text>
+      <text x="115" y="118" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#475569">→ 2000年 クローン規制法制定</text>
+      <text x="115" y="133" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#475569">（4年もかかった）</text>
+      <!-- Box 2 -->
+      <rect x="245" y="20" width="210" height="160" rx="8" fill="#1e2535" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="350" y="48" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#fbbf24" font-weight="700">② 問題後に罰則強化</text>
+      <text x="350" y="68" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">既存法では対応しきれない</text>
+      <text x="350" y="84" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">新技術の問題が起きた後に</text>
+      <text x="350" y="100" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">ようやく罰則が強化される</text>
+      <text x="350" y="118" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#475569">例: 「ながらスマホ」運転</text>
+      <text x="350" y="132" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#475569">（事故増加後に罰則強化）</text>
+      <!-- Box 3 -->
+      <rect x="480" y="20" width="210" height="160" rx="8" fill="#1e2535" stroke="#f87171" stroke-width="1.5"/>
+      <text x="585" y="48" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#f87171" font-weight="700">③ 既存法では対応不能</text>
+      <text x="585" y="68" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">新技術が既存の法律の</text>
+      <text x="585" y="84" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">枠組みに収まらない</text>
+      <text x="585" y="104" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#475569">例: 「通信の秘密」（憲法保障）</text>
+      <text x="585" y="118" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#475569">vsインターネット上の犯罪投稿</text>
+      <text x="585" y="133" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#475569">→ プロバイダー責任制限法で</text>
+      <text x="585" y="147" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#475569">　 対応（後追い）</text>
+    </svg>
+    <figcaption>図: 新技術と法律の3つのギャップ — S03:p.24,25</figcaption>
+  </div>
+
+  <div class="callout" style="background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.3); border-radius: 8px;">
+    <span class="icon">⇒</span>
+    <div>データ・AIを利活用した新技術・新サービスに対し、<strong>既存のルールがない・対応できない状況も十分に存在する</strong>。だからこそ、開発・利用する側に<strong>倫理的な判断</strong>が求められる。 <span class="src">← S03:p.25</span></div>
+  </div>
+
+  <h3 id="ch2-salganik">倫理的判断の方法：Salganikによる4つの原理</h3>
+
+  <div class="block-caution"><div class="block-label">前提</div>倫理的判断を行うための普遍的な基準は存在しない。その時の状況・社会情勢によっても変わる。しかし、判断のための指針となる原理が提案されている。 <span class="src">← S03:p.26</span></div>
+
+  <div class="block-external"><div class="block-label">外部補足（Salganikとは）</div>Matthew Salganik（マシュー・サルガニック）はプリンストン大学の社会学者で、計算社会科学の分野を牽引する研究者の一人。本授業での4原理の引用元は、常松淳「第11章 計算社会科学における倫理」（鳥海不二夫 編『計算社会科学入門』丸善出版, pp.274-275, 2021）。Salganikの原著 "Bit by Bit: Social Research in the Digital Age" をベースに日本語で解説したものである。 <span class="src">← S03:p.26脚注[1]</span></div>
+
+  <table>
+    <tr><th>#</th><th>原理</th><th>内容</th><th>データ・AI利活用の例</th></tr>
+    <tr>
+      <td>①</td>
+      <td><strong>人格の尊重</strong></td>
+      <td>一人ひとりの人格を尊重し、その人が行った自主的な判断を最大限に尊重する。尊重できる方法を確保する。</td>
+      <td>データ収集時の同意取得（オプトイン・オプトアウト）← 第7回で学習</td>
+    </tr>
+    <tr>
+      <td>②</td>
+      <td><strong>善行</strong></td>
+      <td>人に利益をもたらし、不利益を最小にする必要がある。</td>
+      <td>AIによる労働力不足解消と、「仕事が奪われる」問題のバランスを考える</td>
+    </tr>
+    <tr>
+      <td>③</td>
+      <td><strong>正義</strong></td>
+      <td>特定の人だけが利益を享受し、残りの人が不利益を被る状況を避ける。</td>
+      <td>例: 学生の内定辞退率を本人の許可なく販売 → 販売した企業・購入した企業は利益を得るが、情報を売られた学生は不利益を被る（第7回のトラブル事例）</td>
+    </tr>
+    <tr>
+      <td>④</td>
+      <td><strong>法と公益の尊重</strong></td>
+      <td>社会に対して技術・サービスについて十分な説明ができること。AIの出力結果を利用することへの社会的理解を得られるか考える。</td>
+      <td>深層学習などのブラックボックスモデルは「なぜその出力になったか」が説明できない → <strong>説明可能なAI（XAI）</strong>の活用が特に重要視される</td>
+    </tr>
+  </table>
+  <span class="src">← S03:p.26,27, S05</span>
+
+  <div class="block-def">
+    <div class="def-label">【定義】説明可能なAI（XAI: eXplainable AI）</div>
+    AIが出力した結果の根拠・理由を人間が理解できるよう説明可能にする技術・手法。近年特に重要視されている。 <span class="src">← S03:p.27</span>
+  </div>
+
+  <h3 id="ch2-sum">第2章 まとめ</h3>
+  <div class="callout" style="background: rgba(52,211,153,0.07); border: 1px solid rgba(52,211,153,0.25); border-radius: 8px;">
+    <span class="icon">✅</span>
+    <div>
+      <ul>
+        <li>データサイエンスは「諸刃の剣」= 大きな利益をもたらす一方で、不利益・課題の原因にもなる</li>
+        <li>法律等だけでは使用の可否の判断が困難な場合も存在する</li>
+        <li>説明可能なAI（XAI）の活用などによる対応が必要</li>
+      </ul>
+      <span class="src">← S03:p.28</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 第3章 ===== -->
+<section class="section-card" id="ch3">
+  <h2><span class="num">3</span>第3章 生成AI</h2>
+  <div class="goals">
+    <div class="goal-item"><span class="goal-num">1</span>生成AIの仕組みについて基本的な説明ができる</div>
+    <div class="goal-item"><span class="goal-num">2</span>生成AIの利活用方法と留意点について説明ができる</div>
+  </div>
+
+  <h3 id="ch3-what">生成AIとは</h3>
+
+  <div class="block-def">
+    <div class="def-label">【定義】識別モデル</div>
+    データを<strong>識別</strong>するAI。深層学習の発達により飛躍的に性能が向上した技術の一つ。例: 画像認識（何が映っているかを識別）。代表的なサービスとして <strong>Google Vision AI</strong> がある（猫の画像に対して「Cat: 96%」のように確信度付きで識別する）。 <span class="src">← S03:p.32</span>
+  </div>
+
+  <div class="block-def">
+    <div class="def-label">【定義】生成モデル</div>
+    入力された情報をもとに<strong>文章・画像などを生成</strong>する技術。深層学習を活用して急速に進歩した。<br>
+    ・文章生成に使われる → <strong>大規模言語モデル（LLM: Large Language Model）</strong><br>
+    ・画像・動画等を生成するために使われる → <strong>拡散モデル</strong> <span class="src">← S03:p.32</span>
+  </div>
+
+  <div class="block-def">
+    <div class="def-label">【定義】生成AI</div>
+    生成モデルを使用したAIの総称。深層学習を使った生成モデルの研究は<strong>2014年頃</strong>から始まったとされており、まだ比較的新しい研究分野。 <span class="src">← S03:p.32</span>
+  </div>
+
+  <p><strong>主な生成AIサービス（2024年8月現在）:</strong> <span class="src">← S03:p.33</span></p>
+  <table>
+    <tr><th>分野</th><th>代表的なサービス</th></tr>
+    <tr><td>言語生成</td><td>ChatGPT, Claude, Gemini, Copilot …</td></tr>
+    <tr><td>画像生成</td><td>Stable Diffusion, Midjourney …</td></tr>
+    <tr><td>音声生成</td><td>VALL-E, Text-to-Speech AI …</td></tr>
+    <tr><td>音楽生成</td><td>Stable Audio, Soundraw, Suno AI, AIVA …</td></tr>
+    <tr><td>動画生成</td><td>Make-a-video, Runway Gen-3, Sora …</td></tr>
+  </table>
+  <p style="font-size:13px; color:var(--text2);">既存の製品・サービスに組み込まれているものも多数存在する。 <span class="src">← S03:p.33</span></p>
+
+  <div class="block-def">
+    <div class="def-label">【定義】プロンプト</div>
+    ユーザーが生成AIに伝える命令文（入力テキスト）。 <span class="src">← S03:p.34</span>
+  </div>
+
+  <h3 id="ch3-mech">生成AIの仕組み</h3>
+
+  <h4>① 学習フェーズ</h4>
+  <p>生成AIも深層学習技術を使用しているため、<strong>大量の訓練データを用いて大量の特徴を計算（学習）</strong>する。 <span class="src">← S03:p.35</span></p>
+
+  <table>
+    <tr><th>モデル</th><th>公開年</th><th>訓練データ量</th><th>学習した特徴量</th></tr>
+    <tr><td>GPT-3</td><td>2020年</td><td>3,410億トークン</td><td>1,750億個</td></tr>
+    <tr><td>GPT-4</td><td>2023年</td><td>数〜数十兆トークン（推定）</td><td>数〜数百兆個（推定）</td></tr>
+  </table>
+  <span class="src">← S03:p.35</span>
+  <p><small>※ トークン: 複数の文字を1つのかたまりとみたときの単位</small></p>
+
+  <div class="callout">
+    <span class="icon">💡</span>
+    <div>大量のデータで学習すればするほど基本的に性能が向上する傾向がある。逆に言えば、<strong>生成AIは「無から有を生み出す」わけではない</strong>。学習した内容以外のことは生成できない。 <span class="src">← S03:p.35, S05</span></div>
+  </div>
+
+  <h4>② 文章生成のメカニズム</h4>
+  <div class="block-audio"><div class="block-label">音声補足（文章生成の仕組み）</div>生成AIが文章を作成する基本的な仕組みは「次に来る確率が高い単語を選択し、それを繰り返す」こと。 <span class="src">← S05</span></div>
+
+  <!-- SVG: 文章生成のメカニズム -->
+  <div class="svg-wrap">
+    <svg viewBox="0 0 660 130" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:660px;">
+      <!-- 天気が -->
+      <rect x="10" y="40" width="80" height="40" rx="6" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="50" y="65" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="#e2e8f5">天気が</text>
+      <!-- 矢印 -->
+      <line x1="92" y1="60" x2="115" y2="60" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#a1)"/>
+      <!-- 選択肢 -->
+      <rect x="118" y="18" width="100" height="28" rx="5" fill="#34d399" fill-opacity="0.15" stroke="#34d399" stroke-width="1.5"/>
+      <text x="168" y="37" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#34d399">良いので ★</text>
+      <rect x="118" y="50" width="100" height="28" rx="5" fill="#1e2535" stroke="#2a3450" stroke-width="1"/>
+      <text x="168" y="69" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8">青いので</text>
+      <rect x="118" y="82" width="100" height="28" rx="5" fill="#1e2535" stroke="#2a3450" stroke-width="1"/>
+      <text x="168" y="101" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8">堅いので</text>
+      <!-- 矢印2 -->
+      <line x1="220" y1="32" x2="255" y2="55" stroke="#34d399" stroke-width="1.5" stroke-dasharray="3,2"/>
+      <!-- 良いので（選択） -->
+      <rect x="258" y="40" width="80" height="40" rx="6" fill="#1e2535" stroke="#34d399" stroke-width="1.5"/>
+      <text x="298" y="65" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="#34d399">良いので</text>
+      <!-- 矢印3 -->
+      <line x1="340" y1="60" x2="365" y2="60" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#a1)"/>
+      <!-- 次の選択肢 -->
+      <rect x="368" y="18" width="100" height="28" rx="5" fill="#fbbf24" fill-opacity="0.15" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="418" y="37" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#fbbf24">散歩する ★</text>
+      <rect x="368" y="50" width="100" height="28" rx="5" fill="#1e2535" stroke="#2a3450" stroke-width="1"/>
+      <text x="418" y="69" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8">考える</text>
+      <rect x="368" y="82" width="100" height="28" rx="5" fill="#1e2535" stroke="#2a3450" stroke-width="1"/>
+      <text x="418" y="101" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8">料理する</text>
+      <!-- 矢印4 -->
+      <line x1="470" y1="32" x2="505" y2="55" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="3,2"/>
+      <!-- 結果 -->
+      <rect x="508" y="30" width="140" height="60" rx="6" fill="#1a2a4a" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="578" y="55" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">生成結果:</text>
+      <text x="578" y="72" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#5b8dee" font-weight="700">「天気が良いので散歩する」</text>
+      <!-- Arrow defs -->
+      <defs>
+        <marker id="a1" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L7,3 z" fill="#5b8dee"/>
+        </marker>
+      </defs>
+    </svg>
+    <figcaption>図: 生成AIの文章生成メカニズム（次に確率の高い単語を繰り返し選択） — S03:p.36</figcaption>
+  </div>
+
+  <div class="block-audio"><div class="block-label">音声補足（計算が苦手な理由）</div>初期の生成AIは自然な文章は生成できるのに単純な計算問題が苦手という弱点があった。理由: 確率的に次の単語を選ぶ仕組みで動いているため、数値計算のような確定的な処理が本質的に苦手。 <span class="src">← S05</span></div>
+
+  <h3 id="ch3-use">生成AIの活用方法</h3>
+  <table>
+    <tr><th>活用分野</th><th>具体的な作業</th></tr>
+    <tr><td>自然言語処理</td><td>文章の作成・要約・翻訳、顧客対応</td></tr>
+    <tr><td>プログラミング支援</td><td>コードの生成・デバッグ支援</td></tr>
+    <tr><td>発想支援</td><td>新製品のアイデア出し（例: 「20歳女性向けの夕食メニューを5品提案して」）</td></tr>
+    <tr><td>業務効率化</td><td>各種ファイル操作、タスク自動化（例: 「このZipフォルダを解凍し、含まれるファイル一覧を作成して」）</td></tr>
+    <tr><td>データサイエンス</td><td>データの前処理、グラフ作成、分析用プログラムの作成支援</td></tr>
+  </table>
+  <span class="src">← S03:p.37</span>
+
+  <div class="block-audio"><div class="block-label">音声補足（データ分析への活用デモ）</div>
+    第10回第4章で行ったデモ（Pythonを使ったk-means法によるクラスタリング）を生成AIに実行させる例が授業内で紹介された。データを生成AIに渡した上で「添付のデータについてk-means法によるクラスタリングを行います。Pythonを用いて、以下の手順を実施してください」とマークダウン記法で手順・仕様を明確に記述したプロンプトを入力すると、第10回と同等の散布図が生成された。プロンプトにはプログラムが一切含まれていないにもかかわらず、同等の出力が得られる。 <span class="src">← S03:p.38, S05</span>
+  </div>
+
+  <div class="block-def">
+    <div class="def-label">【定義】プロンプトエンジニアリング</div>
+    ユーザーの意図通りの高品質な出力が生成AIから得られるように、適切な指示や質問をプロンプトに与えるための技術。<br>
+    効果的なプロンプトの要素: 背景・文脈を与える / 出力形式を具体的に指定 / マークダウン記法の活用 <span class="src">← S03:p.39</span>
+  </div>
+
+  <h3 id="ch3-caution">留意点4つ</h3>
+
+  <h4>留意点① ハルシネーション（幻覚）</h4>
+  <div class="block-def">
+    <div class="def-label">【定義】ハルシネーション（Hallucination / 幻覚）</div>
+    生成AIが<strong>不正確な情報や誤解を招く情報</strong>を生成すること。 <span class="src">← S03:p.41</span>
+  </div>
+  <div class="block-audio"><div class="block-label">具体的な危険事例（セキュリティリスク）</div>生成したプログラムに存在しないパッケージ名が混入することが知られている。GPT-4では<strong>24.2%</strong>に存在しないパッケージ名が生成され、そのうち<strong>19.6%</strong>のパッケージ名が繰り返し生成されることが確認されている。もし悪意のあるプログラマーがこの傾向を知り、同名の悪意あるパッケージを公開すると、他の人のパソコンにウイルス・マルウェアを含むパッケージをインストールさせることができてしまう。 <br><span style="font-size:11px; color:var(--text2);">出典: The Register, "AI hallucinates software packages and devs download them", 2024年3月28日 <span class="src">← S03:p.41脚注[1]</span></span></div>
+  <div class="callout" style="background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.3); border-radius: 8px;">
+    <span class="icon">⚠️</span>
+    <div>生成AIは「何でも教えてくれる神様」ではない。<strong>知らない情報は必ず、信頼できる情報かどうかを確認する習慣が重要。</strong> <span class="src">← S05</span></div>
+  </div>
+
+  <h4>留意点② 固定観念・偏見の混入</h4>
+  <p>生成AIは過去のデータから学習した内容をもとに生成物を生成するため、学習データに固定観念や偏見が多く含まれると、生成物も偏った結果を出力しやすい。 <span class="src">← S03:p.43</span></p>
+  <div class="block-audio"><div class="block-label">具体的な事例</div>「地図を持って道案内する人のイラストを作成してください」というプロンプトに対し、生成された4枚のイラスト全てが男性として描かれた。「男性の方が地図を読むのが得意」という固定観念が学習データに含まれていたと考えられる。 <span class="src">← S03:p.43, S05</span></div>
+  <p>文章でも画像でも、固定観念や偏見が含まれる可能性が高いため、使用する場合は確認が必要。<span class="src">← S03:p.43</span></p>
+
+  <h4>留意点③ 著作権侵害の可能性</h4>
+  <p>多くの生成AIサービスでは著作権のある生成物を生成しないよう対策されているが、類似物が生成されてしまう可能性は十分にある。そのような生成物を使用すると、<strong>使用したユーザーが著作権侵害を問われる場合がある</strong>。著作権法等の最新情報を確認し、著作権侵害がないか注意する。 <span class="src">← S03:p.44</span></p>
+
+  <h4>留意点④ 個人情報の流出</h4>
+  <p>プロンプトに入力した個人情報も生成AIの学習対象となる。過去には、入力した個人情報や機密情報が別の人の出力結果として出力されてしまった事件があった。 <span class="src">← S03:p.44</span></p>
+  <ul>
+    <li>個人情報は入力しない</li>
+    <li>入力内容を生成AIに学習させないよう設定を変更する</li>
+  </ul>
+
+  <h4>留意点⑤ 訓練データの時期（カットオフ）</h4>
+  <p>訓練データには時間的な区切り（カットオフ）が存在する。訓練データに含まれない新しい情報は生成AIが生成することができない。 <span class="src">← S03:p.45</span></p>
+  <div class="block-audio"><div class="block-label">音声補足</div>例: プログラミング言語の仕様はどんどん変化している。最新の変更情報を持たない生成AIからは古い仕様のプログラムしか出力されない可能性がある。生成された情報が最新の情報に基づいているかどうかを常に確認する必要がある。 <span class="src">← S05</span></div>
+
+  <h3 id="ch3-sum">第3章 まとめ</h3>
+  <div class="callout" style="background: rgba(52,211,153,0.07); border: 1px solid rgba(52,211,153,0.25); border-radius: 8px;">
+    <span class="icon">✅</span>
+    <div>
+      <p><strong>生成AIの仕組み:</strong> 大量の訓練データを用いて大量の特徴を学習し、学習結果をもとに確率的に出力内容を生成する。</p>
+      <p><strong>留意点5つ:</strong></p>
+      <ol style="margin: 4px 0 0 16px; font-size:14px;">
+        <li>ハルシネーション（幻覚）: 不正確・誤解を招く情報の生成</li>
+        <li>固定観念・偏見の混入: 学習データの偏りが生成物に反映</li>
+        <li>著作権侵害の可能性: 類似著作物が生成されユーザーが問われる可能性</li>
+        <li>個人情報の流出: プロンプト入力情報が学習対象になる</li>
+        <li>訓練データのカットオフ: 訓練データ以降の新情報は生成不可</li>
+      </ol>
+      <p>活用の広がる生成AIだが、こういった留意点があることを念頭に適切に使うようにする。</p>
+      <span class="src">← S03:p.46</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 第4章 ===== -->
+<section class="section-card" id="ch4">
+  <h2><span class="num">4</span>第4章 今後の学習</h2>
+  <p style="color:var(--accent-yellow); font-size:13px; font-weight:600;">📌 学習目標: データ利活用に向けた今後の学習方針を計画できる <span class="src">← S03:p.49</span></p>
+
+  <h3 id="ch4-level">本科目の学習レベルと位置付け</h3>
+
+  <div class="block-audio"><div class="block-label">音声補足（AI戦略2019）</div>日本では「AI戦略2019」が策定されており、「デジタル社会の読み・書き・そろばん」であるデータサイエンスについて、大学卒業者全員がリテラシーレベルを修得することが目標として掲げられている。本科目「データサイエンス入門」はこのリテラシーレベルのカリキュラムを網羅し、応用基礎レベルへの導入を担うもの。 <span class="src">← S03:p.50, S05</span></div>
+
+  <!-- SVG: 学習レベルのピラミッド -->
+  <div class="svg-wrap">
+    <svg viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:600px;">
+      <!-- エキスパート -->
+      <polygon points="300,10 380,60 220,60" fill="#1a1a2e" stroke="#f87171" stroke-width="1.5"/>
+      <text x="300" y="43" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#f87171">エキスパート</text>
+      <text x="490" y="38" text-anchor="start" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">100人/年</text>
+      <line x1="380" y1="35" x2="480" y2="35" stroke="#475569" stroke-width="0.5" stroke-dasharray="3,2"/>
+      <!-- 応用基礎 -->
+      <polygon points="220,60 380,60 430,110 170,110" fill="#1e2535" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="300" y="90" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#fbbf24" font-weight="700">応用基礎</text>
+      <text x="490" y="88" text-anchor="start" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">2,000〜25万人/年</text>
+      <line x1="430" y1="85" x2="480" y2="85" stroke="#475569" stroke-width="0.5" stroke-dasharray="3,2"/>
+      <!-- リテラシーレベル（ハイライト） -->
+      <polygon points="170,110 430,110 480,165 120,165" fill="rgba(91,141,238,0.18)" stroke="#5b8dee" stroke-width="2"/>
+      <text x="300" y="142" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="#5b8dee" font-weight="700">リテラシーレベル ← 本科目</text>
+      <text x="490" y="140" text-anchor="start" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#5b8dee">50万人/年（大学卒業者全員）</text>
+      <line x1="480" y1="137" x2="488" y2="137" stroke="#5b8dee" stroke-width="0.5"/>
+      <!-- 最下層 -->
+      <polygon points="120,165 480,165 530,200 70,200" fill="#1a1a2e" stroke="#475569" stroke-width="1"/>
+      <text x="300" y="186" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#64748b">高校卒業者・小中学生全員</text>
+      <text x="490" y="186" text-anchor="start" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">100万人/年</text>
+      <line x1="530" y1="183" x2="488" y2="183" stroke="#475569" stroke-width="0.5" stroke-dasharray="3,2"/>
+    </svg>
+    <figcaption>図: 数理・データサイエンス・AI教育のレベル区分（AI戦略2019より） — S03:p.50</figcaption>
+  </div>
+
+  <p>本科目の学習範囲: <strong>幅</strong> = データサイエンス力の一部 / <strong>深さ</strong> = リテラシーレベル <span class="src">← S03:p.51</span></p>
+
+  <div class="block-audio"><div class="block-label">音声補足（データサイエンティスト協会のスキルセット）</div>
+    一般社団法人データサイエンティスト協会が定義するデータサイエンティストに必要なスキルセットは、<strong>データサイエンス力・データエンジニアリング力・ビジネス力</strong>の3つの円が重なったベン図で表される。本科目「データサイエンス入門」はこのうち<strong>「データサイエンス力」の一部（左下）を扱った授業</strong>であり、知識の深さはリテラシーレベルまで。今後はこの3方向のうち目標に応じた分野を深掘りしていく。 <span class="src">← S03:p.51, S05</span>
+  </div>
+
+  <!-- SVG: 3力ベン図 -->
+  <div class="svg-wrap">
+    <svg viewBox="0 0 500 260" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:480px;">
+      <!-- ビジネス力 -->
+      <circle cx="250" cy="90" r="90" fill="rgba(251,191,36,0.10)" stroke="#fbbf24" stroke-width="1.5"/>
+      <!-- データサイエンス力 -->
+      <circle cx="175" cy="195" r="90" fill="rgba(91,141,238,0.15)" stroke="#5b8dee" stroke-width="2"/>
+      <!-- データエンジニアリング力 -->
+      <circle cx="325" cy="195" r="90" fill="rgba(52,211,153,0.10)" stroke="#34d399" stroke-width="1.5"/>
+      <!-- ラベル -->
+      <text x="250" y="50" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="#fbbf24" font-weight="700">ビジネス力</text>
+      <text x="100" y="232" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#5b8dee" font-weight="700">データ</text>
+      <text x="100" y="248" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#5b8dee" font-weight="700">サイエンス力</text>
+      <text x="400" y="232" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#34d399" font-weight="700">データ</text>
+      <text x="400" y="248" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#34d399" font-weight="700">エンジニアリング力</text>
+      <!-- 本科目マーカー -->
+      <circle cx="155" cy="210" r="18" fill="rgba(91,141,238,0.35)" stroke="#5b8dee" stroke-width="2"/>
+      <text x="155" y="207" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#e2e8f5" font-weight="700">本科目</text>
+      <text x="155" y="218" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="8" fill="#e2e8f5">一部</text>
+    </svg>
+    <figcaption>図: データサイエンティストに必要な3つのスキル（一般社団法人データサイエンティスト協会定義）と本科目の位置付け — S03:p.51</figcaption>
+  </div>
+
+  <p>今後は目標とする専門性によって異なるが、大きく3方向に発展できる。 <span class="src">← S03:p.51</span></p>
+
+  <h3 id="ch4-ds">① データサイエンス力を中心に磨く場合</h3>
+
+  <h4>必要な数学の知識</h4>
+  <table>
+    <tr><th>分野</th><th>内容</th><th>重要度</th></tr>
+    <tr><td>確率統計</td><td>確率分布、記述統計（平均・分散等）</td><td>必須</td></tr>
+    <tr><td>線形代数</td><td>ベクトル・行列、ベクトル空間、線形変換、固有値（本科目では入口のみ扱った）</td><td>必須</td></tr>
+    <tr><td>解析学</td><td>微分・積分、集合や関数</td><td>必須</td></tr>
+    <tr><td>応用分野</td><td>数理最適化、グラフ理論</td><td>重要</td></tr>
+    <tr><td>情報学関連の数学</td><td>情報理論、離散数学</td><td>重要</td></tr>
+  </table>
+  <span class="src">← S03:p.52</span>
+
+  <h4>必要なプログラミング能力</h4>
+  <table>
+    <tr><th>言語</th><th>特徴</th><th>位置付け</th></tr>
+    <tr><td><strong>Python</strong></td><td>データ解析の世界で「今は」主流の言語。2018年頃から急激にシェアが増加し、TIOBEの2023年6月調査で<strong>12.46%</strong>を記録。 <span class="src">← S03:p.53,54</span></td><td>まず習得すべき言語</td></tr>
+    <tr><td><strong>R</strong></td><td>Pythonより前から統計的分析に特化して開発された言語。より高度な内容を学習する際・より専門的な専門書を読む際に有利（専門書がRで書かれている場合が多い）。ただし実行速度が遅いという問題がある。 <span class="src">← S03:p.55, S05</span></td><td>さらに専門的に学ぶ場合に追加推奨</td></tr>
+    <tr><td>C++等</td><td>実行速度が必要な場合に使用されることがある。</td><td>用途に応じて</td></tr>
+  </table>
+
+  <div class="block-caution"><div class="block-label">実用上の注意</div>参加するプロジェクトによっては使用言語を指定される場合もある。1つのプログラミング言語をまず習得した上で、様々な言語を使えるようになることが実用的。言語間で共通する概念・計算機への理解も重要。 <span class="src">← S03:p.55, S05</span></div>
+
+  <h4>その他の学習内容</h4>
+  <ul>
+    <li>本科目では未扱い: 時系列データ・映像データ・音声データの扱い（例: 金融機関では株価変動の時系列データが重要）</li>
+    <li>人工知能分野（特にニューラルネットワークの応用）: 本科目は入口のみ。変化の速い分野のため<strong>継続的な学習</strong>が特に重要</li>
+  </ul>
+  <span class="src">← S03:p.56</span>
+
+  <h3 id="ch4-de">② データエンジニアリング力を中心に磨く場合</h3>
+
+  <table>
+    <tr><th>必要な知識カテゴリ</th><th>具体的な内容</th></tr>
+    <tr><td rowspan="4">大量のデータを扱うための知識</td><td>システム企画から設計・運用に至るまでの知識（システム設計）</td></tr>
+    <tr><td>データベースに関する知識（効率的なデータ保存・抽出）</td></tr>
+    <tr><td>SQLなどのデータベースで使用される言語に関する知識</td></tr>
+    <tr><td>アルゴリズムとデータ構造に関する知識（効果的なデータ探索の前提）</td></tr>
+    <tr><td></td><td>クラウドサービスに関する知識（データ分析システムのクラウド化が一般的）</td></tr>
+    <tr><td rowspan="2">データを安全に扱うための知識</td><td>暗号化技術（公開鍵暗号・電子署名等）に関する知識</td></tr>
+    <tr><td>攻撃と防御手法に関するセキュリティ知識 + プライバシー関連の知識</td></tr>
+  </table>
+  <span class="src">← S03:p.57,58</span>
+
+  <h3 id="ch4-biz">③ ビジネス力を中心に磨く場合</h3>
+
+  <table>
+    <tr><th>必要な知識</th><th>内容</th></tr>
+    <tr><td>マネジメント知識</td><td>プロジェクトマネジメント、組織マネジメント等</td></tr>
+    <tr><td>法律・契約の知識</td><td>データと法律は切り離せない関係（本科目でも複数回言及）</td></tr>
+    <tr><td>課題定義の知識</td><td>「なぜそのデータを分析するのか」という課題の定義が最も重要</td></tr>
+    <tr><td><strong>ドメイン知識</strong>（特に重要）</td><td>業界・分野の専門知識。これがないと、どんな立派な分析をしても「その業界では当たり前のことをデータで言っただけ」になりかねない。ドメイン知識があることで、分析結果の価値を120%引き出せる。</td></tr>
+  </table>
+  <span class="src">← S03:p.59</span>
+
+  <div class="block-audio"><div class="block-label">音声補足（ドメイン知識の重要性）</div>データサイエンスの話をすると技術的な話が中心になりがちだが、その業界に関するドメイン知識をしっかり身につけることで、さらに専門性を高めることができる。技術だけでなく「この業界では当たり前のことがわかっている」ことが、データ分析の結果の意味を正しく解釈するために非常に重要。 <span class="src">← S05</span></div>
+</section>
+
+<!-- ===== 第15回 まとめ ===== -->
+<section class="section-card" id="ch15-sum">
+  <h2><span class="num">✓</span>第15回 まとめ</h2>
+  <div class="callout" style="background: rgba(91,141,238,0.08); border: 1px solid rgba(91,141,238,0.3); border-radius: 8px; margin-bottom: 14px;">
+    <span class="icon">📌</span>
+    <div>
+      <strong>学習目標1: データ・AIの利活用例と問題、その対応策</strong><br>
+      ・DXの実現手段として、データ・AIが幅広い業種で利活用されている<br>
+      ・利活用方法によっては不利益・課題が発生するため、倫理的判断や説明可能なAI（XAI）の活用が重要<br>
+      ・生成AIによる業務効率化が可能だが、留意点（ハルシネーション・偏見・著作権等）に注意して利活用する
+    </div>
+  </div>
+  <div class="callout" style="background: rgba(52,211,153,0.07); border: 1px solid rgba(52,211,153,0.25); border-radius: 8px;">
+    <span class="icon">📌</span>
+    <div>
+      <strong>学習目標2: 今後の学習方針</strong><br>
+      ・リテラシーレベルの知識は全員必須<br>
+      ・目指す専門性に応じた、より高度な分野（データサイエンス力・データエンジニアリング力・ビジネス力）を学習する必要がある
+    </div>
+  </div>
+  <span class="src">← S03:p.61</span>
+</section>
+
+<!-- ===== 末尾補足 ===== -->
+<div id="footer-a" class="footer-card blue">
+  <h3>⭐ 補足A: 最重要ワード一覧</h3>
+  <table>
+    <tr><th>用語</th><th>読み</th><th>定義（ソース由来）</th><th>重要度</th></tr>
+    <tr><td>DX（Digital Transformation）</td><td>ディーエックス</td><td>データとデジタル技術を活用して、製品・サービス・ビジネスモデルを変革するとともに、業務・組織・プロセス・企業文化等を変革し、競争上の優位性を確立すること（経産省定義）</td><td>★★★</td></tr>
+    <tr><td>デジタイゼーション</td><td>でじたいぜーしょん</td><td>アナログ・物理データのデジタル化（例: 紙→電子データ）</td><td>★★★</td></tr>
+    <tr><td>デジタライゼーション</td><td>でじたらいぜーしょん</td><td>業務の効率化による生産性の向上。データ・AIを活用して業務プロセスを改善する取り組み</td><td>★★★</td></tr>
+    <tr><td>諸刃の剣</td><td>もろはのつるぎ</td><td>データサイエンスは大きな利益をもたらす一方、使い方次第で不利益・課題の原因にもなるという比喩表現</td><td>★★★</td></tr>
+    <tr><td>Salganikの4原理</td><td>サルガニック</td><td>倫理的判断の指針: ①人格の尊重 ②善行 ③正義 ④法と公益の尊重（出典: 常松淳「第11章 計算社会科学における倫理」丸善出版, 2021）</td><td>★★★</td></tr>
+    <tr><td>RPA（Robotic Process Automation）</td><td>アールピーエー</td><td>ロボティック・プロセス・オートメーション。コンピューター上のルーティン業務をソフトウェアロボットが自動実行する技術。デジタライゼーションの代表的手段。</td><td>★★☆</td></tr>
+    <tr><td>XAI（eXplainable AI）</td><td>エックスエーアイ</td><td>AIが出力した結果の根拠・理由を人間が理解できるよう説明可能にする技術・手法。説明可能なAI</td><td>★★★</td></tr>
+    <tr><td>生成AI</td><td>せいせいえーあい</td><td>生成モデルを使用したAI。入力された情報をもとに文章・画像・音声等を生成する</td><td>★★★</td></tr>
+    <tr><td>LLM（大規模言語モデル）</td><td>えるえるえむ</td><td>Large Language Model。文章生成に使われる生成モデル</td><td>★★☆</td></tr>
+    <tr><td>拡散モデル</td><td>かくさんもでる</td><td>画像・動画等を生成するときに使われる生成モデル</td><td>★★☆</td></tr>
+    <tr><td>プロンプト</td><td>ぷろんぷと</td><td>ユーザーが生成AIに伝える命令文（入力テキスト）</td><td>★★☆</td></tr>
+    <tr><td>プロンプトエンジニアリング</td><td>ぷろんぷとえんじにありんぐ</td><td>意図通りの高品質な出力が得られるよう、適切な指示・質問をプロンプトに与えるための技術</td><td>★★☆</td></tr>
+    <tr><td>ハルシネーション</td><td>はるしねーしょん</td><td>生成AIが不正確な情報や誤解を招く情報を生成すること。幻覚とも呼ばれる</td><td>★★★</td></tr>
+    <tr><td>識別モデル</td><td>しきべつもでる</td><td>データを識別するAI（画像認識等）</td><td>★★☆</td></tr>
+    <tr><td>ドメイン知識</td><td>どめいんちしき</td><td>特定の業界・分野に関する専門知識。データ分析の結果を正しく解釈するために不可欠</td><td>★★★</td></tr>
+    <tr><td>リテラシーレベル</td><td>りてらしーれべる</td><td>AI戦略2019が示す数理・データサイエンス・AIの教育レベルの一つ。大学卒業者全員が修得すべきレベル</td><td>★★☆</td></tr>
+    <tr><td>オプトイン・オプトアウト</td><td>おぷといん・おぷとあうと</td><td>データ収集時の同意取得方式。オプトイン=明示的に同意した場合のみ許可、オプトアウト=拒否しない限り許可</td><td>★★☆</td></tr>
+  </table>
+</div>
+
+<div id="footer-b" class="footer-card green">
+  <h3>📚 補足B: 知っておくべき背景知識</h3>
+  <ul>
+    <li><strong>AI戦略2019（日本政府）:</strong> 内閣府が策定した人工知能分野の戦略。「デジタル社会の読み・書き・そろばん」としてのデータサイエンス教育を推進。文部科学省は「数理・データサイエンス・AI教育プログラム認定制度」として大学・高専向けに具体化している。</li>
+    <li><strong>DX白書2023（情報処理推進機構）:</strong> 正式タイトル「DX白書2023 – 進み始めた「デジタル」、進まない「トランスフォーメーション」」。日本とアメリカ企業のDX推進状況を比較調査したレポート。DXに取り組む企業割合の55.8%→69.3%の数値はこの白書p.9に掲載。</li>
+    <li><strong>TIOBE Programming Community Index:</strong> オランダのソフトウェア会社TIOBEが毎月公開するプログラミング言語の人気ランキング。各言語名で検索されるWebページ数を集計して順位付けする。Pythonは2023年6月時点で12.46%と首位を維持。</li>
+    <li><strong>GPT-3とGPT-4のスペック:</strong> GPT-3（2020年）は3,410億トークン・1,750億パラメータで学習。GPT-4（2023年）はOpenAIが詳細スペックを非公開にしているため数値は推定値。ただし桁違いに大きいことは公知。</li>
+    <li><strong>プロバイダー責任制限法（プロバイダー責任制定法）:</strong> 正式名称「特定電気通信役務提供者の損害賠償責任の制限及び発信者情報の開示に関する法律」（2001年施行）。インターネット上の投稿による被害に対し、プロバイダーの責任範囲と発信者情報開示の手続きを定めた法律。「通信の秘密」との緊張関係を調整している。</li>
+    <li><strong>体細胞クローン（ドリー）:</strong> 1996年にスコットランドのロスリン研究所でKeith Campbell・Ian Wilmuthらが哺乳類初の体細胞クローン羊「ドリー」を誕生させた。日本では2000年に「ヒトに関するクローン技術等の規制に関する法律」が制定（施行）され、ヒトのクローン作成が禁止された。</li>
+    <li><strong>スマート農業・スマート漁業:</strong> 農林水産省が推進するデジタル技術（AI・IoT・ドローン等）を農業・漁業に活用する取り組み。センサーによる土壌管理や画像認識による生育管理などが含まれる。</li>
+    <li><strong>一般社団法人データサイエンティスト協会:</strong> 2013年設立。データサイエンティストに求められるスキルセットを「データサイエンス力・データエンジニアリング力・ビジネス力」の3つの円（ベン図）で定義している。</li>
+  </ul>
+</div>
+
+<div id="footer-c" class="footer-card yellow">
+  <h3>🎯 補足C: 試験・レポートで重要な観点</h3>
+  <ul>
+    <li><strong>DXの定義と主眼（最頻出）:</strong> DXは「デジタル技術を使うこと」ではなく「組織変革・経営の問題（組織文化の変化）」が主眼であり、データ・AIはその実現手段。経産省定義を正確に説明できるか。</li>
+    <li><strong>デジタイゼーション・デジタライゼーション・DXの区別:</strong> 3つの違い（意味・変革規模：部門→組織→企業/社会全体）を具体例とともに区別して説明できるか。「デジタイゼーション ＜ デジタライゼーション ＜ DX」の変革規模の大きさも押さえる。</li>
+    <li><strong>データサイエンスは「諸刃の剣」:</strong> この表現の意味（利益と不利益の両面）と具体的トラブル例3つ（レコメンド・採用自動化・画像認識）をそれぞれ説明できるか。</li>
+    <li><strong>倫理が必要な3つの理由:</strong> ①法律未整備（クローン羊の例）②問題後に罰則強化（ながらスマホの例）③既存法で対応不能（通信の秘密の例）を具体例とともに説明できるか。</li>
+    <li><strong>Salganikの4原理（頻出）:</strong> 4つの名称と内容・データ利活用例を対応させて説明できるか。特に④「法と公益の尊重」とXAIのつながりは重要。</li>
+    <li><strong>生成AIの文章生成メカニズム:</strong> 「確率的な単語選択の繰り返し」という基本原理と、なぜ計算が苦手かの理由（確率選択なので確定的演算が苦手）を説明できるか。</li>
+    <li><strong>ハルシネーションのセキュリティリスク:</strong> 存在しないパッケージ名の生成（GPT-4: 24.2%）→悪意あるパッケージ公開→マルウェアインストールという連鎖を説明できるか。</li>
+    <li><strong>AI戦略2019のレベル区分:</strong> リテラシーレベル（全大学生必須）・応用基礎レベル・エキスパートの3段階と、本科目の位置付け（リテラシーレベルの網羅）を説明できるか。</li>
+    <li><strong>3力とドメイン知識:</strong> データサイエンス力・データエンジニアリング力・ビジネス力それぞれに必要な知識と、特にビジネス力でドメイン知識が重要な理由を説明できるか。</li>
+  </ul>
+</div>
+
+<div id="footer-d" class="footer-card purple">
+  <h3>🔗 補足D: 関連概念・次回への接続</h3>
+  <ul>
+    <li><strong>第7回との接続:</strong> オプトイン・オプトアウト → 今回のSalganik①「人格の尊重」として再登場。内定辞退率販売のトラブル → Salganik③「正義」の具体例として再登場。</li>
+    <li><strong>第11回との接続:</strong> レコメンドシステム → 今回「精度が高すぎるレコメンドのリスク（例1）」として倫理問題の文脈で再登場。</li>
+    <li><strong>第14回との接続:</strong> 深層学習（ディープラーニング）・エンドツーエンド学習 → 今回の生成AI（識別モデルから生成モデルへの発展）と倫理（ブラックボックス問題→XAI）の両方で再登場。</li>
+    <li><strong>第1回との接続:</strong> データサイエンスを学ぶ必要性（社会的要因・技術的要因） → 今回の第1章「DXの必要性」で復習として再登場。</li>
+    <li><strong>本科目の完結:</strong> 第15回は全15回の最終回。第1回〜第14回で学んだデータサイエンスの基礎・統計・機械学習・プライバシー等の内容が、DX・倫理・生成AIという実社会の文脈につながる構造になっている。</li>
+    <li><strong>今後の発展学習の方向性:</strong>
+      <ul>
+        <li>データサイエンス力: 確率統計→線形代数→解析学→数理最適化の順で数学基礎を固め、Python/Rを習得</li>
+        <li>データエンジニアリング力: SQL・データベース設計→クラウド（AWS/GCP/Azure）→セキュリティ・暗号化技術</li>
+        <li>ビジネス力: ドメイン知識（自分の志望業界の専門知識）→プロジェクトマネジメント→データ関連法規</li>
+      </ul>
+    </li>
+  </ul>
+</div>
+
+</main>
+</body>
+</html>
