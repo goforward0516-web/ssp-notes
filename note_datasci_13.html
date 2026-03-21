@@ -1,0 +1,1498 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>データサイエンス入門 第13回 | 画像データの扱い</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --bg-card: #1a1f2e;
+    --bg-card2: #1e2535;
+    --text: #e2e8f5;
+    --text-muted: #8a99b8;
+    --border: #2d3a55;
+    --accent-blue: #5b8dee;
+    --accent-green: #34d399;
+    --accent-yellow: #fbbf24;
+    --accent-red: #f87171;
+    --accent-purple: #a78bfa;
+    --accent-teal: #22d3ee;
+    --sidebar-w: 260px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 15px;
+    line-height: 1.8;
+    display: flex;
+  }
+
+  /* ===== SIDEBAR ===== */
+  #sidebar {
+    width: var(--sidebar-w);
+    min-height: 100vh;
+    background: var(--bg-card);
+    border-right: 1px solid var(--border);
+    position: fixed;
+    top: 0; left: 0;
+    overflow-y: auto;
+    z-index: 100;
+    padding-bottom: 40px;
+  }
+
+  #sidebar-header {
+    padding: 20px 16px 16px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(135deg, #1a2540 0%, #0f1a35 100%);
+  }
+
+  #sidebar-header .subject {
+    font-size: 10px;
+    color: var(--accent-blue);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-family: 'JetBrains Mono', monospace;
+    margin-bottom: 4px;
+  }
+
+  #sidebar-header .lecture {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.4;
+  }
+
+  #toc { padding: 12px 0; }
+
+  .toc-section {
+    padding: 6px 16px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent-blue);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-top: 8px;
+  }
+
+  .toc-item {
+    display: block;
+    padding: 5px 16px 5px 24px;
+    font-size: 12px;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: all 0.15s;
+    border-left: 2px solid transparent;
+  }
+
+  .toc-item:hover {
+    color: var(--text);
+    background: rgba(91,141,238,0.08);
+    border-left-color: var(--accent-blue);
+  }
+
+  .toc-sub {
+    padding-left: 36px;
+    font-size: 11px;
+  }
+
+  /* ===== MAIN ===== */
+  #main {
+    margin-left: var(--sidebar-w);
+    width: calc(100% - var(--sidebar-w));
+    padding: 40px 48px;
+    max-width: 1000px;
+  }
+
+  /* ===== HEADER ===== */
+  .page-header {
+    background: linear-gradient(135deg, #131d35 0%, #0f1117 100%);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px 36px;
+    margin-bottom: 36px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .page-header::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 180px; height: 180px;
+    background: radial-gradient(circle, rgba(91,141,238,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .page-header .meta-row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+
+  .meta-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 4px;
+    background: rgba(91,141,238,0.15);
+    color: var(--accent-blue);
+    border: 1px solid rgba(91,141,238,0.3);
+  }
+
+  .page-header h1 {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .page-header .subtitle {
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+
+  /* ===== SECTION CARDS ===== */
+  .chapter-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 40px 0 20px;
+    padding: 14px 20px;
+    background: linear-gradient(90deg, rgba(91,141,238,0.12) 0%, transparent 100%);
+    border-left: 4px solid var(--accent-blue);
+    border-radius: 0 8px 8px 0;
+  }
+
+  .chapter-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent-blue);
+    background: rgba(91,141,238,0.15);
+    padding: 2px 8px;
+    border-radius: 3px;
+  }
+
+  .chapter-header h2 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .section-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px 28px;
+    margin-bottom: 18px;
+  }
+
+  .section-card h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--accent-teal);
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-card h3::before {
+    content: '§';
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .section-card p {
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+
+  .section-card ul, .section-card ol {
+    margin: 8px 0 10px 20px;
+  }
+
+  .section-card li {
+    margin-bottom: 5px;
+    color: var(--text);
+  }
+
+  /* ===== BLOCK TYPES ===== */
+  .block-audio {
+    border-left: 3px solid var(--accent-blue);
+    background: rgba(91,141,238,0.07);
+    padding: 12px 16px;
+    margin: 12px 0;
+    border-radius: 0 6px 6px 0;
+    font-size: 14px;
+  }
+
+  .block-audio .block-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--accent-blue);
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+
+  .block-external {
+    border-left: 3px solid var(--accent-green);
+    background: rgba(52,211,153,0.07);
+    padding: 12px 16px;
+    margin: 12px 0;
+    border-radius: 0 6px 6px 0;
+    font-size: 14px;
+  }
+
+  .block-external .block-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--accent-green);
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+
+  .block-check {
+    border-left: 3px solid var(--accent-yellow);
+    background: rgba(251,191,36,0.07);
+    padding: 12px 16px;
+    margin: 12px 0;
+    border-radius: 0 6px 6px 0;
+    font-size: 14px;
+  }
+
+  .block-check .block-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--accent-yellow);
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+
+  .block-def {
+    border-left: 3px solid var(--accent-purple);
+    background: rgba(167,139,250,0.07);
+    padding: 12px 16px;
+    margin: 12px 0;
+    border-radius: 0 6px 6px 0;
+    font-size: 14px;
+  }
+
+  .block-def .block-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--accent-purple);
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+
+  /* ===== SOURCE POINTER ===== */
+  .src {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    background: rgba(255,255,255,0.05);
+    padding: 1px 6px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+    margin-left: 6px;
+    white-space: nowrap;
+  }
+
+  /* ===== TABLES ===== */
+  .styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0;
+    font-size: 13px;
+  }
+
+  .styled-table th {
+    background: rgba(91,141,238,0.15);
+    color: var(--accent-blue);
+    padding: 8px 12px;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 2px solid var(--accent-blue);
+  }
+
+  .styled-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    vertical-align: top;
+  }
+
+  .styled-table tr:hover td {
+    background: rgba(255,255,255,0.02);
+  }
+
+  /* ===== KEY FORMULA ===== */
+  .formula-box {
+    background: linear-gradient(135deg, rgba(91,141,238,0.1) 0%, rgba(34,211,238,0.06) 100%);
+    border: 1px solid rgba(91,141,238,0.3);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 14px 0;
+    text-align: center;
+  }
+
+  .formula-box .formula-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    color: var(--accent-teal);
+    font-weight: 600;
+  }
+
+  .formula-box .formula-note {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 6px;
+  }
+
+  /* ===== IMPORTANT CALLOUT ===== */
+  .callout {
+    background: rgba(248,113,113,0.08);
+    border: 1px solid rgba(248,113,113,0.3);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 14px 0;
+    font-size: 14px;
+  }
+
+  .callout-title {
+    color: var(--accent-red);
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ===== SVG FIGURES ===== */
+  .fig-container {
+    background: var(--bg-card2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    margin: 16px 0;
+    overflow-x: auto;
+  }
+
+  .fig-caption {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-align: center;
+    margin-top: 10px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ===== APPENDIX ===== */
+  .appendix-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 48px 0 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border);
+  }
+
+  .appendix-header h2 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-muted);
+  }
+
+  .appendix-icon {
+    font-size: 18px;
+  }
+
+  /* ===== STARS ===== */
+  .star3 { color: #fbbf24; }
+  .star2 { color: #94a3b8; }
+  .star1 { color: #475569; }
+
+  /* ===== REVIEW CARD ===== */
+  .review-q {
+    background: rgba(52,211,153,0.08);
+    border: 1px solid rgba(52,211,153,0.25);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  .review-q .q-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--accent-green);
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+
+  .matrix-cell-ok { color: var(--accent-green); font-weight: 700; }
+  .matrix-cell-ng { color: var(--accent-red); }
+
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    background: rgba(255,255,255,0.07);
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: var(--accent-teal);
+  }
+
+  @media (max-width: 900px) {
+    #sidebar { display: none; }
+    #main { margin-left: 0; width: 100%; padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== SIDEBAR ===== -->
+<nav id="sidebar">
+  <div id="sidebar-header">
+    <div class="subject">Data Science Intro</div>
+    <div class="lecture">データサイエンス入門<br>第13回 | 画像データの扱い</div>
+  </div>
+  <div id="toc">
+    <div class="toc-section">前回復習</div>
+    <a class="toc-item" href="#review">前回の復習</a>
+
+    <div class="toc-section">第1章</div>
+    <a class="toc-item" href="#ch1">画像をデータにする</a>
+    <a class="toc-item toc-sub" href="#ch1-pixel">画素（ピクセル）</a>
+    <a class="toc-item toc-sub" href="#ch1-gray">グレースケール画像</a>
+    <a class="toc-item toc-sub" href="#ch1-color">カラー画像とRGB</a>
+    <a class="toc-item toc-sub" href="#ch1-vector">ベクトル表現と次元数</a>
+    <a class="toc-item toc-sub" href="#ch1-types">画像データの種類</a>
+
+    <div class="toc-section">第2章</div>
+    <a class="toc-item" href="#ch2">行列の基礎</a>
+    <a class="toc-item toc-sub" href="#ch2-def">行列の定義</a>
+    <a class="toc-item toc-sub" href="#ch2-ops">行列の演算</a>
+    <a class="toc-item toc-sub" href="#ch2-mul">行列の掛け算</a>
+    <a class="toc-item toc-sub" href="#ch2-meaning">掛け算の意味</a>
+
+    <div class="toc-section">第3章</div>
+    <a class="toc-item" href="#ch3">行列の活用</a>
+    <a class="toc-item toc-sub" href="#ch3-transform">画像の変形</a>
+    <a class="toc-item toc-sub" href="#ch3-app">行列の応用</a>
+    <a class="toc-item toc-sub" href="#ch3-conv">畳み込み処理</a>
+
+    <div class="toc-section">第4章</div>
+    <a class="toc-item" href="#ch4">データ分析事例</a>
+
+    <div class="toc-section">補足</div>
+    <a class="toc-item" href="#appendix-a">補足A: 最重要ワード</a>
+    <a class="toc-item" href="#appendix-b">補足B: 背景知識</a>
+    <a class="toc-item" href="#appendix-c">補足C: 試験対策</a>
+    <a class="toc-item" href="#appendix-d">補足D: 次回への接続</a>
+  </div>
+</nav>
+
+<!-- ===== MAIN ===== -->
+<main id="main">
+
+  <!-- PAGE HEADER -->
+  <header class="page-header">
+    <div class="meta-row">
+      <span class="meta-badge">データサイエンス入門</span>
+      <span class="meta-badge">第13回</span>
+      <span class="meta-badge">S03 + S05</span>
+    </div>
+    <h1>画像データの扱い</h1>
+    <div class="subtitle">担当：浅田 麻菜 ／ サイバー大学 IT総合学部 専門基礎科目</div>
+  </header>
+
+  <!-- ===== 前回の復習 ===== -->
+  <section id="review">
+    <div class="chapter-header">
+      <span class="chapter-num">REVIEW</span>
+      <h2>前回の復習（第12回：ベクトルとテキストデータ）</h2>
+    </div>
+
+    <div class="section-card">
+      <h3>復習問題</h3>
+      <div class="review-q">
+        <div class="q-label">Q. 前回の復習問題</div>
+        ベクトル化したテキストデータの活用例を説明してください。
+      </div>
+      <div class="block-audio">
+        <div class="block-label">🔊 音声補足</div>
+        <strong>答え①：コサイン類似度</strong><br>
+        内積をコサインでまとめた式。この<strong>コサイン類似度</strong>を用いて、文章間の類似度を計算できる。<span class="src">← S05</span><br><br>
+        <strong>答え②：単語の分散表現とアナロジー分析</strong><br>
+        単語をベクトル空間に配置すること（単語の<strong>分散表現</strong>）により、アナロジー（類推）をベクトルの計算として実行できる。<span class="src">← S03:p.3</span>
+      </div>
+
+      <div class="block-external">
+        <div class="block-label">📖 外部補足</div>
+        コサイン類似度の式：<code>cos θ = (A·B) / (|A||B|)</code>。ベクトル間の角度が小さい（値が1に近い）ほど2つの文章の意味が似ている。アナロジー分析の有名な例：「王様 − 男 + 女 = 女王」がベクトル演算で導ける。
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 第1章 ===== -->
+  <section id="ch1">
+    <div class="chapter-header">
+      <span class="chapter-num">第1章</span>
+      <h2>画像をデータにする</h2>
+    </div>
+
+    <div class="section-card">
+      <h3>第1章 学習目標</h3>
+      <p>画像データをデジタルデータとして表現する方法を説明できる。<span class="src">← S03:p.7</span></p>
+
+      <div class="block-audio">
+        <div class="block-label">🔊 音声補足</div>
+        コンピュータは数字（0と1）しか扱えない。画像・ことば・音楽・音声などの<strong>非構造化データ</strong>を処理できるようにするためには、これらのデータを数字で表現する工夫が必要。<span class="src">← S03:p.8</span>
+      </div>
+    </div>
+
+    <div class="section-card" id="ch1-pixel">
+      <h3>画像データとは何か</h3>
+      <div class="block-def">
+        <div class="block-label">📌 定義</div>
+        <strong>画像データ</strong>：写真（静止画像）・映像（動画像）など、目で見て捉えられる情報全般。コンピュータで扱うためには<strong>デジタルデータに変換</strong>する必要がある。<span class="src">← S03:p.9, S05</span>
+      </div>
+      <p>画像データの最大の特徴：<strong>データサイズが巨大</strong>になること。</p>
+      <div class="formula-box">
+        <div class="formula-text">100×100ピクセルのカラー画像 → 3万次元のベクトル</div>
+        <div class="formula-note">100 × 100 × 3（RGB） = 30,000次元　← S03:p.9</div>
+      </div>
+
+      <div class="block-audio">
+        <div class="block-label">🔊 音声補足</div>
+        100×100ピクセルはかなり小さい画像。実際には何千×何千のデータが毎日インターネット上に大量に投稿されている。こういった巨大なベクトルを持つ画像データをどう扱うのか、この先で詳しく説明する。<span class="src">← S05</span>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <h3>画素（ピクセル）とは何か</h3>
+      <div class="block-def">
+        <div class="block-label">📌 定義</div>
+        <strong>画素（ピクセル, pixel）</strong>：画像を構成する最小単位の正方形。画像は無数の画素が格子状に並んで構成されている。<span class="src">← S03:p.12</span>
+      </div>
+
+      <div class="block-audio">
+        <div class="block-label">🔊 音声補足</div>
+        チューリップの画像をパソコンのプロパティで確認すると「2517 × 2517 ピクセル」と表示されている。これは、横に2517個・縦に2517個の画素が並んでいることを意味する。<span class="src">← S03:p.10, S05</span>
+      </div>
+
+      <!-- SVG: ピクセル拡大の説明 -->
+      <div class="fig-container">
+        <svg viewBox="0 0 620 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:620px;display:block;margin:auto">
+          <!-- 元の画像ブロック -->
+          <rect x="20" y="30" width="100" height="100" fill="#1a2535" stroke="#5b8dee" stroke-width="1.5" rx="4"/>
+          <text x="70" y="80" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">元の画像</text>
+          <text x="70" y="98" text-anchor="middle" fill="#5b8dee" font-size="10" font-family="JetBrains Mono">2517×2517px</text>
+
+          <!-- 矢印 -->
+          <path d="M130 80 L170 80" stroke="#8a99b8" stroke-width="1.5" marker-end="url(#arr)"/>
+          <text x="150" y="72" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP">拡大</text>
+
+          <!-- 拡大された画素グリッド -->
+          <g transform="translate(180, 20)">
+            <rect width="120" height="120" fill="#131d30" stroke="#5b8dee" stroke-width="1" rx="2"/>
+            <!-- grid lines -->
+            <line x1="0" y1="40" x2="120" y2="40" stroke="#2d3a55" stroke-width="0.7"/>
+            <line x1="0" y1="80" x2="120" y2="80" stroke="#2d3a55" stroke-width="0.7"/>
+            <line x1="40" y1="0" x2="40" y2="120" stroke="#2d3a55" stroke-width="0.7"/>
+            <line x1="80" y1="0" x2="80" y2="120" stroke="#2d3a55" stroke-width="0.7"/>
+            <!-- colored cells -->
+            <rect x="1" y="1" width="39" height="39" fill="#e07060" rx="1" opacity="0.8"/>
+            <rect x="41" y="1" width="39" height="39" fill="#d06050" rx="1" opacity="0.7"/>
+            <rect x="81" y="1" width="38" height="39" fill="#c05545" rx="1" opacity="0.7"/>
+            <rect x="1" y="41" width="39" height="39" fill="#d07570" rx="1" opacity="0.7"/>
+            <rect x="41" y="41" width="39" height="39" fill="#c87878" rx="1" opacity="0.8"/>
+            <rect x="81" y="41" width="38" height="39" fill="#b86565" rx="1" opacity="0.7"/>
+            <rect x="1" y="81" width="39" height="38" fill="#c87060" rx="1" opacity="0.7"/>
+            <rect x="41" y="81" width="39" height="38" fill="#b87060" rx="1" opacity="0.8"/>
+            <rect x="81" y="81" width="38" height="38" fill="#a86058" rx="1" opacity="0.7"/>
+            <!-- highlight one pixel -->
+            <rect x="41" y="41" width="39" height="39" fill="none" stroke="#fbbf24" stroke-width="2" rx="1"/>
+            <text x="60" y="67" text-anchor="middle" fill="#fbbf24" font-size="9" font-weight="bold">1画素</text>
+          </g>
+
+          <!-- 矢印2 -->
+          <path d="M310 80 L350 80" stroke="#8a99b8" stroke-width="1.5" marker-end="url(#arr)"/>
+
+          <!-- 数字表現 -->
+          <g transform="translate(360, 20)">
+            <rect width="200" height="120" fill="#1e2535" stroke="#2d3a55" stroke-width="1" rx="4"/>
+            <text x="10" y="22" fill="#fbbf24" font-size="11" font-family="JetBrains Mono">255  240  220</text>
+            <text x="10" y="40" fill="#fbbf24" font-size="11" font-family="JetBrains Mono">248  230  215</text>
+            <text x="10" y="58" fill="#5b8dee" font-size="11" font-family="JetBrains Mono" font-weight="bold">210  195  180</text>
+            <text x="10" y="76" fill="#e2e8f5" font-size="11" font-family="JetBrains Mono">230  218  205</text>
+            <text x="10" y="94" fill="#e2e8f5" font-size="11" font-family="JetBrains Mono">220  210  198</text>
+            <text x="10" y="112" fill="#8a99b8" font-size="9" font-family="Noto Sans JP">各マスに輝度値（0〜255）</text>
+          </g>
+
+          <defs>
+            <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#8a99b8"/>
+            </marker>
+          </defs>
+        </svg>
+        <div class="fig-caption">図：画像のデジタル化プロセス（約5000倍拡大で画素が見える）　← S03:p.12</div>
+      </div>
+
+      <div class="block-audio">
+        <div class="block-label">🔊 音声補足</div>
+        手書き文字「13」を格子状の枠に当てはめて塗りつぶし、塗りつぶしたマスを「0」、塗られていないマスを「1」で表す。電気がついていない（黒）→ 0、電気がついている（明るい）→ 1、と覚えると分かりやすい。こうして画像を数字の集合で表現できる。<span class="src">← S03:p.13-14, S05</span>
+      </div>
+    </div>
+
+    <div class="section-card" id="ch1-gray">
+      <h3>グレースケール画像の表現</h3>
+      <div class="block-def">
+        <div class="block-label">📌 定義</div>
+        <strong>グレースケール画像</strong>：色の濃さを数字で表現することで白黒の階調を持つ画像。<span class="src">← S03:p.15</span>
+      </div>
+
+      <table class="styled-table">
+        <thead>
+          <tr><th>段階数</th><th>表現</th><th>ビット数</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>2段階</td><td>0（黒）/ 1（白）</td><td>1bit</td></tr>
+          <tr><td>4段階</td><td>0, 1, 2, 3</td><td>2bit</td></tr>
+          <tr><td><strong>256段階</strong></td><td><strong>0〜255（256階調）</strong></td><td><strong>8bit</strong></td></tr>
+        </tbody>
+      </table>
+
+      <div class="block-audio">
+        <div class="block-label">🔊 音声補足</div>
+        256段階（256階調）にすると、左側の図でグラデーションのように細かく滑らかに表示できるようになる。256階調のグレースケール画像は画素数分の数字の集合で表現できる。例：11行×12列 = 132画素 → 132個の数字の集合。<span class="src">← S03:p.15-16, S05</span>
+      </div>
+    </div>
+
+    <div class="section-card" id="ch1-color">
+      <h3>カラー画像の表現：RGBモデル</h3>
+      <div class="block-def">
+        <div class="block-label">📌 定義</div>
+        <strong>RGBモデル</strong>：赤（Red）・緑（Green）・青（Blue）の3原色それぞれを0〜255（256階調）の数値で表し、その組み合わせで色を表現するモデル。<span class="src">← S03:p.17</span>
+      </div>
+
+      <!-- SVG: RGB色の例 -->
+      <div class="fig-container">
+        <svg viewBox="0 0 560 100" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:560px;display:block;margin:auto">
+          <!-- Black -->
+          <rect x="20" y="20" width="60" height="60" fill="#000000" stroke="#2d3a55" stroke-width="1" rx="4"/>
+          <text x="50" y="100" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="JetBrains Mono">R:0 G:0 B:0</text>
+          <text x="50" y="12" text-anchor="middle" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP">黒</text>
+
+          <!-- Red -->
+          <rect x="150" y="20" width="60" height="60" fill="#ff0000" stroke="#2d3a55" stroke-width="1" rx="4"/>
+          <text x="180" y="100" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="JetBrains Mono">R:255 G:0 B:0</text>
+          <text x="180" y="12" text-anchor="middle" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP">赤</text>
+
+          <!-- White -->
+          <rect x="280" y="20" width="60" height="60" fill="#ffffff" stroke="#2d3a55" stroke-width="1" rx="4"/>
+          <text x="310" y="100" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="JetBrains Mono">R:255 G:255 B:255</text>
+          <text x="310" y="12" text-anchor="middle" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP">白</text>
+
+          <!-- Orange -->
+          <rect x="410" y="20" width="60" height="60" fill="#ff9946" stroke="#2d3a55" stroke-width="1" rx="4"/>
+          <text x="440" y="100" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="JetBrains Mono">R:255 G:153 B:70</text>
+          <text x="440" y="12" text-anchor="middle" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP">オレンジ</text>
+        </svg>
+        <div class="fig-caption">図：RGBモデルによる色の表現例　← S03:p.17</div>
+      </div>
+
+      <div class="block-audio">
+        <div class="block-label">🔊 音声補足</div>
+        カラー画像は、RGBそれぞれの数値の集合（行列）が3枚重なることで表現される。右側の3枚の画像はチューリップをR・G・Bに分解したもの。同じ位置にある数字を1個ずつ取り出すことで1つの色を表現している。<span class="src">← S03:p.18-20, S05</span>
+      </div>
+    </div>
+
+    <div class="section-card" id="ch1-vector">
+      <h3>カラー画像のベクトル表現と次元数</h3>
+      <p>各ピクセルにRGB（3つの数値）が含まれるため、カラー画像をベクトルで表現すると：</p>
+      <div class="formula-box">
+        <div class="formula-text">次元数 = 画素数 × 3</div>
+        <div class="formula-note">← S03:p.21-22</div>
+      </div>
+
+      <div class="callout">
+        <div class="callout-title">⚠️ 重要な計算例</div>
+        2517 × 2517ピクセルのカラー画像の場合：<br>
+        2517 × 2517 × 3 = <strong>19,005,867 ≈ 約1900万次元</strong><span class="src">← S03:p.22</span>
+      </div>
+
+      <div class="block-audio">
+        <div class="block-label">🔊 音声補足</div>
+        カラー画像をベクトル表現するには、左から右・上から下にRGBの値を順番に並べていく。1つ1つのピクセルに数字が3つずつ入っているので「画素数×3次元」となる。1900万次元という数字が、画像データがいかに巨大かを示している。<span class="src">← S05</span>
+      </div>
+    </div>
+
+    <div class="section-card" id="ch1-types">
+      <h3>画像データの種類</h3>
+
+      <table class="styled-table">
+        <thead>
+          <tr><th>種類</th><th>表現方法</th><th>特徴</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>ラスター画像<br>／ビットマップ画像</strong></td>
+            <td>画素（ピクセル）の集合</td>
+            <td>写真・複雑な画像の表現に向く。拡大すると粗くなる</td>
+          </tr>
+          <tr>
+            <td><strong>ベクター画像</strong></td>
+            <td>点とベクトルで表現</td>
+            <td>拡大に強い。写真などの複雑な画像は苦手</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="block-audio">
+        <div class="block-label">🔊 音声補足</div>
+        ラスター画像とビットマップ画像は厳密には違う意味だが、どちらも「画素が集まって画像を表現している」という点では同じ。ベクター画像の「ベクター」はベクトルのことで、画像を点とベクトルで表現している。まずはラスター画像・ビットマップ画像の考え方をしっかり押さえておこう。<span class="src">← S03:p.23, S05</span>
+      </div>
+    </div>
+
+    <!-- 第1章まとめ -->
+    <div class="section-card" style="border-color: rgba(52,211,153,0.3);">
+      <h3>第1章 まとめ</h3>
+      <ul>
+        <li>ラスター画像／ビットマップ画像では<strong>画素の集合</strong>として画像を表現する</li>
+        <li>カラー画像では各画素に<strong>RGB（赤・緑・青）の値</strong>を持つ</li>
+        <li>カラー画像をベクトルで表現すると<strong>「画素数 × 3」次元</strong>の巨大なベクトルになる</li>
+      </ul>
+      <span class="src">← S03:p.24</span>
+    </div>
+  </section>
+
+  <!-- ===== 第2章 ===== -->
+  <section id="ch2">
+    <div class="chapter-header">
+      <span class="chapter-num">第2章</span>
+      <h2>行列の基礎</h2>
+    </div>
+
+    <div class="section-card">
+      <h3>第2章 学習目標</h3>
+      <ul>
+        <li>基本的な行列の演算ができる</li>
+        <li>行列の掛け算の意味が説明できる</li>
+      </ul>
+      <span class="src">← S03:p.27</span>
+    </div>
+
+    <div class="section-card">
+      <h3>スカラー・ベクトル・行列の関係</h3>
+
+      <!-- SVG: 概念図 -->
+      <div class="fig-container">
+        <svg viewBox="0 0 580 120" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:580px;display:block;margin:auto">
+          <!-- Scalar -->
+          <g transform="translate(20,20)">
+            <rect width="90" height="80" fill="#1a2535" stroke="#5b8dee" stroke-width="1" rx="4"/>
+            <text x="45" y="38" text-anchor="middle" fill="#fbbf24" font-size="20" font-family="JetBrains Mono" font-weight="bold">5</text>
+            <text x="45" y="68" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP">スカラー</text>
+            <text x="45" y="100" text-anchor="middle" fill="#5b8dee" font-size="9" font-family="Noto Sans JP">数字1つ</text>
+          </g>
+          <!-- Arrow -->
+          <path d="M118 60 L148 60" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#a2)"/>
+
+          <!-- Vector -->
+          <g transform="translate(155,10)">
+            <rect width="80" height="100" fill="#1a2535" stroke="#5b8dee" stroke-width="1" rx="4"/>
+            <text x="40" y="28" text-anchor="middle" fill="#34d399" font-size="13" font-family="JetBrains Mono">1</text>
+            <text x="40" y="48" text-anchor="middle" fill="#34d399" font-size="13" font-family="JetBrains Mono">2</text>
+            <text x="40" y="68" text-anchor="middle" fill="#34d399" font-size="13" font-family="JetBrains Mono">3</text>
+            <text x="40" y="88" text-anchor="middle" fill="#34d399" font-size="13" font-family="JetBrains Mono">5</text>
+            <text x="40" y="115" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP">ベクトル</text>
+          </g>
+          <!-- Arrow -->
+          <path d="M240 60 L270 60" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#a2)"/>
+
+          <!-- Matrix -->
+          <g transform="translate(278,10)">
+            <rect width="160" height="100" fill="#1a2535" stroke="#5b8dee" stroke-width="1" rx="4"/>
+            <text x="30" y="28" text-anchor="middle" fill="#a78bfa" font-size="12" font-family="JetBrains Mono">1  3  4</text>
+            <text x="30" y="48" text-anchor="middle" fill="#a78bfa" font-size="12" font-family="JetBrains Mono">2  2  5</text>
+            <text x="30" y="68" text-anchor="middle" fill="#a78bfa" font-size="12" font-family="JetBrains Mono">3  4  0</text>
+            <text x="30" y="88" text-anchor="middle" fill="#a78bfa" font-size="12" font-family="JetBrains Mono">5  0  7</text>
+            <text x="80" y="115" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP">行列（複数のベクトルを結合）</text>
+          </g>
+
+          <defs>
+            <marker id="a2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#5b8dee"/>
+            </marker>
+          </defs>
+        </svg>
+        <div class="fig-caption">図：スカラー → ベクトル → 行列の関係　← S03:p.28</div>
+      </div>
+
+      <div class="block-audio">
+        <div class="block-label">🔊 音声補足</div>
+        数字1つ1つがスカラー。前回学習した数字を1列に並べたものがベクトル。このベクトルを横にずらっと並べたもの（複数のベクトルを結合したもの）が行列と考えられる。ベクトルや行列には特別な性質があり、これを使うことで計算が楽になったり、人工知能の応用的な機能を作ったりすることができる。<span class="src">← S03:p.28, S05</span>
+      </div>
+    </div>
+
+    <div class="section-card" id="ch2-def">
+      <h3>行列の定義とサイズ表現</h3>
+      <div class="block-def">
+        <div class="block-label">📌 定義</div>
+        <strong>行列（Matrix）</strong>：数字を格子状に並べたもの。<br>
+        <ul style="margin-top:6px">
+          <li><strong>行（row）</strong>：横向きに並んだ数字の並び</li>
+          <li><strong>列（column）</strong>：縦向きに並んだ数字の並び</li>
+          <li><strong>成分（要素）</strong>：行列内の個々の数字。<code>a_{ij}</code> で「i行j列目の要素」を表す</li>
+        </ul>
+        <span class="src">← S03:p.29</span>
+      </div>
+
+      <div class="block-def" style="margin-top:10px">
+        <div class="block-label">📌 サイズ表現</div>
+        「<strong>m行n列行列</strong>」のように表す（行→列の順）。<br>
+        例：2行2列、3行3列、3行2列<span class="src">← S03:p.30</span>
+      </div>
+
+      <div class="block-audio">
+        <div class="block-label">🔊 音声補足</div>
+        行列という名前は「行」と「列」という言葉の組み合わせ。行は横方向、列は縦方向。サイズを表すときも行・列の順番で表す。添字 a_{11} は「1行目1列目の要素」を意味する。どこにある数字かを特定するために添字を使う。<span class="src">← S05</span>
+      </div>
+    </div>
+
+    <div class="section-card" id="ch2-ops">
+      <h3>行列の演算①：足し算と定数倍</h3>
+
+      <p><strong>足し算：</strong>同じサイズの行列同士で行う。同じ位置の要素を足し合わせる。</p>
+      <div class="block-external">
+        <div class="block-label">📖 外部補足</div>
+        サイズが異なる行列（例：3行3列と2行2列）の足し算はできない。必ず同じサイズ同士でなければならない。
+      </div>
+
+      <p style="margin-top:10px"><strong>定数倍：</strong>行列の全ての要素にスカラー（定数）αを掛ける。</p>
+
+      <div class="block-audio">
+        <div class="block-label">🔊 音声補足 — 計算例</div>
+        <strong>足し算の例：</strong>
+        <pre style="background:#1a2535;padding:10px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:12px;margin-top:6px;color:#e2e8f5">
+[1 3]   [2 1]   [1+2  3+1]   [3 4]
+[2 2] + [5 2] = [2+5  2+2] = [7 4]
+[3 4]   [6 4]   [3+6  4+4]   [9 8]</pre>
+        <strong>定数倍の例：</strong>
+        <pre style="background:#1a2535;padding:10px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:12px;margin-top:6px;color:#e2e8f5">
+    [1 3]   [3×1  3×3]   [3  9]
+3 × [2 4] = [3×2  3×4] = [6 12]</pre>
+        <span class="src">← S03:p.33-34, S05</span>
+      </div>
+    </div>
+
+    <div class="section-card" id="ch2-mul">
+      <h3>行列の演算②：掛け算</h3>
+
+      <div class="callout">
+        <div class="callout-title">⚠️ 掛け算のルール（重要）</div>
+        左行列の<strong>行</strong>と右行列の<strong>列</strong>を対応させて内積を計算する。
+      </div>
+
+      <p style="margin-top:12px">2行2列の行列A × 2行2列の行列B の場合：</p>
+      <div style="background:#1a2535;padding:14px 18px;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:13px;margin:10px 0;color:#e2e8f5;overflow-x:auto">
+        [a11 a12]   [b11 b12]   [a11·b11 + a12·b21 ,  a11·b12 + a12·b22]<br>
+        [a21 a22] × [b21 b22] = [a21·b11 + a22·b21 ,  a21·b12 + a22·b22]
+      </div>
+
+      <div class="block-audio">
+        <div class="block-label">🔊 音声補足 — 計算手順</div>
+        <ol style="padding-left:16px;font-size:14px">
+          <li>左行列は<strong>行（横）</strong>に注目、右行列は<strong>列（縦）</strong>に注目する</li>
+          <li>左行列の1行目と右行列の1列目を取り出し、対応する要素を掛けて足し合わせる → 結果の行列の(1,1)成分</li>
+          <li>左行列の1行目と右行列の2列目 → 結果の(1,2)成分</li>
+          <li>左行列の2行目と右行列の1列目 → 結果の(2,1)成分 …というように順番に計算</li>
+        </ol>
+        <span class="src">← S03:p.35-48, S05</span>
+      </div>
+
+      <p style="margin-top:12px"><strong>計算例：</strong></p>
+      <div style="background:#1a2535;padding:12px 16px;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:13px;margin:8px 0;color:#e2e8f5;overflow-x:auto">
+        [1 2]   [1 3]   [1×1+2×2  1×3+2×4]   [5  11]<br>
+        [3 4] × [2 4] = [3×1+4×2  3×3+4×4] = [11  25]
+      </div>
+
+      <div class="section-card" style="background: rgba(248,113,113,0.05); border-color: rgba(248,113,113,0.2); margin-top: 12px;">
+        <h3 style="color: var(--accent-red)">掛け算の注意点 2つ</h3>
+        <p><strong>注意①：掛け算が可能な組み合わせを確認する</strong></p>
+        <p style="font-size:14px; margin-left:16px">左行列の列数 ＝ 右行列の行数 でなければ計算できない。</p>
+        <div class="block-external" style="margin-top:8px">
+          <div class="block-label">📖 外部補足</div>
+          (m×n行列) × (n×p行列) = (m×p行列) となる。n が一致しないと計算不能。
+        </div>
+        <p style="margin-top:12px"><strong>注意②：順序は基本的に交換できない</strong></p>
+        <p style="font-size:14px; margin-left:16px">A×B ≠ B×A（一般的に）。掛ける順序を変えると結果が変わる。</p>
+        <div class="block-audio" style="margin-top:8px">
+          <div class="block-label">🔊 音声補足</div>
+          スカラー（普通の数値）の掛け算は順序を変えても結果が同じだが、行列では右から掛けるか左から掛けるかで結果が変わる。行列を扱う際は順序に必ず注意すること。<span class="src">← S03:p.49, S05</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card" id="ch2-meaning">
+      <h3>行列の掛け算の意味：ベクトルの移動</h3>
+
+      <div class="block-def">
+        <div class="block-label">📌 重要な概念</div>
+        <strong>ある「ベクトル」に左から「行列」を掛けることで、ベクトルの位置を移動できる。</strong><span class="src">← S03:p.58</span>
+      </div>
+
+      <!-- SVG: ベクトルの移動 -->
+      <div class="fig-container">
+        <svg viewBox="0 0 560 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:560px;display:block;margin:auto">
+          <!-- 例1: 平行移動 -->
+          <text x="10" y="20" fill="#8a99b8" font-size="12" font-family="Noto Sans JP">例1: 拡大（平行移動）</text>
+          <!-- axes -->
+          <line x1="30" y1="180" x2="240" y2="180" stroke="#2d3a55" stroke-width="1"/>
+          <line x1="30" y1="180" x2="30" y2="30" stroke="#2d3a55" stroke-width="1"/>
+          <text x="238" y="192" fill="#8a99b8" font-size="10" font-family="JetBrains Mono">x</text>
+          <text x="22" y="28" fill="#8a99b8" font-size="10" font-family="JetBrains Mono">y</text>
+          <!-- vector [2,1] -->
+          <line x1="30" y1="180" x2="110" y2="140" stroke="#34d399" stroke-width="2" marker-end="url(#av1)"/>
+          <text x="75" y="158" fill="#34d399" font-size="11" font-family="JetBrains Mono">[2,1]</text>
+          <!-- vector [4,1] -->
+          <line x1="30" y1="180" x2="190" y2="140" stroke="#fbbf24" stroke-width="2" marker-end="url(#av2)"/>
+          <text x="165" y="135" fill="#fbbf24" font-size="11" font-family="JetBrains Mono">[4,1]</text>
+          <!-- arrow between -->
+          <path d="M118 150 L155 148" stroke="#5b8dee" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#av3)"/>
+
+          <!-- formula -->
+          <text x="30" y="210" fill="#5b8dee" font-size="11" font-family="JetBrains Mono">[2 0] [2]   [4]</text>
+          <text x="30" y="225" fill="#5b8dee" font-size="11" font-family="JetBrains Mono">[0 1] [1] = [1]</text>
+
+          <!-- 例2: 回転 -->
+          <text x="290" y="20" fill="#8a99b8" font-size="12" font-family="Noto Sans JP">例2: 30°回転</text>
+          <line x1="310" y1="180" x2="520" y2="180" stroke="#2d3a55" stroke-width="1"/>
+          <line x1="310" y1="180" x2="310" y2="30" stroke="#2d3a55" stroke-width="1"/>
+          <!-- vector [√3, 1] -->
+          <line x1="310" y1="180" x2="450" y2="120" stroke="#34d399" stroke-width="2" marker-end="url(#av1)"/>
+          <text x="410" y="148" fill="#34d399" font-size="11" font-family="JetBrains Mono">[√3,1]</text>
+          <!-- vector [1, √3] (rotated 30°) -->
+          <line x1="310" y1="180" x2="370" y2="54" stroke="#fbbf24" stroke-width="2" marker-end="url(#av2)"/>
+          <text x="340" y="100" fill="#fbbf24" font-size="11" font-family="JetBrains Mono">[1,√3]</text>
+          <!-- arc for 30° -->
+          <path d="M 370 180 A 60 60 0 0 0 362 130" fill="none" stroke="#a78bfa" stroke-width="1.5" stroke-dasharray="3,2"/>
+          <text x="372" y="155" fill="#a78bfa" font-size="10" font-family="JetBrains Mono">30°</text>
+
+          <defs>
+            <marker id="av1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#34d399"/></marker>
+            <marker id="av2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#fbbf24"/></marker>
+            <marker id="av3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#5b8dee"/></marker>
+          </defs>
+        </svg>
+        <div class="fig-caption">図：行列の掛け算によるベクトルの移動（平行移動・回転）　← S03:p.54, p.57</div>
+      </div>
+
+      <div class="block-audio">
+        <div class="block-label">🔊 音声補足</div>
+        <strong>例1（x軸方向に2倍）：</strong>行列 [[2,0],[0,1]] をベクトル [2,1] に左から掛けると [4,1] になる。ベクトルの位置がx軸方向に移動した。<br><br>
+        <strong>例2（30°回転）：</strong>cos/sinで構成された回転行列をベクトル [√3,1] に左から掛けると [1,√3] になる。ベクトルが30°回転した。<br><br>
+        これが<strong>「行列の掛け算の意味」</strong>。行列はベクトルを移動させるためのルール（変形ルール）。<span class="src">← S03:p.54-57, S05</span>
+      </div>
+
+      <!-- 第2章まとめ -->
+      <div style="background: rgba(52,211,153,0.05); border: 1px solid rgba(52,211,153,0.2); border-radius:8px; padding:16px; margin-top:12px">
+        <strong>第2章 まとめ</strong><span class="src" style="margin-left:6px">← S03:p.59</span>
+        <ul style="margin-top:8px;padding-left:18px">
+          <li>行列の演算：<strong>足し算</strong>（同じ位置の要素を足す）、<strong>定数倍</strong>（全要素に掛ける）、<strong>掛け算</strong>（行×列で積和）</li>
+          <li>掛け算の注意：①可能な組み合わせの確認 ②順序交換不可（例外：単位行列）</li>
+          <li><strong>ベクトルに左から行列を掛けることで、ベクトルを移動（平行移動・回転等）できる</strong></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 第3章 ===== -->
+  <section id="ch3">
+    <div class="chapter-header">
+      <span class="chapter-num">第3章</span>
+      <h2>行列の活用</h2>
+    </div>
+
+    <div class="section-card">
+      <h3>第3章 学習目標</h3>
+      <ul>
+        <li>画像データの画素に対する行列の活用方法を説明できる</li>
+        <li>画像データに対する行列の活用方法を説明できる</li>
+      </ul>
+      <span class="src">← S03:p.62</span>
+    </div>
+
+    <div class="section-card" id="ch3-transform">
+      <h3>画像の変形：アフィン変換</h3>
+
+      <p>第2章で学んだ「行列の掛け算はベクトルを移動させる」を画像に応用する。</p>
+      <p style="margin-top:8px">画像は画素の集合であり、各画素の位置はベクトルで表現できる。</p>
+
+      <div class="formula-box">
+        <div class="formula-text">行列 × 画素の位置ベクトル = 移動後のベクトル</div>
+        <div class="formula-note">全画素に適用することで画像全体を変形できる　← S03:p.70</div>
+      </div>
+
+      <div class="block-def" style="margin-top:12px">
+        <div class="block-label">📌 定義</div>
+        <strong>アフィン変換（Affine Transformation）</strong>：特定の3×3行列を画素の位置ベクトルに掛けることで、画像の拡大・縮小・移動・回転などの変形を行う手法。<span class="src">← S03:p.64-69, S05</span>
+      </div>
+
+      <!-- SVG: アフィン変換の行列説明 -->
+      <div class="fig-container">
+        <svg viewBox="0 0 580 170" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:580px;display:block;margin:auto">
+          <!-- 変換行列 -->
+          <text x="20" y="25" fill="#8a99b8" font-size="12" font-family="Noto Sans JP">アフィン変換行列の例（0.6倍縮小 + x,y方向に50移動）</text>
+          <rect x="20" y="35" width="200" height="100" fill="#1a2535" stroke="#5b8dee" stroke-width="1" rx="4"/>
+          <text x="50" y="65" fill="#34d399" font-size="15" font-family="JetBrains Mono">0.6   0   50</text>
+          <text x="50" y="90" fill="#34d399" font-size="15" font-family="JetBrains Mono"> 0   0.6  50</text>
+          <text x="50" y="115" fill="#34d399" font-size="15" font-family="JetBrains Mono"> 0    0    1</text>
+
+          <!-- 注釈 -->
+          <line x1="225" y1="65" x2="270" y2="50" stroke="#fbbf24" stroke-width="1" stroke-dasharray="3,2"/>
+          <text x="272" y="48" fill="#fbbf24" font-size="11" font-family="Noto Sans JP">x・y方向の拡大率/縮小率</text>
+
+          <line x1="225" y1="90" x2="270" y2="90" stroke="#a78bfa" stroke-width="1" stroke-dasharray="3,2"/>
+          <text x="272" y="94" fill="#a78bfa" font-size="11" font-family="Noto Sans JP">x・y方向に50ずつ平行移動</text>
+
+          <line x1="225" y1="115" x2="270" y2="130" stroke="#8a99b8" stroke-width="1" stroke-dasharray="3,2"/>
+          <text x="272" y="134" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">計算のため常に「1」を追加</text>
+
+          <!-- 計算結果 -->
+          <text x="20" y="155" fill="#8a99b8" font-size="11" font-family="JetBrains Mono">
+            [0.6 0 50][  0 ]   [0.6×0+0×100+50×1]   [ 50]
+          </text>
+          <text x="20" y="170" fill="#8a99b8" font-size="11" font-family="JetBrains Mono">
+            [ 0  0.6 50][100] = [0×0+0.6×100+50×1] = [110]
+          </text>
+        </svg>
+        <div class="fig-caption">図：アフィン変換行列の読み方と計算例（(0,100) → (50,110) へ移動）　← S03:p.67</div>
+      </div>
+
+      <div class="block-audio">
+        <div class="block-label">🔊 音声補足</div>
+        行列は3×3なので、2次元の座標ベクトルに「1」を追加して3次元にしてから計算する。計算結果の3つ目の「1」は便宜上追加したものとして無視する。<br><br>
+        <strong>変換の例：</strong><br>
+        ・0.6倍縮小 + x,y方向に50移動 → 画像が小さくなって右下にずれる<br>
+        ・90°回転行列 × x軸方向250移動行列 → 画像が横向きに回転<br>
+        ・0.5倍 × 30°回転 × x,y方向に100移動 → 小さく斜めに回転<br>
+        <span class="src">← S03:p.64-69, S05</span>
+      </div>
+    </div>
+
+    <div class="section-card" id="ch3-app">
+      <h3>行列の応用：ベクトル空間上のデータ操作</h3>
+
+      <p>行列の掛け算は画像に限らず、<strong>ベクトル化できるあらゆるデータ</strong>に応用できる。</p>
+
+      <!-- SVG: 検索への応用 -->
+      <div class="fig-container">
+        <svg viewBox="0 0 560 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:560px;display:block;margin:auto">
+          <!-- ベクトル空間 -->
+          <line x1="40" y1="180" x2="260" y2="180" stroke="#2d3a55" stroke-width="1"/>
+          <line x1="40" y1="180" x2="40" y2="20" stroke="#2d3a55" stroke-width="1"/>
+
+          <!-- keyword A -->
+          <circle cx="180" cy="100" r="5" fill="#5b8dee"/>
+          <text x="190" y="105" fill="#5b8dee" font-size="11" font-family="Noto Sans JP">キーワードA</text>
+
+          <!-- keyword B -->
+          <circle cx="140" cy="150" r="5" fill="#5b8dee"/>
+          <text x="148" y="155" fill="#5b8dee" font-size="11" font-family="Noto Sans JP">キーワードB</text>
+
+          <!-- game (product) -->
+          <circle cx="100" cy="60" r="8" fill="#34d399" opacity="0.8"/>
+          <text x="85" y="48" fill="#34d399" font-size="10" font-family="Noto Sans JP">スマホゲーム</text>
+
+          <!-- cake (product) -->
+          <circle cx="60" cy="140" r="8" fill="#fbbf24" opacity="0.8"/>
+          <text x="42" y="130" fill="#fbbf24" font-size="10" font-family="Noto Sans JP">ケーキ</text>
+
+          <!-- arrows: keyword→product -->
+          <path d="M180 100 Q140 80 108 65" stroke="#5b8dee" stroke-width="1.5" fill="none" stroke-dasharray="4,2" marker-end="url(#amov)"/>
+          <path d="M140 150 Q100 155 68 143" stroke="#5b8dee" stroke-width="1.5" fill="none" stroke-dasharray="4,2" marker-end="url(#amov)"/>
+
+          <!-- 行列ラベル -->
+          <rect x="270" y="70" width="270" height="80" fill="#1a2535" stroke="#2d3a55" stroke-width="1" rx="6"/>
+          <text x="285" y="95" fill="#e2e8f5" font-size="12" font-family="Noto Sans JP">「関連度」行列（ルール）</text>
+          <text x="285" y="115" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">+ 検索キーワードベクトル</text>
+          <text x="285" y="135" fill="#34d399" font-size="11" font-family="Noto Sans JP">= 関連度の高い商品名を計算</text>
+
+          <defs>
+            <marker id="amov" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#5b8dee"/></marker>
+          </defs>
+        </svg>
+        <div class="fig-caption">図：行列の応用 — 検索キーワードから関連商品を計算　← S03:p.72-73</div>
+      </div>
+
+      <div class="block-audio">
+        <div class="block-label">🔊 音声補足</div>
+        ベクトルが「情報の集合」で、行列が「関連度のルール」だとすれば、行列をベクトルに左から掛けることで、そのベクトルに関連する別の情報（ベクトル）を計算できる。同じ行列をキーワードBに使えばケーキに移動できる。検索のアルゴリズムでもこのような行列×ベクトルの考え方が使われている（実際にはより複雑な計算をしている）。<span class="src">← S03:p.72-73, S05</span>
+      </div>
+
+      <div class="block-external">
+        <div class="block-label">📖 外部補足</div>
+        この概念は自然言語処理における「Transformerアーキテクチャ」の注意機構（Attention Mechanism）に直結する。Query・Key・Value行列を用いて単語間の関連度を計算する仕組みも、本質的には「行列×ベクトル」の操作の積み重ね。
+      </div>
+    </div>
+
+    <div class="section-card" id="ch3-conv">
+      <h3>周辺画素の活用：欠損値予測と畳み込み処理</h3>
+
+      <p>1つの画素単体では「色情報」しかわからない。しかし、<strong>周辺の画素も含めて処理</strong>することで様々な情報を取り出せる。</p>
+
+      <div class="block-audio">
+        <div class="block-label">🔊 音声補足 — 欠損値の予測</div>
+        画素1個1個は人間の目に見えないほど小さいため、隣接する画素と色があまり変わらない。この性質を利用して、欠損した画素の値を周辺画素から予測・補完できる。<span class="src">← S05</span>
+      </div>
+
+      <div class="block-def" style="margin-top:10px">
+        <div class="block-label">📌 定義</div>
+        <strong>畳み込み処理（Convolution）</strong>：注目する画素の周辺（例：3×3の範囲）も含めて演算することで、以下のような情報を抽出する手法。別名：フィルタ処理・畳み込み演算。<span class="src">← S03:p.75, S05</span>
+      </div>
+
+      <table class="styled-table" style="margin-top:10px">
+        <thead>
+          <tr><th>処理内容</th><th>説明</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>ノイズ除去</td><td>周辺画素の平均をとることで細かいノイズを平滑化</td></tr>
+          <tr><td>特徴抽出（エッジ検出）</td><td>明るさが急激に変化するエリアを検出→物体の輪郭を自動抽出</td></tr>
+          <tr><td>縦線・斜め線の検出</td><td>特定方向の明暗パターンを検出</td></tr>
+        </tbody>
+      </table>
+
+      <div class="block-external">
+        <div class="block-label">📖 外部補足</div>
+        畳み込み処理のフィルタ（カーネル）は、小さな行列（例：3×3）として表現される。この行列を画像全体にスライドさせながら掛け算をすることで特徴マップを生成する。これはまさに「行列の掛け算をデータ処理に活用している」例。
+      </div>
+    </div>
+
+    <!-- 第3章まとめ -->
+    <div class="section-card" style="border-color: rgba(52,211,153,0.3);">
+      <h3>第3章 まとめ</h3>
+      <ul>
+        <li>各画素の位置ベクトルに行列を掛けることで<strong>画像の変形（アフィン変換）</strong>が可能</li>
+        <li>行列の応用はベクトル化できるデータ全般に利用可能（検索など）</li>
+        <li>周辺の画素を含めて扱うことで<strong>欠損値の予測・特徴抽出（畳み込み処理）</strong>ができる</li>
+        <li>特徴抽出は現在の人工知能技術で非常に重要</li>
+      </ul>
+      <span class="src">← S03:p.76</span>
+    </div>
+  </section>
+
+  <!-- ===== 第4章 ===== -->
+  <section id="ch4">
+    <div class="chapter-header">
+      <span class="chapter-num">第4章</span>
+      <h2>データ分析事例</h2>
+    </div>
+
+    <div class="section-card">
+      <h3>第4章 学習目標</h3>
+      <p>計算機を用いたデータ分析事例よりデータの扱いを体感する。<span class="src">← S03:p.79</span></p>
+    </div>
+
+    <div class="section-card">
+      <h3>行列とデータサイエンスの関係</h3>
+      <p>第12回（ベクトル）・第13回（行列）を通じて学んだ<strong>線形代数</strong>は、現代のデータサイエンス・AIの基盤。</p>
+
+      <table class="styled-table">
+        <thead>
+          <tr><th>手法</th><th>概要</th><th>応用先</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>特異値分解（SVD）</strong></td>
+            <td>行列を積の形に分解することで<strong>次元圧縮</strong>を実現</td>
+            <td>自然言語処理、情報検索</td>
+          </tr>
+          <tr>
+            <td><strong>畳み込み層（CNN）</strong></td>
+            <td>深層学習（ディープラーニング）における畳み込み処理の適用</td>
+            <td>画像認識の性能が飛躍的向上</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="block-audio">
+        <div class="block-label">🔊 音声補足</div>
+        特異値分解（SVD）は「元々ある行列を小さな積の形に分解すること」。次元数が大きすぎるデータを数学的に小さくする方法。畳み込み層を含んだ深層学習（Deep Learning）によって画像認識の性能が飛躍的に向上した。これについては第14回でさらに詳しく説明する。<span class="src">← S03:p.80, S05</span>
+      </div>
+
+      <div class="block-external">
+        <div class="block-label">📖 外部補足</div>
+        深層学習の日本語訳は「深層学習」または「ディープラーニング」。画像認識の飛躍的向上のきっかけは2012年のImageNet大会でAlexNet（畳み込みニューラルネットワーク）が優勝したこと。
+      </div>
+    </div>
+
+    <div class="section-card">
+      <h3>Pythonによるデモ：Google Colab での実験</h3>
+      <p>使用ツール：<strong>Google Colaboratory（Colab）</strong> — ブラウザ上でPythonを実行できる環境<span class="src">← S03:p.81</span></p>
+      <p style="margin-top:6px; color: var(--text-muted);">※ 演習は必須ではない。動画を見て「1〜3章で学んだ知識がどう活用されているか」を体感することが目的。</p>
+
+      <p style="margin-top:12px; font-weight:600">実験内容まとめ：</p>
+
+      <table class="styled-table">
+        <thead>
+          <tr><th>実験</th><th>操作</th><th>確認できること</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>①データ形式確認</td>
+            <td>300×300pxの猫画像を読み込み、<code>.shape</code>で確認</td>
+            <td><code>(300, 300, 3)</code> → Y軸300px, X軸300px, RGB3チャンネル</td>
+          </tr>
+          <tr>
+            <td>②RGB値確認</td>
+            <td>左上のピクセル(0,0)の値を表示</td>
+            <td><code>[254, 252, 193]</code> → 薄い黄色（第1章で学んだRGB表現の確認）</td>
+          </tr>
+          <tr>
+            <td>③色チャンネル分離</td>
+            <td>GBを0にして赤のみ残す／緑のみ残す／青のみ残す</td>
+            <td>全体的に赤・緑・青っぽい画像に変化</td>
+          </tr>
+          <tr>
+            <td>④2値化</td>
+            <td>RGBの平均値≥128 → (255,255,255)、&lt;128 → (0,0,0)</td>
+            <td>カラー画像が白黒の2値画像に変換（境界線が明確）</td>
+          </tr>
+          <tr>
+            <td>⑤アフィン変換</td>
+            <td>0.6倍縮小+x軸方向100+y軸方向50移動の行列を適用</td>
+            <td>画像が小さくなって移動</td>
+          </tr>
+          <tr>
+            <td>⑥アフィン変換②</td>
+            <td>反時計回り90°回転+y軸方向300移動</td>
+            <td>画像が回転・移動</td>
+          </tr>
+          <tr>
+            <td>⑦アフィン変換③</td>
+            <td>x軸方向1.5倍に拡大</td>
+            <td>横長の画像に変換</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="block-audio">
+        <div class="block-label">🔊 音声補足</div>
+        NumPy（numpy）というライブラリを使用している。画像を読み込むと <code>(300, 300, 3)</code> という形式で表示される。NumPyでは Y, X の順序で表示されるため「Y軸方向300 → X軸方向300」の順になる。使用するライブラリによってX・Yの表示順序が異なるので注意。<span class="src">← S05</span>
+      </div>
+
+      <div class="block-check">
+        <div class="block-label">📋 要確認</div>
+        デモ動画内で使われた画像ファイル名は <code>cat.jpg</code>（または <code>cat.jpeg</code>）。第13回の配布ファイルは <code>DS_第13回第4章.ipynb</code>。準備方法は第10回第4章のデモ動画で説明されている。<span class="src">← S05</span>
+      </div>
+    </div>
+
+    <!-- 第4章まとめ -->
+    <div class="section-card" style="border-color: rgba(52,211,153,0.3);">
+      <h3>第4章 まとめ</h3>
+      <ul>
+        <li>Pythonを用いて画像データにおける画素と色の表現方法を体感した</li>
+        <li>行列による画素の移動（アフィン変換）を実際のコードで確認した</li>
+      </ul>
+      <span class="src">← S03:p.83</span>
+    </div>
+  </section>
+
+  <!-- ===== 第13回 全体まとめ ===== -->
+  <section>
+    <div class="chapter-header" style="border-left-color: var(--accent-yellow)">
+      <span class="chapter-num" style="color:var(--accent-yellow); background:rgba(251,191,36,0.1)">まとめ</span>
+      <h2>第13回 全体まとめ</h2>
+    </div>
+
+    <div class="section-card" style="border-color: rgba(251,191,36,0.3)">
+      <h3>学習目標の達成確認</h3>
+      <table class="styled-table">
+        <thead>
+          <tr><th>学習目標</th><th>対応内容</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>① 画像データに関する基本的な概念を説明できる</strong></td>
+            <td>画素・グレースケール・RGB・ベクトル表現（画素数×3次元）</td>
+          </tr>
+          <tr>
+            <td><strong>② 行列の基礎的な概念を理解し、画像データへの利活用方法を説明できる</strong></td>
+            <td>行列の演算（足し算・定数倍・掛け算）、アフィン変換、畳み込み処理</td>
+          </tr>
+        </tbody>
+      </table>
+      <span class="src">← S03:p.84</span>
+    </div>
+  </section>
+
+  <!-- ===== 補足 A ===== -->
+  <section id="appendix-a">
+    <div class="appendix-header">
+      <span class="appendix-icon">⭐</span>
+      <h2>補足A：最重要ワード一覧</h2>
+    </div>
+
+    <div class="section-card">
+      <table class="styled-table">
+        <thead>
+          <tr><th>用語</th><th>読み</th><th>定義（講義より）</th><th>重要度</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>画素（ピクセル）</strong></td>
+            <td>がそ / pixel</td>
+            <td>画像を構成する最小単位の正方形</td>
+            <td><span class="star3">★★★</span></td>
+          </tr>
+          <tr>
+            <td><strong>256階調</strong></td>
+            <td>にひゃくごじゅうろくかいちょう</td>
+            <td>0〜255の256種類の数字でグレースケールを表現する方式</td>
+            <td><span class="star3">★★★</span></td>
+          </tr>
+          <tr>
+            <td><strong>RGBモデル</strong></td>
+            <td>アールジービーモデル</td>
+            <td>赤・緑・青それぞれを0〜255で表し、組み合わせで色を表現するモデル</td>
+            <td><span class="star3">★★★</span></td>
+          </tr>
+          <tr>
+            <td><strong>行列</strong></td>
+            <td>ぎょうれつ / Matrix</td>
+            <td>複数のベクトルを結合した数字の集合。行と列からなる</td>
+            <td><span class="star3">★★★</span></td>
+          </tr>
+          <tr>
+            <td><strong>アフィン変換</strong></td>
+            <td>あふぃんへんかん</td>
+            <td>特定の行列を画素の位置ベクトルに掛けることで画像の拡大・縮小・移動・回転を行う手法</td>
+            <td><span class="star3">★★★</span></td>
+          </tr>
+          <tr>
+            <td><strong>畳み込み処理</strong></td>
+            <td>たたみこみしょり</td>
+            <td>注目画素の周辺も含めて演算することでノイズ除去・特徴抽出を行う手法。別名：フィルタ処理</td>
+            <td><span class="star3">★★★</span></td>
+          </tr>
+          <tr>
+            <td><strong>ラスター画像</strong></td>
+            <td>らすたーがぞう</td>
+            <td>画素の集合として画像を表現するデータ形式</td>
+            <td><span class="star2">★★☆</span></td>
+          </tr>
+          <tr>
+            <td><strong>ベクター画像</strong></td>
+            <td>べくたーがぞう</td>
+            <td>点とベクトルで画像を表現するデータ形式。拡大に強い</td>
+            <td><span class="star2">★★☆</span></td>
+          </tr>
+          <tr>
+            <td><strong>特異値分解（SVD）</strong></td>
+            <td>とくいちぶんかい</td>
+            <td>行列を積の形に分解して次元圧縮を行う手法</td>
+            <td><span class="star2">★★☆</span></td>
+          </tr>
+          <tr>
+            <td><strong>行（row）</strong></td>
+            <td>ぎょう</td>
+            <td>行列の横向きの並び</td>
+            <td><span class="star1">★☆☆</span></td>
+          </tr>
+          <tr>
+            <td><strong>列（column）</strong></td>
+            <td>れつ</td>
+            <td>行列の縦向きの並び</td>
+            <td><span class="star1">★☆☆</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===== 補足 B ===== -->
+  <section id="appendix-b">
+    <div class="appendix-header">
+      <span class="appendix-icon">📚</span>
+      <h2>補足B：知っておくべき背景知識</h2>
+    </div>
+
+    <div class="section-card">
+      <div class="block-external">
+        <div class="block-label">📖 外部補足</div>
+        <strong>線形代数（Linear Algebra）との関係</strong><br>
+        今回学んだ行列の演算は「線形代数」という数学の分野の基礎。機械学習・データサイエンス・コンピュータグラフィックスのほぼすべての処理に線形代数が使われている。
+      </div>
+      <div class="block-external" style="margin-top:10px">
+        <div class="block-label">📖 外部補足</div>
+        <strong>8bit = 256段階の理由</strong><br>
+        2の8乗 = 256。コンピュータは2進数を使うため、各ビットが0か1を表す。8つのビットで最大256種類の値（0〜255）を表現できる。
+      </div>
+      <div class="block-external" style="margin-top:10px">
+        <div class="block-label">📖 外部補足</div>
+        <strong>NumPyとは</strong><br>
+        Pythonの数値計算ライブラリ。行列・配列の演算を高速に行える。画像はNumPyの多次元配列として扱われる（shape: 高さ × 幅 × チャンネル数）。
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 補足 C ===== -->
+  <section id="appendix-c">
+    <div class="appendix-header">
+      <span class="appendix-icon">🎯</span>
+      <h2>補足C：試験・レポートで重要な観点</h2>
+    </div>
+
+    <div class="section-card">
+      <ul>
+        <li>カラー画像をベクトルで表現したときの次元数の計算（<strong>画素数 × 3</strong>）</li>
+        <li>行列の掛け算の手順（左行列の行 × 右行列の列）とその注意点2つ</li>
+        <li>行列の掛け算の<strong>図形的な意味</strong>（ベクトルの移動・変形）</li>
+        <li>畳み込み処理が「1個の画素」では得られない情報を抽出できる理由</li>
+        <li>ラスター画像とベクター画像の違い</li>
+        <li>RGBモデルにおける黒・白・赤の数値表現</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===== 補足 D ===== -->
+  <section id="appendix-d">
+    <div class="appendix-header">
+      <span class="appendix-icon">🔗</span>
+      <h2>補足D：関連概念・次回への接続</h2>
+    </div>
+
+    <div class="section-card">
+      <p><strong>第14回 予告：</strong>畳み込み層を含む<strong>深層学習（ディープラーニング）</strong>について、さらに詳しく学ぶ。画像認識の性能が飛躍的に向上した理由が明らかになる。<span class="src">← S03:p.80</span></p>
+      <div class="block-audio" style="margin-top:10px">
+        <div class="block-label">🔊 音声補足</div>
+        第12回でベクトル、第13回で行列を学んだ。これらは「線形代数」と呼ばれる数学の分野。この線形代数の力（ベクトル・行列）があることで、人工知能やデータサイエンスが大きく発展している。<span class="src">← S05</span>
+      </div>
+      <div class="block-external" style="margin-top:10px">
+        <div class="block-label">📖 外部補足</div>
+        深層学習の最新モデルであるTransformerも、その中核にある「自己注意機構（Self-Attention）」は行列の掛け算で実装されている。今回学んだ「行列×ベクトル = ベクトルの変換」という考え方は、大規模言語モデル（LLM）の基礎でもある。
+      </div>
+    </div>
+  </section>
+
+  <!-- フッター -->
+  <div style="margin-top:60px; padding-top:20px; border-top:1px solid var(--border); text-align:center; color:var(--text-muted); font-size:12px; font-family:'JetBrains Mono',monospace;">
+    SSP v4.2 | note_datasci_13.html | データサイエンス入門 第13回<br>
+    S03（スライドPDF）+ S05（AI変換テキスト：hynote.ai）
+  </div>
+
+</main>
+</body>
+</html>
