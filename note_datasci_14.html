@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>データサイエンス入門 第14回 機械学習入門</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f1117; --bg-card: #1e2535; --bg-card2: #16202e; --bg-card3: #111827;
+  --tx: #e2e8f5; --tx-sub: #8a99b8; --tx-muted: #4e5d78;
+  --blue: #5b8dee; --green: #34d399; --yellow: #fbbf24;
+  --purple: #a78bfa; --orange: #fb923c; --red: #f87171; --teal: #2dd4bf;
+  --bdr: #2d3a50; --sidebar: 256px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--tx);font-family:'Noto Sans JP',sans-serif;font-size:15px;line-height:1.8;display:flex}
+
+/* ── SIDEBAR ── */
+#sb{position:fixed;top:0;left:0;width:var(--sidebar);height:100vh;background:var(--bg-card2);border-right:1px solid var(--bdr);overflow-y:auto;padding:20px 0;z-index:100}
+#sb .sb-title{font-size:11px;color:var(--tx-muted);text-transform:uppercase;letter-spacing:.1em;padding:0 16px 10px;border-bottom:1px solid var(--bdr);margin-bottom:10px;font-family:'JetBrains Mono',monospace}
+#sb a{display:block;padding:5px 16px;color:var(--tx-sub);text-decoration:none;font-size:12.5px;line-height:1.45;border-left:2px solid transparent;transition:all .15s}
+#sb a:hover,#sb a.on{color:var(--blue);background:rgba(91,141,238,.08);border-left-color:var(--blue)}
+#sb a.l2{padding-left:26px;font-size:11.5px;color:var(--tx-muted)}
+#sb a.l2:hover,#sb a.l2.on{color:var(--blue)}
+#sb .sb-sep{height:1px;background:var(--bdr);margin:8px 16px}
+
+/* ── MAIN ── */
+#main{margin-left:var(--sidebar);padding:36px 44px;max-width:880px;width:100%}
+
+/* ── PAGE HEADER ── */
+.ph{background:linear-gradient(135deg,#1a2640,#1c2e4a);border:1px solid var(--bdr);border-radius:12px;padding:28px 32px;margin-bottom:28px}
+.ph .chip{display:inline-block;background:rgba(91,141,238,.2);color:var(--blue);font-size:11px;padding:2px 9px;border-radius:20px;margin-bottom:10px;font-family:'JetBrains Mono',monospace}
+.ph h1{font-size:24px;font-weight:700;margin-bottom:6px}
+.ph .meta{color:var(--tx-sub);font-size:13px}
+.ph .meta span{margin-right:14px}
+
+/* ── CARDS ── */
+.card{background:var(--bg-card);border:1px solid var(--bdr);border-radius:10px;padding:22px 26px;margin-bottom:20px}
+.card h2{font-size:17px;font-weight:700;margin-bottom:14px;padding-bottom:9px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:7px}
+.card h3{font-size:14.5px;font-weight:700;color:var(--blue);margin:18px 0 8px}
+.card h4{font-size:13.5px;font-weight:600;color:var(--tx-sub);margin:12px 0 6px}
+.card p{margin-bottom:9px}
+.card ul,.card ol{padding-left:18px;margin-bottom:9px}
+.card li{margin-bottom:4px}
+
+/* ── DEFINITION BOX ── */
+.def{background:rgba(91,141,238,.07);border:1px solid rgba(91,141,238,.25);border-radius:6px;padding:11px 15px;margin:9px 0}
+.def .def-lbl{font-size:10.5px;color:var(--blue);font-family:'JetBrains Mono',monospace;font-weight:600;margin-bottom:3px}
+
+/* ── SUPPLEMENT BLOCKS ── */
+.sa{border-left:3px solid var(--blue);background:rgba(91,141,238,.05);border-radius:0 6px 6px 0;padding:9px 13px;margin:9px 0;font-size:13.5px}
+.se{border-left:3px solid var(--green);background:rgba(52,211,153,.05);border-radius:0 6px 6px 0;padding:9px 13px;margin:9px 0;font-size:13.5px}
+.sw{border-left:3px solid var(--orange);background:rgba(251,146,60,.05);border-radius:0 6px 6px 0;padding:9px 13px;margin:9px 0;font-size:13.5px}
+.si{border-left:3px solid var(--purple);background:rgba(167,139,250,.05);border-radius:0 6px 6px 0;padding:9px 13px;margin:9px 0;font-size:13.5px}
+.sl{font-size:10.5px;font-family:'JetBrains Mono',monospace;font-weight:600;display:block;margin-bottom:3px}
+.sa .sl{color:var(--blue)} .se .sl{color:var(--green)} .sw .sl{color:var(--orange)} .si .sl{color:var(--purple)}
+
+/* ── SOURCE POINTER ── */
+.sp{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--tx-muted);background:rgba(255,255,255,.04);border:1px solid var(--bdr);border-radius:3px;padding:0 4px;margin-left:3px;white-space:nowrap}
+
+/* ── TABLES ── */
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px}
+th{background:rgba(91,141,238,.14);color:var(--blue);padding:7px 11px;text-align:left;border:1px solid var(--bdr);font-weight:600}
+td{padding:6px 11px;border:1px solid var(--bdr);vertical-align:top}
+tr:nth-child(even) td{background:rgba(255,255,255,.015)}
+
+/* ── SVG FIGURE ── */
+.fig{background:var(--bg-card2);border:1px solid var(--bdr);border-radius:8px;padding:14px;margin:14px 0;text-align:center}
+.fig figcaption{font-size:11.5px;color:var(--tx-muted);margin-top:7px;font-family:'JetBrains Mono',monospace}
+
+/* ── FORMULA BOX ── */
+.formula{background:var(--bg-card3);border:1px solid var(--bdr);border-radius:6px;padding:10px 16px;margin:9px 0;font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--yellow);letter-spacing:.02em}
+
+/* ── APPENDIX ── */
+.app{background:var(--bg-card);border:1px solid var(--bdr);border-radius:10px;padding:18px 22px;margin-bottom:14px}
+.app h3{font-size:14.5px;font-weight:700;margin-bottom:12px;padding-bottom:7px;border-bottom:1px solid var(--bdr)}
+.app-A h3{color:var(--yellow)} .app-B h3{color:var(--blue)} .app-C h3{color:var(--orange)}
+.app-D h3{color:var(--green)} .app-E h3{color:var(--red)}
+
+/* ── CHAPTER BADGE ── */
+.ch-badge{display:inline-block;font-size:10.5px;font-family:'JetBrains Mono',monospace;padding:2px 8px;border-radius:4px;margin-left:6px;font-weight:500}
+.ch1{background:rgba(91,141,238,.2);color:var(--blue)}
+.ch2{background:rgba(52,211,153,.2);color:var(--green)}
+.ch3{background:rgba(251,191,36,.2);color:var(--yellow)}
+.ch4{background:rgba(251,146,60,.2);color:var(--orange)}
+
+/* ── HIGHLIGHT ── */
+strong{color:var(--tx);font-weight:600}
+.hl-blue{color:var(--blue)} .hl-green{color:var(--green)} .hl-yellow{color:var(--yellow)}
+
+/* ── CORRECTION TAG ── */
+.corr{font-size:10.5px;font-family:'JetBrains Mono',monospace;color:var(--teal);background:rgba(45,212,191,.1);border:1px solid rgba(45,212,191,.25);border-radius:3px;padding:0 4px;margin:0 2px}
+
+@media(max-width:860px){#sb{display:none}#main{margin-left:0;padding:18px}}
+</style>
+</head>
+<body>
+
+<nav id="sb">
+  <div class="sb-title">📖 目次</div>
+  <a href="#top">第14回の概要</a>
+  <a href="#review">前回の復習</a>
+  <div class="sb-sep"></div>
+  <a href="#ch1">第1章 機械学習の概要</a>
+  <a href="#ch1-def" class="l2">機械学習の定義</a>
+  <a href="#ch1-params" class="l2">パラメータと学習</a>
+  <a href="#ch1-example" class="l2">単回帰分析との対応</a>
+  <a href="#ch1-history" class="l2">歴史と背景</a>
+  <a href="#ch1-ds" class="l2">データサイエンスとの関係</a>
+  <a href="#ch1-types" class="l2">機械学習の3分類</a>
+  <div class="sb-sep"></div>
+  <a href="#ch2">第2章 教師あり/なし学習</a>
+  <a href="#ch2-sup" class="l2">教師あり学習</a>
+  <a href="#ch2-unsup" class="l2">教師なし学習</a>
+  <a href="#ch2-matrix" class="l2">4つの枠組み</a>
+  <a href="#ch2-reg" class="l2">回帰</a>
+  <a href="#ch2-cls" class="l2">クラス分類</a>
+  <a href="#ch2-dim" class="l2">次元圧縮</a>
+  <a href="#ch2-clust" class="l2">クラスタリング</a>
+  <div class="sb-sep"></div>
+  <a href="#ch3">第3章 深層学習</a>
+  <a href="#ch3-neuron" class="l2">ニューロンとNN</a>
+  <a href="#ch3-hist" class="l2">NNの歴史</a>
+  <a href="#ch3-feat" class="l2">深層学習の特徴</a>
+  <a href="#ch3-app" class="l2">活用例</a>
+  <div class="sb-sep"></div>
+  <a href="#ch4">第4章 データ分析事例</a>
+  <a href="#ch4-env" class="l2">実行環境と AutoML</a>
+  <a href="#ch4-demo" class="l2">MNIST デモ</a>
+  <div class="sb-sep"></div>
+  <a href="#appendix">末尾補足 A–E</a>
+</nav>
+
+<main id="main">
+
+<!-- ═══════════════════════════════ HEADER ═════════════════════════════════ -->
+<div class="ph" id="top">
+  <div class="chip">note_datasci_14</div>
+  <h1>第14回　機械学習入門</h1>
+  <div class="meta">
+    <span>📚 データサイエンス入門</span>
+    <span>👩‍🏫 浅田 麻菜</span>
+    <span>🏫 サイバー大学 IT総合学部</span>
+  </div>
+</div>
+
+<!-- ═══════════════ 概要 ══════════════════ -->
+<div class="card">
+  <h2>📋 第14回の概要</h2>
+  <h3>授業構成</h3>
+  <p>第1章 機械学習の概要 → 第2章 教師あり学習・教師なし学習 → 第3章 深層学習 → 第4章 データ分析事例</p>
+  <h3>学習目標（全体）</h3>
+  <ul>
+    <li>機械学習の分類と基本的な手法の概要について説明ができる</li>
+    <li>機械学習の現実世界での利活用方法について説明ができる</li>
+  </ul>
+  <div class="sa"><span class="sl">🔊 音声補足</span>第14回は機械学習入門として、データサイエンスにおける機械学習の位置づけを総合的に学ぶ。第1〜3章で概念・手法を理解し、第4章の実習デモでデータ数の重要性を体感する。<span class="sp">← S05-A, S05-B</span></div>
+</div>
+
+<!-- ═══════════════ 前回復習 ══════════════════ -->
+<div class="card" id="review">
+  <h2>🔄 前回の復習（第13回：画像データと行列計算）</h2>
+  <p><strong>Q. 画像データをデジタルデータ化した場合の特徴について説明してください。</strong></p>
+  <div class="def">
+    <div class="def-lbl">【解答】</div>
+    <ul>
+      <li>画像は<strong>画素（ピクセル）の集合</strong>として表現される。画像を格子状に区切った1マスを「画素」と呼び、各画素に色の値が入ることで画像が構成される。<span class="sp">← S03:p.3</span></li>
+      <li>カラー画像の場合、各画素にRGB（赤・緑・青）の3値を持つため、ベクトルとして表現すると <strong>「画素数 × 3」の巨大なベクトル</strong> になる。<span class="sp">← S03:p.3</span></li>
+      <li>そのため画像データの分析は非常に困難であり、さまざまな工夫が必要となる。</li>
+    </ul>
+  </div>
+  <div class="sa"><span class="sl">🔊 音声補足</span>前回の内容に自信がない場合は第13回のノートで復習すること。この「巨大なベクトル問題」が、後で学ぶ次元圧縮や深層学習の必要性につながる重要な伏線。<span class="sp">← S05-A</span></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     第1章
+══════════════════════════════════════════════════ -->
+<div class="card" id="ch1">
+  <h2>📘 第1章　機械学習の概要 <span class="ch-badge ch1">Ch.1</span></h2>
+  <h3>第1章の学習目標</h3>
+  <ul>
+    <li>機械学習の基本的な方法について説明ができる</li>
+    <li>機械学習の分類と違いについて説明ができる</li>
+  </ul>
+</div>
+
+<!-- 機械学習の定義 -->
+<div class="card" id="ch1-def">
+  <h2>🔍 機械学習とは <span class="ch-badge ch1">Ch.1</span></h2>
+  <div class="def">
+    <div class="def-lbl">【定義】（統計的）機械学習</div>
+    <p><strong>データから判断の根拠となる「ルール」を統計的な方法（＝数式）で作る過程。</strong><br>
+    ルールは多数のパラメータで構成される。機械学習は人工知能研究の一分野である。</p>
+  </div>
+  <div class="sa"><span class="sl">🔊 音声補足</span>「統計的」＝「数式で表す」という意味。正確には「統計的機械学習」と呼ぶ。<span class="sp">← S05-A, S05-B</span></div>
+  <div class="se"><span class="sl">🌐 外部補足</span>「人工知能（AI）」は定義が定まっていない言葉だが、基本的には「人間が行っているようなことを機械にやらせようとする研究分野」を指す。将棋AIはチェス・将棋に特化しており、ケーキを識別する用途には答えられない。適切なデータで訓練して初めてタスクをこなせるようになる。<span class="sp">← S03:p.8, S05-A</span></div>
+</div>
+
+<!-- パラメータと学習 -->
+<div class="card" id="ch1-params">
+  <h2>⚙️ パラメータと学習 <span class="ch-badge ch1">Ch.1</span></h2>
+  <div class="def">
+    <div class="def-lbl">【定義】パラメータ</div>
+    <p>ルールを構成する個々の変数。例：チョコレートケーキを判断するルールには「形状パラメータ（三角柱・四角・円…）」「色パラメータ（白・黒・赤・茶…）」などが含まれる。</p>
+  </div>
+  <div class="def">
+    <div class="def-lbl">【定義】学習</div>
+    <p>各パラメータの値を、<strong>データを基に変化させていく過程</strong>。人間の「学習」とは意味が異なる点に注意。</p>
+  </div>
+  <div class="sa"><span class="sl">🔊 音声補足</span>チョコレートケーキの例：形状パラメータに「三角柱」、色パラメータに「茶色」が正解として与えられ、それをデータから順に教え込んでいく過程が「学習」。<span class="sp">← S05-A, S03:p.11-13</span></div>
+</div>
+
+<!-- 単回帰との対応 -->
+<div class="card" id="ch1-example">
+  <h2>📐 具体例：単回帰分析で機械学習を理解する <span class="ch-badge ch1">Ch.1</span></h2>
+  <div class="sa"><span class="sl">🔊 音声補足</span>第9回で学んだ単回帰分析も機械学習の一種として捉えることができる。<span class="sp">← S05-A, S05-B</span></div>
+  <table>
+    <thead><tr><th>機械学習の概念</th><th>単回帰分析での対応物</th></tr></thead>
+    <tbody>
+      <tr><td>判断の根拠となるルール</td><td>一次関数（直線）</td></tr>
+      <tr><td>ルールに含まれるパラメータ</td><td>傾き <em>a</em>、y切片 <em>b</em></td></tr>
+      <tr><td>学習方法（パラメータを決める方法）</td><td>最小二乗法</td></tr>
+    </tbody>
+  </table>
+  <div class="formula">来客数 = 広告額 × 0.5 + 45</div>
+  <p style="font-size:13px;color:var(--tx-sub)">← 傾き 0.5、y切片 45 が最小二乗法で求まった例　<span class="sp">← S03:p.14-15</span></p>
+  <div class="sw"><span class="sl">⚠️ 注意</span>S05-B では「y接辺が40」と誤変換されているが、スライドの図（S03:p.14）より <strong>y切片＝45、傾き＝0.5</strong> が正しい。<span class="corr">誤変換修正済み</span></div>
+</div>
+
+<!-- 歴史 -->
+<div class="card" id="ch1-history">
+  <h2>📅 機械学習の歴史 <span class="ch-badge ch1">Ch.1</span></h2>
+  <table>
+    <thead><tr><th>時期</th><th>出来事</th></tr></thead>
+    <tbody>
+      <tr><td><strong>1950年代〜</strong></td><td>機械学習の概念が既に存在していた（70年以上前から）</td></tr>
+      <tr><td><strong>1959年</strong></td><td>Arthur Samuel がチェッカーゲームに機械学習を適用<br><small style="color:var(--tx-muted)">出典：A. L. Samuel, IBM Journal of Research and Development, vol.3, no.3, pp.210-229 (1959)</small></td></tr>
+      <tr><td><strong>2000年代中頃〜</strong></td><td><strong>第三次人工知能ブーム</strong>：深層学習による画像認識性能の飛躍的向上が牽引。画像処理・自然言語処理・ゲーム・音声認識など多分野に拡大</td></tr>
+    </tbody>
+  </table>
+  <div class="sa"><span class="sl">🔊 音声補足</span>機械学習は最近の技術ではなく1950年代から存在していた。メディアで頻繁に取り上げられるようになったのは第三次AIブーム以降のこと。<span class="sp">← S05-A, S05-B</span></div>
+  <span class="sp">← S03:p.17</span>
+</div>
+
+<!-- データサイエンスとの関係 -->
+<div class="card" id="ch1-ds">
+  <h2>🔗 データサイエンスと機械学習の関係 <span class="ch-badge ch1">Ch.1</span></h2>
+  <div class="def">
+    <div class="def-lbl">【定義】データサイエンスにおける機械学習の位置づけ</div>
+    <p>機械学習はデータ解析をする際の<strong>選択肢の一つ</strong>。分析の目的・データ数（標本数）等に応じて、統計学の方法と機械学習の方法を使い分ける。</p>
+  </div>
+  <h3>統計学の方法 vs 機械学習の方法</h3>
+  <table>
+    <thead><tr><th>比較項目</th><th>統計学の方法</th><th>機械学習の方法</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>必要なデータ数</strong></td>
+        <td>比較的少なくてよい<br>例：t検定では<strong>自由度 30 程度</strong>（データ数約30個）で正規分布に近似できる <span class="sp">← S05-A</span><br><span class="corr">S05-Bの「重度」→「自由度」に修正</span></td>
+        <td>多くのデータが必要<br>最低でも <strong>500件程度</strong>、場合によっては <strong>1万〜2万件</strong> 以上<span class="sp">← S05-A, S05-B</span></td>
+      </tr>
+      <tr>
+        <td><strong>結果の解釈性<br>（説明可能性）</strong></td>
+        <td>比較的高い<br>なぜその結果になったか理解しやすい</td>
+        <td>低い傾向（<strong>特にニューラルネットワーク</strong>使用時に顕著）<br>解析結果の理由が不明確になりやすい<span class="sp">← S03:p.18</span></td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="sa"><span class="sl">🔊 音声補足</span>どちらが優れているということではなく、目的やデータ数によって使い分けることがデータサイエンスの立場。解釈性が重要な場面では統計学、精度・性能が優先される場面では機械学習、という使い分けが基本。<span class="sp">← S05-A, S05-B</span></div>
+  <div class="se"><span class="sl">🌐 外部補足</span>「解釈性（説明可能性）」は英語で Interpretability / Explainability と表記される。AI倫理の観点から重要性が増しており、XAI（Explainable AI：説明可能なAI）という研究分野が生まれている。</div>
+</div>
+
+<!-- 3分類 -->
+<div class="card" id="ch1-types">
+  <h2>🗂️ 機械学習の3分類 <span class="ch-badge ch1">Ch.1</span></h2>
+
+  <div class="fig">
+    <svg viewBox="0 0 700 210" xmlns="http://www.w3.org/2000/svg" style="max-width:100%">
+      <!-- supervised -->
+      <rect x="15" y="15" width="210" height="180" rx="8" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="120" y="44" text-anchor="middle" fill="#5b8dee" font-size="14" font-weight="bold" font-family="sans-serif">教師あり学習</text>
+      <line x1="35" y1="55" x2="205" y2="55" stroke="#2d3a50"/>
+      <text x="120" y="78" text-anchor="middle" fill="#8a99b8" font-size="11.5" font-family="sans-serif">分類情報（ラベル）を含む</text>
+      <text x="120" y="96" text-anchor="middle" fill="#8a99b8" font-size="11.5" font-family="sans-serif">データを使用して学習</text>
+      <rect x="50" y="115" width="140" height="26" rx="4" fill="rgba(91,141,238,.18)" stroke="rgba(91,141,238,.35)"/>
+      <text x="120" y="132" text-anchor="middle" fill="#5b8dee" font-size="12" font-family="sans-serif">例：クラス分類・回帰</text>
+      <text x="120" y="166" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="sans-serif">入力データに正解ラベルあり</text>
+      <!-- unsupervised -->
+      <rect x="245" y="15" width="210" height="180" rx="8" fill="#1e2535" stroke="#34d399" stroke-width="1.5"/>
+      <text x="350" y="44" text-anchor="middle" fill="#34d399" font-size="14" font-weight="bold" font-family="sans-serif">教師なし学習</text>
+      <line x1="265" y1="55" x2="435" y2="55" stroke="#2d3a50"/>
+      <text x="350" y="78" text-anchor="middle" fill="#8a99b8" font-size="11.5" font-family="sans-serif">分類情報（ラベル）を含まない</text>
+      <text x="350" y="96" text-anchor="middle" fill="#8a99b8" font-size="11.5" font-family="sans-serif">データを使用して学習</text>
+      <rect x="280" y="115" width="140" height="26" rx="4" fill="rgba(52,211,153,.18)" stroke="rgba(52,211,153,.35)"/>
+      <text x="350" y="132" text-anchor="middle" fill="#34d399" font-size="12" font-family="sans-serif">例：クラスタリング</text>
+      <text x="350" y="166" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="sans-serif">入力データに正解ラベルなし</text>
+      <!-- reinforcement -->
+      <rect x="475" y="15" width="210" height="180" rx="8" fill="#1e2535" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="580" y="44" text-anchor="middle" fill="#fbbf24" font-size="14" font-weight="bold" font-family="sans-serif">強化学習</text>
+      <line x1="495" y1="55" x2="665" y2="55" stroke="#2d3a50"/>
+      <text x="580" y="78" text-anchor="middle" fill="#8a99b8" font-size="11.5" font-family="sans-serif">問題に対し試行錯誤し</text>
+      <text x="580" y="96" text-anchor="middle" fill="#8a99b8" font-size="11.5" font-family="sans-serif">最適な行動を学習</text>
+      <rect x="510" y="115" width="140" height="26" rx="4" fill="rgba(251,191,36,.18)" stroke="rgba(251,191,36,.35)"/>
+      <text x="580" y="132" text-anchor="middle" fill="#fbbf24" font-size="12" font-family="sans-serif">例：ゲームAI・自動運転</text>
+      <text x="580" y="166" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="sans-serif">報酬スコアで行動を最適化</text>
+    </svg>
+    <figcaption>図：機械学習の3分類　← S03:p.19-23</figcaption>
+  </div>
+
+  <div class="sa"><span class="sl">🔊 音声補足</span>教師あり学習と教師なし学習の違いは「入力データにラベル（正解データ）が含まれているかどうか」。データサイエンスでは主に教師あり学習と教師なし学習を使う。強化学習はゲームAIや自動運転で使われるが、データサイエンスの文脈では比較的使用頻度が低い。<span class="sp">← S05-A, S05-B, S03:p.23</span></div>
+  <div class="sa"><span class="sl">🔊 音声補足（強化学習の具体例）</span>自動運転の例：「信号が青 → +10点、歩行者がいる → −100点」のようにスコアを設定し、シミュレーションを繰り返しながら最適な行動を学習する。<span class="sp">← S05-A, S05-B</span></div>
+
+  <h3>深層学習の位置づけ（第3章で詳述）</h3>
+  <div class="def">
+    <div class="def-lbl">【定義】深層学習（ディープラーニング）</div>
+    <p><strong>ニューラルネットワークを用いた機械学習手法の総称。</strong>教師あり・教師なし・強化学習すべての分類に適用可能。<span class="sp">← S03:p.24</span></p>
+  </div>
+
+  <h3>第1章まとめ</h3>
+  <table>
+    <thead><tr><th>学習目標</th><th>要点</th></tr></thead>
+    <tbody>
+      <tr><td>機械学習の基本的な方法</td><td>データから統計的方法でルールを作る。学習＝パラメータ値をデータで更新すること（≠人間の学習）</td></tr>
+      <tr><td>機械学習の分類と違い</td><td>教師あり・教師なし・強化学習の3分類。違いはラベルの有無（教師あり/なし）および学習方式（強化）</td></tr>
+    </tbody>
+  </table>
+  <span class="sp">← S03:p.25</span>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     第2章
+══════════════════════════════════════════════════ -->
+<div class="card" id="ch2">
+  <h2>📗 第2章　教師あり学習・教師なし学習 <span class="ch-badge ch2">Ch.2</span></h2>
+  <h3>第2章の学習目標</h3>
+  <p>教師あり学習・教師なし学習の枠組みと活用例について説明ができる。<span class="sp">← S03:p.28</span></p>
+</div>
+
+<div class="card" id="ch2-sup">
+  <h2>🎯 教師あり学習 <span class="ch-badge ch2">Ch.2</span></h2>
+  <div class="def">
+    <div class="def-lbl">【定義】教師あり学習</div>
+    <p>各入力データに対応する出力データ（＝ラベル・正解データ）を与えて学習する方法。<strong>入力データと出力データの関係性を関数として学習する。</strong></p>
+  </div>
+  <div class="sa"><span class="sl">🔊 音声補足</span>チョコレートケーキの識別例：入力データ＝ケーキの画像、出力データ＝「チョコケーキ」というラベル。この関係性を数式（関数）で表現するのが教師あり学習の目的。<span class="sp">← S05-A, S05-B, S03:p.29</span></div>
+</div>
+
+<div class="card" id="ch2-unsup">
+  <h2>🔓 教師なし学習 <span class="ch-badge ch2">Ch.2</span></h2>
+  <div class="def">
+    <div class="def-lbl">【定義】教師なし学習</div>
+    <p>入力データのみを与えて、「意味のありそうな」データを出力する方法。出力データ（正解ラベル）は与えない。</p>
+  </div>
+  <div class="sa"><span class="sl">🔊 音声補足</span>チョコケーキとチーズケーキの例：「チョコ」「チーズ」というラベルを付けずに画像だけを与えると、機械が似た者同士をグループ化してくれる。どのグループが何を意味するかは分析者が解釈しなければならない。<span class="sp">← S05-A, S05-B, S03:p.30</span></div>
+</div>
+
+<div class="card" id="ch2-matrix">
+  <h2>📊 4つの枠組み：連続値 vs 離散値 <span class="ch-badge ch2">Ch.2</span></h2>
+  <div class="def">
+    <div class="def-lbl">【定義】連続値</div>
+    <p>連続した値。例：売上1,000円・1,200円・1,300円…、テストの点数0〜100点</p>
+  </div>
+  <div class="def">
+    <div class="def-lbl">【定義】離散値</div>
+    <p>とびとびの値。例：合格(1)／不合格(0)、野菜(1)／果物(2)／加工食品(3)</p>
+  </div>
+  <div class="sw"><span class="sl">⚠️ 注意：誤変換について</span>S05-A では「遺産値・理産値」、S05-B では「利算値・地産値・理産値」と誤変換されているが、すべて<strong>「離散値」</strong>が正しい。スライド S03:p.31 で確認済み。<span class="corr">誤変換修正済み</span></div>
+
+  <div class="fig">
+    <svg viewBox="0 0 660 185" xmlns="http://www.w3.org/2000/svg" style="max-width:100%">
+      <rect x="0" y="0" width="660" height="185" rx="6" fill="#16202e"/>
+      <!-- Col headers -->
+      <rect x="155" y="10" width="235" height="34" rx="4" fill="rgba(91,141,238,.2)"/>
+      <text x="272" y="32" text-anchor="middle" fill="#5b8dee" font-size="13" font-weight="bold" font-family="sans-serif">教師あり学習</text>
+      <rect x="398" y="10" width="252" height="34" rx="4" fill="rgba(52,211,153,.2)"/>
+      <text x="524" y="32" text-anchor="middle" fill="#34d399" font-size="13" font-weight="bold" font-family="sans-serif">教師なし学習</text>
+      <!-- Row headers -->
+      <rect x="10" y="54" width="135" height="52" rx="4" fill="rgba(255,255,255,.04)"/>
+      <text x="77" y="81" text-anchor="middle" fill="#8a99b8" font-size="12" font-family="sans-serif">連続値を出力</text>
+      <rect x="10" y="114" width="135" height="52" rx="4" fill="rgba(255,255,255,.04)"/>
+      <text x="77" y="141" text-anchor="middle" fill="#8a99b8" font-size="12" font-family="sans-serif">離散値を出力</text>
+      <!-- Cells -->
+      <rect x="155" y="54" width="235" height="52" rx="4" fill="rgba(91,141,238,.1)" stroke="rgba(91,141,238,.22)" stroke-width="1"/>
+      <text x="272" y="75" text-anchor="middle" fill="#e2e8f5" font-size="15" font-weight="bold" font-family="sans-serif">回帰</text>
+      <text x="272" y="95" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="sans-serif">売上予測・健康度数値化 など</text>
+      <rect x="398" y="54" width="252" height="52" rx="4" fill="rgba(52,211,153,.1)" stroke="rgba(52,211,153,.22)" stroke-width="1"/>
+      <text x="524" y="75" text-anchor="middle" fill="#e2e8f5" font-size="15" font-weight="bold" font-family="sans-serif">次元圧縮（次元削減）</text>
+      <text x="524" y="95" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="sans-serif">PCA・t-SNE など</text>
+      <rect x="155" y="114" width="235" height="52" rx="4" fill="rgba(91,141,238,.1)" stroke="rgba(91,141,238,.22)" stroke-width="1"/>
+      <text x="272" y="135" text-anchor="middle" fill="#e2e8f5" font-size="15" font-weight="bold" font-family="sans-serif">クラス分類</text>
+      <text x="272" y="155" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="sans-serif">パターン認識・購買予測 など</text>
+      <rect x="398" y="114" width="252" height="52" rx="4" fill="rgba(52,211,153,.1)" stroke="rgba(52,211,153,.22)" stroke-width="1"/>
+      <text x="524" y="135" text-anchor="middle" fill="#e2e8f5" font-size="15" font-weight="bold" font-family="sans-serif">クラスタリング</text>
+      <text x="524" y="155" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="sans-serif">異常検知・グループ化 など</text>
+    </svg>
+    <figcaption>図：教師あり/なし × 連続値/離散値の4分類　← S03:p.31</figcaption>
+  </div>
+  <div class="sw"><span class="sl">⚠️ 補足</span>ロジスティック回帰・プロビット回帰など、「回帰」と名が付いても<strong>離散値を出力する</strong>特別な回帰手法もある。「回帰＝連続値のみ」ではないことに注意。<span class="sp">← S03:p.32, S05-A</span></div>
+</div>
+
+<!-- 回帰 -->
+<div class="card" id="ch2-reg">
+  <h2>📈 回帰 <span class="ch-badge ch2">Ch.2</span></h2>
+  <div class="def">
+    <div class="def-lbl">【定義】回帰</div>
+    <p>複数の説明変数間の関係性を学習する方法（教師あり学習・連続値出力）。</p>
+  </div>
+  <table>
+    <thead><tr><th>手法</th><th>数式</th><th>特徴</th></tr></thead>
+    <tbody>
+      <tr><td><strong>単回帰分析</strong>（第9回）</td><td><code>y = ax + b</code></td><td>説明変数1個</td></tr>
+      <tr><td><strong>重回帰分析</strong></td><td><code>y = a₁x₁ + a₂x₂ + … + aₙxₙ + b</code></td><td>説明変数n個。人間が理解できなくても予測性能が良い場合がある</td></tr>
+    </tbody>
+  </table>
+  <div class="sa"><span class="sl">🔊 音声補足</span>重回帰分析では、売上予測の例なら「その日の気温・天気・来客数・曜日」などを複数の説明変数として同時に扱える。説明変数が2〜3個なら人間も理解できるが、1万個では理由の説明は困難。それでも予測性能が良い場合があるのが機械学習の特徴。<span class="sp">← S05-A, S05-B</span></div>
+  <div class="sw"><span class="sl">⚠️ 誤変換注意</span>S05-A では「中回帰分析・十回帰分析・3回帰分析」と誤変換されているが、すべて<strong>「重回帰分析」</strong>が正しい。S03:p.32 で確認済み。<span class="corr">誤変換修正済み</span></div>
+  <h4>回帰分析の活用例 <span class="sp">← S03:p.33</span></h4>
+  <ul>
+    <li>小売業：商品の需要予測、広告効果の検証</li>
+    <li>金融業：顧客の信用情報の数値化</li>
+    <li>医療：健康診断の各項目から健康度を数値化し、健康度が低い人に保健指導を実施</li>
+  </ul>
+  <div class="sa"><span class="sl">🔊 音声補足</span>回帰分析は方法がシンプルなため幅広い分野で活用可能で、かつ比較的判断理由を理解しやすい（解釈性が高い）という特徴がある。<span class="sp">← S05-A</span></div>
+</div>
+
+<!-- クラス分類 -->
+<div class="card" id="ch2-cls">
+  <h2>🏷️ クラス分類 <span class="ch-badge ch2">Ch.2</span></h2>
+  <div class="def">
+    <div class="def-lbl">【定義】クラス分類</div>
+    <p>出力データとして与えられたクラスに対して、説明変数間の関係を学習する方法（教師あり学習・離散値出力）。Yes/No、犬/猫/トラ など複数クラスも可。</p>
+  </div>
+  <div class="sw"><span class="sl">⚠️ 誤変換注意</span>S05-A では「プラス分類・クラスボルン」と誤変換されているが、すべて<strong>「クラス分類」</strong>が正しい。S03:p.34 で確認済み。<span class="corr">誤変換修正済み</span></div>
+  <div class="sa"><span class="sl">🔊 音声補足</span>第10回で学んだクラス分類がこれにあたる。決定木は解釈性が高いクラス分類の手法の一つ。<span class="sp">← S05-A, S05-B</span></div>
+  <h4>活用例 ①：非構造化データ <span class="sp">← S03:p.35</span></h4>
+  <ul>
+    <li><strong>画像のパターン認識</strong>：顔認識・物体認識・行動認識・医療画像診断</li>
+    <li>音声認識・文字認識・文章のトピック認識</li>
+    <li>例：「迷惑メール」報告からパターンを学習し自動分類</li>
+  </ul>
+  <h4>活用例 ②：構造化データ <span class="sp">← S03:p.36</span></h4>
+  <ul>
+    <li><strong>購買予測</strong>：顧客の属性情報から購入可否を予測</li>
+    <li><strong>解約予測</strong>：顧客の属性からサービス解約の可能性を予測</li>
+    <li><strong>新商品の分類</strong>：過去商品の分類データの特徴を基に新製品のカテゴリを決定</li>
+  </ul>
+</div>
+
+<!-- 次元圧縮 -->
+<div class="card" id="ch2-dim">
+  <h2>🗜️ 次元圧縮（次元削減） <span class="ch-badge ch2">Ch.2</span></h2>
+  <div class="def">
+    <div class="def-lbl">【定義】次元圧縮（次元削減）</div>
+    <p>高次元の入力データを、本質的に同値の低次元のデータに変換する機械学習の方法（教師なし学習・連続値出力）。</p>
+  </div>
+  <div class="sw"><span class="sl">⚠️ 誤変換注意</span>S05-A では「次元波縮・次元発色」と誤変換されているが、<strong>「次元圧縮」</strong>が正しい。S03:p.37 で確認済み。<span class="corr">誤変換修正済み</span></div>
+  <h4>主な分析手法 <span class="sp">← S03:p.37</span></h4>
+  <ul>
+    <li><strong>主成分分析（PCA：Principal Component Analysis）</strong>・独立成分分析：線形データに対して有効</li>
+    <li><strong>t-SNE（t-distributed Stochastic Neighbor Embedding）</strong>：非線形データに対して有効</li>
+  </ul>
+  <h4>PCAの例：ケーキデータ</h4>
+  <div class="sa"><span class="sl">🔊 音声補足</span>ケーキの「金額・売上・糖質・タンパク質…」という多数の特徴量を PCA にかけると、「第1主成分」「第2主成分」という2つの数値にまとめられる。ただしなぜそのようにまとめられたかは機械が自動で決めており、「第1主成分はケーキの人気度を表している」「第2主成分は甘さを表している」といった解釈は<strong>分析者自身が判断しなければならない</strong>。<span class="sp">← S05-A, S05-B, S03:p.38</span></div>
+  <div class="se"><span class="sl">🌐 外部補足</span>PCA は元の多次元データを「分散が最大になる方向」に射影することで次元を削減する手法。情報の損失を最小化しながらデータを圧縮でき、可視化や前処理として広く使われる。</div>
+</div>
+
+<!-- クラスタリング -->
+<div class="card" id="ch2-clust">
+  <h2>🔵 クラスタリング <span class="ch-badge ch2">Ch.2</span></h2>
+  <div class="def">
+    <div class="def-lbl">【定義】クラスタリング</div>
+    <p>入力データ間の類似度から、データをグループ化（グルーピング）する方法（教師なし学習・離散値出力）。類似度の指標としてデータ間の距離（ユークリッド距離など）を用いる。</p>
+  </div>
+  <div class="sa"><span class="sl">🔊 音声補足</span>第10回で学んだ。AグループとBグループに分けることはできるが、「AとBがそれぞれ何を意味するか」は分析者が解釈しなければならない。次元圧縮と同じ問題。<span class="sp">← S05-A, S05-B</span></div>
+  <h3>クラスタリングの応用：異常検知（異常検出）</h3>
+  <div class="def">
+    <div class="def-lbl">【定義】異常検知（異常検出）</div>
+    <p>過去のデータから形成されたクラスターの範囲から外れているデータを「異常」として検出する方法。クラスターに名前が付いていなくても「この範囲から離れている」という情報だけで異常を検知できる点が強み。<span class="sp">← S03:p.39</span></p>
+  </div>
+  <div class="sa"><span class="sl">🔊 音声補足</span>活用例：自動車の異常な動きから飲酒運転を発見。各クラスターに名前が不要なのが異常検知の強み。<span class="sp">← S05-A, S05-B</span></div>
+
+  <h3>第2章まとめ <span class="sp">← S03:p.40</span></h3>
+  <table>
+    <thead><tr><th>手法</th><th>分類</th><th>活用の方向性</th></tr></thead>
+    <tbody>
+      <tr><td><strong>回帰</strong></td><td>教師あり・連続値</td><td>過去データを用いた予測。解釈性が高く活用範囲が広い</td></tr>
+      <tr><td><strong>クラス分類</strong></td><td>教師あり・離散値</td><td>非構造化データのパターン認識で広く活用</td></tr>
+      <tr><td><strong>次元圧縮</strong></td><td>教師なし・連続値</td><td>高次元データを低次元にしてデータを要約・解釈しやすくする</td></tr>
+      <tr><td><strong>クラスタリング</strong></td><td>教師なし・離散値</td><td>データをグループ化。異常検知としても活用可能</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     第3章
+══════════════════════════════════════════════════ -->
+<div class="card" id="ch3">
+  <h2>📙 第3章　深層学習 <span class="ch-badge ch3">Ch.3</span></h2>
+  <h3>第3章の学習目標</h3>
+  <ul>
+    <li>ニューラルネットワークの概要について説明ができる</li>
+    <li>深層学習の特徴と活用例について説明ができる</li>
+  </ul>
+  <span class="sp">← S03:p.43</span>
+</div>
+
+<div class="card" id="ch3-neuron">
+  <h2>🧠 ニューロンとニューラルネットワーク <span class="ch-badge ch3">Ch.3</span></h2>
+  <div class="def">
+    <div class="def-lbl">【定義】ニューロン（神経細胞）</div>
+    <p>脳の最小単位。人間の脳には約<strong>1,000億個</strong>のニューロンがあり、これらがネットワークを構成して情報処理を行っている。<span class="sp">← S03:p.44</span></p>
+  </div>
+  <div class="def">
+    <div class="def-lbl">【定義】ニューラルネットワーク（Neural Network）</div>
+    <p>脳内の神経細胞ネットワークから着想を得て、これをコンピュータ上で人工的に再現したもの。細胞から細胞に情報が次々に伝わることを数学（数式）で表現した計算モデル。<span class="sp">← S03:p.45</span></p>
+  </div>
+  <div class="sw"><span class="sl">⚠️ 誤変換注意</span>S05-A/B では「ユーラル・ムーラル・デューラル・ニブルアリメント」など多数の誤変換がある。すべて<strong>「ニューラル」</strong>が正しい。<span class="corr">誤変換修正済み</span></div>
+  <div class="sa"><span class="sl">🔊 音声補足（画像認識のイメージ）</span>NNに「白色細胞・茶色細胞・チョコ細胞・果物細胞」などが存在するとする。ショートケーキの画像を入力すると「白色細胞」と「果物細胞」が発火 → 「ショートケーキ細胞」が発火 → ショートケーキと判断。チョコケーキなら「茶色細胞」と「チョコ細胞」が発火 → 「チョコケーキ細胞」が発火。このように<strong>細胞の発火パターンで認識を行う</strong>。<span class="sp">← S05-A, S05-B, S03:p.49-51</span></div>
+  <h4>ニューラルネットワークの学習イメージ <span class="sp">← S03:p.52</span></h4>
+  <p>① 全ての細胞間が接続された状態（全結合）からスタート<br>
+  ② 出力結果と正解との誤差を基に、<strong>不適切な結合を弱める</strong>（誤差逆伝播法 / バックプロパゲーション）<br>
+  ③ これを繰り返すことで認識に必要な結合だけが残り完成</p>
+  <div class="se"><span class="sl">🌐 外部補足</span>誤差逆伝播法（Back Propagation）：出力層の誤差を出力層→入力層方向に逆伝播させ、各重みパラメータの更新量を計算するアルゴリズム。1986年の多層パーセプトロンとともに広く普及した。</div>
+</div>
+
+<div class="card" id="ch3-hist">
+  <h2>📅 ニューラルネットワークの歴史 <span class="ch-badge ch3">Ch.3</span></h2>
+  <table>
+    <thead><tr><th>時期</th><th>出来事</th><th>構造・ポイント</th></tr></thead>
+    <tbody>
+      <tr><td><strong>1940年代〜</strong></td><td>ニューロンのモデル化研究開始</td><td>ニューロンを数学で表そうとする試みが始まる</td></tr>
+      <tr><td><strong>1957年</strong></td><td><strong>パーセプトロン</strong>（Rosenblatt）提案</td><td>入力層＋出力層の<strong>2層</strong>NN。2クラス分類が可能に</td></tr>
+      <tr><td>1960〜70年代</td><td>NNの研究が停滞</td><td>パーセプトロンでは表現できない問題（XOR問題等）が指摘され研究が下火に</td></tr>
+      <tr><td><strong>1986年</strong></td><td><strong>多層パーセプトロン</strong>提案（Rumelhart et al.）<br>誤差逆伝播法の導入</td><td>入力層＋<strong>中間層（隠れ層）</strong>＋出力層の3層以上。より複雑な問題に対応可能に</td></tr>
+      <tr><td><strong>2010年代〜</strong></td><td><strong>深層学習</strong>が第三次AIブームを牽引</td><td><strong>一般に4層以上</strong>のNN。画像認識で大成功。中間層の多層化により高度な処理が可能に</td></tr>
+    </tbody>
+  </table>
+  <div class="sa"><span class="sl">🔊 音声補足</span>現在の深層学習で使われるニューラルネットワークは、元々の脳モデルとは全く異なるものに進化している。「脳から着想を得た」というのが起源であり、実態は独自の計算モデル。<span class="sp">← S05-A, S05-B</span></div>
+  <span class="sp">← S03:p.46-48</span>
+
+  <h4>パーセプトロン → 多層パーセプトロン → 深層学習の構造変化</h4>
+  <div class="fig">
+    <svg viewBox="0 0 680 140" xmlns="http://www.w3.org/2000/svg" style="max-width:100%">
+      <!-- Perceptron -->
+      <rect x="10" y="10" width="185" height="120" rx="6" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="103" y="33" text-anchor="middle" fill="#5b8dee" font-size="12" font-weight="bold" font-family="sans-serif">パーセプトロン（1957）</text>
+      <text x="103" y="50" text-anchor="middle" fill="#8a99b8" font-size="10.5" font-family="sans-serif">2層（入力層＋出力層）</text>
+      <!-- nodes -->
+      <circle cx="55" cy="85" r="11" fill="none" stroke="#5b8dee" stroke-width="1.5"/>
+      <circle cx="55" cy="107" r="11" fill="none" stroke="#5b8dee" stroke-width="1.5"/>
+      <circle cx="150" cy="95" r="11" fill="none" stroke="#fbbf24" stroke-width="1.5"/>
+      <line x1="66" y1="85" x2="139" y2="95" stroke="#5b8dee" stroke-width="1"/>
+      <line x1="66" y1="107" x2="139" y2="95" stroke="#5b8dee" stroke-width="1"/>
+      <text x="40" y="73" fill="#8a99b8" font-size="10" font-family="sans-serif">入力層</text>
+      <text x="132" y="73" fill="#8a99b8" font-size="10" font-family="sans-serif">出力層</text>
+      <!-- arrow -->
+      <text x="207" y="78" fill="#34d399" font-size="20" font-family="sans-serif">→</text>
+      <!-- Multi-layer -->
+      <rect x="230" y="10" width="200" height="120" rx="6" fill="#1e2535" stroke="#34d399" stroke-width="1.5"/>
+      <text x="330" y="33" text-anchor="middle" fill="#34d399" font-size="12" font-weight="bold" font-family="sans-serif">多層パーセプトロン（1986）</text>
+      <text x="330" y="50" text-anchor="middle" fill="#8a99b8" font-size="10.5" font-family="sans-serif">3層（中間層を追加）</text>
+      <circle cx="268" cy="85" r="10" fill="none" stroke="#34d399" stroke-width="1.5"/>
+      <circle cx="268" cy="107" r="10" fill="none" stroke="#34d399" stroke-width="1.5"/>
+      <circle cx="330" cy="95" r="10" fill="none" stroke="#a78bfa" stroke-width="1.5"/>
+      <circle cx="392" cy="95" r="10" fill="none" stroke="#fbbf24" stroke-width="1.5"/>
+      <line x1="278" y1="85" x2="320" y2="95" stroke="#34d399" stroke-width="1"/>
+      <line x1="278" y1="107" x2="320" y2="95" stroke="#34d399" stroke-width="1"/>
+      <line x1="340" y1="95" x2="382" y2="95" stroke="#a78bfa" stroke-width="1"/>
+      <text x="318" y="73" fill="#a78bfa" font-size="10" font-family="sans-serif">中間層</text>
+      <!-- arrow -->
+      <text x="443" y="78" fill="#fbbf24" font-size="20" font-family="sans-serif">→</text>
+      <!-- Deep -->
+      <rect x="463" y="10" width="207" height="120" rx="6" fill="#1e2535" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="567" y="33" text-anchor="middle" fill="#fbbf24" font-size="12" font-weight="bold" font-family="sans-serif">深層学習（4層以上）</text>
+      <text x="567" y="50" text-anchor="middle" fill="#8a99b8" font-size="10.5" font-family="sans-serif">中間層を多層化</text>
+      <circle cx="490" cy="85" r="9" fill="none" stroke="#fbbf24" stroke-width="1.5"/>
+      <circle cx="490" cy="107" r="9" fill="none" stroke="#fbbf24" stroke-width="1.5"/>
+      <circle cx="524" cy="95" r="9" fill="none" stroke="#a78bfa" stroke-width="1.5"/>
+      <circle cx="551" cy="95" r="9" fill="none" stroke="#a78bfa" stroke-width="1.5"/>
+      <circle cx="578" cy="95" r="9" fill="none" stroke="#a78bfa" stroke-width="1.5"/>
+      <circle cx="605" cy="95" r="9" fill="none" stroke="#a78bfa" stroke-width="1.5"/>
+      <circle cx="645" cy="95" r="9" fill="none" stroke="#34d399" stroke-width="1.5"/>
+      <line x1="499" y1="85" x2="515" y2="95" stroke="#fbbf24" stroke-width="1"/>
+      <line x1="499" y1="107" x2="515" y2="95" stroke="#fbbf24" stroke-width="1"/>
+      <line x1="533" y1="95" x2="542" y2="95" stroke="#a78bfa" stroke-width="1"/>
+      <line x1="560" y1="95" x2="569" y2="95" stroke="#a78bfa" stroke-width="1"/>
+      <line x1="587" y1="95" x2="596" y2="95" stroke="#a78bfa" stroke-width="1"/>
+      <line x1="614" y1="95" x2="636" y2="95" stroke="#34d399" stroke-width="1"/>
+      <text x="560" y="118" text-anchor="middle" fill="#a78bfa" font-size="10" font-family="sans-serif">中間層（多層化）</text>
+    </svg>
+    <figcaption>図：ニューラルネットワーク構造の発展　← S03:p.46-48</figcaption>
+  </div>
+</div>
+
+<div class="card" id="ch3-feat">
+  <h2>⚡ 深層学習の特徴 <span class="ch-badge ch3">Ch.3</span></h2>
+  <div class="def">
+    <div class="def-lbl">【定義】深層学習（ディープラーニング）</div>
+    <p><strong>多層のニューラルネットワーク構造を持つ機械学習手法の総称</strong>（一般に4層以上）。ResNet・VGGNet など様々なアルゴリズムが存在する。<span class="sp">← S03:p.54</span></p>
+  </div>
+
+  <h3>従来の機械学習の問題点</h3>
+  <div class="sa"><span class="sl">🔊 音声補足</span>従来の機械学習では「どのパラメータ（特徴）を使えば問題を解決できるか」を人間が指定しなければならなかった。例：ショートケーキの認識なら「三角形の形状・白い色・イチゴが乗っている」などを人間が一個一個列挙する必要があった。しかし「ホールケーキはショートケーキじゃないの?」「他の果物が乗っていたら?」など、全ての特徴を人間が網羅的に指定するのは困難かつ非効率。<span class="sp">← S05-A, S05-B, S03:p.53</span></div>
+
+  <h3>深層学習のメリット（2つの特徴）</h3>
+  <table>
+    <thead><tr><th>特徴</th><th>内容</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>① 表現学習</strong></td>
+        <td>どのパラメータ（特徴）を使用すべきかを<strong>自分で学習する</strong>。人間が特徴を一個一個指定しなくてよい。<span class="sp">← S03:p.54</span></td>
+      </tr>
+      <tr>
+        <td><strong>② エンドツーエンド学習（end-to-end）</strong></td>
+        <td>「特徴抽出 → ベクトル化 → データ解析」という複数ステップを<strong>一つの学習プロセスで同時に行う</strong>。従来はステップごとに個別処理が必要だった。<span class="sp">← S03:p.54</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="fig">
+    <svg viewBox="0 0 660 130" xmlns="http://www.w3.org/2000/svg" style="max-width:100%">
+      <!-- Traditional -->
+      <text x="10" y="30" fill="#8a99b8" font-size="12" font-weight="bold" font-family="sans-serif">従来</text>
+      <rect x="60" y="15" width="80" height="30" rx="4" fill="#1e2535" stroke="#5b8dee" stroke-width="1"/>
+      <text x="100" y="34" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="sans-serif">生データ</text>
+      <text x="148" y="33" fill="#5b8dee" font-family="sans-serif">→</text>
+      <rect x="160" y="15" width="80" height="30" rx="4" fill="#1e2535" stroke="#5b8dee" stroke-width="1"/>
+      <text x="200" y="34" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="sans-serif">特徴抽出</text>
+      <text x="248" y="33" fill="#5b8dee" font-family="sans-serif">→</text>
+      <rect x="260" y="15" width="80" height="30" rx="4" fill="#1e2535" stroke="#5b8dee" stroke-width="1"/>
+      <text x="300" y="34" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="sans-serif">ベクトル化</text>
+      <text x="348" y="33" fill="#5b8dee" font-family="sans-serif">→</text>
+      <rect x="360" y="15" width="80" height="30" rx="4" fill="#1e2535" stroke="#5b8dee" stroke-width="1"/>
+      <text x="400" y="34" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="sans-serif">データ解析</text>
+      <text x="448" y="33" fill="#5b8dee" font-family="sans-serif">→</text>
+      <rect x="460" y="15" width="80" height="30" rx="4" fill="#1e2535" stroke="#34d399" stroke-width="1"/>
+      <text x="500" y="34" text-anchor="middle" fill="#34d399" font-size="11" font-family="sans-serif">出力</text>
+      <!-- Deep Learning (end-to-end) -->
+      <text x="10" y="100" fill="#fbbf24" font-size="12" font-weight="bold" font-family="sans-serif">深層学習</text>
+      <rect x="60" y="80" width="80" height="30" rx="4" fill="#1e2535" stroke="#fbbf24" stroke-width="1"/>
+      <text x="100" y="99" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="sans-serif">生データ</text>
+      <text x="148" y="98" fill="#fbbf24" font-family="sans-serif">→</text>
+      <rect x="160" y="80" width="280" height="30" rx="4" fill="rgba(251,191,36,.12)" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="300" y="99" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="sans-serif">end-to-end 学習（一括処理）</text>
+      <text x="448" y="98" fill="#fbbf24" font-family="sans-serif">→</text>
+      <rect x="460" y="80" width="80" height="30" rx="4" fill="#1e2535" stroke="#34d399" stroke-width="1"/>
+      <text x="500" y="99" text-anchor="middle" fill="#34d399" font-size="11" font-family="sans-serif">出力</text>
+    </svg>
+    <figcaption>図：従来の機械学習 vs 深層学習のend-to-end学習　← S03:p.54</figcaption>
+  </div>
+
+  <h3>深層学習のデメリット（3つの課題）</h3>
+  <table>
+    <thead><tr><th>課題</th><th>内容</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>① 大量のデータが必要</strong></td>
+        <td>十分な性能を発揮するために大量のデータが不可欠。1種類の画像認識でも<strong>数十枚〜数百万枚の正解画像</strong>が必要なことも。<span class="sp">← S03:p.55</span></td>
+      </tr>
+      <tr>
+        <td><strong>② 大量の計算資源が必要</strong></td>
+        <td>高性能な <strong>GPU（Graphics Processing Unit）</strong> と膨大な電力が必要。<span class="sp">← S03:p.55</span></td>
+      </tr>
+      <tr>
+        <td><strong>③ 解釈性の問題</strong></td>
+        <td>どの特徴を使って判断したかが分からない（ブラックボックス）。誤認識の原因（学習データの偏り？学習不足？アルゴリズム自体の問題？）も特定しにくい。出力結果を判断に利用する際に<strong>倫理的問題</strong>が生じる可能性あり（詳細は第15回）。<span class="sp">← S03:p.56</span></td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="sa"><span class="sl">🔊 音声補足</span>1,000種類の画像を分類したいのに500枚しかデータがなければ、全種類のデータが揃っていないため学習は成功しない。「大量データが必要」という意味の体感例。<span class="sp">← S05-A</span></div>
+</div>
+
+<div class="card" id="ch3-app">
+  <h2>🚀 深層学習の活用例 <span class="ch-badge ch3">Ch.3</span></h2>
+  <h3>① 画像認識 <span class="sp">← S03:p.57</span></h3>
+  <ul>
+    <li><strong>自動運転</strong>：障害物・道路標識・歩行者の認識</li>
+    <li><strong>医療画像診断</strong>：X線・CT・MRI画像からの病変検出。熟達者の「視点」を再現</li>
+    <li><strong>製品の検品</strong>：製造ラインでの不良品検出</li>
+    <li>Google Vision AI など商用サービスとして広く提供</li>
+  </ul>
+  <h3>② 画像以外の分野 <span class="sp">← S03:p.58</span></h3>
+  <ul>
+    <li><strong>医療</strong>：大量のカルテデータから特定の病気の発症リスクを予測</li>
+    <li><strong>需要予測</strong>：小売店の販売予測・過去の電力消費データから翌日の電力需要を予測</li>
+    <li><strong>農業</strong>：過去の気象データ等から水田の水位を自動調整</li>
+    <li>自然言語処理・音声認識・ゲームAI など多分野に拡大</li>
+  </ul>
+  <div class="sa"><span class="sl">🔊 音声補足</span>深層学習には多くの問題もあるが、性能を求める場面では非常に強力なツール。画像認識に限らず、大量のデータがある分野であれば多様な応用が可能。<span class="sp">← S05-A, S05-B</span></div>
+
+  <h3>第3章まとめ <span class="sp">← S03:p.59</span></h3>
+  <table>
+    <thead><tr><th>学習目標</th><th>要点</th></tr></thead>
+    <tbody>
+      <tr><td>NNの概要</td><td>神経細胞ネットワークをモデル化。1940年代→パーセプトロン(1957)→多層パーセプトロン(1986)→深層学習へ発展</td></tr>
+      <tr><td>深層学習の特徴と活用</td><td>メリット：表現学習・end-to-end学習。デメリット：大量データ・計算資源・解釈性の問題。画像認識を皮切りに多分野で活用</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     第4章
+══════════════════════════════════════════════════ -->
+<div class="card" id="ch4">
+  <h2>💻 第4章　データ分析事例 <span class="ch-badge ch4">Ch.4</span></h2>
+  <h3>学習目標</h3>
+  <p>計算機を用いたデータ分析事例よりデータの扱いを体感する。<span class="sp">← S03:p.62</span></p>
+</div>
+
+<div class="card" id="ch4-env">
+  <h2>🛠️ 機械学習の実行環境と AutoML <span class="ch-badge ch4">Ch.4</span></h2>
+  <h3>① プログラミング言語による実装 <span class="sp">← S03:p.63</span></h3>
+  <ul>
+    <li>各機械学習手法はライブラリとして提供されている</li>
+    <li>Python なら <strong>PyTorch・TensorFlow・Keras</strong> などが有名</li>
+    <li>プログラミング知識に加え、GPU などの計算資源も必要</li>
+  </ul>
+  <h3>② AutoML（Automated Machine Learning）<span class="sp">← S03:p.64</span></h3>
+  <div class="def">
+    <div class="def-lbl">【定義】AutoML</div>
+    <p>ある程度自動で機械学習を実行してくれるサービス。クラウド型ならモデル構築・特徴抽出・計算資源をまとめて提供するため、非エンジニアでも機械学習に取り組みやすい。</p>
+  </div>
+  <div class="sw"><span class="sl">⚠️ 注意</span>AutoMLがあっても分析結果の読み方・出力への判断にはある程度の知識が必須。第1〜3章で学んだ基礎知識が引き続き必要。<span class="sp">← S05-A, S05-B</span></div>
+</div>
+
+<div class="card" id="ch4-demo">
+  <h2>🔬 デモ：MNIST 手書き数字認識と訓練データ数の影響 <span class="ch-badge ch4">Ch.4</span></h2>
+  <h3>デモの概要</h3>
+  <ul>
+    <li><strong>目的</strong>：訓練データ数を変化させることで認識精度への影響を体感する</li>
+    <li><strong>ツール</strong>：Google Colaboratory（Python）</li>
+    <li><strong>ライブラリ</strong>：Keras（ニューラルネットワーク用。記述が簡単でドキュメントが豊富）</li>
+    <li><strong>モデル</strong>：<strong>畳み込みニューラルネットワーク（ConvNet）</strong>：画像認識向けの深層学習アルゴリズムの一つ</li>
+  </ul>
+  <div class="sw"><span class="sl">⚠️ 誤変換注意</span>S05-A では「コンブネット・高見込みニューラルネットワーク」と誤変換されているが、<strong>「畳み込みニューラルネットワーク（ConvNet）」</strong>が正しい。S03:p.63 で確認済み。<span class="corr">誤変換修正済み</span></div>
+
+  <h3>使用データ：MNIST データセット</h3>
+  <ul>
+    <li>手書き数字（0〜9）の画像＋ラベルを含む有名なベンチマークデータセット</li>
+    <li>訓練用：<strong>60,000セット</strong>、テスト用：<strong>10,000セット</strong></li>
+    <li>画像サイズ：<strong>28×28ピクセル</strong>（画素数784個、グレースケール 0〜255）</li>
+  </ul>
+  <div class="sa"><span class="sl">🔊 音声補足</span>第13回で学んだ「グレースケールの0〜255」という知識がここで生きてくる。28×28の行列データは縦28行×横28列で表示され、各値が0〜255の画素値を持つ。<span class="sp">← S05-A, S05-B</span></div>
+
+  <h3>デモ結果：訓練データ数と認識精度の関係</h3>
+  <p>テストデータ100個に対する正解数で評価。</p>
+  <table>
+    <thead><tr><th>訓練データ数</th><th>正解数（/100個）</th><th>精度</th><th>評価</th></tr></thead>
+    <tbody>
+      <tr><td>10個</td><td>19個</td><td>19%</td><td>✗ ランダム（1/10＝10%）と大差なし <span class="sp">← S05-A, S05-B</span></td></tr>
+      <tr><td>100個</td><td>（少し改善）</td><td>〜30%前後</td><td>✗ まだ不十分 <span class="sp">← S05-A, S05-B</span></td></tr>
+      <tr><td>1,000個</td><td>77個</td><td>77%</td><td>△ かなり改善 <span class="sp">← S05-B で明示</span></td></tr>
+      <tr><td>10,000個</td><td><strong>ほぼ100個</strong></td><td><strong>≈100%</strong></td><td>✓ ほぼ完全な認識 <span class="sp">← S05-A, S05-B「ほぼ100%」と明記</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="si"><span class="sl">📝 誤変換・数値解釈について</span>
+    S05-A/B ともに「10,000個で1599個正解」と記録されているが、テスト対象は100個であるため数値として矛盾する。スライドには具体的な正解数の記載はないが、両音声とも<strong>「ほぼ100%の認識ができるようになった」</strong>と明示しているため、ほぼ100/100（100%に近い精度）と解釈するのが妥当。「1599」はAI文字起こしの誤変換と判断。<span class="corr">誤変換修正済み</span><span class="sp">← S05-A, S05-B「ほぼ100%」/ S03（数値記載なし）</span>
+  </div>
+
+  <div class="sa"><span class="sl">🔊 音声補足</span>0〜9という10種類の数字の認識だけでも、10,000個の訓練データが必要だった。いかに大量のデータが必要かが実感できる。（なお今回は非常にシンプルなモデルを使用しているため、層の作り方を工夫すればより少ないデータ数でも精度を上げられる可能性がある。）<span class="sp">← S05-A, S05-B</span></div>
+  <div class="sa"><span class="sl">🔊 音声補足（重要な気づき）</span>デモで使用したどの関数にも「数字の0はカーブがある」「数字の1はカーブがない」といった形の特徴を一切教えていない。プログラム（深層学習）が自分で特徴を学習してくれた。これが「表現学習」の実例。<span class="sp">← S05-A, S05-B</span></div>
+
+  <h3>第4章まとめ / 第14回まとめ <span class="sp">← S03:p.67-68</span></h3>
+  <table>
+    <thead><tr><th>学習目標</th><th>主なポイント</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>機械学習の分類と基本的な手法の概要</td>
+        <td>
+          教師あり・なし・強化学習の3分類 /
+          4つの枠組み（回帰・クラス分類・次元圧縮・クラスタリング） /
+          深層学習はNNを用いた機械学習の総称
+        </td>
+      </tr>
+      <tr>
+        <td>機械学習の現実世界での利活用方法</td>
+        <td>
+          十分なデータ数と計算資源がある場合に活用可能 /
+          解釈性より精度が重要な場面で特に有効
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     APPENDIX
+══════════════════════════════════════════════════ -->
+<div id="appendix">
+
+<div class="app app-A">
+  <h3>⭐ 補足A：最重要ワード一覧</h3>
+  <table>
+    <thead><tr><th>用語</th><th>読み</th><th>定義（ソース照合済み）</th><th>重要度</th></tr></thead>
+    <tbody>
+      <tr><td><strong>（統計的）機械学習</strong></td><td>きかいがくしゅう</td><td>データから判断の根拠となるルールを統計的な方法（数式）で作る過程</td><td>★★★</td></tr>
+      <tr><td><strong>パラメータ</strong></td><td>ぱらめーた</td><td>ルールを構成する個々の変数。学習＝データでパラメータ値を更新すること</td><td>★★★</td></tr>
+      <tr><td><strong>教師あり学習</strong></td><td>きょうしありがくしゅう</td><td>入出力データのペア（ラベル付きデータ）を用いて入出力の関係性を学習する方法</td><td>★★★</td></tr>
+      <tr><td><strong>教師なし学習</strong></td><td>きょうしなしがくしゅう</td><td>ラベルなしの入力データのみから意味のある構造を発見する方法</td><td>★★★</td></tr>
+      <tr><td><strong>強化学習</strong></td><td>きょうかがくしゅう</td><td>問題に対し試行錯誤することで状況ごとの最適な行動を学習する方法</td><td>★★☆</td></tr>
+      <tr><td><strong>深層学習（ディープラーニング）</strong></td><td>しんそうがくしゅう</td><td>多層のニューラルネットワーク構造を持つ機械学習手法の総称（一般に4層以上）</td><td>★★★</td></tr>
+      <tr><td><strong>ニューラルネットワーク</strong></td><td>にゅーらるねっとわーく</td><td>脳内の神経細胞ネットワークから着想を得て人工的に再現した計算モデル</td><td>★★★</td></tr>
+      <tr><td><strong>解釈性（説明可能性）</strong></td><td>かいしゃくせい</td><td>分析結果がなぜそうなったかをどの程度理解できるか。機械学習（特にNN）は低い傾向</td><td>★★★</td></tr>
+      <tr><td><strong>連続値</strong></td><td>れんぞくち</td><td>連続した値。例：売上1,000円・1,200円…、テストの点数0〜100点</td><td>★★★</td></tr>
+      <tr><td><strong>離散値</strong></td><td>りさんち</td><td>とびとびの値。例：合格/不合格(0/1)、野菜/果物/加工食品(1/2/3)</td><td>★★★</td></tr>
+      <tr><td><strong>回帰</strong></td><td>かいき</td><td>連続値を出力する教師あり学習。説明変数と目的変数の関係性を関数として学習</td><td>★★★</td></tr>
+      <tr><td><strong>重回帰分析</strong></td><td>じゅうかいきぶんせき</td><td>説明変数がn個の回帰分析。y = a₁x₁ + a₂x₂ + … + aₙxₙ + b</td><td>★★☆</td></tr>
+      <tr><td><strong>クラス分類</strong></td><td>くらすぶんるい</td><td>離散値を出力する教師あり学習。ラベル付きデータで分類境界を学習</td><td>★★★</td></tr>
+      <tr><td><strong>次元圧縮（次元削減）</strong></td><td>じげんあっしゅく</td><td>高次元データを本質的に同値の低次元データに変換する教師なし学習（PCA・t-SNEなど）</td><td>★★★</td></tr>
+      <tr><td><strong>クラスタリング</strong></td><td>くらすたりんぐ</td><td>データ間の類似度でグループ化する教師なし学習。異常検知にも活用</td><td>★★★</td></tr>
+      <tr><td><strong>主成分分析（PCA）</strong></td><td>しゅせいぶんぶんせき</td><td>分散が最大になる方向に射影して次元を削減する線形手法。出力は第1主成分・第2主成分等</td><td>★★☆</td></tr>
+      <tr><td><strong>パーセプトロン</strong></td><td>ぱーせぷとろん</td><td>1957年提案の2層NN。2クラス分類が可能</td><td>★★☆</td></tr>
+      <tr><td><strong>多層パーセプトロン</strong></td><td>たそうぱーせぷとろん</td><td>1986年提案。中間層（隠れ層）を追加し誤差逆伝播法で学習。複雑な問題に対応可能に</td><td>★★☆</td></tr>
+      <tr><td><strong>誤差逆伝播法（バックプロパゲーション）</strong></td><td>ごさぎゃくでんぱほう</td><td>出力誤差を出力層→入力層方向に伝播させ、各重みパラメータの更新量を計算するアルゴリズム</td><td>★★☆</td></tr>
+      <tr><td><strong>表現学習</strong></td><td>ひょうげんがくしゅう</td><td>深層学習の特徴①。どの特徴（パラメータ）を使うべきか自体を学習する</td><td>★★★</td></tr>
+      <tr><td><strong>エンドツーエンド学習</strong></td><td>えんどつーえんどがくしゅう</td><td>深層学習の特徴②。特徴抽出からタスク学習まで一括して行う</td><td>★★☆</td></tr>
+      <tr><td><strong>異常検知（異常検出）</strong></td><td>いじょうけんち</td><td>過去データから形成されたクラスターの範囲から外れているデータを「異常」として検出</td><td>★★☆</td></tr>
+      <tr><td><strong>AutoML</strong></td><td>おーとえむえる</td><td>Automated Machine Learning。機械学習を自動化するサービス。非エンジニアも活用可能</td><td>★★☆</td></tr>
+      <tr><td><strong>MNIST</strong></td><td>えむにすと</td><td>手書き数字（0〜9）の有名なベンチマークデータセット（訓練60,000・テスト10,000）</td><td>★☆☆</td></tr>
+      <tr><td><strong>畳み込みニューラルネットワーク（ConvNet）</strong></td><td>たたみこみにゅーらる…</td><td>画像認識に特化した深層学習アルゴリズムの一つ。今回のデモで使用</td><td>★★☆</td></tr>
+      <tr><td><strong>第三次人工知能ブーム</strong></td><td>だいさんじじんこうちのうぶーむ</td><td>2000年代中頃から深層学習が牽引した現在進行中のAIブーム</td><td>★★☆</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="app app-B">
+  <h3>📚 補足B：知っておくべき背景知識</h3>
+  <ul>
+    <li><strong>GPU（Graphics Processing Unit）</strong>：元はゲーム・3DCG向けの演算ユニット。大量の並列計算が得意なため、深層学習の訓練に現在広く活用されている。</li>
+    <li><strong>XAI（Explainable AI：説明可能なAI）</strong>：深層学習の解釈性問題に対応するために生まれた研究分野。医療・金融・法律など、判断根拠の説明が法的・社会的に要求される領域で特に重要。</li>
+    <li><strong>転移学習（Transfer Learning）</strong>：大量データで事前訓練済みのモデルを別タスクに転用する技術。深層学習の「大量データが必要」というデメリットを部分的に解決する手法として注目。</li>
+    <li><strong>データサイエンスのサイクル</strong>：課題発見 → データ収集 → 探索的データ解析 → <strong>データ解析・推測（今回の範囲）</strong> → 提案・結果共有 → 課題発見…という循環プロセス。<span class="sp">← S03:p.4</span></li>
+    <li><strong>Arthur Samuel (1959)</strong>：機械学習という用語を初めて使ったとされる研究者。チェッカーゲームへの適用で有名。出典：A. L. Samuel, IBM Journal of Research and Development, vol.3, no.3, pp.210-229 (1959).<span class="sp">← S03:p.17脚注</span></li>
+  </ul>
+</div>
+
+<div class="app app-C">
+  <h3>🎯 補足C：試験・レポートで重要な観点</h3>
+  <ul>
+    <li>機械学習の<strong>3分類</strong>（教師あり・なし・強化学習）の定義と違いを説明できるようにする</li>
+    <li><strong>4つの枠組み</strong>（教師あり/なし × 連続値/離散値）と各手法名（回帰・クラス分類・次元圧縮・クラスタリング）を対応づけて覚える</li>
+    <li>統計学の方法と機械学習の方法の<strong>2つの違い</strong>（必要なデータ数・解釈性）を説明できるようにする</li>
+    <li>深層学習の<strong>メリット（表現学習・end-to-end）</strong>と<strong>デメリット（大量データ・計算資源・解釈性）</strong>を整理しておく</li>
+    <li>単回帰分析が機械学習の一種として解釈できることを理解する（ルール＝一次関数、パラメータ＝傾きとy切片、学習方法＝最小二乗法）</li>
+    <li>クラスタリングの<strong>異常検知</strong>への応用を説明できるようにする</li>
+    <li>教師あり・教師なし学習の違いは「<strong>入力データにラベル（正解データ）が含まれているかどうか</strong>」</li>
+  </ul>
+</div>
+
+<div class="app app-D">
+  <h3>🔗 補足D：関連概念・次回への接続</h3>
+  <ul>
+    <li><strong>第15回（次回）</strong>：深層学習の倫理問題・AIと倫理について詳しく学ぶ。今回のデメリット「解釈性の問題 → 倫理的問題が発生する可能性」が主なテーマ。<span class="sp">← S03:p.56</span></li>
+    <li><strong>第9回との接続</strong>：単回帰分析 → 機械学習の一種として再解釈（ルール＝y=ax+b、傾き a=0.5、y切片 b=45、学習方法＝最小二乗法）</li>
+    <li><strong>第10回との接続</strong>：クラス分類・クラスタリング → 今回の4枠組みで体系化して整理</li>
+    <li><strong>第13回との接続</strong>：「画素数×3の巨大なベクトル問題」→ 次元圧縮・深層学習の必要性として回収</li>
+  </ul>
+</div>
+
+<div class="app app-E">
+  <h3>❓ 未確定事項・要確認リスト（v2: 解消済み含む）</h3>
+  <table>
+    <thead><tr><th>ID</th><th>内容</th><th>状態</th><th>解決方法</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>U01</td>
+        <td>AI変換テキスト全体にわたる「深層学習」の誤変換（真相・新層・真層・心臓・新創 等）</td>
+        <td>✅ 解消</td>
+        <td>S03（スライド）で「深層学習」と確認。全箇所修正済み。</td>
+      </tr>
+      <tr>
+        <td>U02</td>
+        <td>S05-A で「y切片が45」、S05-B で「y接辺が40」と不一致</td>
+        <td>✅ 解消</td>
+        <td>S03:p.14の図「来客数＝広告額×0.5＋45」より <strong>y切片＝45</strong> が正しい</td>
+      </tr>
+      <tr>
+        <td>U03</td>
+        <td>S05-B で「重度が30ぐらい」→ 「自由度」か？</td>
+        <td>✅ 解消</td>
+        <td>S05-A で「自由度が30ぐらい」と明記あり。統計的にも妥当。</td>
+      </tr>
+      <tr>
+        <td>U04</td>
+        <td>10,000訓練データ時の正解数が両音声とも「1599個」と不合理な値</td>
+        <td>✅ 解消（高信頼度）</td>
+        <td>テスト対象は100個（前後の文脈から一貫）。両音声「ほぼ100%」発言より、≈100/100と解釈。「1599」はAI文字起こし誤変換と判断。</td>
+      </tr>
+      <tr>
+        <td>U05</td>
+        <td>「ベースネット・タブーネット（S05-A）」「レスネット・タビネット（S05-B）」の第2手法名</td>
+        <td>⚠️ 一部未解消</td>
+        <td>S05-B「レスネット」→ <strong>ResNet</strong>（高信頼度）。第2手法「タビネット」は S03 に具体名の記載なし。スライドには「ResNetやVGGNetなど様々なアルゴリズム」という文脈で紹介されており、深層学習の総称の説明のため具体名は参考程度。</td>
+      </tr>
+      <tr>
+        <td>U06</td>
+        <td>100個訓練時の具体的な正解数</td>
+        <td>⚠️ 未確認</td>
+        <td>両音声とも「少し改善はしていますが、まだ不十分」とのみ言及。スライドにも数値なし。「30%前後」は推測のため表中では「（少し改善）」と記載。</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+</div><!-- /appendix -->
+</main>
+
+<script>
+const links=document.querySelectorAll('#sb a');
+const secs=[...document.querySelectorAll('[id]')];
+window.addEventListener('scroll',()=>{
+  let cur='';
+  secs.forEach(s=>{if(window.scrollY>=s.offsetTop-90)cur=s.id});
+  links.forEach(l=>{l.classList.remove('on');if(l.getAttribute('href')==='#'+cur)l.classList.add('on')});
+});
+</script>
+</body>
+</html>
