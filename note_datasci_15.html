@@ -254,7 +254,8 @@
   <a class="h2" href="#goals">第15回 学習目標</a>
   <a class="h2" href="#ch1">第1章 データ・AIの利活用例</a>
   <a class="h3" href="#ch1-why">利活用の必要性</a>
-  <a class="h3" href="#ch1-dx1">DXとは①②③</a>
+  <a class="h3" href="#ch1-dx1">DXとは（定義）</a>
+  <a class="h3" href="#ch1-dx1b">DX取り組みの4フェーズ・広義のDX</a>
   <a class="h3" href="#ch1-dx2">DXの具体例（狭義）</a>
   <a class="h3" href="#ch1-dx3">DXの具体例（広義・業種別）</a>
   <a class="h3" href="#ch1-sum">第1章まとめ</a>
@@ -264,9 +265,9 @@
   <a class="h3" href="#ch2-salganik">Salganikの4原理</a>
   <a class="h3" href="#ch2-sum">第2章まとめ</a>
   <a class="h2" href="#ch3">第3章 生成AI</a>
-  <a class="h3" href="#ch3-what">生成AIとは</a>
-  <a class="h3" href="#ch3-mech">仕組み</a>
-  <a class="h3" href="#ch3-use">活用方法</a>
+  <a class="h3" href="#ch3-what">生成AIとは・種類</a>
+  <a class="h3" href="#ch3-mech">仕組み（学習・文章生成）</a>
+  <a class="h3" href="#ch3-use">活用方法・プロンプトエンジニアリング</a>
   <a class="h3" href="#ch3-caution">留意点5つ</a>
   <a class="h3" href="#ch3-sum">第3章まとめ</a>
   <a class="h2" href="#ch4">第4章 今後の学習</a>
@@ -344,7 +345,7 @@
   <div class="block-def">
     <div class="def-label">【定義】DX（Digital Transformation）</div>
     <p>企業がビジネス環境の激しい変化に対応し、<strong>データとデジタル技術を活用して</strong>、顧客や社会のニーズを基に、製品やサービス、ビジネスモデルを変革するとともに、業務そのものや、組織、プロセス、企業文化・風土を変革し、競争上の優位性を確立すること。</p>
-    <p style="font-size:12px; color:var(--text2);">出典: 経済産業省「デジタルガバナンス・コード2.0」 <span class="src">← S03:p.9</span></p>
+    <p style="font-size:12px; color:var(--text2);">出典: 経済産業省「デジタルガバナンス・コード2.0」p.1脚注 <span class="src">← S03:p.9脚注[1]</span></p>
   </div>
 
   <div class="callout">
@@ -363,6 +364,7 @@
     <tr><td>④</td><td>顧客起点の価値創出によるビジネスモデルの根本的な変革</td></tr>
   </table>
   <div class="block-caution"><div class="block-label">⚠ 注意</div>「デジタイゼーション」と「デジタライゼーション」は1文字違いだが意味が異なる。混同しないよう注意が必要。 <span class="src">← S03:p.10, S05</span></div>
+  <p style="font-size:12px; color:var(--text2); margin-top:4px;">出典[2]: 情報処理推進機構「DX白書2023」p.14 (2023) <span class="src">← S03:p.10脚注[2]</span></p>
 
   <div class="block-def">
     <div class="def-label">【定義】RPA（Robotic Process Automation）</div>
@@ -588,7 +590,7 @@
       <td>④</td>
       <td><strong>法と公益の尊重</strong></td>
       <td>社会に対して技術・サービスについて十分な説明ができること。AIの出力結果を利用することへの社会的理解を得られるか考える。</td>
-      <td>深層学習などのブラックボックスモデルは「なぜその出力になったか」が説明できない → <strong>説明可能なAI（XAI）</strong>の活用が特に重要視される</td>
+      <td>深層学習などのブラックボックスモデルは「なぜその出力になったか」が説明できない → <strong>説明可能なAI（XAI）</strong>の活用が特に重要視される。<br><small style="color:var(--text2);">近年はXAIが特に重要視される傾向がある。 <span class="src">← S03:p.27</span></small></td>
     </tr>
   </table>
   <span class="src">← S03:p.26,27, S05</span>
@@ -653,6 +655,11 @@
   <div class="block-def">
     <div class="def-label">【定義】プロンプト</div>
     ユーザーが生成AIに伝える命令文（入力テキスト）。 <span class="src">← S03:p.34</span>
+  </div>
+
+  <div class="block-audio"><div class="block-label">音声補足（ChatGPTの使い方・UI）</div>
+    授業ではブラウザー版ChatGPTの画面を例に説明。画面下部のオレンジ枠（入力欄）にプロンプトを入力し送信すると、右側にAIが生成した文章が出力される。例として「大学生がデータサイエンスを学ぶメリットを3個、列挙してください」と入力したところ、自然で内容の良い回答が生成された。<br>
+    ブラウザーで使用する方法のほかに、<strong>APIとしてプログラムに組み込んで使用する方法</strong>もある（開発者向け）。 <span class="src">← S03:p.34, S05</span>
   </div>
 
   <h3 id="ch3-mech">生成AIの仕組み</h3>
@@ -734,8 +741,20 @@
   </table>
   <span class="src">← S03:p.37</span>
 
-  <div class="block-audio"><div class="block-label">音声補足（データ分析への活用デモ）</div>
-    第10回第4章で行ったデモ（Pythonを使ったk-means法によるクラスタリング）を生成AIに実行させる例が授業内で紹介された。データを生成AIに渡した上で「添付のデータについてk-means法によるクラスタリングを行います。Pythonを用いて、以下の手順を実施してください」とマークダウン記法で手順・仕様を明確に記述したプロンプトを入力すると、第10回と同等の散布図が生成された。プロンプトにはプログラムが一切含まれていないにもかかわらず、同等の出力が得られる。 <span class="src">← S03:p.38, S05</span>
+  <div class="block-audio"><div class="block-label">音声補足（データ分析への活用デモ・具体的プロンプト）</div>
+    第10回第4章で行ったデモ（Pythonを使ったk-means法によるクラスタリング）を生成AIに実行させる例が授業内で紹介された。データを生成AIに渡した上で、以下のようなマークダウン記法を使ったプロンプトを入力することで、第10回と同等の散布図が生成された:<br>
+    <code style="display:block; background:var(--bg3); padding:10px; border-radius:6px; font-size:12px; margin:8px 0; white-space:pre-wrap;">添付のデータについてk-means法によるクラスタリングを行います。
+Pythonを用いて、以下の手順を実施してください。分析結果の説明は日本語で表示してください。
+
+# 手順
+1. データを標準化する
+2. クラスタ数3として、tmp_meanとrainfallに対しk-means法を適用
+3. クラスタリング結果を散布図にクラスタ毎に色分けして表示
+
+# 散布図の仕様
+- 散布図は450px×450pxの正方形
+- 散布図中では変数名をそのまま使用し、日本語にしない</code>
+    プロンプトにはプログラムが一切含まれていないにもかかわらず、同等の出力が得られる点が重要。<strong>どこが見出しでどこが処理なのかを明確に伝える</strong>ためのマークダウン記法（#・-）の活用がポイント。 <span class="src">← S03:p.38, S05</span>
   </div>
 
   <div class="block-def">
@@ -751,6 +770,16 @@
     <div class="def-label">【定義】ハルシネーション（Hallucination / 幻覚）</div>
     生成AIが<strong>不正確な情報や誤解を招く情報</strong>を生成すること。 <span class="src">← S03:p.41</span>
   </div>
+
+  <div class="block-audio"><div class="block-label">音声補足（具体的事例：架空の郷土料理）</div>
+    授業で実演されたエピソード: 「じゃがいもと鮭を使った沖縄県の郷土料理の作り方を教えてください」という意図的に無理のある命令をChatGPT 4oに入力したところ、<strong>「イモカナサ」</strong>という郷土料理（アレンジレシピとして）が出力された。続けて「イモカナサは沖縄県のどの地区の料理ですか」「レシピを紹介したウェブサイトを教えてください」と尋ねると、沖縄本島南部の料理と詳細な説明・サイト情報まで生成された。しかし実際にはイモカナサという料理は<strong>存在しない</strong>。紹介されたウェブサイトにも掲載はなかった。<br>
+    架空の郷土料理の生成程度ならまだ笑って済ませられるが、プログラムのパッケージ名・医療情報・法律情報など、信頼性が重要な分野では深刻な問題につながる。 <span class="src">← S03:p.40,41, S05</span>
+  </div>
+
+  <div class="block-audio"><div class="block-label">音声補足（対処法：「ハルシネーションを起こさずに」命令）</div>
+    授業では対処策として、「ハルシネーションを起こさずに、イモカナサについて教えてください」と明示的に命令した例も紹介。すると生成AIは「「イモカナサ」という料理についての正確な情報は、沖縄の伝統料理としての明確な記録が見つかりませんでした。…一般的には知られていないようです」と正直に回答した。このように<strong>ハルシネーションを避けるよう明示的に指示する</strong>ことが一つの対処法になりうる。ただし常に効果があるとは限らないため、知らない情報は必ず信頼できるソースで確認する習慣が根本的な対策。 <span class="src">← S03:p.42, S05</span>
+  </div>
+
   <div class="block-audio"><div class="block-label">具体的な危険事例（セキュリティリスク）</div>生成したプログラムに存在しないパッケージ名が混入することが知られている。GPT-4では<strong>24.2%</strong>に存在しないパッケージ名が生成され、そのうち<strong>19.6%</strong>のパッケージ名が繰り返し生成されることが確認されている。もし悪意のあるプログラマーがこの傾向を知り、同名の悪意あるパッケージを公開すると、他の人のパソコンにウイルス・マルウェアを含むパッケージをインストールさせることができてしまう。 <br><span style="font-size:11px; color:var(--text2);">出典: The Register, "AI hallucinates software packages and devs download them", 2024年3月28日 <span class="src">← S03:p.41脚注[1]</span></span></div>
   <div class="callout" style="background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.3); border-radius: 8px;">
     <span class="icon">⚠️</span>
@@ -774,7 +803,9 @@
 
   <h4>留意点⑤ 訓練データの時期（カットオフ）</h4>
   <p>訓練データには時間的な区切り（カットオフ）が存在する。訓練データに含まれない新しい情報は生成AIが生成することができない。 <span class="src">← S03:p.45</span></p>
-  <div class="block-audio"><div class="block-label">音声補足</div>例: プログラミング言語の仕様はどんどん変化している。最新の変更情報を持たない生成AIからは古い仕様のプログラムしか出力されない可能性がある。生成された情報が最新の情報に基づいているかどうかを常に確認する必要がある。 <span class="src">← S05</span></div>
+  <div class="block-audio"><div class="block-label">音声補足（具体的なカットオフ日の例）</div>
+    例: OpenAIのGPT-4oのドキュメントでは、訓練データの対象期間として「<strong>Up to Oct 2023</strong>（2023年10月まで）」と明記されている。つまり2023年11月以降の情報はGPT-4oの訓練データに含まれない。プログラミング言語の仕様はどんどん変化しているため、最新の変更情報を持たない生成AIからは古い仕様のプログラムしか出力されない可能性がある。生成された情報が最新の情報に基づいているかどうかを常に確認する必要がある。 <span class="src">← S03:p.45, S05</span>
+  </div>
 
   <h3 id="ch3-sum">第3章 まとめ</h3>
   <div class="callout" style="background: rgba(52,211,153,0.07); border: 1px solid rgba(52,211,153,0.25); border-radius: 8px;">
@@ -959,8 +990,9 @@
     <tr><td>LLM（大規模言語モデル）</td><td>えるえるえむ</td><td>Large Language Model。文章生成に使われる生成モデル</td><td>★★☆</td></tr>
     <tr><td>拡散モデル</td><td>かくさんもでる</td><td>画像・動画等を生成するときに使われる生成モデル</td><td>★★☆</td></tr>
     <tr><td>プロンプト</td><td>ぷろんぷと</td><td>ユーザーが生成AIに伝える命令文（入力テキスト）</td><td>★★☆</td></tr>
-    <tr><td>プロンプトエンジニアリング</td><td>ぷろんぷとえんじにありんぐ</td><td>意図通りの高品質な出力が得られるよう、適切な指示・質問をプロンプトに与えるための技術</td><td>★★☆</td></tr>
-    <tr><td>ハルシネーション</td><td>はるしねーしょん</td><td>生成AIが不正確な情報や誤解を招く情報を生成すること。幻覚とも呼ばれる</td><td>★★★</td></tr>
+    <tr><td>訓練データのカットオフ</td><td>くんれんでーたのかっとおふ</td><td>生成AIの学習データに時間的な区切りがあること。例: GPT-4oは「2023年10月まで」のデータで学習。それ以降の情報は生成できない。</td><td>★★☆</td></tr>
+    <tr><td>プロンプトエンジニアリング</td><td>ぷろんぷとえんじにありんぐ</td><td>意図通りの高品質な出力が得られるよう、適切な指示・質問をプロンプトに与えるための技術。要素: ①背景・文脈を与える ②出力形式を具体的に指定 ③マークダウン記法（#・-）で見出しと処理を明確化</td><td>★★☆</td></tr>
+    <tr><td>ハルシネーション</td><td>はるしねーしょん</td><td>生成AIが不正確な情報や誤解を招く情報を生成すること。幻覚とも呼ばれる。授業例:「イモカナサ」という架空の沖縄郷土料理が生成された。対処法:「ハルシネーションを起こさずに」と明示的に命令するか、不明な情報は必ず別ソースで確認する。</td><td>★★★</td></tr>
     <tr><td>識別モデル</td><td>しきべつもでる</td><td>データを識別するAI（画像認識等）</td><td>★★☆</td></tr>
     <tr><td>ドメイン知識</td><td>どめいんちしき</td><td>特定の業界・分野に関する専門知識。データ分析の結果を正しく解釈するために不可欠</td><td>★★★</td></tr>
     <tr><td>リテラシーレベル</td><td>りてらしーれべる</td><td>AI戦略2019が示す数理・データサイエンス・AIの教育レベルの一つ。大学卒業者全員が修得すべきレベル</td><td>★★☆</td></tr>
