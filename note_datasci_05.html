@@ -745,10 +745,69 @@ em { color: var(--accent-green); font-style: normal; }
     <h3>歴史的事例：ナイチンゲールのローズダイアグラム（鶏頭図）</h3>
     <p>クリミア戦争（1853〜56年）従軍後、病院での衛生管理の重要性を訴えるために報告書を作成。<strong>ローズダイアグラム（極座標図の一種）</strong>を用いた。<span class="ptr">S03:p.21〜22</span></p>
     <div class="warn-block">
-      <div class="warn-label">数値（重要）</div>
-      衛生管理の徹底による死亡率の改善：<strong>1855年2月 約8.2% → 1856年3月 約0.11%</strong>
+      <div class="warn-label">数値（重要）<span class="ptr">S03:p.21</span></div>
+      衛生管理の徹底による死亡率の改善：<strong>1855年2月 約8.2% → 1856年3月 約0.11%</strong><br>
+      <span style="font-size:12px; color:var(--text-sub)">出典：パブリック・ドメイン, https://commons.wikimedia.org/w/index.php?curid=1474443（スライド記載）<br>
+      ※ 数値は「こうもりの翼とバラの花」https://jnapcdc.com/LA/maruyamat/maruyama_002.html を元に作成（スライド記載）</span>
     </div>
     <p style="margin-top:12px">同じデータを棒グラフにすると「冬に死亡率が上昇したのでは？」という誤解を招きやすい。<strong>どのグラフを選ぶかによって伝える情報が変わる。</strong><span class="ptr">S03:p.23〜24</span></p>
+
+    <!-- SVG: ローズダイアグラム（模式図） -->
+    <div class="fig-wrap" style="margin-top:16px">
+      <svg viewBox="0 0 560 240" xmlns="http://www.w3.org/2000/svg" style="max-width:560px; width:100%">
+        <!-- 改善前（右側：大きい） -->
+        <g transform="translate(390,120)">
+          <text x="0" y="-108" fill="#f87171" font-size="11" font-family="JetBrains Mono,monospace" text-anchor="middle">改善前</text>
+          <!-- 月ごとの扇形（感染症=水色 大きめ） -->
+          <path d="M0,0 L0,-90 A90,90 0 0,1 45,-78 Z" fill="#5b8dee" opacity="0.7"/>
+          <path d="M0,0 L45,-78 A90,90 0 0,1 78,-45 Z" fill="#5b8dee" opacity="0.6"/>
+          <path d="M0,0 L78,-45 A90,90 0 0,1 90,0 Z" fill="#5b8dee" opacity="0.5"/>
+          <path d="M0,0 L90,0 A90,90 0 0,1 78,45 Z" fill="#5b8dee" opacity="0.4"/>
+          <path d="M0,0 L78,45 A90,90 0 0,1 45,78 Z" fill="#5b8dee" opacity="0.35"/>
+          <path d="M0,0 L45,78 A90,90 0 0,1 0,90 Z" fill="#5b8dee" opacity="0.3"/>
+          <!-- 負傷（赤小さめ） -->
+          <path d="M0,0 L0,-30 A30,30 0 0,1 15,-26 Z" fill="#f87171" opacity="0.8"/>
+          <path d="M0,0 L15,-26 A30,30 0 0,1 26,-15 Z" fill="#f87171" opacity="0.7"/>
+          <!-- 下半分（ミラー・薄く） -->
+          <path d="M0,0 L0,90 A90,90 0 0,1 -45,78 Z" fill="#5b8dee" opacity="0.3"/>
+          <path d="M0,0 L-45,78 A90,90 0 0,1 -78,45 Z" fill="#5b8dee" opacity="0.35"/>
+          <path d="M0,0 L-78,45 A90,90 0 0,1 -90,0 Z" fill="#5b8dee" opacity="0.4"/>
+          <path d="M0,0 L-90,0 A90,90 0 0,1 -78,-45 Z" fill="#5b8dee" opacity="0.55"/>
+          <path d="M0,0 L-78,-45 A90,90 0 0,1 -45,-78 Z" fill="#5b8dee" opacity="0.65"/>
+          <circle cx="0" cy="0" r="2" fill="#e2e8f5"/>
+          <!-- 月ラベル -->
+          <text x="0" y="-96" fill="#8a99b8" font-size="8" text-anchor="middle" font-family="JetBrains Mono,monospace">1月</text>
+          <text x="0" y="100" fill="#8a99b8" font-size="8" text-anchor="middle" font-family="JetBrains Mono,monospace">7月</text>
+        </g>
+        <!-- 改善後（左側：小さい） -->
+        <g transform="translate(170,120)">
+          <text x="0" y="-68" fill="#34d399" font-size="11" font-family="JetBrains Mono,monospace" text-anchor="middle">改善後</text>
+          <!-- 全体的に小さい扇形 -->
+          <path d="M0,0 L0,-50 A50,50 0 0,1 25,-43 Z" fill="#5b8dee" opacity="0.4"/>
+          <path d="M0,0 L25,-43 A50,50 0 0,1 43,-25 Z" fill="#5b8dee" opacity="0.35"/>
+          <path d="M0,0 L43,-25 A50,50 0 0,1 50,0 Z" fill="#5b8dee" opacity="0.3"/>
+          <path d="M0,0 L50,0 A50,50 0 0,1 43,25 Z" fill="#5b8dee" opacity="0.25"/>
+          <path d="M0,0 L43,25 A50,50 0 0,1 25,43 Z" fill="#5b8dee" opacity="0.2"/>
+          <path d="M0,0 L25,43 A50,50 0 0,1 0,50 Z" fill="#5b8dee" opacity="0.2"/>
+          <path d="M0,0 L0,50 A50,50 0 0,1 -25,43 Z" fill="#5b8dee" opacity="0.2"/>
+          <path d="M0,0 L-25,43 A50,50 0 0,1 -43,25 Z" fill="#5b8dee" opacity="0.2"/>
+          <path d="M0,0 L-43,25 A50,50 0 0,1 -50,0 Z" fill="#5b8dee" opacity="0.25"/>
+          <path d="M0,0 L-50,0 A50,50 0 0,1 -43,-25 Z" fill="#5b8dee" opacity="0.3"/>
+          <path d="M0,0 L-43,-25 A50,50 0 0,1 -25,-43 Z" fill="#5b8dee" opacity="0.35"/>
+          <path d="M0,0 L-25,-43 A50,50 0 0,1 0,-50 Z" fill="#5b8dee" opacity="0.4"/>
+          <circle cx="0" cy="0" r="2" fill="#e2e8f5"/>
+        </g>
+        <!-- 矢印と説明 -->
+        <text x="280" y="120" fill="#fbbf24" font-size="22" text-anchor="middle">→</text>
+        <!-- 凡例 -->
+        <rect x="30" y="200" width="12" height="10" fill="#5b8dee" opacity="0.6"/>
+        <text x="46" y="210" fill="#8a99b8" font-size="10" font-family="JetBrains Mono,monospace">予防可能な感染症（水色）</text>
+        <rect x="220" y="200" width="12" height="10" fill="#f87171" opacity="0.7"/>
+        <text x="236" y="210" fill="#8a99b8" font-size="10" font-family="JetBrains Mono,monospace">負傷（赤）</text>
+        <text x="30" y="228" fill="#4a5a7a" font-size="10" font-family="JetBrains Mono,monospace">扇形の面積で割合を表現。改善後（左）は感染症死が激減しているのが一目でわかる。</text>
+      </svg>
+      <div class="fig-caption">図：ナイチンゲールのローズダイアグラム（鶏頭図）模式図 <span class="ptr">S03:p.22</span></div>
+    </div>
   </div>
 
   <!-- Limit -->
@@ -790,12 +849,17 @@ em { color: var(--accent-green); font-style: normal; }
       <table>
         <thead><tr><th>目的</th><th>グラフの種類</th></tr></thead>
         <tbody>
-          <tr><td><strong>ばらつき</strong>を見る</td><td>ヒストグラム、ストリップチャート、箱ひげ図、バイオリン図</td></tr>
+          <tr><td><strong>ばらつき</strong>を見る</td><td>ヒストグラム、ストリップチャート、箱ひげ図、<span style="color:var(--text-muted)">バイオリン図 ※</span></td></tr>
           <tr><td><strong>値の比較</strong>をする</td><td>棒グラフ</td></tr>
           <tr><td><strong>割合</strong>を見る</td><td>パイチャート（円グラフ）、積み上げ棒グラフ</td></tr>
-          <tr><td><strong>時間変化</strong>を見る</td><td>折れ線グラフ、コレログラム</td></tr>
+          <tr><td><strong>時間変化</strong>を見る</td><td>折れ線グラフ、<span style="color:var(--text-muted)">コレログラム ※</span></td></tr>
         </tbody>
       </table>
+    </div>
+    <div class="audio-block" style="border-left-color:var(--text-muted); margin-top:12px;">
+      <div class="audio-label" style="color:var(--text-muted)">※ 今回授業範囲外（スライド上グレーアウト表示）<span class="ptr">S03:p.31</span></div>
+      <strong>バイオリン図（Violin Plot）</strong>：箱ひげ図にデータの分布密度（カーネル密度推定）を重ね合わせた図。箱ひげ図より詳細なデータ分布の形状が把握できる。<br><br>
+      <strong>コレログラム（Correlogram）</strong>：時系列データの<strong>自己相関</strong>（ある時点とそれより過去の時点のデータとの相関）を可視化したグラフ。時系列分析で使用される。
     </div>
   </div>
 
@@ -958,7 +1022,10 @@ em { color: var(--accent-green); font-style: normal; }
       <li>差が明確に可視化できる</li>
       <li><strong>原点（0）を必ず表示する必要がある</strong></li>
     </ul>
-    <span class="ptr">S03:p.44</span>
+    <div class="audio-block" style="border-left-color:var(--accent-orange); margin-top:10px;">
+      <div class="audio-label" style="color:var(--accent-orange)">⚠ チャートジャンク（第6回で詳しく学習） <span class="ptr">S03:p.44</span></div>
+      棒グラフで原点（0）を省略すると、差が実際より大きく見えるなど<strong>誤解を招く表現</strong>になる。このような不要・誇張した視覚要素を「<strong>チャートジャンク（Chart Junk）</strong>」と呼ぶ。詳細は第6回で学習予定。
+    </div>
     <h4>ヒストグラム vs 棒グラフ</h4>
     <div class="tbl-wrap">
       <table>
@@ -1051,6 +1118,115 @@ em { color: var(--accent-green); font-style: normal; }
     </ul>
     <p style="margin-top:8px; font-size:13px; color:var(--text-sub)"><strong>応用</strong>：重複する図を削除し、対角線にヒストグラム、右上三角に相関係数を表示することで表示エリアを有効活用できる。<span class="ptr">S03:p.60</span></p>
     <span class="ptr">S03:p.56〜59</span>
+
+    <!-- SVG: 散布図行列の構造 -->
+    <div class="fig-wrap" style="margin-top:16px">
+      <svg viewBox="0 0 420 240" xmlns="http://www.w3.org/2000/svg" style="max-width:420px; width:100%">
+        <defs>
+          <style>
+            .cell { stroke: #2a3a55; stroke-width: 1; }
+            .cell-scatter { fill: #1a2235; }
+            .cell-hist { fill: #1e2d45; }
+            .cell-corr { fill: #162030; }
+            .dot-sm { fill: #5b8dee; opacity: 0.7; r: 2; }
+          </style>
+        </defs>
+        <!-- 3x3 grid -->
+        <!-- Row labels -->
+        <text x="12" y="78" fill="#8a99b8" font-size="9" font-family="JetBrains Mono,monospace" text-anchor="middle" transform="rotate(-90,12,78)">平均気温</text>
+        <text x="12" y="148" fill="#8a99b8" font-size="9" font-family="JetBrains Mono,monospace" text-anchor="middle" transform="rotate(-90,12,148)">最高気温</text>
+        <text x="12" y="218" fill="#8a99b8" font-size="9" font-family="JetBrains Mono,monospace" text-anchor="middle" transform="rotate(-90,12,218)">最低気温</text>
+        <!-- Col labels -->
+        <text x="78" y="20" fill="#8a99b8" font-size="9" font-family="JetBrains Mono,monospace" text-anchor="middle">平均気温</text>
+        <text x="148" y="20" fill="#8a99b8" font-size="9" font-family="JetBrains Mono,monospace" text-anchor="middle">最高気温</text>
+        <text x="218" y="20" fill="#8a99b8" font-size="9" font-family="JetBrains Mono,monospace" text-anchor="middle">最低気温</text>
+
+        <!-- [0,0] Histogram 平均気温 -->
+        <rect x="30" y="28" width="96" height="96" class="cell cell-hist" rx="3"/>
+        <text x="78" y="80" fill="#fbbf24" font-size="9" text-anchor="middle" font-family="JetBrains Mono,monospace">ヒストグラム</text>
+        <rect x="40" y="90" width="8" height="28" fill="#5b8dee" opacity="0.5"/>
+        <rect x="50" y="75" width="8" height="43" fill="#5b8dee" opacity="0.6"/>
+        <rect x="60" y="60" width="8" height="58" fill="#5b8dee" opacity="0.7"/>
+        <rect x="70" y="68" width="8" height="50" fill="#5b8dee" opacity="0.6"/>
+        <rect x="80" y="78" width="8" height="40" fill="#5b8dee" opacity="0.5"/>
+        <rect x="90" y="88" width="8" height="30" fill="#5b8dee" opacity="0.4"/>
+        <rect x="100" y="95" width="8" height="23" fill="#5b8dee" opacity="0.35"/>
+
+        <!-- [0,1] Scatter 平均×最高 -->
+        <rect x="128" y="28" width="96" height="96" class="cell cell-scatter" rx="3"/>
+        <text x="176" y="48" fill="#34d399" font-size="8" text-anchor="middle" font-family="JetBrains Mono,monospace">x軸:最高気温</text>
+        <text x="176" y="58" fill="#34d399" font-size="8" text-anchor="middle" font-family="JetBrains Mono,monospace">y軸:平均気温</text>
+        <circle cx="140" cy="108" r="2" fill="#5b8dee" opacity="0.7"/>
+        <circle cx="148" cy="100" r="2" fill="#5b8dee" opacity="0.7"/>
+        <circle cx="155" cy="95" r="2" fill="#5b8dee" opacity="0.7"/>
+        <circle cx="163" cy="88" r="2" fill="#5b8dee" opacity="0.7"/>
+        <circle cx="170" cy="82" r="2" fill="#5b8dee" opacity="0.7"/>
+        <circle cx="178" cy="76" r="2" fill="#5b8dee" opacity="0.7"/>
+        <circle cx="185" cy="70" r="2" fill="#5b8dee" opacity="0.7"/>
+        <circle cx="193" cy="65" r="2" fill="#5b8dee" opacity="0.7"/>
+        <circle cx="200" cy="58" r="2" fill="#5b8dee" opacity="0.7"/>
+        <!-- arrow indicator -->
+        <text x="225" y="78" fill="#fbbf24" font-size="14">↑</text>
+
+        <!-- [0,2] Corr coef -->
+        <rect x="228" y="28" width="96" height="96" class="cell cell-corr" rx="3"/>
+        <text x="276" y="72" fill="#a78bfa" font-size="11" text-anchor="middle" font-family="JetBrains Mono,monospace" font-weight="bold">Corr:</text>
+        <text x="276" y="88" fill="#a78bfa" font-size="12" text-anchor="middle" font-family="JetBrains Mono,monospace" font-weight="bold">0.919***</text>
+        <text x="276" y="40" fill="#4a5a7a" font-size="8" text-anchor="middle" font-family="JetBrains Mono,monospace">相関係数</text>
+
+        <!-- [1,0] Scatter 最高×平均 (mirror of [0,1]) -->
+        <rect x="30" y="126" width="96" height="96" class="cell cell-scatter" rx="3"/>
+        <text x="78" y="146" fill="#34d399" font-size="8" text-anchor="middle" font-family="JetBrains Mono,monospace">x軸:平均気温</text>
+        <text x="78" y="156" fill="#34d399" font-size="8" text-anchor="middle" font-family="JetBrains Mono,monospace">y軸:最高気温</text>
+        <circle cx="40" cy="206" r="2" fill="#5b8dee" opacity="0.7"/>
+        <circle cx="48" cy="198" r="2" fill="#5b8dee" opacity="0.7"/>
+        <circle cx="56" cy="193" r="2" fill="#5b8dee" opacity="0.7"/>
+        <circle cx="64" cy="186" r="2" fill="#5b8dee" opacity="0.7"/>
+        <circle cx="72" cy="180" r="2" fill="#5b8dee" opacity="0.7"/>
+        <circle cx="80" cy="174" r="2" fill="#5b8dee" opacity="0.7"/>
+        <circle cx="88" cy="168" r="2" fill="#5b8dee" opacity="0.7"/>
+        <circle cx="96" cy="162" r="2" fill="#5b8dee" opacity="0.7"/>
+        <circle cx="104" cy="156" r="2" fill="#5b8dee" opacity="0.7"/>
+        <!-- same data note -->
+        <text x="30" y="123" fill="#f87171" font-size="8" font-family="JetBrains Mono,monospace">↕ 同じデータ（軸が入れ替わり）</text>
+
+        <!-- [1,1] Histogram 最高気温 -->
+        <rect x="128" y="126" width="96" height="96" class="cell cell-hist" rx="3"/>
+        <text x="176" y="178" fill="#fbbf24" font-size="9" text-anchor="middle" font-family="JetBrains Mono,monospace">ヒストグラム</text>
+        <rect x="138" y="192" width="8" height="24" fill="#5b8dee" opacity="0.4"/>
+        <rect x="148" y="180" width="8" height="36" fill="#5b8dee" opacity="0.55"/>
+        <rect x="158" y="168" width="8" height="48" fill="#5b8dee" opacity="0.65"/>
+        <rect x="168" y="175" width="8" height="41" fill="#5b8dee" opacity="0.55"/>
+        <rect x="178" y="185" width="8" height="31" fill="#5b8dee" opacity="0.45"/>
+        <rect x="188" y="193" width="8" height="23" fill="#5b8dee" opacity="0.35"/>
+
+        <!-- [1,2] Scatter -->
+        <rect x="228" y="126" width="96" height="96" class="cell cell-scatter" rx="3"/>
+        <circle cx="238" cy="215" r="2" fill="#5b8dee" opacity="0.7"/>
+        <circle cx="248" cy="205" r="2" fill="#5b8dee" opacity="0.7"/>
+        <circle cx="258" cy="196" r="2" fill="#5b8dee" opacity="0.7"/>
+        <circle cx="268" cy="188" r="2" fill="#5b8dee" opacity="0.7"/>
+        <circle cx="278" cy="178" r="2" fill="#5b8dee" opacity="0.7"/>
+        <circle cx="288" cy="170" r="2" fill="#5b8dee" opacity="0.7"/>
+        <circle cx="298" cy="162" r="2" fill="#5b8dee" opacity="0.7"/>
+        <circle cx="308" cy="154" r="2" fill="#5b8dee" opacity="0.7"/>
+        <circle cx="318" cy="146" r="2" fill="#5b8dee" opacity="0.7"/>
+
+        <!-- [2,*] bottom row -->
+        <rect x="30" y="224" width="96" height="12" fill="#0a0e1a" opacity="0"/>
+        <!-- Corr [2,0] -->
+        <rect x="30" y="224" width="96" height="4" fill="none"/>
+        <!-- label: 応用例 -->
+        <text x="340" y="140" fill="#4a5a7a" font-size="9" font-family="JetBrains Mono,monospace" text-anchor="start">【応用】</text>
+        <text x="340" y="152" fill="#4a5a7a" font-size="9" font-family="JetBrains Mono,monospace" text-anchor="start">対角線:</text>
+        <text x="340" y="162" fill="#fbbf24" font-size="9" font-family="JetBrains Mono,monospace" text-anchor="start">ヒストグラム</text>
+        <text x="340" y="176" fill="#4a5a7a" font-size="9" font-family="JetBrains Mono,monospace" text-anchor="start">右上三角:</text>
+        <text x="340" y="186" fill="#a78bfa" font-size="9" font-family="JetBrains Mono,monospace" text-anchor="start">相関係数</text>
+        <text x="340" y="200" fill="#4a5a7a" font-size="9" font-family="JetBrains Mono,monospace" text-anchor="start">左下三角:</text>
+        <text x="340" y="210" fill="#34d399" font-size="9" font-family="JetBrains Mono,monospace" text-anchor="start">散布図</text>
+      </svg>
+      <div class="fig-caption">図：散布図行列の構造と読み方（応用例含む） <span class="ptr">S03:p.57〜60</span></div>
+    </div>
   </div>
 
   <div class="card" id="bubble">
@@ -1218,9 +1394,9 @@ em { color: var(--accent-green); font-style: normal; }
       <table>
         <thead><tr><th>ID</th><th>内容</th><th>種別</th><th>優先度</th></tr></thead>
         <tbody>
-          <tr><td>U01</td><td>「バイオリン図」「コレログラム」の詳細説明がスライドに見当たらない（グレーアウト）</td><td>省略範囲</td><td>低</td></tr>
-          <tr><td>U02</td><td>ナイチンゲールのローズダイアグラムで使用された数字の出典</td><td>出典確認</td><td>低</td></tr>
-          <tr><td>U03</td><td>第6回でチャートジャンクの詳細を学ぶ予定（棒グラフで原点省略に関連）</td><td>次回待ち</td><td>中</td></tr>
+          <tr style="opacity:0.5"><td>U01 ✅</td><td>バイオリン図・コレログラムはスライド上グレーアウト→今回授業範囲外と確定。用語説明をグラフ分類表の注記として追加済み。</td><td><span style="color:var(--accent-green)">解消済み</span></td><td>—</td></tr>
+          <tr style="opacity:0.5"><td>U02 ✅</td><td>ナイチンゲールの数値（8.2%→0.11%）の出典はS03:p.21およびp.23に記載あり（パブリックドメイン・「こうもりの翼とバラの花」サイト）。本文に追記済み。</td><td><span style="color:var(--accent-green)">解消済み</span></td><td>—</td></tr>
+          <tr><td>U03 📌</td><td>チャートジャンクはS03:p.44に「← チャートジャンク（第6回）」と明記あり。定義の概要を棒グラフカードに追加済み。詳細は第6回で学習。</td><td><span style="color:var(--accent-yellow)">第6回待ち</span></td><td>中</td></tr>
         </tbody>
       </table>
     </div>
@@ -1291,7 +1467,7 @@ em { color: var(--accent-green); font-style: normal; }
     <ul>
       <li><strong>第6回</strong>：可視化のメリット③「データを伝える」の詳細、チャートジャンク（棒グラフで原点省略すると？）について学習予定</li>
       <li><strong>探索的データ解析（EDA）</strong>：今回の可視化は「探索的データ解析」フェーズの重要な手法。今後の統計・機械学習の学習につながる</li>
-      <li><strong>バイオリン図・コレログラム</strong>：今回のスライドではグレーアウトされていたグラフ（補足として今後触れる可能性あり）</li>
+      <li><strong>バイオリン図・コレログラム</strong>：今回スライド上グレーアウトされていた（今回授業範囲外）。バイオリン図は箱ひげ図＋分布密度の複合グラフ、コレログラムは時系列の自己相関を可視化するグラフ。グラフ分類表の注記を参照。</li>
     </ul>
   </div>
 
@@ -1303,9 +1479,9 @@ em { color: var(--accent-green); font-style: normal; }
       <table>
         <thead><tr><th>ID</th><th>内容</th><th>種別</th><th>優先度</th></tr></thead>
         <tbody>
-          <tr><td>U01</td><td>「バイオリン図」「コレログラム」の詳細説明がスライドに見当たらない（グレーアウト）</td><td>省略範囲</td><td>低</td></tr>
-          <tr><td>U02</td><td>ナイチンゲールのローズダイアグラムで使用された数字の出典</td><td>出典確認</td><td>低</td></tr>
-          <tr><td>U03</td><td>第6回でチャートジャンクの詳細を学ぶ予定（棒グラフで原点省略に関連）</td><td>次回待ち</td><td>中</td></tr>
+          <tr style="opacity:0.5"><td>U01 ✅</td><td>バイオリン図・コレログラムはスライド上グレーアウト→今回授業範囲外と確定。用語説明をグラフ分類表の注記として追加済み。</td><td><span style="color:var(--accent-green)">解消済み</span></td><td>—</td></tr>
+          <tr style="opacity:0.5"><td>U02 ✅</td><td>ナイチンゲールの数値（8.2%→0.11%）の出典はS03:p.21およびp.23に記載あり（パブリックドメイン・「こうもりの翼とバラの花」サイト）。本文に追記済み。</td><td><span style="color:var(--accent-green)">解消済み</span></td><td>—</td></tr>
+          <tr><td>U03 📌</td><td>チャートジャンクはS03:p.44に「← チャートジャンク（第6回）」と明記あり。定義の概要を棒グラフカードに追加済み。詳細は第6回で学習。</td><td><span style="color:var(--accent-yellow)">第6回待ち</span></td><td>中</td></tr>
         </tbody>
       </table>
     </div>

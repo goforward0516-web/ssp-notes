@@ -775,7 +775,60 @@
     <div class="block-audio">
       決定木の弱点（座標平面上での可視化）：決定木による分類を座標平面上に表すと、年齢（X軸）と利用頻度（Y軸）の2次元で4つのエリアに直角に分かれる。しかし実際のデータは斜め方向の境界線（右下がりの直線）でうまく分類できる形状をしており、決定木の直角分割では課金ユーザーが無課金エリアに混入してしまう。より複雑な決定木にすれば対処できるが、過学習のリスクが生じる。
     </div>
-    <p style="font-size:12px;color:var(--text-muted);font-family:'JetBrains Mono',monospace;margin-top:4px;">[図解省略：決定木の座標平面表示 → スライドp.37〜38参照]</p>
+    <div class="fig-wrap">
+      <figure>
+        <svg viewBox="0 0 620 270" xmlns="http://www.w3.org/2000/svg" width="100%">
+          <!-- LEFT: 決定木による分類（直角分割） -->
+          <text x="150" y="18" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" font-weight="700" fill="#8a99b8">決定木での分類</text>
+          <!-- Axes -->
+          <line x1="40" y1="230" x2="270" y2="230" stroke="#3a4a6b" stroke-width="1.5"/>
+          <line x1="40" y1="230" x2="40" y2="30" stroke="#3a4a6b" stroke-width="1.5"/>
+          <text x="272" y="234" font-family="'JetBrains Mono'" font-size="10" fill="#5a6b8a">年齢</text>
+          <text x="6" y="28" font-family="'JetBrains Mono'" font-size="10" fill="#5a6b8a">利用頻度</text>
+          <!-- 18歳 vertical boundary -->
+          <line x1="155" y1="30" x2="155" y2="230" stroke="#5b8dee" stroke-width="1.5" stroke-dasharray="5,3"/>
+          <text x="130" y="245" font-family="'JetBrains Mono'" font-size="10" fill="#5b8dee">18歳</text>
+          <!-- 1回/日 horizontal boundary (only right side) -->
+          <line x1="155" y1="140" x2="270" y2="140" stroke="#5b8dee" stroke-width="1.5" stroke-dasharray="5,3"/>
+          <text x="18" y="144" font-family="'JetBrains Mono'" font-size="9" fill="#5b8dee">1回/日</text>
+          <!-- Fill areas -->
+          <rect x="41" y="31" width="113" height="198" fill="rgba(96,130,220,0.12)"/>
+          <rect x="156" y="141" width="113" height="88" fill="rgba(96,130,220,0.12)"/>
+          <rect x="156" y="31" width="113" height="108" fill="rgba(248,113,113,0.12)"/>
+          <!-- Labels -->
+          <text x="97" y="135" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#5b8dee">無課金</text>
+          <text x="212" y="100" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#f87171">課金</text>
+          <text x="212" y="190" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#5b8dee">無課金</text>
+          <!-- Data points: red=課金 should be, but classified as 無課金 -->
+          <circle cx="175" cy="155" r="5" fill="#f87171" opacity="0.9"/>
+          <circle cx="200" cy="165" r="5" fill="#f87171" opacity="0.9"/>
+          <circle cx="185" cy="175" r="5" fill="#f87171" opacity="0.9"/>
+          <text x="212" y="148" font-family="'Noto Sans JP'" font-size="9" fill="#f87171">← 本来は課金</text>
+          <text x="212" y="158" font-family="'Noto Sans JP'" font-size="9" fill="#f87171">なのに無課金</text>
+          <text x="212" y="168" font-family="'Noto Sans JP'" font-size="9" fill="#f87171">エリアに分類</text>
+
+          <!-- Arrow -->
+          <text x="302" y="140" text-anchor="middle" font-family="'JetBrains Mono'" font-size="20" fill="#3a4a6b">→</text>
+
+          <!-- RIGHT: 本来欲しい分類（斜め境界線） -->
+          <text x="470" y="18" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" font-weight="700" fill="#8a99b8">本来欲しい分類</text>
+          <line x1="320" y1="230" x2="560" y2="230" stroke="#3a4a6b" stroke-width="1.5"/>
+          <line x1="320" y1="230" x2="320" y2="30" stroke="#3a4a6b" stroke-width="1.5"/>
+          <text x="562" y="234" font-family="'JetBrains Mono'" font-size="10" fill="#5a6b8a">年齢</text>
+          <text x="286" y="28" font-family="'JetBrains Mono'" font-size="10" fill="#5a6b8a">利用頻度</text>
+          <!-- Diagonal boundary -->
+          <line x1="330" y1="60" x2="555" y2="210" stroke="#f87171" stroke-width="2" stroke-dasharray="5,3"/>
+          <!-- Fill areas -->
+          <polygon points="320,30 555,30 555,210 330,60" fill="rgba(248,113,113,0.12)"/>
+          <polygon points="320,30 330,60 555,210 555,230 320,230" fill="rgba(96,130,220,0.12)"/>
+          <text x="460" y="80" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#f87171">課金</text>
+          <text x="370" y="190" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#5b8dee">無課金</text>
+          <text x="430" y="230" font-family="'JetBrains Mono'" font-size="9" fill="#f87171">↑ 斜めの境界線が必要</text>
+          <text x="380" y="244" font-family="'JetBrains Mono'" font-size="9" fill="#f87171">決定木では困難</text>
+        </svg>
+        <figcaption>図：決定木の弱点 — 直角分割では斜め境界が必要なデータを正しく分類できない ｜ S03:p.37〜38</figcaption>
+      </figure>
+    </div>
 
     <div class="block-important">
       決定木では、結果は必ず準備したグループのいずれかに分類される。新しいグループへの分類は不可能（クラス分類全般の性質）。
@@ -784,7 +837,7 @@
     <h3 id="knn">最近傍法と k-近傍法（k-NN）</h3>
 
     <div class="block-important">
-      <span class="def-term">【定義】</span>最近傍法（最近傍法）とは、分類不明の新データに最も近い（距離が最短の）既存データのラベルを採用する分類手法。
+      <span class="def-term">【定義】</span>最近傍法とは、分類不明の新データに最も近い（距離が最短の）既存データのラベルを採用する分類手法。
     </div>
 
     <div class="block-audio">
@@ -1029,17 +1082,165 @@
       <li><strong>曲線の境界線が必要なデータ</strong>（渦巻き・ドーナツ型など）→ 直線では正しく分類できない</li>
     </ul>
     <p>→ <strong>必ず可視化（散布図）でデータの形状を確認してから適用する</strong></p>
-    <p style="font-size:12px;color:var(--text-muted);font-family:'JetBrains Mono',monospace;">[図解省略：高相関データへのk-means適用例・渦巻き型データ → スライドp.67〜69参照]</p>
+    <div class="fig-wrap">
+      <figure>
+        <svg viewBox="0 0 620 210" xmlns="http://www.w3.org/2000/svg" width="100%">
+          <!-- LEFT: 高相関データ（直線状）への不適切なk-means適用 -->
+          <text x="150" y="16" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" font-weight="700" fill="#8a99b8">高相関データへのk-means（不適切）</text>
+          <line x1="20" y1="185" x2="280" y2="185" stroke="#3a4a6b" stroke-width="1"/>
+          <line x1="20" y1="185" x2="20" y2="25" stroke="#3a4a6b" stroke-width="1"/>
+          <!-- Data points: linear distribution -->
+          <circle cx="40" cy="170" r="4" fill="#34d399"/><circle cx="55" cy="160" r="4" fill="#34d399"/>
+          <circle cx="70" cy="150" r="4" fill="#34d399"/><circle cx="85" cy="142" r="4" fill="#34d399"/>
+          <circle cx="100" cy="133" r="4" fill="#34d399"/><circle cx="115" cy="124" r="4" fill="#fbbf24"/>
+          <circle cx="130" cy="115" r="4" fill="#fbbf24"/><circle cx="145" cy="106" r="4" fill="#fbbf24"/>
+          <circle cx="160" cy="97" r="4" fill="#f87171"/><circle cx="175" cy="88" r="4" fill="#f87171"/>
+          <circle cx="190" cy="79" r="4" fill="#f87171"/><circle cx="205" cy="70" r="4" fill="#f87171"/>
+          <circle cx="220" cy="61" r="4" fill="#f87171"/><circle cx="235" cy="52" r="4" fill="#f87171"/>
+          <!-- k-means boundaries (diagonal cuts on linear data = wrong) -->
+          <line x1="110" y1="25" x2="120" y2="185" stroke="#f87171" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <line x1="155" y1="25" x2="165" y2="185" stroke="#f87171" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <text x="150" y="200" text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#f87171">本来1グループなのに無理やり3分割</text>
 
-    <h4>② 外れ値の影響</h4>
-    <p>外れ値が存在すると、領域内データの平均を求める際に中心点が外れ値の方向にズレてしまう。→ 境界線がずれてクラスタリング結果が歪む。</p>
-    <p style="font-size:12px;color:var(--text-muted);font-family:'JetBrains Mono',monospace;">[図解省略：外れ値によるk-means中心点ズレの例 → スライドp.70参照]</p>
+          <!-- Arrow -->
+          <text x="305" y="108" text-anchor="middle" font-family="'JetBrains Mono'" font-size="20" fill="#3a4a6b">→</text>
+
+          <!-- RIGHT: 渦巻き型データ（曲線境界が必要） -->
+          <text x="470" y="16" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" font-weight="700" fill="#8a99b8">曲線境界が必要なデータ（渦巻き型）</text>
+          <line x1="330" y1="185" x2="590" y2="185" stroke="#3a4a6b" stroke-width="1"/>
+          <line x1="330" y1="185" x2="330" y2="25" stroke="#3a4a6b" stroke-width="1"/>
+          <!-- Outer ring (group A) -->
+          <circle cx="460" cy="40" r="4" fill="#34d399"/><circle cx="510" cy="55" r="4" fill="#34d399"/>
+          <circle cx="545" cy="95" r="4" fill="#34d399"/><circle cx="545" cy="145" r="4" fill="#34d399"/>
+          <circle cx="510" cy="175" r="4" fill="#34d399"/><circle cx="460" cy="180" r="4" fill="#34d399"/>
+          <circle cx="410" cy="165" r="4" fill="#34d399"/><circle cx="375" cy="130" r="4" fill="#34d399"/>
+          <circle cx="370" cy="80" r="4" fill="#34d399"/><circle cx="400" cy="45" r="4" fill="#34d399"/>
+          <!-- Inner group (group B) -->
+          <circle cx="460" cy="90" r="4" fill="#5b8dee"/><circle cx="490" cy="105" r="4" fill="#5b8dee"/>
+          <circle cx="480" cy="130" r="4" fill="#5b8dee"/><circle cx="450" cy="140" r="4" fill="#5b8dee"/>
+          <circle cx="425" cy="125" r="4" fill="#5b8dee"/><circle cx="420" cy="100" r="4" fill="#5b8dee"/>
+          <circle cx="440" cy="80" r="4" fill="#5b8dee"/>
+          <!-- Ideal curve boundary -->
+          <ellipse cx="460" cy="115" rx="55" ry="45" fill="none" stroke="#34d399" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <text x="460" y="200" text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#5b8dee">k-meansの直線境界では分離不可能</text>
+        </svg>
+        <figcaption>図：k-means法が不適切なデータ形状 ｜ S03:p.67〜69</figcaption>
+      </figure>
+    </div>
+
+    <div class="fig-wrap">
+      <figure>
+        <svg viewBox="0 0 520 200" xmlns="http://www.w3.org/2000/svg" width="100%">
+          <!-- Outlier effect on k-means -->
+          <text x="130" y="16" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" font-weight="700" fill="#8a99b8">外れ値なし</text>
+          <text x="390" y="16" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" font-weight="700" fill="#8a99b8">外れ値あり → 中心がズレる</text>
+          <!-- LEFT: no outlier -->
+          <line x1="20" y1="175" x2="240" y2="175" stroke="#3a4a6b" stroke-width="1"/>
+          <line x1="20" y1="175" x2="20" y2="25" stroke="#3a4a6b" stroke-width="1"/>
+          <!-- cluster A points -->
+          <circle cx="60" cy="120" r="4" fill="#5b8dee"/><circle cx="75" cy="110" r="4" fill="#5b8dee"/>
+          <circle cx="55" cy="100" r="4" fill="#5b8dee"/><circle cx="80" cy="130" r="4" fill="#5b8dee"/>
+          <circle cx="65" cy="140" r="4" fill="#5b8dee"/>
+          <!-- center A -->
+          <circle cx="67" cy="120" r="7" fill="none" stroke="#5b8dee" stroke-width="2"/>
+          <text x="67" y="124" text-anchor="middle" font-family="'JetBrains Mono'" font-size="10" fill="#5b8dee">★</text>
+          <!-- cluster B points -->
+          <circle cx="160" cy="80" r="4" fill="#34d399"/><circle cx="175" cy="70" r="4" fill="#34d399"/>
+          <circle cx="155" cy="65" r="4" fill="#34d399"/><circle cx="180" cy="85" r="4" fill="#34d399"/>
+          <circle cx="165" cy="90" r="4" fill="#34d399"/>
+          <!-- center B -->
+          <circle cx="167" cy="78" r="7" fill="none" stroke="#34d399" stroke-width="2"/>
+          <text x="167" y="82" text-anchor="middle" font-family="'JetBrains Mono'" font-size="10" fill="#34d399">★</text>
+          <!-- boundary -->
+          <line x1="118" y1="25" x2="118" y2="175" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <text x="118" y="188" text-anchor="middle" font-family="'JetBrains Mono'" font-size="9" fill="#fbbf24">境界線（正しい）</text>
+
+          <!-- Arrow -->
+          <text x="258" y="100" text-anchor="middle" font-family="'JetBrains Mono'" font-size="18" fill="#3a4a6b">→</text>
+
+          <!-- RIGHT: with outlier -->
+          <line x1="278" y1="175" x2="510" y2="175" stroke="#3a4a6b" stroke-width="1"/>
+          <line x1="278" y1="175" x2="278" y2="25" stroke="#3a4a6b" stroke-width="1"/>
+          <!-- same cluster A -->
+          <circle cx="318" cy="120" r="4" fill="#5b8dee"/><circle cx="333" cy="110" r="4" fill="#5b8dee"/>
+          <circle cx="313" cy="100" r="4" fill="#5b8dee"/><circle cx="338" cy="130" r="4" fill="#5b8dee"/>
+          <circle cx="323" cy="140" r="4" fill="#5b8dee"/>
+          <!-- outlier (red circle) -->
+          <circle cx="430" cy="155" r="6" fill="#f87171" stroke="#f87171" stroke-width="2"/>
+          <text x="440" y="152" font-family="'Noto Sans JP'" font-size="10" fill="#f87171">外れ値</text>
+          <!-- center A shifted toward outlier -->
+          <circle cx="355" cy="130" r="7" fill="none" stroke="#5b8dee" stroke-width="2" stroke-dasharray="3,2"/>
+          <text x="355" y="134" text-anchor="middle" font-family="'JetBrains Mono'" font-size="10" fill="#5b8dee">★</text>
+          <text x="355" y="148" text-anchor="middle" font-family="'Noto Sans JP'" font-size="9" fill="#f87171">↑ ズレた</text>
+          <!-- same cluster B -->
+          <circle cx="418" cy="80" r="4" fill="#34d399"/><circle cx="433" cy="70" r="4" fill="#34d399"/>
+          <circle cx="413" cy="65" r="4" fill="#34d399"/><circle cx="438" cy="85" r="4" fill="#34d399"/>
+          <circle cx="423" cy="90" r="4" fill="#34d399"/>
+          <circle cx="425" cy="78" r="7" fill="none" stroke="#34d399" stroke-width="2"/>
+          <text x="425" y="82" text-anchor="middle" font-family="'JetBrains Mono'" font-size="10" fill="#34d399">★</text>
+          <!-- shifted boundary -->
+          <line x1="390" y1="25" x2="390" y2="175" stroke="#f87171" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <text x="390" y="188" text-anchor="middle" font-family="'JetBrains Mono'" font-size="9" fill="#f87171">境界線（ズレた）</text>
+        </svg>
+        <figcaption>図：外れ値によるk-means中心点・境界線のズレ ｜ S03:p.70</figcaption>
+      </figure>
+    </div>
 
     <h4>③ データの単位（スケール）の影響</h4>
     <div class="block-important">
       同じデータでも単位が違うだけで（例：メートル vs センチメートル）クラスタリング結果が変わってしまう。→ 対策：<strong>標準化</strong>が必要。
     </div>
-    <p style="font-size:12px;color:var(--text-muted);font-family:'JetBrains Mono',monospace;">[図解省略：同一データの単位変換前後でクラスタが変わる散布図比較 → スライドp.71〜72参照]</p>
+    <div class="fig-wrap">
+      <figure>
+        <svg viewBox="0 0 640 220" xmlns="http://www.w3.org/2000/svg" width="100%">
+          <!-- LEFT: x axis in meters (small scale) -->
+          <text x="120" y="16" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" font-weight="700" fill="#8a99b8">X軸 = メートル（正規クラスタ）</text>
+          <line x1="20" y1="185" x2="240" y2="185" stroke="#3a4a6b" stroke-width="1"/>
+          <line x1="20" y1="185" x2="20" y2="30" stroke="#3a4a6b" stroke-width="1"/>
+          <text x="244" y="189" font-family="'JetBrains Mono'" font-size="9" fill="#5a6b8a">x</text>
+          <text x="5" y="28" font-family="'JetBrains Mono'" font-size="9" fill="#5a6b8a">y</text>
+          <!-- Green cluster (bottom-left) -->
+          <circle cx="50" cy="160" r="4" fill="#34d399"/><circle cx="65" cy="155" r="4" fill="#34d399"/>
+          <circle cx="45" cy="145" r="4" fill="#34d399"/>
+          <!-- Black cluster (center-right) -->
+          <circle cx="130" cy="120" r="4" fill="#8a99b8"/><circle cx="150" cy="115" r="4" fill="#8a99b8"/>
+          <circle cx="140" cy="130" r="4" fill="#8a99b8"/>
+          <!-- Red cluster (top) -->
+          <circle cx="110" cy="60" r="4" fill="#f87171"/>
+          <!-- Cluster boundaries -->
+          <ellipse cx="53" cy="153" rx="22" ry="20" fill="none" stroke="#34d399" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <ellipse cx="140" cy="122" rx="25" ry="18" fill="none" stroke="#8a99b8" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <ellipse cx="110" cy="60" rx="18" ry="16" fill="none" stroke="#f87171" stroke-width="1.5" stroke-dasharray="4,2"/>
+
+          <!-- Arrow -->
+          <text x="262" y="110" text-anchor="middle" font-family="'JetBrains Mono'" font-size="18" fill="#3a4a6b">→</text>
+          <text x="262" y="128" text-anchor="middle" font-family="'Noto Sans JP'" font-size="9" fill="#f87171">×100</text>
+          <text x="262" y="142" text-anchor="middle" font-family="'Noto Sans JP'" font-size="9" fill="#5a6b8a">（m→cm）</text>
+
+          <!-- RIGHT: x axis in centimeters (100x scale) = different cluster result -->
+          <text x="460" y="16" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" font-weight="700" fill="#8a99b8">X軸 = センチメートル（結果が変わる）</text>
+          <line x1="290" y1="185" x2="620" y2="185" stroke="#3a4a6b" stroke-width="1"/>
+          <line x1="290" y1="185" x2="290" y2="30" stroke="#3a4a6b" stroke-width="1"/>
+          <text x="624" y="189" font-family="'JetBrains Mono'" font-size="9" fill="#5a6b8a">x×100</text>
+          <text x="275" y="28" font-family="'JetBrains Mono'" font-size="9" fill="#5a6b8a">y</text>
+          <!-- Same y values, x stretched 100x -->
+          <!-- Green cluster now far left, red far right, black still center -->
+          <circle cx="310" cy="160" r="4" fill="#34d399"/><circle cx="316" cy="155" r="4" fill="#34d399"/>
+          <circle cx="308" cy="145" r="4" fill="#34d399"/>
+          <!-- Black cluster center -->
+          <circle cx="460" cy="120" r="4" fill="#f87171"/><circle cx="480" cy="115" r="4" fill="#f87171"/>
+          <circle cx="470" cy="130" r="4" fill="#f87171"/>
+          <!-- Red cluster now right side -->
+          <circle cx="580" cy="60" r="4" fill="#8a99b8"/>
+          <!-- New boundaries (different grouping due to x scale) -->
+          <ellipse cx="311" cy="153" rx="22" ry="20" fill="none" stroke="#34d399" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <ellipse cx="470" cy="122" rx="25" ry="18" fill="none" stroke="#f87171" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <ellipse cx="580" cy="60" rx="18" ry="16" fill="none" stroke="#8a99b8" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <text x="460" y="205" text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#f87171">→ クラスタリング結果が変わってしまう</text>
+        </svg>
+        <figcaption>図：単位（スケール）の違いがk-meansクラスタリング結果に影響する ｜ S03:p.71〜72</figcaption>
+      </figure>
+    </div>
 
     <div class="block-important">
       <span class="def-term">【定義】</span>標準化とは、全データについて「（観測値 − 平均値） ÷ 標準偏差」を計算することで、<strong>単位をなくし</strong>、平均0・分散1の値に変換する操作。これによりスケールの違いがクラスタリングに影響しなくなる。
@@ -1084,7 +1285,79 @@
         </tr>
       </tbody>
     </table>
-    <p style="font-size:12px;color:var(--text-muted);font-family:'JetBrains Mono',monospace;">[図解省略：標準化なし/あり/正解ラベルの3散布図比較 → スライドp.83参照]</p>
+    <div class="fig-wrap">
+      <figure>
+        <svg viewBox="0 0 700 230" xmlns="http://www.w3.org/2000/svg" width="100%">
+          <!-- TITLE ROW -->
+          <text x="115" y="16" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" font-weight="700" fill="#f87171">標準化なし（失敗）</text>
+          <text x="355" y="16" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" font-weight="700" fill="#34d399">標準化あり（成功）</text>
+          <text x="585" y="16" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" font-weight="700" fill="#8a99b8">正解ラベル</text>
+
+          <!-- ── LEFT: without standardization ── -->
+          <!-- x=平均気温(11〜18), y=年間降水量(750〜2250) → y dominates → vertical split -->
+          <line x1="20" y1="200" x2="210" y2="200" stroke="#3a4a6b" stroke-width="1"/>
+          <line x1="20" y1="200" x2="20" y2="30" stroke="#3a4a6b" stroke-width="1"/>
+          <text x="115" y="215" text-anchor="middle" font-family="'JetBrains Mono'" font-size="9" fill="#5a6b8a">平均気温</text>
+          <text x="5" y="28" font-family="'JetBrains Mono'" font-size="9" fill="#5a6b8a">降水量</text>
+          <!-- Data squashed at bottom (y range dominates) -->
+          <circle cx="55" cy="190" r="3" fill="#34d399"/><circle cx="62" cy="192" r="3" fill="#34d399"/>
+          <circle cx="50" cy="188" r="3" fill="#34d399"/><circle cx="68" cy="193" r="3" fill="#34d399"/>
+          <circle cx="58" cy="186" r="3" fill="#34d399"/>
+          <circle cx="110" cy="191" r="3" fill="#fbbf24"/><circle cx="118" cy="189" r="3" fill="#fbbf24"/>
+          <circle cx="105" cy="193" r="3" fill="#fbbf24"/><circle cx="122" cy="188" r="3" fill="#fbbf24"/>
+          <circle cx="163" cy="190" r="3" fill="#a78bfa"/><circle cx="170" cy="192" r="3" fill="#a78bfa"/>
+          <circle cx="158" cy="188" r="3" fill="#a78bfa"/><circle cx="175" cy="191" r="3" fill="#a78bfa"/>
+          <!-- Vertical boundaries (wrong: splits by x=temperature, not by actual groups) -->
+          <line x1="90" y1="30" x2="90" y2="200" stroke="#f87171" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <line x1="145" y1="30" x2="145" y2="200" stroke="#f87171" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <text x="115" y="42" text-anchor="middle" font-family="'Noto Sans JP'" font-size="9" fill="#f87171">データが底部に集中</text>
+          <text x="115" y="54" text-anchor="middle" font-family="'Noto Sans JP'" font-size="9" fill="#f87171">縦分割になってしまう</text>
+
+          <!-- ── MIDDLE: with standardization ── -->
+          <line x1="240" y1="200" x2="460" y2="200" stroke="#3a4a6b" stroke-width="1"/>
+          <line x1="240" y1="200" x2="240" y2="30" stroke="#3a4a6b" stroke-width="1"/>
+          <text x="350" y="215" text-anchor="middle" font-family="'JetBrains Mono'" font-size="9" fill="#5a6b8a">平均気温（標準化済）</text>
+          <text x="225" y="28" font-family="'JetBrains Mono'" font-size="9" fill="#5a6b8a">降水量</text>
+          <!-- Miyagi: low temp, low precip → bottom-left (blue) -->
+          <circle cx="268" cy="168" r="3" fill="#5b8dee"/><circle cx="275" cy="173" r="3" fill="#5b8dee"/>
+          <circle cx="262" cy="160" r="3" fill="#5b8dee"/><circle cx="280" cy="165" r="3" fill="#5b8dee"/>
+          <circle cx="270" cy="178" r="3" fill="#5b8dee"/>
+          <!-- Niigata: cool + high precip → right (orange) -->
+          <circle cx="390" cy="55" r="3" fill="#fb923c"/><circle cx="400" cy="48" r="3" fill="#fb923c"/>
+          <circle cx="385" cy="62" r="3" fill="#fb923c"/><circle cx="408" cy="58" r="3" fill="#fb923c"/>
+          <circle cx="395" cy="70" r="3" fill="#fb923c"/>
+          <!-- Osaka: warm + mid precip → top-center (green) -->
+          <circle cx="348" cy="95" r="3" fill="#34d399"/><circle cx="358" cy="88" r="3" fill="#34d399"/>
+          <circle cx="340" cy="103" r="3" fill="#34d399"/><circle cx="365" cy="98" r="3" fill="#34d399"/>
+          <circle cx="352" cy="110" r="3" fill="#34d399"/>
+          <!-- Cluster outlines -->
+          <ellipse cx="271" cy="169" rx="22" ry="22" fill="none" stroke="#5b8dee" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <ellipse cx="397" cy="59" rx="25" ry="20" fill="none" stroke="#fb923c" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <ellipse cx="351" cy="99" rx="28" ry="18" fill="none" stroke="#34d399" stroke-width="1.5" stroke-dasharray="4,2"/>
+
+          <!-- ── RIGHT: correct labels ── -->
+          <line x1="490" y1="200" x2="695" y2="200" stroke="#3a4a6b" stroke-width="1"/>
+          <line x1="490" y1="200" x2="490" y2="30" stroke="#3a4a6b" stroke-width="1"/>
+          <text x="592" y="215" text-anchor="middle" font-family="'JetBrains Mono'" font-size="9" fill="#5a6b8a">平均気温</text>
+          <!-- Miyagi (blue) -->
+          <circle cx="515" cy="168" r="3" fill="#5b8dee"/><circle cx="522" cy="173" r="3" fill="#5b8dee"/>
+          <circle cx="510" cy="160" r="3" fill="#5b8dee"/><circle cx="528" cy="165" r="3" fill="#5b8dee"/>
+          <circle cx="518" cy="178" r="3" fill="#5b8dee"/>
+          <text x="518" y="150" font-family="'Noto Sans JP'" font-size="9" fill="#5b8dee">宮城</text>
+          <!-- Niigata (orange) -->
+          <circle cx="608" cy="55" r="3" fill="#fb923c"/><circle cx="618" cy="48" r="3" fill="#fb923c"/>
+          <circle cx="603" cy="62" r="3" fill="#fb923c"/><circle cx="625" cy="58" r="3" fill="#fb923c"/>
+          <circle cx="613" cy="70" r="3" fill="#fb923c"/>
+          <text x="612" y="82" font-family="'Noto Sans JP'" font-size="9" fill="#fb923c">新潟</text>
+          <!-- Osaka (green) -->
+          <circle cx="570" cy="105" r="3" fill="#34d399"/><circle cx="580" cy="98" r="3" fill="#34d399"/>
+          <circle cx="562" cy="113" r="3" fill="#34d399"/><circle cx="587" cy="108" r="3" fill="#34d399"/>
+          <circle cx="574" cy="120" r="3" fill="#34d399"/>
+          <text x="572" y="90" font-family="'Noto Sans JP'" font-size="9" fill="#34d399">大阪</text>
+        </svg>
+        <figcaption>図：標準化なし（失敗）・あり（成功）・正解ラベルの比較 — 都道府県別気象データ ｜ S03:p.83</figcaption>
+      </figure>
+    </div>
 
     <div class="block-important">
       機械学習の分析は「コードは数行で書ける」が、<strong>データの中身を確認しないまま実行することは危険</strong>。外れ値・データ形状・単位のスケールを必ず確認してから実行する姿勢が重要。
@@ -1127,9 +1400,10 @@
     </table>
     <p class="src">S03:p.79</p>
 
-    <div class="block-ext">
-      機械学習の実装には R や Python が広く使われる。各手法の「ライブラリ」または「関数」として実装されているため、アルゴリズムの詳細を知らなくても手軽に実行できる。一方で「簡単に動かせる」ことが、検証なしの使用につながりやすいリスクもある。
+    <div class="block-audio">
+      機械学習の実装にはRやPythonがよく使われる。各手法のライブラリまたは関数として実装されているため、手軽にクラス分類・クラスタリングを実行できる。一方、表計算ソフトでも原理的には実行可能だが、k-meansのような「中心点更新を何度も繰り返す処理」には不向きで手間がかかるため、プログラミング言語の使用が一般的。
     </div>
+    <p class="src">S02（第4章冒頭）·S03:p.79</p>
   </div>
 
   <!-- ═══════════ APPENDIX A: 重要ワード ═══════════ -->
@@ -1294,7 +1568,7 @@
         <tr><td>クラス多数</td><td>クラスタ数</td><td>「タ数」→「多数」に誤変換</td></tr>
         <tr><td>ゲイニーズ法 / ゲーミング法 / 三民図法</td><td>k-means法</td><td>デモ部分での追加パターン</td></tr>
         <tr><td>教習法</td><td>凝集法（階層的クラスタリングの手法）</td><td>「凝集」→「教習」に誤変換</td></tr>
-        <tr><td>機構像 / 気構層 / 木構造</td><td>木構造</td><td>文脈により「木構造」が正しいが要確認</td></tr>
+        <tr><td>機構像 / 気構層</td><td>木構造</td><td>S03:p.21「木構造を学習」、p.36「分類結果は木構造で表現」で確定</td></tr>
       </tbody>
     </table>
     <p class="src">S02全体照合・S03対応確認済み</p>
@@ -1317,18 +1591,18 @@
           </tr>
           <tr>
             <td>I-2 内容の充足度</td>
-            <td style="color:var(--accent-yellow);font-weight:700;">注意</td>
-            <td>各セクションに音声補足（青ブロック）が配置されており、補足A（最重要ワード）にStep 4用語集★★★が全12語含まれている。ただし第4章の事例セクションの音声補足が薄め（スライドがデモ動画への誘導のみのため）。</td>
+            <td style="color:var(--accent-teal);font-weight:700;">OK</td>
+            <td>各セクションに音声補足が配置済み。第4章デモ部分の音声補足を3ブロック追加済み。補足A（最重要ワード）にStep 4用語集★★★が全12語含まれている。</td>
           </tr>
           <tr>
             <td>I-3 タグの完全性</td>
             <td style="color:var(--accent-teal);font-weight:700;">OK</td>
-            <td>[未確定]・[要確認]タグなし。[外部補足]タグは第4章に1件配置、ソース根拠なし補完として適切に明示されている。</td>
+            <td>[未確定]・[要確認]・[外部補足]タグなし（全て解消済み）。[図解省略]タグも全5箇所をSVGに差し替え済み。補足Dの要確認項目（木構造）もS03:p.21で確定済み。</td>
           </tr>
         </tbody>
       </table>
-      <div class="block-check">
-        <strong>パートI 要対応事項</strong>：第4章 事例セクションの音声補足が薄い（デモ動画部分のためS02に内容が少ない）。スライドS03:p.80〜83の内容で補完済みだが、次回以降デモ動画書き起こしが入手できた場合は追記推奨。
+      <div class="block-ext">
+        パートI 全項目OK。要対応事項なし。第4章音声補足は3ブロック追加済み（デモ位置づけ・手順概要・Pythonコードのポイント）。
       </div>
     </div>
 
@@ -1339,16 +1613,11 @@
         <thead><tr><th>ID</th><th>タグ種別</th><th>場所</th><th>内容の概要</th><th>優先度</th><th>対処方法</th></tr></thead>
         <tbody>
           <tr>
-            <td>U01</td>
-            <td><code>[外部補足]</code></td>
-            <td>第4章 事例セクション</td>
-            <td>機械学習実装にR・Pythonが広く使われるという補足。ソース根拠はS03:p.79（「プログラミング言語を使った分析が一般的」）から推論した外部知識。</td>
-            <td>低</td>
-            <td>解決不要（背景知識として適切）</td>
+            <td colspan="6" style="text-align:center;color:var(--accent-teal);font-weight:700;">未確定情報なし — 全て解消済み</td>
           </tr>
         </tbody>
       </table>
-      <p style="color:var(--text-secondary);font-size:13px;margin-top:8px;">不確定情報 合計：1件（高優先: 0件 / 中: 0件 / 低: 1件）</p>
+      <p style="color:var(--text-secondary);font-size:13px;margin-top:8px;">不確定情報 合計：0件</p>
     </div>
 
     <!-- パートIII: ソース照合QC -->
@@ -1428,7 +1697,7 @@
             <td>visual_accuracy</td>
             <td style="color:var(--accent-teal);">pass</td><td>2</td>
             <td>S03:p.20,37〜38,44,57,65,67〜72,83</td>
-            <td>SVGのテキスト見切れを全5図修正済み。再現していない図（決定木の座標表示・k-means留意点3種・標準化前後比較）に [図解省略：スライドp.XX参照] を明記済み。</td>
+            <td>SVGのテキスト見切れを全5図修正済み。再現していない図（決定木の座標表示・k-means留意点3種・標準化前後比較）をすべてインラインSVGで再現済み。[図解省略]マーカーは本文中に残存なし。</td>
           </tr>
           <tr>
             <td>text_quality</td>

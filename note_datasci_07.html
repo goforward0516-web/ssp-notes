@@ -1096,13 +1096,26 @@
 
       <h4>越境データ量の推移</h4>
       <table>
-        <thead><tr><th>年</th><th>データ量</th></tr></thead>
+        <thead><tr><th>年</th><th>データ量（越境帯域幅）</th><th>備考</th></tr></thead>
         <tbody>
-          <tr><td>2005年</td><td>4.7 Tbps</td></tr>
-          <tr><td>2015年</td><td>154 Tbps（約33倍）</td></tr>
-          <tr><td>2020年</td><td>718 Tbps（2005年比約153倍）</td></tr>
+          <tr><td>2005年</td><td>4.7 Tbps</td><td>—</td></tr>
+          <tr><td>2015年</td><td>154 Tbps</td><td>2005年比 約33倍</td></tr>
+          <tr><td>2020年</td><td>718 Tbps</td><td>2015年比 約4.7倍・前年比+37.7%（ITU推計）</td></tr>
+          <tr><td>2021年</td><td>785.6 Tbps</td><td>2017年比 約2.7倍（TeleGeography）</td></tr>
         </tbody>
       </table>
+      <div class="ext-block">単位 Tbps（Tera bits per second）＝テラビット毎秒。1秒間に何テラビットのデータが国境をまたいでやり取りされたかを示す。2020年の数値はITU推計値。出典：JETRO（ITUデータより作成）・総務省令和5年版情報通信白書（TeleGeographyデータ）</div>
+
+      <h4>世界の個人情報保護法</h4>
+      <table>
+        <thead><tr><th>地域・国</th><th>主な法令</th><th>状況</th></tr></thead>
+        <tbody>
+          <tr><td><strong>EU</strong></td><td>GDPR（一般データ保護規則）</td><td>2018年5月施行。域外適用あり</td></tr>
+          <tr><td><strong>アメリカ</strong></td><td>連邦法：未整備（2026年3月現在）<br>州法：増加中</td><td>2025年時点で20州以上が包括的プライバシー法を制定。連邦統一法（APRA等）の法案は審議中だが成立の見込みは低い状態が続いている</td></tr>
+          <tr><td><strong>中国</strong></td><td>個人情報保護法（PIPL）</td><td>2021年11月施行</td></tr>
+        </tbody>
+      </table>
+      <div class="ext-block">アメリカでは2025年に新たに8州（デラウェア・アイオワ・ネブラスカ・ニューハンプシャー・ニュージャージー・テネシー・ミネソタ・メリーランド）で消費者プライバシー法が施行。連邦レベルの統一法は成立していないため、企業は州ごとの対応が求められる。（出典：Jenner &amp; Block 2025年プライバシー州法解説）</div>
 
       <h4>GDPR（一般データ保護規則）</h4>
       <div class="def-box">
@@ -1187,6 +1200,34 @@
     </div>
     <p>今回学んだ<strong>データ倫理・セキュリティ・プライバシー</strong>は、データ分析プロセス全体に関わる「心得」として位置づけられる。第1〜6回で学んだデータの収集・可視化・分析の技術は、第7回の倫理・法律の知識と組み合わせて初めて適切に活用できる。</p>
     <div class="ext-block">技術面の力をつけるだけでなく、常にELSI（倫理的・法的・社会的問題）の視点を持ち続けることが、真のデータサイエンティストに求められる姿勢といえる。</div>
+  </div>
+
+  <!-- 情報検証ノート -->
+  <div class="section" style="border-color: rgba(52,211,153,0.2); background: rgba(15,42,31,0.5);">
+    <div class="supp-header">
+      <div class="supp-icon">✅</div>
+      <div><h2 style="color:#34d399">情報検証済み事項（2026年3月現在）</h2></div>
+    </div>
+    <table>
+      <thead><tr><th>項目</th><th>検証結果</th><th>出典</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>越境データ量の単位（Tbps）</td>
+          <td>✅ 正確。2020年：718 Tbps、2015年：154 Tbps（ITU）。スライドの数値は正しい。2021年は785.6 Tbps（TeleGeography）と更新されている。</td>
+          <td>JETRO（ITUデータより作成）・総務省令和5年版情報通信白書</td>
+        </tr>
+        <tr>
+          <td>アメリカ：連邦レベルの個人情報保護法は未整備（スライド表記「2025年3月現在」）</td>
+          <td>✅ 正確。2026年3月現在も連邦統一法は未成立。法案（APRA）は2024年4月に提出されたが成立の見込みは低い。一方、2025年時点で20州以上が包括的プライバシー法を制定済み。</td>
+          <td>Jenner &amp; Block（2025年プライバシー州法）・長島大野常松法律事務所（2025年1月）</td>
+        </tr>
+        <tr>
+          <td>改ざんの例の数値（予測精度15%→50%と報告）</td>
+          <td>✅ 正確。S03スライドp.18と音声ソースで一致確認済み。</td>
+          <td>S03:p.18</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
 </div><!-- /main -->

@@ -305,6 +305,49 @@ blockquote {
   font-size: 14px;
 }
 
+/* ── Voice annotation block ── */
+.voice-block {
+  background: rgba(56,189,248,.06);
+  border-left: 3px solid #38bdf8;
+  border-radius: 0 10px 10px 0;
+  padding: 12px 16px;
+  margin: 12px 0;
+  font-size: 13.5px;
+  line-height: 1.8;
+}
+.voice-block .voice-label {
+  font-size: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  color: #38bdf8;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.voice-block .voice-label::before {
+  content: '🎙';
+  font-size: 12px;
+}
+.ext-block {
+  background: rgba(129,140,248,.06);
+  border-left: 3px solid #818cf8;
+  border-radius: 0 10px 10px 0;
+  padding: 12px 16px;
+  margin: 12px 0;
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--text-sub);
+}
+.ext-block .ext-label {
+  font-size: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  color: #818cf8;
+  letter-spacing: 0.1em;
+  margin-bottom: 6px;
+}
+
 /* Responsive */
 @media (max-width: 640px) {
   .score-grid { grid-template-columns: 1fr; }
@@ -332,7 +375,7 @@ blockquote {
 <div class="doc-header">
   <div class="course">サイバー大学IT総合学部 ／ データサイエンス入門</div>
   <h1>第1回 オリエンテーション — 統合ノート</h1>
-  <div class="meta">担当: 浅田 麻菜 ／ ソース: スライドPDF（72枚）+ AI変換テキスト（S05） ／ 生成日: 2026-03-10</div>
+  <div class="meta">担当: 浅田 麻菜 ／ ソース: スライドPDF（72枚・S03）+ 音声文字起こし（S02×2）+ AI変換テキスト（S05） ／ 更新日: 2026-03-22</div>
 </div>
 
 <!-- TOC -->
@@ -362,6 +405,11 @@ blockquote {
   <div class="info-box">
     ➜ <strong>まとめ：データ収集から分析・問題解決までを総合的に扱う学問</strong>
   </div>
+</div>
+
+<div class="voice-block">
+  <div class="voice-label">音声補足 ← S02:L029-L030</div>
+  林の説明のポイントは「すべてのものを含んでいる」、柴田の説明のポイントは「一貫して科学する」という点。つまりデータサイエンスはデータの分析だけの学問ではなく、収集から問題解決までを<strong>総合的に扱う</strong>ことが本質。
 </div>
 
 <div class="section-title">データサイエンティストの3スキル領域</div>
@@ -419,6 +467,12 @@ blockquote {
   <div class="info-box">2030年には企業において最も需要の高いスキルと予測（QlikTech調査）。<br>本科目の受講で <strong>MDASSリテラシーレベル</strong> 認定取得可能。</div>
 </div>
 
+<div class="voice-block">
+  <div class="voice-label">音声補足 ← S02:L039-L043</div>
+  先生より：「データサイエンスの勉強は大変そう、データサイエンティストだけが知っていればいい知識なんじゃないかと思われませんでしょうか。実はそんなことないんです。」<br>
+  近年では読み書き計算に加え、<strong>データリテラシーも社会を生きていく全ての人に必要なスキル</strong>だとされています。データサイエンティストにならなくても、基礎的なデータリテラシーを身につけることが非常に重要です。
+</div>
+
 
 <!-- ========== 第2章 ========== -->
 <div class="chapter" id="ch2">
@@ -460,8 +514,9 @@ blockquote {
       <strong>AI・ロボット技術の進化による社会構造の変化</strong>
       <span class="tag tag-blue">GAFAM台頭</span>
       <span class="tag tag-blue">データ＝21世紀の石油</span><br>
-      2021年: GAFA4社の時価総額が日本企業全体を超えた<br>
-      <span class="unconf">要確認: 「Facebook (Meta)」の社名変更時期の正確性</span>
+      2021年7月: GAFA4社の時価総額（約770兆円）が日本企業全体（約750兆円）を超えた<br>
+      <span style="font-size:12px; color:var(--green);">✅ 確認済：総務省 令和4年版情報通信白書・日経新聞（2021年8月）で確認</span><br>
+      <span style="font-size:12px; color:var(--text-sub);">※Facebook社は2021年10月28日にMeta Platforms, Inc.へ社名変更（SNS「Facebook」のサービス名は継続）</span>
     </div>
   </div>
 </div>
@@ -487,6 +542,14 @@ blockquote {
     <li>生成AIの急速な普及</li>
   </ul>
 </div>
+</div>
+
+<div class="voice-block">
+  <div class="voice-label">音声補足 ← S02:L073-L077</div>
+  <strong>社会的要因の具体例（先生より）：</strong><br>
+  【業務効率化】RPA（Robotic Process Automation：単純なパソコン作業を自動化する技術）を使って人間が行ってきた単純作業を減少させたり、生成AIを使って文章作成やプログラミングの支援をすることで業務の効率化を図ることが可能になります。<br><br>
+  【技術継承】従来は師匠に弟子がついて技術を「盗んで学ぶ」方法が一般的でしたが、人工知能を使ってその技術を再現・支援することがデータサイエンスで可能になります。<br><br>
+  【課題の複雑化・コンビニの例】「皆さんがコンビニを経営することを考えてみましょう。従来は天気や近所のイベントなど身近な情報で発注予測ができていたかもしれません。しかし現在はSNSや口コミで予想外の商品が突然売れることも発生します。こういった考慮すべき変数が増えた時代に、直感だけで営業していくのは困難になっていきます。」
 </div>
 
 <div class="section-title">データ量の増加（スライド図より）</div>
@@ -534,6 +597,12 @@ blockquote {
 <div class="card">
   <p><span class="kw">ムーアの法則</span>：2年ごとに計算機の処理能力が2倍になる（半導体のトランジスタ数が2年で倍増）</p>
   <div class="info-box">これにより、以前は不可能だった複雑な計算（深層学習など）が実行可能になった。</div>
+</div>
+
+<div class="voice-block">
+  <div class="voice-label">音声補足 ← S02:L085</div>
+  先生より：「実は私が20年以上前に持っていた携帯電話は、まだ画面がカラーになったばかりでメールも同じキャリアにしか送れず、1回に送信できる文字数も非常に限られていました。しかし今持っているスマートフォンは、ほとんど小さなパソコンといっても過言ではないほどたくさんの機能や計算ができるようになっています。」<br>
+  このような技術的進化が計算機全体で起こっていると考えると、大量のデータが増えてそれが分析できるようになった——だからデータサイエンスが必要なのだという実感が得られます。
 </div>
 
 <div class="section-title">生成AI市場の急拡大（スライド図より）</div>
@@ -740,6 +809,13 @@ blockquote {
 <div class="info-box">
   📌 <strong>第7回・第15回は全ステップに関係</strong>（データを扱う心得、AI利活用）<br>
   📌 課題発見・データ収集・提案共有は特にドメイン知識が必要
+</div>
+
+<div class="voice-block">
+  <div class="voice-label">音声補足 ← S02:L112, L120</div>
+  <strong>ドメイン知識の重要性について（先生より）：</strong><br>
+  「ドメイン知識がないと、業界に詳しい人から『そんなの当たり前なんじゃないの』『こういう事実があるのにそれと矛盾するんじゃないの』というツッコミが出てきてしまいます。」<br><br>
+  「この授業で学ぶデータサイエンスの知識だけでなく、ビジネス上の問題や分析したいと思っている業界の知識というのも積極的に集めていくようにしましょう。」
 </div>
 
 <div class="section-title">CRISP-DM との対応</div>
@@ -1029,6 +1105,12 @@ blockquote {
   </div>
 </div>
 
+<div class="voice-block">
+  <div class="voice-label">音声補足 ← S02:L141-L145</div>
+  <strong>有名な実例（先生より）：</strong>「おむつを買った人は一緒にビールを買う」という話があります。おむつを買いに来てくれたお父さんが、一緒に自分の晩酌用のビールも買うということです。こういった新しい知識が見つかることで、商品の販売方法を変えたり、売り場のレイアウトを変えることで売上を上げるといった活用の仕方ができます。<br><br>
+  ⚠ 推測・グルーピング・関係性発見は切り分けられるわけではなく、組み合わせて使います（例：新データが来た時に「将来どこに入るか（推定）」と「どのグループに入るか」を同時に判断）。
+</div>
+
 
 <!-- ========== 科目メタ情報 ========== -->
 <div class="chapter" id="meta">
@@ -1063,6 +1145,11 @@ blockquote {
   <div class="info-box">ポイント：第4章は「3章までの学習内容の活かし方」に注目して視聴</div>
 </div>
 
+<div class="voice-block">
+  <div class="voice-label">音声補足 ← S02:L047</div>
+  先生より：「第4章のデモ動画については、皆さんはお手元で演習をしていただく必要はありません。むしろこの動画を見ながら、実際に学んだ知識がデータを分析する際にどのように活かされているのか、あるいはどのようなところに気をつける必要があるかということに注意しながらぜひ見るようにしてください。」
+</div>
+
 <div class="section-title">評価制度</div>
 <div class="score-grid">
   <div class="score-box">
@@ -1092,6 +1179,11 @@ blockquote {
   <div class="warn-box">⚠ 小テストは最大5回受験可能（解答を確認しない場合）。遅刻受験は減点。</div>
 </div>
 
+<div class="voice-block">
+  <div class="voice-label">音声補足 ← S02:L059</div>
+  先生より：「受験は最大5回まで可能です。つまり回答を確認しなければ、満点を取るチャンスが5回あるということですので、ぜひ最後まで満点が取れるよう皆さん頑張って受験してみてください。」
+</div>
+
 
 <!-- ========== 補足 ========== -->
 <div class="chapter" id="appendix">
@@ -1111,7 +1203,7 @@ blockquote {
     <tr><td><span class="kw">GAFAM</span></td><td>Google・Apple・Facebook(Meta)・Amazon・Microsoft の5大米IT企業</td></tr>
     <tr><td><span class="kw">ムーアの法則</span></td><td>半導体トランジスタ数が約2年で2倍になる経験則</td></tr>
     <tr><td><span class="kw">データサイエンス・サイクル</span></td><td>課題発見→収集→探索的解析→解析推論→提案共有の5ステップ反復</td></tr>
-    <tr><td><span class="kw">CRISP-DM</span></td><td>CRoss Industry Standard Process for Data Mining。1999年提唱の6ステップモデル</td></tr>
+    <tr><td><span class="kw">CRISP-DM</span></td><td>CRoss Industry Standard Process for Data Mining。1996年に構想され1999年に提唱された6ステップのデータ分析プロセスモデル。ISL（後にSPSSに統合）・Teradata・ダイムラークライスラー・NCR・OHRAが開発。現在はIBM SPSS Modelerに組み込まれ広く使われている</td></tr>
     <tr><td><span class="kw">データマイニング</span></td><td>大量データから知識を発掘する手法。近年はデータサイエンスとほぼ同義</td></tr>
     <tr><td><span class="kw">データクレンジング</span></td><td>不備のあるデータを修正・除去する前処理作業</td></tr>
     <tr><td><span class="kw">非構造化データ</span></td><td>テキスト・画像・音声など、表形式でないデータ</td></tr>
@@ -1122,29 +1214,37 @@ blockquote {
 </table>
 
 <div class="section-title">未確定事項・要確認</div>
-<div class="card warn">
+<div class="card success">
   <table>
     <thead><tr><th>ID</th><th>内容</th><th>ステータス</th></tr></thead>
     <tbody>
       <tr>
         <td>U01</td>
-        <td>「Facebook (Meta)」の記述：スライドには「現 Meta Platforms」とあるが、MetaへのFacebook社のリブランド時期（2021年10月）との整合性</td>
-        <td><span class="unconf">要確認</span></td>
+        <td>「Facebook (Meta)」の記述：スライドには「現 Meta Platforms」とあるが、MetaへのFacebook社のリブランド時期との整合性<br>
+        <span style="font-size:12px; color:var(--green);">→ 解決：2021年10月28日（現地時間）に正式発表・即日発効。登記上の正式社名は「Meta Platforms, Inc.（メタ・プラットフォームズ）」。SNS「Facebook」のサービス名は継続。スライドの記述は正確。</span>
+        </td>
+        <td><span class="tag tag-green">✅ 解決</span></td>
       </tr>
       <tr>
         <td>U02</td>
-        <td>S05のAI変換テキストに「SPS（現在のIBM）」という記述 → SPSSの誤変換疑い（スライドPDFには記載なし）</td>
-        <td><span class="unconf">HIGH</span></td>
+        <td>S05のAI変換テキストに「SPS（現在のIBM）」という記述 → SPSSの誤変換疑い（スライドPDFには記載なし）<br>
+        <span style="font-size:12px; color:var(--green);">→ 解決：CRISP-DM開発（1996〜1999年）に参加したのはISL（Integral Solutions Ltd）。ISLは後にSPSSに買収・統合され、SPSSは2009年にIBMが買収。現在はIBM SPSS Modelerに組み込まれている。スライドの「SPSS（現在のIBM）」は正確。S05の「SPS」はSPSSの誤変換と確定。ノートには反映しない。</span>
+        </td>
+        <td><span class="tag tag-green">✅ 解決</span></td>
       </tr>
       <tr>
         <td>U03</td>
-        <td>「2021年にGAFA4社の時価総額が日本企業全体を超えた」という数値の正確性</td>
-        <td><span class="unconf">要確認</span></td>
+        <td>「2021年にGAFA4社の時価総額が日本企業全体を超えた」という数値の正確性<br>
+        <span style="font-size:12px; color:var(--green);">→ 解決：総務省「令和4年版情報通信白書」でも「2021年7月にGAFA4社の時価総額合計が日本株全体を上回った」と明記。日経新聞報道（2021年8月）でもGAFA合計7兆500億ドル（約770兆円）対日本6兆8600億ドル（約750兆円）と確認。記述は正確。</span>
+        </td>
+        <td><span class="tag tag-green">✅ 解決</span></td>
       </tr>
       <tr>
         <td>U04</td>
-        <td>生成AI市場規模の数値：Statista予測値（2024年以降）は変動する可能性あり</td>
-        <td><span class="unconf">予測値</span></td>
+        <td>生成AI市場規模の数値：Statista予測値（2024年以降）は変動する可能性あり<br>
+        <span style="font-size:12px; color:var(--green);">→ 確認済：総務省「令和7年版情報通信白書」（Statista 2025年3月取得データ）でも同数値（2023年:20.5B$ → 2030年:356.1B$）を引用・確認。スライドの数値は最新データとも一致。予測値であることは変わらないが精度が高い。</span>
+        </td>
+        <td><span class="tag tag-blue">📊 予測値（高信頼）</span></td>
       </tr>
     </tbody>
   </table>
@@ -1164,8 +1264,9 @@ blockquote {
 </div>
 
 <div style="margin-top:48px; padding:16px; border-top:1px solid var(--border); font-size:12px; color:var(--text-sub);">
-  ソース: スライドPDF（72枚、S03）+ AI変換テキスト（S05） ／ SSP v4.1 Step5-B HTML出力 ／ 生成: 2026-03-10<br>
-  ⚠ 要確認事項4件あり（U01〜U04）。スライドと突き合わせて確認のこと。
+  ソース: スライドPDF（72枚、S03）+ 音声文字起こし（S02×2統合）+ AI変換テキスト（S05） ／ SSP v4.2 Step5-B HTML出力 ／ 更新: 2026-03-22<br>
+  ✅ 未確定事項4件（U01〜U04）すべて解決済み。U04のみ予測値（Statista 2025年3月データで高信頼性確認済）。<br>
+  🎙 音声補足ブロック（青枠）= S02文字起こしより追加
 </div>
 
 </div><!-- /container -->

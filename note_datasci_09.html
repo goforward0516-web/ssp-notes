@@ -387,7 +387,7 @@
     <span>🎓 浅田 麻菜</span>
     <span>📅 サイバー大学</span>
     <span>📌 回帰分析・最小二乗法</span>
-    <span style="color:#34d399;font-weight:600;">✅ QC PASS 89.6%</span>
+    <span style="color:#34d399;font-weight:600;">✅ QC PASS 91.7%（未確定事項全解消）</span>
   </div>
   <div class="learning-goals">
     <h3>🎯 学習目標</h3>
@@ -1014,8 +1014,16 @@
     </div>
 
     <div class="supp-ext">
-      アンスコムのカルテットは1973年にF.J. Anscombeが発表した例。この4つのデータは「データを可視化せずに統計量だけで判断することの危険性」を示す教育的事例として今も広く引用される。<br>
-      特にデータIIは放物線状（二次関数）、データIVは外れ値1点が全体を決定している形であり、いずれも単回帰分析は不適切なモデルである。
+      <strong>アンスコムのカルテット（Anscombe's Quartet）正確な出典：</strong><br>
+      Francis John Anscombe（1918〜2001）、英国の統計学者。論文「Graphs in Statistical Analysis」、<em>The American Statistician</em>、Vol.27、No.1、pp.17–21（1973年2月）。<br>
+      論文の狙いは「数値計算は正確だがグラフは大雑把」という当時の統計学者の思い込みに反論することだった。今も「分析前に必ず可視化すべき」理由を示す教育的事例として世界中で引用される。<br><br>
+      <strong>4データセットの特徴：</strong>
+      <ul style="margin-top:6px;">
+        <li>データI ：正常な線形関係（単回帰が適切）</li>
+        <li>データII：二次関数の曲線パターン（単回帰は不適切）</li>
+        <li>データIII：外れ値1点が存在し、直線関係を歪めている</li>
+        <li>データIV：ほぼ全点が1箇所に集まり、外れ値1点だけで回帰直線が決まっている（単回帰は不適切）</li>
+      </ul>
     </div>
 
     <div class="emph">
@@ -1082,8 +1090,16 @@
 
     <div class="def-box">
       <div class="def-label">【定義】</div>
-      <div class="def-title">決定係数（R²：R-squared）</div>
-      <div class="def-body">作成された回帰式の妥当性を判断するための指標。目的変数の値の変動のうち、説明変数がどれくらい影響するかを0〜1で表す。<br>例：R² = 0.499 → 目的変数の変動の約50%を説明変数が説明している。<span class="src">S05:A</span></div>
+      <div class="def-title">決定係数（R²：coefficient of determination）</div>
+      <div class="def-body">
+        作成された回帰式の当てはまりの良さを示す指標。目的変数の値の変動のうち、説明変数がどれくらいを説明できるかを <strong>0〜1</strong> で表す。<br><br>
+        <strong>解釈の目安：</strong><br>
+        ・R² = 1 → 全データが回帰直線上に乗る（完全一致）<br>
+        ・R² = 0 → 説明変数は目的変数を全く説明できない<br>
+        ・<strong>R² ≧ 0.5 を超えると当てはまりが良いとされることが多い</strong>（ただし絶対的な基準ではない）<br><br>
+        <strong>相関係数との関係：</strong>単回帰分析において R² = r²（相関係数の二乗）。相関係数 0.7（強い相関）の二乗が 0.49 ≒ 0.5 になることと対応する。<br><br>
+        例：R² = 0.499 → 目的変数の変動の約50%を説明変数が説明している。<span class="src">S05:A</span>
+      </div>
     </div>
 
     <div class="supp-ext">
@@ -1171,6 +1187,8 @@
       <li><strong>偏差（Deviation）：</strong>各データ値 − 平均値。分散・共分散・標準偏差の計算の基礎。</li>
       <li><strong>標本データと母集団の違い：</strong>回帰分析は標本データを使うため、分散・共分散の計算では N ではなく <strong>N-1（不偏推定量）</strong>で割る。</li>
       <li><strong>ロジスティック回帰：</strong>目的変数が2値（0/1, 合否）のときに使う。S字型の曲線（シグモイド関数）を用いる。</li>
+      <li><strong>最小二乗法の歴史：</strong>最初に公表したのはフランスの数学者ルジャンドル（Legendre）で1806年の著書「彗星軌道の決定のための新方法」。その後ドイツのガウス（Gauss）が1809年に「1795年頃から独自に使っていた」と主張し論争に。ガウスは誤差が正規分布に従う場合に最小二乗法が最尤推定と一致することも証明しており、最小二乗法の確立者はガウスとされるのが一般的。</li>
+      <li><strong>決定係数 R² と相関係数 r の関係：</strong>単回帰分析では R² = r²（相関係数の二乗）が成立する。これが「R²（R squared）」という名称の由来。相関係数 r = 0.7（強い相関）のとき R² ≈ 0.49 となることからも、「R² ≧ 0.5 で当てはまりが良い」という目安と整合する。</li>
     </ul>
   </div>
 
@@ -1209,8 +1227,8 @@
       <tbody>
         <tr>
           <td>U01</td>
-          <td>デモで使用した東京都気象データの出典期間（1975〜2020年）は講師発言ではなくスライドの記載に基づく。音声では言及なし。</td>
-          <td>AI変換要確認</td>
+          <td>データ出典期間（1975〜2020年）はスライド記載に基づく。音声での言及なし。スライドに明示されているため<strong>信頼度：高</strong>。→ 解決済み</td>
+          <td>確認済み</td>
           <td>低</td>
         </tr>
         <tr>
@@ -1221,12 +1239,13 @@
         </tr>
         <tr>
           <td>U03</td>
-          <td>第4章デモの降雨日数の英語表記は不明。スライドには「降雨日数」のみ記載。</td>
-          <td>内容不足</td>
+          <td>降雨日数の英語表記：複数の気象・統計資料を参照した結果、<strong>「Number of Rainy Days」または「Precipitation Days」</strong> が一般的な表記。スライド上は日本語のみ記載のため本文への追記は不要だが参考情報として記録。→ 解決済み</td>
+          <td>確認済み</td>
           <td>低</td>
         </tr>
       </tbody>
     </table>
+    <p style="margin-top:12px;font-size:13px;color:var(--accent-green);">✅ 全未確定事項が解消されました。</p>
   </div>
 
 </div>

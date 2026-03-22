@@ -677,6 +677,63 @@
         <div class="block-label">🔊 音声補足</div>
         256段階（256階調）にすると、左側の図でグラデーションのように細かく滑らかに表示できるようになる。256階調のグレースケール画像は画素数分の数字の集合で表現できる。例：11行×12列 = 132画素 → 132個の数字の集合。<span class="src">← S03:p.15-16, S05</span>
       </div>
+
+      <!-- SVG: グレースケール数値グリッド（S03:p.16 再現） -->
+      <div class="fig-container">
+        <svg viewBox="0 0 580 175" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:580px;display:block;margin:auto">
+          <text x="10" y="16" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">手書き「13」のグレースケール表現（11行×12列 = 132画素）</text>
+          <!-- grid: 12列×11行, each cell 38×13px, origin (10,22) -->
+          <g font-family="JetBrains Mono" font-size="9" text-anchor="middle">
+            <!-- row 1 (all 255 = white) -->
+            <g fill="#e2e8f5">
+              <text x="29" y="34">255</text><text x="67" y="34">255</text><text x="105" y="34">255</text><text x="143" y="34">255</text><text x="181" y="34">255</text><text x="219" y="34">255</text><text x="257" y="34">255</text><text x="295" y="34">255</text><text x="333" y="34">255</text><text x="371" y="34">255</text><text x="409" y="34">255</text><text x="447" y="34">255</text>
+            </g>
+            <!-- row 2 -->
+            <text x="29" y="47" fill="#e2e8f5">255</text><text x="67" y="47" fill="#1a1a1a">0</text><text x="105" y="47" fill="#1a1a1a">0</text><text x="143" y="47" fill="#e2e8f5">255</text><text x="181" y="47" fill="#e2e8f5">255</text><text x="219" y="47" fill="#1a1a1a">0</text><text x="257" y="47" fill="#1a1a1a">0</text><text x="295" y="47" fill="#1a1a1a">0</text><text x="333" y="47" fill="#1a1a1a">0</text><text x="371" y="47" fill="#1a1a1a">0</text><text x="409" y="47" fill="#e2e8f5">255</text><text x="447" y="47" fill="#e2e8f5">255</text>
+            <!-- row 3 -->
+            <text x="29" y="60" fill="#e2e8f5">255</text><text x="67" y="60" fill="#1a1a1a">0</text><text x="105" y="60" fill="#1a1a1a">0</text><text x="143" y="60" fill="#e2e8f5">255</text><text x="181" y="60" fill="#e2e8f5">255</text><text x="219" y="60" fill="#e2e8f5">255</text><text x="257" y="60" fill="#e2e8f5">255</text><text x="295" y="60" fill="#1a1a1a">0</text><text x="333" y="60" fill="#1a1a1a">0</text><text x="371" y="60" fill="#1a1a1a">0</text><text x="409" y="60" fill="#1a1a1a">0</text><text x="447" y="60" fill="#e2e8f5">255</text>
+            <!-- row 4 -->
+            <text x="29" y="73" fill="#e2e8f5">255</text><text x="67" y="73" fill="#1a1a1a">0</text><text x="105" y="73" fill="#1a1a1a">0</text><text x="143" y="73" fill="#e2e8f5">255</text><text x="181" y="73" fill="#e2e8f5">255</text><text x="219" y="73" fill="#e2e8f5">255</text><text x="257" y="73" fill="#e2e8f5">255</text><text x="295" y="73" fill="#e2e8f5">255</text><text x="333" y="73" fill="#e2e8f5">255</text><text x="371" y="73" fill="#1a1a1a">0</text><text x="409" y="73" fill="#1a1a1a">0</text><text x="447" y="73" fill="#e2e8f5">255</text>
+            <!-- row 5 -->
+            <text x="29" y="86" fill="#e2e8f5">255</text><text x="67" y="86" fill="#1a1a1a">0</text><text x="105" y="86" fill="#1a1a1a">0</text><text x="143" y="86" fill="#e2e8f5">255</text><text x="181" y="86" fill="#e2e8f5">255</text><text x="219" y="86" fill="#e2e8f5">255</text><text x="257" y="86" fill="#5a5a5a">68</text><text x="295" y="86" fill="#1a1a1a">0</text><text x="333" y="86" fill="#1a1a1a">0</text><text x="371" y="86" fill="#1a1a1a">0</text><text x="409" y="86" fill="#e2e8f5">255</text><text x="447" y="86" fill="#e2e8f5">255</text>
+            <!-- row 6 -->
+            <text x="29" y="99" fill="#e2e8f5">255</text><text x="67" y="99" fill="#1a1a1a">0</text><text x="105" y="99" fill="#1a1a1a">0</text><text x="143" y="99" fill="#e2e8f5">255</text><text x="181" y="99" fill="#e2e8f5">255</text><text x="219" y="99" fill="#e2e8f5">255</text><text x="257" y="99" fill="#585858">67</text><text x="295" y="99" fill="#1a1a1a">0</text><text x="333" y="99" fill="#1a1a1a">0</text><text x="371" y="99" fill="#1a1a1a">0</text><text x="409" y="99" fill="#1a1a1a">0</text><text x="447" y="99" fill="#e2e8f5">255</text>
+            <!-- row 7 -->
+            <text x="29" y="112" fill="#e2e8f5">255</text><text x="67" y="112" fill="#1a1a1a">0</text><text x="105" y="112" fill="#1a1a1a">0</text><text x="143" y="112" fill="#e2e8f5">255</text><text x="181" y="112" fill="#e2e8f5">255</text><text x="219" y="112" fill="#e2e8f5">255</text><text x="257" y="112" fill="#e2e8f5">255</text><text x="295" y="112" fill="#e2e8f5">255</text><text x="333" y="112" fill="#e2e8f5">255</text><text x="371" y="112" fill="#1a1a1a">0</text><text x="409" y="112" fill="#1a1a1a">0</text><text x="447" y="112" fill="#555555">69</text>
+            <!-- row 8 -->
+            <text x="29" y="125" fill="#e2e8f5">255</text><text x="67" y="125" fill="#1a1a1a">0</text><text x="105" y="125" fill="#1a1a1a">0</text><text x="143" y="125" fill="#e2e8f5">255</text><text x="181" y="125" fill="#e2e8f5">255</text><text x="219" y="125" fill="#5a5a5a">68</text><text x="257" y="125" fill="#5a5a5a">68</text><text x="295" y="125" fill="#e2e8f5">255</text><text x="333" y="125" fill="#e2e8f5">255</text><text x="371" y="125" fill="#1a1a1a">0</text><text x="409" y="125" fill="#1a1a1a">0</text><text x="447" y="125" fill="#525252">65</text>
+            <!-- row 9 -->
+            <text x="29" y="138" fill="#e2e8f5">255</text><text x="67" y="138" fill="#1a1a1a">0</text><text x="105" y="138" fill="#1a1a1a">0</text><text x="143" y="138" fill="#e2e8f5">255</text><text x="181" y="138" fill="#e2e8f5">255</text><text x="219" y="138" fill="#1a1a1a">0</text><text x="257" y="138" fill="#1a1a1a">0</text><text x="295" y="138" fill="#1a1a1a">0</text><text x="333" y="138" fill="#1a1a1a">0</text><text x="371" y="138" fill="#1a1a1a">0</text><text x="409" y="138" fill="#282828">32</text><text x="447" y="138" fill="#e2e8f5">255</text>
+            <!-- row 10 -->
+            <text x="29" y="151" fill="#e2e8f5">255</text><text x="67" y="151" fill="#484848">58</text><text x="105" y="151" fill="#4f4f4f">63</text><text x="143" y="151" fill="#e2e8f5">255</text><text x="181" y="151" fill="#e2e8f5">255</text><text x="219" y="151" fill="#e2e8f5">255</text><text x="257" y="151" fill="#e2e8f5">255</text><text x="295" y="151" fill="#e2e8f5">255</text><text x="333" y="151" fill="#e2e8f5">255</text><text x="371" y="151" fill="#e2e8f5">255</text><text x="409" y="151" fill="#e2e8f5">255</text><text x="447" y="151" fill="#e2e8f5">255</text>
+            <!-- row 11 (all 255) -->
+            <g fill="#e2e8f5">
+              <text x="29" y="164">255</text><text x="67" y="164">255</text><text x="105" y="164">255</text><text x="143" y="164">255</text><text x="181" y="164">255</text><text x="219" y="164">255</text><text x="257" y="164">255</text><text x="295" y="164">255</text><text x="333" y="164">255</text><text x="371" y="164">255</text><text x="409" y="164">255</text><text x="447" y="164">255</text>
+            </g>
+          </g>
+          <!-- grid lines -->
+          <g stroke="#2d3a55" stroke-width="0.5">
+            <line x1="10" y1="22" x2="466" y2="22"/>
+            <line x1="10" y1="35" x2="466" y2="35"/><line x1="10" y1="48" x2="466" y2="48"/><line x1="10" y1="61" x2="466" y2="61"/>
+            <line x1="10" y1="74" x2="466" y2="74"/><line x1="10" y1="87" x2="466" y2="87"/><line x1="10" y1="100" x2="466" y2="100"/>
+            <line x1="10" y1="113" x2="466" y2="113"/><line x1="10" y1="126" x2="466" y2="126"/><line x1="10" y1="139" x2="466" y2="139"/>
+            <line x1="10" y1="152" x2="466" y2="152"/><line x1="10" y1="165" x2="466" y2="165"/>
+            <line x1="10" y1="22" x2="10" y2="165"/><line x1="48" y1="22" x2="48" y2="165"/><line x1="86" y1="22" x2="86" y2="165"/>
+            <line x1="124" y1="22" x2="124" y2="165"/><line x1="162" y1="22" x2="162" y2="165"/><line x1="200" y1="22" x2="200" y2="165"/>
+            <line x1="238" y1="22" x2="238" y2="165"/><line x1="276" y1="22" x2="276" y2="165"/><line x1="314" y1="22" x2="314" y2="165"/>
+            <line x1="352" y1="22" x2="352" y2="165"/><line x1="390" y1="22" x2="390" y2="165"/><line x1="428" y1="22" x2="428" y2="165"/>
+            <line x1="466" y1="22" x2="466" y2="165"/>
+          </g>
+          <!-- legend -->
+          <rect x="480" y="40" width="16" height="12" fill="#1a2535" stroke="#2d3a55" stroke-width="0.5"/>
+          <text x="500" y="51" fill="#1a1a1a" font-size="10" font-family="JetBrains Mono">0 = 黒</text>
+          <rect x="480" y="60" width="16" height="12" fill="#e2e8f5" stroke="#2d3a55" stroke-width="0.5"/>
+          <text x="500" y="71" fill="#8a99b8" font-size="10" font-family="JetBrains Mono">255 = 白</text>
+          <rect x="480" y="80" width="16" height="12" fill="#505050" stroke="#2d3a55" stroke-width="0.5"/>
+          <text x="500" y="91" fill="#8a99b8" font-size="10" font-family="JetBrains Mono">中間値</text>
+        </svg>
+        <div class="fig-caption">図：手書き「13」の256階調グレースケール表現（S03:p.16 再現）　← S03:p.16</div>
+      </div>
     </div>
 
     <div class="section-card" id="ch1-color">
@@ -934,7 +991,16 @@
         <p style="font-size:14px; margin-left:16px">左行列の列数 ＝ 右行列の行数 でなければ計算できない。</p>
         <div class="block-external" style="margin-top:8px">
           <div class="block-label">📖 外部補足</div>
-          (m×n行列) × (n×p行列) = (m×p行列) となる。n が一致しないと計算不能。
+          (m×n行列) × (n×p行列) = (m×p行列) となる。n が一致しないと計算不能。<br><br>
+          <strong>スライドの具体例（S03:p.49）：</strong>
+          <pre style="background:#1a2535;padding:8px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:11px;margin-top:6px;color:#e2e8f5">
+× 計算不可：[1 2] × [1 4]   ← 左:2行2列, 右:3行2列 → 左の列数2 ≠ 右の行数3
+           [3 4]   [2 5]
+                   [3 6]
+
+○ 計算可能：[1 4] × [1 2]   ← 左:3行2列, 右:2行2列 → 左の列数2 = 右の行数2
+           [2 5]   [3 4]     → 結果は3行2列
+           [3 6]</pre>
         </div>
         <p style="margin-top:12px"><strong>注意②：順序は基本的に交換できない</strong></p>
         <p style="font-size:14px; margin-left:16px">A×B ≠ B×A（一般的に）。掛ける順序を変えると結果が変わる。</p>
@@ -1004,6 +1070,19 @@
         <strong>例1（x軸方向に2倍）：</strong>行列 [[2,0],[0,1]] をベクトル [2,1] に左から掛けると [4,1] になる。ベクトルの位置がx軸方向に移動した。<br><br>
         <strong>例2（30°回転）：</strong>cos/sinで構成された回転行列をベクトル [√3,1] に左から掛けると [1,√3] になる。ベクトルが30°回転した。<br><br>
         これが<strong>「行列の掛け算の意味」</strong>。行列はベクトルを移動させるためのルール（変形ルール）。<span class="src">← S03:p.54-57, S05</span>
+      </div>
+
+      <div class="block-external">
+        <div class="block-label">📖 外部補足 — 回転行列の正確な式</div>
+        角度θだけ反時計回りに回転させる回転行列：
+        <pre style="background:#1a2535;padding:10px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:12px;margin-top:6px;color:#e2e8f5">
+R(θ) = [cos θ  −sin θ]
+       [sin θ   cos θ]</pre>
+        θ = 30° のとき：cos30° = √3/2 ≈ 0.866、sin30° = 1/2 = 0.5<br>
+        <pre style="background:#1a2535;padding:10px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:12px;margin-top:6px;color:#e2e8f5">
+[√3/2  −1/2] [√3]   [√3/2×√3 − 1/2×1]   [3/2 − 1/2]   [1 ]
+[1/2   √3/2] [ 1] = [1/2×√3  + √3/2×1] = [√3/2 + √3/2] = [√3]</pre>
+        ∴ [√3, 1] → [1, √3]（30°反時計回りに回転）　← 計算により確認済み
       </div>
 
       <!-- 第2章まとめ -->
@@ -1090,6 +1169,15 @@
         ・0.5倍 × 30°回転 × x,y方向に100移動 → 小さく斜めに回転<br>
         <span class="src">← S03:p.64-69, S05</span>
       </div>
+
+      <div class="block-external">
+        <div class="block-label">📖 外部補足 — なぜ「1」を追加するのか（同次座標）</div>
+        2次元の平行移動は通常の2×2行列だけでは表現できない（平行移動は線形変換ではないため）。そこで座標に「1」を追加した<strong>同次座標（Homogeneous Coordinates）</strong>を使い、3×3の行列で拡大・縮小・回転・平行移動を統一的に表現する。<br><br>
+        <pre style="background:#1a2535;padding:8px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:11px;margin-top:6px;color:#e2e8f5">
+2次元座標 (x, y) → 同次座標 [x, y, 1]^T として3×3行列を掛ける
+結果の3成分目は必ず1になるため、上2成分だけ読めばよい</pre>
+        これにより複数の変換を行列の掛け算で<strong>合成</strong>できる利点もある。
+      </div>
     </div>
 
     <div class="section-card" id="ch3-app">
@@ -1175,8 +1263,65 @@
       </table>
 
       <div class="block-external">
-        <div class="block-label">📖 外部補足</div>
-        畳み込み処理のフィルタ（カーネル）は、小さな行列（例：3×3）として表現される。この行列を画像全体にスライドさせながら掛け算をすることで特徴マップを生成する。これはまさに「行列の掛け算をデータ処理に活用している」例。
+        <div class="block-label">📖 外部補足 — 畳み込みカーネルの具体例</div>
+        フィルタ（カーネル）は小さな行列。これを画像全体にスライドさせながら対応する画素値と掛け算→足し合わせて特徴マップを生成する。
+
+        <!-- SVG: カーネルと畳み込みの仕組み -->
+        <div style="margin-top:10px">
+        <svg viewBox="0 0 560 160" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:560px;display:block">
+          <!-- 入力画像（5×5グリッド） -->
+          <text x="10" y="14" fill="#8a99b8" font-size="10" font-family="Noto Sans JP">入力画像（一部）</text>
+          <g font-family="JetBrains Mono" font-size="10" text-anchor="middle">
+            <!-- row values: エッジ周辺の例 -->
+            <text x="35" y="32" fill="#1e1e1e">0</text><text x="65" y="32" fill="#1e1e1e">0</text><text x="95" y="32" fill="#1e1e1e">0</text><text x="125" y="32" fill="#1e1e1e">0</text><text x="155" y="32" fill="#1e1e1e">0</text>
+            <text x="35" y="57" fill="#1e1e1e">0</text><text x="65" y="57" fill="#1e1e1e">0</text><text x="95" y="57" fill="#1e1e1e">0</text><text x="125" y="57" fill="#1e1e1e">0</text><text x="155" y="57" fill="#1e1e1e">0</text>
+            <text x="35" y="82" fill="#e2e8f5">255</text><text x="65" y="82" fill="#e2e8f5">255</text><text x="95" y="82" fill="#e2e8f5">255</text><text x="125" y="82" fill="#e2e8f5">255</text><text x="155" y="82" fill="#e2e8f5">255</text>
+            <text x="35" y="107" fill="#e2e8f5">255</text><text x="65" y="107" fill="#e2e8f5">255</text><text x="95" y="107" fill="#e2e8f5">255</text><text x="125" y="107" fill="#e2e8f5">255</text><text x="155" y="107" fill="#e2e8f5">255</text>
+            <text x="35" y="132" fill="#e2e8f5">255</text><text x="65" y="132" fill="#e2e8f5">255</text><text x="95" y="132" fill="#e2e8f5">255</text><text x="125" y="132" fill="#e2e8f5">255</text><text x="155" y="132" fill="#e2e8f5">255</text>
+          </g>
+          <!-- grid -->
+          <g stroke="#2d3a55" stroke-width="0.5">
+            <line x1="20" y1="20" x2="170" y2="20"/><line x1="20" y1="45" x2="170" y2="45"/><line x1="20" y1="70" x2="170" y2="70"/><line x1="20" y1="95" x2="170" y2="95"/><line x1="20" y1="120" x2="170" y2="120"/><line x1="20" y1="145" x2="170" y2="145"/>
+            <line x1="20" y1="20" x2="20" y2="145"/><line x1="50" y1="20" x2="50" y2="145"/><line x1="80" y1="20" x2="80" y2="145"/><line x1="110" y1="20" x2="110" y2="145"/><line x1="140" y1="20" x2="140" y2="145"/><line x1="170" y1="20" x2="170" y2="145"/>
+          </g>
+          <!-- highlight 3×3 window -->
+          <rect x="50" y="45" width="90" height="75" fill="none" stroke="#fbbf24" stroke-width="2" rx="2"/>
+
+          <!-- arrow -->
+          <path d="M185 82 L215 82" stroke="#8a99b8" stroke-width="1.5" marker-end="url(#ck)"/>
+          <text x="200" y="75" fill="#8a99b8" font-size="9" font-family="Noto Sans JP" text-anchor="middle">×</text>
+
+          <!-- カーネル（水平エッジ検出） -->
+          <text x="225" y="14" fill="#8a99b8" font-size="10" font-family="Noto Sans JP">水平エッジ検出カーネル</text>
+          <g font-family="JetBrains Mono" font-size="11" text-anchor="middle">
+            <text x="250" y="37" fill="#f87171">−1</text><text x="280" y="37" fill="#f87171">−1</text><text x="310" y="37" fill="#f87171">−1</text>
+            <text x="250" y="62" fill="#8a99b8"> 0</text><text x="280" y="62" fill="#8a99b8"> 0</text><text x="310" y="62" fill="#8a99b8"> 0</text>
+            <text x="250" y="87" fill="#34d399">+1</text><text x="280" y="87" fill="#34d399">+1</text><text x="310" y="87" fill="#34d399">+1</text>
+          </g>
+          <g stroke="#2d3a55" stroke-width="0.5">
+            <line x1="230" y1="20" x2="330" y2="20"/><line x1="230" y1="45" x2="330" y2="45"/><line x1="230" y1="70" x2="330" y2="70"/><line x1="230" y1="95" x2="330" y2="95"/>
+            <line x1="230" y1="20" x2="230" y2="95"/><line x1="263" y1="20" x2="263" y2="95"/><line x1="296" y1="20" x2="296" y2="95"/><line x1="330" y1="20" x2="330" y2="95"/>
+          </g>
+          <text x="280" y="112" fill="#8a99b8" font-size="9" font-family="Noto Sans JP" text-anchor="middle">（Sobelフィルタの簡易版）</text>
+
+          <!-- arrow2 -->
+          <path d="M345 60 L375 60" stroke="#8a99b8" stroke-width="1.5" marker-end="url(#ck)"/>
+          <text x="360" y="53" fill="#8a99b8" font-size="9" font-family="Noto Sans JP" text-anchor="middle">→</text>
+
+          <!-- 出力値 -->
+          <text x="390" y="14" fill="#8a99b8" font-size="10" font-family="Noto Sans JP">出力（特徴マップ値）</text>
+          <rect x="378" y="30" width="80" height="50" fill="#1a2535" stroke="#34d399" stroke-width="1.5" rx="4"/>
+          <text x="418" y="62" fill="#34d399" font-size="18" font-family="JetBrains Mono" font-weight="bold" text-anchor="middle">765</text>
+          <text x="418" y="95" fill="#34d399" font-size="10" font-family="Noto Sans JP" text-anchor="middle">エッジ強度大</text>
+          <text x="418" y="130" fill="#8a99b8" font-size="9" font-family="Noto Sans JP" text-anchor="middle">= 0×(−1)+255×(+1)</text>
+          <text x="418" y="143" fill="#8a99b8" font-size="9" font-family="Noto Sans JP" text-anchor="middle">×3列分の合計</text>
+
+          <defs>
+            <marker id="ck" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#8a99b8"/></marker>
+          </defs>
+        </svg>
+        </div>
+        黄枠の3×3領域がスライドしながら各位置で畳み込み計算。エッジ（明暗の境界）の位置で出力値が大きくなる。
       </div>
     </div>
 
@@ -1267,7 +1412,7 @@
           </tr>
           <tr>
             <td>④2値化</td>
-            <td>RGBの平均値≥128 → (255,255,255)、&lt;128 → (0,0,0)</td>
+            <td>RGBの平均値 ≥ 128 → (255,255,255)、&lt; 128 → (0,0,0)</td>
             <td>カラー画像が白黒の2値画像に変換（境界線が明確）</td>
           </tr>
           <tr>
@@ -1290,7 +1435,11 @@
 
       <div class="block-audio">
         <div class="block-label">🔊 音声補足</div>
-        NumPy（numpy）というライブラリを使用している。画像を読み込むと <code>(300, 300, 3)</code> という形式で表示される。NumPyでは Y, X の順序で表示されるため「Y軸方向300 → X軸方向300」の順になる。使用するライブラリによってX・Yの表示順序が異なるので注意。<span class="src">← S05</span>
+        NumPy（numpy）というライブラリを使用している。画像を読み込むと <code>(300, 300, 3)</code> という形式で表示される。NumPyでは <strong>Y（行）, X（列）, チャンネル</strong> の順序で表示されるため「Y軸方向300 → X軸方向300 → RGB3チャンネル」の順になる。使用するライブラリによってX・Yの表示順序が異なるので注意。<span class="src">← S05</span>
+      </div>
+      <div class="block-external">
+        <div class="block-label">📖 外部補足</div>
+        NumPyの画像配列の shape は <code>(height, width, channels)</code> = <code>(Y, X, 3)</code>。インデックスも <code>img[y, x]</code> の順。一方、数学の座標系では (x, y) の順が一般的なため混乱しやすい。第3章スライドで「画像の左上を原点、右向きがX軸、下向きがY軸」と説明されているのはこのため。
       </div>
 
       <div class="block-check">
@@ -1348,73 +1497,91 @@
     <div class="section-card">
       <table class="styled-table">
         <thead>
-          <tr><th>用語</th><th>読み</th><th>定義（講義より）</th><th>重要度</th></tr>
+          <tr><th>用語</th><th>読み</th><th>定義（講義より）</th><th>誤変換パターン（S05）</th><th>重要度</th></tr>
         </thead>
         <tbody>
           <tr>
             <td><strong>画素（ピクセル）</strong></td>
             <td>がそ / pixel</td>
             <td>画像を構成する最小単位の正方形</td>
+            <td>一一気区、画属、画面</td>
             <td><span class="star3">★★★</span></td>
           </tr>
           <tr>
             <td><strong>256階調</strong></td>
             <td>にひゃくごじゅうろくかいちょう</td>
             <td>0〜255の256種類の数字でグレースケールを表現する方式</td>
+            <td>256会長、256階層</td>
             <td><span class="star3">★★★</span></td>
           </tr>
           <tr>
             <td><strong>RGBモデル</strong></td>
             <td>アールジービーモデル</td>
-            <td>赤・緑・青それぞれを0〜255で表し、組み合わせで色を表現するモデル</td>
+            <td>赤（Red）・緑（Green）・青（Blue）それぞれを0〜255で表し、組み合わせで色を表現するモデル</td>
+            <td>誤変換少ない</td>
             <td><span class="star3">★★★</span></td>
           </tr>
           <tr>
             <td><strong>行列</strong></td>
             <td>ぎょうれつ / Matrix</td>
             <td>複数のベクトルを結合した数字の集合。行と列からなる</td>
+            <td>強列、上列、行例</td>
             <td><span class="star3">★★★</span></td>
           </tr>
           <tr>
             <td><strong>アフィン変換</strong></td>
             <td>あふぃんへんかん</td>
-            <td>特定の行列を画素の位置ベクトルに掛けることで画像の拡大・縮小・移動・回転を行う手法</td>
+            <td>3×3の行列（同次座標系）を画素の位置ベクトルに掛けることで画像の拡大・縮小・移動・回転を統一的に表現する手法</td>
+            <td>アフィン変化、ガフィン、アルフィン、アビン</td>
             <td><span class="star3">★★★</span></td>
           </tr>
           <tr>
             <td><strong>畳み込み処理</strong></td>
-            <td>たたみこみしょり</td>
-            <td>注目画素の周辺も含めて演算することでノイズ除去・特徴抽出を行う手法。別名：フィルタ処理</td>
+            <td>たたみこみしょり / Convolution</td>
+            <td>注目画素の周辺（例：3×3）も含めてカーネル行列と演算し、ノイズ除去・特徴抽出を行う手法。別名：フィルタ処理</td>
+            <td>固み込み、高み込み、固め込み</td>
             <td><span class="star3">★★★</span></td>
           </tr>
           <tr>
-            <td><strong>ラスター画像</strong></td>
+            <td><strong>ラスター画像／ビットマップ画像</strong></td>
             <td>らすたーがぞう</td>
-            <td>画素の集合として画像を表現するデータ形式</td>
+            <td>画素（ピクセル）の集合として画像を表現するデータ形式。拡大すると粗くなる</td>
+            <td>ラフター画像、カスター画像、ピットマップ、フィットマップ</td>
             <td><span class="star2">★★☆</span></td>
           </tr>
           <tr>
             <td><strong>ベクター画像</strong></td>
             <td>べくたーがぞう</td>
-            <td>点とベクトルで画像を表現するデータ形式。拡大に強い</td>
+            <td>点とベクトルで画像を表現するデータ形式。拡大しても粗くならない</td>
+            <td>誤変換少ない</td>
             <td><span class="star2">★★☆</span></td>
           </tr>
           <tr>
             <td><strong>特異値分解（SVD）</strong></td>
             <td>とくいちぶんかい</td>
-            <td>行列を積の形に分解して次元圧縮を行う手法</td>
+            <td>行列を積の形に分解して次元圧縮を行う手法。自然言語処理・情報検索に活用</td>
+            <td>独一分解、特解</td>
             <td><span class="star2">★★☆</span></td>
           </tr>
           <tr>
-            <td><strong>行（row）</strong></td>
-            <td>ぎょう</td>
-            <td>行列の横向きの並び</td>
+            <td><strong>NumPy</strong></td>
+            <td>ナムパイ</td>
+            <td>Pythonの数値計算ライブラリ。画像を多次元配列 (Y, X, channels) として扱う</td>
+            <td>ラムパイ、ラムパ、ナムパ</td>
+            <td><span class="star2">★★☆</span></td>
+          </tr>
+          <tr>
+            <td><strong>同次座標</strong></td>
+            <td>どうじざひょう / Homogeneous Coordinates</td>
+            <td>2次元座標 (x, y) に「1」を追加して [x, y, 1] とした3次元表現。アフィン変換で平行移動を行列で表すために使用</td>
+            <td>（講義では用語未使用・概念のみ説明）</td>
             <td><span class="star1">★☆☆</span></td>
           </tr>
           <tr>
-            <td><strong>列（column）</strong></td>
-            <td>れつ</td>
-            <td>行列の縦向きの並び</td>
+            <td><strong>行（row）/ 列（column）</strong></td>
+            <td>ぎょう / れつ</td>
+            <td>行：行列の横向きの並び　列：行列の縦向きの並び。サイズは「行×列」の順で表す</td>
+            <td>誤変換少ない</td>
             <td><span class="star1">★☆☆</span></td>
           </tr>
         </tbody>

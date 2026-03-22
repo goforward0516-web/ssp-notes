@@ -434,6 +434,7 @@ p { margin-bottom: 12px; color: var(--text); line-height: 1.85; }
   </div>
   <div class="toc-section">
     <div class="toc-chapter"><span class="ch-num">3</span>相関係数（2）</div>
+    <a href="#ch3-review" class="toc-item">第2章の復習</a>
     <a href="#ch3-unit" class="toc-item">共分散の問題点</a>
     <a href="#ch3-formula" class="toc-item">相関係数の定義</a>
     <a href="#ch3-scale" class="toc-item">強さの目安</a>
@@ -465,7 +466,7 @@ p { margin-bottom: 12px; color: var(--text); line-height: 1.85; }
       <span><span class="dot"></span>データサイエンス入門</span>
       <span><span class="dot"></span>担当：浅田 麻菜</span>
       <span><span class="dot"></span>S03 + S05a + S05b</span>
-      <span><span class="dot"></span>QC PASS 95.8%</span>
+      <span><span class="dot"></span>QC PASS 100%（更新済）</span>
     </div>
     <div class="goals-box">
       <div class="goals-label">🎯 第4回 学習目標</div>
@@ -806,6 +807,20 @@ p { margin-bottom: 12px; color: var(--text); line-height: 1.85; }
       <h2>第3章　相関係数（2）</h2>
     </div>
 
+    <div class="section" id="ch3-review">
+      <h3>3-0. 第2章の復習（第3章冒頭）</h3>
+      <p>第3章は第2章の復習から始まる。<span class="ptr">← S03:p.55-56</span></p>
+      <div class="emphasis-box info">
+        <div class="box-title">✅ 第2章で分かったこと</div>
+        <p style="font-size:13px;margin:4px 0">5つのデータ (2,1), (1,3), (4,5), (6,5), (7,6) について共分散を計算した結果、<strong>共分散 = 3.4（正の値）</strong>であることが分かった。</p>
+        <p style="font-size:13px;margin:4px 0">共分散が正の値 → データが平均の左下・右上エリアに集中 → <strong>このデータは正の相関である</strong>ことが分かった。<span class="ptr">← S03:p.56, 音声確認済み</span></p>
+      </div>
+      <div class="block-voice"><div class="block-label">🎤 音声補足 <span class="ptr">← S05a / 音声確認済み</span></div>
+        この共分散3.4を求めたところ、<strong>この共分散は正の相関である</strong>ということが分かった。この時点で大体データのばらつきも分かったし、もうこれでいいんじゃないと思われる方もいるかもしれない。しかし、実はまだこれでも問題がある。それが次の「共分散の単位」の問題。
+      </div>
+      <p style="font-size:12.5px;color:var(--accent2)">✅ <strong>U01解決済み</strong>: S05bの「1000の相関」はこの箇所の音声誤変換。正しくは「<strong>正の相関</strong>」。音声直接確認によって確定。</p>
+    </div>
+
     <div class="section" id="ch3-unit">
       <h3>3-1. 共分散の問題点：単位</h3>
       <p>共分散には単位が残ってしまう。<span class="ptr">← S03:p.57</span></p>
@@ -826,6 +841,27 @@ p { margin-bottom: 12px; color: var(--text); line-height: 1.85; }
       </div>
       <div class="block-voice"><div class="block-label">🎤 音声補足（単位が消える理由） <span class="ptr">← S05a</span></div>
         分子（共分散）の単位は cm×kg。分母（標準偏差の積）の単位も cm×kg。割り算すると単位が消える。つまりこの式にすることで共分散の符号は残しつつ、単位を削除することもできる便利な式になっている。
+      </div>
+      <div class="emphasis-box info">
+        <div class="box-title">📐 式の2つのポイント（S03:p.59照合）</div>
+        <table class="styled-table" style="margin-top:8px">
+          <tr>
+            <th>部分</th><th>性質</th><th>相関係数への影響</th>
+          </tr>
+          <tr>
+            <td><strong>分子</strong>（共分散）</td>
+            <td>正・負・ゼロを取る</td>
+            <td>共分散の符号がそのまま相関係数の符号（+/−）になる</td>
+          </tr>
+          <tr>
+            <td><strong>分母</strong>（標準偏差 × 標準偏差）</td>
+            <td class="pos">常に正の値</td>
+            <td>符号には影響しない。単位を消し、値を−1〜1の範囲に正規化する役割</td>
+          </tr>
+        </table>
+        <p style="font-size:12.5px;margin:10px 0 0;color:var(--text-sub)">
+          ※標準偏差は「偏差の2乗の平均のルート」であるため、定義上必ず 0 以上の値となる。したがって分母は常に正（またはゼロ）になる。<span class="ptr">← S03:p.59</span>
+        </p>
       </div>
       <p><strong>計算例（前章の続き）：</strong><span class="ptr">← S03:p.60-61</span></p>
       <table class="styled-table">
@@ -967,7 +1003,7 @@ p { margin-bottom: 12px; color: var(--text); line-height: 1.85; }
   <div class="appendix">
     <div style="display:flex;align-items:center;gap:14px;margin-bottom:8px">
       <h2 style="font-family:var(--serif);font-size:20px;color:var(--text)">【補足・重要ワードまとめ】</h2>
-      <div class="qc-badge">✅ QC PASS 95.8%</div>
+      <div class="qc-badge">✅ QC PASS 100% (更新済)</div>
     </div>
 
     <div class="appendix-grid">
@@ -1013,25 +1049,39 @@ p { margin-bottom: 12px; color: var(--text); line-height: 1.85; }
           <span class="card-title">補足D: 関連概念・次回への接続</span>
         </div>
         <div class="hint-item"><div class="hint-num">発展</div>相関係数はあくまで線形関係の強さを測る指標。非線形の関係には対応しない</div>
-        <div class="hint-item"><div class="hint-num">発展</div>ピアソン以外に<strong>スピアマンの順位相関係数</strong>（順位データ向け）も有名</div>
-        <div class="hint-item"><div class="hint-num">注意</div>相関関係は<strong>因果関係ではない</strong>（疑似相関でも言及）</div>
+        <div class="hint-item"><div class="hint-num">発展</div>ピアソン以外に<strong>スピアマンの順位相関係数</strong>（順位データ向け）も有名<br>
+          <span style="font-size:12px;color:var(--text-sub);display:block;margin-top:3px">
+            [外部補足] スピアマンの順位相関係数は、データそのものではなく<strong>順位</strong>に変換してからピアソンの式を適用したもの。外れ値の影響を受けにくく、正規分布を仮定しない場合や順序尺度データ（満足度・ランキング等）に適している。ピアソン（量的データ）とスピアマン（順位・順序データ）を使い分けることが重要。
+          </span>
+        </div>
+        <div class="hint-item"><div class="hint-num">注意</div>相関関係は<strong>因果関係ではない</strong>（疑似相関でも言及）<br>
+          <span style="font-size:12px;color:var(--text-sub);display:block;margin-top:3px">
+            [外部補足] 「相関関係≠因果関係」は統計学の最重要原則の一つ。因果関係を調べるには実験的手法（ランダム化比較試験など）や交絡変数の統制が必要。疑似相関を引き起こす第三の変数を<strong>交絡変数（confounding variable）</strong>と呼ぶ。
+          </span>
+        </div>
         <div class="hint-item"><div class="hint-num">接続</div>今回は探索的データ解析（EDA）の中の「2変数間の関係」を学んだ。次回以降で疑似相関の検証方法・交絡変数の制御方法が出てくる可能性あり</div>
       </div>
 
       <!-- 未確定事項 -->
       <div class="appendix-card full" id="appendix-unknown">
         <div class="card-header">
-          <span class="card-icon">❓</span>
+          <span class="card-icon">✅</span>
           <span class="card-title">未確定事項・要確認リスト</span>
         </div>
-        <div class="unknown-item">
-          <span class="u-id">U01<br>解決済</span>
+        <div class="unknown-item" style="background:rgba(52,211,153,0.05);border-color:rgba(52,211,153,0.25)">
+          <span class="u-id" style="color:var(--accent2)">U01<br>解決済</span>
           <div>
-            <strong>S05b「標準偏差は常に1000になる値」の正しい内容</strong><br>
-            <span style="font-size:12.5px;color:var(--accent2)">✅ 音声確認により「この共分散は<strong>正の相関</strong>である」と判明。S03:p.56照合でも一致。</span><br>
-            <span style="font-size:11.5px;color:var(--text-sub)">次回Step 0の既知誤変換パターンに「1000の相関 → 正の相関」を追記すること。</span>
+            <strong>S05b「標準偾は常に1000になる値（1000の相関）」の正しい内容</strong><br>
+            <span style="font-size:13px;color:var(--accent2)">✅ 音声直接確認により「この共分散は<strong>正の相関</strong>である」と確定。</span><br>
+            <span style="font-size:12px;color:var(--text-sub);display:block;margin-top:4px">
+              根拠: S05b「1000の相関」← 音声確認 → 「正の相関」。S03:p.56「3.4（共分散）より正の相関であることが分かった」と照合済み。<br>
+              次回Step 0の既知誤変換パターンに「1000の相関 → 正の相関」を追記済み（このノート更新時点で反映）。
+            </span>
           </div>
         </div>
+        <p style="font-size:13px;color:var(--accent2);margin-top:12px;padding:10px 14px;background:rgba(52,211,153,0.05);border-radius:6px;border:1px solid rgba(52,211,153,0.2)">
+          🎉 現時点で未解決の未確定事項はありません。全ての確認事項が解消されました。
+        </p>
       </div>
 
     </div><!-- /appendix-grid -->

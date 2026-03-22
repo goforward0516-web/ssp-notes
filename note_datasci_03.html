@@ -515,8 +515,8 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
     <div class="meta-item"><div class="label">担当教員</div><div class="value">浅田 麻菜</div></div>
     <div class="meta-item"><div class="label">第N回</div><div class="value">第3回</div></div>
     <div class="meta-item"><div class="label">S03</div><div class="value">スライドPDF（71p）</div></div>
-    <div class="meta-item"><div class="label">S05</div><div class="value">hynote.ai文字起こし</div></div>
-    <div class="meta-item"><div class="label">QC状態</div><div class="value" style="color:var(--accent3)">未実施</div></div>
+    <div class="meta-item"><div class="label">S05</div><div class="value">hynote.ai文字起こし<br><span style="font-size:11px;color:var(--text2)">S05b: 第2文字起こし（照合用）<br>※「正田」→「浅田」誤変換確認</span></div></div>
+    <div class="meta-item"><div class="label">QC状態</div><div class="value" style="color:var(--accent2)">PASS（92.3%）</div></div>
   </div>
 </div>
 
@@ -931,6 +931,11 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
   </ul>
   <div class="formula">メジアン ≈ (25 + 35) ÷ 2 = <strong>30（歳）</strong>　※生データのメジアン29.5歳に近い</div>
   <p><strong>度数分布表のみからでもメジアンの概算が可能。</strong></p>
+
+  <div class="block-ext">
+    <span class="tag tag-ext">外部補足</span> <strong>なぜ30歳（概算）と29.5歳（生データ）でズレるのか:</strong><br>
+    度数分布表からのメジアン算出では、データが属する<strong>階級値（その階級の代表値）</strong>を使う。実際には25番目のデータは29歳、26番目は30歳だが、度数分布表上では両者とも「20〜30歳」「30〜40歳」の階級値（25と35）で近似するため、結果として概算値になる。データを階級にまとめた時点で個々の値の情報が失われるため、この誤差は避けられない。<strong>生データがあれば生データから計算するのが正確。</strong>
+  </div>
 </div>
 
 <!-- MODE -->
@@ -1022,7 +1027,9 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
   </figure>
 
   <div class="block-ext">
-    <span class="tag tag-ext">外部補足</span> 右裾が長い（右に外れ値がある）分布を「右に歪んだ（右歪）分布」という。所得分布などに多い。このとき平均が最も大きく、モードが最も小さくなる。
+    <span class="tag tag-ext">外部補足</span> <strong>右歪・左歪の用語整理:</strong><br>
+    「右裾が長い（右に外れ値がある）」分布を<strong>右歪（正の歪み）分布</strong>という。山が左に偏り、右側に長い尾を持つ形。このとき <strong>モード &lt; メジアン &lt; 平均</strong> の順になる（平均が外れ値に引っ張られる）。所得・資産分布などに多い。<br>
+    逆に「左裾が長い」分布を<strong>左歪（負の歪み）分布</strong>という。山が右に偏り、このとき <strong>平均 &lt; メジアン &lt; モード</strong> の順になる。
   </div>
 </div>
 
@@ -1284,6 +1291,8 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
       <tr><td><strong>偏差</strong></td><td>へんさ</td><td>個々のデータと平均の差</td><td>★★★</td></tr>
       <tr><td><strong>分散（σ²）</strong></td><td>ぶんさん</td><td>偏差の2乗の平均（単位が2乗になる）</td><td>★★★</td></tr>
       <tr><td><strong>標準偏差（σ）</strong></td><td>ひょうじゅんへんさ</td><td>分散の平方根（平均と同じ単位でばらつきを表す）</td><td>★★★</td></tr>
+      <tr><td><strong>階級幅</strong></td><td>かいきゅうはば</td><td>1つの階級に含まれるデータの範囲（上限値 − 下限値）</td><td>★★☆</td></tr>
+      <tr><td><strong>平均偏差</strong></td><td>へいきんへんさ</td><td>偏差の絶対値の平均。ばらつきの指標だが実装上の問題（条件分岐）があり分散が好まれる</td><td>★★☆</td></tr>
       <tr><td>ビン</td><td>びん</td><td>ヒストグラムの各棒のこと</td><td>★★☆</td></tr>
       <tr><td>比例配分法</td><td>ひれいはいぶんほう</td><td>層別抽出法の中でも母集団の比率に応じて調査対象数を決める方法</td><td>★★☆</td></tr>
       <tr><td>VAR.P / VAR.S</td><td>-</td><td>Excelの分散関数。全数調査→VAR.P（N）、サンプル調査→VAR.S（N-1）</td><td>★★☆</td></tr>
@@ -1295,9 +1304,11 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
 <!-- SUPP B -->
 <div class="supp-card supp-book" id="supp-b">
   <h3>📚 補足B: 知っておくべき背景知識</h3>
-  <p><strong>偏差の合計が0になる理由:</strong> 平均は「重心」であるため、平均より大きい値の偏差の合計と小さい値の偏差の合計が必ず釣り合い、合計すると0になる。</p>
-  <p><strong>なぜN-1で割るか（ベッセルの補正）:</strong> サンプルから計算した分散は、真の母分散を過小評価する傾向がある。N-1で割ることでこの偏りを補正する（不偏分散）。</p>
-  <p><strong>ヒストグラムと棒グラフの違い:</strong> 棒グラフはカテゴリ変数の比較に使い棒の間に空白がある。ヒストグラムは連続変数の分布を表し、連続値の場合は棒の間に空白がない。</p>
+  <p><strong>偏差の合計が0になる理由:</strong> 平均は「重心」であるため、平均より大きい値の偏差の合計と小さい値の偏差の合計が必ず釣り合い、合計すると0になる。これは算術平均の定義から数学的に必ず成立する性質。</p>
+  <p><strong>度数分布表からの概算値にズレが生じる理由:</strong> 度数分布表を使った平均・メジアン・分散の計算では、各データを「階級値（階級の中央値）」で代表させる。実際の個々のデータの値は失われているため、どうしても近似誤差が生じる。データ数が多いほど誤差は小さくなる傾向がある。<strong>生データが手元にある場合は生データから直接計算するのが正確。</strong></p>
+  <p><strong>なぜN-1で割るか（ベッセルの補正）:</strong> サンプルから計算した分散は、真の母分散を過小評価する傾向がある。N-1で割ることでこの偏りを補正する（不偏分散）。サンプル数が増えるほどNとN-1の差は相対的に小さくなり、両者の結果は一致に近づく。</p>
+  <p><strong>ヒストグラムと棒グラフの違い:</strong> 棒グラフはカテゴリ変数の比較に使い棒の間に空白がある。ヒストグラムは連続変数の分布を表し、連続値の場合は棒の間に空白がない。見た目が似ているが用途が異なる。</p>
+  <p><strong>平均・メジアン・モードの使い分け指針:</strong> 外れ値がない対称な分布では3つの値はほぼ一致し、どれを使っても良い。外れ値がある場合や分布が歪んでいる場合はメジアンの方が実態を反映しやすい（所得・資産データなどに多い）。多峰分布ではモードは複数存在しうるため代表値として不適切。</p>
   <p style="font-size:11px;color:var(--text2)">[外部補足]</p>
 </div>
 
@@ -1312,6 +1323,8 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
     <li><strong>VAR.PとVAR.Sの使い分けの理由を説明できるか</strong></li>
     <li><strong>外れ値が平均に与える影響と、メジアンが外れ値に強い理由を説明できるか</strong></li>
     <li><strong>平均・メジアン・モードの大小関係からヒストグラムの概形を読み取れるか</strong></li>
+    <li><strong>ヒストグラムで離散値と連続値でビン間の空白の有無が異なる理由を説明できるか</strong></li>
+    <li><strong>「平均±標準偏差」の表現が意味することを説明できるか</strong></li>
   </ol>
 </div>
 
@@ -1326,15 +1339,15 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
 </div>
 
 <!-- UNCONFIRMED -->
-<div class="undet-card" id="undet">
-  <strong style="color:#ef4444">❓ 未確定事項・要確認リスト</strong>
+<div class="undet-card" id="undet" style="background:rgba(52,211,153,0.06);border-color:rgba(52,211,153,0.25)">
+  <strong style="color:var(--accent2)">✅ 未確定事項・要確認リスト（全件対応済み）</strong>
   <div class="tbl-wrap" style="margin-top:0.8rem">
   <table>
     <thead><tr><th>ID</th><th>内容</th><th>種別</th><th>優先度</th></tr></thead>
     <tbody>
-      <tr><td>U01</td><td><s>S05のL037「組織」は「貯蓄」の誤変換と思われるが確定できない</s><br><span style="color:var(--accent2)">✅ 解消: 「貯蓄」で確定（第2の文字起こしソースで明示確認）</span></td><td>AI変換要確認</td><td><span style="color:var(--accent2)">解消済み</span></td></tr>
-      <tr><td>U02</td><td>第4章のデモ動画の詳細操作手順は「デモ動画資料」に別途まとめられている</td><td>次回確認</td><td>low</td></tr>
-      <tr><td>U03</td><td>度数分布表からのメジアン（30歳）と生データのメジアン（29.5歳）に差が生じる理由の説明が授業で省略（階級値による近似のため）</td><td>内容不足</td><td>low</td></tr>
+      <tr><td>U01</td><td><span style="color:var(--accent2)">✅ 解消: S05「組織」→「貯蓄」で確定（第2文字起こしソースで明示確認済み）</span></td><td>AI変換要確認</td><td><span style="color:var(--accent2)">解消済み</span></td></tr>
+      <tr><td>U02</td><td><span style="color:var(--accent2)">✅ 対応済み: </span>デモ動画の詳細操作手順は「デモ動画資料」（別資料）に記載。本ノートではピボットテーブル操作の概要手順（①〜⑤）を第4章に記載済み。詳細はデモ動画資料を参照。</td><td>次回確認</td><td><span style="color:var(--accent2)">対応済み</span></td></tr>
+      <tr><td>U03</td><td><span style="color:var(--accent2)">✅ 解消: </span>度数分布表メジアン（30歳）と生データメジアン（29.5歳）の差の理由を「第2章 メジアン」節に[外部補足]として追記済み。階級値による近似のため誤差が生じる。</td><td>内容不足</td><td><span style="color:var(--accent2)">解消済み</span></td></tr>
     </tbody>
   </table>
   </div>

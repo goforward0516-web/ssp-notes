@@ -1494,12 +1494,20 @@ p:last-child { margin-bottom: 0; }
 
     <div class="block-audio">
       <div class="block-audio-label">🎙 AUDIO — 結果の解釈</div>
-      <p>今回のデモでは t値が棄却域に入っており、p値が 0.05 未満だったため、帰無仮説を棄却 → 「平均気温に違いがある」という対立仮説が採択された。つまり「東京は昔より今の方が暑くなっている」という結論が統計的に支持された。<span class="src-badge">← S05</span></p>
+      <p>
+        「t値が棄却域に入っている」<span class="src-badge">← S05 doc2</span>、
+        「p値（P 2-tail）が有意水準 0.05 より小さい」<span class="src-badge">← S05 doc2</span>
+        という2点が音声で確認されており、帰無仮説が棄却された。<span class="src-badge">← S05 doc2</span><br>
+        → 対立仮説「平均気温に違いがある」が採択。「東京は昔より今の方が暑くなっている」という結論が統計的に支持された。<span class="src-badge">← S05 doc2</span>
+      </p>
+      <p style="font-size:12.5px;color:#fbbf24;margin-top:8px;padding:6px 10px;background:#3d2e0a;border-radius:4px;">
+        <span class="src-badge">[未確定:U02]</span>　t値・p値の具体的な数値はデモ動画の画面にのみ表示。スライド（S03）・音声テキスト（S05）いずれにも数値記載なし。結論の方向性（棄却）のみS05で確認済み。
+      </p>
     </div>
 
     <div class="block-external">
       <div class="block-label">🌐 外部補足</div>
-      <p>「等分散を仮定しない」t検定（Welchのt検定）は、等分散の場合にも使用可能で汎用性が高い。本来は F検定で等分散かどうかを先に確認してから t検定の種類を選ぶが、実務ではWelchの t検定がデフォルトで選ばれることが多い。[外部補足]</p>
+      <p><strong>Welchのt検定</strong>について：スライドでは「等分散を仮定しない2標本によるt検定」と表記されているが、これは統計学でWelchのt検定と呼ばれる手法。等分散を仮定しない場合でも使用でき、等分散の場合にも適用できるため汎用性が高い。本来の手順はF検定で等分散かどうかを先に確認してからt検定の種類を選ぶが、実務では先にF検定をせずWelchのt検定をデフォルトで選ぶことが多い。自由度の計算式も通常のt検定（データ数−1）とは異なり、より複雑な式（Welch-Satterthwaite近似）を使う。<span class="src-badge">S03:p.86 + 外部補足</span></p>
     </div>
 
     <div class="important-box">
@@ -1700,31 +1708,35 @@ p:last-child { margin-bottom: 0; }
     <div class="appendix-card green">
       <div class="appendix-card-title">📚 補足B: 背景知識</div>
       <ul>
-        <li>正規分布の確率密度関数は覚えなくてよい（授業で明言）</li>
-        <li>標準偏差＝分散の正の平方根（σ = √σ²）は第3回の復習</li>
-        <li>Welchのt検定：等分散を仮定しないt検定。汎用性が高い</li>
-        <li>χ²検定・F検定：母分散の検定で使う（今回は範囲外）</li>
+        <li>正規分布の確率密度関数は<strong>覚えなくてよい</strong>（授業で明言）。式中にσ²とμが含まれている点だけ押さえる。<span class="src-badge">S03:p.17</span></li>
+        <li>標準偏差σ = √σ²（分散の正の平方根）。スライドでは以降σと略記。<span class="src-badge">S03:p.17</span></li>
+        <li>標本分散の計算はΣ(xᵢ−x̄)²を<strong>n−1</strong>（標本数−1）で割る（不偏分散）。全数調査の分散と異なる点に注意。<span class="src-badge">S03:p.71</span></li>
+        <li>Welchのt検定：「等分散を仮定しない」t検定。等分散の場合にも使用可。自由度の計算式が通常と異なる。<span class="src-badge">S03:p.86 + 外部補足</span></li>
+        <li>F検定：2群の分散が等しいかを検定する手法。t検定の種類を選ぶ前に本来実施する。<span class="src-badge">S03:p.86</span></li>
+        <li>χ²検定：母分散に関する検定。今回は範囲外。<span class="src-badge">S03:p.86</span></li>
+        <li>ノンパラメトリック検定：正規分布を前提としない場合の検定群。<span class="src-badge">S03:p.86</span></li>
       </ul>
     </div>
     <!-- 補足C -->
     <div class="appendix-card orange">
       <div class="appendix-card-title">🎯 補足C: 試験・レポートで重要な観点</div>
       <ul>
-        <li>帰無仮説が保留＝「帰無仮説の採択」ではないことに注意</li>
-        <li>p値 &lt; 有意水準 → 帰無仮説を棄却、対立仮説採択</li>
-        <li>1.96σ ≈ 95%（正確に95%となる境界）を即答できるように</li>
-        <li>検定結果の表（t値・p値・t Critical）の読み方</li>
-        <li>t分布は正規分布より95%の幅が広い理由を説明できるか</li>
+        <li>帰無仮説が<strong>保留</strong>＝「帰無仮説の採択」ではない。「わからない」という意味。<span class="src-badge">S03:p.79-80</span></li>
+        <li>p値 &lt; 有意水準（0.05）→ 帰無仮説を棄却 → 対立仮説採択。<span class="src-badge">S03:p.76-78</span></li>
+        <li><strong>1.96σ → 95%</strong>（正確に95%となる境界値）を即答できるように。<span class="src-badge">S03:p.27</span></li>
+        <li>検定結果の表の読み方：T Stat（t値）・P two-tail（p値）・t Critical two-tail（棄却域境界）の3点。<span class="src-badge">S03:p.88-89 ← S05</span></li>
+        <li>t分布が正規分布より95%の幅が広い（±1.96σ → ±2.57σ）理由：データが少ないときの不確実性を考慮するため。<span class="src-badge">S03:p.69</span></li>
+        <li>統計・データサイエンス関連の資格試験でも検定結果の表の見方が出題される。<span class="src-badge">← S05</span></li>
       </ul>
     </div>
     <!-- 補足D -->
     <div class="appendix-card purple">
       <div class="appendix-card-title">🔗 補足D: 次回（第9回）への接続</div>
       <ul>
-        <li>第9回：過去のパターンを使った予測（単回帰分析）</li>
-        <li>単回帰分析のモデル評価にもt検定が登場する</li>
-        <li>第10回：グループ分け（クラスタリング）</li>
-        <li>第11回：データ間の関係性の発見（相関・回帰）</li>
+        <li><strong>第9回</strong>：予測② 過去のパターンを使った将来予測（単回帰分析）。t検定がモデルの評価にも使われる。<span class="src-badge">S03:p.8-9,85</span></li>
+        <li><strong>第10回</strong>：データのグループ分け（クラスタリング）。<span class="src-badge">S03:p.10</span></li>
+        <li><strong>第11回</strong>：データ間の関係性の発見（相関・アソシエーション分析など）。<span class="src-badge">S03:p.11</span></li>
+        <li>今回学んだ正規分布・t分布・検定の枠組みは第9〜11回すべての基礎になる。</li>
       </ul>
     </div>
     <!-- 補足A続 -->
@@ -1753,22 +1765,10 @@ p:last-child { margin-bottom: 0; }
     </thead>
     <tbody>
       <tr>
-        <td>U01</td>
-        <td>S05テキストで「気務仮説」「義務仮説」等の表記が混在 → 「帰無仮説」に統一済み</td>
-        <td>AI変換修正</td>
-        <td>確認済</td>
-      </tr>
-      <tr>
         <td>U02</td>
-        <td>デモ動画の実際の検定結果の数値（t値・p値の具体値）はスライドに未記載</td>
-        <td>内容不足</td>
+        <td>第4章デモの実際のt値・p値の具体数値。デモ動画画面にのみ表示され、スライド・音声テキストに記載なし。結論（帰無仮説棄却）はS05で確認済み。</td>
+        <td>補完不能</td>
         <td>low</td>
-      </tr>
-      <tr>
-        <td>U03</td>
-        <td>S05で「G検定」と表記されている箇所 → 「t検定」に修正済み</td>
-        <td>AI変換修正</td>
-        <td>確認済</td>
       </tr>
     </tbody>
   </table>

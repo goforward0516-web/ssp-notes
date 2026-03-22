@@ -1404,7 +1404,7 @@ negative: [日本]
           <tr><td><strong>ベクトル空間</strong></td><td>べくとるくうかん</td><td>複数のベクトルの根本を1か所にまとめたベクトルの集合（同じ次元のみ）</td><td class="star3">★★★</td></tr>
           <tr><td><strong>コサイン類似度</strong></td><td>こさいんるいじど</td><td>cosθ = a·b/(‖a‖‖b‖)。2ベクトル間の角度で類似度を表現。値域-1〜1</td><td class="star3">★★★</td></tr>
           <tr><td><strong>単語の分散表現</strong></td><td>たんごのぶんさんひょうげん</td><td>単語をベクトルで表現したもの。似た単語が近くに配置される</td><td class="star3">★★★</td></tr>
-          <tr><td><strong>Word2Vec</strong></td><td>わーどつーべく</td><td>単語をベクトルに変換する手法の総称。CBOWとSkip-gramの2モデルがある</td><td class="star3">★★★</td></tr>
+          <tr><td><strong>Word2Vec</strong></td><td>わーどつーべく</td><td>単語をベクトルに変換する手法の総称（2013年、Mikolov et al. / Google）。CBOWとSkip-gramの2モデルがある</td><td class="star3">★★★</td></tr>
           <tr><td><strong>アナロジー（類推）</strong></td><td>あなろじー</td><td>ある単語間の関係から似た関係にある他の単語を導くこと。Word2Vecでベクトル計算として実現</td><td class="star3">★★★</td></tr>
           <tr><td><strong>コーパス</strong></td><td>こーぱす</td><td>テキストデータを集めてデータベース化したもの</td><td class="star3">★★★</td></tr>
           <tr><td><strong>MeCab</strong></td><td>めかぶ</td><td>日本語形態素解析の代表的なツール</td><td class="star2">★★☆</td></tr>
@@ -1418,13 +1418,56 @@ negative: [日本]
     <section id="appendix-b" class="section">
       <h2 class="appendix-title"><span class="icon">📚</span>補足B：知っておくべき背景知識</h2>
       <div class="block-ext">
-        <div class="block-label label-ext">📚 外部補足</div>
+        <div class="block-label label-ext">📚 外部補足（Web検索で確認済み）</div>
+
+        <p style="font-weight:600;color:var(--accent-blue);margin:12px 0 6px;">▌ テキストデータ・前処理</p>
         <ul>
-          <li><strong>非構造化データ</strong>：画像・音声・テキストなど。世界のデータの約80〜90%を占めるとされる。</li>
-          <li><strong>MeCab以外の形態素解析ツール</strong>：Janome（純Pythonで使いやすい）・JUMAN・SudachiなどもPythonから利用可能。</li>
-          <li><strong>Word2Vecの発表</strong>：2013年、GoogleのTomas Mikolov らによって発表された。</li>
-          <li><strong>より進んだ単語の分散表現</strong>：GloVe・fastText・BERTなどがある。特にBERT（2018年）以降、文脈を考慮した表現が可能になり精度がさらに向上。</li>
-          <li><strong>協調フィルタリング</strong>：ユーザーの行動履歴（購買・閲覧等）をベクトル化し、コサイン類似度等で類似ユーザーを探してレコメンドを行う手法。Amazonや Netflix のレコメンドで広く使われている。</li>
+          <li><strong>非構造化データの割合</strong>：画像・音声・テキストなどの非構造化データは、世界で生成されるデータ全体の約80〜90%を占めるとされる。構造化データ（表形式）はごく一部。</li>
+          <li><strong>MeCab以外の日本語形態素解析ツール</strong>：
+            <strong>Janome</strong>（純Pythonで追加インストールが容易）・
+            <strong>JUMAN++</strong>（京都大学）・
+            <strong>Sudachi</strong>（ワークスアプリケーションズ製。chiVeで採用）など。
+            Pythonからはいずれも利用可能。</li>
+          <li><strong>ストップワード</strong>：「は」「を」「の」のような助詞や、出現頻度が極端に高い一般的な語は、分析に不要なため除去することが多い。この処理もテキストクレンジングの一部。</li>
+        </ul>
+
+        <p style="font-weight:600;color:var(--accent-blue);margin:14px 0 6px;">▌ Word2Vec</p>
+        <ul>
+          <li><strong>発表</strong>：2013年1月、Tomáš Mikolov、Kai Chen、Greg Corrado、Ilya Sutskever、Jeff DeanのGoogleチームによりarXiv論文「Efficient Estimation of Word Representations in Vector Space」として公開。同年ICLR・NIPSでも発表された。</li>
+          <li><strong>CBOWとSkip-gramの違い</strong>：
+            <strong>CBOW</strong>（Continuous Bag of Words）は周辺単語から中心単語を予測→高速・頻出語に強い。
+            <strong>Skip-gram</strong>は中心単語から周辺単語を予測→低頻度語や意味的なアナロジーに強く、大規模コーパスで特に有効。今回のデモではSkip-gram（<code>sg=1</code>）を採用。</li>
+          <li><strong>アナロジー（類推）の有名例</strong>：
+            <code>King − Man + Woman ≈ Queen</code>（王様 − 男 + 女 ≈ 女王）。
+            これはMikolovらの論文でも示された意味演算の代表例。今回のデモでは小さいコーパスのため再現できなかったが、chiVeでは成功した。</li>
+        </ul>
+
+        <p style="font-weight:600;color:var(--accent-blue);margin:14px 0 6px;">▌ 学習済みモデル（chiVe）の詳細</p>
+        <ul>
+          <li><strong>chiVe（チャイブ / Sudachi Vector）</strong>：ワークスアプリケーションズの徳島人工知能NLP研究所と国立国語研究所の共同研究。形態素解析器「Sudachi」と、258億語規模の「国語研日本語ウェブコーパス（NWJC）」をもとに、Word2Vec（Gensim）のSkip-gramで作成。<strong>Apache-2.0ライセンスで商用利用可能</strong>。複数のバージョン・ファイル形式（gensim/text/Magnitude）で配布されている。</li>
+          <li><strong>chiVeを使う理由</strong>：①メンテナンスが継続されている、②汎用的な日本語コーパスを使用、③単語だけでなく固有表現・複合語の表現精度が高い。</li>
+        </ul>
+
+        <p style="font-weight:600;color:var(--accent-blue);margin:14px 0 6px;">▌ Word2Vec以降の発展（分散表現の系譜）</p>
+        <ul>
+          <li><strong>GloVe</strong>（2014年、Stanford）：単語の共起行列のグローバル統計を使って学習。Word2Vecと並ぶ静的埋め込みの代表手法。</li>
+          <li><strong>fastText</strong>（2016年、Facebook AI Research）：Word2Vecをサブワード（文字n-gram）に拡張。未知語にも対応できる。Mikolov自身がFacebook移籍後に開発。</li>
+          <li><strong>BERT</strong>（Bidirectional Encoder Representations from Transformers、2018年10月公開）：GoogleのJacob Devlin、Ming-Wei Chang、Kenton Lee、Kristina Toutanovaが発表。<strong>文脈を考慮した動的な単語表現</strong>を実現。Word2Vec・GloVeが各単語に1つの固定ベクトルを与えるのに対し、BERTは同じ単語でも前後の文脈によって異なるベクトルを生成する。11のNLPタスクで当時の最高精度を更新。</li>
+          <li><strong>静的埋め込み vs 動的埋め込みの違い（重要）</strong>：
+            <table style="margin-top:8px;font-size:13px;">
+              <thead><tr><th>手法</th><th>種別</th><th>特徴</th></tr></thead>
+              <tbody>
+                <tr><td>Word2Vec / GloVe / fastText</td><td>静的埋め込み</td><td>単語ごとに1つのベクトル（文脈を問わず固定）</td></tr>
+                <tr><td>BERT / GPT 系</td><td>動的（文脈考慮）埋め込み</td><td>同じ単語でも文脈によってベクトルが変わる</td></tr>
+              </tbody>
+            </table>
+          </li>
+        </ul>
+
+        <p style="font-weight:600;color:var(--accent-blue);margin:14px 0 6px;">▌ コサイン類似度の応用</p>
+        <ul>
+          <li><strong>協調フィルタリング</strong>：ユーザーの行動履歴（購買・閲覧等）をベクトル化し、コサイン類似度等で類似ユーザーを探してレコメンドを行う手法。AmazonやNetflixのレコメンドで広く使われている。</li>
+          <li><strong>コサイン類似度 vs ユークリッド距離</strong>：ユークリッド距離はベクトルの長さ（絶対量）に影響されるが、コサイン類似度は<strong>方向（向き）のみ</strong>で比較するため、文書の長さが違っても公平に比較できる。テキスト分析では一般的にコサイン類似度が好まれる。</li>
         </ul>
       </div>
     </section>
@@ -1440,7 +1483,8 @@ negative: [日本]
           <li>コサイン類似度の式 <code>cosθ = a·b / (‖a‖‖b‖)</code> と値域（-1〜1）・解釈を説明できること</li>
           <li>アナロジーをベクトル計算で表現できること（例：フランス - 日本 + 東京 = パリ）</li>
           <li>BoWの仕組みと、BoWだけでは解決できない問題（単語の意味を考慮できない）を説明できること</li>
-          <li>日本語でトークン化に形態素解析が必要な理由を説明できること</li>
+          <li>CBOWとSkip-gramの違いを説明できること（CBOW: 周辺→中心、Skip-gram: 中心→周辺。今回のデモはSkip-gram）</li>
+          <li>コサイン類似度とユークリッド距離の使い分けを説明できること（コサインは方向のみで比較→文書の長さに依存しない）</li>
         </ul>
       </div>
     </section>
@@ -1451,17 +1495,35 @@ negative: [日本]
       <div class="card">
         <p><strong>第13回（次回）：「行列」の基礎</strong></p>
         <ul style="margin-top:8px;">
-          <li>行列はベクトルを横に複数並べたもの。ベクトルの延長として理解できる。</li>
-          <li>行列演算（行列積等）を使うことで、大規模データの処理が効率化される。</li>
-          <li>ニューラルネットワーク・ディープラーニングの内部でも行列計算が中心的な役割を担う。</li>
+          <li>行列はベクトルを横に複数並べたもの（例：4人×6特徴量のデータ = 4×6行列）。ベクトルの延長として理解できる。</li>
+          <li>行列演算（行列積等）を使うことで、大規模データの処理・変換を一括で行える。</li>
+          <li>ニューラルネットワーク・ディープラーニングの内部では、データの変換が<strong>すべて行列計算として実装</strong>されている。</li>
         </ul>
       </div>
       <div class="card">
         <p><strong>これまでとの接続：</strong></p>
         <ul style="margin-top:8px;">
-          <li>第10回 クラスタリング：距離（ユークリッド距離等）で類似度を評価 → <strong>今回はコサイン類似度による評価</strong>（角度ベース）</li>
-          <li>第11回 アソシエーション分析・協調フィルタリング → <strong>今回のコサイン類似度を使った協調フィルタリング</strong>に接続</li>
+          <li>第3回 データクレンジング → <strong>今回のテキストクレンジングへ発展</strong>（構造化データと同じ概念がテキストにも適用される）</li>
+          <li>第10回 クラスタリング：ユークリッド距離で類似度を評価 → <strong>今回はコサイン類似度（角度ベース）</strong>。文書の長さに左右されない比較が可能になる</li>
+          <li>第11回 協調フィルタリング（アソシエーション分析ベース）→ <strong>コサイン類似度ベースの協調フィルタリング</strong>としても実装できる</li>
         </ul>
+      </div>
+      <div class="card">
+        <p><strong>NLPの技術的系譜（発展の流れ）：</strong></p>
+        <div style="overflow-x:auto;">
+          <table style="font-size:13px;margin-top:8px;">
+            <thead><tr><th>年代</th><th>手法</th><th>特徴</th></tr></thead>
+            <tbody>
+              <tr><td>〜2010年代前半</td><td>BoW + 従来型前処理</td><td>出現回数ベース。今回の授業の中心。実務でも今も使われる</td></tr>
+              <tr><td>2013年</td><td><strong>Word2Vec</strong>（Mikolov et al.）</td><td>単語の意味をベクトルで表現。アナロジー計算が可能に</td></tr>
+              <tr><td>2014年</td><td>GloVe（Stanford）</td><td>共起行列のグローバル統計を利用</td></tr>
+              <tr><td>2016年</td><td>fastText（Facebook AI Research）</td><td>サブワードにより未知語対応</td></tr>
+              <tr><td><strong>2018年</strong></td><td><strong>BERT</strong>（Google, Devlin et al.）</td><td><strong>文脈依存の動的ベクトル</strong>。Transformerベース。11タスクでSOTA更新</td></tr>
+              <tr><td>2020年〜</td><td>GPT-3/4, ChatGPT 等</td><td>大規模言語モデル（LLM）。テキスト生成の精度が飛躍的向上</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="margin-top:8px;font-size:13px;color:var(--text-sub);">※ 今回の授業（第12回）は2013年以前の基礎技術を学ぶ回。これが現代LLMの土台になっている。</p>
       </div>
     </section>
 

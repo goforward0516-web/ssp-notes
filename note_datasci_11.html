@@ -458,7 +458,11 @@
       <strong>クラス分類：</strong>既存のグループに対し、新しいデータをどのグループに入れるかを決める方法。<br>
       <span class="src">← S03:p.3</span><br>
       例）写真の生き物が哺乳類か魚類かに分ける。グループ自体（哺乳類・魚類）はあらかじめ定義されている。<br>
-      使用手法：決定木・k近傍法（kNN）・ナイーブベイズ等
+      使用手法（授業言及）：決定木・最近傍法・ナイーブベイズ等
+      <div class="ext-block" style="margin-top:8px;">
+        <div class="label">🌐 EXTERNAL SUPPLEMENT — クラス分類手法の正式名称</div>
+        スライドp.3・S05で「細菌方法」「経菌方法」「景金防法」という誤変換が混在。コンテキストおよび機械学習の標準的分類から、それぞれ<strong>k近傍法（k-NN: k-Nearest Neighbors）</strong>・<strong>ナイーブベイズ（Naive Bayes）</strong>に対応すると判定。「決定木（Decision Tree）」はS05①で「決定理」と表記されているが文脈から確定。
+      </div>
       <div class="audio-block" style="margin-top:8px;">
         <div class="label">🎙 AUDIO SUPPLEMENT</div>
         クラス分類では「既存のグループに分ける方法を決める」のに対し、クラスタリングは「分析してみて初めてグループが決まる」点が根本的に異なる。クラスタリングの例：価格帯によって「高価格群・低価格群」に分かれた場合、このグループ分けは分析前には存在しなかった。<span class="src">← S05</span>
@@ -803,8 +807,9 @@
         <tr><th>リフト値の値</th><th>解釈</th><th>例</th></tr>
       </thead>
       <tbody>
-        <tr><td><strong class="hl-teal">1 以上</strong></td><td>商品B は 商品A との<strong>組み合わせで売れる</strong></td><td>{A}⇒{B} = 10/9</td></tr>
-        <tr><td><strong class="hl-rose">1 未満</strong></td><td>商品E は 商品D に<strong>関係なく売れる</strong>（独立して売れる）</td><td>{D}⇒{E} = 5/8</td></tr>
+        <tr><td><strong class="hl-teal">1 より大きい</strong></td><td>商品B は 商品A との<strong>組み合わせで売れる</strong>（正の相乗効果あり）</td><td>{A}⇒{B} = 10/9 ≈ 1.11</td></tr>
+        <tr><td><strong style="color:var(--text-sub);">= 1</strong></td><td>XとYは<strong>独立</strong>（一緒に買われることがランダムな場合と変わらない）</td><td>—</td></tr>
+        <tr><td><strong class="hl-rose">1 より小さい</strong></td><td>商品E は 商品D に<strong>関係なく売れる</strong>（組み合わせ効果なし）</td><td>{D}⇒{E} = 5/8 = 0.625</td></tr>
       </tbody>
     </table>
   </div>
@@ -933,19 +938,22 @@
 
   <h4>手順（アソシエーション分析を使った方法）</h4>
   <ol>
-    <li><strong>類似商品のスコア算出：</strong>対象顧客（客1）を除いた他の客のデータを使い、客1の「購入済み商品 ⇒ 未購入商品」の各アソシエーションルールの信頼度を計算し、未購入商品ごとに信頼度の合計（スコア）を算出</li>
+    <li><strong>類似商品のスコア算出：</strong>対象顧客（客1）を除いた<strong>残り4人（客2〜5）のデータを使用</strong>し、客1の「購入済み商品 ⇒ 未購入商品」の各アソシエーションルールの信頼度を計算し、未購入商品ごとに信頼度の合計（スコア）を算出 <span class="src">← S03:p.55</span></li>
     <li><strong>レコメンドの作成：</strong>最もスコアが高い未購入商品をレコメンド</li>
   </ol>
 
   <div class="audio-block">
-    <div class="label">🎙 AUDIO SUPPLEMENT — 具体例</div>
-    客1（商品A・B購入済み）へのレコメンド（客2〜5のデータを使用）：<br>
-    {A}⇒{E} の信頼度 = 1.0<br>
+    <div class="label">🎙 AUDIO SUPPLEMENT — 具体例（客2〜5の4人ベースで計算）</div>
+    客1（商品A・B購入済み、商品C・D・E未購入）へのレコメンド：<br>
+    客1を除く客2〜5の4人のデータを使い、「購入済み ⇒ 未購入」の信頼度を計算する。<br><br>
+    <strong>商品E のスコア：</strong><br>
+    {A}⇒{E} の信頼度 = 1.0（Aを買った客2〜5のうち全員がEも購入）<br>
     {B}⇒{E} の信頼度 = 1.0<br>
     {A,B}⇒{E} の信頼度 = 1.0<br>
-    → 商品E のスコア = <strong>3.0</strong><br>
-    （商品C・商品D のスコアはそれぞれ 0.5）<br>
-    → <strong>商品E をレコメンド</strong><span class="src">← S05</span>
+    → スコア合計 = <strong>3.0</strong><br><br>
+    <strong>商品C のスコア：</strong>{A}⇒{C}、{B}⇒{C}、{A,B}⇒{C} の信頼度合計 = <strong>0.5</strong><br>
+    <strong>商品D のスコア：</strong>同様に信頼度合計 = <strong>0.5</strong><br><br>
+    → スコア最大の<strong>商品E をレコメンド</strong><span class="src">← S03:p.56, S05</span>
   </div>
 
   <h3>協調フィルタリングの特徴</h3>
@@ -1067,7 +1075,7 @@
           <tr><td>疑似相関</td><td>ぎじそうかん</td><td>第3の変数（交絡因子）が原因で、直接関係のない2変量間に相関があるように見える現象</td><td>★★★</td></tr>
           <tr><td>組み合わせ爆発</td><td>くみあわせばくはつ</td><td>変量数が増えると全組み合わせ数が爆発的に増加し計算困難になること</td><td>★★☆</td></tr>
           <tr><td>二変量データ</td><td>にへんりょうでーた</td><td>1つの観測対象に対して2種類のデータが存在するデータ形式</td><td>★★☆</td></tr>
-          <tr><td>連関</td><td>れんかん</td><td>質的データ間の相関関係（量的データの相関関係と区別するための用語）</td><td>★★☆</td></tr>
+          <tr><td>連関</td><td>れんかん</td><td>質的データ間の相関関係（量的データの相関関係と区別するための用語）<br><span style="font-size:12px; color:var(--text-muted);">[外部補足] 英語では association または contingency と表記されることが多い</span></td><td>★★☆</td></tr>
           <tr><td>ユーザベース協調フィルタリング</td><td>ゆーざべーすきょうちょうふぃるたりんぐ</td><td>類似ユーザの購入商品を使ってレコメンドを作成する手法</td><td>★★☆</td></tr>
           <tr><td>アイテムベース協調フィルタリング</td><td>あいてむべーすきょうちょうふぃるたりんぐ</td><td>類似商品（類似購入傾向を持つ商品）を使ってレコメンドを作成する手法</td><td>★★☆</td></tr>
           <tr><td>しきい値</td><td>しきいち</td><td>アソシエーション分析で「検討対象」とするための支持度・信頼度・リフト値の下限値。分析者が設定する</td><td>★★☆</td></tr>
@@ -1110,17 +1118,18 @@
   </div>
 
   <!-- 未確定事項 -->
-  <div class="appendix-card" style="border-color: var(--accent-orange);">
-    <h3 style="color: var(--accent-orange);">❓ 未確定事項・要確認リスト</h3>
+  <div class="appendix-card" style="border-color: var(--accent-teal);">
+    <h3 style="color: var(--accent-teal);">✅ 未確定事項ログ（全件解消済み）</h3>
+    <p style="font-size:13px; color:var(--accent-teal); margin-bottom:12px;">未解決の未確定事項：<strong>0件</strong>。以下は処理済み誤変換の記録。</p>
     <div class="tbl-wrap">
       <table>
         <thead>
-          <tr><th>ID</th><th>内容</th><th>種別</th><th>優先度</th></tr>
+          <tr><th>ID</th><th>内容</th><th>種別</th><th>状態</th></tr>
         </thead>
         <tbody>
-          <tr><td>U01</td><td>S05で「細菌方法」「経菌方法」と誤変換されている箇所 → コンテキストから「k近傍法（kNN）」と判定。スライドでは「景金防法」とあり、「k近傍法」として処理。</td><td>AI変換誤変換（処理済み）</td><td>low</td></tr>
-          <tr><td>U02</td><td>S05で「強調フィルタリング」→「協調フィルタリング」（S03:p.46で確認済み）</td><td>AI変換誤変換（処理済み）</td><td>low</td></tr>
-          <tr><td>U03</td><td>アイテムベース協調フィルタリングの説明でS05に「ルジ/ルイスの商品」という表現があるが「類似の商品」の誤変換と判定。</td><td>AI変換誤変換（処理済み）</td><td>low</td></tr>
+          <tr><td>U01</td><td>S05で「細菌方法」「経菌方法」「景金防法」→ 機械学習標準分類の文脈からk近傍法・ナイーブベイズと判定。前回復習セクションに外部補足タグで明示済み。</td><td>AI変換誤変換</td><td>✅ 解消済み</td></tr>
+          <tr><td>U02</td><td>S05で「強調フィルタリング」→「協調フィルタリング」。S03:p.46の表記で確認済み、全箇所修正済み。</td><td>AI変換誤変換</td><td>✅ 解消済み</td></tr>
+          <tr><td>U03</td><td>S05に「ルジ/ルイスの商品」→「類似の商品」の誤変換。文脈・S03双方で確定済み、修正済み。</td><td>AI変換誤変換</td><td>✅ 解消済み</td></tr>
         </tbody>
       </table>
     </div>

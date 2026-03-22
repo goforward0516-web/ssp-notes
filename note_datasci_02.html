@@ -1690,6 +1690,72 @@ tr:hover td { background: #ffffff04; }
   <span class="pointer">← S03:p.34-39 / S02</span>
 </div>
 
+<!-- 非確率抽出法 補足 -->
+<div class="section">
+  <div class="section-title"><span class="icon">📖</span>非確率抽出法の補足 <span style="font-size:11px;color:var(--green);font-family:'JetBrains Mono',monospace;">[外部補足]</span></div>
+
+  <div class="block block-infer">
+    <div class="block-label">⚠️ 本講義での扱い</div>
+    本講義では非確率抽出法の詳細説明は行われていない（分類図で言及のみ）。以下は統計学の一般的な定義に基づく外部補足。
+    <span class="pointer">[外部補足] 統計WEB・Wikipedia「無作為抽出」・エナゴ学術英語アカデミー</span>
+  </div>
+
+  <div class="block block-def">
+    <div class="block-label">定義</div>
+    <strong>非確率抽出法（有意抽出法）</strong> ＝ ランダムな選択ではなく、<strong>調査者の主観的な判断・便宜・条件</strong>に基づいて標本を選ぶ方法。標本に選ばれる確率が不均等なため、<strong>標本誤差を統計的に推定できない</strong>。
+  </div>
+
+  <h3>非確率抽出法の主な種類</h3>
+  <div class="table-wrap">
+    <table>
+      <tr><th>手法</th><th>内容</th><th>例</th></tr>
+      <tr>
+        <td><strong>便宜的抽出法</strong><br><span style="font-size:10px;color:var(--text-muted);">Convenience Sampling</span></td>
+        <td>研究者が<strong>最も入手しやすい人々</strong>を対象にする。参加者の確保が容易なため広く使われる</td>
+        <td>街角での面接・クラスの学生への配布・インターネット募集</td>
+      </tr>
+      <tr>
+        <td><strong>割り当て抽出法</strong><br><span style="font-size:10px;color:var(--text-muted);">Quota Sampling</span></td>
+        <td>母集団の層（性別・年代等）の比率に合わせて<strong>必要数を割り当て</strong>、各層から便宜的に集める</td>
+        <td>500人の従業員調査で「男性250人・女性250人」と割り当て</td>
+      </tr>
+      <tr>
+        <td><strong>機縁法（縁故法）</strong><br><span style="font-size:10px;color:var(--text-muted);">Snowball Sampling</span></td>
+        <td>知人・関係者の紹介を連鎖的につなぐ「<strong>雪だるま式</strong>」の抽出法</td>
+        <td>希少疾患患者の研究・特定コミュニティの調査</td>
+      </tr>
+      <tr>
+        <td><strong>応募法</strong></td>
+        <td>新聞・広報などで<strong>応募者を募って</strong>標本を抽出</td>
+        <td>新聞アンケート・SNSでの調査協力募集</td>
+      </tr>
+    </table>
+  </div>
+
+  <h3>確率抽出法 vs 非確率抽出法 まとめ比較</h3>
+  <div class="table-wrap">
+    <table>
+      <tr><th></th><th>確率抽出法（無作為抽出）</th><th>非確率抽出法（有意抽出）</th></tr>
+      <tr><td><strong>選び方</strong></td><td>ランダム（確率的）</td><td>調査者の判断・便宜・条件</td></tr>
+      <tr><td><strong>母集団の代表性</strong></td><td><span class="check">高い</span></td><td><span class="cross">低い（偏りのリスクあり）</span></td></tr>
+      <tr><td><strong>標本誤差の推定</strong></td><td><span class="check">統計的に計算可能</span></td><td><span class="cross">計算不能（不明）</span></td></tr>
+      <tr><td><strong>コスト・手間</strong></td><td>高い</td><td>低い・速い</td></tr>
+      <tr><td><strong>主な用途</strong></td><td>統計的推測・世論調査・学術調査</td><td>予備調査・探索的研究・質的研究</td></tr>
+      <tr><td><strong>例</strong></td><td>単純無作為・系統・層別・多段</td><td>便宜的・割り当て・機縁法・応募法</td></tr>
+    </table>
+  </div>
+
+  <div class="block block-exam">
+    <div class="block-label">⭐ 試験ポイント [外部補足]</div>
+    <ul style="margin:0;padding-left:18px;">
+      <li>非確率抽出法は<strong>標本誤差を統計的に推定できない</strong>点が最大の欠点</li>
+      <li>確率抽出法の方が<strong>母集団の代表性が高い</strong>（逆に「非確率抽出法の方が代表性が高い」は誤り）</li>
+      <li>スノーボール・サンプリング（機縁法）は<strong>非確率抽出法の一種</strong></li>
+    </ul>
+  </div>
+  <span class="pointer">[外部補足] 統計WEB / Wikipedia「無作為抽出」/ エナゴ学術英語アカデミー</span>
+</div>
+
 <!-- 第2章まとめ -->
 <div id="ch2-summary"></div>
 <div class="section">
@@ -2685,11 +2751,12 @@ tr:hover td { background: #ffffff04; }
       <span style="font-size:12px;color:var(--text-muted);">授業スライドは「比例尺度」、統計学正式用語は「比率尺度」。本ノートでは両方を併記。</span>
     </div>
   </div>
-  <div class="unknown-item">
-    <span class="uid">U04</span>
+  <div class="unknown-item" style="border-color:var(--green);">
+    <span class="uid" style="color:var(--green);background:#34d39915;border-color:#34d39930;">U04</span>
     <div>
-      <strong>非確率抽出法の詳細</strong> → <span style="color:var(--yellow)">内容不足（mid）</span><br>
-      <span style="font-size:12px;color:var(--text-muted);">本講義では非確率抽出法の詳細説明は行われていない。分類図で言及のみ。「ランダムを使わない標本抽出の総称」として把握しておけば十分。</span>
+      <strong>非確率抽出法の詳細</strong> → <span style="color:var(--green)">外部情報で補完・解決</span><br>
+      <span style="font-size:12px;color:var(--text-muted);">本講義では詳細説明なし。統計学の一般知識から補足。詳細は下記「非確率抽出法の補足」セクションを参照。</span>
+      <span class="pointer">[外部補足] 統計WEB / Wikipedia「無作為抽出」等</span>
     </div>
   </div>
 </div>
