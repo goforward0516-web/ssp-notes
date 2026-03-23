@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>インターネット入門 第2回 — インターネットの基礎知識</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --bg-card: #161b27;
+    --bg-card2: #1a2030;
+    --border: #2a3448;
+    --border-accent: #3d4f6e;
+    --text: #e2e8f5;
+    --text-sub: #8a99b8;
+    --text-dim: #5a6a85;
+    --accent-blue: #5b8dee;
+    --accent-blue-dim: #2a3f6e;
+    --accent-green: #34d399;
+    --accent-green-dim: #1a4a38;
+    --accent-amber: #fbbf24;
+    --accent-amber-dim: #4a3a10;
+    --accent-purple: #a78bfa;
+    --accent-purple-dim: #2d2450;
+    --accent-orange: #fb923c;
+    --accent-orange-dim: #4a2810;
+    --accent-teal: #22d3ee;
+    --accent-red: #f87171;
+    --sidebar-w: 260px;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 15px;
+    line-height: 1.8;
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ── Sidebar ── */
+  #sidebar {
+    width: var(--sidebar-w);
+    min-width: var(--sidebar-w);
+    background: var(--bg-card);
+    border-right: 1px solid var(--border);
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    overflow-y: auto;
+    z-index: 100;
+    padding: 20px 0;
+  }
+
+  .sb-logo {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent-blue);
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    padding: 0 18px 14px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 14px;
+  }
+
+  .sb-title {
+    font-size: 12px;
+    color: var(--text-sub);
+    padding: 0 18px 12px;
+    line-height: 1.5;
+  }
+
+  .sb-nav a {
+    display: block;
+    font-size: 12.5px;
+    color: var(--text-sub);
+    text-decoration: none;
+    padding: 5px 18px;
+    border-left: 2px solid transparent;
+    transition: all .15s;
+  }
+  .sb-nav a:hover { color: var(--text); border-left-color: var(--accent-blue); background: rgba(91,141,238,.07); }
+  .sb-nav a.active { color: var(--accent-blue); border-left-color: var(--accent-blue); }
+  .sb-nav .sb-h1 { font-weight: 700; color: var(--text); font-size: 12px; margin-top: 12px; padding: 4px 18px; }
+  .sb-nav .sb-h2 { padding-left: 28px; font-size: 11.5px; }
+
+  /* ── Main ── */
+  #main {
+    margin-left: var(--sidebar-w);
+    flex: 1;
+    padding: 36px 44px 80px;
+    max-width: 900px;
+  }
+
+  /* ── Page Header ── */
+  .page-header {
+    background: linear-gradient(135deg, #131b2e 0%, #0f1117 60%, #0d1520 100%);
+    border: 1px solid var(--border-accent);
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin-bottom: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .page-header::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 180px; height: 180px;
+    background: radial-gradient(circle, rgba(91,141,238,.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .ph-label { font-size: 11px; color: var(--accent-blue); font-weight: 700; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 8px; }
+  .ph-title { font-size: 24px; font-weight: 700; color: var(--text); margin-bottom: 10px; line-height: 1.3; }
+  .ph-subtitle { font-size: 14px; color: var(--text-sub); margin-bottom: 16px; }
+  .ph-meta { display: flex; flex-wrap: wrap; gap: 8px; }
+  .ph-badge {
+    font-size: 11px; font-family: var(--font-mono);
+    background: rgba(91,141,238,.12); border: 1px solid rgba(91,141,238,.3);
+    color: var(--accent-blue); border-radius: 4px; padding: 3px 9px;
+  }
+  .ph-badge.green { background: rgba(52,211,153,.1); border-color: rgba(52,211,153,.3); color: var(--accent-green); }
+  .ph-badge.amber { background: rgba(251,191,36,.1); border-color: rgba(251,191,36,.3); color: var(--accent-amber); }
+
+  /* ── Section ── */
+  .section {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+  .section-header {
+    padding: 14px 22px;
+    background: rgba(91,141,238,.06);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-icon { font-size: 16px; }
+  .section-title { font-size: 15px; font-weight: 700; color: var(--text); }
+  .section-sub { font-size: 11px; color: var(--text-dim); margin-left: auto; font-family: var(--font-mono); }
+  .section-body { padding: 20px 22px; }
+
+  /* ── Chapter ── */
+  .ch-heading {
+    font-size: 17px; font-weight: 700; color: var(--accent-blue);
+    border-left: 3px solid var(--accent-blue);
+    padding: 6px 14px; margin: 0 0 16px;
+    background: rgba(91,141,238,.05); border-radius: 0 6px 6px 0;
+  }
+  .sub-heading {
+    font-size: 14px; font-weight: 700; color: var(--accent-teal);
+    margin: 20px 0 10px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .sub-heading::before { content: '▸'; font-size: 10px; }
+
+  p { margin-bottom: 10px; }
+  ul, ol { margin: 8px 0 10px 20px; }
+  li { margin-bottom: 4px; }
+
+  /* ── Blocks ── */
+  .block {
+    border-left: 3px solid;
+    border-radius: 0 6px 6px 0;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+  .block-voice { border-color: var(--accent-blue); background: rgba(91,141,238,.08); }
+  .block-external { border-color: var(--accent-green); background: rgba(52,211,153,.07); }
+  .block-uncertain { border-color: var(--accent-orange); background: rgba(251,146,60,.07); }
+  .block-infer { border-color: var(--accent-purple); background: rgba(167,139,250,.07); }
+  .block-key { border-color: var(--accent-amber); background: rgba(251,191,36,.07); }
+
+  .block-label {
+    font-size: 10px; font-weight: 700; font-family: var(--font-mono);
+    letter-spacing: .08em; text-transform: uppercase;
+    margin-bottom: 6px; opacity: .85;
+  }
+  .block-voice .block-label { color: var(--accent-blue); }
+  .block-external .block-label { color: var(--accent-green); }
+  .block-uncertain .block-label { color: var(--accent-orange); }
+  .block-key .block-label { color: var(--accent-amber); }
+
+  .src-pointer {
+    font-family: var(--font-mono); font-size: 10px;
+    color: var(--text-dim); background: rgba(255,255,255,.04);
+    border: 1px solid var(--border); border-radius: 3px;
+    padding: 1px 5px; margin-left: 6px;
+  }
+
+  /* ── Table ── */
+  table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 13.5px; }
+  th { background: rgba(91,141,238,.1); color: var(--accent-blue); font-weight: 700; padding: 8px 12px; border: 1px solid var(--border-accent); text-align: left; }
+  td { padding: 7px 12px; border: 1px solid var(--border); color: var(--text); }
+  tr:nth-child(even) td { background: rgba(255,255,255,.025); }
+
+  /* ── Concept Box ── */
+  .concept-box {
+    background: rgba(251,191,36,.07);
+    border: 1px solid rgba(251,191,36,.25);
+    border-radius: 8px; padding: 14px 18px; margin: 14px 0;
+  }
+  .concept-term { font-weight: 700; color: var(--accent-amber); font-size: 14px; margin-bottom: 4px; }
+  .concept-def { font-size: 14px; color: var(--text); }
+
+  /* ── SVG wrapper ── */
+  .svg-wrap { margin: 18px 0; overflow-x: auto; }
+  .svg-wrap figcaption { font-size: 11px; color: var(--text-dim); margin-top: 6px; font-family: var(--font-mono); }
+
+  /* ── Timeline ── */
+  .timeline { margin: 12px 0; }
+  .tl-item { display: flex; gap: 14px; margin-bottom: 10px; align-items: flex-start; }
+  .tl-year {
+    font-family: var(--font-mono); font-size: 12px; font-weight: 700;
+    color: var(--accent-blue); background: rgba(91,141,238,.12);
+    border: 1px solid rgba(91,141,238,.3);
+    border-radius: 4px; padding: 2px 7px;
+    white-space: nowrap; flex-shrink: 0; margin-top: 3px;
+  }
+  .tl-body { font-size: 14px; }
+  .tl-body strong { color: var(--accent-teal); }
+
+  /* ── Appendix Cards ── */
+  .appendix-section { margin-top: 32px; }
+  .appendix-card {
+    border-radius: 10px; border: 1px solid;
+    padding: 18px 22px; margin-bottom: 18px;
+  }
+  .appendix-card.uncertain { border-color: rgba(251,146,60,.4); background: rgba(251,146,60,.05); }
+  .appendix-card.vocab { border-color: rgba(251,191,36,.35); background: rgba(251,191,36,.04); }
+  .appendix-card.bg { border-color: rgba(52,211,153,.3); background: rgba(52,211,153,.04); }
+  .appendix-card.exam { border-color: rgba(167,139,250,.3); background: rgba(167,139,250,.04); }
+  .appendix-card.next { border-color: rgba(34,211,238,.3); background: rgba(34,211,238,.04); }
+  .ac-title { font-size: 14px; font-weight: 700; margin-bottom: 12px; }
+  .appendix-card.uncertain .ac-title { color: var(--accent-orange); }
+  .appendix-card.vocab .ac-title { color: var(--accent-amber); }
+  .appendix-card.bg .ac-title { color: var(--accent-green); }
+  .appendix-card.exam .ac-title { color: var(--accent-purple); }
+  .appendix-card.next .ac-title { color: var(--accent-teal); }
+  .ext-note { font-size: 12px; color: var(--text-sub); }
+
+  kbd {
+    font-family: var(--font-mono); font-size: 11px;
+    background: rgba(255,255,255,.06); border: 1px solid var(--border);
+    border-radius: 3px; padding: 1px 5px; color: var(--text-sub);
+  }
+
+  code { font-family: var(--font-mono); font-size: 12.5px; color: var(--accent-teal); }
+
+  @media (max-width: 800px) {
+    #sidebar { display: none; }
+    #main { margin-left: 0; padding: 20px 16px 60px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== SIDEBAR ===== -->
+<nav id="sidebar">
+  <div class="sb-logo">SSP Note</div>
+  <div class="sb-title">インターネット入門<br>第2回</div>
+  <div class="sb-nav">
+    <div class="sb-h1">◇ 概要</div>
+    <a href="#intro">学習目標・授業構成</a>
+    <div class="sb-h1">◇ 第1章</div>
+    <a href="#ch1" class="sb-h2">コンピュータネットワーク</a>
+    <a href="#ch1-lan" class="sb-h2">LAN と WAN</a>
+    <a href="#ch1-internet" class="sb-h2">インターネットとは</a>
+    <a href="#ch1-backbone" class="sb-h2">バックボーン・IX</a>
+    <a href="#ch1-mgmt" class="sb-h2">管理組織</a>
+    <div class="sb-h1">◇ 第2章</div>
+    <a href="#ch2-comm" class="sb-h2">通信の歴史</a>
+    <a href="#ch2-arpa" class="sb-h2">ARPANETの誕生</a>
+    <a href="#ch2-tcp" class="sb-h2">TCP/IP の確立</a>
+    <a href="#ch2-nsfnet" class="sb-h2">NSFNet と商用化</a>
+    <div class="sb-h1">◇ 第3章</div>
+    <a href="#ch3-www" class="sb-h2">WWW の誕生</a>
+    <a href="#ch3-hyper" class="sb-h2">ハイパーテキスト</a>
+    <a href="#ch3-components" class="sb-h2">WWW の構成要素</a>
+    <div class="sb-h1">◇ 第4章</div>
+    <a href="#ch4-home" class="sb-h2">自宅ネットワーク</a>
+    <a href="#ch4-nic" class="sb-h2">NIC</a>
+    <a href="#ch4-hub" class="sb-h2">ハブ・スイッチ・AP</a>
+    <a href="#ch4-router" class="sb-h2">ルータ</a>
+    <a href="#ch4-modem" class="sb-h2">モデム・ONU</a>
+    <a href="#ch4-fw" class="sb-h2">ファイアウォール</a>
+    <div class="sb-h1">◇ 補足</div>
+    <a href="#appendix-vocab">最重要ワード</a>
+    <a href="#appendix-bg">背景知識</a>
+    <a href="#appendix-exam">試験・レポート</a>
+    <a href="#appendix-next">関連・次回</a>
+  </div>
+</nav>
+
+<!-- ===== MAIN ===== -->
+<main id="main">
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="ph-label">インターネット入門 / Cyber University</div>
+  <div class="ph-title">第2回 インターネットの基礎知識</div>
+  <div class="ph-subtitle">担当: 橋本 匡史 先生</div>
+  <div class="ph-meta">
+    <span class="ph-badge">S03: スライドPDF</span>
+    <span class="ph-badge">S05: AI変換×2</span>
+    <span class="ph-badge green">外部補完済み</span>
+    <span class="ph-badge amber">Web照合: CERN・DARPA・NSF・Wikipedia</span>
+  </div>
+</div>
+
+<!-- 学習目標 -->
+<div class="section" id="intro">
+  <div class="section-header">
+    <span class="section-icon">🎯</span>
+    <span class="section-title">学習目標・授業構成</span>
+    <span class="section-sub">S03:p.2–3</span>
+  </div>
+  <div class="section-body">
+    <p>第2回では、インターネットとは何か・その歴史と発展・身近なネットワーク機器について学ぶ。</p>
+    <div class="block block-key">
+      <div class="block-label">学習目標</div>
+      <ol>
+        <li>インターネットの歴史と発展について理解し、説明できる</li>
+        <li>身の回りのネットワーク機器について理解し、説明できる</li>
+      </ol>
+    </div>
+    <table>
+      <tr><th>章</th><th>テーマ</th></tr>
+      <tr><td>第1章</td><td>コンピュータネットワークとインターネット（概念・規模分類）</td></tr>
+      <tr><td>第2章</td><td>インターネットの始まり（通信の歴史・ARPANET・TCP/IP）</td></tr>
+      <tr><td>第3章</td><td>WWW（World Wide Web）サービス</td></tr>
+      <tr><td>第4章</td><td>身の回りのネットワーク機器</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ================== 第1章 ================== -->
+<div class="section" id="ch1">
+  <div class="section-header">
+    <span class="section-icon">🌐</span>
+    <span class="section-title">第1章　コンピュータ・ネットワークとインターネット</span>
+    <span class="section-sub">S03:p.4–15</span>
+  </div>
+  <div class="section-body">
+
+    <div class="ch-heading" id="ch1">コンピュータ・ネットワークとは</div>
+    <div class="concept-box">
+      <div class="concept-term">コンピュータ・ネットワーク（計算機ネットワーク）</div>
+      <div class="concept-def">複数のコンピュータ（計算機）が互いに接続し、通信することによって情報をやりとりするシステム。単に「ネットワーク」とも呼ばれる。</div>
+    </div>
+    <p>コンピュータにはPC・タブレット・スマートフォンのほか、車・家電製品など多様なデバイスが含まれ、これらもネットワークに接続して情報を交換する。<span class="src-pointer">← S03:p.6</span></p>
+
+    <div class="block block-voice">
+      <div class="block-label">🎙 音声補足</div>
+      スマートフォンで家の照明を制御したり、料理器具がレシピをダウンロードして自動調理するといった IoT 利用例が挙げられた。コンピュータはネットワークを介して「情報交換する機器」として広義に捉える。<span class="src-pointer">← S05</span>
+    </div>
+
+    <div class="sub-heading" id="ch1-lan">LAN と WAN</div>
+    <div class="svg-wrap">
+      <figure>
+        <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:700px">
+          <defs>
+            <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#5b8dee"/>
+            </marker>
+          </defs>
+          <!-- LAN Box A -->
+          <rect x="20" y="30" width="180" height="80" rx="8" fill="#1a2535" stroke="#5b8dee" stroke-width="1.5"/>
+          <text x="110" y="52" text-anchor="middle" fill="#5b8dee" font-size="11" font-family="Noto Sans JP" font-weight="700">LAN（企業A）</text>
+          <rect x="35" y="62" width="40" height="30" rx="4" fill="#2a3f6e" stroke="#5b8dee" stroke-width="1"/>
+          <text x="55" y="82" text-anchor="middle" fill="#e2e8f5" font-size="10">PC</text>
+          <rect x="85" y="62" width="40" height="30" rx="4" fill="#2a3f6e" stroke="#5b8dee" stroke-width="1"/>
+          <text x="105" y="82" text-anchor="middle" fill="#e2e8f5" font-size="10">PC</text>
+          <rect x="135" y="62" width="50" height="30" rx="4" fill="#2a3f6e" stroke="#5b8dee" stroke-width="1"/>
+          <text x="160" y="82" text-anchor="middle" fill="#e2e8f5" font-size="10">Printer</text>
+          <!-- LAN Box B -->
+          <rect x="500" y="30" width="180" height="80" rx="8" fill="#1a2535" stroke="#5b8dee" stroke-width="1.5"/>
+          <text x="590" y="52" text-anchor="middle" fill="#5b8dee" font-size="11" font-family="Noto Sans JP" font-weight="700">LAN（家庭X）</text>
+          <rect x="515" y="62" width="40" height="30" rx="4" fill="#2a3f6e" stroke="#5b8dee" stroke-width="1"/>
+          <text x="535" y="82" text-anchor="middle" fill="#e2e8f5" font-size="10">PC</text>
+          <rect x="575" y="62" width="55" height="30" rx="4" fill="#2a3f6e" stroke="#5b8dee" stroke-width="1"/>
+          <text x="603" y="82" text-anchor="middle" fill="#e2e8f5" font-size="10">スマホ</text>
+          <!-- WAN -->
+          <rect x="240" y="60" width="220" height="60" rx="30" fill="#1a2a1a" stroke="#34d399" stroke-width="1.5" stroke-dasharray="5,3"/>
+          <text x="350" y="88" text-anchor="middle" fill="#34d399" font-size="13" font-weight="700" font-family="Noto Sans JP">WAN</text>
+          <text x="350" y="106" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP">管理者が異なるLAN同士の広域接続</text>
+          <!-- Arrows -->
+          <line x1="200" y1="70" x2="240" y2="82" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#arr)"/>
+          <line x1="460" y1="82" x2="500" y2="70" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#arr)"/>
+          <!-- Labels -->
+          <text x="110" y="130" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">小規模・拠点内</text>
+          <text x="590" y="130" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">小規模・拠点内</text>
+          <!-- Internet -->
+          <rect x="200" y="150" width="300" height="55" rx="10" fill="#0d1520" stroke="#fbbf24" stroke-width="1.5"/>
+          <text x="350" y="175" text-anchor="middle" fill="#fbbf24" font-size="14" font-weight="700" font-family="Noto Sans JP">インターネット</text>
+          <text x="350" y="196" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP">世界規模でネットワーク同士を接続した「ネットワークのネットワーク」</text>
+          <line x1="350" y1="120" x2="350" y2="150" stroke="#34d399" stroke-width="1.5" marker-end="url(#arr)"/>
+        </svg>
+        <figcaption>図：LAN・WAN・インターネットの関係 ← S03:p.7–9</figcaption>
+      </figure>
+    </div>
+
+    <table>
+      <tr><th>名称</th><th>規模</th><th>例</th></tr>
+      <tr><td><strong>LAN</strong>（Local Area Network）</td><td>小規模・拠点内</td><td>家庭内、オフィス内ネットワーク</td></tr>
+      <tr><td><strong>WAN</strong>（Wide Area Network）</td><td>中〜大規模</td><td>複数のLANを接続した広域ネットワーク</td></tr>
+      <tr><td><strong>インターネット</strong></td><td>世界規模</td><td>全世界のWAN・LANを相互接続</td></tr>
+    </table>
+
+    <div class="sub-heading" id="ch1-internet">インターネットとは</div>
+    <div class="concept-box">
+      <div class="concept-term">インターネット（Internet）＝ Internetworking</div>
+      <div class="concept-def">
+        <strong>Inter</strong>（間・相互、ラテン語由来）＋ <strong>net</strong>（網・ネットワーク）<br>
+        → ネットワークを相互に接続したもの。「<strong>ネットワークのネットワーク</strong>」。<br>
+        ※ どこか1つの組織が全体を運用管理しているわけではない。各組織が独立に自身のネットワークを運用管理し、それらが相互接続されている。
+      </div>
+    </div>
+
+    <div class="block block-voice">
+      <div class="block-label">🎙 音声補足</div>
+      「ネットワーク」を日本語では「網（もう）」と表現することがある（例: 電話網）。インターネットは英語で Internet、その語源は Inter + networking（ネットワーク同士を相互接続すること）。<span class="src-pointer">← S05</span>
+    </div>
+
+    <div class="sub-heading" id="ch1-backbone">バックボーン・ネットワークと IX</div>
+    <div class="concept-box">
+      <div class="concept-term">バックボーン・ネットワーク（Backbone Network）</div>
+      <div class="concept-def">インターネットを支える、高速・大容量なネットワーク。自動車道に例えると「高速道路」に相当する。個人ユーザーは直接接続しない。</div>
+    </div>
+
+    <p>バックボーンは基本的に<strong>人口が多い地域・平地</strong>を中心に敷設され、大陸の沿岸部ほど細かくなる傾向がある。日本では東京・大阪・仙台・福岡・沖縄などに集中している。<span class="src-pointer">← S03:p.12–13</span></p>
+
+    <div class="concept-box">
+      <div class="concept-term">IX（Internet eXchange / IXP: Internet eXchange Point）— 相互接続点</div>
+      <div class="concept-def">インターネット上でネットワーク同士が相互接続するための「接続点」。個別に1対1で接続するより、IXを経由することで多数のネットワークと効率的に接続できる。</div>
+    </div>
+
+    <div class="block block-voice">
+      <div class="block-label">🎙 音声補足（重要）</div>
+      <strong>IXは地理的に最短ルートを通らない場合がある。</strong><br>
+      例: 福岡のPCから沖縄のサーバへアクセスする場合、多くの場合は東京や大阪のIXを経由してから沖縄に到達する。インターネットでは地理的最短距離ではなくネットワーク構成に従ってデータが転送される。<span class="src-pointer">← S03:p.13, S05</span>
+    </div>
+
+    <p>ユーザーがインターネットに接続する際は、まず契約した <strong>ISP（Internet Service Provider）</strong> のネットワークに接続し、そのISPがIXを通じて他のネットワークと相互接続することでインターネット全体にアクセスできる。<span class="src-pointer">← S03:p.11</span></p>
+
+    <div class="sub-heading" id="ch1-mgmt">インターネットを管理する主要組織</div>
+    <p>インターネット全体を管理する「中央組織」は存在しないが、技術標準化や識別子管理を担う組織がある。<span class="src-pointer">← S03:p.14</span></p>
+    <table>
+      <tr><th>組織</th><th>役割</th></tr>
+      <tr><td><strong>IETF</strong>（Internet Engineering Task Force）</td><td>インターネットにおける通信プロトコルの標準化</td></tr>
+      <tr><td><strong>ICANN</strong>（Internet Corporation for Assigned Names and Numbers）</td><td>IPアドレス・ドメイン名などの割り当て・管理</td></tr>
+      <tr><td><strong>W3C</strong>（World Wide Web Consortium）</td><td>WWW（ウェブ）技術の標準化</td></tr>
+    </table>
+    <div class="block block-voice">
+      <div class="block-label">🎙 音声補足</div>
+      IETF・ICANN の詳細（プロトコル・IPアドレス・ドメインの用語含む）は第4回「通信の決まりごと」で改めて説明される。<span class="src-pointer">← S05</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- ================== 第2章 ================== -->
+<div class="section" id="ch2-comm">
+  <div class="section-header">
+    <span class="section-icon">📡</span>
+    <span class="section-title">第2章　インターネットの始まり</span>
+    <span class="section-sub">S03:p.17–30</span>
+  </div>
+  <div class="section-body">
+
+    <div class="ch-heading">通信の歴史</div>
+    <div class="block block-voice">
+      <div class="block-label">🎙 音声補足</div>
+      古典的な通信手段である「のろし」は、敵襲の有無をのろしの有無に対応させ、本数・色で情報量を増やすことができた。手旗信号（日本の船舶）とともに、視覚情報を利用した「ある意味光通信」であった。<span class="src-pointer">← S05</span>
+    </div>
+
+    <div class="timeline">
+      <div class="tl-item"><span class="tl-year">1832年</span><div class="tl-body"><strong>シリング式電信機</strong>を発明（Pavel Schilling、ロシア）。1832年10月21日に自室内で短距離送受信に成功。2進数を活用した符号を初めて採用した電信機。<span class="src-pointer">← S03:p.20, Web照合済み</span></div></div>
+      <div class="tl-item"><span class="tl-year">1837年</span><div class="tl-body"><strong>モールス電信機</strong>（Samuel F. B. Morse・Alfred Vailが開発）を発明。同年に英国ではCooke・Wheatstoneも独立して電信機を特許取得。モールス符号 = ドット（・）とダッシュ（―）を組み合わせてアルファベット・数字・記号を表現。<span class="src-pointer">← Web照合済み</span></div></div>
+      <div class="tl-item"><span class="tl-year">1844年</span><div class="tl-body">モールスが<strong>ワシントンDC〜ボルチモア間</strong>で最初の長距離電信送信に成功。「What hath God wrought」と送信。<span class="src-pointer">← Web照合済み</span></div></div>
+      <div class="tl-item"><span class="tl-year">1850年</span><div class="tl-body">イギリス・フランス間を<strong>海底ケーブル</strong>で結んだ電信サービス開始。</div></div>
+      <div class="tl-item"><span class="tl-year">1869年</span><div class="tl-body">日本で<strong>東京・横浜間の電信サービス</strong>開始。</div></div>
+      <div class="tl-item"><span class="tl-year">1875年</span><div class="tl-body"><strong>グラハム・ベル</strong>（A. Graham Bell）が電話を発明。音声→電気信号→音声への変換で実現。</div></div>
+      <div class="tl-item"><span class="tl-year">1890年</span><div class="tl-body">日本で<strong>東京・横浜間の電話サービス</strong>開始。</div></div>
+    </div>
+
+    <div class="block block-voice">
+      <div class="block-label">🎙 音声補足</div>
+      電気を利用して信号で情報を伝達する通信を「電信（でんしん）」と呼ぶ。19世紀の電気の実用化により通信技術が大きく発展した。電信は現在のデジタル通信の礎となっている。<span class="src-pointer">← S03:p.20, S05</span>
+    </div>
+
+    <div class="ch-heading" id="ch2-arpa">インターネット誕生のきっかけ — スプートニク・ショック</div>
+
+    <div class="block block-key">
+      <div class="block-label">Key Event: 1957年</div>
+      <p><strong>スプートニク・ショック</strong>：旧ソビエト連邦が人類初の人工衛星「スプートニク」の打ち上げを成功させた。</p>
+      <p>当時アメリカ・旧ソ連は冷戦状態。旧ソ連は1949年に核を保有しており、人工衛星技術を応用すればICBM（大陸間弾道ミサイル）をアメリカに打ち込める可能性があるとして、アメリカに大きな衝撃を与えた。<span class="src-pointer">← S03:p.22</span></p>
+    </div>
+
+    <p>これを機にアメリカ政府は軍事技術に関連する科学技術を大きく支援。その過程で <strong>NASA</strong>（航空宇宙局）と <strong>ARPA</strong>（Advanced Research Projects Agency：高度研究計画局、後のDARPA）が設立された。</p>
+
+    <div class="block block-voice">
+      <div class="block-label">🎙 音声補足</div>
+      ARPAは軍事目的に限らず一般公募によって様々な科学研究に資金提供を行っていた。その資金を元に1967年にARPANETのプロジェクトが開始された。4拠点のうち、スライドでは「スタンフォード研究所」と記載されているが、これは <strong>SRI（Stanford Research Institute）</strong> のこと。現在のSRI Internationalで、スタンフォード大学とは別組織。<span class="src-pointer">← S05, S03:p.24, Web照合済み</span>
+    </div>
+
+    <div class="concept-box">
+      <div class="concept-term">ARPANET — インターネットの原型（1967年プロジェクト開始・1969年運用開始）</div>
+      <div class="concept-def">
+        <strong>パケット交換</strong>を採用したコンピュータネットワーク。<br>
+        接続拠点（1969年12月5日・4ノード完成時）：UCLA・UCSB・ユタ大学・<strong>SRI</strong>（Stanford Research Institute：スタンフォード研究所）の4拠点。<span class="src-pointer">← S03:p.24, Web照合済み</span><br>
+        中継装置として <strong>IMP</strong>（Interface Message Processor）を使用。現在のルータの役割。<br>
+        通信プロトコルとして <strong>NCP</strong>（Network Control Program）を採用。<br>
+        <span style="font-size:13px; color:var(--text-sub)">※ 世界初の送受信（1969年10月29日）：UCLA→SRIへ「login」と入力。最初の2文字「lo」のみ送信成功（その後クラッシュ）。約1時間後に完全な接続に成功。</span>
+      </div>
+    </div>
+
+    <div class="concept-box">
+      <div class="concept-term">パケット交換（Packet Switching）</div>
+      <div class="concept-def">
+        送信側でデータを「パケット」という単位に分割して転送し、受信側で元のデータに復元する仕組み。<br>
+        → ネットワークをメッシュ状（網の目状）に接続することで、一部が破壊されても迂回経路で通信できる <strong>故障に強いネットワーク</strong>が実現できる。<span class="src-pointer">← S03:p.23–24</span>
+      </div>
+    </div>
+
+    <div class="ch-heading" id="ch2-tcp">TCP/IP の確立</div>
+
+    <div class="timeline">
+      <div class="tl-item"><span class="tl-year">1973年</span><div class="tl-body">NCPに置き換わるプロトコルとして <strong>TCP/IP の開発開始</strong>。設計者は <strong>Vint Cerf</strong>（スタンフォード大）と <strong>Bob Kahn</strong>（DARPA）。<span class="src-pointer">← Web照合済み</span></div></div>
+      <div class="tl-item"><span class="tl-year">1974年</span><div class="tl-body">最初の <strong>TCPの仕様が公開</strong>。その後改良が重ねられ、TCPの一部機能が IPとして分割された。</div></div>
+      <div class="tl-item"><span class="tl-year">1981年</span><div class="tl-body">現在も使われる <strong>TCP/IPの仕様が公開</strong>。</div></div>
+      <div class="tl-item"><span class="tl-year">1983年1月1日</span><div class="tl-body">ARPANETのプロトコルが NCP から <strong>TCP/IPへ完全切り替え</strong>。この日はインターネットの「誕生日」とも呼ばれる。<span class="src-pointer">← S03:p.25, Web照合済み</span></div></div>
+    </div>
+
+    <div class="block block-voice">
+      <div class="block-label">🎙 音声補足（TCP/IP 普及のきっかけ）</div>
+      OS の UNIX をベル研が全米の大学に無償提供していた。UNIX の一バージョン「<strong>4.2BSD</strong>」（1983年、UCバークレー）では TCP/IP が標準プロトコルとしてサポートされたため、アメリカのすべての大学で標準的に TCP/IP が利用できる状態となった。これが TCP/IP がインターネットの標準プロトコルとして広まった大きなきっかけの一つ。<span class="src-pointer">← S03:p.25, S05, Web照合済み</span>
+    </div>
+
+    <div class="sub-heading">TCP/IP における重要な4つの概念</div>
+
+    <div class="svg-wrap">
+      <figure>
+        <svg viewBox="0 0 700 250" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:700px">
+          <!-- Card 1 -->
+          <rect x="20" y="20" width="155" height="110" rx="8" fill="#1a2535" stroke="#5b8dee" stroke-width="1.5"/>
+          <text x="97" y="45" text-anchor="middle" fill="#5b8dee" font-size="11" font-weight="700" font-family="Noto Sans JP">① パケット交換</text>
+          <text x="97" y="65" text-anchor="middle" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP">データを分割し転送</text>
+          <text x="97" y="82" text-anchor="middle" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP">メッシュ構成で</text>
+          <text x="97" y="99" text-anchor="middle" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP">故障に強いネットワーク</text>
+          <text x="97" y="118" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP">ARPANET から継承</text>
+          <!-- Card 2 -->
+          <rect x="190" y="20" width="155" height="110" rx="8" fill="#1a2535" stroke="#34d399" stroke-width="1.5"/>
+          <text x="267" y="45" text-anchor="middle" fill="#34d399" font-size="11" font-weight="700" font-family="Noto Sans JP">② 開かれたネットワーク</text>
+          <text x="267" y="63" text-anchor="middle" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP">個々のネットワーク技術は</text>
+          <text x="267" y="80" text-anchor="middle" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP">自由に選択できる</text>
+          <text x="267" y="97" text-anchor="middle" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP">相互接続はTCP/IPで統一</text>
+          <text x="267" y="118" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP">Open-Architecture Networking</text>
+          <!-- Card 3 -->
+          <rect x="360" y="20" width="155" height="110" rx="8" fill="#1a2535" stroke="#fbbf24" stroke-width="1.5"/>
+          <text x="437" y="45" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="700" font-family="Noto Sans JP">③ ベストエフォート</text>
+          <text x="437" y="65" text-anchor="middle" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP">「できる限り頑張る</text>
+          <text x="437" y="82" text-anchor="middle" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP">が、保証はしない」</text>
+          <text x="437" y="99" text-anchor="middle" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP">通信品質の無保証モデル</text>
+          <text x="437" y="118" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP">Best Effort</text>
+          <!-- Card 4 -->
+          <rect x="530" y="20" width="155" height="110" rx="8" fill="#1a2535" stroke="#a78bfa" stroke-width="1.5"/>
+          <text x="607" y="45" text-anchor="middle" fill="#a78bfa" font-size="11" font-weight="700" font-family="Noto Sans JP">④ エンドツーエンド</text>
+          <text x="607" y="65" text-anchor="middle" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP">ネットワーク機器は</text>
+          <text x="607" y="82" text-anchor="middle" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP">できる限りシンプルに</text>
+          <text x="607" y="99" text-anchor="middle" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP">複雑処理は端末側で</text>
+          <text x="607" y="118" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP">End-to-End</text>
+          <!-- Bottom note -->
+          <rect x="270" y="155" width="300" height="50" rx="6" fill="#1e2a18" stroke="#34d399" stroke-width="1"/>
+          <text x="420" y="177" text-anchor="middle" fill="#34d399" font-size="11" font-weight="700" font-family="Noto Sans JP">③＋④ の組合せ効果</text>
+          <text x="420" y="197" text-anchor="middle" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP">ネットワーク機器が単純化 → コスト削減</text>
+          <line x1="437" y1="130" x2="420" y2="155" stroke="#fbbf24" stroke-width="1" stroke-dasharray="3,2"/>
+          <line x1="607" y1="130" x2="450" y2="155" stroke="#a78bfa" stroke-width="1" stroke-dasharray="3,2"/>
+        </svg>
+        <figcaption>図：TCP/IPにおける重要な4概念 ← S03:p.26</figcaption>
+      </figure>
+    </div>
+
+    <div class="block block-voice">
+      <div class="block-label">🎙 音声補足（ベストエフォートの具体例）</div>
+      1Gbps の回線でも、混雑していたら途中でデータが失われたり、10Mbps しか出ない場合がある。それが「ベストエフォート」。通信品質の保証はない。<span class="src-pointer">← S05</span>
+    </div>
+
+    <div class="ch-heading" id="ch2-nsfnet">学術研究ネットワークから商用インターネットへ</div>
+
+      <div class="timeline">
+      <div class="tl-item"><span class="tl-year">1981年</span><div class="tl-body"><strong>CSNet</strong>（Computer Science NETwork）運用開始。NSF（アメリカ国立科学財団）が初期資金提供。ARPANETに接続できない大学向け。最終的に180以上の大学が接続。日本の東京大学も接続。</div></div>
+      <div class="tl-item"><span class="tl-year">1986年</span><div class="tl-body"><strong>NSFNet</strong> 運用開始。研究者がスーパーコンピュータへ自由にアクセスできることを目的として<strong>6か所</strong>のスーパーコンピュータをつないだ。<span class="src-pointer">← Web照合済み</span><br>教育研究用通信は無料。アメリカのバックボーンネットワークに成長。初期バックボーン速度は <strong>56kbps</strong>。CSNetに接続していた多くの大学がNSFNetへ移行。</div></div>
+      <div class="tl-item"><span class="tl-year">1986年〜</span><div class="tl-body"><strong>輻輳（ふくそう）急増</strong>：開始直後から数週間でトラフィックが倍増を繰り返し、56kbpsバックボーンが深刻な混雑に。<br><span style="font-size:13px; color:var(--text-sub)">輻輳（ふくそう） = ネットワークが混雑すること</span></div></div>
+      <div class="tl-item"><span class="tl-year">1988年</span><div class="tl-body">1987年のNSF受注を受け、IBM・MCI・Merit Networkがバックボーンを <strong>1.5Mbps（T1）に増強</strong>（56kbps比で約27倍）。接続ネットワーク数170超に拡大。<span class="src-pointer">← Web照合済み</span></div></div>
+      <div class="tl-item"><span class="tl-year">1990年</span><div class="tl-body">非営利団体 <strong>ANS</strong>（Advanced Network and Services）設立（IBM・MCI・Merit Networkの3社）。さらに高速な <strong>45Mbps（T3）</strong>のバックボーン「ANSNet」を構築。<span class="src-pointer">← S03:p.29, Web照合済み</span></div></div>
+      <div class="tl-item"><span class="tl-year">1991年</span><div class="tl-body">ANS が商用ISP <strong>ANS CO+RE</strong>（COmmercial plus REsearch）を立ち上げ。商用利用可能な接続サービスを提供。並行してUUNET・PSINETなどの商用ISPや商用IX（CIX）も登場。1993年には接続台数が <strong>200万台以上</strong>に拡大。</div></div>
+      <div class="tl-item"><span class="tl-year">1992年</span><div class="tl-body">アル・ゴア（Al Gore）米副大統領が<strong>NII（情報スーパーハイウェイ構想）</strong>を主導。学術研究用ネットワークから社会インフラとしてのインターネットへ発展する契機に。</div></div>
+      <div class="tl-item"><span class="tl-year">1995年</span><div class="tl-body">NSFNetの<strong>バックボーン廃止</strong>。商用ISPがインターネットバックボーンを引き継ぎ、現在のインターネットへ。</div></div>
+    </div>
+
+    <div class="block block-voice">
+      <div class="block-label">🎙 音声補足（日本の動向）</div>
+      日本では1985年に電気通信事業法が制定されたことにより民間企業が通信事業を行えるようになり、1990年代にはアメリカと同様に商用ネットワークや商用ISPが現れ、現在のインターネットへと発展していった。<span class="src-pointer">← S05</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- ================== 第3章 ================== -->
+<div class="section" id="ch3-www">
+  <div class="section-header">
+    <span class="section-icon">🕸️</span>
+    <span class="section-title">第3章　WWW（World Wide Web）サービス</span>
+    <span class="section-sub">S03:p.32–46</span>
+  </div>
+  <div class="section-body">
+
+    <div class="ch-heading">WWW の誕生</div>
+
+    <div class="concept-box">
+      <div class="concept-term">WWW（World Wide Web）</div>
+      <div class="concept-def">TCP/IPを利用したインターネット上で実現されたハイパーテキストシステム。単に「Web（ウェブ）」とも呼ばれる。<br>
+      ⚠️ <strong>インターネット ≠ WWW</strong>。WWWはインターネット上のサービスの一つ。</div>
+    </div>
+
+    <div class="block block-voice">
+      <div class="block-label">🎙 音声補足</div>
+      WWWは「インターネットのキラーアプリケーション」となった。インフラとしてのインターネットがあっても、誰でも使いたくなるようなアプリケーションがなければ現在のような必要不可欠な存在にはならなかった。<br>
+      ティム・バーナーズ=リーがWWWを発明したのは、CERNの研究者間で「異なるコンピュータに保存された情報を共有・アクセスする手段が欲しい」という実際の問題を解決するためだった。既にインターネットもハイパーテキストという概念も存在していたが、「インターネット上でハイパーテキストを実現する」という組み合わせが革新的だった。<span class="src-pointer">← S05, Web照合済み: CERN公式</span>
+    </div>
+
+    <div class="timeline">
+      <div class="tl-item"><span class="tl-year">1989年3月</span><div class="tl-body"><strong>ティム・バーナーズ=リー</strong>（Tim Berners-Lee、英国人、当時CERN所属）が最初の提案書「Information Management: A Proposal」を提出。上司のMike Sendallは「Vague but exciting（漠然としているが面白い）」と評した。<span class="src-pointer">← Web照合済み: CERN公式</span></div></div>
+      <div class="tl-item"><span class="tl-year">1990年11月</span><div class="tl-body">ベルギー人エンジニアのRobert Cailliau と共同でより具体的な提案書「WorldWideWeb: Proposal for a HyperText Project」を正式発表。<span class="src-pointer">← Web照合済み: CERN公式</span></div></div>
+      <div class="tl-item"><span class="tl-year">1990年12月20日</span><div class="tl-body"><strong>世界初のウェブページ</strong>が公開（http://info.cern.ch/hypertext/WWW/TheProject.html）。NeXTコンピュータ上で最初のWebサーバとブラウザ「WorldWideWeb」が完成。<span class="src-pointer">← Web照合済み: Wikipedia</span></div></div>
+      <div class="tl-item"><span class="tl-year">1991年8月</span><div class="tl-body">CERN外部のユーザーへインターネット経由で公開開始。ブラウザ・サーバ・ライブラリが<strong>開発者に公開</strong>。<span class="src-pointer">← Web照合済み: CERN公式</span></div></div>
+      <div class="tl-item"><span class="tl-year">1993年4月30日</span><div class="tl-body">CERNがWWWの基盤技術を<strong>ロイヤリティフリーで公開</strong>。これにより世界中に爆発的に普及。<span class="src-pointer">← Web照合済み: CERN公式</span></div></div>
+      <div class="tl-item"><span class="tl-year">1993年</span><div class="tl-body">NCSA（イリノイ大学）が <strong>Mosaic</strong> の最初のバージョンをリリース。テキストと画像を1ページで表示できる初のグラフィカルブラウザとして爆発的に普及した。<span class="src-pointer">← S03:p.43, Web照合済み</span></div></div>
+    </div>
+
+    <div class="sub-heading" id="ch3-hyper">ハイパーテキストとハイパーリンク</div>
+
+    <table>
+      <tr><th>概念</th><th>定義</th></tr>
+      <tr><td><strong>ハイパーテキスト</strong>（Hypertext）</td><td>複数の文書を関連付けたり、結びつけたりする仕組み</td></tr>
+      <tr><td><strong>ハイパーリンク</strong>（Hyperlink）</td><td>文書間を関連付けて参照すること。単に「リンク」とも言う</td></tr>
+      <tr><td><strong>ハイパーメディア</strong>（Hypermedia）</td><td>テキストだけでなく画像・音声・動画も含めて相互に関連付ける仕組み（広義のハイパーテキスト）</td></tr>
+    </table>
+
+    <div class="sub-heading">WWW の3つの特徴</div>
+    <div class="block block-key">
+      <div class="block-label">WWW の特徴</div>
+      <ol>
+        <li><strong>インターネット上で実現</strong>：他のハイパーテキストシステムと異なりインターネット上に構築した点が革新的。</li>
+        <li><strong>ハイパーリンクが単一方向</strong>：リンク先の所有者に連絡なしに自由にリンクを設定できる。双方向リンクを前提にするより実装がシンプル。（相互リンクは単一方向リンクを2つ設定すれば実現できる。）</li>
+        <li><strong>無償で公開</strong>：特定の個人・組織に独占されず、誰でも自由に開発・拡張できた。これが世界規模の普及につながった。</li>
+      </ol>
+    </div>
+
+    <div class="ch-heading" id="ch3-components">WWW の主な構成要素</div>
+
+    <div class="svg-wrap">
+      <figure>
+        <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:700px">
+          <defs>
+            <marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#5b8dee"/>
+            </marker>
+            <marker id="arr3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#34d399"/>
+            </marker>
+          </defs>
+          <!-- Client -->
+          <rect x="30" y="50" width="150" height="100" rx="8" fill="#1a2535" stroke="#5b8dee" stroke-width="1.5"/>
+          <text x="105" y="78" text-anchor="middle" fill="#5b8dee" font-size="12" font-weight="700" font-family="Noto Sans JP">Webブラウザ</text>
+          <text x="105" y="98" text-anchor="middle" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP">ユーザがページを</text>
+          <text x="105" y="114" text-anchor="middle" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP">閲覧するアプリ</text>
+          <text x="105" y="138" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP">クライアント側</text>
+          <!-- Server -->
+          <rect x="520" y="50" width="155" height="100" rx="8" fill="#1a2535" stroke="#34d399" stroke-width="1.5"/>
+          <text x="597" y="78" text-anchor="middle" fill="#34d399" font-size="12" font-weight="700" font-family="Noto Sans JP">Webサーバ</text>
+          <text x="597" y="98" text-anchor="middle" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP">Webページを格納・</text>
+          <text x="597" y="114" text-anchor="middle" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP">提供するサーバ</text>
+          <text x="597" y="138" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP">サーバ側</text>
+          <!-- Internet cloud -->
+          <ellipse cx="350" cy="100" rx="100" ry="45" fill="#111a2a" stroke="#fbbf24" stroke-width="1.2" stroke-dasharray="5,3"/>
+          <text x="350" y="96" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="700" font-family="Noto Sans JP">インターネット</text>
+          <text x="350" y="114" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP">TCP/IP で通信</text>
+          <!-- HTTP arrows -->
+          <line x1="180" y1="85" x2="248" y2="85" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#arr2)"/>
+          <text x="213" y="78" text-anchor="middle" fill="#5b8dee" font-size="9" font-family="Noto Sans JP">HTTP要求</text>
+          <line x1="452" y1="115" x2="520" y2="115" stroke="#34d399" stroke-width="1.5" marker-end="url(#arr3)"/>
+          <text x="486" y="110" text-anchor="middle" fill="#34d399" font-size="9" font-family="Noto Sans JP">HTTP応答</text>
+          <!-- Labels bottom -->
+          <text x="350" y="175" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP">クライアント・サーバ型アーキテクチャ</text>
+        </svg>
+        <figcaption>図：WWWの基本構成 — クライアント・サーバ型 ← S03:p.39</figcaption>
+      </figure>
+    </div>
+
+    <table>
+      <tr><th>構成要素</th><th>正式名称</th><th>役割</th></tr>
+      <tr><td><strong>URI</strong></td><td>Uniform Resource Identifier</td><td>インターネット上のウェブページ・画像などの資源の<strong>位置・識別</strong>を表す。URL（Uniform Resource Locator）はURIに含まれる概念（URL ⊂ URI）。</td></tr>
+      <tr><td><strong>HTML</strong></td><td>HyperText Markup Language</td><td>ウェブページを表現する記述言語。文章構造・見た目・マルチメディアの埋め込みをタグで表現。現在の標準は <strong>HTML Living Standard</strong>（WHATWG が策定）。</td></tr>
+      <tr><td><strong>HTTP</strong></td><td>HyperText Transfer Protocol</td><td>WebブラウザとWebサーバ間でウェブページを構成する資源を転送するプロトコル。</td></tr>
+      <tr><td><strong>Webブラウザ</strong></td><td>—</td><td>ユーザがウェブページを閲覧するアプリケーション（クライアント）。</td></tr>
+      <tr><td><strong>Webサーバ</strong></td><td>—</td><td>ウェブページなどの資源を格納・提供するサーバ。</td></tr>
+    </table>
+
+    <div class="sub-heading">URI の構造</div>
+    <div class="block block-key">
+      <div class="block-label">URI の例</div>
+      <code>https://www.cyber-u.ac.jp/index.html</code><br>
+      <ul style="margin-top:8px; font-size:13.5px;">
+        <li><strong>https</strong> — スキーム名（使用プロトコル）。現在は HTTPS が主流（HTTP の暗号化版）。</li>
+        <li><strong>www.cyber-u.ac.jp</strong> — Webサーバのアドレス（ドメイン名）。</li>
+        <li><strong>/index.html</strong> — 資源のファイル名（トップページを表す）。</li>
+      </ul>
+    </div>
+
+    <div class="block block-voice">
+      <div class="block-label">🎙 音声補足（HTTP と HTTPS）</div>
+      HTTP は<strong>平文（ひらぶん）</strong>でデータを転送するため、通信内容を第三者に盗み見られるリスクがある。そのため現在では通信を暗号化した <strong>HTTPS</strong> が一般的。URIスキームが「https」なら暗号化、「http」なら平文。http のサイトでは通信内容が漏れても問題ないか確認が必要。<span class="src-pointer">← S03:p.45, S05</span>
+    </div>
+
+    <div class="sub-heading">主なWebブラウザとWebサーバ</div>
+    <table>
+      <tr><th>種類</th><th>例</th><th>補足</th></tr>
+      <tr><td>Webブラウザ</td><td>Google Chrome / Microsoft Edge / Mozilla Firefox / Apple Safari</td><td>世界初のWebブラウザ名も「WorldWideWeb」。1993年「Mosaic」がテキスト+画像を1ページで表示可能にした画期的なブラウザ。</td></tr>
+      <tr><td>Webサーバ</td><td>Apache HTTP Server / Nginx / Microsoft IIS</td><td>世界初はCERNの「CERN httpd」。httpd の「d」= Daemon（守護神・常駐型プログラム）。</td></tr>
+    </table>
+
+  </div>
+</div>
+
+<!-- ================== 第4章 ================== -->
+<div class="section" id="ch4-home">
+  <div class="section-header">
+    <span class="section-icon">🏠</span>
+    <span class="section-title">第4章　身の回りのネットワーク機器</span>
+    <span class="section-sub">S03:p.48–59</span>
+  </div>
+  <div class="section-body">
+
+    <div class="ch-heading">自宅ネットワークからインターネットへ</div>
+
+    <div class="concept-box">
+      <div class="concept-term">ホスト（Host）</div>
+      <div class="concept-def">ネットワークに接続するコンピュータ。通信の両端（End-to-End）に着目する場合、<strong>エンドホスト</strong>とも呼ぶ。</div>
+    </div>
+
+    <p>自宅のホストがインターネット上のホストにアクセスするまでの流れ：<span class="src-pointer">← S03:p.50</span></p>
+    <ol>
+      <li>自宅のホストが自宅ネットワーク（LAN）に接続</li>
+      <li>自宅LANが <strong>アクセス回線</strong>（光回線・電話回線・CATVなど）を通じてISPのネットワークに接続 → これを「アクセスネットワーク」と呼ぶ</li>
+      <li>ISPのネットワークが IX などを経由して宛先ホストのネットワークへ到達</li>
+    </ol>
+
+    <div class="svg-wrap">
+      <figure>
+        <svg viewBox="0 0 700 180" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:700px">
+          <defs>
+            <marker id="arr4" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L7,3 z" fill="#5b8dee"/>
+            </marker>
+          </defs>
+          <!-- Home Network -->
+          <rect x="10" y="20" width="200" height="140" rx="8" fill="#0f1520" stroke="#5b8dee" stroke-width="1.5" stroke-dasharray="6,3"/>
+          <text x="110" y="42" text-anchor="middle" fill="#5b8dee" font-size="10" font-weight="700" font-family="Noto Sans JP">自宅ネットワーク（LAN）</text>
+          <!-- Devices -->
+          <rect x="20" y="50" width="35" height="25" rx="3" fill="#1e2d4a" stroke="#5b8dee" stroke-width="1"/>
+          <text x="37" y="67" text-anchor="middle" fill="#e2e8f5" font-size="9" font-family="Noto Sans JP">PC-A</text>
+          <rect x="65" y="50" width="35" height="25" rx="3" fill="#1e2d4a" stroke="#5b8dee" stroke-width="1"/>
+          <text x="82" y="67" text-anchor="middle" fill="#e2e8f5" font-size="9" font-family="Noto Sans JP">PC-B</text>
+          <!-- Switch -->
+          <rect x="20" y="95" width="60" height="22" rx="3" fill="#1e2d4a" stroke="#22d3ee" stroke-width="1"/>
+          <text x="50" y="110" text-anchor="middle" fill="#22d3ee" font-size="9" font-family="Noto Sans JP">スイッチ</text>
+          <!-- Router -->
+          <rect x="100" y="95" width="50" height="22" rx="3" fill="#1e2d4a" stroke="#34d399" stroke-width="1"/>
+          <text x="125" y="110" text-anchor="middle" fill="#34d399" font-size="9" font-family="Noto Sans JP">ルータ</text>
+          <!-- FW -->
+          <rect x="160" y="95" width="42" height="22" rx="3" fill="#1e2d4a" stroke="#f87171" stroke-width="1"/>
+          <text x="181" y="110" text-anchor="middle" fill="#f87171" font-size="8.5" font-family="Noto Sans JP">FW</text>
+          <!-- ONU -->
+          <rect x="240" y="85" width="50" height="30" rx="3" fill="#1e2d4a" stroke="#fbbf24" stroke-width="1"/>
+          <text x="265" y="100" text-anchor="middle" fill="#fbbf24" font-size="9" font-family="Noto Sans JP">ONU or</text>
+          <text x="265" y="112" text-anchor="middle" fill="#fbbf24" font-size="9" font-family="Noto Sans JP">モデム</text>
+          <!-- ISP -->
+          <rect x="320" y="60" width="100" height="60" rx="8" fill="#1a2020" stroke="#34d399" stroke-width="1.5"/>
+          <text x="370" y="87" text-anchor="middle" fill="#34d399" font-size="11" font-weight="700" font-family="Noto Sans JP">ISP</text>
+          <text x="370" y="105" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP">ネットワーク</text>
+          <!-- IX -->
+          <rect x="450" y="70" width="60" height="40" rx="6" fill="#1a1a30" stroke="#a78bfa" stroke-width="1.5"/>
+          <text x="480" y="88" text-anchor="middle" fill="#a78bfa" font-size="11" font-weight="700">IX</text>
+          <text x="480" y="103" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP">相互接続点</text>
+          <!-- Internet -->
+          <rect x="540" y="50" width="150" height="80" rx="8" fill="#0d1520" stroke="#fbbf24" stroke-width="1.5"/>
+          <text x="615" y="87" text-anchor="middle" fill="#fbbf24" font-size="12" font-weight="700" font-family="Noto Sans JP">インターネット</text>
+          <text x="615" y="107" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP">宛先ホスト</text>
+          <!-- Connections -->
+          <line x1="80" y1="62" x2="50" y2="95" stroke="#5b8dee" stroke-width="1" marker-end="url(#arr4)"/>
+          <line x1="80" y1="106" x2="100" y2="106" stroke="#5b8dee" stroke-width="1" marker-end="url(#arr4)"/>
+          <line x1="150" y1="106" x2="160" y2="106" stroke="#5b8dee" stroke-width="1" marker-end="url(#arr4)"/>
+          <line x1="202" y1="106" x2="240" y2="100" stroke="#5b8dee" stroke-width="1" marker-end="url(#arr4)"/>
+          <line x1="290" y1="100" x2="320" y2="95" stroke="#5b8dee" stroke-width="1" marker-end="url(#arr4)"/>
+          <line x1="420" y1="90" x2="450" y2="90" stroke="#5b8dee" stroke-width="1" marker-end="url(#arr4)"/>
+          <line x1="510" y1="90" x2="540" y2="90" stroke="#5b8dee" stroke-width="1" marker-end="url(#arr4)"/>
+          <!-- Access line label -->
+          <text x="265" y="160" text-anchor="middle" fill="#fbbf24" font-size="9" font-family="Noto Sans JP">アクセス回線（光回線など）</text>
+          <line x1="205" y1="155" x2="322" y2="155" stroke="#fbbf24" stroke-width="1"/>
+        </svg>
+        <figcaption>図：自宅ネットワークからインターネットへのアクセス構成 ← S03:p.51</figcaption>
+      </figure>
+    </div>
+
+    <div class="sub-heading" id="ch4-nic">ネットワーク・インターフェイス（NIC）</div>
+    <div class="concept-box">
+      <div class="concept-term">ネットワーク・インターフェイス / NIC（Network Interface Card）</div>
+      <div class="concept-def">ホストやネットワーク機器がネットワークにアクセスし通信するための機能を備えた機器。ネットワーク機器そのものではなく、ホスト等に搭載される機能部品。</div>
+    </div>
+    <table>
+      <tr><th>役割</th><th>詳細</th></tr>
+      <tr><td><strong>変調</strong>（Modulation）</td><td>デジタル信号 → アナログ信号に変換（ネットワークへ送信するため）</td></tr>
+      <tr><td><strong>復調</strong>（Demodulation）</td><td>アナログ信号 → デジタル信号に変換（受信した信号をデジタルに戻す）</td></tr>
+      <tr><td><strong>誤り検知・訂正</strong></td><td>ノイズで信号が変化した場合にその誤りを検知・訂正する</td></tr>
+      <tr><td><strong>衝突回避</strong></td><td>同時に複数のホストが通信すると失敗するため、それを防ぐ調整を行う</td></tr>
+    </table>
+
+    <div class="sub-heading" id="ch4-hub">ハブ・スイッチ・アクセスポイント</div>
+    <p>ハブ・スイッチは <strong>LANを拡げる中継機器</strong>。ケーブル本数とポート数を削減できる。<span class="src-pointer">← S03:p.53</span></p>
+    <div class="block block-voice">
+      <div class="block-label">🎙 音声補足（中継機の効果）</div>
+      N台のホストを相互接続する場合：中継機なしでは n×(n-1)/2 本のケーブルが必要。中継機があればN本で済む。例: 4台なら6本 → 4本に削減。<span class="src-pointer">← S03:p.53, S05</span>
+    </div>
+
+    <table>
+      <tr><th>機器</th><th>別名</th><th>信号の転送先</th><th>現状</th></tr>
+      <tr><td><strong>ハブ（HUB）</strong></td><td>リピータ（Repeater）</td><td><strong>すべてのポート</strong>に転送</td><td>現在は少ない</td></tr>
+      <tr><td><strong>スイッチ（Switch）</strong></td><td>スイッチングハブ / ブリッジ</td><td><strong>宛先ホストのポートのみ</strong>に転送</td><td>現在の主流</td></tr>
+    </table>
+
+    <div class="concept-box">
+      <div class="concept-term">アクセスポイント（AP: Access Point）</div>
+      <div class="concept-def">無線LAN規格などの無線通信を使ってLANに接続するためのネットワーク機器。「無線版スイッチ」とイメージするとよい。無線アクセスポイント・無線LAN基地局とも呼ばれる。</div>
+    </div>
+
+    <div class="block block-voice">
+      <div class="block-label">🎙 音声補足（Wi-Fi と無線LAN の違い）</div>
+      <strong>Wi-Fi ≠ 無線LAN</strong>（厳密には）。Wi-Fi とは Wi-Fi Alliance という団体が「他の無線機器と相互接続できること」を認定した製品に付けるラベル（Wi-Fi CERTIFIED）。日常的には Wi-Fi = 無線LAN として扱われることが多いが、専門的な場では注意が必要。<span class="src-pointer">← S03:p.55, S05</span>
+    </div>
+
+    <div class="sub-heading" id="ch4-router">ルータ（Router）</div>
+    <div class="concept-box">
+      <div class="concept-term">ルータ（Router）</div>
+      <div class="concept-def">複数のネットワーク（LAN）同士を接続するためのネットワーク機器。自宅LANをISPのネットワークに接続するために必須。スイッチの機能（LANの延長）も内包する。</div>
+    </div>
+    <div class="block block-voice">
+      <div class="block-label">🎙 音声補足（ブロードバンドルータ）</div>
+      市販の<strong>ブロードバンドルータ</strong>には、スイッチ・アクセスポイント・ルータ・ファイアウォールの機能が1台に統合されているものが多く、小規模な自宅ネットワークでは手軽に利用できる。<span class="src-pointer">← S03:p.56, S05</span>
+    </div>
+
+    <div class="sub-heading" id="ch4-modem">モデム・ONU</div>
+    <p>自宅LANの通信方式とアクセス回線の通信方式が異なるため、変換処理を担う機器が必要。<span class="src-pointer">← S03:p.57</span></p>
+    <table>
+      <tr><th>機器</th><th>用途</th><th>変換内容</th></tr>
+      <tr><td><strong>モデム（Modem）</strong></td><td>アクセス回線が<strong>電話回線</strong>（ADSLなど）の場合</td><td>デジタル信号 ↔ アナログ電気信号。MOdulation + DEModulation が名前の由来。現在はADSLが衰退し見る機会が減った。</td></tr>
+      <tr><td><strong>ONU</strong>（Optical Network Unit）</td><td>アクセス回線が<strong>光回線</strong>の場合</td><td>デジタル信号 ↔ 光信号。「光回線終端装置」とも呼ぶ。日本の多くの家庭に設置されている。</td></tr>
+    </table>
+
+    <div class="sub-heading" id="ch4-fw">ファイアウォール（Firewall）</div>
+    <div class="concept-box">
+      <div class="concept-term">ファイアウォール（Firewall）</div>
+      <div class="concept-def">ネットワークセキュリティを実現するためのネットワーク機器。インターネット側から自宅ネットワークへの望ましくないアクセスや悪意のあるソフトウェアの侵入を防ぐ。ブロードバンドルータに機能が含まれる場合もある。</div>
+    </div>
+    <div class="block block-voice">
+      <div class="block-label">🎙 音声補足</div>
+      セキュリティは自身が<strong>被害者にならない</strong>ことはもちろん、<strong>加害者にならない</strong>ためにも非常に重要。<span class="src-pointer">← S03:p.58, S05</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- ==================== APPENDIX ==================== -->
+<div class="appendix-section">
+
+  <!-- 最重要ワード -->
+  <div class="appendix-card vocab" id="appendix-vocab">
+    <div class="ac-title">⭐ 補足A: 最重要ワード一覧</div>
+    <table>
+      <tr><th>用語</th><th>読み</th><th>定義（原文ベース）</th><th>重要度</th></tr>
+      <tr><td>コンピュータ・ネットワーク</td><td>—</td><td>複数のコンピュータが互いに接続し通信することで情報をやりとりするシステム</td><td>★★★</td></tr>
+      <tr><td>LAN</td><td>ラン</td><td>Local Area Network。家庭・オフィス内などの小規模拠点ネットワーク</td><td>★★★</td></tr>
+      <tr><td>WAN</td><td>ワン</td><td>Wide Area Network。管理者が異なる複数のLANが相互接続した広域ネットワーク</td><td>★★★</td></tr>
+      <tr><td>インターネット</td><td>—</td><td>世界規模でネットワーク同士を接続したネットワーク。「ネットワークのネットワーク」</td><td>★★★</td></tr>
+      <tr><td>バックボーン・ネットワーク</td><td>—</td><td>インターネットを支える高速・大容量なネットワーク</td><td>★★★</td></tr>
+      <tr><td>ISP</td><td>アイエスピー</td><td>Internet Service Provider。ユーザにインターネット接続サービスを提供する事業者</td><td>★★★</td></tr>
+      <tr><td>IX / IXP</td><td>アイエックス</td><td>Internet eXchange（Point）。ネットワーク同士が相互接続する相互接続点</td><td>★★★</td></tr>
+      <tr><td>パケット交換</td><td>—</td><td>データをパケット単位に分割して転送し、受信側で復元する仕組み。故障に強い</td><td>★★★</td></tr>
+      <tr><td>TCP/IP</td><td>—</td><td>インターネットの標準通信プロトコル。パケット交換・開かれたネットワーク・ベストエフォート・エンドツーエンドを基盤とする</td><td>★★★</td></tr>
+      <tr><td>ARPANET</td><td>アーパネット</td><td>インターネットの原型。1969年運用開始（初の送受信は10月29日）。パケット交換を採用した世界初の広域コンピュータネットワーク。4ノード：UCLA・UCSB・ユタ大学・SRI</td><td>★★★</td></tr>
+      <tr><td>WWW / Web</td><td>ダブリュダブリュダブリュ</td><td>World Wide Web。TCP/IPを用いたインターネット上のハイパーテキストシステム。インターネット≠WWW</td><td>★★★</td></tr>
+      <tr><td>URI / URL</td><td>ユーアールアイ</td><td>Uniform Resource Identifier。インターネット上の資源の位置・識別を表す識別子。URL ⊂ URI</td><td>★★★</td></tr>
+      <tr><td>HTML</td><td>エイチティーエムエル</td><td>HyperText Markup Language。ウェブページを記述する言語</td><td>★★★</td></tr>
+      <tr><td>HTTP / HTTPS</td><td>エイチティーティーピー</td><td>WebブラウザとWebサーバ間でウェブページを転送するプロトコル。HTTPSは暗号化版</td><td>★★★</td></tr>
+      <tr><td>ベストエフォート</td><td>—</td><td>通信品質の保証を行わないサービスモデル（「できる限り頑張るが保証はしない」）</td><td>★★☆</td></tr>
+      <tr><td>エンドツーエンド</td><td>—</td><td>ネットワーク機器はシンプルに保ち、複雑な処理はネットワーク端の機器で行う考え方</td><td>★★☆</td></tr>
+      <tr><td>輻輳（ふくそう）</td><td>ふくそう</td><td>ネットワークが混雑すること</td><td>★★☆</td></tr>
+      <tr><td>ハイパーテキスト</td><td>—</td><td>複数の文書を関連付けたり結びつけたりする仕組み</td><td>★★☆</td></tr>
+      <tr><td>ハイパーリンク</td><td>—</td><td>文書間を関連付けて参照すること。単に「リンク」とも言う</td><td>★★☆</td></tr>
+      <tr><td>ルータ</td><td>ルータ</td><td>複数のLAN同士を接続するためのネットワーク機器</td><td>★★☆</td></tr>
+      <tr><td>ONU</td><td>オーエヌユー</td><td>Optical Network Unit。光回線終端装置。光回線のアクセス回線に使用</td><td>★★☆</td></tr>
+      <tr><td>ファイアウォール</td><td>—</td><td>ネットワークセキュリティを実現するための機器。外部からの不正アクセスを防ぐ</td><td>★★☆</td></tr>
+      <tr><td>NIC</td><td>ニック</td><td>Network Interface Card。ネットワークに接続するための機能を持つ機器</td><td>★☆☆</td></tr>
+      <tr><td>スプートニク・ショック</td><td>—</td><td>1957年、旧ソ連の人工衛星打上げ成功によるアメリカへの衝撃。インターネット誕生のきっかけ</td><td>★☆☆</td></tr>
+    </table>
+  </div>
+
+  <div class="appendix-card bg" id="appendix-bg">
+    <div class="ac-title">📚 補足B: 知っておくべき背景知識</div>
+    <ul>
+      <li><span class="ext-note">[外部補足]</span> <strong>CERN</strong>（セルン）= 欧州原子核研究機構（スイス・ジュネーブ近郊）。WWWはCERNの研究者ティム・バーナーズ=リー（英国人コンピュータ科学者）が1989年に発明。2017年にACM チューリング賞を受賞。</li>
+      <li><span class="ext-note">[外部補足]</span> <strong>ARPANET 初の送受信（1969年10月29日22:30）</strong>：UCLA→SRI（スタンフォード研究所）へ「login」と入力しようとしたが2文字「lo」で相手側がクラッシュ。1時間後に完全ログイン成功。"lo"が世界初のインターネットメッセージとなった。</li>
+      <li><span class="ext-note">[外部補足]</span> <strong>NSFNet の速度変遷（Web照合済み）</strong>：56kbps（1986年）→ T1=1.5Mbps（1988年、約27倍）→ T3=45Mbps（1991年）。1995年に廃止され商用ISPに移行。</li>
+      <li><span class="ext-note">[外部補足]</span> <strong>WHATWG</strong>（Web Hypertext Application Technology Working Group）は Apple・Mozilla・Opera・Google が設立した団体で、現在の HTML Living Standard を策定している。W3Cも関連するが、HTMLの主導権は WHATWG にある。</li>
+      <li><span class="ext-note">[外部補足]</span> <strong>Mosaic</strong>（1993年）は NCSA（イリノイ大学国立スーパーコンピュータ応用センター）が開発。テキストと画像を1ページで表示できた初のグラフィカルWebブラウザ。Marc Andreessenらが関わり、後に Netscape Navigatorに発展した。WWWの一般普及に決定的な役割を果たした。</li>
+      <li><span class="ext-note">[外部補足]</span> <strong>UNIX 4.2BSD</strong>（1983年、UCバークレー）で TCP/IP が標準実装されたことが、全米大学でのTCP/IP普及を後押しした。Vint Cerf と Bob Kahn が TCP/IP を設計（1973年〜）。</li>
+      <li><span class="ext-note">[外部補足]</span> 現在の世界の海底ケーブルは400本以上存在し、国際インターネットトラフィックの95%以上を担う。日本は島国のため国際通信は全て海底ケーブルか衛星に依存。</li>
+    </ul>
+  </div>
+
+  <!-- 試験・レポート -->
+  <div class="appendix-card exam" id="appendix-exam">
+    <div class="ac-title">🎯 補足C: 試験・レポートで重要な観点</div>
+    <ul>
+      <li><strong>LAN・WAN・インターネットの違い</strong>を規模と管理者の観点から説明できること。</li>
+      <li><strong>インターネット = ネットワークのネットワーク</strong>という定義と、中央管理組織が存在しないという特性を理解すること。</li>
+      <li><strong>TCP/IPの4概念</strong>（パケット交換・開かれたネットワーク・ベストエフォート・エンドツーエンド）を説明できること。特にベストエフォートとエンドツーエンドの組合せがコスト削減につながる点。</li>
+      <li><strong>WWW ≠ インターネット</strong>（WWWはインターネット上のサービスの一つ）を区別して説明できること。</li>
+      <li><strong>HTTP と HTTPS の違い</strong>：平文 vs 暗号化。URIスキームで識別できる。</li>
+      <li><strong>ハブとスイッチの違い</strong>：全ポートへの転送 vs 宛先ポートのみへの転送。</li>
+      <li><strong>モデムとONUの違い</strong>：電話回線用 vs 光回線用。</li>
+      <li>IXの位置の都合で<strong>地理的最短距離を通らない場合がある</strong>こと（例: 福岡→沖縄が東京経由になる）。</li>
+      <li>インターネット歴史の流れ：<strong>ARPANET → CSNet → NSFNet → 商用化 → NII</strong></li>
+    </ul>
+  </div>
+
+  <div class="appendix-card next" id="appendix-next">
+    <div class="ac-title">🔗 補足D: 関連概念・次回への接続</div>
+    <ul>
+      <li><strong>第4回「通信の決まりごと」</strong>で TCP/IP の詳細・IPアドレス・ドメインの仕組みが扱われる予定（IETF・ICANN の詳細もそこで扱う）。</li>
+      <li><span class="ext-note">[外部補足]</span> <strong>プロトコル</strong>（protocol）= 通信における決まりごと・手続き。OSI参照モデルの7層（物理・データリンク・ネットワーク・トランスポート・セッション・プレゼンテーション・アプリケーション）で体系的に理解できる。TCP/IPはこのうちトランスポート層とネットワーク層を担う。</li>
+      <li><span class="ext-note">[外部補足]</span> <strong>IPアドレス</strong>はネットワーク上のホストを識別する番号。IPv4（32bit、約43億通り）はほぼ枯渇しており、IPv6（128bit、約340澗（かん）通り）への移行が進んでいる。</li>
+      <li><span class="ext-note">[外部補足]</span> <strong>DNS</strong>（Domain Name System）はドメイン名（例: www.cyber-u.ac.jp）をIPアドレスに変換する仕組み。ウェブアクセスに必須のインフラ。ICANNが頂点のルートサーバを管理する。</li>
+      <li><span class="ext-note">[外部補足]</span> <strong>クライアント・サーバ型</strong>の対概念として<strong>P2P（Peer-to-Peer）</strong>がある。BitTorrentやブロックチェーン技術で使われる分散型アーキテクチャで、中央サーバが不要。</li>
+      <li><span class="ext-note">[外部補足]</span> <strong>Vint Cerf と Bob Kahn</strong> はTCP/IP の共同設計者として「インターネットの父」と呼ばれる。2004年にチューリング賞を受賞。</li>
+    </ul>
+  </div>
+
+</div><!-- /appendix-section -->
+
+</main>
+
+<script>
+// Simple scroll spy
+const links = document.querySelectorAll('#sidebar .sb-nav a');
+const sections = [];
+links.forEach(l => { if(l.getAttribute('href').startsWith('#')) sections.push(l.getAttribute('href').slice(1)); });
+window.addEventListener('scroll', () => {
+  let cur = '';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if(el && el.getBoundingClientRect().top < 120) cur = id;
+  });
+  links.forEach(l => {
+    l.classList.remove('active');
+    if(l.getAttribute('href') === '#' + cur) l.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
