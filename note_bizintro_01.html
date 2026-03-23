@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>企業経営入門 第1回 オリエンテーション</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-base: #0f1117;
+  --bg-card: #1a1f2e;
+  --bg-card2: #1e2535;
+  --border: #2d3a52;
+  --text-main: #e2e8f5;
+  --text-sub: #8a99b8;
+  --accent-blue: #5b8dee;
+  --accent-green: #34d399;
+  --accent-yellow: #fbbf24;
+  --accent-purple: #a78bfa;
+  --accent-orange: #fb923c;
+  --accent-red: #f87171;
+  --link: #60a5fa;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  background: var(--bg-base);
+  color: var(--text-main);
+  font-size: 15px;
+  line-height: 1.8;
+  display: flex;
+}
+/* ── Sidebar ── */
+#sidebar {
+  width: 260px;
+  min-width: 260px;
+  background: var(--bg-card);
+  border-right: 1px solid var(--border);
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  overflow-y: auto;
+  padding: 20px 0;
+}
+#sidebar h2 {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-sub);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 0 18px 10px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 10px;
+}
+#sidebar ul { list-style: none; }
+#sidebar ul li a {
+  display: block;
+  padding: 6px 18px;
+  font-size: 13px;
+  color: var(--text-sub);
+  text-decoration: none;
+  border-left: 3px solid transparent;
+  transition: all .15s;
+}
+#sidebar ul li a:hover,
+#sidebar ul li a.active {
+  color: var(--text-main);
+  border-left-color: var(--accent-blue);
+  background: rgba(91,141,238,.08);
+}
+#sidebar ul li.sub a { padding-left: 32px; font-size: 12px; }
+/* ── Main ── */
+#main {
+  flex: 1;
+  max-width: 860px;
+  padding: 36px 40px 80px;
+  overflow-y: auto;
+}
+/* ── Header ── */
+.note-header {
+  background: linear-gradient(135deg, #1e2535 0%, #15192a 100%);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px 32px;
+  margin-bottom: 32px;
+}
+.note-header .badge {
+  display: inline-block;
+  background: rgba(91,141,238,.18);
+  color: var(--accent-blue);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.note-header h1 {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 12px;
+}
+.meta-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 24px;
+  margin-top: 14px;
+}
+.meta-item {
+  font-size: 12px;
+  color: var(--text-sub);
+  font-family: 'JetBrains Mono', monospace;
+}
+.meta-item span { color: var(--text-main); }
+/* ── Section cards ── */
+.section-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 24px 28px;
+  margin-bottom: 20px;
+}
+.section-card h2 {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--accent-blue);
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 18px;
+}
+.section-card h3 {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--accent-yellow);
+  margin: 18px 0 8px;
+}
+.section-card h4 {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent-green);
+  margin: 14px 0 6px;
+}
+.section-card p { margin-bottom: 10px; font-size: 14px; }
+.section-card ul, .section-card ol { margin: 6px 0 10px 20px; font-size: 14px; }
+.section-card li { margin-bottom: 4px; }
+/* ── Blocks ── */
+.voice-block {
+  border-left: 3px solid var(--accent-blue);
+  background: rgba(91,141,238,.07);
+  border-radius: 0 6px 6px 0;
+  padding: 10px 14px;
+  margin: 10px 0;
+  font-size: 13px;
+}
+.voice-block::before {
+  content: "🎙 音声補足";
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent-blue);
+  margin-bottom: 4px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.ext-block {
+  border-left: 3px solid var(--accent-green);
+  background: rgba(52,211,153,.07);
+  border-radius: 0 6px 6px 0;
+  padding: 10px 14px;
+  margin: 10px 0;
+  font-size: 13px;
+}
+.ext-block::before {
+  content: "🔍 外部補足";
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent-green);
+  margin-bottom: 4px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.emphasis-block {
+  border-left: 3px solid var(--accent-yellow);
+  background: rgba(251,191,36,.07);
+  border-radius: 0 6px 6px 0;
+  padding: 10px 14px;
+  margin: 10px 0;
+  font-size: 13px;
+  font-weight: 500;
+}
+/* ── Pointer badge ── */
+.ptr {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-sub);
+  background: rgba(255,255,255,.06);
+  padding: 1px 6px;
+  border-radius: 4px;
+  margin-left: 6px;
+}
+/* ── Table ── */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0;
+  font-size: 13px;
+}
+th {
+  background: rgba(91,141,238,.15);
+  color: var(--accent-blue);
+  padding: 8px 12px;
+  text-align: left;
+  font-weight: 700;
+  border: 1px solid var(--border);
+}
+td {
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  vertical-align: top;
+}
+tr:nth-child(even) td { background: rgba(255,255,255,.02); }
+/* ── Unresolved card ── */
+.unresolved-card {
+  background: rgba(251,146,60,.06);
+  border: 1px solid rgba(251,146,60,.3);
+  border-radius: 10px;
+  padding: 20px 24px;
+  margin-bottom: 20px;
+}
+.unresolved-card h3 {
+  color: var(--accent-orange);
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+/* ── Appendix cards ── */
+.appendix-card {
+  background: var(--bg-card2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px 24px;
+  margin-bottom: 16px;
+}
+.appendix-card h3 {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+.appendix-card.card-a h3 { color: var(--accent-yellow); }
+.appendix-card.card-b h3 { color: var(--accent-green); }
+.appendix-card.card-c h3 { color: var(--accent-purple); }
+.appendix-card.card-d h3 { color: var(--accent-blue); }
+.appendix-card p, .appendix-card li { font-size: 13px; }
+.ext-note { font-size: 12px; color: var(--text-sub); }
+/* ── Timeline ── */
+.timeline { list-style: none; margin: 10px 0; }
+.timeline li {
+  display: flex;
+  gap: 12px;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(45,58,82,.5);
+  font-size: 13px;
+}
+.timeline li .year {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--accent-yellow);
+  min-width: 60px;
+  font-weight: 700;
+}
+/* ── SVG fig ── */
+figure { margin: 14px 0; }
+figcaption {
+  font-size: 11px;
+  color: var(--text-sub);
+  font-family: 'JetBrains Mono', monospace;
+  margin-top: 6px;
+  text-align: center;
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════ SIDEBAR ═════════════════ -->
+<nav id="sidebar">
+  <h2>目次</h2>
+  <ul>
+    <li><a href="#overview">講義概要</a></li>
+    <li><a href="#ch1">第1章 イントロダクション</a></li>
+    <li class="sub"><a href="#ch1-1">学習目標と達成目標</a></li>
+    <li class="sub"><a href="#ch1-2">なぜ企業経営を学ぶか</a></li>
+    <li class="sub"><a href="#ch1-3">3主体の関係</a></li>
+    <li class="sub"><a href="#ch1-4">企業と会社</a></li>
+    <li class="sub"><a href="#ch1-5">企業・会社の種類</a></li>
+    <li class="sub"><a href="#ch1-6">株式会社の歴史</a></li>
+    <li><a href="#ch2">第2章 企業経営とは何か</a></li>
+    <li class="sub"><a href="#ch2-1">企業の目的</a></li>
+    <li class="sub"><a href="#ch2-2">財とサービス</a></li>
+    <li class="sub"><a href="#ch2-3">企業活動の循環</a></li>
+    <li class="sub"><a href="#ch2-4">市場と競争</a></li>
+    <li class="sub"><a href="#ch2-5">持続的優位性</a></li>
+    <li class="sub"><a href="#ch2-6">ステークホルダー・CSR</a></li>
+    <li class="sub"><a href="#ch2-7">リスクマネジメント</a></li>
+    <li class="sub"><a href="#ch2-8">構成要素まとめ</a></li>
+    <li><a href="#ch3">第3章 ビジネスモデル</a></li>
+    <li class="sub"><a href="#ch3-1">ビジネスモデルとは</a></li>
+    <li class="sub"><a href="#ch3-2">各業態の例</a></li>
+    <li class="sub"><a href="#ch3-3">情報仲介業モデル</a></li>
+    <li><a href="#ch4">第4章 講義の全体構成</a></li>
+    <li><a href="#appendix">末尾補足</a></li>
+  </ul>
+</nav>
+
+<!-- ═══════════════════════════════════════ MAIN ════════════════════ -->
+<main id="main">
+
+<!-- ── Header ── -->
+<div class="note-header">
+  <div class="badge">SSP v4.2 · note_bizintro_01.html · v1.1</div>
+  <h1>企業経営入門 第1回 オリエンテーション</h1>
+  <div class="meta-grid">
+    <div class="meta-item">担当: <span>馬場 研二（ばば けんじ）</span></div>
+    <div class="meta-item">科目コード: <span>BA101</span></div>
+    <div class="meta-item">ソース: <span>S03（スライドPDF）/ S05-A・S05-B（hynote.ai × 2）</span></div>
+    <div class="meta-item">作成: <span>2026-03-24</span></div>
+  </div>
+</div>
+
+<!-- ── 未確定事項（全件解消済み）── -->
+<div class="unresolved-card" id="unresolved" style="border-color:rgba(52,211,153,.3);background:rgba(52,211,153,.04);">
+  <h3 style="color:var(--accent-green);">✅ 未確定事項 — 全件解消済み（パートIV 外部補完）</h3>
+  <table>
+    <thead><tr><th>ID</th><th>内容</th><th>解消方法</th><th>スコア更新</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>U01 ✅</td>
+        <td>「労働力調査 2017年5月分」の時点問題</td>
+        <td>総務省統計局「労働力調査 2025年平均」で最新値を確認。就業者6,842万人・雇用者6,227万人（雇用者比率≈91%）。スライド数値は当時の出典として正しいが、補足Bに最新値を追記。</td>
+        <td>warn→pass</td>
+      </tr>
+      <tr>
+        <td>U02 ✅</td>
+        <td>講師名のヨミガナ（S05間の不一致）</td>
+        <td>公式サイト（kenjibaba.jp）・サイバー大学教員ページで「馬場 研二（ばば けんじ）」確認済み。S05-B「バジ」はAI誤変換と確定。</td>
+        <td>warn→pass</td>
+      </tr>
+      <tr>
+        <td>U03 ✅</td>
+        <td>「ゴーイングコンサン」誤変換</td>
+        <td>S03に「going concern」と英語表記あり。「ゴーイング・コンサーン（going concern）」に修正済み。</td>
+        <td>既pass</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     CH0 講義概要
+════════════════════════════════════════════════════════════════════ -->
+<section class="section-card" id="overview">
+  <h2>📋 講義概要・学習目標</h2>
+  <p>本科目「企業経営入門」は、企業経営に関わる基礎的な概念と仕組みを体系的に学ぶ15回講義である。第1回はオリエンテーションとして、講義全体の目標・構成を把握し、企業とは何か・ビジネスモデルとは何かを大まかに理解することを目的とする。 <span class="ptr">← S03:p.2</span></p>
+
+  <h3>今回の学習目標</h3>
+  <ul>
+    <li>この講義の目標・方針・概要を理解する</li>
+    <li>企業経営とは何かをおおまかに把握する</li>
+  </ul>
+
+  <h3>今回の構成</h3>
+  <ul>
+    <li>第1章 イントロダクション</li>
+    <li>第2章 企業経営とは何か</li>
+    <li>第3章 ビジネスモデル</li>
+    <li>第4章 企業経営入門の構成</li>
+  </ul>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     CH1 イントロダクション
+════════════════════════════════════════════════════════════════════ -->
+<section class="section-card" id="ch1">
+  <h2>第1章 イントロダクション</h2>
+
+  <!-- 1-1 達成目標 -->
+  <h3 id="ch1-1">1-1 この講義の達成目標</h3>
+  <p>以下の項目を理解し、<strong>自分の言葉で説明できる</strong>ようになることが目標。単なる暗記ではなく、自分なりの理解を求めている。 <span class="ptr">← S03:p.4</span></p>
+
+  <div class="voice-block">
+    「自分の言葉で説明できるようになってほしい」という表現には、内容を暗記するのではなく、しっかりと理解してほしいという教員の意図が込められている。 <span class="ptr">← S05-A</span>
+  </div>
+
+  <ul>
+    <li>株式会社の仕組みと企業経営を構成する要素</li>
+    <li>経営理念・経営戦略・マーケティング・技術経営の概念とそれらの関係</li>
+    <li>企業の資金調達、財務諸表の種類と役割</li>
+    <li>管理会計とその主要分析手法</li>
+    <li>組織と人材のマネジメントの重要性とポイント</li>
+    <li>内部統制と企業経営におけるリスク</li>
+    <li>ベンチャー企業の特性・資金調達・リスクと回避策</li>
+  </ul>
+
+  <div class="voice-block">
+    これらは、将来企業に就職する人にとっても役立つ内容として設計されている。経営者としての視点だけでなく、従業員として知っておくべき知識も含まれている。 <span class="ptr">← S05-A</span>
+  </div>
+
+  <!-- 1-2 なぜ学ぶか -->
+  <h3 id="ch1-2">1-2 なぜ企業経営を学ぶのか</h3>
+  <p>企業経営を学ぶ理由は以下の通り。 <span class="ptr">← S03:p.6</span></p>
+  <ul>
+    <li>企業は経済活動の中心である</li>
+    <li>多くの人が企業で働いている（就業者の約88%が雇用者、約12%が自営業主・家族従業者）</li>
+    <li>経済主体は「家計・企業・政府」の3つであり、企業が大きな位置づけを占める</li>
+    <li>モノやサービスを生み出す主体の多くは企業である</li>
+    <li>経営系科目の位置づけを把握し、関連科目への関心を持つ</li>
+  </ul>
+
+  <div class="voice-block">
+    就業者の約88%が雇用者という数値は「労働力調査 2017年5月分」に基づく（スライド掲載値）。受講生の多くが企業と関わりを持っているという文脈で提示された。 <span class="ptr">← S03:p.6, S05-A</span>
+    <div class="ext-block" style="margin-top:8px;">
+      [外部補足] 最新の総務省「労働力調査（基本集計）2025年平均」では、就業者6,842万人のうち雇用者が6,227万人（約91%）、自営業主・家族従業者が589万人（約9%）。雇用者比率は2017年以降も上昇傾向が続いている。（出典: 総務省統計局 stat.go.jp）
+    </div>
+  </div>
+
+  <!-- 1-3 3主体 -->
+  <h3 id="ch1-3">1-3 家計・企業・政府の関係</h3>
+
+  <figure>
+    <!-- 図: 家計・企業・政府の三角関係 S03:p.7 -->
+    <!-- viewBox: 500×320 -->
+    <svg viewBox="0 0 500 320" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:500px;display:block;margin:0 auto;">
+      <!-- 背景 -->
+      <rect width="500" height="320" fill="#1e2535" rx="8"/>
+      <!-- 政府ボックス(上中央) -->
+      <rect x="190" y="20" width="120" height="44" rx="6" fill="#2d3a52" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="250" y="47" text-anchor="middle" fill="#e2e8f5" font-size="14" font-family="Noto Sans JP,sans-serif">政府</text>
+      <!-- 家計ボックス(左下) -->
+      <rect x="40" y="230" width="120" height="44" rx="6" fill="#2d3a52" stroke="#34d399" stroke-width="1.5"/>
+      <text x="100" y="257" text-anchor="middle" fill="#e2e8f5" font-size="14" font-family="Noto Sans JP,sans-serif">家計</text>
+      <!-- 企業ボックス(右下) -->
+      <rect x="340" y="230" width="120" height="44" rx="6" fill="#2d3a52" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="400" y="257" text-anchor="middle" fill="#e2e8f5" font-size="14" font-family="Noto Sans JP,sans-serif">企業</text>
+      <!-- 矢印: 政府←家計 税金 -->
+      <!-- [計算] 家計上端(100,230)→政府左端(190,42) -->
+      <line x1="110" y1="230" x2="210" y2="64" stroke="#8a99b8" stroke-width="1.2" marker-end="url(#arr)"/>
+      <text x="138" y="162" fill="#8a99b8" font-size="10" font-family="Noto Sans JP,sans-serif">税金</text>
+      <!-- 矢印: 政府→家計 サービス -->
+      <line x1="200" y1="64" x2="100" y2="230" stroke="#5b8dee" stroke-width="1.2" marker-end="url(#arr2)"/>
+      <text x="132" y="145" fill="#5b8dee" font-size="10" font-family="Noto Sans JP,sans-serif">サービス</text>
+      <!-- 矢印: 政府←企業 税金 -->
+      <!-- [計算] 企業上端(400,230)→政府右端(310,42) -->
+      <line x1="390" y1="230" x2="290" y2="64" stroke="#8a99b8" stroke-width="1.2" marker-end="url(#arr)"/>
+      <text x="350" y="162" fill="#8a99b8" font-size="10" font-family="Noto Sans JP,sans-serif">税金</text>
+      <!-- 矢印: 政府→企業 サービス -->
+      <line x1="300" y1="64" x2="400" y2="230" stroke="#5b8dee" stroke-width="1.2" marker-end="url(#arr2)"/>
+      <text x="358" y="145" fill="#5b8dee" font-size="10" font-family="Noto Sans JP,sans-serif">サービス</text>
+      <!-- 矢印: 家計→企業 労働 -->
+      <line x1="160" y1="258" x2="340" y2="258" stroke="#fbbf24" stroke-width="1.2" marker-end="url(#arr3)"/>
+      <text x="230" y="272" text-anchor="middle" fill="#fbbf24" font-size="10" font-family="Noto Sans JP,sans-serif">労働 / 財・サービス購入</text>
+      <!-- 矢印: 企業→家計 賃金・財 -->
+      <line x1="340" y1="248" x2="160" y2="248" stroke="#34d399" stroke-width="1.2" marker-end="url(#arr4)"/>
+      <text x="230" y="244" text-anchor="middle" fill="#34d399" font-size="10" font-family="Noto Sans JP,sans-serif">賃金 / 財・サービス提供</text>
+      <!-- arrowhead markers -->
+      <defs>
+        <marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+          <path d="M0,0 L6,3 L0,6 Z" fill="#8a99b8"/>
+        </marker>
+        <marker id="arr2" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+          <path d="M0,0 L6,3 L0,6 Z" fill="#5b8dee"/>
+        </marker>
+        <marker id="arr3" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+          <path d="M0,0 L6,3 L0,6 Z" fill="#fbbf24"/>
+        </marker>
+        <marker id="arr4" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+          <path d="M0,0 L6,3 L0,6 Z" fill="#34d399"/>
+        </marker>
+      </defs>
+    </svg>
+    <figcaption>図1: 家計・企業・政府の三角関係 <span class="ptr">S03:p.7</span></figcaption>
+  </figure>
+
+  <div class="voice-block">
+    企業は家計（消費者）に財・サービスを提供し、代金を受け取る。また、家計から労働力の提供を受け、賃金を支払う。政府は家計・企業から税金を受け取り、道路・水道・治安維持・防衛などの公共サービスを提供する。 <span class="ptr">← S05-A</span>
+  </div>
+
+  <!-- 1-4 企業と会社 -->
+  <h3 id="ch1-4">1-4 企業と会社の違い</h3>
+  <table>
+    <thead>
+      <tr><th>用語</th><th>概念</th><th>法律上の定義</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>会社</strong></td>
+        <td>私益を目的とする営利社団法人。利益追求を目的とした法人格を持つ組織。</td>
+        <td>あり（会社法で規定）</td>
+      </tr>
+      <tr>
+        <td><strong>企業</strong></td>
+        <td>広く「事業を営む経済単位」という概念。会社より大きな括り。</td>
+        <td>なし</td>
+      </tr>
+    </tbody>
+  </table>
+  <p><span class="ptr">← S03:p.8</span></p>
+
+  <div class="voice-block">
+    日常会話では「会社」と「企業」は混用されることが多いが、「会社」は法律上の位置づけがある。教員も時々混用することがあるため、注意して使い分けてほしいと説明している。 <span class="ptr">← S05-A</span>
+  </div>
+
+  <!-- 1-5 種類 -->
+  <h3 id="ch1-5">1-5 企業の種類・会社の種類</h3>
+
+  <figure>
+    <!-- ツリー図: 企業の種類 S03:p.9 -->
+    <!-- viewBox: 600×280 -->
+    <!-- [計算] 各ボックスを等間隔に配置 -->
+    <svg viewBox="0 0 600 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:600px;display:block;margin:0 auto;">
+      <rect width="600" height="280" fill="#1e2535" rx="8"/>
+      <!-- 企業 root -->
+      <rect x="10" y="110" width="80" height="36" rx="5" fill="#2d3a52" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="50" y="133" text-anchor="middle" fill="#e2e8f5" font-size="13" font-family="Noto Sans JP,sans-serif">企業</text>
+      <!-- 私企業 -->
+      <rect x="120" y="60" width="80" height="36" rx="5" fill="#2d3a52" stroke="#34d399" stroke-width="1.5"/>
+      <text x="160" y="83" text-anchor="middle" fill="#e2e8f5" font-size="12" font-family="Noto Sans JP,sans-serif">私企業</text>
+      <!-- 公企業 -->
+      <rect x="120" y="170" width="80" height="36" rx="5" fill="#1a2a22" stroke="#8a99b8" stroke-width="1.2"/>
+      <text x="160" y="193" text-anchor="middle" fill="#8a99b8" font-size="12" font-family="Noto Sans JP,sans-serif">公企業</text>
+      <!-- 線: 企業→私企業 -->
+      <line x1="90" y1="122" x2="120" y2="78" stroke="#5b8dee" stroke-width="1.2"/>
+      <!-- 線: 企業→公企業 -->
+      <line x1="90" y1="132" x2="120" y2="188" stroke="#8a99b8" stroke-width="1.2"/>
+      <!-- 法人企業 -->
+      <rect x="230" y="20" width="80" height="36" rx="5" fill="#2d3a52" stroke="#34d399" stroke-width="1.5"/>
+      <text x="270" y="43" text-anchor="middle" fill="#e2e8f5" font-size="12" font-family="Noto Sans JP,sans-serif">法人企業</text>
+      <!-- 個人企業 -->
+      <rect x="230" y="80" width="80" height="36" rx="5" fill="#2d3a52" stroke="#34d399" stroke-width="1.2"/>
+      <text x="270" y="103" text-anchor="middle" fill="#8a99b8" font-size="12" font-family="Noto Sans JP,sans-serif">個人企業</text>
+      <!-- 線: 私企業→法人 -->
+      <line x1="200" y1="72" x2="230" y2="38" stroke="#34d399" stroke-width="1.2"/>
+      <!-- 線: 私企業→個人 -->
+      <line x1="200" y1="82" x2="230" y2="98" stroke="#34d399" stroke-width="1"/>
+      <!-- 会社 -->
+      <rect x="340" y="0" width="80" height="36" rx="5" fill="#2d3a52" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="380" y="23" text-anchor="middle" fill="#e2e8f5" font-size="12" font-family="Noto Sans JP,sans-serif">会社</text>
+      <!-- 組合 -->
+      <rect x="340" y="46" width="80" height="36" rx="5" fill="#2d3a52" stroke="#8a99b8" stroke-width="1"/>
+      <text x="380" y="69" text-anchor="middle" fill="#8a99b8" font-size="12" font-family="Noto Sans JP,sans-serif">組合</text>
+      <!-- 線: 法人→会社 -->
+      <line x1="310" y1="32" x2="340" y2="18" stroke="#fbbf24" stroke-width="1.2"/>
+      <!-- 線: 法人→組合 -->
+      <line x1="310" y1="42" x2="340" y2="60" stroke="#8a99b8" stroke-width="1"/>
+      <!-- 4種類 -->
+      <rect x="450" y="0" width="80" height="26" rx="4" fill="#fbbf2420" stroke="#fbbf24" stroke-width="1"/>
+      <text x="490" y="17" text-anchor="middle" fill="#fbbf24" font-size="11" font-family="Noto Sans JP,sans-serif">株式会社 ★</text>
+      <rect x="450" y="32" width="80" height="26" rx="4" fill="#2d3a5280" stroke="#8a99b8" stroke-width="1"/>
+      <text x="490" y="49" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="Noto Sans JP,sans-serif">合資会社</text>
+      <rect x="450" y="64" width="80" height="26" rx="4" fill="#2d3a5280" stroke="#8a99b8" stroke-width="1"/>
+      <text x="490" y="81" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="Noto Sans JP,sans-serif">合名会社</text>
+      <rect x="450" y="96" width="80" height="26" rx="4" fill="#2d3a5280" stroke="#8a99b8" stroke-width="1"/>
+      <text x="490" y="113" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="Noto Sans JP,sans-serif">合同会社</text>
+      <!-- 線: 会社→各種 -->
+      <line x1="420" y1="13" x2="450" y2="13" stroke="#fbbf24" stroke-width="1.2"/>
+      <line x1="420" y1="18" x2="450" y2="45" stroke="#8a99b8" stroke-width="1"/>
+      <line x1="420" y1="20" x2="450" y2="77" stroke="#8a99b8" stroke-width="1"/>
+      <line x1="420" y1="22" x2="450" y2="109" stroke="#8a99b8" stroke-width="1"/>
+      <!-- 公企業の内容 -->
+      <text x="130" y="228" fill="#8a99b8" font-size="11" font-family="Noto Sans JP,sans-serif">国の企業</text>
+      <text x="130" y="244" fill="#8a99b8" font-size="11" font-family="Noto Sans JP,sans-serif">地方公共団体の企業</text>
+      <text x="130" y="260" fill="#8a99b8" font-size="11" font-family="Noto Sans JP,sans-serif">公団・公社</text>
+    </svg>
+    <figcaption>図2: 企業の種類（ツリー図） <span class="ptr">S03:p.9</span></figcaption>
+  </figure>
+
+  <div class="voice-block">
+    一般的に「会社」と言えば株式会社を指すことが多い。公企業（国・地方公共団体の企業、公団・公社）についてはこの講義では詳しく扱わない。 <span class="ptr">← S05-A</span>
+  </div>
+
+  <h4>会社の種類の比較</h4>
+  <table>
+    <thead>
+      <tr><th></th><th>株式会社</th><th>合同会社</th><th>合名会社</th><th>合資会社</th><th>NPO（参考）</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>責任形態</strong></td>
+        <td>有限責任</td>
+        <td>有限責任</td>
+        <td>無限責任</td>
+        <td>有限＋無限</td>
+        <td>なし</td>
+      </tr>
+      <tr>
+        <td><strong>社員の入退社</strong></td>
+        <td>買受・譲渡可能</td>
+        <td>総社員の同意</td>
+        <td>総社員の同意</td>
+        <td>総社員の同意</td>
+        <td>総社員の同意</td>
+      </tr>
+      <tr>
+        <td><strong>納税</strong></td>
+        <td>あり</td>
+        <td>あり</td>
+        <td>あり</td>
+        <td>あり</td>
+        <td>なし</td>
+      </tr>
+      <tr>
+        <td><strong>配当</strong></td>
+        <td>あり</td>
+        <td>自由</td>
+        <td>あり</td>
+        <td>あり</td>
+        <td>なし</td>
+      </tr>
+    </tbody>
+  </table>
+  <p><span class="ptr">← S03:p.10</span></p>
+
+  <div class="emphasis-block">
+    【定義】有限責任：責任が出資の範囲に限られること。無限責任：出資の範囲を超えて個人の財産まで責任が及ぶこと。<br>
+    ⚠️ 表中の「社員」とは法律上の概念であり、株式会社でいう「株主」にあたる（一般的な「社員＝従業員」とは異なる）。 <span class="ptr">← S03:p.10</span>
+  </div>
+
+  <div class="voice-block">
+    株式会社の2つの重要な特徴：①責任が有限であること（出資した分しか責任を取らなくてよい）、②株式の買受・譲渡が可能であること（他の会社形態は総社員の同意が必要）。この2点から、多くの人が関わりを持てる形態となっている。 <span class="ptr">← S05-A</span>
+  </div>
+
+  <!-- 1-6 歴史 -->
+  <h3 id="ch1-6">1-6 株式会社の歴史</h3>
+
+  <div class="voice-block">
+    当時のアジアとの香辛料（胡椒）貿易はハイリスク・ハイリターンであった。船を出して貿易を行い、利益を出資者に還元する「当座企業」（航海ごとに資金を集める一時的な企業）として始まった。 <span class="ptr">← S05-A, S03:p.11</span>
+  </div>
+
+  <div class="ext-block">
+    [外部補足] オランダ東インド会社の正式名称はオランダ語で「Vereenigde Oost-Indische Compagnie（略称: VOC）」。資本金は約650万ギルダー、重役会は「17人会（Heeren XVII）」と呼ばれた。本社はアムステルダム。アムステルダム証券取引所と同時に設立され、1799年12月31日にオランダ政府により解散。学術的には「①全社員の有限責任制、②会社機関の存在、③譲渡自由な等額株式制、④確定資本金制と永続性」という4指標を初めて具備した組織として、株式会社の起源とされている（中野常男の分析による）。（出典: Wikipedia「オランダ東インド会社」ほか）
+  </div>
+
+  <ul class="timeline">
+    <li><span class="year">1600年</span>イギリス東インド会社（EIC）設立 ── 航海ごとに出資者を集める方式（当座企業）で始まった。VOCの前身にあたる形態。</li>
+    <li><span class="year">1602年</span>オランダ東インド会社（VOC / Vereenigde Oost-Indische Compagnie）設立 ── 世界初の株式会社とされる。EICと異なり最初から株式を発行して多額の資本を集めた点が画期的。資本金約650万ギルダー。</li>
+    <li><span class="year">1657年</span>イギリス東インド会社が株式会社化 ── 継続的な株式会社の最初とされる。4つの特徴：①全出資者が有限責任、②取締役会の設置、③資本の証券化、④永続企業。</li>
+    <li><span class="year">18世紀初</span>株式会社ブームと泡沫会社（bubble company）の乱立</li>
+    <li><span class="year">1720年</span>泡沫会社禁止法制定（イギリス） ── バブル崩壊・「南海の泡沫事件（South Sea Bubble）」</li>
+    <li><span class="year">18世紀後半</span>産業革命 ── 多様な産業で大規模資本が必要に</li>
+    <li><span class="year">1799年</span>オランダ東インド会社（VOC）解散 ── オランダ政府により解散命令。約200年間の歴史に幕。</li>
+    <li><span class="year">1825年</span>泡沫会社禁止法の廃止（イギリス）</li>
+    <li><span class="year">1844年</span>特許制度から登記制度へ移行（イギリス） ── 国の許可なく登記だけで株式会社設立が可能に</li>
+    <li><span class="year">1855年</span>有限責任法（イギリス）</li>
+    <li><span class="year">1862年</span>会社法（イギリス） ── 現代に近い形で成立</li>
+  </ul>
+  <p><span class="ptr">← S03:p.11–13, S05-A</span></p>
+
+  <div class="ext-block">
+    [外部補足] 「南海の泡沫事件（South Sea Bubble）」は1720年のイギリスで起きた投機ブームと崩壊。南海会社の株価が急騰・暴落し、多くの投資家が損失を被った。これが泡沫会社禁止法（Bubble Act 1720）制定のきっかけとなった。 <span class="ptr">[外部補足]</span>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     CH2 企業経営とは何か
+════════════════════════════════════════════════════════════════════ -->
+<section class="section-card" id="ch2">
+  <h2>第2章 企業経営とは何か</h2>
+
+  <!-- 2-1 目的 -->
+  <h3 id="ch2-1">2-1 企業の目的</h3>
+
+  <div class="emphasis-block">
+    【定義・重要】「企業の目的は顧客を創造することである。利益は企業の目的ではなく、存続の条件である。」（ピーター・F・ドラッカー） <span class="ptr">← S03:p.16</span>
+  </div>
+
+  <div class="voice-block">
+    企業は利益がなければ継続できない（going concern＝継続的事業活動）。しかし、その利益は財・サービスを買ってくれる顧客なしには生まれない。短期的な利益だけを追うのではなく、顧客を創造し続けることが企業が存続するための本質的な目的だという考え方がドラッカーの主張。この「利益は目的か手段か」という問いが、この講義全体の大きなテーマのひとつである。 <span class="ptr">← S05-A</span>
+  </div>
+
+  <div class="ext-block">
+    [外部補足] ピーター・F・ドラッカー（Peter F. Drucker, 1909–2005）はオーストリア生まれのアメリカの経営学者。「現代経営学の父」とも呼ばれ、マネジメントの概念を体系化した。代表著作に『マネジメント』（1973年）がある。 <span class="ptr">[外部補足]</span>
+  </div>
+
+  <p>この講義では「企業」は原則として「私企業（営利企業）」を指す。 <span class="ptr">← S03:p.16注</span></p>
+
+  <!-- 2-2 財とサービス -->
+  <h3 id="ch2-2">2-2 財とサービスの分類</h3>
+  <p>企業が生み出すものは「財」または「サービス」である。 <span class="ptr">← S03:p.17</span></p>
+
+  <h4>財の分類</h4>
+  <table>
+    <thead>
+      <tr><th>分類軸</th><th>種類A</th><th>種類B</th><th>備考</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>用途</td>
+        <td><strong>消費財</strong>（買って使うもの）</td>
+        <td><strong>生産財</strong>（企業が生産に使うもの。機械・設備等）</td>
+        <td>生産財は減価償却の対象</td>
+      </tr>
+      <tr>
+        <td>形態</td>
+        <td><strong>有形財</strong>（形のある財）</td>
+        <td><strong>無形財</strong>（知的所有権・情報財）</td>
+        <td>特許・商標権・デジタルデータ等</td>
+      </tr>
+      <tr>
+        <td>耐久性</td>
+        <td><strong>耐久消費財</strong>（車など長期使用）</td>
+        <td><strong>非耐久消費財</strong>（食品など即時消費）</td>
+        <td>中間に半耐久消費財</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="voice-block">
+    耐久消費財・非耐久消費財の区分けは税務・会計制度においても重要な概念。情報財はデジタルなやり取りが可能な形のない情報を扱うものを指す。 <span class="ptr">← S05-A</span>
+  </div>
+
+  <h4>サービスの特性</h4>
+  <table>
+    <thead>
+      <tr><th>特性</th><th>説明</th><th>例</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>同時性</strong></td>
+        <td>生産と消費が同時に行われる。顧客がいないと提供できない。</td>
+        <td>理髪店・レストランでの提供</td>
+      </tr>
+      <tr>
+        <td><strong>消滅性</strong></td>
+        <td>在庫として蓄積できない。</td>
+        <td>飛行機の空席・旅館の空室は翌日に繰り越せない</td>
+      </tr>
+    </tbody>
+  </table>
+  <p><span class="ptr">← S03:p.17</span></p>
+
+  <!-- 2-3 循環 -->
+  <h3 id="ch2-3">2-3 企業活動の循環</h3>
+
+  <figure>
+    <!-- サイクル図: 資源配分→優位性の構築→付加価値の創出→利潤→再投資 -->
+    <!-- viewBox: 400×240 -->
+    <!-- [計算] 縦フロー 4ボックス + 右に再投資矢印 -->
+    <svg viewBox="0 0 420 240" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:420px;display:block;margin:0 auto;">
+      <rect width="420" height="240" fill="#1e2535" rx="8"/>
+      <!-- ボックス群 (中央縦列) -->
+      <!-- [座標] x=110, 幅=180, y間隔50 -->
+      <rect x="110" y="10"  width="180" height="36" rx="6" fill="#1a2535" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="200" y="33" text-anchor="middle" fill="#e2e8f5" font-size="12" font-family="Noto Sans JP,sans-serif">資源配分</text>
+
+      <rect x="110" y="70"  width="180" height="36" rx="6" fill="#1a2535" stroke="#34d399" stroke-width="1.5"/>
+      <text x="200" y="93" text-anchor="middle" fill="#e2e8f5" font-size="12" font-family="Noto Sans JP,sans-serif">優位性の構築</text>
+
+      <rect x="110" y="130" width="180" height="36" rx="6" fill="#1a2535" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="200" y="153" text-anchor="middle" fill="#e2e8f5" font-size="12" font-family="Noto Sans JP,sans-serif">付加価値の創出</text>
+
+      <rect x="110" y="190" width="180" height="36" rx="6" fill="#1a2535" stroke="#a78bfa" stroke-width="1.5"/>
+      <text x="200" y="213" text-anchor="middle" fill="#e2e8f5" font-size="12" font-family="Noto Sans JP,sans-serif">利潤（利益）</text>
+
+      <!-- ↓矢印 -->
+      <line x1="200" y1="46" x2="200" y2="70" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#da)"/>
+      <line x1="200" y1="106" x2="200" y2="130" stroke="#34d399" stroke-width="1.5" marker-end="url(#da2)"/>
+      <line x1="200" y1="166" x2="200" y2="190" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#da3)"/>
+
+      <!-- 再投資の矢印: 利潤右→上→資源配分右 -->
+      <path d="M290,208 L360,208 L360,28 L290,28" stroke="#a78bfa" stroke-width="1.5" fill="none" stroke-dasharray="4,3" marker-end="url(#da4)"/>
+      <text x="366" y="125" fill="#a78bfa" font-size="11" font-family="Noto Sans JP,sans-serif" writing-mode="vertical-rl">再投資</text>
+
+      <defs>
+        <marker id="da"  markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#5b8dee"/></marker>
+        <marker id="da2" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#34d399"/></marker>
+        <marker id="da3" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#fbbf24"/></marker>
+        <marker id="da4" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#a78bfa"/></marker>
+      </defs>
+    </svg>
+    <figcaption>図3: 企業活動の循環 <span class="ptr">S03:p.18</span></figcaption>
+  </figure>
+
+  <div class="voice-block">
+    企業は自社の資源をどう配分するかを決め、競争相手より優位に立てるよう事業を運営する。そこで生まれた付加価値を顧客に提供することで利益を得る。この利益をさらに再投資することで、企業活動が継続・成長していく。 <span class="ptr">← S05-A</span>
+  </div>
+
+  <!-- 2-4 市場と競争 -->
+  <h3 id="ch2-4">2-4 市場と競争</h3>
+
+  <div class="emphasis-block">
+    【定義】市場（マーケット）：経営の世界では「買い手の集合」を指す（原義は買い手と売り手が集まる取引の場）。 <span class="ptr">← S03:p.19</span>
+  </div>
+
+  <table>
+    <thead><tr><th>概念</th><th>説明</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>市場競争</strong></td>
+        <td>買い手を獲得するために、価格・品質などの面で他の企業と競い合うこと</td>
+      </tr>
+      <tr>
+        <td><strong>差別化・差異化</strong></td>
+        <td>独自の付加価値を付けることで単純な価格競争から抜け出す戦略</td>
+      </tr>
+      <tr>
+        <td><strong>ブルーオーシャン</strong></td>
+        <td>競争のない未開拓市場</td>
+      </tr>
+      <tr>
+        <td><strong>レッドオーシャン</strong></td>
+        <td>競争が激しい市場（「血に染まった」赤い海のイメージ）</td>
+      </tr>
+    </tbody>
+  </table>
+  <p><span class="ptr">← S03:p.19</span></p>
+
+  <div class="voice-block">
+    「市場分析」とは、自社の製品・サービスを買ってくれる人がどこにいるかを分析すること。企業が継続的に事業を続けるためには、自分の顧客をどこに求めるかという観点が非常に重要。 <span class="ptr">← S05-A</span>
+  </div>
+
+  <!-- 2-5 持続的優位性 -->
+  <h3 id="ch2-5">2-5 持続的な優位性の構築</h3>
+
+  <div class="emphasis-block">
+    【定義】競争優位：業界平均以上の利益率、または一定以上の市場シェアを持つ状態。コスト優位と差別化優位（差異化優位）がある。 <span class="ptr">← S03:p.20</span>
+  </div>
+
+  <h4>模倣困難性（競争相手が簡単に真似できない「何か」）</h4>
+  <table>
+    <thead><tr><th>要素</th><th>説明</th></tr></thead>
+    <tbody>
+      <tr><td>特許・著作権</td><td>法律で保護され、他者が同じものを作れない</td></tr>
+      <tr><td>ブランド</td><td>長く市場で認知されることで競合が追随しにくい</td></tr>
+      <tr><td>立地</td><td>人通りの多い場所・一等地での商売は他者が真似できない</td></tr>
+      <tr><td>許認可</td><td>国や行政から取得した特定業種の参入許可</td></tr>
+    </tbody>
+  </table>
+  <p><span class="ptr">← S03:p.20</span></p>
+
+  <div class="voice-block">
+    持続的な競争優位が大事な理由：長期的に競争優位な企業こそが事業を継続できるから。目の前の利益だけを追う企業は長続きしない。 <span class="ptr">← S05-A</span>
+  </div>
+
+  <!-- 2-6 ステークホルダー・CSR -->
+  <h3 id="ch2-6">2-6 ステークホルダーとCSR</h3>
+
+  <div class="emphasis-block">
+    【定義】ステークホルダー（Stakeholder）：企業と利害関係を持つ個人・法人・機関。株主・従業員・労働組合・仕入先・顧客・外注先・政府・地域住民・コミュニティなど。 <span class="ptr">← S03:p.21</span>
+  </div>
+
+  <div class="voice-block">
+    ステークホルダーの協力・関与なしに、企業は継続的に付加価値創造活動を続けられない。たとえば社員が全員辞めてしまったり、仕入先が商品を納入してくれなくなれば、企業は運営できなくなる。ステークホルダーとの関係をいかに良好に維持するかが経営の重要ポイント。 <span class="ptr">← S05-A</span>
+  </div>
+
+  <div class="emphasis-block">
+    【定義】CSR（Corporate Social Responsibility：企業の社会的責任）：社会的な公正さ（コンプライアンス）・社会貢献・地域貢献・環境への配慮・従業員対応など、企業が公器として果たすべき責任。 <span class="ptr">← S03:p.21</span>
+  </div>
+
+  <div class="ext-block">
+    [外部補足] コンプライアンス（compliance）は「法令遵守」を中心としつつ、それにとどまらず企業が守るべき行動規範全般を含む概念。近年は「法令遵守」だけでなく「社会規範・倫理的行動」まで含む広義の使われ方が一般的。 <span class="ptr">[外部補足]</span>
+  </div>
+
+  <!-- 2-7 リスクマネジメント -->
+  <h3 id="ch2-7">2-7 リスクマネジメント</h3>
+  <p>企業を取り巻くリスクは多様化している。 <span class="ptr">← S03:p.22</span></p>
+
+  <ul>
+    <li>自然災害（大地震・台風・洪水等）、異常気象</li>
+    <li>戦争・テロ・火災・誘拐</li>
+    <li>社会インフラ（電気・ガス・鉄道等）の停止</li>
+    <li>金融危機・原油高騰・金利変動・為替変動</li>
+    <li>不正取引・談合・横領・輸送事故</li>
+    <li>不正アクセス・情報漏えい・情報システム停止</li>
+    <li>投資の失敗・製品事故・リコール など</li>
+  </ul>
+
+  <div class="emphasis-block">
+    【定義】ERM（Enterprise Risk Management：エンタープライズリスクマネジメント）：企業全体のリスクを統合的に管理する手法・考え方。 <span class="ptr">← S03:p.22</span>
+  </div>
+
+  <div class="voice-block">
+    多様なリスクに対して常日頃から備えておくことが企業経営に求められている。コンプライアンスと企業倫理も、このリスクマネジメントの観点から厳しく求められる。 <span class="ptr">← S05-A</span>
+  </div>
+
+  <!-- 2-8 構成要素 -->
+  <h3 id="ch2-8">2-8 企業経営を構成する要素</h3>
+  <p>この講義全体で学ぶ企業経営の構成要素（専門家によって分け方は異なる）: <span class="ptr">← S03:p.23</span></p>
+
+  <figure>
+    <!-- 花びら型: 中央に「経営理念・企業の価値観」を置き、周囲に7要素 -->
+    <!-- viewBox: 400×380 -->
+    <!-- [計算] 中央円(200,190), r=55 周囲楕円8個を等角配置 -->
+    <svg viewBox="0 0 400 380" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:400px;display:block;margin:0 auto;">
+      <rect width="400" height="380" fill="#1e2535" rx="8"/>
+      <!-- 中央 -->
+      <ellipse cx="200" cy="190" rx="68" ry="40" fill="#2d3a52" stroke="#fbbf24" stroke-width="2"/>
+      <text x="200" y="184" text-anchor="middle" fill="#fbbf24" font-size="11" font-family="Noto Sans JP,sans-serif" font-weight="700">経営理念</text>
+      <text x="200" y="200" text-anchor="middle" fill="#fbbf24" font-size="10" font-family="Noto Sans JP,sans-serif">企業の価値観</text>
+      <!-- 8方向の周囲要素 (角度: 0°上から時計回り) -->
+      <!-- 経営戦略: 上(270°) [cx=200, cy=190-120=70] -->
+      <ellipse cx="200" cy="70" rx="60" ry="28" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="200" y="75" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="Noto Sans JP,sans-serif">経営戦略</text>
+      <!-- マーケティング: 右上(315°) [cx≈200+85*0.707=260, cy≈190-85*0.707=130] -->
+      <ellipse cx="305" cy="100" rx="55" ry="26" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="305" y="105" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="Noto Sans JP,sans-serif">マーケティング</text>
+      <!-- 組織のマネジメント: 右(0°) [cx=200+120=320, cy=190] -->
+      <ellipse cx="340" cy="190" rx="55" ry="26" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="340" y="186" text-anchor="middle" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP,sans-serif">組織の</text>
+      <text x="340" y="200" text-anchor="middle" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP,sans-serif">マネジメント</text>
+      <!-- 人材のマネジメント: 右下 [cx=305, cy=280] -->
+      <ellipse cx="305" cy="280" rx="55" ry="26" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="305" y="276" text-anchor="middle" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP,sans-serif">人材の</text>
+      <text x="305" y="290" text-anchor="middle" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP,sans-serif">マネジメント</text>
+      <!-- 資金のマネジメント: 下 [cx=200, cy=310] -->
+      <ellipse cx="200" cy="316" rx="60" ry="26" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="200" y="312" text-anchor="middle" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP,sans-serif">資金の</text>
+      <text x="200" y="326" text-anchor="middle" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP,sans-serif">マネジメント</text>
+      <!-- オペレーションのマネジメント: 左下 [cx=95, cy=280] -->
+      <ellipse cx="95" cy="280" rx="56" ry="26" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="95" y="276" text-anchor="middle" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP,sans-serif">オペレーションの</text>
+      <text x="95" y="290" text-anchor="middle" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP,sans-serif">マネジメント</text>
+      <!-- リスクマネジメント: 左 [cx=60, cy=190] -->
+      <ellipse cx="58" cy="190" rx="54" ry="26" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="58" y="186" text-anchor="middle" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP,sans-serif">リスク</text>
+      <text x="58" y="200" text-anchor="middle" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP,sans-serif">マネジメント</text>
+    </svg>
+    <figcaption>図4: 企業経営を構成する要素 <span class="ptr">S03:p.23</span></figcaption>
+  </figure>
+
+  <div class="voice-block">
+    これがこの講義の15回を通じて学ぶ内容の全体像。経営理念・企業の価値観が最上位にあり、その下に各種マネジメント要素が連携している。 <span class="ptr">← S05-A</span>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     CH3 ビジネスモデル
+════════════════════════════════════════════════════════════════════ -->
+<section class="section-card" id="ch3">
+  <h2>第3章 ビジネスモデル</h2>
+
+  <!-- 3-1 定義 -->
+  <h3 id="ch3-1">3-1 ビジネスモデルとは何か</h3>
+
+  <div class="emphasis-block">
+    【定義】ビジネスモデル：企業が収益を得る仕組み。顧客や他の企業等との間で財・サービス・情報をどういう経路でやり取りし、その中でどのように収入を得て利益を上げていくかという仕組み。 <span class="ptr">← S03:p.26</span>
+  </div>
+
+  <div class="voice-block">
+    ビジネスモデルという用語はよく聞かれるが、具体的に説明した書籍はあまりない。3つの視点（戦略モデル・オペレーションモデル・収益モデル）から説明できるが、どのモデルにも「①顧客に何を提供するか、②どのように届けるか、③どれだけ儲かるか」という3要素が必ず含まれていなければならない。 <span class="ptr">← S05-A</span>
+  </div>
+
+  <table>
+    <thead><tr><th>モデル</th><th>説明</th></tr></thead>
+    <tbody>
+      <tr><td><strong>戦略モデル</strong></td><td>顧客に提供するものは何か</td></tr>
+      <tr><td><strong>オペレーションモデル</strong></td><td>事業活動の構造と前提</td></tr>
+      <tr><td><strong>収益モデル</strong></td><td>事業活動の対価を得る構造と前提</td></tr>
+    </tbody>
+  </table>
+  <p><span class="ptr">← S03:p.26</span></p>
+
+  <!-- 3-2 各業態 -->
+  <h3 id="ch3-2">3-2 各業態のビジネスモデル例</h3>
+
+  <h4>パン屋・製造業・流通業</h4>
+  <p>いずれも基本構造は同じ：<strong>売上総利益（粗利益）＝ 売上高 ― 売上原価（商品の原価）</strong> <span class="ptr">← S03:p.27–29</span></p>
+
+  <table>
+    <thead><tr><th>業態</th><th>仕入</th><th>生産</th><th>販売</th><th>売上原価に含まれるもの</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>パン屋</td>
+        <td>小麦粉</td>
+        <td>パンを焼く</td>
+        <td>店頭・無店舗</td>
+        <td>小麦粉代・焼釜設備・店舗費</td>
+      </tr>
+      <tr>
+        <td>製造業</td>
+        <td>原材料・部品</td>
+        <td>組み立て</td>
+        <td>販売店経由</td>
+        <td>原材料費・労務費・光熱水料・減価償却費</td>
+      </tr>
+      <tr>
+        <td>流通業（小売）</td>
+        <td>商品</td>
+        <td>（なし）</td>
+        <td>店頭</td>
+        <td>商品仕入れ費・労務費・光熱水費・減価償却費</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="voice-block">
+    「安く仕入れて高く売る」が商売の原則。個別商品の価格設定において、仕入れと売値の差（価格差）がこれらのコストを賄えるよう設定されなければならない。 <span class="ptr">← S05-A</span>
+  </div>
+
+  <h4>新聞社のビジネスモデル</h4>
+  <p>収益源が2つある点が特徴。 <span class="ptr">← S03:p.30</span></p>
+  <p><strong>売上総利益 ＝ 購読料 ＋ 広告料 ― 売上原価</strong></p>
+
+  <div class="voice-block">
+    専門雑誌も同様に購読料収入と広告料収入の2本立て。フリーペーパーは購読料がゼロであるため、収入はほぼ広告料のみ。そのため広告スペースの割合が大きくなっている。 <span class="ptr">← S05-A</span>
+  </div>
+
+  <!-- 3-3 情報仲介 -->
+  <h3 id="ch3-3">3-3 情報仲介型ビジネスモデル</h3>
+
+  <h4>顧客紹介型（例: 中古車情報サイト）</h4>
+  <p>買い手と売り手をつなぐ情報仲介業。収入源：カーディーラー等からの紹介料（または広告料）。インターネット普及後に急増したモデル。 <span class="ptr">← S03:p.31</span></p>
+
+  <div class="voice-block">
+    情報サイトが多数出てきたことで紹介料を取りにくくなり、単純にメーカーから広告料を取るモデルに移行しているサイトも増えている。 <span class="ptr">← S05-A</span>
+  </div>
+
+  <h4>オークション型（例: オークションサイト）</h4>
+  <p>売り手と買い手をマッチングし、複数の買い手が入札して売り手と契約する仕組み。収入源：出品料・落札手数料。近年は手数料・出品料無料のサイトも増加。 <span class="ptr">← S03:p.32</span></p>
+
+  <h4>ビジネスモデルの表現方法</h4>
+  <p>「物の流れ」と「代金の流れ（逆方向）」を図で整理することが有効。重要なチェックポイント：各取引関係で代金がしっかり回収できるか（例：部品代金が高騰した場合に販売店に転嫁できるか）。 <span class="ptr">← S03:p.33</span></p>
+
+  <div class="voice-block">
+    新しいサービスやベンチャー企業が上場するとき、「どんなビジネスモデルで儲けているのか」を図にして整理してみることを勧めている。自分の事業立ち上げ時にも有効な思考整理ツール。 <span class="ptr">← S05-A</span>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     CH4 全体構成
+════════════════════════════════════════════════════════════════════ -->
+<section class="section-card" id="ch4">
+  <h2>第4章 企業経営入門の全体構成</h2>
+
+  <table>
+    <thead>
+      <tr><th>回</th><th>テーマ</th><th>回</th><th>テーマ</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>第1回</td><td>オリエンテーション（本回）</td><td>第9回</td><td>HRMとリーダーシップ</td></tr>
+      <tr><td>第2回</td><td>経営理念と経営戦略</td><td>第10回</td><td>内部統制とITリスク</td></tr>
+      <tr><td>第3回</td><td>経営戦略論</td><td>第11回</td><td>ベンチャー企業</td></tr>
+      <tr><td>第4回</td><td>マーケティング</td><td>第12回</td><td>同族経営と事業承継</td></tr>
+      <tr><td>第5回</td><td>会社の機関</td><td>第13回</td><td>事例1：Apple</td></tr>
+      <tr><td>第6回</td><td>資金調達と財務諸表</td><td>第14回</td><td>事例2：Amazon.com</td></tr>
+      <tr><td>第7回</td><td>管理会計</td><td>第15回</td><td>まとめ：成功・失敗企業の事例</td></tr>
+      <tr><td>第8回</td><td>組織のマネジメント</td><td></td><td></td></tr>
+    </tbody>
+  </table>
+  <p><span class="ptr">← S03:p.36</span></p>
+
+  <div class="voice-block">
+    第2〜3回の経営理念・経営戦略は会社経営の基本をなす部分。第4回マーケティングは「単に物を売る方法ではなく、市場を創造して良い商品を作り買い手のニーズを捉える総合的な活動」として位置づけられる。第12回の同族経営は日本の会社の約97%が同族経営であることから設定された。第13〜14回はApple・Amazon.comを事例として取り上げる。 <span class="ptr">← S05-A, S03:p.37–43</span>
+  </div>
+
+  <h3>マーケティングの主要概念（第4回予告）</h3>
+  <ul>
+    <li><strong>STP</strong>：セグメンテーション（Segmentation）・ターゲティング（Targeting）・ポジショニング（Positioning）</li>
+    <li><strong>マーケティング・ミックス（4つのP）</strong>：Product（商品）・Price（価格）・Place（流通）・Promotion（販促活動）</li>
+    <li>ブランド戦略</li>
+  </ul>
+  <p><span class="ptr">← S03:p.38</span></p>
+
+  <h3>経営戦略論（第3回予告）</h3>
+  <ul>
+    <li>ポーターの市場ポジショニング論</li>
+    <li>コア・コンピタンス論</li>
+    <li>ビジネス・ゲーム論</li>
+    <li>資源ベース論（RBV）</li>
+  </ul>
+  <p><span class="ptr">← S03:p.37</span></p>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     APPENDIX
+════════════════════════════════════════════════════════════════════ -->
+<section id="appendix">
+  <h2 style="font-size:16px;color:var(--text-sub);margin:28px 0 16px;padding-left:4px;">📎 末尾補足</h2>
+
+  <!-- 補足A -->
+  <div class="appendix-card card-a">
+    <h3>⭐ 補足A: 最重要ワード一覧</h3>
+    <table>
+      <thead><tr><th>用語</th><th>読み</th><th>定義（原文から抽出）</th><th>重要度</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>株式会社</td>
+          <td>かぶしきがいしゃ</td>
+          <td>出資者全員が有限責任を負い、株式の買受・譲渡が可能な会社形態。取締役会・証券化・永続企業の特徴を持つ。</td>
+          <td>★★★</td>
+        </tr>
+        <tr>
+          <td>有限責任</td>
+          <td>ゆうげんせきにん</td>
+          <td>責任が出資の範囲に限られること（個人財産まで及ばない）</td>
+          <td>★★★</td>
+        </tr>
+        <tr>
+          <td>無限責任</td>
+          <td>むげんせきにん</td>
+          <td>出資の範囲を超えて個人の財産まで責任が及ぶこと</td>
+          <td>★★★</td>
+        </tr>
+        <tr>
+          <td>going concern</td>
+          <td>ゴーイング・コンサーン</td>
+          <td>企業が継続的に事業活動を行い続けること（存続前提の概念）</td>
+          <td>★★★</td>
+        </tr>
+        <tr>
+          <td>ステークホルダー</td>
+          <td>すてーくほるだー</td>
+          <td>企業と利害関係を持つ全ての個人・法人・機関（株主・従業員・顧客・政府・地域住民等）</td>
+          <td>★★★</td>
+        </tr>
+        <tr>
+          <td>CSR</td>
+          <td>シーエスアール</td>
+          <td>Corporate Social Responsibility（企業の社会的責任）。コンプライアンス・社会貢献・環境配慮等を含む。</td>
+          <td>★★★</td>
+        </tr>
+        <tr>
+          <td>ビジネスモデル</td>
+          <td>びじねすもでる</td>
+          <td>企業が収益を得る仕組み。誰に何をどう届け、どこで利益を得るかを示す構造。</td>
+          <td>★★★</td>
+        </tr>
+        <tr>
+          <td>ERM</td>
+          <td>イーアールエム</td>
+          <td>Enterprise Risk Management（エンタープライズリスクマネジメント）。企業全体のリスクを統合的に管理する手法。</td>
+          <td>★★☆</td>
+        </tr>
+        <tr>
+          <td>売上総利益（粗利益）</td>
+          <td>あらりえき</td>
+          <td>売上高 ― 売上原価。商品・サービスを売ることで得られる最初の利益指標。</td>
+          <td>★★☆</td>
+        </tr>
+        <tr>
+          <td>ブルーオーシャン</td>
+          <td>ぶるーおーしゃん</td>
+          <td>競争のない未開拓市場。⇔レッドオーシャン（競争が激しい市場）。</td>
+          <td>★★☆</td>
+        </tr>
+        <tr>
+          <td>模倣困難性</td>
+          <td>もほうこんなんせい</td>
+          <td>競争相手が簡単に真似できない「何か」（特許・ブランド・立地・許認可等）。持続的競争優位の源泉。</td>
+          <td>★★☆</td>
+        </tr>
+        <tr>
+          <td>当座企業</td>
+          <td>とうざきぎょう</td>
+          <td>1回の事業（航海）ごとに資金を集め、終了後に解散する一時的な企業形態。株式会社の前身。</td>
+          <td>★☆☆</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="appendix-card card-b">
+    <h3>📚 補足B: 知っておくべき背景知識</h3>
+    <ul>
+      <li><strong>馬場 研二（ばば けんじ）先生について</strong>：九州大学経済学部卒、ボストン大学ビジネススクールでMBA取得（1991年）。地方銀行・外資系人事コンサル等を経て、140年以上続くファミリー企業（株式会社麻生）の本社経営企画部門に15年間在籍。2014年よりサイバー大学IT総合学部教授。2012年に（一社）日本ファミリービジネスアドバイザー協会を設立。講義で語る内容は実務経験に基づくものが多い。（出典: kenjibaba.jp、サイバー大学教員ページ）<span class="ext-note"> [外部補足]</span></li>
+      <li><strong>労働力調査の最新値（2025年平均）</strong>：就業者6,842万人、雇用者6,227万人（雇用者比率≈91%）、自営業主・家族従業者589万人（≈9%）。スライド記載の2017年値（雇用者約88%）から雇用者比率は上昇傾向。（出典: 総務省統計局「労働力調査（基本集計）2025年平均」stat.go.jp）<span class="ext-note"> [外部補足・U01解消]</span></li>
+      <li><strong>ピーター・ドラッカー（1909–2005）</strong>：「現代経営学の父」。「企業の目的は顧客を創造すること」という命題は著書『マネジメント』（1974年邦訳、原著1973年）で提唱。<span class="ext-note"> [外部補足]</span></li>
+      <li><strong>オランダ東インド会社（VOC）の実態</strong>：正式名称「Vereenigde Oost-Indische Compagnie」、資本金約650万ギルダー、重役会「17人会（Heeren XVII）」。1602年にアムステルダム証券取引所と同時設立。貿易独占権だけでなく条約締結権・軍隊交戦権・植民地経営権も持つ準国家的機関だった。1799年にオランダ政府により解散。（出典: Wikipedia「オランダ東インド会社」）<span class="ext-note"> [外部補足]</span></li>
+      <li><strong>南海の泡沫事件（South Sea Bubble, 1720年）</strong>：英国南海会社の株価暴騰・崩壊。イギリスで泡沫会社禁止法（Bubble Act）が制定されるきっかけとなった。近代的な証券規制の起源のひとつ。<span class="ext-note"> [外部補足]</span></li>
+      <li><strong>産業革命（18世紀後半〜19世紀）</strong>：イギリスで起きた工業化革命。資本集約型産業の勃興により、株式会社形態が普及するための社会的・経済的背景となった。<span class="ext-note"> [外部補足]</span></li>
+      <li><strong>会社法（日本）</strong>：株式会社・合同会社・合名会社・合資会社の4種類を規定。2005年制定、2006年施行。それ以前は商法が会社に関する規定を含んでいた。<span class="ext-note"> [外部補足]</span></li>
+    </ul>
+  </div>
+
+  <!-- 補足C -->
+  <div class="appendix-card card-c">
+    <h3>🎯 補足C: 試験・レポートで重要な観点</h3>
+    <ul>
+      <li>「会社」と「企業」の違いを法律上の定義を踏まえて説明できるか</li>
+      <li>株式会社の特徴（有限責任・株式譲渡の自由）を他の会社形態と対比して説明できるか</li>
+      <li>ドラッカーの命題（「企業の目的は顧客を創造すること」）の意味を説明できるか</li>
+      <li>ステークホルダーの例を複数挙げ、その重要性を説明できるか</li>
+      <li>特定のビジネスモデルを図で描き、物の流れと代金の流れを説明できるか</li>
+      <li>「持続的競争優位」と「模倣困難性」の概念を具体例とともに説明できるか</li>
+    </ul>
+  </div>
+
+  <!-- 補足D -->
+  <div class="appendix-card card-d">
+    <h3>🔗 補足D: 関連概念・次回への接続</h3>
+    <p><strong>次回（第2回）テーマ：経営理念と経営戦略</strong><br>
+    経営理念は企業経営の最上位にある概念で「なぜ存在するのか」を問うもの。経営戦略は企業の目標達成のための基本方針・計画。</p>
+    <ul style="margin-top:10px;">
+      <li><strong>Porter (1980)「競争の戦略」</strong>：第3回（経営戦略論）で取り上げる市場ポジショニング論の源流。<span class="ext-note"> [外部補足]</span></li>
+      <li><strong>コア・コンピタンス（Prahalad &amp; Hamel, 1990）</strong>：第3回で扱う資源ベース戦略論の重要概念。自社の中核能力を軸に競争優位を構築する考え方。<span class="ext-note"> [外部補足]</span></li>
+      <li><strong>マーケティング4P（E. Jerome McCarthy, 1960年代）</strong>：Product・Price・Place・Promotionの枠組み。第4回で詳しく扱う。<span class="ext-note"> [外部補足]</span></li>
+      <li>サイバー大学の関連科目：「経営戦略」「マーケティング入門」「会計簿記入門」「コーポレート・ファイナンス」「起業入門」など <span class="ptr">← S03:p.37–43</span></li>
+    </ul>
+  </div>
+
+</section>
+
+<p style="font-size:11px;color:var(--text-sub);text-align:right;margin-top:30px;font-family:'JetBrains Mono',monospace;">
+  v1.0 2026-03-24 初版（SSP v4.2 / Step 5-B完了）<br>
+  v1.1 2026-03-24 U01解消（労働力調査2025年最新値追加）/ U02解消（馬場先生ヨミガナ確定）/ VOC正式名・資本金・解散年追加 / 1600年EIC設立をタイムラインに追加 / 補足B充実（Step 6パートIV外部補完）
+</p>
+
+</main>
+</body>
+</html>
