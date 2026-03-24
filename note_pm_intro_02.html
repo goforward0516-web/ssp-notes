@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>プロジェクトマネジメント入門 第2回 — プロジェクトのライフサイクル</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --bg-card: #161b27;
+    --bg-card2: #1e2535;
+    --border: #2a3450;
+    --border-accent: #3d4f7a;
+    --text: #e2e8f5;
+    --text-sub: #8a99b8;
+    --text-muted: #5b6b8a;
+    --accent-blue: #5b8dee;
+    --accent-green: #34d399;
+    --accent-yellow: #fbbf24;
+    --accent-purple: #a78bfa;
+    --accent-orange: #fb923c;
+    --accent-red: #f87171;
+    --audio-border: #5b8dee;
+    --audio-bg: rgba(91,141,238,0.08);
+    --infer-border: #a78bfa;
+    --infer-bg: rgba(167,139,250,0.08);
+    --ext-border: #34d399;
+    --ext-bg: rgba(52,211,153,0.08);
+    --warn-border: #fb923c;
+    --warn-bg: rgba(251,146,60,0.08);
+    --undefined-border: #fb923c;
+    --undefined-bg: rgba(251,146,60,0.12);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 15px;
+    line-height: 1.8;
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ===== Sidebar ===== */
+  #sidebar {
+    width: 260px;
+    min-width: 260px;
+    background: var(--bg-card);
+    border-right: 1px solid var(--border);
+    padding: 24px 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    flex-shrink: 0;
+  }
+
+  #sidebar h2 {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding: 0 20px 12px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 12px;
+  }
+
+  #sidebar nav a {
+    display: block;
+    padding: 6px 20px;
+    color: var(--text-sub);
+    text-decoration: none;
+    font-size: 13px;
+    line-height: 1.4;
+    transition: color 0.15s, background 0.15s;
+    border-left: 2px solid transparent;
+  }
+
+  #sidebar nav a:hover {
+    color: var(--text);
+    background: rgba(91,141,238,0.08);
+    border-left-color: var(--accent-blue);
+  }
+
+  #sidebar nav a.section-link {
+    font-weight: 500;
+    color: var(--text);
+    margin-top: 8px;
+    font-size: 12.5px;
+  }
+
+  #sidebar nav a.sub-link {
+    padding-left: 32px;
+    font-size: 12px;
+  }
+
+  /* ===== Main ===== */
+  #main {
+    flex: 1;
+    padding: 40px 48px;
+    max-width: 960px;
+  }
+
+  /* ===== Page Header ===== */
+  .page-header {
+    margin-bottom: 40px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .page-header .subject-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    background: rgba(91,141,238,0.15);
+    color: var(--accent-blue);
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-bottom: 12px;
+    letter-spacing: 0.05em;
+  }
+
+  .page-header h1 {
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 8px;
+  }
+
+  .page-header .meta {
+    color: var(--text-sub);
+    font-size: 13px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 10px;
+  }
+
+  .page-header .meta span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .sources-info {
+    margin-top: 14px;
+    padding: 10px 14px;
+    background: var(--bg-card2);
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    color: var(--text-sub);
+  }
+
+  /* ===== Section Card ===== */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 28px 32px;
+    margin-bottom: 24px;
+  }
+
+  .card h2 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--accent-blue);
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .card h2 .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+
+  .card h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--accent-yellow);
+    margin: 20px 0 10px;
+  }
+
+  .card h4 {
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--text-sub);
+    margin: 14px 0 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 12px;
+  }
+
+  .card p { margin-bottom: 10px; }
+
+  .card ul, .card ol {
+    padding-left: 20px;
+    margin-bottom: 10px;
+  }
+
+  .card li { margin-bottom: 4px; }
+
+  /* ===== Blocks ===== */
+  .audio-block {
+    border-left: 3px solid var(--audio-border);
+    background: var(--audio-bg);
+    border-radius: 0 6px 6px 0;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  .audio-block .block-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--audio-border);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  .infer-block {
+    border-left: 3px solid var(--infer-border);
+    background: var(--infer-bg);
+    border-radius: 0 6px 6px 0;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  .infer-block .block-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--infer-border);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  .ext-block {
+    border-left: 3px solid var(--ext-border);
+    background: var(--ext-bg);
+    border-radius: 0 6px 6px 0;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  .ext-block .block-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--ext-border);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  .warn-block {
+    border-left: 3px solid var(--warn-border);
+    background: var(--warn-bg);
+    border-radius: 0 6px 6px 0;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  .definition-box {
+    background: rgba(91,141,238,0.12);
+    border: 1px solid rgba(91,141,238,0.3);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 14px 0;
+  }
+
+  .definition-box .def-label {
+    font-size: 11px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent-blue);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  .definition-box .def-text {
+    font-weight: 500;
+    font-size: 15px;
+  }
+
+  /* ===== Pointer Badge ===== */
+  .ptr {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    color: var(--text-muted);
+    margin-left: 6px;
+    vertical-align: middle;
+    background: var(--bg-card2);
+    padding: 1px 5px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+    white-space: nowrap;
+  }
+
+  /* ===== Tables ===== */
+  .table-wrap { overflow-x: auto; margin: 14px 0; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+  }
+
+  th {
+    background: var(--bg-card2);
+    color: var(--accent-blue);
+    font-weight: 500;
+    padding: 8px 12px;
+    text-align: left;
+    border: 1px solid var(--border-accent);
+    font-size: 12px;
+    letter-spacing: 0.03em;
+  }
+
+  td {
+    padding: 7px 12px;
+    border: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+
+  /* ===== SVG figure ===== */
+  figure {
+    margin: 20px 0;
+    text-align: center;
+  }
+
+  figcaption {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 8px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ===== Appendix Cards ===== */
+  .appendix-card {
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    padding: 24px 28px;
+    margin-bottom: 20px;
+  }
+
+  .appendix-card.undefined-card {
+    border-color: var(--undefined-border);
+    background: var(--undefined-bg);
+  }
+
+  .appendix-card.word-card {
+    border-color: #fbbf24;
+    background: rgba(251,191,36,0.05);
+  }
+
+  .appendix-card.bg-card {
+    border-color: #34d399;
+    background: rgba(52,211,153,0.05);
+  }
+
+  .appendix-card.exam-card {
+    border-color: #f87171;
+    background: rgba(248,113,113,0.05);
+  }
+
+  .appendix-card.related-card {
+    border-color: #a78bfa;
+    background: rgba(167,139,250,0.05);
+  }
+
+  .appendix-card h3 {
+    font-size: 16px;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+  }
+
+  .appendix-card .ext-note {
+    font-size: 12px;
+    color: var(--text-sub);
+  }
+
+  /* ===== meeting table ===== */
+  .meeting-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin: 14px 0;
+  }
+
+  .meeting-item {
+    background: var(--bg-card2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+  }
+
+  .meeting-item .meeting-name {
+    font-weight: 700;
+    color: var(--accent-yellow);
+    font-size: 13px;
+    margin-bottom: 6px;
+  }
+
+  .meeting-item p {
+    font-size: 12.5px;
+    color: var(--text-sub);
+    margin-bottom: 4px;
+  }
+
+  /* ===== Flow diagram (CSS) ===== */
+  .flow-diagram {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 14px 0;
+  }
+
+  .flow-node {
+    background: var(--bg-card2);
+    border: 1px solid var(--accent-blue);
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--accent-blue);
+    white-space: nowrap;
+  }
+
+  .flow-arrow {
+    color: var(--text-muted);
+    font-size: 18px;
+    line-height: 1;
+  }
+
+  .highlight-box {
+    background: rgba(251,191,36,0.08);
+    border: 1px solid rgba(251,191,36,0.3);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 12px 0;
+  }
+
+  /* ===== Tag badges ===== */
+  .tag-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-family: 'JetBrains Mono', monospace;
+    padding: 2px 7px;
+    border-radius: 4px;
+    margin: 0 2px;
+  }
+
+  .tag-high { background: rgba(52,211,153,0.15); color: var(--accent-green); }
+  .tag-mid { background: rgba(251,191,36,0.15); color: var(--accent-yellow); }
+  .tag-low { background: rgba(248,113,113,0.15); color: var(--accent-red); }
+
+  /* ===== Scroll ===== */
+  #sidebar::-webkit-scrollbar { width: 4px; }
+  #sidebar::-webkit-scrollbar-track { background: transparent; }
+  #sidebar::-webkit-scrollbar-thumb { background: var(--border-accent); border-radius: 4px; }
+
+  @media (max-width: 768px) {
+    #sidebar { display: none; }
+    #main { padding: 24px 20px; }
+  }
+
+  .star-high { color: #fbbf24; }
+  .star-mid { color: #94a3b8; }
+</style>
+</head>
+<body>
+
+<!-- ===== SIDEBAR ===== -->
+<aside id="sidebar">
+  <h2>目次</h2>
+  <nav>
+    <a href="#page-header" class="section-link">📋 授業概要</a>
+    <a href="#review" class="section-link">🔁 前回の振り返り</a>
+    <a href="#ch1" class="section-link">第1章 取り巻く課題</a>
+    <a href="#ch1-env" class="sub-link">1-1 複雑化する環境</a>
+    <a href="#ch1-std" class="sub-link">1-2 幻想の標準化</a>
+    <a href="#ch2" class="section-link">第2章 ライフサイクル</a>
+    <a href="#ch2-def" class="sub-link">2-1 定義と概念</a>
+    <a href="#ch2-start" class="sub-link">2-2 始まりの宣言</a>
+    <a href="#ch2-end" class="sub-link">2-3 終わりの宣言</a>
+    <a href="#ch3" class="section-link">第3章 組織形態</a>
+    <a href="#ch3-org" class="sub-link">3-1 組織の定義</a>
+    <a href="#ch3-hier" class="sub-link">3-2 階層型組織</a>
+    <a href="#ch3-member" class="sub-link">3-3 メンバー集め</a>
+    <a href="#ch4" class="section-link">第4章 運営のしくみ</a>
+    <a href="#ch4-points" class="sub-link">4-1 運営の3ポイント</a>
+    <a href="#ch4-meetings" class="sub-link">4-2 会議体</a>
+    <a href="#appendix" class="section-link">📎 末尾補足</a>
+    <a href="#app-undefined" class="sub-link">❓ 未確定事項</a>
+    <a href="#app-a" class="sub-link">⭐ 補足A: 重要ワード</a>
+    <a href="#app-b" class="sub-link">📚 補足B: 背景知識</a>
+    <a href="#app-c" class="sub-link">🎯 補足C: 試験観点</a>
+    <a href="#app-d" class="sub-link">🔗 補足D: 関連概念</a>
+  </nav>
+</aside>
+
+<!-- ===== MAIN ===== -->
+<main id="main">
+
+  <!-- Page Header -->
+  <header class="page-header" id="page-header">
+    <span class="subject-tag">PM101 / プロジェクトマネジメント入門</span>
+    <h1>第2回 プロジェクトのライフサイクル</h1>
+    <div class="meta">
+      <span>👤 勝 眞一郎</span>
+      <span>📅 サイバー大学 IT総合学部｜専門基礎科目</span>
+    </div>
+    <div class="sources-info">
+      ソース: S03（スライドPDF 71枚）/ S05-A（AI変換テキスト）/ S05-B（hynote.ai）｜
+      作成: SSP v4.5.1｜ファイル名: note_pm_intro_02.html
+    </div>
+  </header>
+
+  <!-- 前回の振り返り -->
+  <section class="card" id="review">
+    <h2><span class="section-num">§ 0</span> 前回の振り返り（第1回 オリエンテーション）</h2>
+
+    <h3>プロジェクトの3要素</h3>
+    <div class="definition-box">
+      <span class="def-label">定義</span>
+      <p class="def-text">プロジェクトとは「<strong>目的が決まっている</strong>」「<strong>資源が決まっている</strong>」「<strong>期限が決まっている</strong>」という3つの要素を持つ活動である。</p>
+    </div>
+    <div class="audio-block">
+      <span class="block-label">🎙 音声補足</span>
+      <p>この3つの要素はプロジェクトマネジメント入門の授業全体を通じて最も重要な概念であり、必ず覚えておく必要がある。目的・資源・期限のいずれか一つでも不明確な場合、プロジェクトとして構成することができない。<span class="ptr">← S05-A</span></p>
+    </div>
+
+    <h3>プロジェクトマネジメントの定義</h3>
+    <div class="definition-box">
+      <span class="def-label">定義</span>
+      <p class="def-text">プロジェクトをどのように遂行するか<strong>計画</strong>を行い、その計画に基づき<strong>実行</strong>し、実行の過程を<strong>測定</strong>しながら、プロジェクトの目的を達成できるように<strong>コントロール</strong>していくこと。<span class="ptr">← S03:p.6</span></p>
+    </div>
+    <div class="audio-block">
+      <span class="block-label">🎙 音声補足</span>
+      <p>「コントロール」とはうまくいかなかった部分を是正することを意味する。うまくいっている部分には手を打たなくてよい。計画→実行→測定→コントロールの流れが重要。<span class="ptr">← S05-A</span></p>
+    </div>
+
+    <h3>ソフトウェア規模と失敗率</h3>
+    <div class="audio-block">
+      <span class="block-label">🎙 音声補足</span>
+      <p>Capers Jones「ソフトウェアの成功と失敗」より、ソフトウェアの機能数（FP: Function Point）が増えるほど、中止・遅延プロジェクトの割合が増加することが示されている。規模が大きくなるほど被害も大きくなるため、プロジェクトのコントロールが不可欠となる。<span class="ptr">← S03:p.7 / S05-A</span></p>
+    </div>
+
+    <h3>プロジェクトマネジメントの2つの課題</h3>
+    <ul>
+      <li><strong>相反する要求事項の最適なバランスをとること</strong> — スケジュール・コスト・品質・人・技術・目的が相互にトレードオフの関係にある</li>
+      <li><strong>リスクを顕在化し、リスクを減らすこと</strong> — どのようなリスクがあるかを明示化し、その対処を行う</li>
+    </ul>
+    <div class="audio-block">
+      <span class="block-label">🎙 音声補足</span>
+      <p>例えば、スケジュールを延ばすとコストが増加し、品質を上げようとするとコストも増える。これらの相互関係を理解した上でバランスを取ることがマネジメントに要求される。<span class="ptr">← S05-A</span></p>
+    </div>
+
+    <h3>主要ドキュメントの流れ</h3>
+    <!-- CSS Flow Diagram -->
+    <div class="flow-diagram">
+      <div class="flow-node">企画</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node">立ち上げ<br><small style="font-size:10px;font-weight:400;color:var(--text-sub)">プロジェクト憲章</small></div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node">マイルストーン<br><small style="font-size:10px;font-weight:400;color:var(--text-sub)">スコープ記述書</small></div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node">マイルストーン<br><small style="font-size:10px;font-weight:400;color:var(--text-sub)">PM計画書</small></div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node">終結</div>
+    </div>
+    <div class="audio-block">
+      <span class="block-label">🎙 音声補足</span>
+      <p>いきなりプロジェクトマネジメント計画書を作りがちだが、その前段階として「プロジェクト憲章（このプロジェクトは何か）」「プロジェクトスコープ記述書（どの範囲でやるか）」をしっかり作ることが重要。<span class="ptr">← S05-A</span></p>
+    </div>
+  </section>
+
+  <!-- 第1章 -->
+  <section class="card" id="ch1">
+    <h2><span class="section-num">§ 1</span> 第1章 プロジェクトを取り巻く課題</h2>
+    <p><strong>学習目標:</strong> プロジェクトを取り巻く課題について理解し、説明できる。<span class="ptr">← S03:p.12</span></p>
+
+    <div id="ch1-env">
+    <h3>1-1 複雑化する私たちの環境</h3>
+    <p>現代のプロジェクト環境は以下の4つの方向で複雑化が進んでいる。<span class="ptr">← S03:p.13</span></p>
+
+    <!-- SVG: 4つの複雑化要因 -->
+    <figure>
+      <svg viewBox="0 0 560 320" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:560px;">
+        <!-- 中央楕円 -->
+        <ellipse cx="280" cy="160" rx="80" ry="50" fill="rgba(91,141,238,0.15)" stroke="#5b8dee" stroke-width="1.5"/>
+        <text x="280" y="153" text-anchor="middle" fill="#e2e8f5" font-size="12" font-weight="600" font-family="Noto Sans JP">プロジェクトでの</text>
+        <text x="280" y="170" text-anchor="middle" fill="#e2e8f5" font-size="12" font-weight="600" font-family="Noto Sans JP">対応が増えている</text>
+
+        <!-- 上: 大規模化 -->
+        <rect x="205" y="18" width="150" height="46" rx="8" fill="#1e2535" stroke="#fbbf24" stroke-width="1.5"/>
+        <text x="280" y="40" text-anchor="middle" fill="#fbbf24" font-size="13" font-weight="700" font-family="Noto Sans JP">大規模化</text>
+        <text x="280" y="57" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">関係者・規模の拡大</text>
+        <line x1="280" y1="64" x2="280" y2="110" stroke="#5b8dee" stroke-width="1" stroke-dasharray="4,3"/>
+
+        <!-- 右: 連携の複雑化 -->
+        <rect x="398" y="135" width="148" height="46" rx="8" fill="#1e2535" stroke="#34d399" stroke-width="1.5"/>
+        <text x="472" y="157" text-anchor="middle" fill="#34d399" font-size="13" font-weight="700" font-family="Noto Sans JP">連携の複雑化</text>
+        <text x="472" y="174" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">多様な関係者連携</text>
+        <line x1="398" y1="158" x2="360" y2="158" stroke="#5b8dee" stroke-width="1" stroke-dasharray="4,3"/>
+
+        <!-- 下: 国際化 -->
+        <rect x="205" y="258" width="150" height="46" rx="8" fill="#1e2535" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="280" y="280" text-anchor="middle" fill="#a78bfa" font-size="13" font-weight="700" font-family="Noto Sans JP">国際化</text>
+        <text x="280" y="297" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">オフショア・グローバル</text>
+        <line x1="280" y1="258" x2="280" y2="210" stroke="#5b8dee" stroke-width="1" stroke-dasharray="4,3"/>
+
+        <!-- 左: 技術の複雑化 -->
+        <rect x="14" y="135" width="148" height="46" rx="8" fill="#1e2535" stroke="#fb923c" stroke-width="1.5"/>
+        <text x="88" y="157" text-anchor="middle" fill="#fb923c" font-size="13" font-weight="700" font-family="Noto Sans JP">技術の複雑化</text>
+        <text x="88" y="174" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">セキュリティ・OS対応</text>
+        <line x1="162" y1="158" x2="200" y2="158" stroke="#5b8dee" stroke-width="1" stroke-dasharray="4,3"/>
+      </svg>
+      <figcaption>図：プロジェクトを取り巻く4つの複雑化要因　<span class="ptr">S03:p.13</span></figcaption>
+    </figure>
+
+    <h4>具体例</h4>
+    <div class="table-wrap">
+    <table>
+      <tr><th>領域</th><th>複雑化の具体内容</th></tr>
+      <tr><td>夏休みの宿題</td><td>塾の宿題の増加、パソコン利用、英語科目の追加、デバイスの多様化</td></tr>
+      <tr><td>家の建築</td><td>建築基準法の制限増加、良質な原材料の減少、新工法（床暖・オール電化等）の選択肢増加</td></tr>
+      <tr><td>コンピュータシステム</td><td>規模の拡大、海外ユーザーとの連携増加、セキュリティ・通信速度・OS対応の複雑化</td></tr>
+    </table>
+    </div>
+    <div class="audio-block">
+      <span class="block-label">🎙 音声補足</span>
+      <p>大規模開発の例として、300名規模のシステム開発現場では、複数社の共同開発・オフショア/ニアショア（海外開発チーム）の参加・複数の開発環境・多数のユーザー・テレワーク開発が組み合わさる。こうした複雑な環境では、しっかりとしたマネジメントがないとうまく連携が取れない。<span class="ptr">← S05-A</span></p>
+    </div>
+    </div>
+
+    <div id="ch1-std">
+    <h3>1-2 幻想の標準化</h3>
+    <div class="highlight-box">
+      <p><strong>「時代が変わっても楽にはならない。むしろ…」</strong> <span class="ptr">← S03:p.17</span></p>
+    </div>
+
+    <!-- SVG: 幻想の標準化グラフ -->
+    <figure>
+      <svg viewBox="0 0 560 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:560px;">
+        <!-- 軸 -->
+        <line x1="50" y1="220" x2="530" y2="220" stroke="#3d4f7a" stroke-width="1.5"/>
+        <line x1="50" y1="220" x2="50" y2="20" stroke="#3d4f7a" stroke-width="1.5"/>
+        <!-- 軸ラベル -->
+        <text x="290" y="248" text-anchor="middle" fill="#8a99b8" font-size="12" font-family="Noto Sans JP">経過時間 →</text>
+        <text x="22" y="130" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="Noto Sans JP" transform="rotate(-90,22,130)">システム成熟度</text>
+
+        <!-- フェーズ区切り -->
+        <line x1="180" y1="20" x2="180" y2="220" stroke="#3d4f7a" stroke-width="1" stroke-dasharray="5,4"/>
+        <line x1="360" y1="20" x2="360" y2="220" stroke="#3d4f7a" stroke-width="1" stroke-dasharray="5,4"/>
+
+        <!-- フェーズラベル -->
+        <text x="115" y="35" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">立ち上がり段階</text>
+        <text x="270" y="35" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">標準化段階</text>
+        <text x="445" y="35" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">次の対応段階</text>
+
+        <!-- 混沌1: 螺旋状 (立ち上がり) -->
+        <path d="M60,190 Q70,185 65,175 Q60,165 75,160 Q90,155 85,145 Q80,135 95,130 Q110,125 108,118 Q106,110 115,108 Q125,106 130,100 Q140,90 150,95 Q160,100 165,88 Q170,80 175,85" fill="none" stroke="#fb923c" stroke-width="1.8"/>
+        <!-- 上昇曲線 (標準化) -->
+        <path d="M175,85 Q200,70 230,60 Q260,50 290,55 Q320,60 340,70 Q355,78 360,85" fill="none" stroke="#34d399" stroke-width="2.2"/>
+        <!-- 安定期ブレース -->
+        <text x="240" y="95" text-anchor="middle" fill="#34d399" font-size="11" font-family="Noto Sans JP">安定期（短い）</text>
+
+        <!-- 混沌2 (次の対応) -->
+        <path d="M360,85 Q375,75 380,65 Q385,55 395,50 Q405,45 410,52 Q415,58 420,48 Q425,40 435,38 Q445,36 448,44 Q451,50 460,45 Q470,40 475,50 Q480,58 490,48 Q500,40 510,55" fill="none" stroke="#fb923c" stroke-width="1.8"/>
+      </svg>
+      <figcaption>図：幻想の標準化 — システム成熟度の推移　<span class="ptr">S03:p.17</span></figcaption>
+    </figure>
+
+    <div class="audio-block">
+      <span class="block-label">🎙 音声補足</span>
+      <p>時間が経てばシステム開発が楽になると思いがちだが、実際は標準化によって一時的に安定期が訪れても、その期間は短い。次の環境変化が生じ、また混沌とした状態に戻る。標準化自体も進化し続けなければならず、さらなる複雑化が続く。<span class="ptr">← S05-A</span></p>
+    </div>
+
+    <h3>第1章まとめ</h3>
+    <ul>
+      <li>私たちが取り組むプロジェクト（夏休みの宿題・家の建築・料理・システム開発）はますます複雑な事情の中で解決しなければならない</li>
+      <li>そのためには成功確率を上げるための作法である「プロジェクトマネジメント」を学び工夫していく必要がある <span class="ptr">← S03:p.18</span></li>
+    </ul>
+    </div>
+  </section>
+
+  <!-- 第2章 -->
+  <section class="card" id="ch2">
+    <h2><span class="section-num">§ 2</span> 第2章 プロジェクトのライフサイクル</h2>
+    <p><strong>学習目標:</strong> プロジェクトのライフサイクルについて理解し、説明できる。<span class="ptr">← S03:p.21</span></p>
+
+    <div id="ch2-def">
+    <h3>2-1 ライフサイクルの定義と概念</h3>
+
+    <div class="definition-box">
+      <span class="def-label">定義 — ライフサイクル</span>
+      <p class="def-text">プロジェクトが始まってから終わるまでの<strong>一連の流れ</strong>。「サイクル」は繰り返しがあることを意味する。<span class="ptr">← S03:p.23</span></p>
+    </div>
+
+    <div class="audio-block">
+      <span class="block-label">🎙 音声補足</span>
+      <p>プロジェクトの3要素のうち「期限が決まっている」ということは、始まりがあり終わりもあることを意味する。家の建築で例えると「建築→補修→補修→補修→取り壊し」という繰り返しのサイクルが存在する。<span class="ptr">← S05-A</span></p>
+    </div>
+
+    <h4>プロジェクトの起承転結フェーズ</h4>
+    <p>講師は100以上のプロジェクトを経験してきたが、必ずプロジェクトには起承転結があると述べている。<span class="ptr">← S05-A</span></p>
+
+    <!-- SVG: ライフサイクル曲線 -->
+    <figure>
+      <svg viewBox="0 0 560 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:560px;">
+        <!-- 軸 -->
+        <line x1="40" y1="210" x2="530" y2="210" stroke="#3d4f7a" stroke-width="1.5"/>
+        <line x1="40" y1="210" x2="40" y2="20" stroke="#3d4f7a" stroke-width="1.5"/>
+        <text x="290" y="238" text-anchor="middle" fill="#8a99b8" font-size="12" font-family="Noto Sans JP">経過時間 →</text>
+        <text x="16" y="115" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="Noto Sans JP" transform="rotate(-90,16,115)">コスト・工数 ↑</text>
+
+        <!-- フェーズ区切り -->
+        <line x1="160" y1="20" x2="160" y2="210" stroke="#3d4f7a" stroke-width="1" stroke-dasharray="5,4"/>
+        <line x1="310" y1="20" x2="310" y2="210" stroke="#3d4f7a" stroke-width="1" stroke-dasharray="5,4"/>
+        <line x1="430" y1="20" x2="430" y2="210" stroke="#3d4f7a" stroke-width="1" stroke-dasharray="5,4"/>
+
+        <!-- フェーズラベル -->
+        <text x="100" y="35" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">初期フェーズ</text>
+        <text x="235" y="35" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">中間フェーズI</text>
+        <text x="370" y="35" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">中間フェーズII</text>
+        <text x="480" y="35" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">最終</text>
+
+        <!-- 起承転結ラベル -->
+        <text x="100" y="225" text-anchor="middle" fill="#fbbf24" font-size="13" font-weight="700" font-family="Noto Sans JP">起</text>
+        <text x="235" y="225" text-anchor="middle" fill="#fbbf24" font-size="13" font-weight="700" font-family="Noto Sans JP">承</text>
+        <text x="370" y="225" text-anchor="middle" fill="#fbbf24" font-size="13" font-weight="700" font-family="Noto Sans JP">転</text>
+        <text x="480" y="225" text-anchor="middle" fill="#fbbf24" font-size="13" font-weight="700" font-family="Noto Sans JP">結</text>
+
+        <!-- コスト曲線 -->
+        <path d="M50,195 Q80,188 100,185 Q130,178 160,155 Q200,120 240,85 Q270,62 310,58 Q350,54 370,68 Q400,90 430,72 Q460,56 480,90 Q500,115 520,130" fill="none" stroke="#5b8dee" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+      <figcaption>図：プロジェクトのライフサイクル（コスト・工数の推移）　<span class="ptr">S03:p.24</span></figcaption>
+    </figure>
+
+    <h4>ライフサイクルの具体例</h4>
+    <div class="table-wrap">
+    <table>
+      <tr><th>例</th><th>ライフサイクルの流れ</th></tr>
+      <tr>
+        <td>家づくり</td>
+        <td>計画 → 契約 → 設計仕様書・設計図面作成 → 基礎工事完了 → 棟上げ → 施主検査 → 引き渡し（完成）<span class="ptr">← S03:p.25</span></td>
+      </tr>
+      <tr>
+        <td>システム構築</td>
+        <td>構築 → 利用・運用 → 変更 → 利用・運用 → 変更 → 再構築（大規模刷新）<span class="ptr">← S03:p.26</span></td>
+      </tr>
+    </table>
+    </div>
+    </div>
+
+    <div id="ch2-start">
+    <h3>2-2 プロジェクトの始まり — 宣言の重要性</h3>
+
+    <div class="highlight-box">
+      <p>🚀 <strong>プロジェクトの始まりは「始めます」と宣言した時。</strong></p>
+      <p>始まるまではなんとなく話し合ってもよいが、始まる時には<strong>周囲からわかるように宣言する</strong>必要がある。<span class="ptr">← S03:p.27</span></p>
+    </div>
+
+    <div class="audio-block">
+      <span class="block-label">🎙 音声補足</span>
+      <p>「システムを作る人たちだけでなく、周囲から見てもあのプロジェクトがこういう目的でスタートしたとわかるようにすることが重要」というのがポイント。単に内部で決めただけでは不十分で、正式に宣言することで周囲も認識する。<span class="ptr">← S05-A</span></p>
+    </div>
+
+    <h4>プロジェクト憲章（宣言の文書例）</h4>
+    <div class="ext-block">
+      <span class="block-label">📄 プロジェクト憲章とは</span>
+      <p>プロジェクトの開始を公式に認めると書いた文書。目的・期間・リーダー・場所・組織などが記載されており、周囲の人から見てプロジェクトが立ち上がったことがわかるようにする文書。<span class="ptr">← S03:p.27</span></p>
+    </div>
+
+    <h4>始まりの例</h4>
+    <div class="table-wrap">
+    <table>
+      <tr><th>例</th><th>スタートとなる行動</th></tr>
+      <tr><td>料理</td><td>「献立を決めた時」— 心の中で決めた、または献立を書いた時<span class="ptr">← S03:p.28</span></td></tr>
+      <tr><td>家を建てる</td><td>「家族会議で決まった」または「銀行でローンを組む」<span class="ptr">← S03:p.29</span></td></tr>
+      <tr><td>システム開発</td><td>利用部門と情報システム部門がシステム企画書を作成し、<strong>経営会議で承認された時</strong><span class="ptr">← S03:p.30</span></td></tr>
+    </table>
+    </div>
+    <div class="audio-block">
+      <span class="block-label">🎙 音声補足</span>
+      <p>「こんなシステムがあったらいいね」と話しているだけではプロジェクトはスタートしていない。企業の場合、企画書を作成しただけでなく経営会議で承認されることで初めてプロジェクトがスタートする。「立てたいね」と思っているだけでも同様にスタートとはならない。<span class="ptr">← S05-A</span></p>
+    </div>
+    </div>
+
+    <div id="ch2-end">
+    <h3>2-3 プロジェクトの終わり — 宣言と次への接続</h3>
+
+    <div class="highlight-box">
+      <p>🏁 <strong>プロジェクトの終わりも「終わります」と宣言する必要がある。</strong></p>
+      <p>終わる時にも周囲からわかるように宣言する。この宣言がないとずるずるとプロジェクトが進行してしまう。<span class="ptr">← S03:p.31</span></p>
+    </div>
+
+    <div class="ext-block">
+      <span class="block-label">📋 プロジェクト最終判定会</span>
+      <p>プロジェクトの終了を公式に認める会議。当初の目的が達成されたかを判定し、終了を宣言する。<strong>目的が達成されていない場合でも終了（中止）の宣言をすることがある。</strong><span class="ptr">← S03:p.31</span></p>
+    </div>
+
+    <div class="audio-block">
+      <span class="block-label">🎙 音声補足</span>
+      <p>宣言をしないとずるずるとプロジェクトが進行してしまう。一旦区切りをつける意味でも、終わりの宣言は非常に重要。目的未達成でも中止の宣言をすることがある。<span class="ptr">← S05-A</span></p>
+    </div>
+
+    <h4>終わりの例</h4>
+    <div class="table-wrap">
+    <table>
+      <tr><th>例</th><th>終わりとなる時点</th></tr>
+      <tr><td>料理</td><td>献立通りの料理が完成した時、または食事・食器片付けが終わった時<span class="ptr">← S03:p.32</span></td></tr>
+      <tr><td>家を建てる</td><td>家が完成し施工業者から施主へ引き渡された時、または引っ越して住み始めた時<span class="ptr">← S03:p.33</span></td></tr>
+      <tr><td>システム開発</td><td>システムが<strong>本番稼働（カットオーバー）した時</strong>（長いスパンでは最初の月末処理・年末処理確認後も）<span class="ptr">← S03:p.34</span></td></tr>
+    </table>
+    </div>
+
+    <div class="ext-block">
+      <span class="block-label">🔄 終わりは次の始まり</span>
+      <p>あるプロジェクトの終わりは、次のプロジェクトや次の運用の始まりでもある。ライフサイクル全体を考えて活動することが重要。「保守がしやすいか」「追加のコストはどうか」という観点でライフサイクル全体を見ることが求められる。<span class="ptr">← S03:p.35</span></p>
+    </div>
+    <div class="audio-block">
+      <span class="block-label">🎙 音声補足</span>
+      <p>システムが本番稼働すると運用が始まり、不具合が出てきたり変化が生じたりする。それを改善するという次のプロジェクトの始まりでもある。長い目で見たプロジェクトを考えることが重要。<span class="ptr">← S05-A</span></p>
+    </div>
+
+    <h3>第2章まとめ</h3>
+    <ol>
+      <li>プロジェクトには<strong>長い視点・短い視点</strong>のプロジェクトがある</li>
+      <li>どちらにも<strong>始まって終わるというライフサイクル</strong>がある</li>
+      <li>プロジェクトの<strong>始まりと終わりは宣言</strong>しなくてはならない</li>
+      <li>一つのプロジェクトの<strong>終わりは次のプロジェクトの始まり</strong>でもある<span class="ptr">← S03:p.36</span></li>
+    </ol>
+    </div>
+  </section>
+
+  <!-- 第3章 -->
+  <section class="card" id="ch3">
+    <h2><span class="section-num">§ 3</span> 第3章 プロジェクト型組織の形態</h2>
+    <p><strong>学習目標:</strong> プロジェクト型組織の形態について理解し、説明できる。<span class="ptr">← S03:p.39</span></p>
+
+    <div id="ch3-org">
+    <h3>3-1 組織の定義</h3>
+
+    <div class="definition-box">
+      <span class="def-label">定義 — 組織</span>
+      <p class="def-text">ある<strong>共通の目的</strong>を達成するために、<strong>2人以上</strong>の人が集まって、<strong>思いを合わせて</strong>、<strong>一定のルール</strong>の中で活動する仕組み。<span class="ptr">← S03:p.40</span></p>
+    </div>
+
+    <div class="audio-block">
+      <span class="block-label">🎙 音声補足</span>
+      <p>組織の重要点：①共通の目的があること、②それを全員が認識していること、③達成したいと思っていること。単に100人を集めただけでは組織として機能しない。「組織にしなくては、ただ人数がたくさんいてもプロジェクトは実行できない」。<span class="ptr">← S05-A</span></p>
+    </div>
+
+    <h4>なぜ複数人が必要か</h4>
+    <p>1人でできる仕事は限られているため、複数人での組織が必要になる。プロジェクトの規模が大きくなるほど関係する人数が増える。<span class="ptr">← S03:p.41</span></p>
+
+    <div class="table-wrap">
+    <table>
+      <tr><th>規模例</th><th>必要な人員</th></tr>
+      <tr><td>犬小屋を作る</td><td>1〜2人</td></tr>
+      <tr><td>一軒家を作る</td><td>10〜20人程度</td></tr>
+      <tr><td>駅のホームをリニューアルする</td><td>何千〜何万人</td></tr>
+    </table>
+    </div>
+
+    <h4>組織形態の種類</h4>
+    <div class="table-wrap">
+    <table>
+      <tr><th>組織形態</th><th>特徴</th><th>説明</th></tr>
+      <tr>
+        <td><strong>階層型組織</strong></td>
+        <td>オーソドックスな伝統的手法</td>
+        <td>役割によってグループが層のようになっている。上→下への指示と下→上への報告の繰り返し。<span class="ptr">← S03:p.47</span></td>
+      </tr>
+      <tr>
+        <td><strong>クロスファンクショナル型組織</strong></td>
+        <td>近年多用</td>
+        <td>機能（ファンクション）が縦横にクロスして任せられながら仕事をする。詳細は第9回で学習。<span class="ptr">← S03:p.46</span></td>
+      </tr>
+    </table>
+    </div>
+    </div>
+
+    <div id="ch3-hier">
+    <h3>3-2 階層型組織の構造と特徴</h3>
+
+    <!-- SVG: 階層型組織図 -->
+    <figure>
+      <svg viewBox="0 0 500 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:500px;">
+        <!-- 全体リーダー -->
+        <rect x="185" y="20" width="130" height="44" rx="8" fill="#1e2535" stroke="#fbbf24" stroke-width="2"/>
+        <text x="250" y="39" text-anchor="middle" fill="#fbbf24" font-size="13" font-weight="700" font-family="Noto Sans JP">全体リーダー</text>
+        <text x="250" y="55" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">（プロジェクトマネージャー）</text>
+
+        <!-- 接続線 -->
+        <line x1="205" y1="64" x2="140" y2="110" stroke="#5b8dee" stroke-width="1.5"/>
+        <line x1="295" y1="64" x2="360" y2="110" stroke="#5b8dee" stroke-width="1.5"/>
+
+        <!-- A地区リーダー -->
+        <rect x="60" y="110" width="160" height="38" rx="8" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+        <text x="140" y="133" text-anchor="middle" fill="#5b8dee" font-size="13" font-weight="700" font-family="Noto Sans JP">Ａ地区リーダー</text>
+
+        <!-- B地区リーダー -->
+        <rect x="280" y="110" width="160" height="38" rx="8" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+        <text x="360" y="133" text-anchor="middle" fill="#5b8dee" font-size="13" font-weight="700" font-family="Noto Sans JP">Ｂ地区リーダー</text>
+
+        <!-- A下のメンバー -->
+        <line x1="105" y1="148" x2="80" y2="192" stroke="#5b8dee" stroke-width="1.5"/>
+        <line x1="175" y1="148" x2="200" y2="192" stroke="#5b8dee" stroke-width="1.5"/>
+        <rect x="42" y="192" width="76" height="36" rx="6" fill="#0f1117" stroke="#2a3450" stroke-width="1.2"/>
+        <text x="80" y="214" text-anchor="middle" fill="#8a99b8" font-size="12" font-family="Noto Sans JP">メンバー</text>
+        <rect x="162" y="192" width="76" height="36" rx="6" fill="#0f1117" stroke="#2a3450" stroke-width="1.2"/>
+        <text x="200" y="214" text-anchor="middle" fill="#8a99b8" font-size="12" font-family="Noto Sans JP">メンバー</text>
+
+        <!-- B下のメンバー -->
+        <line x1="325" y1="148" x2="300" y2="192" stroke="#5b8dee" stroke-width="1.5"/>
+        <line x1="395" y1="148" x2="420" y2="192" stroke="#5b8dee" stroke-width="1.5"/>
+        <rect x="262" y="192" width="76" height="36" rx="6" fill="#0f1117" stroke="#2a3450" stroke-width="1.2"/>
+        <text x="300" y="214" text-anchor="middle" fill="#8a99b8" font-size="12" font-family="Noto Sans JP">メンバー</text>
+        <rect x="382" y="192" width="76" height="36" rx="6" fill="#0f1117" stroke="#2a3450" stroke-width="1.2"/>
+        <text x="420" y="214" text-anchor="middle" fill="#8a99b8" font-size="12" font-family="Noto Sans JP">メンバー</text>
+
+        <!-- 指示・報告ラベル -->
+        <text x="72" y="92" fill="#34d399" font-size="10" font-family="Noto Sans JP">指示↓</text>
+        <text x="72" y="105" fill="#fb923c" font-size="10" font-family="Noto Sans JP">↑報告</text>
+      </svg>
+      <figcaption>図：階層型組織の構造　<span class="ptr">S03:p.47-48</span></figcaption>
+    </figure>
+
+    <h4>階層型組織の特徴</h4>
+    <ul>
+      <li><strong>上の層の人</strong>がすぐ下の層の人に<strong>指示</strong>をする</li>
+      <li><strong>下の層の人</strong>は指示されたことを<strong>実行</strong>し、状況を上の人に<strong>報告</strong>する</li>
+      <li>この構造が横に増えても同じ仕組みで展開できる（スケーラビリティがある）</li>
+      <li>典型例: <strong>軍隊</strong>（上の命令に必ず従い、下は実行して報告する）<span class="ptr">← S03:p.49</span></li>
+    </ul>
+    <div class="audio-block">
+      <span class="block-label">🎙 音声補足</span>
+      <p>料理の例：総料理長の下に料理シェフとデザートリーダーがいて、その下にメンバーがいる構造。200名のディナーパーティーなどの大人数を対象にした場合、こうした階層型の組織が有効。メンバーがそれぞれの役割（「私はデザートを担当する」）を明確に持ち、指示-実行-報告の流れを守る。<span class="ptr">← S05-A</span></p>
+    </div>
+    </div>
+
+    <div id="ch3-member">
+    <h3>3-3 メンバー集めのポイント</h3>
+
+    <div class="highlight-box">
+      <p>💪 <strong>ベストメンバーで行こう！</strong></p>
+    </div>
+
+    <div class="table-wrap">
+    <table>
+      <tr><th>ポイント</th><th>内容</th></tr>
+      <tr>
+        <td><strong>悔いのない人選</strong></td>
+        <td>後で「あの人を入れておけば」と後悔しないために、この分野では一番だと思った人を熱意を込めて説得して連れてくる<span class="ptr">← S03:p.51</span></td>
+      </tr>
+      <tr>
+        <td><strong>専任できる体制</strong></td>
+        <td>名前だけプロジェクトに入っていて実際には別の人が手伝うという形はダメ。ベストメンバーが実際にプロジェクト期間中に専任して作業することが必要<span class="ptr">← S03:p.51</span></td>
+      </tr>
+      <tr>
+        <td><strong>日頃の努力</strong></td>
+        <td>他部門・他社との日頃からのコミュニケーションと関係構築が重要。「この人のプロジェクトなら出す価値がある」という関係性を普段から作っておく<span class="ptr">← S03:p.51</span></td>
+      </tr>
+    </table>
+    </div>
+    <div class="audio-block">
+      <span class="block-label">🎙 音声補足</span>
+      <p>日頃から良い関係を築いておかないと、いざベストメンバーを要請したときに「うちは重要な人材なので出せません」と断られてしまう。最初の組織形成は非常に重要な仕事で、プロジェクトのパフォーマンスを決める。<span class="ptr">← S05-A</span></p>
+    </div>
+    </div>
+
+    <h3>第3章まとめ</h3>
+    <ol>
+      <li>プロジェクトを複数人数で行う際には<strong>組織</strong>が必要になる</li>
+      <li>典型的な組織形態として<strong>階層型組織</strong>と<strong>クロスファンクショナル型組織</strong>がある（この回では階層型を解説）</li>
+      <li>メンバー集めは<strong>ベストメンバーで悔いのない人選</strong>を行うことが重要<span class="ptr">← S03:p.52</span></li>
+    </ol>
+  </section>
+
+  <!-- 第4章 -->
+  <section class="card" id="ch4">
+    <h2><span class="section-num">§ 4</span> 第4章 プロジェクト運営のしくみ</h2>
+    <p><strong>学習目標:</strong> プロジェクト運営のしくみについて理解し、説明できる。<span class="ptr">← S03:p.55</span></p>
+
+    <div id="ch4-points">
+    <h3>4-1 運営の難しさと3つのポイント</h3>
+
+    <div class="audio-block">
+      <span class="block-label">🎙 音声補足</span>
+      <p>プロジェクトの規模が大きくなり関係する人数が増えるほど、コミュニケーション・イメージ伝達・共有の難しさが増す。1人で行う場合は問題ないが、3人・40人（クラス）・100〜200人（町内）と増えるにつれ、意識の共通化が難しくなる。<span class="ptr">← S05-A</span></p>
+    </div>
+
+    <h4>組織としての運営の3つのポイント <span class="ptr">← S03:p.57</span></h4>
+    <div class="table-wrap">
+    <table>
+      <tr><th>#</th><th>ポイント</th><th>良い例</th><th>悪い例</th></tr>
+      <tr>
+        <td>①</td>
+        <td><strong>明確な役割と責任</strong></td>
+        <td>デザート担当の料理人・内装担当の工務店員・機材準備担当者など、誰が何をするかが全員に明示されている</td>
+        <td>みんなが同じところに固まる（役割分担なし）<span class="ptr">← S03:p.58</span></td>
+      </tr>
+      <tr>
+        <td>②</td>
+        <td><strong>状況の正確な把握と共有</strong></td>
+        <td>料理の進捗表・工事の日程表（更新版）・システム開発スケジュール（更新版）を全員が見られる</td>
+        <td>書いたものが古く、噂が蔓延し実態がわからない<span class="ptr">← S03:p.59</span></td>
+      </tr>
+      <tr>
+        <td>③</td>
+        <td><strong>会議などの公式な意思決定</strong></td>
+        <td>献立決定会議・工事内容決定会議・システム開発月例報告会議など</td>
+        <td>いつの間にか誰かの判断で方向が変わっている<span class="ptr">← S03:p.60</span></td>
+      </tr>
+    </table>
+    </div>
+    </div>
+
+    <div id="ch4-meetings">
+    <h3>4-2 主要な会議体 <span class="ptr">← S03:p.61</span></h3>
+
+    <div class="meeting-grid">
+      <div class="meeting-item">
+        <div class="meeting-name">① ステアリング・コミッティ</div>
+        <p><strong>役割:</strong> プロジェクトの方向性を決定する責任者の会議</p>
+        <p><strong>語源:</strong> ステアリング（車のハンドル・船の舵）</p>
+        <p><strong>メンバー:</strong> 各グループの責任者</p>
+        <p><strong>頻度:</strong> 方向転換が必要な時</p>
+        <p style="font-size:12px;color:var(--text-sub);margin-top:6px;">Go / Return / Stop の判断はここで行う</p>
+      </div>
+      <div class="meeting-item">
+        <div class="meeting-name">② 定例進捗報告会</div>
+        <p><strong>役割:</strong> 問題・予実績を定例的に報告する</p>
+        <p><strong>内容:</strong> 問題報告・予実績報告</p>
+        <p><strong>発表者:</strong> プロジェクトメンバー</p>
+        <p><strong>頻度:</strong> 月1回〜週1回〜毎日</p>
+        <p style="font-size:12px;color:var(--text-sub);margin-top:6px;">月例会 / 週例会 / 朝礼・終礼 / 9時から会議</p>
+      </div>
+      <div class="meeting-item">
+        <div class="meeting-name">③ マイルストーン・レビュー</div>
+        <p><strong>役割:</strong> 節目での評価・判定</p>
+        <p><strong>内容:</strong> 品質・コスト・スケジュールの実施状況</p>
+        <p><strong>報告者:</strong> プロジェクト責任者（PM）</p>
+        <p><strong>受け側:</strong> ステアリング・コミッティ</p>
+        <p style="font-size:12px;color:var(--text-sub);margin-top:6px;"><strong>結論: Go / Return / Stop</strong></p>
+      </div>
+    </div>
+
+    <h4>ステアリング・コミッティの具体例 <span class="ptr">← S03:p.63</span></h4>
+    <div class="table-wrap">
+    <table>
+      <tr><th>例</th><th>参加者</th><th>決定する内容</th></tr>
+      <tr><td>料理</td><td>各セクション（料理・前菜・デザート・ドリンク）の長</td><td>今回はこれでいこう、状況が変わったのでこう変えよう</td></tr>
+      <tr><td>家作り</td><td>住まう家族と建築の責任者</td><td>この家をこうしていこう、方針を確認・変更</td></tr>
+      <tr><td>システム開発</td><td>開発依頼責任者と開発責任者</td><td>これでやっていこう、状況が変わったのでこう変えよう</td></tr>
+    </table>
+    </div>
+
+    <h4>マイルストーン・レビューの判定 <span class="ptr">← S03:p.66-67</span></h4>
+    <!-- SVG: Go/Return/Stop -->
+    <figure>
+      <svg viewBox="0 0 500 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:500px;">
+        <!-- タイムライン -->
+        <line x1="40" y1="65" x2="460" y2="65" stroke="#3d4f7a" stroke-width="2"/>
+        <!-- 前回のレビュー -->
+        <circle cx="100" cy="65" r="10" fill="#2a3450" stroke="#5b8dee" stroke-width="2"/>
+        <text x="100" y="100" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">前回のレビュー</text>
+        <!-- 今回のレビュー -->
+        <circle cx="300" cy="65" r="10" fill="#fb923c" stroke="#fb923c" stroke-width="2"/>
+        <text x="300" y="100" text-anchor="middle" fill="#fb923c" font-size="11" font-family="Noto Sans JP">今回のレビュー</text>
+
+        <!-- Go矢印 -->
+        <path d="M310,60 L430,60 L420,50 M430,60 L420,70" fill="none" stroke="#34d399" stroke-width="2"/>
+        <text x="430" y="42" text-anchor="middle" fill="#34d399" font-size="14" font-weight="700" font-family="JetBrains Mono">Go</text>
+
+        <!-- Return矢印 -->
+        <path d="M290,50 Q250,20 200,50 L210,45 M200,50 L210,55" fill="none" stroke="#fbbf24" stroke-width="2"/>
+        <text x="245" y="22" text-anchor="middle" fill="#fbbf24" font-size="13" font-weight="700" font-family="JetBrains Mono">Return</text>
+
+        <!-- Stop -->
+        <text x="300" y="28" text-anchor="middle" fill="#f87171" font-size="13" font-weight="700" font-family="JetBrains Mono">Stop</text>
+        <line x1="290" y1="56" x2="290" y2="36" stroke="#f87171" stroke-width="1.5"/>
+      </svg>
+      <figcaption>図：マイルストーン・レビューの判断　<span class="ptr">S03:p.67</span></figcaption>
+    </figure>
+
+    <div class="table-wrap">
+    <table>
+      <tr><th>判定</th><th>意味</th></tr>
+      <tr><td style="color:var(--accent-green);font-weight:700;">Go（合格）</td><td>このまま進めてよい</td></tr>
+      <tr><td style="color:var(--accent-yellow);font-weight:700;">Return（やり直し）</td><td>修正して再度進める</td></tr>
+      <tr><td style="color:var(--accent-red);font-weight:700;">Stop（中止）</td><td>このプロジェクトを中止する。問題が解決されないままシステム開発が進むと使えないシステムが完成してしまうため、この判断が非常に重要。<span class="ptr">← S05-A</span></td></tr>
+    </table>
+    </div>
+
+    <div class="audio-block">
+      <span class="block-label">🎙 音声補足</span>
+      <p>ストップをかけないとそのまま赤字が垂れ流されたり、問題が解決されないままシステム開発が進んで最終的に使えないシステムが完成するという事態になりかねない。この判断は非常に重要。<span class="ptr">← S05-A</span></p>
+    </div>
+
+    <h4>共有・報告の方法 <span class="ptr">← S03:p.68</span></h4>
+    <p>関係者に日頃から関心を持ってもらい、状況を理解して早く手を打てるようにするため、以下のようなコミュニケーションツールを活用する。</p>
+    <ul>
+      <li>プロジェクト・メルマガ</li>
+      <li>プロジェクト・ブログ</li>
+      <li>メッセンジャーアプリ</li>
+    </ul>
+    </div>
+
+    <h3>第4章まとめ <span class="ptr">← S03:p.69</span></h3>
+    <ul>
+      <li>プロジェクトが大きくなるほど、関連する組織や人が多くなるので、組織としての<strong>運営を効率よく行うことが大切</strong></li>
+      <li>運営のポイントは<strong>明確な役割と責任</strong>・<strong>状況の正確な把握と共有</strong>・<strong>会議などの公式な意思決定</strong>の3つ</li>
+    </ul>
+  </section>
+
+  <!-- ===== 末尾補足 ===== -->
+  <section id="appendix">
+    <h2 style="font-size:18px;font-weight:700;color:var(--text);margin-bottom:20px;">📎 末尾補足</h2>
+
+    <!-- 未確定事項 (v1.1: U01低優先で残存・U02 Web確認で解消済み) -->
+    <div class="appendix-card undefined-card" id="app-undefined">
+      <h3>❓ 未確定事項・要確認リスト</h3>
+      <div class="table-wrap">
+      <table>
+        <tr><th>ID</th><th>内容</th><th>種別</th><th>優先度</th><th>対処状況</th></tr>
+        <tr>
+          <td>U01</td>
+          <td>講師が「携わった事例で言うと300名規模」と述べている現場の具体的なプロジェクト名・企業名・期間</td>
+          <td>口頭情報のみ</td>
+          <td>低</td>
+          <td>S03スライドに記載なし（写真2枚あり・企業名非公開）。授業内の補足説明にとどまるため解消不要と判断。</td>
+        </tr>
+        <tr style="background:rgba(52,211,153,0.06);">
+          <td><s>U02</s></td>
+          <td><s>Capers Jonesの「ソフトウェアの成功と失敗」の正確な出版年・訳者情報</s></td>
+          <td>外部補完</td>
+          <td>—</td>
+          <td>✅ 解消済み。書誌情報確認：共立出版、1997年10月、伊土誠一・富野寿 監訳。詳細は補足B参照。</td>
+        </tr>
+      </table>
+      </div>
+      <p style="font-size:12px;color:var(--text-sub);margin-top:8px;">残存未確定: 1件（低優先）／解消済み: 1件</p>
+    </div>
+
+    <!-- 補足A -->
+    <div class="appendix-card word-card" id="app-a">
+      <h3>⭐ 補足A: 最重要ワード一覧</h3>
+      <div class="table-wrap">
+      <table>
+        <tr><th>用語</th><th>読み</th><th>定義（原文から抽出）</th><th>重要度</th></tr>
+        <tr>
+          <td><strong>プロジェクトのライフサイクル</strong></td>
+          <td>らいふさいくる</td>
+          <td>プロジェクトが始まってから終わるまでの一連の流れ。「サイクル」は繰り返しがあることを意味し、あるプロジェクトの終わりは次のプロジェクトの始まりでもある。<span class="ptr">← S03:p.23</span></td>
+          <td><span class="star-high">★★★</span></td>
+        </tr>
+        <tr>
+          <td><strong>プロジェクト憲章</strong></td>
+          <td>けんしょう / Project Charter</td>
+          <td>プロジェクトの開始を公式に認めると書いた文書。目的・期間・リーダー・場所・組織などが記載され、周囲からプロジェクト立ち上がりが認識できる。PMBOKでは立ち上げプロセスの成果物として定義される。<span class="ptr">← S03:p.27</span></td>
+          <td><span class="star-high">★★★</span></td>
+        </tr>
+        <tr>
+          <td><strong>プロジェクト最終判定会</strong></td>
+          <td>さいしゅうはんていかい</td>
+          <td>プロジェクトの終了を公式に認める会議。当初の目的が達成されたかを判定し終了を宣言する。目的未達でも中止の宣言ができる（宣言がないとずるずると進行する）。<span class="ptr">← S03:p.31</span></td>
+          <td><span class="star-high">★★★</span></td>
+        </tr>
+        <tr>
+          <td><strong>マイルストーン</strong></td>
+          <td>まいるすとーん / Milestone</td>
+          <td>プロジェクトの途中段階のチェックポイント（節目）。マイルストーン・レビューでGo/Return/Stopを判定する。英語本来の意味は道標の里程標石。<span class="ptr">← S03:p.10</span></td>
+          <td><span class="star-high">★★★</span></td>
+        </tr>
+        <tr>
+          <td><strong>ステアリング・コミッティ</strong></td>
+          <td>すてありんぐこみってぃ（ステコミ / SC）</td>
+          <td>プロジェクトの方向性を決定する最上位の運営委員会。各グループの責任者・経営層で構成。「ステアリング」は車のハンドル・船の舵を意味し、方向転換を担う。PMではPMが対応できない上位問題の意思決定を行う。<span class="ptr">← S03:p.62</span></td>
+          <td><span class="star-high">★★★</span></td>
+        </tr>
+        <tr>
+          <td><strong>階層型組織</strong></td>
+          <td>かいそうがたそしき / Hierarchical Organization</td>
+          <td>役割によってグループが層のようになっている組織。上から下への指示・下から上への報告が基本構造。軍隊が典型例。スケーラビリティが高い（C地区・D地区と横展開できる）。<span class="ptr">← S03:p.47</span></td>
+          <td><span class="star-high">★★★</span></td>
+        </tr>
+        <tr>
+          <td><strong>クロスファンクショナル型組織</strong></td>
+          <td>くろすふぁんくしょなる</td>
+          <td>機能（ファンクション）が縦横にクロスして任せられながら仕事をする組織形態。複雑なプロジェクトへの適応性が高く近年多用される。詳細は第9回。<span class="ptr">← S03:p.45</span></td>
+          <td><span class="star-mid">★★☆</span></td>
+        </tr>
+        <tr>
+          <td><strong>幻想の標準化</strong></td>
+          <td>げんそうのひょうじゅんか</td>
+          <td>標準化によって安定期が訪れるが、その期間は短く次の環境変化が来て再び混沌となる現象。「時代が変わっても楽にはならない」ことを示すコンセプト。<span class="ptr">← S03:p.17</span></td>
+          <td><span class="star-mid">★★☆</span></td>
+        </tr>
+        <tr>
+          <td><strong>FP（ファンクションポイント）</strong></td>
+          <td>ふぁんくしょんぽいんと / Function Point</td>
+          <td>ソフトウェアの機能の数（規模）を表す尺度。FPが大きいほど（規模が大きいほど）プロジェクトの中止・遅延率が上がることがCapers Jonesの研究で示されている。<span class="ptr">← S03:p.7</span></td>
+          <td><span class="star-mid">★★☆</span></td>
+        </tr>
+        <tr>
+          <td><strong>カットオーバー</strong></td>
+          <td>かっとおーばー / Cut-over</td>
+          <td>システムが旧環境から新環境に切り替わって本番稼働すること。システム開発プロジェクトの終わりの時点として最も広く使われる基準。<span class="ptr">← S03:p.34</span></td>
+          <td><span class="star-mid">★★☆</span></td>
+        </tr>
+        <tr>
+          <td><strong>オフショア・ニアショア</strong></td>
+          <td>おふしょあ / Offshore・Nearshore</td>
+          <td>海外（オフショア）または近隣国（ニアショア）の開発チームを活用した開発手法。国際化・複雑化の具体例として言及。テレワーク開発と組み合わせるとマネジメントの重要性が増す。<span class="ptr">← S05-A</span></td>
+          <td>★☆☆</td>
+        </tr>
+      </table>
+      </div>
+    </div>
+
+    <!-- 補足B -->
+    <div class="appendix-card bg-card" id="app-b">
+      <h3>📚 補足B: 知っておくべき背景知識</h3>
+
+      <h4 style="color:var(--accent-green);margin:12px 0 6px;">✅ Capers Jones「ソフトウェアの成功と失敗」書誌情報（U02解消済み）</h4>
+      <div class="ext-block" style="margin:8px 0;">
+        <span class="block-label">📗 Web確認済み書誌情報</span>
+        <p><strong>日本語版書名:</strong> ソフトウェアの成功と失敗<br>
+        <strong>著者:</strong> Capers Jones（ケイパーズ・ジョーンズ）<br>
+        <strong>監訳:</strong> 伊土誠一・富野寿<br>
+        <strong>出版社:</strong> 共立出版（発行元: 構造計画研究所）<br>
+        <strong>発行:</strong> 1997年10月（ISBN: 9784320097209）<br>
+        <strong>ページ数:</strong> 308ページ</p>
+        <p style="margin-top:8px;font-size:13px;color:var(--text-sub);">Capers Jones はソフトウェア生産性研究の第一人者で、Software Productivity Research LLC（SPR）創設者。"Estimating Software Costs"（McGraw-Hill, 2007 第2版）、"Applied Software Measurement"（McGraw-Hill, 2008 第3版）など多数の著作がある。スライドに引用されているFPと成功率のデータはアジア・ヨーロッパ・南北アメリカの複数国のソフトウェアプロジェクトデータに基づく実証研究から導かれたもの。</p>
+      </div>
+
+      <h4 style="color:var(--accent-green);margin:20px 0 6px;">プロジェクト憲章・スコープ記述書・PM計画書の3段階</h4>
+      <div class="ext-block" style="margin:8px 0;">
+        <span class="block-label">📄 外部補足</span>
+        <div class="table-wrap" style="margin-top:8px;">
+        <table>
+          <tr><th>文書名</th><th>タイミング</th><th>記載内容</th></tr>
+          <tr>
+            <td><strong>プロジェクト憲章</strong></td>
+            <td>立ち上げ時</td>
+            <td>何のプロジェクトか・目的・期間・リーダー・予算概要。「このプロジェクトが存在する」ことの公式認証文書。PMBOKの立ち上げプロセスの主要成果物。</td>
+          </tr>
+          <tr>
+            <td><strong>プロジェクトスコープ記述書</strong></td>
+            <td>計画フェーズ初期</td>
+            <td>プロジェクトの範囲（何をやるか・何をやらないか）を詳細に定義。スコープクリープ（無制限な範囲拡大）を防ぐ基準文書。</td>
+          </tr>
+          <tr>
+            <td><strong>プロジェクトマネジメント計画書</strong></td>
+            <td>計画フェーズ</td>
+            <td>スケジュール・コスト・品質・リスク・コミュニケーション等の全管理計画を統合した文書。PMBOKでは10の知識エリアそれぞれのマネジメント計画を含む。</td>
+          </tr>
+        </table>
+        </div>
+      </div>
+
+      <h4 style="color:var(--accent-green);margin:20px 0 6px;">ステアリング・コミッティの実務的な位置づけ</h4>
+      <div class="ext-block" style="margin:8px 0;">
+        <span class="block-label">💼 外部補足 — IT用語辞典e-Words / Promapedia 参照</span>
+        <p>授業の定義（「異なる目的を持つグループ間で合意を得るための委員会」）に加え、実務上の特徴：</p>
+        <ul style="margin-top:8px;padding-left:18px;font-size:14px;">
+          <li>PMが対応できない<strong>上位課題（部門間対立・大幅なスコープ変更・大規模予算調整）</strong>の意思決定を行う場</li>
+          <li>定例ミーティングとの違い：定例は「進捗確認」が目的、ステコミは「方向性の確定と重要課題の解決」が目的</li>
+          <li>参加者はプロジェクトオーナー・経営層・主要部門責任者など<strong>意思決定権を持つ人物</strong>が原則</li>
+          <li>開催タイミングは事前にプロジェクト計画書で明確化しておく（「必要に応じて」では遅延しがち）</li>
+          <li>「ステコミ」「SC（エスシー）」と略されることが多い</li>
+        </ul>
+      </div>
+
+      <h4 style="color:var(--accent-green);margin:20px 0 6px;">起承転結とPMBOK 5プロセス群の対応</h4>
+      <div class="ext-block" style="margin:8px 0;">
+        <span class="block-label">📖 外部補足 — PMBOK第6版</span>
+        <div class="table-wrap" style="margin-top:8px;">
+        <table>
+          <tr><th>授業の「起承転結」</th><th>PMBOKプロセス群</th><th>主な活動</th></tr>
+          <tr><td>起（初期フェーズ）</td><td>立ち上げ</td><td>プロジェクト憲章作成・ステークホルダー特定</td></tr>
+          <tr><td>承（中間フェーズI）</td><td>計画→実行</td><td>スコープ記述書・PM計画書作成→実作業開始</td></tr>
+          <tr><td>転（中間フェーズII）</td><td>監視・コントロール</td><td>進捗測定・是正処置・変更管理</td></tr>
+          <tr><td>結（最終フェーズ）</td><td>終結</td><td>成果物引き渡し・プロジェクト終了宣言</td></tr>
+        </table>
+        </div>
+        <p style="font-size:12px;color:var(--text-sub);margin-top:6px;">※監視・コントロールは計画フェーズ開始と同時に並行して続き、終結まで続く点が特徴。PMBOK第7版（2021年）では5プロセス群から12の原理・原則に改定されたが、基本的な流れの概念は引き継がれている。</p>
+      </div>
+    </div>
+
+    <!-- 補足C -->
+    <div class="appendix-card exam-card" id="app-c">
+      <h3>🎯 補足C: 試験・レポートで重要な観点</h3>
+      <ul>
+        <li><strong>プロジェクトの3要素</strong>（目的・資源・期限）のそれぞれが欠けると何が問題になるかを具体例で説明できること</li>
+        <li><strong>「宣言が必要」な理由</strong>：始まり（=プロジェクト憲章）・終わり（=最終判定会）の宣言がないとどうなるかを説明できること。「宣言しないとずるずると進行する」は重要なキーワード。</li>
+        <li><strong>ライフサイクルの「終わりは始まり」</strong>：一つのプロジェクトが終わると次の運用・改善プロジェクトが始まる連鎖を説明できること。「保守しやすいか」「追加コストはどうか」という長期視点が重要。</li>
+        <li><strong>組織の4要素定義</strong>：「共通の目的を達成するために、2人以上が集まって、思いを合わせて、一定のルールの中で活動する仕組み」を正確に言えること。「100人集めても組織にならない」理由を説明できること。</li>
+        <li><strong>階層型組織の指示-報告サイクル</strong>：「上の層→下の層への指示」「下の層→上の層への報告」の繰り返し構造、および横展開できるスケーラビリティを説明できること。</li>
+        <li><strong>運営の3ポイント</strong>：①明確な役割と責任・②状況の正確な把握と共有・③公式な意思決定——それぞれの「悪い例」（役割が固まる・情報が古い・いつの間にか方向が変わる）とセットで説明できること。</li>
+        <li><strong>3つの会議体の区別</strong>：ステアリング・コミッティ（方向性・経営層）/ 定例進捗報告会（定期・メンバー同士）/ マイルストーン・レビュー（節目・PMがステコミに報告）の違いと用途を区別できること。</li>
+        <li><strong>Go / Return / Stop の判定</strong>：マイルストーン・レビューの3判定の意味。Stop判定が重要な理由（問題を抱えたまま進むと使えないシステムが完成する）を説明できること。</li>
+      </ul>
+    </div>
+
+    <!-- 補足D -->
+    <div class="appendix-card related-card" id="app-d">
+      <h3>🔗 補足D: 関連概念・次回への接続</h3>
+
+      <h4 style="color:var(--accent-purple);margin:12px 0 6px;">講義全体の流れ <span class="ptr">← S03:p.9</span></h4>
+      <div class="flow-diagram">
+        <div class="flow-node" style="font-size:12px;">第1回<br>オリエンテーション</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-node" style="font-size:12px;border-color:var(--accent-yellow);color:var(--accent-yellow);">第2回<br>ライフサイクル（今回）</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-node" style="font-size:12px;">第3回<br>管理の基本PDCA</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-node" style="font-size:12px;">第4回<br>立ち上げのプロセス</div>
+      </div>
+      <p style="font-size:13px;margin-top:8px;color:var(--text-sub);">以降（第5〜13回）：時間管理・クリティカルパス・コスト管理・品質管理・<strong>第9回：組織管理（クロスファンクショナル型含む）</strong>・コミュニケーション・リスク管理・調達管理・要求仕様書の作り方</p>
+
+      <h4 style="color:var(--accent-purple);margin:20px 0 6px;">PMBOK（プロジェクトマネジメント知識体系）との対応</h4>
+      <div class="ext-block" style="margin:8px 0;">
+        <span class="block-label">📖 外部補足</span>
+        <p>この授業で登場する概念は国際標準 PMBOK（PMI: Project Management Institute 策定）に準拠している。第6版（2017年）まで「5プロセス群 × 10知識エリア」の体系で整理されており、第7版（2021年）では「12の原理・原則」と「8のパフォーマンス領域」に改訂された。</p>
+        <div class="table-wrap" style="margin-top:8px;">
+        <table>
+          <tr><th>授業で登場する概念</th><th>PMBOKでの位置づけ</th></tr>
+          <tr><td>プロジェクト憲章</td><td>立ち上げプロセス群の主要成果物（Project Charter）</td></tr>
+          <tr><td>プロジェクトスコープ記述書</td><td>スコープマネジメント計画の成果物</td></tr>
+          <tr><td>マイルストーン・レビュー</td><td>監視・コントロールプロセスの実施手段</td></tr>
+          <tr><td>ステアリング・コミッティ</td><td>プロジェクトガバナンス構造の最上位意思決定機関</td></tr>
+          <tr><td>リスクの顕在化と低減</td><td>リスクマネジメント知識エリア（第12〜13回対応）</td></tr>
+        </table>
+        </div>
+      </div>
+
+      <h4 style="color:var(--accent-purple);margin:20px 0 6px;">ウォーターフォール型 vs アジャイル型</h4>
+      <div class="ext-block" style="margin:8px 0;">
+        <span class="block-label">💡 外部補足</span>
+        <p>この授業では主に<strong>ウォーターフォール型</strong>（要件定義→設計→開発→テスト→リリースを順番に進む）の管理を扱う。一方、現代では<strong>アジャイル型</strong>（短い反復サイクル「スプリント」を繰り返し価値を継続提供する）が広く普及している。</p>
+        <div class="table-wrap" style="margin-top:8px;">
+        <table>
+          <tr><th></th><th>ウォーターフォール型</th><th>アジャイル型</th></tr>
+          <tr><td>計画</td><td>プロジェクト開始時に全体計画</td><td>スプリントごとに計画</td></tr>
+          <tr><td>変更対応</td><td>変更は高コスト</td><td>変更を歓迎</td></tr>
+          <tr><td>組織形態</td><td>階層型が多い</td><td>クロスファンクショナル型が主</td></tr>
+          <tr><td>向いているプロジェクト</td><td>要件が明確・安定しているもの</td><td>要件が変化しやすいもの</td></tr>
+        </table>
+        </div>
+        <p style="font-size:12px;color:var(--text-sub);margin-top:6px;">クロスファンクショナル型組織の詳細と、アジャイルとの関係は第9回「プロジェクトの組織マネジメント」で扱われる。</p>
+      </div>
+
+      <h4 style="color:var(--accent-purple);margin:20px 0 6px;">PMPとPMI資格</h4>
+      <div class="ext-block" style="margin:8px 0;">
+        <span class="block-label">🏆 外部補足</span>
+        <p>PMP（Project Management Professional）はPMIが認定するプロジェクトマネジメントの国際資格。PMBOKの知識を実務に応用できることを証明する。プロジェクトマネジメントのキャリアを目指す場合、この授業の学習内容は資格取得の基礎となる。</p>
+      </div>
+    </div>
+
+    <!-- ページフッター -->
+    <div style="margin-top:32px;padding-top:20px;border-top:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);">
+      <p>SSP v4.5.1 | ソース: S03（スライドPDF 71p）+ S05×2（hynote.ai）| QC: 実施済み</p>
+      <p style="margin-top:4px;">v1.0 初版 — note_pm_intro_02.html</p>
+      <p style="margin-top:4px;">v1.1 未確定事項解消（U02 Web確認済み）/ 補足A〜D全面強化（PMBOK対応表・ステコミ実務補足・書誌情報確定・会議体比較表等追加）</p>
+    </div>
+  </section>
+
+</main>
+
+</body>
+</html>
