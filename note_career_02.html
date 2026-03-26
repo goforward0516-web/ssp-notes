@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>キャリア入門 第2回｜企業が求める人材像</title>
+<style>
+  :root {
+    --bg: #1a1a2e;
+    --surface: #16213e;
+    --surface2: #0f3460;
+    --accent: #e94560;
+    --accent2: #f5a623;
+    --accent3: #4ecdc4;
+    --text: #e0e0e0;
+    --text-sub: #a0a0b0;
+    --border: #2a2a4a;
+    --tag-def: #2d6a4f;
+    --tag-ex: #1a4a6b;
+    --tag-ext: #4a2d6a;
+    --warn: #7a4a00;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Hiragino Sans', 'Meiryo', sans-serif;
+    font-size: 15px;
+    line-height: 1.8;
+    padding: 0 0 60px 0;
+  }
+  .page-header {
+    background: linear-gradient(135deg, #0f3460 0%, #16213e 60%, #1a1a2e 100%);
+    border-bottom: 3px solid var(--accent);
+    padding: 36px 40px 28px;
+  }
+  .page-header .label {
+    font-size: 11px; letter-spacing: 2px; color: var(--accent2);
+    text-transform: uppercase; margin-bottom: 6px;
+  }
+  .page-header h1 { font-size: 26px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+  .page-header .subtitle { font-size: 14px; color: var(--text-sub); }
+  .meta-row { display: flex; gap: 20px; margin-top: 16px; flex-wrap: wrap; }
+  .meta-chip {
+    font-size: 12px; background: rgba(255,255,255,0.07);
+    border: 1px solid var(--border); border-radius: 20px; padding: 3px 12px; color: var(--text-sub);
+  }
+  .toc {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 20px 28px; margin: 32px 40px;
+  }
+  .toc h2 { font-size: 13px; color: var(--accent2); letter-spacing: 1px; margin-bottom: 12px; }
+  .toc ol { padding-left: 20px; }
+  .toc li { margin: 4px 0; }
+  .toc a { color: var(--accent3); text-decoration: none; font-size: 14px; }
+  .toc a:hover { text-decoration: underline; }
+  .section { margin: 0 40px 48px; }
+  .section-header {
+    display: flex; align-items: center; gap: 14px;
+    border-bottom: 2px solid var(--accent); padding-bottom: 8px; margin-bottom: 24px;
+  }
+  .section-num {
+    background: var(--accent); color: #fff; font-size: 12px; font-weight: 700;
+    border-radius: 6px; padding: 3px 10px; white-space: nowrap;
+  }
+  .section-header h2 { font-size: 20px; font-weight: 700; color: #fff; }
+  .card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 20px 24px; margin-bottom: 18px;
+  }
+  .card h3 {
+    font-size: 15px; font-weight: 700; color: var(--accent2); margin-bottom: 12px;
+    border-left: 3px solid var(--accent2); padding-left: 10px;
+  }
+  .card p { margin-bottom: 8px; color: var(--text); }
+  .tag {
+    display: inline-block; font-size: 11px; font-weight: 700; border-radius: 4px;
+    padding: 1px 7px; margin-right: 6px; margin-bottom: 2px; vertical-align: middle;
+  }
+  .tag-def { background: var(--tag-def); color: #b7e4c7; border: 1px solid #40916c; }
+  .tag-ex  { background: var(--tag-ex);  color: #90e0ef; border: 1px solid #0077b6; }
+  .tag-ext { background: var(--tag-ext); color: #d8b4fe; border: 1px solid #7c3aed; }
+  .tag-key { background: #3a2a00; color: var(--accent2); border: 1px solid #7a5a00; }
+  .highlight {
+    background: rgba(233,69,96,0.08); border-left: 4px solid var(--accent);
+    border-radius: 0 8px 8px 0; padding: 14px 18px; margin: 14px 0; color: var(--text);
+  }
+  .highlight-blue {
+    background: rgba(78,205,196,0.08); border-left: 4px solid var(--accent3);
+    border-radius: 0 8px 8px 0; padding: 14px 18px; margin: 14px 0;
+  }
+  .highlight-yellow {
+    background: rgba(245,166,35,0.08); border-left: 4px solid var(--accent2);
+    border-radius: 0 8px 8px 0; padding: 14px 18px; margin: 14px 0;
+  }
+  .compare-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+  .compare-table th {
+    background: var(--surface2); color: var(--accent2); padding: 10px 14px;
+    text-align: center; border: 1px solid var(--border); font-size: 13px;
+  }
+  .compare-table td {
+    padding: 9px 14px; border: 1px solid var(--border);
+    background: var(--surface); vertical-align: top;
+  }
+  .compare-table .label-col {
+    color: var(--accent3); font-weight: 700; white-space: nowrap; width: 120px;
+  }
+  .three-power { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin: 16px 0; }
+  .power-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 16px; text-align: center;
+  }
+  .power-card .icon { font-size: 28px; margin-bottom: 8px; }
+  .power-card .title { font-size: 14px; font-weight: 700; color: var(--accent2); margin-bottom: 6px; }
+  .power-card .en { font-size: 11px; color: var(--text-sub); margin-bottom: 8px; }
+  .power-card p { font-size: 13px; color: var(--text); text-align: left; }
+  .employability-structure { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 16px 0; }
+  .emp-item { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+  .emp-item .emp-label {
+    font-size: 12px; font-weight: 700; margin-bottom: 6px; padding: 2px 8px;
+    border-radius: 4px; display: inline-block;
+  }
+  .emp-visible { border-top: 3px solid var(--accent2); }
+  .emp-hidden  { border-top: 3px solid var(--accent3); }
+  .emp-a { background: rgba(245,166,35,0.15); color: var(--accent2); }
+  .emp-b { background: rgba(245,166,35,0.08); color: var(--accent2); }
+  .emp-c { background: rgba(78,205,196,0.15); color: var(--accent3); }
+  .horensou { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin: 16px 0; }
+  .hs-card {
+    background: var(--surface); border-radius: 10px; padding: 16px;
+    text-align: center; border: 1px solid var(--border);
+  }
+  .hs-card .hs-kanji { font-size: 32px; font-weight: 900; color: var(--accent); margin-bottom: 4px; }
+  .hs-card .hs-yomi  { font-size: 12px; color: var(--text-sub); margin-bottom: 10px; }
+  .hs-card .hs-purpose { font-size: 12px; color: var(--accent3); font-weight: 700; margin-bottom: 6px; }
+  .hs-card p { font-size: 12px; color: var(--text); text-align: left; }
+  .skill-stack { margin: 16px 0; }
+  .skill-row {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 8px;
+    padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border);
+  }
+  .skill-row.app { background: rgba(245,166,35,0.1); border-color: rgba(245,166,35,0.3); }
+  .skill-row.os  { background: rgba(78,205,196,0.07); border-color: rgba(78,205,196,0.3); }
+  .skill-badge { font-size: 11px; font-weight: 700; border-radius: 5px; padding: 2px 8px; white-space: nowrap; }
+  .badge-app { background: var(--accent2); color: #000; }
+  .badge-os  { background: var(--accent3); color: #000; }
+  .skill-name { font-size: 14px; font-weight: 700; }
+  .skill-desc { font-size: 13px; color: var(--text-sub); margin-left: auto; }
+  .num-badge {
+    display: inline-block; background: var(--accent); color: #fff; font-size: 20px;
+    font-weight: 900; border-radius: 8px; padding: 4px 14px; margin: 0 4px;
+    vertical-align: middle; line-height: 1.4;
+  }
+  .footer {
+    text-align: center; color: var(--text-sub); font-size: 12px;
+    margin-top: 48px; padding: 16px 40px; border-top: 1px solid var(--border);
+  }
+  ul.note-list { padding-left: 18px; margin: 8px 0; }
+  ul.note-list li { margin: 5px 0; font-size: 14px; }
+  ul.note-list li::marker { color: var(--accent2); }
+  ol.note-olist { padding-left: 20px; margin: 8px 0; }
+  ol.note-olist li { margin: 5px 0; font-size: 14px; }
+  ol.note-olist li::marker { color: var(--accent); font-weight: 700; }
+  strong { color: #fff; }
+  @media (max-width: 700px) {
+    .page-header, .toc, .section { margin-left: 16px; margin-right: 16px; }
+    .three-power, .horensou, .employability-structure { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="label">Cyber University ／ 学部共通教養科目</div>
+  <h1>キャリア入門　第2回</h1>
+  <div class="subtitle">企業が求める人材像</div>
+  <div class="meta-row">
+    <span class="meta-chip">📚 S02 文字起こし</span>
+    <span class="meta-chip">📄 S03 スライドPDF</span>
+    <span class="meta-chip">🗂 4章構成</span>
+    <span class="meta-chip">SSP v4.2</span>
+  </div>
+</div>
+
+<div class="toc">
+  <h2>目　次</h2>
+  <ol>
+    <li><a href="#ch1">第1章　雇用情勢の変化</a>　— 終身雇用の崩壊・社会人基礎力</li>
+    <li><a href="#ch2">第2章　エンプロイアビリティ</a>　— 雇用され続ける能力の構造</li>
+    <li><a href="#ch3">第3章　コミュニケーション</a>　— 報告・連絡・相談（ホウレンソウ）</li>
+    <li><a href="#ch4">第4章　企業活動の実際と人材育成</a>　— CSR・ステークホルダー・キャリアパス</li>
+    <li><a href="#appendix" style="color:var(--accent2);">⭐ 末尾補足</a>　— 最重要用語集・試験対策・誤変換パターン記録</li>
+  </ol>
+</div>
+
+<!-- ═══ 第1章 ═══ -->
+<div class="section" id="ch1">
+  <div class="section-header">
+    <span class="section-num">第1章</span>
+    <h2>雇用情勢の変化</h2>
+  </div>
+
+  <div class="card">
+    <h3>終身雇用制度の崩壊</h3>
+    <p>日本は高度経済成長期に<strong>終身雇用制度</strong>（入社から定年まで雇用継続）を取り入れてきた。しかし以下の要因により制度が揺らいだ。</p>
+    <ul class="note-list">
+      <li>バブル崩壊による業績悪化</li>
+      <li>企業間競争の激化</li>
+      <li>組織の<strong>ダウンサイジング</strong>（組織を小さな単位に再編し、その中での成果を重視）</li>
+    </ul>
+    <table class="compare-table" style="margin-top: 16px;">
+      <tr><th>旧来（終身雇用時代）</th><th>現在（成果主義時代）</th></tr>
+      <tr>
+        <td>終身雇用・年功主義</td>
+        <td style="color:var(--accent);">流動的な雇用・成果主義</td>
+      </tr>
+      <tr>
+        <td>入社後に長期間かけて再教育 → 指示通りに完璧にこなす人材を育てる</td>
+        <td style="color:var(--accent);">早期配属で<strong>即戦力として活躍</strong> → 自ら考え・仕事を創り出す人材が求められる</td>
+      </tr>
+      <tr>
+        <td>大学教育と企業教育の乖離が大きい</td>
+        <td>学生時代からの社会人基礎力の習得が重要</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>仕事の構造：95% と 5%（講師の実務経験から）</h3>
+    <div class="highlight">
+      <p>仕事の <span class="num-badge">95%</span> は決まりきった業務（上司の指示・会社の手順）。</p>
+      <p>残り <span class="num-badge">5%</span> が自分の力を発揮できる部分。<br>
+      この5%で「自分がやりたい仕事・会社が求める仕事・市場が求める仕事」を<strong>いかに創り出せるか</strong>が評価につながる。</p>
+    </div>
+    <p style="font-size: 13px; color: var(--text-sub); margin-top: 8px;">※この95%/5%という数字は、講師が企業研修の実務経験から語った経験則であり、特定の統計調査を出典とするものではない（S03スライドにも記載なし）。正確な数値ではなく「仕事の大半は定型業務」という本質的なメッセージとして理解するとよい。</p>
+    <p style="margin-top: 8px;"><span class="tag tag-ext">[外部補足]</span>就職して間もない段階では「5%の裁量」を小さく感じがちだが、3年経って仕事が見えてきた段階から本来の力が発揮できる。早期離職は機会損失になりやすい。</p>
+  </div>
+
+  <div class="card">
+    <h3><span class="tag tag-key">数値</span>　入社3年以内の離職率と七五三現象</h3>
+    <p><strong>七五三現象</strong>とは、就職して3年以内に中卒の7割・高卒の5割・大卒の3割が離職する現象の通称（1990年代から使われてきた言葉）。現在の実態は改善されているが「大卒3割」の傾向は続いている。</p>
+    <p style="margin-top: 10px;">厚生労働省「新規学卒就職者の離職状況」の最新公表データ（令和4年3月卒業者、2025年10月公表）では：</p>
+    <table class="compare-table" style="margin-top: 10px;">
+      <tr><th>学歴</th><th>七五三現象（通称）</th><th>最新実績（R4.3卒）</th></tr>
+      <tr><td>中学卒</td><td>約7割</td><td><strong>54.1%</strong></td></tr>
+      <tr><td>高校卒</td><td>約5割</td><td><strong>37.9%</strong></td></tr>
+      <tr><td>大学卒</td><td>約3割</td><td><strong>33.8%</strong></td></tr>
+    </table>
+    <p style="margin-top: 8px; font-size: 13px; color: var(--text-sub);">出典：厚生労働省「新規学卒就職者の離職状況（令和4年3月卒業者）」2025年10月公表。R3.3卒（2024年10月公表）では大卒34.9%（前年比+2.6pt上昇）。<br>
+    ※講師が授業で言及した「最近40%超」は公式統計では確認されないが、小規模事業所（5人未満）限定では大卒59.1%（R3.3卒）に達しており、業種・規模によって大きく異なる。</p>
+    <div class="highlight-yellow">
+      <strong>なぜ離職するのか？</strong>
+      <p>「3年経って仕事が見え始めた → もっと自分の力が発揮できる別の会社では？」という心理から離職している。</p>
+      <p>しかし実態は逆：3年経て初めて力が本当に発揮できる段階に入る。根本原因は<strong>目的意識の欠如</strong>（自分が何をやりたいかが不明確なまま入社している）。</p>
+      <p style="margin-top: 6px; font-size: 13px;">離職理由の上位：①仕事が自分に合わなかった（大卒43.4%）②人間関係がよくなかった（23.7%）③労働条件の不満（23.4%）（内閣府「子供・若者白書」平成30年版）</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3><span class="tag tag-def">定義</span>　社会人基礎力（経済産業省）</h3>
+    <p>経済産業省が2006年に提唱した「職場や地域社会で多様な人々と仕事をしていくために必要な基礎的な力」。<strong>3つの能力・12の能力要素</strong>で構成される。2018年には「人生100年時代の社会人基礎力」として再定義され、3つの視点（学び・統合・目的）とリフレクション（振り返り）を軸とする概念が加わった。</p>
+    <div class="three-power" style="margin-top: 16px;">
+      <div class="power-card">
+        <div class="icon">🚀</div>
+        <div class="title">前に踏み出す力</div>
+        <div class="en">Action</div>
+        <p>一歩前に踏み出し、失敗しても粘り強く取り組む力。<br>能力要素：①主体性　②働きかける力　③実行力</p>
+      </div>
+      <div class="power-card">
+        <div class="icon">🧠</div>
+        <div class="title">考え抜く力</div>
+        <div class="en">Thinking</div>
+        <p>何事にも疑問を持ち、自分なりの答えを出す力。<br>能力要素：④課題発見力　⑤計画力　⑥創造力</p>
+      </div>
+      <div class="power-card">
+        <div class="icon">🤝</div>
+        <div class="title">チームで働く力</div>
+        <div class="en">Teamwork</div>
+        <p>多様な人とともに組織の目標に向かって協力する力。<br>能力要素：⑦発信力　⑧傾聴力　⑨柔軟性　⑩情況把握力　⑪規律性　⑫ストレスコントロール力</p>
+      </div>
+    </div>
+    <div class="highlight-blue" style="margin-top: 12px;">
+      <strong>2018年改訂：人生100年時代の社会人基礎力（3つの視点の追加）</strong>
+      <ul class="note-list" style="margin-top: 6px;">
+        <li><strong>目的</strong>（どう活躍するか）：自分がどのように社会・組織の中で活躍したいかを考える</li>
+        <li><strong>学び</strong>（何を学ぶか）：学び続けることを学ぶ。仕事と学びを循環させ続ける</li>
+        <li><strong>統合</strong>（どう学ぶか）：多様な経験・知識を組み合わせて新しい価値を生む</li>
+      </ul>
+      <p style="margin-top: 6px; font-size: 13px;">3能力・12要素を土台としつつ、<strong>リフレクション（振り返り）</strong>を軸として3つの視点のバランスを図りながら自らキャリアを切り開く。対象年齢も若者だけでなく全世代へ拡張。</p>
+    </div>
+    <p style="margin-top: 10px; font-size: 13px; color: var(--text-sub);">出典：経済産業省 https://www.meti.go.jp/policy/kisoryoku/index.html</p>
+  </div>
+
+  <div class="card">
+    <h3>人生100年時代のスキル構造（アプリ／OSモデル）</h3>
+    <p>スマートフォンと同様、働き手も「アプリ」と「OS」を常にアップデートし続けることが必要。</p>
+    <div class="skill-stack">
+      <div class="skill-row app">
+        <span class="skill-badge badge-app">アプリ層</span>
+        <span class="skill-name">社内スキル</span>
+        <span class="skill-desc">職場によって異なる。職場で習得する。</span>
+      </div>
+      <div class="skill-row app">
+        <span class="skill-badge badge-app">アプリ層</span>
+        <span class="skill-name">専門スキル</span>
+        <span class="skill-desc">人材としての付加価値源泉。絶えず新たな習得・更新が必要。</span>
+      </div>
+      <div class="skill-row os">
+        <span class="skill-badge badge-os">OS層</span>
+        <span class="skill-name">社会人基礎力</span>
+        <span class="skill-desc">社会人としての基礎スキル。初期に身につけておく必要がある。</span>
+      </div>
+      <div class="skill-row os">
+        <span class="skill-badge badge-os">OS層</span>
+        <span class="skill-name">キャリア意識・マインド</span>
+        <span class="skill-desc">全ての基盤。絶えず持ち続けることが必要。</span>
+      </div>
+    </div>
+    <div class="highlight-blue">
+      <strong>このキャリア入門で身につけるのは OS層</strong>
+      <p>学生時代に「社会人基礎力」と「キャリア意識・マインド」（OS部分）をしっかり習得しておく。専門スキル（アプリ）は社会に出てから積み上げていく。</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>「人生100年時代の社会人基礎力」：3つの視点 × リフレクション</h3>
+    <p>能力を発揮するにあたって自己を認識しリフレクション（振り返り）しながら、目的・学び・統合のバランスを図ることが自らのキャリアを切り開く上で必要。</p>
+    <ul class="note-list">
+      <li><strong>目的</strong>：どう活躍するか（自己実現や社会貢献に向けて行動する）</li>
+      <li><strong>学び</strong>：何を学ぶか（自分の興味・仕事で必要なものを考えながら学び続ける）</li>
+      <li><strong>統合</strong>：どのように学ぶか（多様な体験・経験・能力・キャリアを組み合わせ統合する）</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ═══ 第2章 ═══ -->
+<div class="section" id="ch2">
+  <div class="section-header">
+    <span class="section-num">第2章</span>
+    <h2>エンプロイアビリティ</h2>
+  </div>
+
+  <div class="card">
+    <h3><span class="tag tag-def">定義</span>　エンプロイアビリティ（Employability）</h3>
+    <p><strong>Employ（雇用する）＋ Ability（能力）</strong>の造語。</p>
+    <div class="highlight">
+      <strong>＝「（継続的に）雇用され得る能力」</strong>
+      <p>企業が社員を雇う能力ではなく、<strong>就職した後も継続して雇用され続けるための能力</strong>を指す。</p>
+    </div>
+    <p><strong>概念の背景</strong>：1980年代以降、アメリカで企業のダウンサイジングやリストラクチャリング（＝再構築）が進み、長期的雇用が保証できなくなったため、長期雇用に代わる発展的な労使関係を構築するために生まれた概念。</p>
+    <p style="margin-top: 8px; font-size: 13px; color: var(--text-sub);">出典：厚生労働省職業能力開発局「エンプロイアビリティの判断基準等に関する調査研究報告書」</p>
+    <p style="margin-top: 6px; font-size: 13px;"><span class="tag tag-ext">[外部補足]</span>「リストラ」の本来の意味は「解雇」ではなく「組織の再構築（Restructuring）」。ダウンサイジングは組織を小さな単位に再編成すること。</p>
+  </div>
+
+  <div class="card">
+    <h3>エンプロイアビリティの構造（企業を超えて通用する能力）</h3>
+    <div class="employability-structure">
+      <div class="emp-item emp-visible">
+        <span class="emp-label emp-a">(A) 知識・技能　【見える部分】</span>
+        <p style="font-size: 13px; margin-top: 8px;"><strong>職務遂行に必要な特定の知識・技能などの顕在的なもの。</strong></p>
+        <p style="font-size: 13px;">主に大学・専門教育、または企業内のOJT・Off-JTによる職業訓練や教育訓練により習得できる。</p>
+        <p style="font-size: 12px; color: var(--text-sub); margin-top: 6px;">例：IT総合学部・世界遺産学部の専門教育で習得するもの</p>
+      </div>
+      <div class="emp-item emp-visible">
+        <span class="emp-label emp-b">(B) 思考特性・行動特性　【見える部分】</span>
+        <p style="font-size: 13px; margin-top: 8px;"><strong>協調性・積極性など、職務遂行にあたり各個人が保持している思考・行動特性。</strong></p>
+        <p style="font-size: 13px;">単なる職業訓練では身につかない。キャリアの方向性を定め、職業上のキャリアを積むことで自律的に習得していくもの。学校の集団生活と職場での集団生活は「自分の立ち振る舞い方」が異なる点に注意。</p>
+      </div>
+      <div class="emp-item emp-hidden" style="grid-column: 1 / -1;">
+        <span class="emp-label emp-c">(C) 動機・人柄・性格・信念・価値観　【見えない部分】</span>
+        <p style="font-size: 13px; margin-top: 8px;"><strong>潜在的な個人的属性に関するもの。</strong>本人が持って生まれた特性や、子供の頃からの実生活・教育によって育まれた性格が基になる。</p>
+        <p style="font-size: 13px; margin-top: 6px;"><strong>対人対応力</strong>：「空気を読む」べき場面と「ガムシャラに前進する」べき場面をうまく使い分けながら自分の特性を発揮する力。自分が周囲から誤解されると感じるなら、「特性の引き出し方」を見直す。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>エンプロイアビリティを高めるために</h3>
+    <div class="highlight-yellow">
+      <strong>① 労働市場での価値を意識する</strong>
+      <p>自分の業務・目指す仕事に必要な能力を身につけるだけでなく、<strong>他社・異業種でも通用するビジネス全般のスキル</strong>（広い知識・スキル）を習得する意識が必要。</p>
+    </div>
+    <div class="highlight-blue" style="margin-top: 12px;">
+      <strong>② 自発的に能力を習得する</strong>
+      <p>「就職してから会社が教えてくれるもの」という受け身の発想を捨てる。労働市場における自分の価値は、<strong>自ら高めなければならない</strong>という意識を持って積極的に習得する。</p>
+    </div>
+    <p style="margin-top: 14px;"><strong>習得目標となる5つの力</strong>：リーダーシップ・問題解決力・判断力・交渉力・創造力</p>
+    <p style="font-size: 13px; color: var(--text-sub); margin-top: 6px;">これら5つすべてを持つ人材は社会でもごくわずか。自分が「これには自信がある」という要素を1つでも発揮できるようになることが大切。弱い部分は他の要素で補完することを考える。</p>
+  </div>
+</div>
+
+<!-- ═══ 第3章 ═══ -->
+<div class="section" id="ch3">
+  <div class="section-header">
+    <span class="section-num">第3章</span>
+    <h2>コミュニケーション</h2>
+  </div>
+
+  <div class="card">
+    <h3>職場で求められるコミュニケーション</h3>
+    <p>日常の友人・家族とのコミュニケーションと職場のコミュニケーションは異なる。職場では相手の役割に応じて目的が分かれる。</p>
+    <table class="compare-table" style="margin-top: 12px;">
+      <tr><th>相手</th><th>コミュニケーションの形</th><th>目的</th></tr>
+      <tr>
+        <td class="label-col">上司へ</td>
+        <td>報告・連絡・相談（ホウレンソウ）</td>
+        <td>業務進行を上司が把握できるよう支援する</td>
+      </tr>
+      <tr>
+        <td class="label-col">同僚へ</td>
+        <td>協力・連携・情報共有</td>
+        <td>チームで無駄なく効率的に仕事を進める</td>
+      </tr>
+      <tr>
+        <td class="label-col">顧客へ</td>
+        <td>説明・報告・聞き取り</td>
+        <td>顧客に価値を提供する（ビジネス成立の本質）</td>
+      </tr>
+    </table>
+    <div class="highlight" style="margin-top: 14px;">
+      <strong>重要な原則</strong>：ビジネスは「自分がやりたいこと」ではなく<strong>「お客様・周囲が求めること」</strong>を行って初めて成立する。周囲が求めることを理解するために積極的にコミュニケーションをとることが必須。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3><span class="tag tag-key">数値</span>　リーダーの影響力 20% vs 部下の力 80%</h3>
+    <div class="highlight">
+      <p>組織全体が出す結果のうち、リーダーが及ぼす影響力は <span class="num-badge">20%</span>。</p>
+      <p>残り <span class="num-badge">80%</span> は部下（一般社員）の力に左右される。</p>
+    </div>
+    <p>→ <strong>「部下力」</strong>（部下が上司のことを考えてサポートできる力）が非常に重要。そのためにコミュニケーションを通じて「上司・リーダーが何を考えているか」を把握することが不可欠。</p>
+  </div>
+
+  <div class="card">
+    <h3>報告・連絡・相談（ホウレンソウ）の詳細</h3>
+    <div class="horensou">
+      <div class="hs-card">
+        <div class="hs-kanji">報</div>
+        <div class="hs-yomi">ほうこく</div>
+        <div class="hs-purpose">目的：与えられた業務の進行状況や結果を知らせる</div>
+        <p>中間報告も必要。手段（口頭・メール・メモ）とタイミングを考える。分かりやすくするために成果物・資料を準備する場合もある。</p>
+        <p style="margin-top: 6px; font-size: 12px; color: var(--accent2);">⚠ 「忙しそうだから後回し」は問題になりやすい。最初に「こういう場合はどうすれば？」と確認しておく。</p>
+      </div>
+      <div class="hs-card">
+        <div class="hs-kanji">連</div>
+        <div class="hs-yomi">れんらく</div>
+        <div class="hs-purpose">目的：方向性のズレを防ぎ、業務を円滑に進める</div>
+        <p>変更があった場合などのタイミングが重要。<strong>5W2H</strong>（When/Where/Who/What/Why・How/How much）の要領で簡潔に伝える。</p>
+        <p style="margin-top: 6px; font-size: 12px; color: var(--accent3);">逐次連絡でアドバイスを得られ、大きな手戻りを防げる＝OJTの学びになる。</p>
+      </div>
+      <div class="hs-card">
+        <div class="hs-kanji">相</div>
+        <div class="hs-yomi">そうだん</div>
+        <div class="hs-purpose">目的：問題の早期解決・効率的な業務遂行</div>
+        <p>一人でボールを長く持ちすぎると問題は大きくなる。<strong>早め早めに相談する</strong>ことが精神的負荷を下げる。</p>
+        <p style="margin-top: 6px; font-size: 12px; color: var(--accent2);">相談内容は明確に・情報を整理して伝える。自分なりの対策案も事前に考えておく（「君はどう考える？」と聞かれることがある）。</p>
+      </div>
+    </div>
+    <div class="highlight-blue" style="margin-top: 14px;">
+      <strong>ホウレンソウの本質</strong>：自分の考えを伝えるためではなく、<strong>上司が業務を前進させるための情報を提供すること</strong>。相談の「相」だけが自分の意見を入れる部分。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>他の社員のコミュニケーションにも目を配る</h3>
+    <p>上司だけでなく、職場の様々な社員の行動・コミュニケーションを観察することで：</p>
+    <ul class="note-list">
+      <li>企業・チームが目指している目標が自然と理解できる</li>
+      <li>自分に任せられた仕事の意味が確認できる</li>
+      <li>モチベーションが上がる</li>
+      <li>転職・部署異動後も早期に新しい職場の方向性を把握できる</li>
+    </ul>
+    <p style="margin-top: 10px;"><span class="tag tag-ext">[外部補足]</span>「自分より仕事ができる人を見つけたら、なぜできるのかの理由を徹底的に探す」という姿勢が成長を加速させる。できる人とできない人の差には必ず理由がある。</p>
+  </div>
+</div>
+
+<!-- ═══ 第4章 ═══ -->
+<div class="section" id="ch4">
+  <div class="section-header">
+    <span class="section-num">第4章</span>
+    <h2>企業活動の実際と人材育成</h2>
+  </div>
+
+  <div class="card">
+    <h3>企業活動の目的</h3>
+    <p><span class="tag tag-def">定義</span> <strong>CSR（企業の社会的責任 / Corporate Social Responsibility）</strong>：企業が利益追求だけでなく社会に価値を提供し続ける責任。</p>
+    <div class="highlight-yellow">
+      <strong>継続して利益を得るための3要素</strong>
+      <ol class="note-olist" style="margin-top: 8px;">
+        <li><strong>モノ・サービスの創造・提供</strong>：顧客が欲しいものを作る（顧客の創造）。高付加価値製品・サービスを提供する。</li>
+        <li><strong>市場評価としての適正な利益を得る</strong>：不適切な利益の取り方は企業の存続を妨げる。</li>
+        <li><strong>経済活動を通じて社会に貢献する</strong>：税金を納めること自体も社会への貢献。</li>
+      </ol>
+    </div>
+    <p style="margin-top: 10px;">企業が存続するためには：<strong>最小限の人員で効率よく業務を行い、必要なコストを抑えて利益を最大化する</strong>ことを常に考える必要がある。社員一人ひとりの活動が企業全体の利益につながっている。</p>
+  </div>
+
+  <div class="card">
+    <h3><span class="tag tag-def">定義</span>　ステークホルダー（利害関係者）</h3>
+    <p>企業は利害関係者と適切なコミュニケーション・関係性を持ちながらビジネスを行っている。</p>
+    <table class="compare-table" style="margin-top: 12px;">
+      <tr><th>種別</th><th>対象</th></tr>
+      <tr>
+        <td class="label-col">一次的</td>
+        <td>顧客・同僚・上司・取引先　→ 日常業務で直接関わる</td>
+      </tr>
+      <tr>
+        <td class="label-col">二次的</td>
+        <td>地域住民・メディア・家族・社会全般　→ 企業の社会的責務の対象</td>
+      </tr>
+    </table>
+    <p style="margin-top: 10px; font-size: 13px;">各関係者に対して「どんな価値を提供しているのか」「自分はその中でどんな関係性を持てるか」を意識することで、自分の仕事の意味がより明確になる。</p>
+  </div>
+
+  <div class="card">
+    <h3>企業活動のサイクルと戦略</h3>
+    <p><span class="tag tag-def">定義</span> <strong>戦略</strong>：「戦を略す」こと。個々人がバラバラに動くのではなく、トップがシンプルな方向性（ミッション）を示し、社員は考える量を最小化して業務に集中できる状態を作る。</p>
+    <div class="highlight-blue">
+      <strong>企業活動の計画サイクル</strong>（目標設定 → 計画作成 → 評価）
+      <ul class="note-list" style="margin-top: 6px;">
+        <li>月次計画（1ヶ月単位）</li>
+        <li>年間計画（1年単位）</li>
+        <li>中期経営計画（3〜5年単位）</li>
+      </ul>
+      <p style="margin-top: 6px; font-size: 13px;">企業全体の計画がブレイクダウンされ、事業部・課・個人の活動計画になる。自分のミッションが戦略のどこに絡んでいるかを理解することで仕事が充実したものになる。</p>
+    </div>
+    <p style="margin-top: 10px; font-size: 13px; color: var(--text-sub);"><span class="tag tag-ext">[外部補足]</span>「目標設定→計画→評価」のサイクルはPDCA（Plan-Do-Check-Action）と整合している。実行（Do）は計画書の中に当然含まれており、本スライドは企業全体計画が個人計画へ展開される仕組みの説明が主眼。（補足資料より）</p>
+  </div>
+
+  <div class="card">
+    <h3>キャリアパスの考え方</h3>
+    <p>人生は一回きり。自分の人生のイメージが明確な人ほど仕事を楽しめる。</p>
+    <div class="highlight">
+      <strong>「やりたいこと」が見えない時の実践的アドバイス</strong>
+      <p>「何をやりたいか」より先に <strong>「何をやりたくないか」</strong> をどんどん書き出して削ぎ落とす。それをやらなくてよい職業を選ぶという消去法でキャリアの輪郭が見えてくる。</p>
+    </div>
+    <p style="margin-top: 12px;">やりたいことが朧げながら見えてきたら積み上げるスキル：</p>
+    <ul class="note-list">
+      <li><strong>社会人基礎力</strong>（OS層：まず土台として）</li>
+      <li><strong>コンセプチュアルスキル</strong>：概念化・本質を見抜く力</li>
+      <li><strong>ヒューマンリソーススキル</strong>：対人関係・チームマネジメント</li>
+      <li><strong>テクニカルスキル</strong>：専門知識・技術</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>人材採用から人材育成までの考え方の変化</h3>
+    <p>（出典：三菱総合研究所『自治体チャンネル＋』2004年7月）</p>
+    <table class="compare-table" style="margin-top: 12px;">
+      <tr><th></th><th>これまで</th><th style="color:var(--accent);">これから</th></tr>
+      <tr>
+        <td class="label-col">求める側（企業）</td>
+        <td>「素材」を確保し、自前で企業人教育</td>
+        <td style="color:var(--accent);">スキルを備えた人材を確保。大学への研修教育・リカレント教育への期待</td>
+      </tr>
+      <tr>
+        <td class="label-col">教育現場（大学）</td>
+        <td>スクリーニング（どの大学を出たか）・学力重視</td>
+        <td style="color:var(--accent);">スクーリング（何を学んだか）・<strong>考える力</strong>重視</td>
+      </tr>
+      <tr>
+        <td class="label-col">人材一人ひとり</td>
+        <td>いい大学・いい会社（単線的人生観・終身雇用）</td>
+        <td style="color:var(--accent);">好きな仕事・自己実現・社会の中での役割（<strong>複線的人生観・多様な雇用システム</strong>）</td>
+      </tr>
+    </table>
+    <div class="highlight-blue" style="margin-top: 14px;">
+      <strong><span class="tag tag-def">定義</span>　リカレント教育</strong>
+      <p>一度就職した人が知識を補充するために大学に戻って学ぶ形態。サイバー大学はこのリカレント教育に特に力を入れている。</p>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══ 末尾補足 ═══ -->
+<div class="section" id="appendix">
+  <div class="section-header">
+    <span class="section-num" style="background:var(--accent2);">補足</span>
+    <h2>⭐ 最重要用語集・試験対策</h2>
+  </div>
+
+  <div class="card">
+    <h3>⭐ 最重要ワード一覧（★★★）</h3>
+    <table class="compare-table">
+      <tr><th>用語</th><th>定義・要点</th><th>出典</th></tr>
+      <tr>
+        <td><strong>終身雇用制度</strong></td>
+        <td>一旦雇用した社員を定年退職まで継続して雇用し続ける日本の雇用形態。バブル崩壊等で崩壊しつつある。</td>
+        <td>S03:p.4</td>
+      </tr>
+      <tr>
+        <td><strong>社会人基礎力</strong></td>
+        <td>「職場や地域社会で多様な人々と仕事をしていくために必要な基礎的な力」。3能力12要素（2006年提唱・2018年改訂）。</td>
+        <td>経済産業省 2006</td>
+      </tr>
+      <tr>
+        <td><strong>エンプロイアビリティ</strong></td>
+        <td>継続的に雇用され続ける能力。A知識・技能 / B思考・行動特性 / C動機・価値観の3層構造。1980年代以降にアメリカで生まれた概念。</td>
+        <td>厚生労働省職業能力開発局</td>
+      </tr>
+      <tr>
+        <td><strong>ほうれんそう（報連相）</strong></td>
+        <td>報告（進捗通知）・連絡（方向性ズレ防止）・相談（問題早期解決）の略。目的は「上司が業務を前進させるための情報提供」。</td>
+        <td>S03:p.29-31</td>
+      </tr>
+      <tr>
+        <td><strong>部下力</strong></td>
+        <td>部下が上司を理解してサポートする力。組織の結果の80%は部下の力に左右される（リーダー影響は20%のみ）。</td>
+        <td>S03:p.28</td>
+      </tr>
+      <tr>
+        <td><strong>CSR</strong></td>
+        <td>Corporate Social Responsibility。企業が利益追求だけでなく社会に価値を提供し続ける責任。</td>
+        <td>S03:p.36</td>
+      </tr>
+      <tr>
+        <td><strong>リカレント教育</strong></td>
+        <td>一度就職した社会人が知識補充のために大学等に戻って学ぶ形態。「これから」の時代に求められる。</td>
+        <td>S03:p.43</td>
+      </tr>
+      <tr>
+        <td><strong>七五三現象</strong></td>
+        <td>新卒就職後3年以内に中卒7割・高卒5割・大卒3割が離職するという通称（1990年代から使われる言葉）。最新実績：大卒33.8%（R4.3卒）。</td>
+        <td>厚生労働省 令和4年3月卒データ</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>🎯 試験・レポートで重要な観点</h3>
+    <ul class="note-list">
+      <li><strong>社会人基礎力の3要素</strong>を正確に言える：前に踏み出す力・考え抜く力・チームで働く力（経済産業省2006年）</li>
+      <li><strong>エンプロイアビリティの3層構造</strong>：A知識・技能（顕在・見える）/ B思考・行動特性（見える）/ C動機・価値観（潜在・見えない）</li>
+      <li><strong>ほうれんそう各要素の目的の違い</strong>：報告＝進捗通知、連絡＝方向性ズレ防止（5W2H）、相談＝問題早期解決</li>
+      <li><strong>終身雇用→成果主義への変化の背景</strong>：バブル崩壊・企業間競争激化・ダウンサイジングの3要因</li>
+      <li><strong>スクリーニング vs スクーリング</strong>：学歴（どの大学を出たか）重視 → 学習内容（何を学んだか）重視への転換</li>
+      <li><strong>部下力80%の原則</strong>：組織結果はリーダー20%・部下80%。コミュニケーションが部下力を高める</li>
+      <li><strong>リカレント教育の意味と背景</strong>：社会人が学び直しのため大学に戻る。人生100年時代・ビジネスモデル転換が背景</li>
+      <li><strong>人生100年時代のスキル構造</strong>：OS（社会人基礎力・キャリア意識）+ アプリ（社内スキル・専門スキル）。OSを学生時代から築く</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>🔄 誤変換パターン記録（次回Step 0転記用）</h3>
+    <table class="compare-table">
+      <tr><th>誤変換</th><th>正しい用語</th></tr>
+      <tr><td>就寝雇用・終信雇用</td><td>終身雇用</td></tr>
+      <tr><td>社会人基訴力・起訴力・規訴力・キス力・技術力</td><td>社会人基礎力</td></tr>
+      <tr><td>エンプロヤルビティ・エンプロイアルビリティ</td><td>エンプロイアビリティ</td></tr>
+      <tr><td>公正労働省</td><td>厚生労働省</td></tr>
+      <tr><td>OfJT・オフJT</td><td>Off-JT</td></tr>
+      <tr><td>三菱創業研究所</td><td>三菱総合研究所</td></tr>
+      <tr><td>七ゴ産減少</td><td>七五三現象</td></tr>
+      <tr><td>ほれ草・法連想</td><td>ほうれんそう（報連相）</td></tr>
+      <tr><td>貸化</td><td>可視化</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="footer">
+  キャリア入門 第2回「企業が求める人材像」　SSP v4.2 生成ノート<br>
+  ソース：S05×2（hynote.ai AI変換テキスト）+ S03（スライドPDF）　|　note_career_02.html　|　v1.1 2026-03-26 Step6 QC完了・数値精度向上
+</div>
+
+</body>
+</html>
