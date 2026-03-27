@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ITのための基礎知識 第2回 — IT関連法規と倫理</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+JP:wght@600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f1117;
+  --bg2: #161b27;
+  --bg3: #1e2535;
+  --card: #1a2133;
+  --border: #2a3650;
+  --text: #e2e8f5;
+  --text-sub: #8a99b8;
+  --text-muted: #556070;
+  --blue: #5b8dee;
+  --blue-dim: #1e3a6e;
+  --green: #34d399;
+  --green-dim: #0d3327;
+  --orange: #fbbf24;
+  --orange-dim: #3d2a00;
+  --purple: #a78bfa;
+  --purple-dim: #2d1f5e;
+  --red: #f87171;
+  --red-dim: #3d1010;
+  --accent: #4fc4cf;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 15px;
+  line-height: 1.8;
+  display: flex;
+}
+
+/* ===== サイドバー ===== */
+#sidebar {
+  width: 260px;
+  min-width: 260px;
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  overflow-y: auto;
+  padding: 20px 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.sidebar-header {
+  padding: 0 20px 16px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 12px;
+}
+.sidebar-header .subject { font-size: 11px; color: var(--text-muted); letter-spacing: .05em; text-transform: uppercase; }
+.sidebar-header .title { font-size: 13px; color: var(--text-sub); font-weight: 500; margin-top: 4px; }
+.sidebar-header .topic { font-size: 12px; color: var(--accent); margin-top: 2px; }
+
+.toc-section { padding: 0 0 8px; }
+.toc-chapter {
+  padding: 6px 20px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.toc-link {
+  display: block;
+  padding: 5px 20px 5px 28px;
+  font-size: 12.5px;
+  color: var(--text-sub);
+  text-decoration: none;
+  transition: all .15s;
+  border-left: 2px solid transparent;
+}
+.toc-link:hover { color: var(--text); background: rgba(91,141,238,.07); border-left-color: var(--blue); }
+.toc-link.sub { padding-left: 40px; font-size: 12px; color: var(--text-muted); }
+
+/* ===== メインコンテンツ ===== */
+#main {
+  flex: 1;
+  max-width: 920px;
+  padding: 40px 48px 80px;
+  overflow-x: hidden;
+}
+
+/* ヘッダー */
+.page-header {
+  background: linear-gradient(135deg, #0d1d3d 0%, #0f2040 50%, #111827 100%);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 32px 36px;
+  margin-bottom: 32px;
+}
+.page-header .meta { font-size: 11px; color: var(--text-muted); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 8px; }
+.page-header h1 { font-family: 'Noto Serif JP', serif; font-size: 24px; color: var(--text); line-height: 1.4; }
+.page-header .subtitle { font-size: 16px; color: var(--accent); margin-top: 6px; }
+.page-header .info-row { display: flex; gap: 24px; margin-top: 16px; flex-wrap: wrap; }
+.info-badge { font-size: 12px; color: var(--text-sub); background: rgba(255,255,255,.05); border: 1px solid var(--border); border-radius: 6px; padding: 4px 10px; font-family: 'JetBrains Mono', monospace; }
+
+/* セクション */
+section { margin-bottom: 36px; }
+h2 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 19px;
+  color: var(--text);
+  padding: 14px 20px;
+  background: var(--bg3);
+  border-left: 4px solid var(--blue);
+  border-radius: 0 8px 8px 0;
+  margin-bottom: 20px;
+}
+h3 {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--accent);
+  margin: 20px 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+h3::before { content: '▸'; color: var(--blue); font-size: 12px; }
+h4 { font-size: 14px; font-weight: 700; color: var(--orange); margin: 14px 0 8px; }
+
+p { margin-bottom: 10px; }
+ul { padding-left: 20px; margin-bottom: 10px; }
+ul li { margin-bottom: 4px; }
+ol { padding-left: 22px; margin-bottom: 10px; }
+ol li { margin-bottom: 6px; }
+
+/* カード */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px 24px;
+  margin-bottom: 16px;
+}
+
+/* 定義ボックス */
+.def-box {
+  background: var(--bg3);
+  border: 1px solid var(--blue-dim);
+  border-left: 4px solid var(--blue);
+  border-radius: 0 8px 8px 0;
+  padding: 14px 18px;
+  margin-bottom: 14px;
+}
+.def-box .def-label { font-size: 10px; font-weight: 700; color: var(--blue); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 4px; }
+
+/* 音声補足 */
+.audio-block {
+  border-left: 3px solid var(--blue);
+  background: rgba(91,141,238,.07);
+  border-radius: 0 8px 8px 0;
+  padding: 12px 16px;
+  margin: 12px 0;
+  font-size: 14px;
+}
+.audio-block .block-label { font-size: 10px; color: var(--blue); font-weight: 700; letter-spacing: .08em; margin-bottom: 4px; }
+
+/* 外部補足 */
+.ext-block {
+  border-left: 3px solid var(--green);
+  background: rgba(52,211,153,.07);
+  border-radius: 0 8px 8px 0;
+  padding: 12px 16px;
+  margin: 12px 0;
+  font-size: 14px;
+}
+.ext-block .block-label { font-size: 10px; color: var(--green); font-weight: 700; letter-spacing: .08em; margin-bottom: 4px; }
+
+/* ソースポインター */
+.src { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); background: rgba(255,255,255,.04); border-radius: 4px; padding: 1px 6px; margin-left: 6px; }
+
+/* テーブル */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 14px 0;
+  font-size: 13.5px;
+}
+th {
+  background: var(--bg3);
+  color: var(--text-sub);
+  font-weight: 700;
+  padding: 10px 14px;
+  text-align: left;
+  border: 1px solid var(--border);
+  font-size: 12px;
+}
+td {
+  padding: 9px 14px;
+  border: 1px solid var(--border);
+  vertical-align: top;
+}
+tr:nth-child(even) td { background: rgba(255,255,255,.02); }
+
+/* 法律ハイライト */
+.law-badge {
+  display: inline-block;
+  font-size: 11px;
+  background: rgba(91,141,238,.15);
+  border: 1px solid var(--blue-dim);
+  color: var(--blue);
+  border-radius: 4px;
+  padding: 1px 8px;
+  margin-left: 6px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* 未確定事項カード */
+.uncertain-card {
+  background: rgba(251,191,36,.06);
+  border: 1px solid var(--orange-dim);
+  border-top: 3px solid var(--orange);
+  border-radius: 8px;
+  padding: 18px 22px;
+  margin-bottom: 20px;
+}
+.uncertain-card .card-title { font-size: 13px; font-weight: 700; color: var(--orange); margin-bottom: 12px; }
+
+/* 補足カード */
+.appendix-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px 24px;
+  margin-bottom: 20px;
+}
+.appendix-card .card-title { font-weight: 700; font-size: 15px; margin-bottom: 14px; }
+.appendix-card .ext-info { font-size: 12px; color: var(--text-sub); }
+
+/* 事例ボックス */
+.case-box {
+  background: rgba(167,139,250,.06);
+  border-left: 3px solid var(--purple);
+  border-radius: 0 8px 8px 0;
+  padding: 12px 16px;
+  margin: 10px 0;
+  font-size: 14px;
+}
+.case-box .case-label { font-size: 10px; color: var(--purple); font-weight: 700; letter-spacing: .08em; margin-bottom: 4px; }
+
+/* SVGコンテナ */
+.svg-container { margin: 16px 0; overflow-x: auto; }
+.svg-container figcaption { font-size: 11px; color: var(--text-muted); margin-top: 6px; font-family: 'JetBrains Mono', monospace; }
+
+/* チップ */
+.chip {
+  display: inline-block;
+  font-size: 11px;
+  border-radius: 4px;
+  padding: 2px 8px;
+  margin: 2px;
+}
+.chip-blue { background: var(--blue-dim); color: var(--blue); }
+.chip-green { background: var(--green-dim); color: var(--green); }
+.chip-orange { background: var(--orange-dim); color: var(--orange); }
+
+/* タグ */
+.tag-important { color: var(--orange); font-weight: 700; font-size: 11px; margin-right: 6px; }
+
+hr { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+</style>
+</head>
+<body>
+
+<!-- サイドバー -->
+<nav id="sidebar">
+  <div class="sidebar-header">
+    <div class="subject">ITのための基礎知識</div>
+    <div class="title">第2回</div>
+    <div class="topic">IT関連法規と倫理</div>
+  </div>
+  <div class="toc-section">
+    <div class="toc-chapter">概要</div>
+    <a class="toc-link" href="#header">ページヘッダー</a>
+    <a class="toc-link" href="#uncertain">❓ 未確定事項</a>
+  </div>
+  <div class="toc-section">
+    <div class="toc-chapter">第1章</div>
+    <a class="toc-link" href="#ch1">知的財産権</a>
+    <a class="toc-link sub" href="#ch1-chosaku">著作権</a>
+    <a class="toc-link sub" href="#ch1-sangyo">産業財産権</a>
+    <a class="toc-link sub" href="#ch1-fusei">不正競争防止法</a>
+    <a class="toc-link sub" href="#ch1-shozo">肖像権・パブリシティ権</a>
+    <a class="toc-link sub" href="#ch1-soft">ソフトウェアライセンス</a>
+  </div>
+  <div class="toc-section">
+    <div class="toc-chapter">第2章</div>
+    <a class="toc-link" href="#ch2">セキュリティ関連法規</a>
+    <a class="toc-link sub" href="#ch2-cyber">サイバーセキュリティ基本法</a>
+    <a class="toc-link sub" href="#ch2-fussei">不正アクセス禁止法</a>
+    <a class="toc-link sub" href="#ch2-kojin">個人情報保護法</a>
+    <a class="toc-link sub" href="#ch2-tsushin">電気通信事業法</a>
+  </div>
+  <div class="toc-section">
+    <div class="toc-chapter">第3章</div>
+    <a class="toc-link" href="#ch3">労働関連法規・派遣事業</a>
+    <a class="toc-link sub" href="#ch3-keiyaku">労働契約法</a>
+    <a class="toc-link sub" href="#ch3-kijun">労働基準法</a>
+    <a class="toc-link sub" href="#ch3-haken">労働者派遣事業</a>
+    <a class="toc-link sub" href="#ch3-ukeoi">請負と偽装請負</a>
+  </div>
+  <div class="toc-section">
+    <div class="toc-chapter">第4章</div>
+    <a class="toc-link" href="#ch4">IT関連の法律とガイドライン</a>
+    <a class="toc-link sub" href="#ch4-compliance">コンプライアンス</a>
+    <a class="toc-link sub" href="#ch4-gov">コーポレートガバナンス</a>
+    <a class="toc-link sub" href="#ch4-society">Society 5.0・AI倫理</a>
+    <a class="toc-link sub" href="#ch4-kankyou">環境法</a>
+    <a class="toc-link sub" href="#ch4-hyojun">標準化</a>
+    <a class="toc-link sub" href="#ch4-nda">守秘義務契約・NDA</a>
+  </div>
+  <div class="toc-section">
+    <div class="toc-chapter">補足</div>
+    <a class="toc-link" href="#appendix-a">⭐ 補足A: 最重要ワード</a>
+    <a class="toc-link" href="#appendix-b">📚 補足B: 背景知識</a>
+    <a class="toc-link" href="#appendix-c">🎯 補足C: 試験観点</a>
+    <a class="toc-link" href="#appendix-d">🔗 補足D: 関連概念</a>
+  </div>
+</nav>
+
+<!-- メイン -->
+<main id="main">
+
+<!-- ヘッダー -->
+<div class="page-header" id="header">
+  <div class="meta">サイバー大学 IT総合学部｜専門基礎科目</div>
+  <h1>ITのための基礎知識</h1>
+  <div class="subtitle">第2回 — IT関連法規と倫理</div>
+  <div class="info-row">
+    <span class="info-badge">担当教員: 馬場 研二</span>
+    <span class="info-badge">ソース: S03（スライドPDF・114p） + S05（hynote.ai × 2）</span>
+    <span class="info-badge">v1.0 2025-03-24</span>
+  </div>
+</div>
+
+<!-- 学習目標 -->
+<section>
+  <h2>第2回 学習目標</h2>
+  <div class="card">
+    <p>法務分野の基本知識を習得し、以下について実務における基本的な考え方を説明できるようになる。</p>
+    <ul>
+      <li>知的財産権の種類と保護内容、違法行為の理解</li>
+      <li>セキュリティ関連法規</li>
+      <li>労働法規の概要・労働者派遣事業の概要</li>
+      <li>企業の規範</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ❓ 未確定事項 -->
+<section id="uncertain">
+  <div class="uncertain-card">
+    <div class="card-title">❓ 未確定事項・要確認リスト</div>
+    <table>
+      <thead><tr><th>ID</th><th>内容</th><th>種別</th><th>優先度</th><th>解消できない理由</th></tr></thead>
+      <tbody>
+        <tr><td>U01</td><td>担当教員名がS05音声変換では「和田先生」等に誤変換されている。S03スライド表紙より「馬場研二」と確定。</td><td>AI変換要確認</td><td>解決済み</td><td>S03照合済み</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:12px;color:var(--text-muted);margin-top:8px;">※ すべての未確定事項はS03スライドとの照合により解決済み</p>
+  </div>
+</section>
+
+<!-- ─── 第1章 ─── -->
+<section id="ch1">
+  <h2>第1章｜知的財産権</h2>
+  <div class="card" style="margin-bottom:20px">
+    <b>学習目標：</b>知的財産権にはどのような種類があり、何が法律で守られ、どのような行為が違法に当たるのかの基本を説明できる。
+  </div>
+
+  <!-- 知的財産権の概観 -->
+  <div class="svg-container">
+    <svg viewBox="0 0 780 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:780px">
+      <!-- 背景 -->
+      <rect width="780" height="260" fill="#161b27" rx="8"/>
+      <!-- タイトル -->
+      <text x="390" y="28" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="12" font-weight="700">知的財産権の体系</text>
+      <!-- 知的財産権ルートボックス -->
+      <!-- x=280, width=220, cx=390 -->
+      <rect x="280" y="40" width="220" height="44" rx="6" fill="#1e3a6e" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="390" y="57" text-anchor="middle" fill="#5b8dee" font-family="Noto Sans JP,sans-serif" font-size="13" font-weight="700">知的財産権</text>
+      <text x="390" y="74" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="10">（知的所有権）</text>
+      <!-- 著作権ボックス x=60, width=160, cx=140 -->
+      <rect x="60" y="120" width="160" height="40" rx="6" fill="#0d3327" stroke="#34d399" stroke-width="1.5"/>
+      <text x="140" y="145" text-anchor="middle" fill="#34d399" font-family="Noto Sans JP,sans-serif" font-size="13" font-weight="700">著作権</text>
+      <!-- 産業財産権ボックス x=290, width=200, cx=390 -->
+      <rect x="290" y="120" width="200" height="40" rx="6" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="390" y="141" text-anchor="middle" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif" font-size="13" font-weight="700">産業財産権</text>
+      <text x="390" y="154" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="9">（工業所有権）</text>
+      <!-- その他ボックス x=560, width=160, cx=640 -->
+      <rect x="560" y="120" width="160" height="40" rx="6" fill="#1e2535" stroke="#556070" stroke-width="1.5"/>
+      <text x="640" y="145" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="13">その他</text>
+      <!-- 産業財産権の子要素 4つ -->
+      <!-- 特許権 x=270, cx=310 -->
+      <rect x="252" y="195" width="96" height="32" rx="5" fill="#2d1f5e" stroke="#a78bfa" stroke-width="1"/>
+      <text x="300" y="216" text-anchor="middle" fill="#a78bfa" font-family="Noto Sans JP,sans-serif" font-size="11">特許権</text>
+      <!-- 実用新案権 -->
+      <rect x="356" y="195" width="96" height="32" rx="5" fill="#2d1f5e" stroke="#a78bfa" stroke-width="1"/>
+      <text x="404" y="216" text-anchor="middle" fill="#a78bfa" font-family="Noto Sans JP,sans-serif" font-size="11">実用新案権</text>
+      <!-- 意匠権 -->
+      <rect x="460" y="195" width="80" height="32" rx="5" fill="#2d1f5e" stroke="#a78bfa" stroke-width="1"/>
+      <text x="500" y="216" text-anchor="middle" fill="#a78bfa" font-family="Noto Sans JP,sans-serif" font-size="11">意匠権</text>
+      <!-- 商標権 -->
+      <rect x="552" y="195" width="80" height="32" rx="5" fill="#2d1f5e" stroke="#a78bfa" stroke-width="1"/>
+      <text x="592" y="216" text-anchor="middle" fill="#a78bfa" font-family="Noto Sans JP,sans-serif" font-size="11">商標権</text>
+      <!-- 線: 知的財産権→著作権 -->
+      <line x1="350" y1="84" x2="140" y2="120" stroke="#556070" stroke-width="1.5"/>
+      <!-- 線: 知的財産権→産業財産権 -->
+      <line x1="390" y1="84" x2="390" y2="120" stroke="#5b8dee" stroke-width="1.5"/>
+      <!-- 線: 知的財産権→その他 -->
+      <line x1="430" y1="84" x2="640" y2="120" stroke="#556070" stroke-width="1.5"/>
+      <!-- 線: 産業財産権→子要素 -->
+      <line x1="300" y1="160" x2="300" y2="195" stroke="#556070" stroke-width="1"/>
+      <line x1="404" y1="160" x2="404" y2="195" stroke="#556070" stroke-width="1"/>
+      <line x1="500" y1="160" x2="500" y2="195" stroke="#556070" stroke-width="1"/>
+      <line x1="592" y1="160" x2="592" y2="195" stroke="#556070" stroke-width="1"/>
+      <!-- その他の例 -->
+      <text x="640" y="186" text-anchor="middle" fill="#556070" font-family="Noto Sans JP,sans-serif" font-size="9">不正競争防止法 / 種苗法 等</text>
+    </svg>
+    <figcaption>図: 知的財産権の体系 ← S03:p.8</figcaption>
+  </div>
+
+  <!-- 著作権 -->
+  <section id="ch1-chosaku">
+    <h3>著作権</h3>
+    <div class="def-box">
+      <div class="def-label">定義</div>
+      「著作物」を創作した者（「著作者」）に与えられる、自分が創作した著作物を無断でコピーされたり、インターネットで利用されない権利。<span class="src">← S03:p.7</span>
+    </div>
+    <p>知的財産権のうち、<b>精神文化的なもの</b>を指す。</p>
+    <h4>著作権の制限（例外）</h4>
+    <ul>
+      <li><b>私的使用のための複製</b>：個人や家庭内での使用目的であれば、著作物を許可なく複製できる。</li>
+      <li><b>引用</b>：報道・批評・研究などの目的で、公正な慣行に従い必要な範囲内であれば、許可なく引用できる。</li>
+      <li><b>教育目的の特例</b>：教育機関における遠隔教育などの教育目的において、著作物の特例的な利用が可能。</li>
+    </ul>
+    <div class="audio-block">
+      <div class="block-label">🎙 音声補足</div>
+      著作権は、他人が著作物を利用したいといってきたとき、条件をつけて利用を許可したり、拒否したりできる権利でもある。ただし上記のように権利が制限される場合もある。<span class="src">← S05-A</span>
+    </div>
+    <div class="audio-block">
+      <div class="block-label">🎙 音声補足</div>
+      AIが学習に利用するデータ・AIが生成したデータについて、それぞれ著作権の観点で留意する必要がある。<span class="src">← S03:p.7</span>
+    </div>
+  </section>
+
+  <!-- 産業財産権 -->
+  <section id="ch1-sangyo">
+    <h3>産業財産権</h3>
+    <div class="def-box">
+      <div class="def-label">定義</div>
+      知的財産権に含まれるもので、発明やデザインなどを<b>登録することによって守られる</b>権利。<span class="src">← S03:p.9</span>
+    </div>
+    <p>知的財産権のうち、<b>物質文化的なもの（工業財産権）</b>に相当する。</p>
+
+    <h4>産業財産権制度の目的</h4>
+    <p>新しい技術・デザイン・ネーミング・ロゴマークなどに独占権を与え、模倣防止のために保護することで、研究開発へのインセンティブを付与し、産業の発展を図ること。<span class="src">← S03:p.11</span></p>
+
+    <h4>4種類の産業財産権（特許庁所管）</h4>
+    <table>
+      <thead><tr><th>権利名</th><th>根拠法</th><th>保護対象</th></tr></thead>
+      <tbody>
+        <tr><td>特許権</td><td>特許法</td><td>発明（新しい技術・アイデア）</td></tr>
+        <tr><td>実用新案権</td><td>実用新案法</td><td>物品の形状・構造・組合せ（小発明）</td></tr>
+        <tr><td>意匠権</td><td>意匠法</td><td>物品・建築物・画像のデザイン</td></tr>
+        <tr><td>商標権</td><td>商標法</td><td>ネーミング・ロゴマーク（商品・役務の標識）</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:13px;color:var(--text-muted)">※「意匠権」は音声AI変換で「遺証権」「衣装権」等に誤変換されやすいので注意。<span class="src">← 誤変換ログ</span></p>
+    <div class="audio-block">
+      <div class="block-label">🎙 音声補足</div>
+      発明やデザインなどの無断使用は違法。AIが学習・生成したデータについて、産業財産権の観点でも留意が必要。<span class="src">← S03:p.9</span>
+    </div>
+  </section>
+
+  <!-- 不正競争防止法 -->
+  <section id="ch1-fusei">
+    <h3>不正競争防止法</h3>
+    <div class="def-box">
+      <div class="def-label">定義：不正競争とは</div>
+      不正な方法によって同業者の利益を害する営業上の競争のこと。<span class="src">← S03:p.12</span>
+    </div>
+    <p>不正競争防止法第2条1項に定義されており、<b>10類型</b>に分類されている。</p>
+    <div class="svg-container">
+      <svg viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:720px">
+        <rect width="720" height="200" fill="#161b27" rx="8"/>
+        <text x="360" y="24" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="11" font-weight="700">不正競争の10類型（不正競争防止法 第2条1項）</text>
+        <!-- 5列2行 -->
+        <!-- 行1 -->
+        <rect x="20" y="38" width="130" height="36" rx="5" fill="#2d1f5e" stroke="#a78bfa" stroke-width="1"/>
+        <text x="85" y="54" text-anchor="middle" fill="#a78bfa" font-family="Noto Sans JP,sans-serif" font-size="10" font-weight="700">① 周知表示混同</text>
+        <text x="85" y="67" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="9">惹起行為</text>
+
+        <rect x="162" y="38" width="130" height="36" rx="5" fill="#2d1f5e" stroke="#a78bfa" stroke-width="1"/>
+        <text x="227" y="54" text-anchor="middle" fill="#a78bfa" font-family="Noto Sans JP,sans-serif" font-size="10" font-weight="700">② 著名表示冒用</text>
+        <text x="227" y="67" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="9">行為</text>
+
+        <rect x="304" y="38" width="130" height="36" rx="5" fill="#1e2535" stroke="#556070" stroke-width="1"/>
+        <text x="369" y="54" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="10">③ 形態模倣商品</text>
+        <text x="369" y="67" text-anchor="middle" fill="#556070" font-family="Noto Sans JP,sans-serif" font-size="9">の提供行為</text>
+
+        <rect x="446" y="38" width="120" height="36" rx="5" fill="#1e2535" stroke="#556070" stroke-width="1"/>
+        <text x="506" y="54" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="10">④ 営業秘密の</text>
+        <text x="506" y="67" text-anchor="middle" fill="#556070" font-family="Noto Sans JP,sans-serif" font-size="9">侵害</text>
+
+        <rect x="578" y="38" width="122" height="36" rx="5" fill="#1e2535" stroke="#556070" stroke-width="1"/>
+        <text x="639" y="54" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="10">⑤ 限定提供データ</text>
+        <text x="639" y="67" text-anchor="middle" fill="#556070" font-family="Noto Sans JP,sans-serif" font-size="9">の不正取得等</text>
+
+        <!-- 行2 -->
+        <rect x="20" y="86" width="130" height="36" rx="5" fill="#1e2535" stroke="#556070" stroke-width="1"/>
+        <text x="85" y="102" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="10">⑥ 技術的制限手段</text>
+        <text x="85" y="115" text-anchor="middle" fill="#556070" font-family="Noto Sans JP,sans-serif" font-size="9">無効化装置等</text>
+
+        <rect x="162" y="86" width="130" height="36" rx="5" fill="#1e2535" stroke="#556070" stroke-width="1"/>
+        <text x="227" y="102" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="10">⑦ ドメイン名の</text>
+        <text x="227" y="115" text-anchor="middle" fill="#556070" font-family="Noto Sans JP,sans-serif" font-size="9">不正取得等</text>
+
+        <rect x="304" y="86" width="130" height="36" rx="5" fill="#1e2535" stroke="#556070" stroke-width="1"/>
+        <text x="369" y="102" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="10">⑧ 誤認惹起行為</text>
+        <text x="369" y="115" text-anchor="middle" fill="#556070" font-family="Noto Sans JP,sans-serif" font-size="9"> </text>
+
+        <rect x="446" y="86" width="120" height="36" rx="5" fill="#1e2535" stroke="#556070" stroke-width="1"/>
+        <text x="506" y="102" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="10">⑨ 信用毀損行為</text>
+        <text x="506" y="115" text-anchor="middle" fill="#556070" font-family="Noto Sans JP,sans-serif" font-size="9"> </text>
+
+        <rect x="578" y="86" width="122" height="36" rx="5" fill="#1e2535" stroke="#556070" stroke-width="1"/>
+        <text x="639" y="102" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="10">⑩ 代理人等の</text>
+        <text x="639" y="115" text-anchor="middle" fill="#556070" font-family="Noto Sans JP,sans-serif" font-size="9">商標冒用行為</text>
+
+        <text x="360" y="170" text-anchor="middle" fill="#556070" font-family="Noto Sans JP,sans-serif" font-size="10">★ 授業で詳述するのは①と②（紫色）</text>
+      </svg>
+      <figcaption>図: 不正競争の10類型 ← S03:p.12</figcaption>
+    </div>
+
+    <h4>①周知表示混同惹起行為の事例</h4>
+    <div class="case-box">
+      <div class="case-label">📋 判例事例</div>
+      <p><b>ウォークマン事件（千葉地判平8.4.17）</b>：ソニーの有名な表示「ウォークマン」と同一の表示を看板等に使用したり、「有限会社ウォークマン」という商号として使用した業者に対し、表示の使用禁止及び商号の抹消請求が認められた。<span class="src">← S03:p.13</span></p>
+      <p><b>動くかに看板事件（大阪地判昭62.5.27）</b>：大阪の有名なかに料理屋の名物「動くかに看板」と類似したかに看板を使用した同業者に対し、看板の使用禁止及び損害賠償が認められた。<span class="src">← S03:p.13</span></p>
+    </div>
+
+    <h4>②著名表示冒用行為の事例</h4>
+    <div class="case-box">
+      <div class="case-label">📋 判例事例</div>
+      <p><b>三菱信販事件（知財高判平22.7.28）</b>：三菱の名称及び三菱標章（スリーダイヤのマーク）が三菱グループを示すものとして著名であるとして、三菱グループに属しない信販会社に対し、三菱の名称及び標章の使用差止めが認められた。<span class="src">← S03:p.14</span></p>
+    </div>
+
+    <h4>不正競争防止法の目的</h4>
+    <ul>
+      <li>事業者間の公正な競争の促進</li>
+      <li>事業者の営業上の利益の保護（→私益）</li>
+      <li>公正な競争秩序の維持（→公益）</li>
+    </ul>
+    <div class="audio-block">
+      <div class="block-label">🎙 音声補足</div>
+      不正競争防止法は、著作権法・産業財産権関連法規では守られない<b>営業秘密・限定提供データ</b>などを保護することも目的とする。最終目的は「国民経済の健全な発展に寄与すること」。<span class="src">← S03:p.15-16</span>
+    </div>
+  </section>
+
+  <!-- 肖像権・パブリシティ権 -->
+  <section id="ch1-shozo">
+    <h3>肖像権とパブリシティ権</h3>
+    <div class="audio-block">
+      <div class="block-label">🎙 音声補足</div>
+      肖像権・パブリシティ権は<b>明文化された法律は存在しないが、判例によって認められた</b>権利。<span class="src">← S03:p.17</span>
+    </div>
+    <div class="def-box">
+      <div class="def-label">肖像権とは</div>
+      勝手に写真に撮られたり、撮られた写真を勝手に公開されない権利。タレント・アーティスト・スポーツ選手など有名人が名前や顔写真などを勝手に使われない権利も含む。<span class="src">← S03:p.18</span>
+    </div>
+    <div class="def-box">
+      <div class="def-label">パブリシティ権とは</div>
+      人の氏名・肖像（写真など）は個人の人格の象徴であり、人格権に由来するものとしてみだりに利用されない権利を有する。特に、肖像が持つ「顧客吸引力（客を引きつける力）」を排他的に利用する権利をパブリシティ権という。<span class="src">← S03:p.19</span>
+    </div>
+    <h4>パブリシティ権侵害となる3類型（最高裁）</h4>
+    <ol>
+      <li>ブロマイドやグラビアなど、写真自体を鑑賞する商品</li>
+      <li>キャラクター商品など、商品の差別化を図る目的で写真などを付ける</li>
+      <li>写真を商品広告に使用</li>
+    </ol>
+    <p>これらの場合は権利者に許可を取り、利用料を支払う必要がある。<span class="src">← S03:p.20</span></p>
+  </section>
+
+  <!-- ソフトウェアライセンス -->
+  <section id="ch1-soft">
+    <h3>ソフトウェアライセンス</h3>
+    <div class="def-box">
+      <div class="def-label">定義</div>
+      コンピュータのソフトウェアについて、ソフトウェアの使用に関する権利や制限を定めた文書のこと。<span class="src">← S03:p.21</span>
+    </div>
+    <p>ソフトウェアを利用する際は、著作権や知的財産権を有する者から<b>ソフトウェアライセンス（使用権）</b>を認めてもらわなければならない。</p>
+
+    <h4>使用許諾契約（ライセンス契約）と利用規約</h4>
+    <table>
+      <thead><tr><th>用語</th><th>説明</th></tr></thead>
+      <tbody>
+        <tr><td>ライセンサー</td><td>権利の使用を許諾する側</td></tr>
+        <tr><td>ライセンシー</td><td>許諾を受ける側</td></tr>
+        <tr><td>利用規約</td><td>サービスを提供する側が利用者に対してサービス利用のルールを提示するもの</td></tr>
+      </tbody>
+    </table>
+
+    <h4>個別の契約書がなくても成立する契約</h4>
+    <div class="card">
+      <table>
+        <thead><tr><th>種類</th><th>場面</th><th>成立のタイミング</th></tr></thead>
+        <tbody>
+          <tr><td><b>シュリンクラップ契約</b></td><td>既存のパッケージソフトウェアを店舗で購入</td><td>パッケージを<b>開封した時点</b></td></tr>
+          <tr><td><b>クリックオン契約</b></td><td>ソフトウェアをホームページからダウンロード</td><td>「同意する」ボタンを<b>クリックした時点</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="audio-block">
+      <div class="block-label">🎙 音声補足</div>
+      大量に販売されているソフトウェアは、いちいち契約書を交わすわけにはいかないため、これらの特別な方式が存在する。<span class="src">← S05-A</span>
+    </div>
+    <div class="ext-block">
+      <div class="block-label">[外部補足] 特許審査基準（漫画）</div>
+      特許庁が「漫画審査基準 ～AI・IoT編～」を公開している。特許審査の基本的な考え方はAI・IoT分野以外にも共通するため、幅広く活用できる。<br>
+      出典: <a href="https://www.jpo.go.jp/system/laws/rule/guideline/patent/comic_ai_iot.html" style="color:var(--green)">特許庁審査第一部調整課審査基準室</a> <span class="src">← S03:p.24</span>
+    </div>
+  </section>
+</section>
+
+<!-- ─── 第2章 ─── -->
+<section id="ch2">
+  <h2>第2章｜セキュリティ関連法規</h2>
+  <div class="card" style="margin-bottom:20px">
+    <b>学習目標：</b>代表的なセキュリティ関連法規の概要を説明できる。
+  </div>
+
+  <!-- サイバーセキュリティ基本法 -->
+  <section id="ch2-cyber">
+    <h3>サイバーセキュリティ基本法</h3>
+    <div class="def-box">
+      <div class="def-label">定義</div>
+      サイバーセキュリティに関する施策を総合的かつ効率的に推進するため、基本理念を定め、国の責務等を明らかにし、サイバーセキュリティ戦略の策定・その他施策の基本となる事項等を規定する法律。<span class="src">← S03:p.28</span>
+    </div>
+    <p>企業や政府を狙ったサイバー攻撃が年々増加していることを受け、<b>2014年</b>に議員立法により可決された。<span class="src">← S03:p.29</span></p>
+
+    <h4>政府統一基準群</h4>
+    <p>サイバーセキュリティ基本法に基づく、政府機関及び独立行政法人等の情報セキュリティ水準を維持・向上させるための統一的な枠組み。<span class="src">← S03:p.30</span></p>
+    <div class="audio-block">
+      <div class="block-label">🎙 音声補足</div>
+      内閣サイバーセキュリティセンター（NISC）において、共通ルール（統一基準群）の策定・監査・監視・教育訓練等を通して、政府機関等全体の<b>PDCAサイクル</b>を適切に回し、情報セキュリティ対策の総合的強化を図っている。<span class="src">← S03:p.32</span>
+    </div>
+  </section>
+
+  <!-- 不正アクセス禁止法 -->
+  <section id="ch2-fussei">
+    <h3>不正アクセス禁止法 <span class="law-badge">正式名称: 不正アクセス行為の禁止等に関する法律</span></h3>
+    <div class="def-box">
+      <div class="def-label">目的</div>
+      コンピュータシステムへの不正なアクセスを防止し、情報セキュリティの確保とサイバー犯罪の抑止を目的とする。<span class="src">← S03:p.33</span>
+    </div>
+    <p><b>2012年3月</b>に改正。他人のIDやパスワードの不正取得等の罪が新設され、法定刑の上限が<b>懲役1年から3年</b>に引き上げられた。<span class="src">← S03:p.34</span></p>
+    <div class="audio-block">
+      <div class="block-label">🎙 音声補足</div>
+      不正アクセス禁止法第3条「何人も、不正アクセス行為をしてはならない」と定められており、<b>実際の金銭的被害がなくても罰則を受ける可能性がある</b>。<span class="src">← S03:p.35</span>
+    </div>
+
+    <h4>不正アクセスに該当する4種類の具体的行為</h4>
+    <table>
+      <thead><tr><th>条文</th><th>行為の種類</th><th>具体例</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><b>第4条</b></td>
+          <td>他人の識別符号を不正に取得する行為</td>
+          <td>・社員が職務上の立場を利用して顧客の識別符号を確認する<br>・フィッシング詐欺によりアカウント情報を不正入手<br>（フィッシング詐欺：偽のメール・ウェブサイトで個人情報を盗む詐欺）</td>
+        </tr>
+        <tr>
+          <td><b>第5条</b></td>
+          <td>不正アクセス行為を助長する行為</td>
+          <td>・アクセス権限のある役員が権限のない一般社員にIDやパスワードを渡す<br>・他人のIDやパスワードを口頭で無断に伝えたりインターネット上で販売</td>
+        </tr>
+        <tr>
+          <td><b>第6条</b></td>
+          <td>他人の識別符号を不正に保管する行為</td>
+          <td>・不正に取得したIDやパスワードをパソコンやUSBメモリ内に保管<br>（保管方法が紙であっても同様に違法）</td>
+        </tr>
+        <tr>
+          <td><b>第7条</b></td>
+          <td>識別符号の入力を不正に要求する行為</td>
+          <td>・偽のフィッシングサイトを構築してインターネット上に公開<br>・フィッシングサイトに誘導する目的で電子メールを送付</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="audio-block">
+      <div class="block-label">🎙 音声補足</div>
+      職場での被害事例および対処法は「国民のためのサイバーセキュリティサイト」（総務省）に16事例まとめられている。
+      <a href="https://www.soumu.go.jp/main_sosiki/cybersecurity/kokumin/case/business/" style="color:var(--blue);font-size:13px"> → 参照リンク</a><span class="src">← S03:p.37</span>
+    </div>
+  </section>
+
+  <!-- 個人情報保護法 -->
+  <section id="ch2-kojin">
+    <h3>個人情報保護法</h3>
+    <p>個人情報の定義、国・地方公共団体・個人情報取扱事業者の責務、行政機関等が守るべき義務など、個人情報を取り扱う機関が守るべきルールや施策の方針、個人情報保護委員会の規定について定める。<span class="src">← S03:p.38</span></p>
+    <div class="def-box">
+      <div class="def-label">個人情報取扱事業者（第2条3）</div>
+      「個人情報データベース等を事業の用に供している者」。ただし国の機関・地方公共団体・独立行政法人等を除く。<span class="src">← S03:p.39</span>
+    </div>
+
+    <h4>個人情報とは</h4>
+    <div class="def-box">
+      <div class="def-label">定義</div>
+      生存する個人に関する情報で、氏名・生年月日・住所・顔写真などにより<b>特定の個人を識別できる情報</b>。他の情報と容易に照合することができ、それにより特定の個人を識別できるものも含む。<span class="src">← S03:p.40-41</span>
+    </div>
+    <ul>
+      <li>生年月日や電話番号は単体では識別不能だが、氏名と組み合わせると個人情報に該当する場合がある。</li>
+      <li>メールアドレスも、ユーザー名やドメイン名から特定個人を識別できる場合は単体で個人情報となる。</li>
+      <li>番号・記号・符号等で政令・規則で定められたものを「<b>個人識別符号</b>」といい、個人識別符号を含む情報は個人情報となる。</li>
+    </ul>
+
+    <h4>個人情報保護法の主要用語</h4>
+    <table>
+      <thead><tr><th>用語</th><th>定義</th><th>例</th></tr></thead>
+      <tbody>
+        <tr><td><b>個人情報データベース等</b></td><td>特定の個人情報を検索できるように体系的に構成された情報の集合物</td><td>五十音順の名簿、コンピュータで検索できるデータベース</td></tr>
+        <tr><td><b>個人データ</b></td><td>個人情報データベース等を構成する個人情報</td><td>名簿を構成する氏名・誕生日・住所・電話番号</td></tr>
+        <tr><td><b>保有個人データ</b></td><td>個人データのうち、個人情報取扱事業者が本人から請求される開示・訂正・削除等に応じることができる権限を有するもの</td><td>—</td></tr>
+        <tr><td><b>パーソナルデータ</b></td><td>個人の属性情報・移動・行動・購買履歴・ウェアラブル機器から収集された個人情報（総務省定義）。匿名加工された人流情報・商品情報等も含む</td><td>—</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 電気通信事業法 -->
+  <section id="ch2-tsushin">
+    <h3>電気通信事業法</h3>
+    <p>SNS・電子掲示板・動画共有プラットフォームにおいて、以下のいずれかに該当する場合は登録または届出が必要な電気通信事業となる。<span class="src">← S03:p.49</span></p>
+    <ul>
+      <li>利用者登録が必要で、<b>アクティブ利用者数が1,000万以上</b>→ 媒介相当電気通信役務に該当</li>
+      <li>特定の利用者間のみでやりとりできる<b>ダイレクトメッセージ機能</b>を提供している場合→ 他人の通信を媒介</li>
+    </ul>
+    <div class="audio-block">
+      <div class="block-label">🎙 音声補足</div>
+      登録・届出が必要な事業者に該当するかどうかは、総務省「電気通信事業参入マニュアル（追補版）ガイドブック」でも確認できる。<span class="src">← S03:p.50</span>
+    </div>
+  </section>
+</section>
+
+<!-- ─── 第3章 ─── -->
+<section id="ch3">
+  <h2>第3章｜労働関連法規と労働者派遣事業</h2>
+  <div class="card" style="margin-bottom:20px">
+    <b>学習目標：</b>労働関連法規の概要と、労働者派遣事業の概要を説明できる。
+  </div>
+  <div class="card">
+    <p><b>主な労働関連法規：</b>労働契約法・労働基準法・労働者派遣法</p>
+    <p><b>労働者の安全・健康・雇用安定に関する法律：</b>労働安全衛生法・労働施策総合推進法（パワハラ防止法）</p>
+  </div>
+
+  <!-- 労働契約法 -->
+  <section id="ch3-keiyaku">
+    <h3>労働契約法</h3>
+    <p>労働契約に関し、労働者と使用者が守るべき民事的なルールを定める法律。<b>2008年3月</b>から施行。<span class="src">← S03:p.57</span></p>
+    <h4>労働契約の5つの原則</h4>
+    <table>
+      <thead><tr><th>#</th><th>原則名</th><th>内容</th></tr></thead>
+      <tbody>
+        <tr><td>①</td><td><b>労使対等の原則</b></td><td>労働者と使用者が対等の立場で合意した上で締結・変更する</td></tr>
+        <tr><td>②</td><td><b>均衡考慮の原則</b></td><td>就業の実態に応じて均衡を考慮しつつ締結・変更する</td></tr>
+        <tr><td>③</td><td><b>仕事と生活の調和への配慮の原則</b></td><td>仕事と生活の調和にも配慮しつつ締結・変更する</td></tr>
+        <tr><td>④</td><td><b>信義誠実の原則</b></td><td>労働契約を遵守し、信義に従い誠実に権利を行使・義務を履行する</td></tr>
+        <tr><td>⑤</td><td><b>権利濫用禁止の原則</b></td><td>労働契約に基づく権利の行使にあたって濫用してはいけない</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:13px;color:var(--text-muted)">※「信義誠実」は音声AI変換で「審議誠実」に誤変換されやすいので注意。<span class="src">← 誤変換ログ</span></p>
+  </section>
+
+  <!-- 労働基準法 -->
+  <section id="ch3-kijun">
+    <h3>労働基準法</h3>
+    <p>労働条件に関する基本的な法令であり、労働条件の最低基準を定める。違反があった場合は労働基準監督署の監督指導等の対象となり、罰則が適用される場合もある。<span class="src">← S03:p.61</span></p>
+
+    <h4>法定労働時間</h4>
+    <div class="def-box">
+      <div class="def-label">労働基準法による制限</div>
+      労働時間を<b>1日8時間、1週間40時間</b>を超えて労働させてはならない。<span class="src">← S03:p.62</span>
+    </div>
+
+    <h4>36協定（サブロク協定）</h4>
+    <div class="def-box">
+      <div class="def-label">定義</div>
+      使用者が法定労働時間を超えて時間外労働させる場合、あらかじめ労働者の過半数で組織する労働組合（または過半数代表者）との間で「時間外労働・休日労働に関する協定」を締結し、労働基準監督署長に届け出なければならない。労働基準法第<b>36</b>条に規定されていることから「36協定（サブロク協定）」と呼ばれる。<span class="src">← S03:p.63</span>
+    </div>
+
+    <h4>裁量労働制とフレックスタイム制の比較</h4>
+    <table>
+      <thead><tr><th>項目</th><th>裁量労働制</th><th>フレックスタイム制</th></tr></thead>
+      <tbody>
+        <tr><td>対象業務</td><td><b>特定の業務に限定</b></td><td>職種や業務に関係なく導入可能</td></tr>
+        <tr><td>賃金計算</td><td>「みなし労働時間」適用（実労働時間に関係なく）</td><td>「実労働時間」に基づいて計算</td></tr>
+        <tr><td>裁量の主体</td><td>業務の遂行方法・時間配分を労働者が決定</td><td>始業・終業時間を労働者が自由に決定</td></tr>
+        <tr><td>種類</td><td>①専門業務型<br>②企画業務型</td><td>清算期間（通常1か月）内で総労働時間を調整</td></tr>
+        <tr><td>届出要件</td><td>労使協定や労使委員会の決議を労働基準監督署に届出</td><td>清算期間が1か月を超えるときのみ協定書を届出</td></tr>
+      </tbody>
+    </table>
+    <div class="audio-block">
+      <div class="block-label">🎙 音声補足</div>
+      裁量労働制もフレックスタイム制でも、労働時間のカウントをしないからといって管理しなくていいわけではない。従業員の健康管理の観点から、企業には<b>労働時間の適切な把握を行う責務</b>がある。<span class="src">← S03:p.68</span>
+    </div>
+  </section>
+
+  <!-- 労働者派遣事業 -->
+  <section id="ch3-haken">
+    <h3>労働者派遣事業</h3>
+    <div class="def-box">
+      <div class="def-label">定義（法第2条）</div>
+      派遣元事業主が自己の雇用する労働者を、<b>派遣先の指揮命令を受けて、派遣先のために</b>、労働に従事させることを業として行うこと。<span class="src">← S03:p.71</span>
+    </div>
+    <p>この定義に当てはまるものはすべて労働者派遣法の適用を受ける。</p>
+    <p>派遣先が派遣受入れにあたり派遣労働者を選考・特定する行為は、紹介予定派遣を受け入れる場合を除き禁止（派遣法第26条第6項）。<span class="src">← S03:p.71</span></p>
+
+    <div class="svg-container">
+      <!-- 3者関係図 -->
+      <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px">
+        <rect width="700" height="200" fill="#161b27" rx="8"/>
+        <text x="350" y="24" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="11" font-weight="700">労働者派遣の3者関係</text>
+        <!-- 派遣元 box x=60,y=60, w=160 h=60 cx=140 cy=90 -->
+        <rect x="60" y="55" width="160" height="60" rx="8" fill="#0d3327" stroke="#34d399" stroke-width="1.5"/>
+        <text x="140" y="82" text-anchor="middle" fill="#34d399" font-family="Noto Sans JP,sans-serif" font-size="13" font-weight="700">派遣元事業主</text>
+        <text x="140" y="100" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="10">（派遣会社）</text>
+        <!-- 派遣先 box x=470,y=60, w=160, cx=550 cy=90 -->
+        <rect x="470" y="55" width="160" height="60" rx="8" fill="#1e3a6e" stroke="#5b8dee" stroke-width="1.5"/>
+        <text x="550" y="82" text-anchor="middle" fill="#5b8dee" font-family="Noto Sans JP,sans-serif" font-size="13" font-weight="700">派遣先企業</text>
+        <text x="550" y="100" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="10">（受入れ先）</text>
+        <!-- 労働者 box x=250,y=130, w=160, cx=330,cy=160 -->
+        <rect x="250" y="130" width="160" height="50" rx="8" fill="#2d1f5e" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="330" y="152" text-anchor="middle" fill="#a78bfa" font-family="Noto Sans JP,sans-serif" font-size="13" font-weight="700">派遣労働者</text>
+        <text x="330" y="168" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="10">（派遣スタッフ）</text>
+        <!-- 派遣元↔派遣先: 派遣契約 -->
+        <line x1="220" y1="85" x2="470" y2="85" stroke="#5b8dee" stroke-width="1.5" stroke-dasharray="5,3"/>
+        <text x="345" y="78" text-anchor="middle" fill="#5b8dee" font-family="Noto Sans JP,sans-serif" font-size="10">派遣契約・派遣料金</text>
+        <!-- 派遣元↔労働者: 雇用関係 -->
+        <!-- 派遣元 cx=140, 労働者 x=250 → 線: (220,115)→(250,130) -->
+        <line x1="180" y1="115" x2="280" y2="130" stroke="#34d399" stroke-width="1.5"/>
+        <text x="190" y="132" text-anchor="middle" fill="#34d399" font-family="Noto Sans JP,sans-serif" font-size="10">雇用関係・給与支払</text>
+        <!-- 派遣先↔労働者: 指揮命令 -->
+        <line x1="500" y1="115" x2="410" y2="130" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="490" y="132" text-anchor="middle" fill="#a78bfa" font-family="Noto Sans JP,sans-serif" font-size="10">指揮命令関係</text>
+      </svg>
+      <figcaption>図: 労働者派遣の3者関係 ← S03:p.71-73</figcaption>
+    </div>
+
+    <h4>料金・給与の流れ</h4>
+    <ul>
+      <li>派遣元は派遣先から<b>派遣料金</b>を受け取る</li>
+      <li>派遣社員の給与は<b>派遣元から</b>支払われる（派遣先企業から直接支払われることはない）</li>
+      <li>派遣料金の内訳：派遣スタッフへの賃金 + 派遣会社のマージン（紹介料）</li>
+    </ul>
+
+    <h4>労働者派遣法</h4>
+    <div class="def-box">
+      <div class="def-label">正式名称</div>
+      「労働者派遣事業の適正な運営の確保及び派遣労働者の保護等に関する法律」。<b>1985年制定、2012年改正</b>。<span class="src">← S03:p.77</span>
+    </div>
+    <h4>派遣事業の許可</h4>
+    <table>
+      <thead><tr><th>項目</th><th>内容</th></tr></thead>
+      <tbody>
+        <tr><td>許可の要否</td><td>すべての労働者派遣事業を行おうとする者は<b>許可必須</b>（法第5条）</td></tr>
+        <tr><td>有効期間（新規）</td><td><b>3年</b>（法第10条）</td></tr>
+        <tr><td>有効期間（更新）</td><td><b>5年</b></td></tr>
+        <tr><td>許可単位</td><td>事業主単位。届出により新たな事業所を設置できる</td></tr>
+      </tbody>
+    </table>
+    <div class="audio-block">
+      <div class="block-label">🎙 音声補足</div>
+      「労働者派遣事業関係業務取扱要領」（厚労省、令和7年1月版）は<b>530ページ</b>以上、「許可・更新等手続マニュアル」は<b>224ページ</b>以上にわたる詳細な手続きが定められている。派遣事業を行う者は必読。<span class="src">← S03:p.80</span>
+    </div>
+  </section>
+
+  <!-- 請負と偽装請負 -->
+  <section id="ch3-ukeoi">
+    <h3>請負（うけおい）と偽装請負</h3>
+    <div class="def-box">
+      <div class="def-label">請負の定義（民法第632条）</div>
+      労働の結果としての仕事の完成を目的とするもの。労働者派遣との違いは、<b>注文主と労働者との間に指揮命令関係が生じない</b>点にある。<span class="src">← S03:p.81</span>
+    </div>
+
+    <div class="def-box">
+      <div class="def-label">偽装請負とは</div>
+      ①実態として労働者派遣事業であると判断されるもの（労働者派遣法に違反）、または②個人事業主への適切な再委託ではなく、その実態から当該個人事業主が労働基準法上の労働者であると判断されるものなど、<b>契約の形式と実態に不一致があるもの</b>。<span class="src">← S03:p.83</span>
+    </div>
+    <div class="audio-block">
+      <div class="block-label">🎙 音声補足</div>
+      偽装請負は、注文主が実態として労働者に指揮命令関係を持っている場合に生じる。フリーランスとして働いている人たちにも当てはまる場合があるので注意が必要。<span class="src">← S05-A</span>
+    </div>
+
+    <div class="svg-container">
+      <svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:720px">
+        <rect width="720" height="220" fill="#161b27" rx="8"/>
+        <text x="360" y="24" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="11" font-weight="700">労働者派遣 vs 請負 vs 偽装請負</text>
+        <!-- 派遣 -->
+        <rect x="20" y="38" width="200" height="30" rx="5" fill="#0d3327" stroke="#34d399" stroke-width="1.5"/>
+        <text x="120" y="59" text-anchor="middle" fill="#34d399" font-family="Noto Sans JP,sans-serif" font-size="12" font-weight="700">＜労働者派遣＞</text>
+        <text x="30" y="90" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="10">派遣元</text>
+        <rect x="25" y="96" width="60" height="28" rx="4" fill="#0d3327" stroke="#34d399" stroke-width="1"/>
+        <text x="55" y="115" text-anchor="middle" fill="#34d399" font-family="Noto Sans JP,sans-serif" font-size="10">派遣元</text>
+        <text x="120" y="90" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="10">派遣先</text>
+        <rect x="115" y="96" width="60" height="28" rx="4" fill="#1e3a6e" stroke="#5b8dee" stroke-width="1"/>
+        <text x="145" y="115" text-anchor="middle" fill="#5b8dee" font-family="Noto Sans JP,sans-serif" font-size="10">派遣先</text>
+        <rect x="70" y="148" width="60" height="28" rx="4" fill="#2d1f5e" stroke="#a78bfa" stroke-width="1"/>
+        <text x="100" y="167" text-anchor="middle" fill="#a78bfa" font-family="Noto Sans JP,sans-serif" font-size="10">労働者</text>
+        <!-- 派遣: 派遣元→派遣先 -->
+        <line x1="85" y1="110" x2="115" y2="110" stroke="#5b8dee" stroke-width="1" stroke-dasharray="3,2"/>
+        <text x="100" y="106" text-anchor="middle" fill="#5b8dee" font-family="Noto Sans JP,sans-serif" font-size="8">派遣契約</text>
+        <!-- 派遣: 派遣元→労働者 -->
+        <line x1="65" y1="124" x2="90" y2="148" stroke="#34d399" stroke-width="1"/>
+        <text x="68" y="142" fill="#34d399" font-family="Noto Sans JP,sans-serif" font-size="8">雇用</text>
+        <!-- 派遣: 派遣先→労働者 指揮命令 -->
+        <line x1="145" y1="124" x2="120" y2="148" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="140" y="143" fill="#a78bfa" font-family="Noto Sans JP,sans-serif" font-size="8">指揮命令↓</text>
+
+        <!-- 請負 -->
+        <rect x="260" y="38" width="200" height="30" rx="5" fill="#1e2535" stroke="#34d399" stroke-width="1.5"/>
+        <text x="360" y="59" text-anchor="middle" fill="#34d399" font-family="Noto Sans JP,sans-serif" font-size="12" font-weight="700">＜請負＞（適正）</text>
+        <rect x="265" y="96" width="65" height="28" rx="4" fill="#1e2535" stroke="#556070" stroke-width="1"/>
+        <text x="297" y="115" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="10">受負業者</text>
+        <rect x="375" y="96" width="65" height="28" rx="4" fill="#1e2535" stroke="#556070" stroke-width="1"/>
+        <text x="407" y="115" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="10">注文主</text>
+        <rect x="310" y="148" width="65" height="28" rx="4" fill="#1e2535" stroke="#556070" stroke-width="1"/>
+        <text x="342" y="167" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="10">労働者</text>
+        <line x1="330" y1="110" x2="375" y2="110" stroke="#556070" stroke-width="1" stroke-dasharray="3,2"/>
+        <text x="352" y="106" text-anchor="middle" fill="#556070" font-family="Noto Sans JP,sans-serif" font-size="8">請負契約</text>
+        <line x1="310" y1="124" x2="330" y2="148" stroke="#556070" stroke-width="1"/>
+        <text x="295" y="143" fill="#556070" font-family="Noto Sans JP,sans-serif" font-size="8">雇用</text>
+        <!-- 注文主→労働者: 指揮命令なし -->
+        <line x1="410" y1="124" x2="375" y2="148" stroke="#556070" stroke-width="1" stroke-dasharray="2,3"/>
+        <text x="405" y="142" fill="#556070" font-family="Noto Sans JP,sans-serif" font-size="8">指揮命令なし</text>
+
+        <!-- 偽装請負 -->
+        <rect x="500" y="38" width="200" height="30" rx="5" fill="#3d1010" stroke="#f87171" stroke-width="1.5"/>
+        <text x="600" y="59" text-anchor="middle" fill="#f87171" font-family="Noto Sans JP,sans-serif" font-size="12" font-weight="700">＜偽装請負＞（違法）</text>
+        <rect x="505" y="96" width="65" height="28" rx="4" fill="#1e2535" stroke="#556070" stroke-width="1"/>
+        <text x="537" y="115" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="10">受負業者</text>
+        <rect x="615" y="96" width="65" height="28" rx="4" fill="#3d1010" stroke="#f87171" stroke-width="1"/>
+        <text x="647" y="115" text-anchor="middle" fill="#f87171" font-family="Noto Sans JP,sans-serif" font-size="10">注文主</text>
+        <rect x="550" y="148" width="65" height="28" rx="4" fill="#1e2535" stroke="#556070" stroke-width="1"/>
+        <text x="582" y="167" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="10">労働者</text>
+        <line x1="570" y1="110" x2="615" y2="110" stroke="#556070" stroke-width="1" stroke-dasharray="3,2"/>
+        <text x="592" y="106" text-anchor="middle" fill="#556070" font-family="Noto Sans JP,sans-serif" font-size="8">請負契約（形式）</text>
+        <line x1="550" y1="124" x2="570" y2="148" stroke="#556070" stroke-width="1"/>
+        <!-- 注文主→労働者: 実態は指揮命令あり (違法) -->
+        <line x1="647" y1="124" x2="610" y2="148" stroke="#f87171" stroke-width="2"/>
+        <text x="644" y="142" fill="#f87171" font-family="Noto Sans JP,sans-serif" font-size="8">実態：指揮命令↓</text>
+        <text x="600" y="192" text-anchor="middle" fill="#f87171" font-family="Noto Sans JP,sans-serif" font-size="10" font-weight="700">→ 偽装請負（違法）</text>
+      </svg>
+      <figcaption>図: 労働者派遣・請負・偽装請負の比較 ← S03:p.83-84</figcaption>
+    </div>
+  </section>
+</section>
+
+<!-- ─── 第4章 ─── -->
+<section id="ch4">
+  <h2>第4章｜IT関連の法律とガイドライン</h2>
+  <div class="card" style="margin-bottom:20px">
+    <b>学習目標：</b>企業等の規範に関する考え方、環境に配慮する様々な法律、標準化の活動の意義と身近な例を説明できる。
+  </div>
+
+  <!-- コンプライアンス -->
+  <section id="ch4-compliance">
+    <h3>コンプライアンス</h3>
+    <div class="def-box">
+      <div class="def-label">定義</div>
+      「法令遵守」という意味がある言葉。現在では、法令を遵守することはもとより、企業倫理や社会規範を尊重するという意味合いもある。語源は英語「compliance（従う・命令に応じる）」。<span class="src">← S03:p.92-93</span>
+    </div>
+    <h4>コンプライアンスリスクの代表的な5事例</h4>
+    <ul>
+      <li>データの持ち出しや情報漏えい</li>
+      <li>ハラスメント</li>
+      <li>超過勤務</li>
+      <li>不正会計や不正利用</li>
+      <li>景品表示法違反</li>
+    </ul>
+  </section>
+
+  <!-- コーポレートガバナンス -->
+  <section id="ch4-gov">
+    <h3>コーポレートガバナンス・内部統制</h3>
+    <div class="def-box">
+      <div class="def-label">コーポレートガバナンス</div>
+      顧客や市場などから信頼を獲得するための経営活動の健全化を目的とした取組。企業がコンプライアンスを遵守するよう、自ら監視役を付けて外部から「統制」すること。<span class="src">← S03:p.96</span>
+    </div>
+    <p>「会社は経営者のものではなく、株主やステークホルダー（利害関係者）のもの」という理念に基づく。日本では<b>2021年3月1日施行の改正会社法</b>により、上場会社での<b>社外取締役の設置が義務化</b>された。<span class="src">← S03:p.97</span></p>
+
+    <div class="def-box">
+      <div class="def-label">内部統制</div>
+      コンプライアンスを含む社内規範を守るため、会社内部の業務適正化など社内ルールを作り、それを遵守させる仕組み。内部統制を強化することでコンプライアンスが強化され、企業の健全な経営が実現される。<span class="src">← S03:p.98</span>
+    </div>
+  </section>
+
+  <!-- Society 5.0 / AI倫理 -->
+  <section id="ch4-society">
+    <h3>Society 5.0・データ駆動型社会・AI倫理</h3>
+    <div class="def-box">
+      <div class="def-label">Society 5.0</div>
+      第5期科学技術基本計画において日本が目指すべき未来社会の姿として提唱。IoTによってすべての人とモノがつながり、AIやロボット・自動走行車などの技術により、少子高齢化・地方の過疎化・貧富の格差などの課題が克服される社会。<span class="src">← S03:p.99</span>
+    </div>
+    <div class="def-box">
+      <div class="def-label">データ駆動型社会</div>
+      ビッグデータを集めてAIやIoTを使って社会の課題を解決し、利便性を高める社会。従来はデータを分析して問題を見つけることが主だったが、データ駆動型社会では<b>問題を解決することが目標</b>となる。<span class="src">← S03:p.100</span>
+    </div>
+    <p>安心・安全で信頼できるデータ駆動型社会の実現には、<b>自由なデータ流通と個人情報保護を両立</b>する枠組みを実装することが必要。<span class="src">← S03:p.101</span></p>
+
+    <h4>AIと倫理</h4>
+    <p>AIが学習に利用するデータ・AIが生成したデータについて、個人情報保護・プライバシー・秘密保持の観点で留意が必要。<span class="src">← S03:p.102</span></p>
+    <h4>企業でAIを活用することに関連するリスク</h4>
+    <ul>
+      <li>機密情報漏えいや個人情報の不適正利用</li>
+      <li>犯罪の巧妙化・容易化</li>
+      <li>偽情報などによる社会の混乱・不安定化</li>
+      <li>サイバー攻撃の巧妙化</li>
+      <li>著作権侵害のリスク</li>
+    </ul>
+  </section>
+
+  <!-- 情報公開制度 -->
+  <section>
+    <h3>情報公開制度</h3>
+    <p>「行政機関の保有する情報の公開に関する法律」（情報公開法）に基づき、企業・団体・個人を問わず誰でも行政機関が作成した文書について情報の開示請求ができる。アカウンタビリティ（政府の諸活動を説明する責務）を全うし、公正で民主的な行政の推進を目指すもの。<span class="src">← S03:p.103</span></p>
+  </section>
+
+  <!-- 環境法 -->
+  <section id="ch4-kankyou">
+    <h3>環境法</h3>
+    <p>環境保全を目的とする法令の総称。環境基本法第8条が事業者の責務として公害防止・廃棄物の適正処理・環境負荷の低減等を掲げており、個別の環境法がより具体的に事業者の義務を規定する。<span class="src">← S03:p.104</span></p>
+    <h4>主な分野</h4>
+    <ul>
+      <li><b>公害防止の分野</b>：公害を個別に対策する法令</li>
+      <li><b>資源循環の分野</b>：「循環型社会形成推進基本法」が基本法として存在</li>
+      <li>廃棄物処理法・各種リサイクル法が廃棄物の適正処理や<b>3R（Reduce, Reuse, Recycle）</b>などの具体的取組みを企業等に求める</li>
+    </ul>
+  </section>
+
+  <!-- 標準化 -->
+  <section id="ch4-hyojun">
+    <h3>標準化（Standardization）</h3>
+    <div class="def-box">
+      <div class="def-label">標準（Standard）とは</div>
+      スポーツのルールなどのように、規則や規制などの「取り決め」や「決めごと」のこと。<span class="src">← S03:p.106</span>
+    </div>
+    <div class="def-box">
+      <div class="def-label">標準化とは</div>
+      この「標準」を関係者が集まって話しあいによって意識的に作り、それを利用する活動のこと。<br>身近な例：乾電池（単一・単二・単三等のサイズに統一されているため、どのメーカーのものを買っても使える）<span class="src">← S03:p.107</span>
+    </div>
+
+    <h4>標準の3類型</h4>
+    <table>
+      <thead><tr><th>種類</th><th>制定の経緯</th><th>代表例</th><th>特徴</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><b>デジュール標準</b><br>（de jure）</td>
+          <td>標準化機関における合意を経て制定される公的な標準</td>
+          <td>ISO国際規格、CEN（EU域内）、JIS（日本）</td>
+          <td>加盟国で適用。審議に時間がかかるが権威がある</td>
+        </tr>
+        <tr>
+          <td><b>フォーラム標準</b></td>
+          <td>特定分野の標準化に関心がある企業・専門家群の合意</td>
+          <td>IEEE（アイトリプルイー）、DVDフォーラム、HTTP</td>
+          <td>加盟企業内で適用。比較的スピードが速い</td>
+        </tr>
+        <tr>
+          <td><b>デファクト標準</b><br>（de facto）</td>
+          <td>特定企業の製品・サービスが世界中に普及することで生まれる事実上の標準</td>
+          <td>Windows、Google検索、USB</td>
+          <td>合意形成のプロセス不要。競争に勝ち残ると結果的に標準化</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4>主要な国際・国内標準化機関・団体</h4>
+    <table>
+      <thead><tr><th>略称</th><th>正式名称</th><th>設立年</th><th>本部</th><th>対象分野</th></tr></thead>
+      <tbody>
+        <tr><td><b>IEC</b></td><td>国際電気標準会議</td><td><b>1906年</b></td><td>スイス・ジュネーヴ</td><td>電気技術・電子工学・関連分野</td></tr>
+        <tr><td><b>ISO</b></td><td>国際標準化機構</td><td><b>1947年</b></td><td>スイス・ジュネーヴ</td><td>工業製品・食品安全・農業・医療など全分野（約2万の規格）</td></tr>
+        <tr><td><b>ANSI</b></td><td>米国国家規格協会</td><td><b>1918年</b></td><td>ワシントンD.C.</td><td>アメリカの工業製品の標準化・規格化（政府から独立した私的非営利組織）</td></tr>
+        <tr><td><b>JISC</b></td><td>日本産業標準調査会</td><td>—</td><td>経済産業省内</td><td>JIS（日本産業規格）の制定・改正。産業製品から文字コード・情報処理まで</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:13px;color:var(--text-muted)">※ANSIの設立年はS05-Aで「1958年」と誤変換されていたが、S03スライド・S05-B両方で「1918年」と確認。<span class="src">← 数値不一致ログ/S03照合済み</span></p>
+
+    <div class="audio-block">
+      <div class="block-label">🎙 音声補足</div>
+      ISOが策定した国際規格を「ISO」と呼称する事例もみられる。ISO 9000（品質マネジメントシステム）、ISO 14000（環境マネジメントシステム）が代表例。<span class="src">← S03:p.110</span>
+    </div>
+  </section>
+
+  <!-- 守秘義務契約 -->
+  <section id="ch4-nda">
+    <h3>守秘義務契約・NDA</h3>
+    <div class="def-box">
+      <div class="def-label">守秘義務契約（秘密保持契約）</div>
+      守秘義務は公務員・弁護士・税理士等が負っている法律上の義務を指す場合が多く、事業者間の契約では「秘密保持契約書」と呼ばれることが多い。英語では「Non-Disclosure Agreement」→ 頭文字を取って<b>NDA</b>とも呼ばれる。<span class="src">← S03:p.111</span>
+    </div>
+    <div class="audio-block">
+      <div class="block-label">🎙 音声補足</div>
+      NDAの目的：自社が持つ営業秘密や個人情報等は自社の存続に関わる重要なものだが、製造委託・販売委託等で取引を行う際には委託先に業務上の秘密や個人情報等を提供する必要が生じる場合がある。NDAを締結することで、提供した秘密情報の管理義務を相手方に負わせ、不当な流出・悪用を防ぐ。<span class="src">← S03:p.112</span>
+    </div>
+    <p style="font-size:13px;color:var(--text-muted)">※「守秘義務」は音声AI変換で「手費義務」「主費義務」等に誤変換されやすいので注意。<span class="src">← 誤変換ログ</span></p>
+  </section>
+</section>
+
+<hr>
+
+<!-- ─── 末尾補足 ─── -->
+
+<!-- 補足A -->
+<section id="appendix-a">
+  <div class="appendix-card">
+    <div class="card-title">⭐ 補足A: 最重要ワード一覧</div>
+    <table>
+      <thead><tr><th>用語</th><th>読み</th><th>定義（原文から抽出）</th><th>重要度</th></tr></thead>
+      <tbody>
+        <tr><td><b>知的財産権</b></td><td>ちてきざいさんけん</td><td>知的な創作活動によって何かを作り出した、その創作者に与えられる、創作したものを「勝手に利用されない」権利</td><td>★★★</td></tr>
+        <tr><td><b>著作権</b></td><td>ちょさくけん</td><td>著作物を創作した者に与えられる、無断でコピーされたりインターネットで利用されない権利</td><td>★★★</td></tr>
+        <tr><td><b>産業財産権</b></td><td>さんぎょうざいさんけん</td><td>発明やデザインなどを登録することによって守られる権利（特許権・実用新案権・意匠権・商標権）</td><td>★★★</td></tr>
+        <tr><td><b>意匠権</b></td><td>いしょうけん</td><td>物品・建築物・画像のデザインを保護する産業財産権（意匠法）</td><td>★★★</td></tr>
+        <tr><td><b>不正競争防止法</b></td><td>ふせいきょうそうぼうしほう</td><td>企業間の不適切な競争を防ぐための法律。10類型の不正競争を定義</td><td>★★★</td></tr>
+        <tr><td><b>肖像権</b></td><td>しょうぞうけん</td><td>勝手に写真に撮られたり、撮られた写真を勝手に公開されない権利（判例で認められた権利）</td><td>★★★</td></tr>
+        <tr><td><b>パブリシティ権</b></td><td>ぱぶりしてぃけん</td><td>肖像が持つ顧客吸引力を排他的に利用する権利（判例で認められた権利）</td><td>★★★</td></tr>
+        <tr><td><b>不正アクセス禁止法</b></td><td>ふせいあくせすきんしほう</td><td>コンピュータシステムへの不正なアクセスを防止するための法律（2012年改正）</td><td>★★★</td></tr>
+        <tr><td><b>個人情報</b></td><td>こじんじょうほう</td><td>生存する個人に関する情報で、特定の個人を識別できる情報</td><td>★★★</td></tr>
+        <tr><td><b>労働者派遣法</b></td><td>ろうどうしゃはけんほう</td><td>派遣労働者を保護し労働者派遣事業を適正に運営することを目的として1985年制定、2012年改正</td><td>★★★</td></tr>
+        <tr><td><b>36協定（サブロク協定）</b></td><td>さぶろくきょうてい</td><td>時間外労働・休日労働に関する労使協定。労働基準法第36条に基づく</td><td>★★★</td></tr>
+        <tr><td><b>偽装請負</b></td><td>ぎそううけおい</td><td>形式上は請負契約だが、実態として注文主が労働者に指揮命令関係を持つ違法形態</td><td>★★★</td></tr>
+        <tr><td><b>コンプライアンス</b></td><td>こんぷらいあんす</td><td>法令遵守。現在では企業倫理や社会規範を尊重するという意味合いもある</td><td>★★★</td></tr>
+        <tr><td><b>コーポレートガバナンス</b></td><td>こーぽれーとがばなんす</td><td>顧客や市場などから信頼を獲得するための経営活動の健全化を目的とした取組</td><td>★★★</td></tr>
+        <tr><td><b>NDA</b></td><td>えぬでぃーえー</td><td>Non-Disclosure Agreement（守秘義務契約・秘密保持契約書）</td><td>★★★</td></tr>
+        <tr><td><b>識別符号</b></td><td>しきべつふごう</td><td>不正アクセス禁止法上の用語。IDやパスワードなど、アクセスに必要な符号</td><td>★★☆</td></tr>
+        <tr><td><b>裁量労働制</b></td><td>さいりょうろうどうせい</td><td>実際の労働時間に関係なく、あらかじめ定めた時間を労働したとみなす制度</td><td>★★☆</td></tr>
+        <tr><td><b>フレックスタイム制</b></td><td>ふれっくすたいむせい</td><td>労働者が始業・終業時間を自由に決定できる制度</td><td>★★☆</td></tr>
+        <tr><td><b>デジュール標準</b></td><td>でじゅーるひょうじゅん</td><td>標準化機関における合意を経て制定される公的な標準（ISO・JIS等）</td><td>★★☆</td></tr>
+        <tr><td><b>デファクト標準</b></td><td>でふぁくとひょうじゅん</td><td>特定企業の製品・サービスが世界中に普及することで生まれる事実上の標準</td><td>★★☆</td></tr>
+        <tr><td><b>Society 5.0</b></td><td>そさいえてぃごーてんぜろ</td><td>第5期科学技術基本計画が提唱した日本が目指すべき未来社会の姿</td><td>★★☆</td></tr>
+        <tr><td><b>個人識別符号</b></td><td>こじんしきべつふごう</td><td>番号・記号・符号等で情報単体から特定個人を識別できる、政令・規則で定められたもの</td><td>★☆☆</td></tr>
+        <tr><td><b>シュリンクラップ契約</b></td><td>しゅりんくらっぷけいやく</td><td>パッケージソフトウェアを開封した時点で契約が成立する形態</td><td>★☆☆</td></tr>
+        <tr><td><b>クリックオン契約</b></td><td>くりっくおんけいやく</td><td>「同意する」ボタンをクリックした時点で契約が成立する形態</td><td>★☆☆</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- 補足B -->
+<section id="appendix-b">
+  <div class="appendix-card">
+    <div class="card-title">📚 補足B: 知っておくべき背景知識</div>
+    <p class="ext-info">[外部補足] <b>著作権の保護期間（日本）</b>：原則として著作者の死後70年（著作権法第51条）。無名・変名・団体名義の著作物・映画は<b>公表後70年</b>（著作者の死亡日が特定できないため公表時起算）。保護期間は翌年1月1日から起算する暦年主義（第57条）。2018年12月30日のTPP11発効に伴い、従来の死後50年から70年に延長された。この期間を超えた著作物はパブリックドメインとなり、誰でも自由に利用できる。<br><small style="color:var(--text-muted)">出典: 文化庁「著作物等の保護期間の延長に関するQ&A」/ 公益社団法人著作権情報センター（CRIC）</small></p>
+    <p class="ext-info">[外部補足] <b>特許権の存続期間</b>：特許出願の日から<b>20年</b>（特許法第67条第1項）。ただし例外的に存続期間を延長できる場合が2種類ある。①審査遅延補償延長：設定登録が出願から5年または審査請求から3年のいずれか遅い日以後になされた場合に延長可（第67条第2項）。②医薬品・農薬等の薬事承認等を受けるために実施できなかった期間について、<b>最大5年を限度</b>として延長可（第67条第4項）。<br><small style="color:var(--text-muted)">出典: 特許庁「審査基準」/ 独立行政法人工業所有権情報研修館（INPIT）</small></p>
+    <p class="ext-info">[外部補足] <b>周知表示（①類型）vs 著名表示（②類型）の違い</b>：①は一定の地域・業界で知られている商標・商号等について「混同を生じさせる行為」を禁止するもの。②は全国的・国際的に広く認知された「著名な」表示について、混同がなくても冒用行為そのものを禁止するもの。②のほうが保護の範囲が広く、異業種への使用も規制対象になる。</p>
+    <p class="ext-info">[外部補足] <b>フィッシング詐欺の現状（2024年）</b>：フィッシング対策協議会によると、2024年1〜11月の累計フィッシング報告件数は<b>148万5,746件</b>となり、統計開始（2005年）以来最多だった2023年の年間119万6,390件を11か月で既に上回った（過去最多）。12月単月だけで23万2,290件を記録。Amazon・クレジットカード会社・宅配業者・電力会社をかたるものが多数。犯罪者による自動送信システムや生成AIを悪用した文面作成が原因とみられている。<br><small style="color:var(--text-muted)">出典: フィッシング対策協議会「2024/12 フィッシング報告状況」/ 日本経済新聞（2025年1月）</small></p>
+    <p class="ext-info">[外部補足] <b>改正個人情報保護法（2022年全面施行）</b>：3年ごとの見直し規定があり、2022年4月全面施行。主な改正点として「不適正利用の禁止」「情報漏洩等の報告・本人通知の義務化」「保有個人データの範囲拡大（6か月以内短期保存データも対象）」「利用停止・消去等の請求権拡充」などが強化された。個人情報保護委員会が監督権限を持つ。</p>
+    <p class="ext-info">[外部補足] <b>みなし労働時間（裁量労働制）</b>：実際の労働時間が「みなし時間」を超えても超過分の残業代は原則発生しない。ただしS03スライドにも明記されているとおり、健康管理時間の適切な把握は企業の義務（労働基準法上）。専門業務型は対象業務が19業務に限定（弁護士・システムアナリスト・新聞記者等）。企画業務型は本社等の企画・立案・調査・分析業務のみ対象。</p>
+  </div>
+</section>
+
+<!-- 補足C -->
+<section id="appendix-c">
+  <div class="appendix-card">
+    <div class="card-title">🎯 補足C: 試験・レポートで重要な観点</div>
+    <ul>
+      <li>産業財産権の4種類（特許権・実用新案権・<b>意匠権</b>・商標権）とそれぞれの保護対象を正確に区別できること。</li>
+      <li>不正競争防止法の10類型のうち、①周知表示混同惹起行為と②著名表示冒用行為の具体的事例（ウォークマン事件・三菱信販事件）を説明できること。</li>
+      <li>不正アクセス禁止法の4条〜7条の禁止行為を条文番号と対応づけて説明できること。</li>
+      <li>個人情報・個人データ・保有個人データの定義の違いを説明できること。</li>
+      <li>36協定の定義と「サブロク」の由来（労働基準法第36条）を説明できること。</li>
+      <li>労働者派遣・請負・偽装請負の違い（指揮命令関係の有無）を図で説明できること。</li>
+      <li>デジュール標準・フォーラム標準・デファクト標準の違いと代表例を区別できること。</li>
+      <li>コンプライアンス、コーポレートガバナンス、内部統制の関係を説明できること（内部統制はコンプライアンスを実現するための手段）。</li>
+      <li><b>数値で問われやすいもの</b>：法定労働時間（1日8時間・1週40時間）、派遣許可有効期間（新規3年・更新5年）、不正アクセス禁止法の罰則上限（懲役3年）、ANSI設立1918年、IEC設立1906年、ISO設立1947年。著作権保護期間（著作者の死後70年 / 団体名義・映画は公表後70年）、特許権存続期間（出願日から20年・医薬品等は最大5年延長可）も頻出。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 補足D -->
+<section id="appendix-d">
+  <div class="appendix-card">
+    <div class="card-title">🔗 補足D: 関連概念・次回への接続</div>
+    <p class="ext-info">[外部補足] <b>オープンソースライセンス</b>：ソフトウェアライセンスの一形態。MIT License・GPL（GNU General Public License）・Apache License 2.0等がある。ソースコードの公開・改変・再配布の条件がライセンスごとに異なる。GPLは「コピーレフト」条項により、改変して配布する場合も同じライセンスを継承しなければならない（伝染性）。企業での利用時には各ライセンスの条件確認が必須。</p>
+    <p class="ext-info">[外部補足] <b>GDPRとの比較</b>：EUの一般データ保護規則（GDPR, 2018年5月施行）は日本の個人情報保護法より厳格で、違反した場合の制裁金は最大2,000万ユーロまたは世界年間売上の4%のいずれか高いほう。EU居住者のデータを扱う日本企業にも適用される（域外適用）。日本とEUの間では相互認定（十分性認定）が2019年に発効し、双方の枠組みの下でのデータ移転が容易になっている。</p>
+    <p class="ext-info">[外部補足] <b>フリーランス保護新法（2024年11月1日施行）</b>：正式名称「特定受託事業者に係る取引の適正化等に関する法律」（フリーランス・事業者間取引適正化等法）。2023年4月28日可決・5月12日公布。発注事業者に対して①書面等による取引条件の明示、②60日以内の報酬支払い、③一方的な報酬減額等の禁止、④ハラスメント対策、⑤育児・介護への配慮、⑥中途解除時の30日前予告等を義務付け。違反した場合は最大50万円の罰金（法人両罰規定あり）。第3章で扱う「偽装請負」問題とも密接に関連する。<br><small style="color:var(--text-muted)">出典: 政府広報オンライン「フリーランスが安心して働ける環境づくりのための法律」/ 厚生労働省</small></p>
+    <p class="ext-info">[外部補足] <b>IEEEの標準例</b>：IEEE 802.11（Wi-Fi）、IEEE 802.3（Ethernet）など、ネットワーク分野の標準化で特に重要。IEEEは「アイトリプルイー」と読む（Institute of Electrical and Electronics Engineers）。フォーラム標準の代表例としてS03スライドでも挙げられている。</p>
+    <p class="ext-info">[外部補足] <b>AIガバナンスの動向</b>：EU AI Act（欧州AI法）が2024年8月に発効。リスクベースのアプローチで、高リスクAIシステム（医療・採用・インフラ等）には厳格な要件が課される。日本では経済産業省・総務省が「AI事業者ガイドライン」（2024年4月）を公表。企業のAI活用倫理の指針として参照可。</p>
+  </div>
+</section>
+
+</main>
+
+<script>
+// アクティブなTOCリンクのハイライト
+const sections = document.querySelectorAll('section[id]');
+const tocLinks = document.querySelectorAll('.toc-link');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      tocLinks.forEach(l => l.classList.remove('active'));
+      const active = document.querySelector('.toc-link[href="#' + entry.target.id + '"]');
+      if (active) {
+        active.classList.add('active');
+        active.style.color = 'var(--accent)';
+        active.style.borderLeftColor = 'var(--accent)';
+        // 他は戻す
+        tocLinks.forEach(l => {
+          if (l !== active) { l.style.color = ''; l.style.borderLeftColor = ''; }
+        });
+      }
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
