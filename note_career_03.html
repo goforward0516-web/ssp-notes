@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>キャリア入門 第3回 社会人基礎力について</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --bg2: #161b27;
+    --bg3: #1e2535;
+    --card: #1a2032;
+    --border: #2a3550;
+    --text: #e2e8f5;
+    --text-sub: #8a99b8;
+    --accent: #5b8dee;
+    --accent2: #34d399;
+    --accent3: #fbbf24;
+    --voice: #3b82f6;
+    --infer: #8b5cf6;
+    --warn: #f59e0b;
+    --ext: #10b981;
+    --red: #ef4444;
+    --sidebar-w: 240px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 15px;
+    line-height: 1.8;
+    display: flex;
+  }
+
+  /* ===== SIDEBAR ===== */
+  #sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    width: var(--sidebar-w);
+    height: 100vh;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    padding: 20px 0;
+    z-index: 100;
+  }
+  #sidebar h2 {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--text-sub);
+    text-transform: uppercase;
+    padding: 0 16px 12px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 12px;
+  }
+  #sidebar ul { list-style: none; }
+  #sidebar ul li a {
+    display: block;
+    padding: 5px 16px;
+    font-size: 12px;
+    color: var(--text-sub);
+    text-decoration: none;
+    transition: all 0.15s;
+    border-left: 2px solid transparent;
+  }
+  #sidebar ul li a:hover,
+  #sidebar ul li a.active {
+    color: var(--accent);
+    border-left-color: var(--accent);
+    background: rgba(91,141,238,0.06);
+  }
+  #sidebar ul li.section-head > a {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--text);
+    margin-top: 8px;
+  }
+  #sidebar ul li.sub > a { padding-left: 28px; font-size: 11px; }
+
+  /* ===== MAIN ===== */
+  #main {
+    margin-left: var(--sidebar-w);
+    flex: 1;
+    max-width: 900px;
+    padding: 40px 48px 80px;
+  }
+
+  /* ===== HEADER ===== */
+  .page-header {
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 24px;
+    margin-bottom: 40px;
+  }
+  .page-header .badge {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 2px 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+  }
+  .page-header h1 {
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+  .page-header .meta {
+    display: flex; gap: 20px; flex-wrap: wrap;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-sub);
+  }
+  .page-header .meta span::before { content: "● "; color: var(--accent2); }
+
+  /* ===== SECTION ===== */
+  .section { margin-bottom: 48px; }
+  .section-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+    border-left: 4px solid var(--accent);
+    padding-left: 14px;
+    margin-bottom: 20px;
+    scroll-margin-top: 24px;
+  }
+  .sub-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--accent3);
+    margin: 24px 0 12px;
+    scroll-margin-top: 24px;
+  }
+  .sub-title2 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--accent2);
+    margin: 16px 0 8px;
+  }
+
+  /* ===== CARD ===== */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 22px;
+    margin-bottom: 16px;
+  }
+
+  /* ===== BLOCKS ===== */
+  .voice-block {
+    border-left: 3px solid var(--voice);
+    background: rgba(59,130,246,0.06);
+    border-radius: 0 6px 6px 0;
+    padding: 10px 14px;
+    margin: 10px 0;
+    font-size: 14px;
+  }
+  .voice-block .label {
+    font-size: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--voice);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+  }
+  .infer-block {
+    border-left: 3px solid var(--infer);
+    background: rgba(139,92,246,0.06);
+    border-radius: 0 6px 6px 0;
+    padding: 10px 14px;
+    margin: 10px 0;
+    font-size: 13px;
+  }
+  .warn-block {
+    border-left: 3px solid var(--warn);
+    background: rgba(245,158,11,0.07);
+    border-radius: 0 6px 6px 0;
+    padding: 10px 14px;
+    margin: 10px 0;
+    font-size: 13px;
+  }
+  .ext-block {
+    border-left: 3px solid var(--ext);
+    background: rgba(16,185,129,0.06);
+    border-radius: 0 6px 6px 0;
+    padding: 10px 14px;
+    margin: 10px 0;
+    font-size: 13px;
+  }
+  .ext-block .label, .voice-block .label2 {
+    font-size: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.1em;
+  }
+  .ext-block .label { color: var(--ext); }
+
+  /* ===== POINTER ===== */
+  .ptr {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-sub);
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 1px 5px;
+    margin-left: 6px;
+  }
+
+  /* ===== OX TABLE ===== */
+  .ox-table {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 12px 0;
+  }
+  .ox-box {
+    border-radius: 6px;
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+  .ox-box.bad {
+    background: rgba(239,68,68,0.08);
+    border: 1px solid rgba(239,68,68,0.3);
+  }
+  .ox-box.good {
+    background: rgba(52,211,153,0.08);
+    border: 1px solid rgba(52,211,153,0.3);
+  }
+  .ox-box .ox-label {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .ox-box.bad .ox-label { color: var(--red); }
+  .ox-box.good .ox-label { color: var(--accent2); }
+
+  /* ===== TABLE ===== */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 13px;
+  }
+  th {
+    background: var(--bg3);
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    text-align: left;
+  }
+  td {
+    padding: 7px 12px;
+    border: 1px solid var(--border);
+    color: var(--text);
+    vertical-align: top;
+  }
+  tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+
+  /* ===== APPENDIX CARDS ===== */
+  .appendix-card {
+    border-radius: 8px;
+    padding: 20px 22px;
+    margin-bottom: 16px;
+  }
+  .appendix-card.unconfirmed {
+    background: rgba(245,158,11,0.07);
+    border: 1px solid rgba(245,158,11,0.3);
+  }
+  .appendix-card.glossary {
+    background: var(--card);
+    border: 1px solid var(--border);
+  }
+  .appendix-card.bg-know {
+    background: rgba(91,141,238,0.06);
+    border: 1px solid rgba(91,141,238,0.2);
+  }
+  .appendix-card.exam {
+    background: rgba(251,191,36,0.06);
+    border: 1px solid rgba(251,191,36,0.2);
+  }
+  .appendix-card.related {
+    background: rgba(52,211,153,0.05);
+    border: 1px solid rgba(52,211,153,0.2);
+  }
+  .appendix-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .appendix-ext {
+    font-size: 12px;
+    color: var(--text-sub);
+  }
+
+  /* ===== SVG ===== */
+  .svg-wrap {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    margin: 16px 0;
+    overflow-x: auto;
+  }
+  figcaption {
+    font-size: 11px;
+    color: var(--text-sub);
+    font-family: 'JetBrains Mono', monospace;
+    margin-top: 8px;
+    text-align: center;
+  }
+
+  p { margin-bottom: 10px; }
+  ul, ol { padding-left: 20px; margin-bottom: 10px; }
+  li { margin-bottom: 4px; }
+  strong { color: var(--accent3); font-weight: 700; }
+  em { color: var(--accent2); font-style: normal; font-weight: 500; }
+
+  .chip {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    border-radius: 3px;
+    padding: 1px 6px;
+    margin: 0 2px;
+  }
+  .chip.s03 { background: rgba(91,141,238,0.15); color: var(--accent); }
+  .chip.s05 { background: rgba(139,92,246,0.15); color: #a78bfa; }
+  .chip.ext { background: rgba(16,185,129,0.15); color: var(--ext); }
+
+  hr.sec-div {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 40px 0;
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== SIDEBAR ===== -->
+<nav id="sidebar">
+  <h2>目次</h2>
+  <ul>
+    <li class="section-head"><a href="#overview">📋 概要</a></li>
+    <li class="section-head"><a href="#ch1">第1章 社会人基礎力が必要な理由</a></li>
+    <li class="sub"><a href="#ch1-edu">教育環境の変化</a></li>
+    <li class="sub"><a href="#ch1-biz">ビジネス環境の変化</a></li>
+    <li class="sub"><a href="#ch1-3cap">3つの能力（復習）</a></li>
+    <li class="section-head"><a href="#ch2">第2章 前に踏み出す力</a></li>
+    <li class="sub"><a href="#ch2-main">主体性・働きかけ力・実行力</a></li>
+    <li class="sub"><a href="#ch2-sum">まとめ</a></li>
+    <li class="section-head"><a href="#ch3">第3章 考え抜く力</a></li>
+    <li class="sub"><a href="#ch3-find">課題発見力</a></li>
+    <li class="sub"><a href="#ch3-plan">計画力</a></li>
+    <li class="sub"><a href="#ch3-cre">創造力</a></li>
+    <li class="section-head"><a href="#ch4">第4章 チームで働く力</a></li>
+    <li class="sub"><a href="#ch4-comm">コミュニケーションに必要な力</a></li>
+    <li class="sub"><a href="#ch4-stress">ストレスに対応する力</a></li>
+    <li class="sub"><a href="#ch4-rule">自分を律する力</a></li>
+    <li class="section-head"><a href="#appendix">📎 補足</a></li>
+    <li class="sub"><a href="#app-unc">❓ 未確定事項</a></li>
+    <li class="sub"><a href="#app-a">⭐ 補足A: 最重要ワード</a></li>
+    <li class="sub"><a href="#app-b">📚 補足B: 背景知識</a></li>
+    <li class="sub"><a href="#app-c">🎯 補足C: 試験・レポート</a></li>
+    <li class="sub"><a href="#app-d">🔗 補足D: 関連概念</a></li>
+  </ul>
+</nav>
+
+<!-- ===== MAIN ===== -->
+<main id="main">
+
+<!-- PAGE HEADER -->
+<header class="page-header" id="overview">
+  <div class="badge">SSP ノート</div>
+  <h1>第3回 社会人基礎力について</h1>
+  <div class="meta">
+    <span>科目: キャリア入門</span>
+    <span>サイバー大学</span>
+    <span>ソース: S03（スライドPDF）· S05（AI文字起こし ×2）</span>
+    <span>ファイル: note_career_03.html</span>
+  </div>
+  <div style="margin-top:10px;font-size:11px;color:var(--text-sub);font-family:'JetBrains Mono',monospace;background:rgba(0,0,0,0.2);border-radius:6px;padding:8px 12px;">
+    v1.0 初版（Step 5-B完了）<br>
+    v1.1 U01解消（厚労省離職率数値確定）· U03解消（三木谷著書名確定）· U04解消（2006年・2018年確認）· 補足B・本文に確定数値追記
+  </div>
+</header>
+
+<!-- ===== 第1章 ===== -->
+<section class="section" id="ch1">
+  <h2 class="section-title">第1章 社会人基礎力が必要な理由</h2>
+
+  <div class="card" id="ch1-edu">
+    <div class="sub-title">職場に定着できない若者の増加</div>
+    <p>
+      厚生労働省「新規学卒就職者の離職状況（令和3年3月卒業者）」によると、若者が就職後3年以内に職場を去るケースが増加しており、社会問題となっている。
+      <span class="chip s03">S03:p.4</span>
+    </p>
+
+    <div class="voice-block">
+      <div class="label">🔊 音声補足</div>
+      <strong>大学卒の3年以内離職率（令和3年3月卒・確定値）</strong>
+      <ul style="margin-top:6px;">
+        <li>3年以内合計：<strong>34.9%</strong>（3人に1人以上が3年以内に離職）</li>
+        <li>1年目：12.3% / 2年目：12.3% / 3年目：10.3%</li>
+        <li>大卒は他学歴と比べて1年目の早期離職が少なく、2〜3年目にかけて均等に離職する傾向がある</li>
+        <li>最新（令和4年3月卒）では33.8%とやや低下傾向にあるが、依然として3割超が継続</li>
+      </ul>
+      なぜ離職率が高まったかという点を、社会人基礎力との関係で説明している。
+      <span class="ptr">← 厚生労働省公式データ Web照合済み [外部補足]</span>
+    </div>
+    <p><em>[図解省略：スライドp.4 就職後3年以内離職率の推移グラフ参照]</em></p>
+
+    <div class="sub-title2" id="ch1-edu2">教育環境の変化</div>
+
+    <div class="svg-wrap">
+      <figure>
+        <svg viewBox="0 0 720 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:720px;">
+          <!-- 左ボックス1 -->
+          <rect x="10" y="20" width="220" height="64" rx="6" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+          <text x="120" y="47" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="#e2e8f5" font-weight="700">核家族化</text>
+          <text x="120" y="66" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8">地域コミュニティの希薄化</text>
+          <!-- 矢印1 -->
+          <path d="M232 52 L272 52" stroke="#fbbf24" stroke-width="2" marker-end="url(#arr)"/>
+          <!-- 右ボックス1 -->
+          <rect x="274" y="20" width="200" height="64" rx="6" fill="#1e2535" stroke="#34d399" stroke-width="1.5"/>
+          <text x="374" y="47" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#e2e8f5" font-weight="700">若者のコミュニケーション</text>
+          <text x="374" y="66" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#e2e8f5">能力低下</text>
+
+          <!-- 左ボックス2 -->
+          <rect x="10" y="100" width="220" height="64" rx="6" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+          <text x="120" y="127" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="#e2e8f5" font-weight="700">大学全入時代</text>
+          <text x="120" y="146" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8">学生の学習意欲の低下</text>
+          <!-- 矢印2 -->
+          <path d="M232 132 L272 132" stroke="#fbbf24" stroke-width="2" marker-end="url(#arr)"/>
+          <!-- 右ボックス2 -->
+          <rect x="274" y="100" width="200" height="64" rx="6" fill="#1e2535" stroke="#34d399" stroke-width="1.5"/>
+          <text x="374" y="134" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#e2e8f5" font-weight="700">大学での教育力低下</text>
+
+          <!-- 合流矢印 -->
+          <path d="M476 52 Q560 52 560 92 Q560 132 606 132" stroke="#fbbf24" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+          <!-- 結論ボックス -->
+          <rect x="608" y="100" width="100" height="64" rx="6" fill="#ef444422" stroke="#ef4444" stroke-width="1.5"/>
+          <text x="658" y="127" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#fca5a5" font-weight="700">社会人基礎力</text>
+          <text x="658" y="146" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#fca5a5">が低下</text>
+
+          <defs>
+            <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0 0 L6 3 L0 6 Z" fill="#fbbf24"/>
+            </marker>
+          </defs>
+        </svg>
+        <figcaption>図：教育環境の変化と社会人基礎力低下の構図 <span class="ptr">S03:p.5</span></figcaption>
+      </figure>
+    </div>
+
+    <div class="voice-block">
+      <div class="label">🔊 音声補足</div>
+      コミュニケーションが減ったのではなく、形が変化した（携帯・パソコン・インターネット）。しかし対面・家族・地域内のコミュニケーションは随分減っている。大学全入時代については、サイバー大学の学生には当てはまらない部分もあると補足されている。
+      <span class="ptr">← S05:ch1</span>
+    </div>
+  </div>
+
+  <div class="card" id="ch1-biz">
+    <div class="sub-title">ビジネス環境の変化</div>
+
+    <div class="svg-wrap">
+      <figure>
+        <svg viewBox="0 0 720 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:720px;">
+          <rect x="10" y="20" width="200" height="64" rx="6" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+          <text x="110" y="47" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="#e2e8f5" font-weight="700">国内市場の成熟化</text>
+          <path d="M212 52 L252 52" stroke="#fbbf24" stroke-width="2" marker-end="url(#arr2)"/>
+          <rect x="254" y="10" width="220" height="84" rx="6" fill="#1e2535" stroke="#34d399" stroke-width="1.5"/>
+          <text x="364" y="40" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#e2e8f5" font-weight="700">市場ニーズの多様化</text>
+          <text x="364" y="60" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8">商品サイクルの短期化</text>
+          <text x="364" y="78" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8">→常にマーケットを見ながら考える</text>
+
+          <rect x="10" y="100" width="200" height="64" rx="6" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+          <text x="110" y="127" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="#e2e8f5" font-weight="700">IT化の進展</text>
+          <path d="M212 132 L252 132" stroke="#fbbf24" stroke-width="2" marker-end="url(#arr2)"/>
+          <rect x="254" y="105" width="220" height="54" rx="6" fill="#1e2535" stroke="#34d399" stroke-width="1.5"/>
+          <text x="364" y="130" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#e2e8f5" font-weight="700">組織・業務のスリム化</text>
+          <text x="364" y="148" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8">ビジネス空間の拡大</text>
+
+          <path d="M476 52 Q555 52 555 92 Q555 132 598 132" stroke="#fbbf24" stroke-width="1.5" fill="none" marker-end="url(#arr2)"/>
+          <rect x="600" y="96" width="108" height="72" rx="6" fill="#34d39922" stroke="#34d399" stroke-width="1.5"/>
+          <text x="654" y="122" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#34d399" font-weight="700">新しい価値を</text>
+          <text x="654" y="140" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#34d399" font-weight="700">創造する力</text>
+          <text x="654" y="158" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">が求められる</text>
+
+          <defs>
+            <marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0 0 L6 3 L0 6 Z" fill="#fbbf24"/>
+            </marker>
+          </defs>
+        </svg>
+        <figcaption>図：ビジネス環境の変化 <span class="ptr">S03:p.6</span></figcaption>
+      </figure>
+    </div>
+
+    <div class="voice-block">
+      <div class="label">🔊 音声補足</div>
+      「いいものを作れば売れる」時代から、個々のニーズに沿った商品・サービスが求められる時代へ。最小限の人員で最高の効果を出す（スリム化）中で、一人ひとりが考える領域が増えている。過去の常識にとらわれない発想が求められるようになった。
+      <span class="ptr">← S05:ch1</span>
+    </div>
+  </div>
+
+  <div class="card" id="ch1-3cap">
+    <div class="sub-title">社会人基礎力を構成する3つの能力（復習）</div>
+    <p>経済産業省が2006年に提唱した「社会人基礎力」は、職場や地域社会で多様な人と仕事をしていくために必要な基礎的な力を<strong>3つの能力・12の能力要素</strong>として定義している。<span class="chip s03">S03:p.7,9</span></p>
+
+    <div class="svg-wrap">
+      <figure>
+        <svg viewBox="0 0 720 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:720px;">
+          <!-- Action -->
+          <rect x="20" y="20" width="210" height="120" rx="8" fill="#fbbf2415" stroke="#fbbf24" stroke-width="2"/>
+          <text x="125" y="48" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="14" fill="#fbbf24" font-weight="700">前に踏み出す力</text>
+          <text x="125" y="66" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8">（アクション）</text>
+          <text x="125" y="88" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">一歩前に踏み出し</text>
+          <text x="125" y="104" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">失敗しても粘り強く</text>
+          <text x="125" y="120" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">取り組む力</text>
+
+          <!-- Think -->
+          <rect x="250" y="20" width="210" height="120" rx="8" fill="#fbbf2415" stroke="#fbbf24" stroke-width="2"/>
+          <text x="355" y="48" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="14" fill="#fbbf24" font-weight="700">考え抜く力</text>
+          <text x="355" y="66" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8">（シンキング）</text>
+          <text x="355" y="88" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">疑問を持ち</text>
+          <text x="355" y="104" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">考え抜く力</text>
+
+          <!-- 双方向矢印 -->
+          <path d="M232 80 L248 80" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#arr3)" marker-start="url(#arr3r)"/>
+
+          <!-- Team -->
+          <rect x="130" y="170" width="240" height="110" rx="8" fill="#5b8dee15" stroke="#5b8dee" stroke-width="2"/>
+          <text x="250" y="198" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="14" fill="#5b8dee" font-weight="700">チームで働く力</text>
+          <text x="250" y="216" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8">（チームワーク）</text>
+          <text x="250" y="238" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">多様な人々とともに</text>
+          <text x="250" y="254" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">目標に向けて協力する力</text>
+
+          <!-- 矢印 ActionとTeam -->
+          <path d="M125 142 L185 168" stroke="#5b8dee" stroke-width="1.5" fill="none" marker-end="url(#arr3)"/>
+          <!-- 矢印 ThinkとTeam -->
+          <path d="M355 142 L320 168" stroke="#5b8dee" stroke-width="1.5" fill="none" marker-end="url(#arr3)"/>
+          <!-- Team→Action逆 -->
+          <path d="M185 170 L135 144" stroke="#5b8dee" stroke-width="1" fill="none" marker-end="url(#arr3)"/>
+          <!-- Team→Think逆 -->
+          <path d="M318 170 L360 144" stroke="#5b8dee" stroke-width="1" fill="none" marker-end="url(#arr3)"/>
+
+          <text x="560" y="60" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8">人生100年時代・</text>
+          <text x="560" y="76" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8">第四次産業革命の下で</text>
+          <text x="560" y="92" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#34d399" font-weight="700">重要性が増している</text>
+
+          <defs>
+            <marker id="arr3" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+              <path d="M0 0 L5 3 L0 6 Z" fill="#5b8dee"/>
+            </marker>
+            <marker id="arr3r" markerWidth="7" markerHeight="7" refX="2" refY="3" orient="auto">
+              <path d="M5 0 L0 3 L5 6 Z" fill="#5b8dee"/>
+            </marker>
+          </defs>
+        </svg>
+        <figcaption>図：社会人基礎力を構成する3つの能力 <span class="ptr">S03:p.7</span></figcaption>
+      </figure>
+    </div>
+
+    <p>「人生100年時代」や「第四次産業革命」の下で、2006年に発表した社会人基礎力はむしろその重要性を増している。<span class="chip s03">S03:p.7</span></p>
+
+    <div class="voice-block">
+      <div class="label">🔊 音声補足</div>
+      今後のキャリアが多様化・社会が複雑化し、曖昧な価値観への対応が難しくなっている中でも、社会人基礎力をしっかり抑えておけば対応できる、と説明されている。
+      <span class="ptr">← S05:ch1</span>
+    </div>
+
+    <p style="margin-top:14px;"><strong>第1章まとめ：</strong>若者が大学を卒業するまでに身につける能力と、職場で求められる能力が合わなくなってきた。だから<strong>早期に社会人基礎力を身につけることが重要</strong>。<span class="chip s03">S03:p.13</span></p>
+  </div>
+</section>
+
+<hr class="sec-div">
+
+<!-- ===== 第2章 ===== -->
+<section class="section" id="ch2">
+  <h2 class="section-title">第2章 前に踏み出す力（アクション）</h2>
+
+  <div class="card">
+    <p>前に踏み出す力は以下の<strong>3要素</strong>で構成される。<span class="chip s03">S03:p.10,17</span></p>
+    <div class="svg-wrap">
+      <figure>
+        <svg viewBox="0 0 600 120" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:600px;">
+          <rect x="10" y="20" width="130" height="80" rx="6" fill="#fbbf2415" stroke="#fbbf24" stroke-width="2"/>
+          <text x="75" y="58" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="14" fill="#fbbf24" font-weight="700">前に踏み出す力</text>
+
+          <path d="M142 40 L195 40" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#arr4)"/>
+          <path d="M142 60 L195 60" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#arr4)"/>
+          <path d="M142 80 L195 80" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#arr4)"/>
+
+          <rect x="197" y="20" width="120" height="36" rx="5" fill="#1e2535" stroke="#5b8dee" stroke-width="1"/>
+          <text x="257" y="43" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#e2e8f5" font-weight="700">主体性</text>
+          <rect x="197" y="62" width="120" height="36" rx="5" fill="#1e2535" stroke="#5b8dee" stroke-width="1"/>
+          <text x="257" y="85" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#e2e8f5" font-weight="700">働きかけ力</text>
+          <rect x="197" y="104" width="120" height="0" rx="5"/><!-- placeholder -->
+
+          <!-- 定義テキスト -->
+          <text x="330" y="43" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8">物事に進んで取り組む力</text>
+          <text x="330" y="85" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8">他人に働きかけ巻き込む力</text>
+
+          <defs>
+            <marker id="arr4" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+              <path d="M0 0 L5 3 L0 6 Z" fill="#5b8dee"/>
+            </marker>
+          </defs>
+        </svg>
+        <figcaption>図：前に踏み出す力の構成要素 <span class="ptr">S03:p.17</span></figcaption>
+      </figure>
+    </div>
+
+    <p>正確な3要素：<strong>主体性</strong>（物事に進んで取り組む力）・<strong>働きかけ力</strong>（他人に働きかけ巻き込む力）・<strong>実行力</strong>（目的を設定し確実に行動する力）<span class="chip s03">S03:p.17</span></p>
+    <p>指示待ちにならず、<em>一人称で物事を捉え、自ら行動できるようになること</em>が求められている。<span class="chip s03">S03:p.10</span></p>
+  </div>
+
+  <div class="card" id="ch2-main">
+    <div class="sub-title">① 主体性</div>
+    <p><strong>【定義】</strong> 物事に進んで取り組む力 <span class="chip s03">S03:p.18</span></p>
+
+    <div class="ox-table">
+      <div class="ox-box bad">
+        <div class="ox-label">✗</div>
+        仕事が終わったので、上司が次の指示を出してくれるのを待つ。
+      </div>
+      <div class="ox-box good">
+        <div class="ox-label">○</div>
+        自分でやるべきことを見つけ、上司に相談して進める。
+      </div>
+    </div>
+    <p style="font-size:13px;color:var(--text-sub)">← <span class="chip s03">S03:p.18</span></p>
+
+    <div class="voice-block">
+      <div class="label">🔊 音声補足（インターンシップへの適用）</div>
+      頼まれた1つの仕事が終わったら、上司や受け入れ担当者が声をかけてくれるのを待つのではなく、①終わったことをきちんと報告し（報告・連絡・相談）、②自分から次の指示をもらいに行く（「次に私は何をすればいいですか」と聞く）。また、自分ができること（直接業務に影響しない作業等）を見つけ、相談しながら仕事をもらう。
+      <span class="ptr">← S05:ch2</span>
+    </div>
+
+    <div class="ext-block">
+      <div class="label">🌐 外部補足</div>
+      評価される理由は2つ：①言われた以上のことをする姿勢が評価される、②自分で考えることで一つひとつの仕事の意味が理解でき、自己成長につながる。
+      <span class="ptr">← S05:ch2</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sub-title">② 働きかけ力</div>
+    <p><strong>【定義】</strong> 他人に働きかけ巻き込む力 <span class="chip s03">S03:p.20</span></p>
+
+    <div class="ox-table">
+      <div class="ox-box bad">
+        <div class="ox-label">✗</div>
+        「会議室の机がいつも汚れている」と文句を言いながら拭いている。
+      </div>
+      <div class="ox-box good">
+        <div class="ox-label">○</div>
+        「会議終了後に毎回机を拭くようにしよう」と自分が率先し、みんなに声をかける。
+      </div>
+    </div>
+    <p style="font-size:13px;color:var(--text-sub)">← <span class="chip s03">S03:p.20</span></p>
+
+    <div class="voice-block">
+      <div class="label">🔊 音声補足（インターンシップへの適用）</div>
+      他のインターンシップ生や社員のモチベーションが低い場合、自分もやる気をなくすのではなく、周りのモチベーションを上げる方法を考える。やる気がない原因を取り除く手助けをし、「一緒に頑張ろう」と声をかける。まず自分が主体的に動き、その後に声をかけながら盛り上げる。
+      <span class="ptr">← S05:ch2</span>
+    </div>
+
+    <div class="voice-block">
+      <div class="label">🔊 音声補足</div>
+      「人間の行動には確実にその裏側にその行動を起こした原因がある」。やる気のない社員が「仕事はそんなに楽しいものじゃない」と言っても、インターンシップ生の積極的な姿勢がその社員の意識を変えるきっかけになる可能性がある。
+      <span class="ptr">← S05:ch2</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sub-title">③ 実行力</div>
+    <p><strong>【定義】</strong> 目的を設定し確実に行動する力 <span class="chip s03">S03:p.22</span></p>
+
+    <div class="ox-table">
+      <div class="ox-box bad">
+        <div class="ox-label">✗</div>
+        取引先に新サービスを案内するよう言われたので、定期訪問の際に担当者にチラシを渡す。（単に渡すだけで相手に真意が伝わらない）
+      </div>
+      <div class="ox-box good">
+        <div class="ox-label">○</div>
+        「新サービスの契約を10件獲得する」という目標を立て、いくつかの手段を考えて実行する。
+      </div>
+    </div>
+    <p style="font-size:13px;color:var(--text-sub)">← <span class="chip s03">S03:p.22</span></p>
+
+    <div class="voice-block">
+      <div class="label">🔊 音声補足（インターンシップへの適用）</div>
+      名刺のデータ入力のような「つまらない仕事」でも、「今週中にこれだけの数の入力を終える」「この会社の取引先企業名を〇件覚える」などの目標を自分で設定し、達成まで粘り強く取り組む。つまらない仕事でも目標設定があれば「楽しい仕事・身につく仕事」として取り組めるようになる。小さなことをきちんとやるインターンシップ生には、次の課題としてやりたいことが任せられるようになる。
+      <span class="ptr">← S05:ch2</span>
+    </div>
+
+    <div class="voice-block">
+      <div class="label">🔊 音声補足</div>
+      実行力のある社員・職員は常に自分たちの行動を何かの成果につなげながら行動している。
+      <span class="ptr">← S05:ch2</span>
+    </div>
+  </div>
+
+  <div class="card" id="ch2-sum">
+    <div class="sub-title">第2章まとめ</div>
+    <p style="font-size:16px; font-weight:700; color:var(--accent3);">
+      「やらされている」という感覚は捨て、すべてのことは<em>「自分の仕事」</em>という意識で取り組む
+    </p>
+    <span class="chip s03">S03:p.24</span>
+    <div class="voice-block">
+      <div class="label">🔊 音声補足</div>
+      自分の目の前にある仕事はだれの仕事でもなく、自分自身に任せられた仕事。どのような意識で取り組むかによって、その仕事を通じて学べる量・出せる成果は大きく異なる。
+      <span class="ptr">← S05:ch2</span>
+    </div>
+  </div>
+</section>
+
+<hr class="sec-div">
+
+<!-- ===== 第3章 ===== -->
+<section class="section" id="ch3">
+  <h2 class="section-title">第3章 考え抜く力（シンキング）</h2>
+
+  <div class="card">
+    <p>考え抜く力は以下の<strong>3要素</strong>で構成される。<span class="chip s03">S03:p.28</span></p>
+    <p>論理的に答えを出すこと以上に、<em>自ら課題を定義し、解決のためのシナリオを描く</em>自律的な思考力が求められている。<span class="chip s03">S03:p.11</span></p>
+
+    <div class="svg-wrap">
+      <figure>
+        <svg viewBox="0 0 620 120" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:620px;">
+          <rect x="10" y="20" width="130" height="80" rx="6" fill="#fbbf2415" stroke="#fbbf24" stroke-width="2"/>
+          <text x="75" y="58" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="#fbbf24" font-weight="700">考え抜く力</text>
+
+          <path d="M142 35 L190 35" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#arr5)"/>
+          <path d="M142 60 L190 60" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#arr5)"/>
+          <path d="M142 85 L190 85" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#arr5)"/>
+
+          <rect x="192" y="18" width="130" height="34" rx="5" fill="#1e2535" stroke="#5b8dee"/>
+          <text x="257" y="40" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#e2e8f5" font-weight="700">課題発見力</text>
+
+          <rect x="192" y="44" width="130" height="32" rx="5" fill="#1e2535" stroke="#5b8dee"/>
+          <text x="257" y="65" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#e2e8f5" font-weight="700">計画力</text>
+
+          <rect x="192" y="70" width="130" height="32" rx="5" fill="#1e2535" stroke="#5b8dee"/>
+          <text x="257" y="91" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#e2e8f5" font-weight="700">創造力</text>
+
+          <text x="335" y="35" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#8a99b8">現状を分析し目的や課題を明らかにする力</text>
+          <text x="335" y="65" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#8a99b8">課題の解決に向けたプロセスを明らかにし準備する力</text>
+          <text x="335" y="91" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#8a99b8">新しい価値を生み出す力</text>
+
+          <defs>
+            <marker id="arr5" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+              <path d="M0 0 L5 3 L0 6 Z" fill="#5b8dee"/>
+            </marker>
+          </defs>
+        </svg>
+        <figcaption>図：考え抜く力の構成要素 <span class="ptr">S03:p.28</span></figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <div class="card" id="ch3-find">
+    <div class="sub-title">① 課題発見力</div>
+    <p><strong>【定義】</strong> 現状を分析し目的や課題を明らかにする力 <span class="chip s03">S03:p.29</span></p>
+
+    <div class="voice-block">
+      <div class="label">🔊 音声補足（作業と仕事の違い）</div>
+      「作業」とは自分であまり考えなくてよい、とりあえず言われたことをやればよいもの。「仕事」とはその中で考えていかなければならないもの。「作業」を「仕事」に変えるためには課題を発見する視点が必要。
+      <span class="ptr">← S05:ch3</span>
+    </div>
+
+    <div class="ox-table">
+      <div class="ox-box bad">
+        <div class="ox-label">✗</div>
+        「この作業は時間がかかるから嫌だ」と思いながら仕事をしている。（仕事の意味を考える視点がなくなる）
+      </div>
+      <div class="ox-box good">
+        <div class="ox-label">○</div>
+        作業を効率的に進められない問題を見つけ、解決することを周囲に提案する。
+      </div>
+    </div>
+    <p style="font-size:13px;color:var(--text-sub)">← <span class="chip s03">S03:p.29</span></p>
+
+    <div class="ext-block">
+      <div class="label">🌐 外部補足（三木谷浩史社長の言葉）</div>
+      楽天グループの三木谷浩史社長は著書<em>『成功のコンセプト』</em>（幻冬舎、2007年）の中で「1日に1%の改善を続けると1年間（365日）で約<strong>37倍</strong>の効率を得ることができる」と述べている。計算式：1.01<sup>365</sup> ≈ 37.78。「常に改善、常に前進」を第1のコンセプトとして位置づけている。
+      <span class="ptr">← S05-A・書籍確認済み ※S03に記載なし</span>
+    </div>
+
+    <div class="voice-block">
+      <div class="label">🔊 音声補足（インターンシップへの適用）</div>
+      職場に書類が多く、みんなが探すのに苦労していることに気づいた場合、「この会社のやり方だから」と思うのではなく、なぜ探しにくいのかという原因を考える。ただし勝手に整理するのではなく「使いやすいように整理しましょうか？」と相談する（書類の配置は各自が自分の使いやすいように置いているため）。
+      <span class="ptr">← S05:ch3</span>
+    </div>
+
+    <div class="voice-block">
+      <div class="label">🔊 音声補足（整理と整頓の違い）</div>
+      <ul>
+        <li><strong>整理</strong>：不要なものを捨てること（要る/要らないの判断は社員に確認する。機密書類は重要廃棄物として適切に処理する）</li>
+        <li><strong>整頓</strong>：必要なものを分かりやすく配置すること（ファイル整理・インデックス付与など、検索性が高い状態にする）</li>
+      </ul>
+      コミュニケーションなしで勝手に行うより、相談しながら進める方が組織にとって有益。
+      <span class="ptr">← S05:ch3</span>
+    </div>
+  </div>
+
+  <div class="card" id="ch3-plan">
+    <div class="sub-title">② 計画力</div>
+    <p><strong>【定義】</strong> 課題の解決に向けたプロセスを明らかにし準備する力 <span class="chip s03">S03:p.31</span></p>
+
+    <div class="ox-table">
+      <div class="ox-box bad">
+        <div class="ox-label">✗</div>
+        課題を解決するために何をすればよいか全くわからず、手がつけられない。（課題を溜め込むだけ、「時間がない」と言い訳）
+      </div>
+      <div class="ox-box good">
+        <div class="ox-label">○</div>
+        課題を解決する方法を数パターン考えて頭の中でシミュレーションし、最善策を検討。実行の準備を進める。
+      </div>
+    </div>
+    <p style="font-size:13px;color:var(--text-sub)">← <span class="chip s03">S03:p.31</span></p>
+
+    <div class="voice-block">
+      <div class="label">🔊 音声補足（インターンシップへの適用）</div>
+      職場の書類を利用しやすいように整理することになった場合、「順番に並べればよい」と安易に考えず、<em>最も利用しやすい保管方法は何か</em>を複数案検討する。「誰が利用しやすいのか」を考え、様々な人の意見を聞く。意見が増えて「聞けば聞くほど分からなくなる」ときは、自分で複数の解決策を作り上げて、周囲の社員に分かりやすく説明し選んでもらう。
+      <span class="ptr">← S05:ch3</span>
+    </div>
+
+    <div class="voice-block">
+      <div class="label">🔊 音声補足</div>
+      仕事は「自分だけで回答を探す作業」ではなく、「周囲と話し合いながら最善のものを探していくプロセス」。周囲との関係性の中で納得解を探し、みんなが納得できる形を計画・実行することが重要。
+      <span class="ptr">← S05:ch3</span>
+    </div>
+
+    <div class="voice-block">
+      <div class="label">🔊 音声補足</div>
+      「時間がない」と言う人は実際には解決するプロセスを考えていないのではないか、という指摘がある。時間は作ろうと思えば作れる。
+      <span class="ptr">← S05:ch3</span>
+    </div>
+  </div>
+
+  <div class="card" id="ch3-cre">
+    <div class="sub-title">③ 創造力</div>
+    <p><strong>【定義】</strong> 新しい価値を生み出す力 <span class="chip s03">S03:p.33</span></p>
+
+    <div class="ox-table">
+      <div class="ox-box bad">
+        <div class="ox-label">✗</div>
+        今までのやり方、自分の知っている範囲で課題を解決しようとする。
+      </div>
+      <div class="ox-box good">
+        <div class="ox-label">○</div>
+        様々な情報を収集し、課題を解決するための新しいアイデアを考え出す。
+      </div>
+    </div>
+    <p style="font-size:13px;color:var(--text-sub)">← <span class="chip s03">S03:p.33</span></p>
+
+    <div class="voice-block">
+      <div class="label">🔊 音声補足（インターンシップへの適用）</div>
+      書類の整理方法を考える際、自分の知識の範囲内だけで考えるのではなく：利用者の意見を聞く、世の中の分類方法を調べる、データ化する方法を考える（紙でなくサーバー・パソコンで管理）など、広い視野で解決方法を探す。書類の整理だけでも、それを使っている人→その人が行う仕事→その先のお客様まで、頭の中がどんどん活性化していく。
+      <span class="ptr">← S05:ch3</span>
+    </div>
+
+    <div class="voice-block">
+      <div class="label">🔊 音声補足</div>
+      「楽しい」と「楽」は違う。楽になった分の時間で新しいアイデアを出していくことが、仕事を本当に楽しくすることにつながる。前回よりも今回、今回よりも次回、という改善の姿勢が重要。
+      <span class="ptr">← S05:ch3</span>
+    </div>
+
+    <p style="font-size:15px; font-weight:700; color:var(--accent3); margin-top:14px;">
+      第3章まとめ：すぐに答えを求めようとせず、自分で<em>調べる・考える</em>という手順を踏む
+    </p>
+    <span class="chip s03">S03:p.35</span>
+  </div>
+</section>
+
+<hr class="sec-div">
+
+<!-- ===== 第4章 ===== -->
+<section class="section" id="ch4">
+  <h2 class="section-title">第4章 チームで働く力（チームワーク）</h2>
+
+  <div class="card">
+    <p>チームで働く力の6要素を、以下の3グループに分類する。<span class="chip s03">S03:p.39</span></p>
+    <p>グループ内の協調性だけに留まらず、<em>多様な人々との繋がりや協働を生み出す力</em>が求められている。</p>
+
+    <div class="svg-wrap">
+      <figure>
+        <svg viewBox="0 0 680 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:680px;">
+          <!-- 中央ボックス -->
+          <rect x="240" y="75" width="160" height="50" rx="6" fill="#5b8dee22" stroke="#5b8dee" stroke-width="2"/>
+          <text x="320" y="104" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="#5b8dee" font-weight="700">チームで働く力</text>
+
+          <!-- グループ1 コミュニケーション -->
+          <rect x="10" y="10" width="200" height="100" rx="6" fill="#1e2535" stroke="#34d399" stroke-width="1.5"/>
+          <text x="110" y="34" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#34d399" font-weight="700">コミュニケーションに必要な力</text>
+          <text x="110" y="54" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#e2e8f5">発信力</text>
+          <text x="110" y="72" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#e2e8f5">傾聴力</text>
+          <text x="110" y="90" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#e2e8f5">状況把握力</text>
+          <path d="M212 60 L238 90" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#arr6)"/>
+
+          <!-- グループ2 ストレス -->
+          <rect x="10" y="130" width="200" height="60" rx="6" fill="#1e2535" stroke="#fbbf24" stroke-width="1.5"/>
+          <text x="110" y="152" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#fbbf24" font-weight="700">ストレスに対応する力</text>
+          <text x="110" y="172" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#e2e8f5">柔軟性 · ストレスコントロール力</text>
+          <path d="M212 160 L238 110" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#arr6)"/>
+
+          <!-- グループ3 規律 -->
+          <rect x="468" y="75" width="200" height="50" rx="6" fill="#1e2535" stroke="#ef4444" stroke-width="1.5"/>
+          <text x="568" y="97" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#ef4444" font-weight="700">自分を律する力</text>
+          <text x="568" y="115" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#e2e8f5">規律性</text>
+          <path d="M468 100 L402 100" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#arr6)"/>
+
+          <defs>
+            <marker id="arr6" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+              <path d="M0 0 L5 3 L0 6 Z" fill="#5b8dee"/>
+            </marker>
+          </defs>
+        </svg>
+        <figcaption>図：チームで働く力の構成要素 <span class="ptr">S03:p.39</span></figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <div class="card" id="ch4-comm">
+    <div class="sub-title">① コミュニケーションに必要な力</div>
+    <p><strong>【定義（3つの要素）】</strong><span class="chip s03">S03:p.40</span></p>
+    <ul>
+      <li><strong>発信力</strong>：自分の意見をわかりやすく伝える力</li>
+      <li><strong>傾聴力</strong>：相手の意見を丁寧に聞く力</li>
+      <li><strong>状況把握力</strong>：自分と周囲の人々や物事との関係性を理解する力</li>
+    </ul>
+
+    <div class="ox-table">
+      <div class="ox-box bad">
+        <div class="ox-label">✗</div>
+        会議などで一方的に自分の意見だけを主張し、周囲の意見を言わせない・認めない。（これは発信力ではない。相手に押し付けになっているため）
+      </div>
+      <div class="ox-box good">
+        <div class="ox-label">○</div>
+        相手が理解しやすい言葉で話し、適切なタイミングで質問し、周囲の意見も引き出す努力をする。
+      </div>
+    </div>
+    <p style="font-size:13px;color:var(--text-sub)">← <span class="chip s03">S03:p.40</span></p>
+
+    <div class="voice-block">
+      <div class="label">🔊 音声補足（会議の目的）</div>
+      会議は「合意（合議）」のためにある。参加している一人ひとりがそこで合意を形成し、自分が会議終了後に何をすべきかを理解し、その後の行動につながるのが本当の会議。これが理解できていなければ状況把握力が欠如している。
+      <span class="ptr">← S05:ch4</span>
+    </div>
+
+    <div class="voice-block">
+      <div class="label">🔊 音声補足（インターンシップへの適用・メモを取る意味）</div>
+      受け入れ企業の担当者から作業の指示を受けたとき、言われたことだけを聞くのではなく、<em>担当者の話をメモを取りながら聞き</em>、その作業の意味を理解するために質問し、業務全体の把握に努める。メモを取る意味は2つ：①言われたことを忘れない、②相手に「一生懸命聞いている」という姿勢を伝える。メモを取ることで相手がもっと教えてくれるようになり、質問への回答も丁寧になる。
+      <span class="ptr">← S05:ch4</span>
+    </div>
+  </div>
+
+  <div class="card" id="ch4-stress">
+    <div class="sub-title">② ストレスに対応する力</div>
+    <p><strong>【定義（2つの要素）】</strong><span class="chip s03">S03:p.42</span></p>
+    <ul>
+      <li><strong>柔軟性</strong>：意見の違いや立場の違いを理解する力</li>
+      <li><strong>ストレスコントロール力</strong>：ストレスの発生源に対応する力</li>
+    </ul>
+
+    <div class="voice-block">
+      <div class="label">🔊 音声補足（離職との関係）</div>
+      離職した方へのインタビューで「職場の人間関係に疲れた」という意見が非常に多い。職場の人間関係は「自分で作るもの」。その作り方がうまくなかった、または知らなかったことでストレスを溜めてしまい職場を離れる。だからストレスに対応する力は事前に学習する必要がある。
+      <span class="ptr">← S05:ch4</span>
+    </div>
+
+    <div class="ox-table">
+      <div class="ox-box bad">
+        <div class="ox-label">✗</div>
+        上司と意見が合わず、職場での人間関係にストレスを感じている。
+      </div>
+      <div class="ox-box good">
+        <div class="ox-label">○</div>
+        上司の立場で考え、なぜそのような意見であるかを理解し、会社にとって何が最善かをその意見も含めて一緒に考える。
+      </div>
+    </div>
+    <p style="font-size:13px;color:var(--text-sub)">← <span class="chip s03">S03:p.42</span></p>
+
+    <div class="voice-block">
+      <div class="label">🔊 音声補足（インターンシップへの適用）</div>
+      受け入れ企業の担当者から態度について注意を受けた場合、「厳しすぎる」と思うのではなく、「注意してくれる＝もっとよい形にしたいという気持ちの裏返し」と捉える。インターンシップ生の態度は対外的には受け入れ企業の評価になるため、企業の立場を考えて改善する。注意されたことで「この企業はどういう姿になりたいのか」を理解するヒントにもなる。そう考えればストレスはたまらない。
+      <span class="ptr">← S05:ch4</span>
+    </div>
+  </div>
+
+  <div class="card" id="ch4-rule">
+    <div class="sub-title">③ 自分を律する力（規律性）</div>
+    <p><strong>【定義】</strong> 社会のルールや人との約束を守る力 <span class="chip s03">S03:p.44</span></p>
+
+    <div class="ox-table">
+      <div class="ox-box bad">
+        <div class="ox-label">✗</div>
+        お客様との約束の時間に連絡なしで遅れる。（相手が待ち続けることになる）
+      </div>
+      <div class="ox-box good">
+        <div class="ox-label">○</div>
+        お客様との約束の時間は厳守する。事故などやむを得ない場合はすぐ連絡してお詫びする。
+      </div>
+    </div>
+    <p style="font-size:13px;color:var(--text-sub)">← <span class="chip s03">S03:p.44</span></p>
+
+    <div class="voice-block">
+      <div class="label">🔊 音声補足（インターンシップへの適用）</div>
+      作業にソフトウェアのインストールが必要になった場合、企業のPCに勝手にインストールするのではなく、受け入れ企業の担当者に「何のために何のソフトのインストールが必要なのか」をきちんと説明・相談する。企業には厳格な規約がありインストールできるソフトウェアが決まっている場合もある。その規律が何のために存在するのかを理解した上で行動する。
+      <span class="ptr">← S05:ch4</span>
+    </div>
+
+    <div class="voice-block">
+      <div class="label">🔊 音声補足</div>
+      ルールは「周囲も自分も気持ちよく仕事ができるように」決まっているもの。相手の立場に立った言動を常に考えれば、そのルール・マナーを常に意識できるようになる。
+      <span class="ptr">← S05:ch4</span>
+    </div>
+
+    <p style="font-size:16px; font-weight:700; color:var(--accent3); margin-top:14px;">
+      第4章まとめ：ビジネスマナー・社会のルールを守ることは当然。<em>相手の立場に立った言動</em>を心がける
+    </p>
+    <span class="chip s03">S03:p.46</span>
+  </div>
+</section>
+
+<hr class="sec-div">
+
+<!-- ===== APPENDIX ===== -->
+<section class="section" id="appendix">
+  <h2 class="section-title">📎 補足</h2>
+
+  <!-- 未確定事項 -->
+  <div class="appendix-card unconfirmed" id="app-unc">
+    <div class="appendix-title">❓ 未確定事項・要確認リスト</div>
+    <table>
+      <tr><th>ID</th><th>内容</th><th>種別</th><th>優先度</th><th>状態</th></tr>
+      <tr>
+        <td style="color:#34d399;font-weight:700;">U01 ✓</td>
+        <td>厚生労働省グラフの具体的な離職率数値（1年目・2年目・3年目の%）</td>
+        <td>[内容不足]</td>
+        <td>mid</td>
+        <td style="color:#34d399;">解決済み — 令和3年3月卒大卒: 1年目12.3%・2年目12.3%・3年目10.3% → 合計34.9%（補足Bに追記）</td>
+      </tr>
+      <tr>
+        <td>U02</td>
+        <td>「森戸さん」が誰を指すか（受講者の呼称か架空設定か）</td>
+        <td>[AI変換要確認]</td>
+        <td>low</td>
+        <td>未解決（固有名詞不明・本文では「担当者」として一般化処理済み・影響なし）</td>
+      </tr>
+      <tr>
+        <td style="color:#34d399;font-weight:700;">U03 ✓</td>
+        <td>三木谷社長「1日1%改善で37倍」の出典書籍名</td>
+        <td>[内容不足]</td>
+        <td>mid</td>
+        <td style="color:#34d399;">解決済み — 三木谷浩史著『成功のコンセプト』（幻冬舎、2007年）（補足Bに追記）</td>
+      </tr>
+      <tr>
+        <td style="color:#34d399;font-weight:700;">U04 ✓</td>
+        <td>経済産業省が社会人基礎力を発表した年（2006年の確認）</td>
+        <td>[内容不足]</td>
+        <td>mid</td>
+        <td style="color:#34d399;">解決済み — 経済産業省公式サイト（meti.go.jp/policy/kisoryoku）で「2006年提唱」確認。2018年に「人生100年時代の社会人基礎力」として再定義。</td>
+      </tr>
+    </table>
+    <p style="font-size:12px;color:var(--text-sub);margin-top:8px;">v1.1 更新: U01・U03・U04をWebサーチで解消。残未解決: U02（low優先・内容に影響なし）</p>
+  </div>
+
+  <!-- 補足A -->
+  <div class="appendix-card glossary" id="app-a">
+    <div class="appendix-title">⭐ 補足A: 最重要ワード一覧</div>
+    <table>
+      <tr><th>用語</th><th>読み</th><th>定義（原文から抽出）</th><th>重要度</th></tr>
+      <tr><td><strong>社会人基礎力</strong></td><td>しゃかいじんきそりょく</td><td>職場や地域社会で多様な人と仕事をしていくために必要な基礎的な力。3能力・12要素（経済産業省 2006年）</td><td>★★★</td></tr>
+      <tr><td>前に踏み出す力（アクション）</td><td>まえにふみだすちから</td><td>一歩前に踏み出し、失敗しても粘り強く取り組む力。主体性・働きかけ力・実行力</td><td>★★★</td></tr>
+      <tr><td>考え抜く力（シンキング）</td><td>かんがえぬくちから</td><td>疑問を持ち考え抜く力。課題発見力・計画力・創造力</td><td>★★★</td></tr>
+      <tr><td>チームで働く力（チームワーク）</td><td>チームではたらくちから</td><td>多様な人々とともに目標に向けて協力する力。6要素</td><td>★★★</td></tr>
+      <tr><td>主体性</td><td>しゅたいせい</td><td>物事に進んで取り組む力</td><td>★★★</td></tr>
+      <tr><td>実行力</td><td>じっこうりょく</td><td>目的を設定し確実に行動する力</td><td>★★★</td></tr>
+      <tr><td>課題発見力</td><td>かだいはっけんりょく</td><td>現状を分析し目的や課題を明らかにする力</td><td>★★★</td></tr>
+      <tr><td>傾聴力</td><td>けいちょうりょく</td><td>相手の意見を丁寧に聞く力</td><td>★★☆</td></tr>
+      <tr><td>規律性</td><td>きりつせい</td><td>社会のルールや人との約束を守る力</td><td>★★☆</td></tr>
+      <tr><td>創造力</td><td>そうぞうりょく</td><td>新しい価値を生み出す力</td><td>★★☆</td></tr>
+      <tr><td>整理</td><td>せいり</td><td>不要なものを捨てること</td><td>★☆☆</td></tr>
+      <tr><td>整頓</td><td>せいとん</td><td>必要なものを分かりやすく配置すること</td><td>★☆☆</td></tr>
+    </table>
+  </div>
+
+  <!-- 補足B -->
+  <div class="appendix-card bg-know" id="app-b">
+    <div class="appendix-title">📚 補足B: 知っておくべき背景知識</div>
+
+    <p><strong>社会人基礎力の経緯（確定）</strong></p>
+    <p class="appendix-ext">
+      経済産業省が主催した有識者会議により<strong>2006年に提唱</strong>（経済産業省公式サイトで確認済み）。職場や地域社会で多様な人と仕事をしていくために必要な基礎的な力を「3つの能力・12の能力要素」として定義した。
+      その後、<strong>2018年に「人生100年時代の社会人基礎力」として再定義</strong>。「目的（どう活躍するか）」「学び（何を学ぶか）」「統合（どのように学ぶか）」の3つの視点が追加され、新入社員だけでなく全世代を対象とした考え方に拡張された。
+      詳細は経済産業省ウェブサイト（https://www.meti.go.jp/policy/kisoryoku/index.html）で確認できる。
+      <span class="ptr">← S03:p.7,8・Web照合済み [外部補足]</span>
+    </p>
+
+    <p style="margin-top:12px;"><strong>厚生労働省の離職率データ（確定数値）</strong></p>
+    <p class="appendix-ext">
+      スライドで引用されているのは「厚生労働省 新規学卒就職者の離職状況（令和3年3月卒業者）」のグラフ。Web照合により数値が確定した。
+      <strong>令和3年3月卒・大学卒の3年以内離職率：34.9%</strong>（前年比 +2.6ポイント）。内訳は1年目12.3%・2年目12.3%・3年目10.3%で、大卒は他学歴と比べ1年目の早期離職が少ない特徴がある。
+      最新データ（令和4年3月卒）では33.8%とやや改善しているが、依然として3割超の水準が続いている。
+      出典: 厚生労働省「新規学卒就職者の離職状況」（https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000137940.html）
+      <span class="ptr">← S03:p.4・Web照合済み [外部補足]</span>
+    </p>
+
+    <p style="margin-top:12px;"><strong>1日1%改善 → 1年で37.8倍 の出典（確定）</strong></p>
+    <p class="appendix-ext">
+      三木谷浩史（楽天グループ創業者）著『成功のコンセプト』（幻冬舎、2007年）に記載された考え方。
+      計算式：1.01<sup>365</sup> = 37.78倍。「毎日1%の改善を1年続ければ37倍の効率を得られる」という言葉は、同書の「常に改善、常に前進」という第1のコンセプトとして紹介されている。
+      授業中は音声のみで言及（S03に記載なし）。数式での説明は本書を参照のこと。
+      <span class="ptr">← S05-A・出典確認済み [外部補足]</span>
+    </p>
+  </div>
+
+  <!-- 補足C -->
+  <div class="appendix-card exam" id="app-c">
+    <div class="appendix-title">🎯 補足C: 試験・レポートで重要な観点</div>
+    <ul>
+      <li>社会人基礎力の<strong>3つの能力の名称と定義</strong>（アクション・シンキング・チームワーク）を正確に覚える</li>
+      <li>各能力を構成する<strong>要素の名称と定義</strong>（前に踏み出す力:3要素、考え抜く力:3要素、チームで働く力:6要素）</li>
+      <li>社会人基礎力が必要になった背景：<strong>教育環境の変化</strong>（核家族化・地域コミュニティ希薄化）と<strong>ビジネス環境の変化</strong>（国内市場成熟化・IT化）</li>
+      <li>「作業」と「仕事」の違いを説明できること（課題発見力の文脈）</li>
+      <li>「整理」と「整頓」の定義の違い（整理＝捨てる、整頓＝分かりやすく配置）</li>
+      <li>インターンシップでの各能力の具体的な発揮方法（〇×の例）</li>
+      <li>離職の主な原因と社会人基礎力（特にストレスコントロール力・規律性）の関連</li>
+      <li><strong>経済産業省が社会人基礎力を提唱した年：2006年</strong>（産学の有識者委員会により策定）</li>
+      <li>2018年に「人生100年時代の社会人基礎力」として再定義された背景と追加された3視点（目的・学び・統合）</li>
+    </ul>
+  </div>
+
+  <!-- 補足D -->
+  <div class="appendix-card related" id="app-d">
+    <div class="appendix-title">🔗 補足D: 関連概念・次回への接続</div>
+    <p class="appendix-ext">
+      【外部補足】<strong>「人生100年時代の社会人基礎力」（2018年再定義）</strong>：2006年版の3能力・12要素を土台に、2018年に経済産業省が再定義。新たに「目的（どう活躍するか）」「学び（何を学ぶか）」「統合（どのように学ぶか）」の3つの視点が追加された。対象が大学生・新入社員だけでなく、就学前からシニア層まで全世代に拡張された点が特徴。自己のキャリアを自らが切り開く「キャリアオーナーシップ」の意識も重要とされている。出典：経済産業省 https://www.meti.go.jp/policy/kisoryoku/index.html
+    </p>
+    <p class="appendix-ext" style="margin-top:8px;">
+      【外部補足】報告・連絡・相談（ほうれんそう）：授業内で「前回も話した」と言及されている。仕事の完了を上司に報告し、次の指示を求める基本的なビジネスコミュニケーション。主体性の発揮と直結している。
+    </p>
+    <p class="appendix-ext" style="margin-top:8px;">
+      【外部補足】VUCA（Volatile, Uncertain, Complex, Ambiguous）：現代社会の複雑性・曖昧性を表す概念。「キャリアの多様化・社会の複雑化・曖昧な価値観」という授業の文脈と接続する。社会人基礎力はこのVUCA時代に対応するための基礎となる。
+    </p>
+    <p class="appendix-ext" style="margin-top:8px;">
+      【外部補足】PDCAサイクル（Plan-Do-Check-Action）：計画力・課題発見力・創造力の繰り返し改善の考え方と関連する。三木谷浩史著『成功のコンセプト』の「1日1%の改善」というエピソードはPDCAの継続的改善（Kaizen）の思想とも一致する。
+    </p>
+    <p style="margin-top:12px; font-size:13px; color:var(--text-sub);">
+      → 次回（第4回）は前回・今回の内容を踏まえたキャリア形成の具体的ステップに関連する内容が予想される。
+    </p>
+  </div>
+</section>
+
+</main>
+
+<script>
+  // サイドバーのアクティブリンク制御
+  const links = document.querySelectorAll('#sidebar a');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const id = '#' + e.target.id;
+        const active = document.querySelector('#sidebar a[href="' + id + '"]');
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  document.querySelectorAll('[id]').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
