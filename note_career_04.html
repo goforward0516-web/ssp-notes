@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>キャリア入門 第4回 — 組織で働くための基礎知識</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --bg2: #1a1d27;
+    --bg3: #1e2535;
+    --card: #1e2535;
+    --border: #2d3550;
+    --text: #e2e8f5;
+    --text-sub: #8a99b8;
+    --accent1: #5b8dee;
+    --accent2: #34d399;
+    --accent3: #fbbf24;
+    --accent4: #a78bfa;
+    --accent-red: #f87171;
+    --accent-orange: #fb923c;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 15px;
+    line-height: 1.8;
+    display: flex;
+  }
+  /* ===== SIDEBAR ===== */
+  #sidebar {
+    width: 260px;
+    min-width: 260px;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    overflow-y: auto;
+    padding: 24px 0;
+  }
+  #sidebar h2 {
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--text-sub);
+    padding: 0 20px 12px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 12px;
+  }
+  #sidebar ul { list-style: none; }
+  #sidebar li a {
+    display: block;
+    padding: 6px 20px;
+    color: var(--text-sub);
+    text-decoration: none;
+    font-size: 13px;
+    border-left: 2px solid transparent;
+    transition: all .15s;
+  }
+  #sidebar li a:hover { color: var(--text); background: var(--bg3); border-left-color: var(--accent1); }
+  #sidebar li a.lv2 { padding-left: 34px; font-size: 12px; }
+  #sidebar li a.lv3 { padding-left: 48px; font-size: 11px; color: #6b7a9a; }
+  /* ===== MAIN ===== */
+  #main {
+    flex: 1;
+    max-width: 900px;
+    padding: 40px 48px;
+    overflow-x: hidden;
+  }
+  /* ===== HEADER ===== */
+  .page-header {
+    background: linear-gradient(135deg, #1a2a4a 0%, #1e2535 100%);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin-bottom: 32px;
+  }
+  .page-header .label {
+    font-size: 11px;
+    letter-spacing: .12em;
+    color: var(--accent1);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .page-header h1 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+  .meta-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text-sub);
+  }
+  .meta-grid span { font-family: 'JetBrains Mono', monospace; font-size: 11px; background: var(--bg3); padding: 4px 8px; border-radius: 4px; }
+  /* ===== SECTION HEADERS ===== */
+  h2.sec {
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--text);
+    border-left: 4px solid var(--accent1);
+    padding-left: 14px;
+    margin: 36px 0 16px;
+  }
+  h3.sub {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--accent1);
+    margin: 24px 0 10px;
+  }
+  h4.subsub {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--accent3);
+    margin: 16px 0 8px;
+  }
+  /* ===== CARD ===== */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+  }
+  /* ===== BLOCKS ===== */
+  .voice-block {
+    border-left: 3px solid var(--accent1);
+    background: rgba(91,141,238,.07);
+    padding: 10px 16px;
+    margin: 10px 0;
+    border-radius: 0 6px 6px 0;
+    font-size: 14px;
+  }
+  .voice-block .blabel {
+    font-size: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent1);
+    letter-spacing: .08em;
+    margin-bottom: 4px;
+  }
+  .ext-block {
+    border-left: 3px solid var(--accent2);
+    background: rgba(52,211,153,.07);
+    padding: 10px 16px;
+    margin: 10px 0;
+    border-radius: 0 6px 6px 0;
+    font-size: 14px;
+  }
+  .ext-block .blabel { font-size: 10px; font-family: 'JetBrains Mono', monospace; color: var(--accent2); letter-spacing: .08em; margin-bottom: 4px; }
+  .warn-block {
+    border-left: 3px solid var(--accent-orange);
+    background: rgba(251,146,60,.07);
+    padding: 10px 16px;
+    margin: 10px 0;
+    border-radius: 0 6px 6px 0;
+    font-size: 14px;
+  }
+  .emphasis-block {
+    border: 1px solid var(--accent3);
+    background: rgba(251,191,36,.06);
+    padding: 14px 18px;
+    border-radius: 8px;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+  /* ===== POINTER ===== */
+  .ptr {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-sub);
+    background: var(--bg3);
+    padding: 1px 5px;
+    border-radius: 3px;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+  /* ===== TABLE ===== */
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; }
+  th { background: var(--bg3); color: var(--text-sub); font-weight: 600; padding: 8px 12px; text-align: left; border-bottom: 2px solid var(--border); }
+  td { padding: 8px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(91,141,238,.04); }
+  /* ===== SVG CONTAINER ===== */
+  .svg-wrap { margin: 16px 0; }
+  figcaption { font-size: 11px; font-family: 'JetBrains Mono', monospace; color: var(--text-sub); margin-top: 6px; }
+  /* ===== APPENDIX CARDS ===== */
+  .app-card { border-radius: 10px; padding: 20px 24px; margin-bottom: 20px; }
+  .app-undetermined { background: rgba(251,146,60,.08); border: 1px solid rgba(251,146,60,.3); }
+  .app-a { background: rgba(91,141,238,.07); border: 1px solid rgba(91,141,238,.3); }
+  .app-b { background: rgba(52,211,153,.07); border: 1px solid rgba(52,211,153,.3); }
+  .app-c { background: rgba(251,191,36,.07); border: 1px solid rgba(251,191,36,.3); }
+  .app-d { background: rgba(167,139,250,.07); border: 1px solid rgba(167,139,250,.3); }
+  .app-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 14px; }
+  .app-undetermined h3 { color: var(--accent-orange); }
+  .app-a h3 { color: var(--accent1); }
+  .app-b h3 { color: var(--accent2); }
+  .app-c h3 { color: var(--accent3); }
+  .app-d h3 { color: var(--accent4); }
+  .app-ext-item { font-size: 12px; color: var(--text-sub); }
+  /* ===== FLOW DIAGRAM (CSS Flexbox) ===== */
+  .flow-wrap { display: flex; flex-direction: column; align-items: center; gap: 4px; margin: 16px auto; max-width: 480px; }
+  .flow-box { background: var(--bg3); border: 1px solid var(--accent1); border-radius: 8px; padding: 10px 20px; text-align: center; width: 100%; font-size: 13px; font-weight: 600; }
+  .flow-arrow { font-size: 20px; color: var(--accent3); line-height: 1; }
+  .flow-label { font-size: 11px; color: var(--accent3); font-weight: 700; }
+  /* ===== MISC ===== */
+  ul, ol { padding-left: 1.4em; }
+  li { margin-bottom: 4px; }
+  p { margin-bottom: 10px; }
+  strong { color: var(--accent3); }
+  code { font-family: 'JetBrains Mono', monospace; font-size: 12px; background: var(--bg3); padding: 1px 5px; border-radius: 3px; }
+  .badge-ox { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; margin-right: 6px; }
+  .badge-o { background: rgba(52,211,153,.2); color: var(--accent2); }
+  .badge-x { background: rgba(248,113,113,.2); color: var(--accent-red); }
+  hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+</style>
+</head>
+<body>
+
+<!-- ===== SIDEBAR ===== -->
+<nav id="sidebar">
+  <h2>目次</h2>
+  <ul>
+    <li><a href="#header">📄 授業概要</a></li>
+    <li><a href="#ch1">第1章 周囲への気配り</a></li>
+    <li><a href="#ch1-org" class="lv2">1.1 組織で働くということ</a></li>
+    <li><a href="#ch1-place" class="lv2">1.2 仕事をする場所への気配り</a></li>
+    <li><a href="#ch1-people" class="lv2">1.3 一緒に仕事する人への気配り</a></li>
+    <li><a href="#ch1-timing" class="lv2">1.4 タイミングへの気配り</a></li>
+    <li><a href="#ch2">第2章 仕事の受け方</a></li>
+    <li><a href="#ch2-pro" class="lv2">2.1 プロとしての意識</a></li>
+    <li><a href="#ch2-spirit" class="lv2">2.2 チャレンジ精神と責任感</a></li>
+    <li><a href="#ch2-confirm" class="lv2">2.3 仕事を受ける前の確認事項</a></li>
+    <li><a href="#ch3">第3章 仕事の進め方</a></li>
+    <li><a href="#ch3-scope" class="lv2">3.1 開始〜終了の管理</a></li>
+    <li><a href="#ch3-todo" class="lv2">3.2 To Doリストの活用</a></li>
+    <li><a href="#ch3-schedule" class="lv2">3.3 スケジュールの立て方</a></li>
+    <li><a href="#ch3-organize" class="lv2">3.4 整理整頓の重要性</a></li>
+    <li><a href="#ch3-comm" class="lv2">3.5 わかりやすい伝達</a></li>
+    <li><a href="#ch4">第4章 メディアリテラシー</a></li>
+    <li><a href="#ch4-def" class="lv2">4.1 メディアリテラシーとは</a></li>
+    <li><a href="#ch4-mass" class="lv2">4.2 マスメディア vs インターネット</a></li>
+    <li><a href="#ch4-edit" class="lv2">4.3 情報処理力と情報編集力</a></li>
+    <li><a href="#appendix">📎 末尾補足</a></li>
+    <li><a href="#app-und" class="lv2">❓ 未確定事項</a></li>
+    <li><a href="#app-a" class="lv2">⭐ 補足A 最重要ワード</a></li>
+    <li><a href="#app-b" class="lv2">📚 補足B 背景知識</a></li>
+    <li><a href="#app-c" class="lv2">🎯 補足C 試験・レポート観点</a></li>
+    <li><a href="#app-d" class="lv2">🔗 補足D 関連概念</a></li>
+  </ul>
+</nav>
+
+<!-- ===== MAIN ===== -->
+<main id="main">
+
+  <!-- HEADER -->
+  <div class="page-header" id="header">
+    <div class="label">キャリア入門 &nbsp;·&nbsp; Cyber University</div>
+    <h1>第4回 組織で働くための基礎知識</h1>
+    <div class="meta-grid">
+      <div>科目 <span>キャリア入門（SD105）</span></div>
+      <div>回数 <span>第4回</span></div>
+      <div>ソース <span>S03 + S05×2</span></div>
+      <div>作成 <span>SSP v4.5.1</span></div>
+    </div>
+  </div>
+
+  <!-- ===== CHAPTER 1 ===== -->
+  <h2 class="sec" id="ch1">第1章　周囲への気配り</h2>
+  <p>インターンシップを例として、就業経験のない学生を対象に、組織の中で「周囲に気配りができる人」になるための考え方と行動を学ぶ。 <span class="ptr">← S03:p.2</span></p>
+
+  <h3 class="sub" id="ch1-org">1.1 組織で働くということ</h3>
+  <div class="card">
+    <p>会社（組織）は、社長→事業部長→部門長→一般社員という縦の権限構造で動いており、各自が指示・命令を受けながら仕事をする。一般社員の立場では、直属の上司・先輩社員・同期・後輩など、立場も年齢も異なる人々と共に働く。 <span class="ptr">← S03:p.6</span></p>
+
+    <figure class="svg-wrap">
+      <!-- 組織図 SVG: viewBox=0 0 500 220, 各ボックス幅120,高さ36, y間隔50 -->
+      <svg viewBox="0 0 500 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:500px;">
+        <!-- 社長 -->
+        <rect x="190" y="10" width="120" height="36" rx="6" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+        <text x="250" y="33" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="#e2e8f5">社長</text>
+        <!-- 事業部長×2 -->
+        <rect x="80" y="76" width="120" height="36" rx="6" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+        <text x="140" y="99" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="#e2e8f5">事業部長</text>
+        <rect x="300" y="76" width="120" height="36" rx="6" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+        <text x="360" y="99" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="#e2e8f5">事業部長</text>
+        <!-- 部門長×3 -->
+        <rect x="10" y="142" width="100" height="36" rx="6" fill="#1e2535" stroke="#8a99b8" stroke-width="1"/>
+        <text x="60" y="165" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#8a99b8">部門長</text>
+        <rect x="140" y="142" width="100" height="36" rx="6" fill="#1e2535" stroke="#8a99b8" stroke-width="1"/>
+        <text x="190" y="165" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#8a99b8">部門長</text>
+        <rect x="310" y="142" width="100" height="36" rx="6" fill="#1e2535" stroke="#8a99b8" stroke-width="1"/>
+        <text x="360" y="165" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#8a99b8">部門長</text>
+        <!-- 一般社員 -->
+        <rect x="420" y="142" width="70" height="36" rx="6" fill="rgba(91,141,238,.15)" stroke="#5b8dee" stroke-width="1.5"/>
+        <text x="455" y="165" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#5b8dee">一般社員</text>
+        <!-- 接続線 -->
+        <line x1="250" y1="46" x2="140" y2="76" stroke="#2d3550" stroke-width="1.5"/>
+        <line x1="250" y1="46" x2="360" y2="76" stroke="#2d3550" stroke-width="1.5"/>
+        <line x1="140" y1="112" x2="60" y2="142" stroke="#2d3550" stroke-width="1"/>
+        <line x1="140" y1="112" x2="190" y2="142" stroke="#2d3550" stroke-width="1"/>
+        <line x1="360" y1="112" x2="360" y2="142" stroke="#2d3550" stroke-width="1"/>
+        <line x1="360" y1="112" x2="455" y2="142" stroke="#2d3550" stroke-width="1"/>
+        <!-- 注記 -->
+        <text x="420" y="198" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#34d399">← 直属上司・先輩・同期・後輩</text>
+      </svg>
+      <figcaption>図：会社の組織構造（縦社会） S03:p.6</figcaption>
+    </figure>
+
+    <div class="emphasis-block">
+      <strong>目標：「周囲に気配りができる人」を目指す</strong><br>
+      立場も年齢も違う人々がひとつの組織として機能するためには、それぞれの立場での周囲への気配りが必要。 <span class="ptr">← S03:p.6</span>
+    </div>
+
+    <div class="voice-block">
+      <div class="blabel">AUDIO SUPPLEMENT</div>
+      一人で仕事する場合は一人で結果を出せばよいが、組織では組織としての結果を出すことが求められる。そのため自分の役割を理解・全うするために、周囲への気配りが必要になる。 <span class="ptr">← S05</span>
+    </div>
+  </div>
+
+  <h3 class="sub" id="ch1-place">1.2 仕事をする場所への気配り</h3>
+  <div class="card">
+    <p>オフィスなど仕事をする場所の環境に積極的に気を配ること。 <span class="ptr">← S03:p.7</span></p>
+
+    <table>
+      <tr>
+        <th>状況の例</th>
+        <th><span class="badge-x">×</span> やってはいけない行動</th>
+        <th><span class="badge-o">○</span> 正しい行動</th>
+      </tr>
+      <tr>
+        <td>オフィスでゴミ箱がいっぱいになっていた</td>
+        <td>各自が終業時に処理しているようなのでそのままにしておく</td>
+        <td>自分が使用していなくても、気づいたらすぐ社員に確認し、回収する</td>
+      </tr>
+      <tr>
+        <td>オフィスで汚れ・片付いていない箇所を見つけた</td>
+        <td>指示されるまで動かない</td>
+        <td>指示されていなくても、社員に相談し率先して片付ける</td>
+      </tr>
+    </table>
+    <p style="font-size:13px;color:var(--text-sub);">出典: S03:p.7-8</p>
+
+    <div class="voice-block">
+      <div class="blabel">AUDIO SUPPLEMENT</div>
+      会社によってゴミ箱の処理ルールは異なる。①各自が終業時に処理するルールの会社、②掃除してくれる方がいる会社、どちらの場合でも重要なのは<strong>声をかけること</strong>。「ゴミ箱がいっぱいになっているんですが、私の方で回収できるなら回収しようと思いますけど、どのようにすればいいですか」という形で確認することが、コミュニケーションのきっかけになる。そのコミュニケーションの中から、仕事に関するいろんなアドバイスを社員から受けられるようになる。 <span class="ptr">← S05</span>
+    </div>
+
+    <div class="voice-block">
+      <div class="blabel">AUDIO SUPPLEMENT</div>
+      率先して片付けることで、社員がその時間を他の仕事に使えたり、仕事がしやすくなったりすれば、直接的でなくても<strong>価値を生み出す</strong>ことにつながる。ただし<strong>勝手にやってしまうと必要なものを捨てる</strong>などの大きなミスになる可能性もあるので、周囲をよく見て相手の状況を推測しつつ、必ず社員に確認してから行動すること。最初から仕事で成果を出すことは求められていない。自分ができるところから協力していく、という気配りの意識が重要。 <span class="ptr">← S05</span>
+    </div>
+  </div>
+
+  <h3 class="sub" id="ch1-people">1.3 一緒に仕事をする人への気配り</h3>
+  <div class="card">
+    <table>
+      <tr>
+        <th>状況の例</th>
+        <th><span class="badge-x">×</span> やってはいけない行動</th>
+        <th><span class="badge-o">○</span> 正しい行動</th>
+      </tr>
+      <tr>
+        <td>会議開始時間直前に急いで資料を準備している社員がいた</td>
+        <td>「それはその人の仕事なので自分はやらない」と判断する</td>
+        <td>声をかけ、率先して手伝う</td>
+      </tr>
+      <tr>
+        <td>周囲に困っている人がいた</td>
+        <td>指示されるまで動かない</td>
+        <td>自分から声をかけ、できることがあれば率先して手伝う</td>
+      </tr>
+    </table>
+    <p style="font-size:13px;color:var(--text-sub);">出典: S03:p.9-10</p>
+
+    <div class="voice-block">
+      <div class="blabel">AUDIO SUPPLEMENT</div>
+      自分から声をかけて手伝うことで、感謝されるだけでなく、<strong>与えられた仕事以外のことに触れるチャンス</strong>が得られる。1週間もいれば大体自分ができることかできないことかは理解できるようになる。できることがわかったら、困っている人に声をかけ、時間的な余裕があれば率先して手伝う。企業側が一つ一つ指示を出さなければ動かない状態は非常に手間がかかる。自分からどんどん話しかけ、やりたい仕事を得るチャンスを掴んでほしい。 <span class="ptr">← S05</span>
+    </div>
+  </div>
+
+  <h3 class="sub" id="ch1-timing">1.4 タイミングへの気配り</h3>
+  <div class="card">
+    <h4 class="subsub">◆ 頼まれたことをするタイミング</h4>
+    <table>
+      <tr>
+        <th>状況の例</th>
+        <th><span class="badge-x">×</span></th>
+        <th><span class="badge-o">○</span></th>
+      </tr>
+      <tr>
+        <td>「ちょっとこの書類をお客様にFAXしてほしい」と頼まれた</td>
+        <td>たいした仕事ではないので後で時間があるときにやる</td>
+        <td>時間がかからない仕事だからこそ後回しにせず、すぐにやる</td>
+      </tr>
+    </table>
+    <p style="font-size:13px;color:var(--text-sub);">出典: S03:p.11</p>
+
+    <div class="emphasis-block">
+      <strong>急に割り込んでくる仕事は急ぎの可能性が高い。後回しは忘れる原因にもなる。</strong><br>
+      → 急に何かを頼まれたときは：<br>
+      &nbsp;&nbsp;① すぐに実行する、または<br>
+      &nbsp;&nbsp;② 急ぎなのか・いつまでにすればよいのかを確認する（報連相） <span class="ptr">← S03:p.12</span>
+    </div>
+
+    <div class="voice-block">
+      <div class="blabel">AUDIO SUPPLEMENT</div>
+      人に頼むくらいだから当然急いでいるはず。わからなければ「いつまでにこれは送っておけばいいですか」と確認するコミュニケーションが重要。<strong>報連相（報告・連絡・相談）</strong>を確認する癖をつけてほしい。 <span class="ptr">← S05</span>
+    </div>
+
+    <h4 class="subsub">◆ 声をかけるタイミング</h4>
+    <table>
+      <tr>
+        <th>状況の例</th>
+        <th><span class="badge-x">×</span></th>
+        <th><span class="badge-o">○</span></th>
+      </tr>
+      <tr>
+        <td>ある社員に質問しようとしたところ、その人がお客様のところへ出かけようとしていた</td>
+        <td>出かけてしまうと質問できなくなるのですぐにつかまえて声をかける（自分軸の行動）</td>
+        <td>声をかけるのは止め、他の人に尋ねるか、外出から戻るのを待ち質問する</td>
+      </tr>
+    </table>
+    <p style="font-size:13px;color:var(--text-sub);">出典: S03:p.13</p>
+
+    <div class="emphasis-block">
+      <strong>相手の状況を見て声をかける。時間がなさそうであれば他の人に対応してもらうか、その人の都合のよい時間を教えてもらう。</strong><br>
+      相手が期限や時間に追われている場合は<strong>迷惑にもなり得る</strong>。 <span class="ptr">← S03:p.14</span>
+    </div>
+
+    <div class="voice-block">
+      <div class="blabel">AUDIO SUPPLEMENT</div>
+      全然声をかけないのも「何をしていいかわからない」状態になる。その間のバランスを取るために周囲とコミュニケーションをとることが大切。まず職場に着いたら、一人一人の社員の動きと、忙しい人にどのタイミングで周囲が声をかけているかを観察すること。朝一番に「今日はどのような時間帯に声をかけれますか」と事前に確認する方法も有効。 <span class="ptr">← S05</span>
+    </div>
+
+    <div class="emphasis-block" style="margin-top:16px;">
+      <strong>第1章 まとめ</strong>：周囲に気を配り、人が気がつかない・やらないことを率先して行う。そのためには、<strong>周囲をよく見て相手の状況を推測する習慣</strong>をつける。 <span class="ptr">← S03:p.15</span>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- ===== CHAPTER 2 ===== -->
+  <h2 class="sec" id="ch2">第2章　仕事の受け方</h2>
+
+  <h3 class="sub" id="ch2-pro">2.1 プロとしての意識</h3>
+  <div class="card">
+    <table>
+      <tr>
+        <th>概念</th>
+        <th>定義</th>
+        <th>意識の向き</th>
+      </tr>
+      <tr>
+        <td><strong>サラリーマン（プロ的）</strong></td>
+        <td>お金をもらって仕事をする人</td>
+        <td>給与をもらうことが目的</td>
+      </tr>
+      <tr>
+        <td><strong>ビジネスパーソン（プロ本来の意味）</strong></td>
+        <td>仕事で結果を出してその対価をもらう人</td>
+        <td>仕事で結果を出すことが目的</td>
+      </tr>
+    </table>
+    <p style="font-size:13px;color:var(--text-sub);">出典: S03:p.22（「お金をもらって仕事をする」のか「仕事を通じてお金をもらう」のか、という言い回しの違いに本質がある）</p>
+
+    <div class="emphasis-block">
+      <strong>入社すればプロとしての意識が求められる。</strong><br>
+      プロの方々の仕事ぶりを観察し、「プロとはどういうものか」を自分なりに定義する。もしプロらしくない人がいても反面教師として学ぶこと（失礼な言動は絶対に禁止）。 <span class="ptr">← S03:p.22</span>
+    </div>
+
+    <div class="voice-block">
+      <div class="blabel">AUDIO SUPPLEMENT</div>
+      企業研修で新入社員に話す内容として、「入社すれば全てその方々はプロとしてみなされる」という考え方がある。「お金をもらって仕事をする」のはサラリーマン的な発想で、「仕事を通じてお金をもらう＝仕事で結果を出してその対価をもらう」のがビジネスパーソン。いきなりプロとして働くことを求めているわけではないが、<strong>プロの仕事ぶりをじっくり観察する</strong>ことは必須。インターンや就業体験に行く際はこの視点を持って社員を見ること。 <span class="ptr">← S05</span>
+    </div>
+  </div>
+
+  <h3 class="sub" id="ch2-spirit">2.2 チャレンジ精神と責任感</h3>
+  <div class="card">
+    <figure class="svg-wrap">
+      <!-- チャレンジ精神 vs 責任感の2カラム比較図 -->
+      <!-- viewBox 0 0 480 140, 各ボックス x=10,y=20, w=210,h=100 / x=260,y=20,w=210,h=100 -->
+      <svg viewBox="0 0 480 140" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:480px;">
+        <rect x="10" y="10" width="210" height="120" rx="8" fill="rgba(251,191,36,.08)" stroke="#fbbf24" stroke-width="1.5"/>
+        <text x="115" y="38" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="14" font-weight="bold" fill="#fbbf24">チャレンジ精神</text>
+        <text x="115" y="60" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">初めてのことでも</text>
+        <text x="115" y="78" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">進んで挑戦し、</text>
+        <text x="115" y="96" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">自分の成長につなげようと</text>
+        <text x="115" y="114" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">する意欲を持つ</text>
+
+        <rect x="260" y="10" width="210" height="120" rx="8" fill="rgba(52,211,153,.08)" stroke="#34d399" stroke-width="1.5"/>
+        <text x="365" y="38" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="14" font-weight="bold" fill="#34d399">責任感</text>
+        <text x="365" y="60" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">任せてもらった仕事は</text>
+        <text x="365" y="78" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">必ず最後まで</text>
+        <text x="365" y="96" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">やり遂げるという</text>
+        <text x="365" y="114" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">強い意志を持つ</text>
+      </svg>
+      <figcaption>図：仕事を受ける際の心構え S03:p.23</figcaption>
+    </figure>
+
+    <h4 class="subsub">◆ チャレンジ精神の実践</h4>
+    <table>
+      <tr>
+        <th>状況</th>
+        <th><span class="badge-x">×</span></th>
+        <th><span class="badge-o">○</span></th>
+      </tr>
+      <tr>
+        <td>表計算ソフトを使ったことがないのに「急ぎじゃないからこの資料集計してみる？」と言われた</td>
+        <td>「そのソフトは使ったことがないので…」「間違えるといけないので…」と断る</td>
+        <td>「経験はないですが、やらせてください」と初めてのことにも挑戦してみる</td>
+      </tr>
+    </table>
+    <p style="font-size:13px;color:var(--text-sub);">出典: S03:p.24</p>
+
+    <!-- チャレンジ→成長フロー -->
+    <div class="flow-wrap" style="margin-top:16px;">
+      <div class="flow-box" style="background:rgba(251,191,36,.1);border-color:#fbbf24;">チャレンジ（初めての体験を多く積む）</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-label">経験</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-box">今までできなかったことができるようになる</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-label">成長</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-box">任せてもらえる仕事の幅が広がる</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-box" style="background:rgba(52,211,153,.1);border-color:#34d399;color:#34d399;font-weight:700;">仕事が面白くなる</div>
+    </div>
+    <figcaption style="text-align:center;margin-top:4px;">図：チャレンジが生み出す成長サイクル S03:p.25</figcaption>
+
+    <div class="voice-block" style="margin-top:16px;">
+      <div class="blabel">AUDIO SUPPLEMENT</div>
+      人間はやったことあることしかできない。初めてやることは失敗する可能性が高いが、同じことを繰り返しているだけでは成長につながらない。常に新しいことに挑戦する意識が成長の原動力。大学の中で知識を習得しているから、<strong>経験を通じて蓄積した知識を実際に実証してほしい</strong>。失敗してもよい。フィードバックを素直に聞いて次から改善できるようにすれば、それが成長につながる。短い期間でもどんどんチャレンジすれば、任せてもらう仕事の幅が広がり、仕事が面白くなる。仕事の辛さ・厳しさを乗り越えると仕事はものすごく楽しくなる。そのプロセスを感じるためにもチャレンジし続けてほしい。 <span class="ptr">← S05</span>
+    </div>
+
+    <h4 class="subsub">◆ 責任感の実践</h4>
+    <table>
+      <tr>
+        <th>状況</th>
+        <th><span class="badge-x">×</span></th>
+        <th><span class="badge-o">○</span></th>
+      </tr>
+      <tr>
+        <td>「今日中に」という約束で引き受けた仕事が終業時間までに終わりそうにない</td>
+        <td>時間内にできないものは仕方がないと諦め、時間になったら帰る</td>
+        <td>最後まで自分が担当するという意識で、残って作業してもよいか・明日までかかってもよいかなど尋ね、指示を仰ぐ</td>
+      </tr>
+    </table>
+    <p style="font-size:13px;color:var(--text-sub);">出典: S03:p.26</p>
+
+    <div class="emphasis-block">
+      <strong>小さな実績の積み重ねが信用を築くことにつながる。</strong><br>
+      小さなことでも責任を持って確実にやり遂げる → 「この人なら任せても大丈夫」という安心感 → 次からも仕事を任せてもらえる <span class="ptr">← S03:p.27</span>
+    </div>
+
+    <div class="voice-block">
+      <div class="blabel">AUDIO SUPPLEMENT</div>
+      仕事を受けるのも責任感、達成するのも責任感。仕事を受けるとき、どこまでやれば仕事の終了なのかをわからずに受けると、途中から迷い始める。仕事の内容とどこまでやるのかをきちんと理解してから引き受けることが重要。 <span class="ptr">← S05</span>
+    </div>
+  </div>
+
+  <h3 class="sub" id="ch2-confirm">2.3 仕事を受ける前の確認事項（4点）</h3>
+  <div class="card">
+    <table>
+      <tr>
+        <th>#</th>
+        <th>確認事項</th>
+        <th>内容</th>
+      </tr>
+      <tr>
+        <td><strong>①</strong></td>
+        <td><strong>いつまでに</strong></td>
+        <td>仕事の期限</td>
+      </tr>
+      <tr>
+        <td><strong>②</strong></td>
+        <td><strong>何のために</strong></td>
+        <td>仕事の目的・背景</td>
+      </tr>
+      <tr>
+        <td><strong>③</strong></td>
+        <td><strong>何を</strong></td>
+        <td>提出物の内容や形態</td>
+      </tr>
+      <tr>
+        <td><strong>④</strong></td>
+        <td><strong>どうする</strong></td>
+        <td>提出先</td>
+      </tr>
+    </table>
+    <p style="font-size:13px;color:var(--text-sub);">出典: S03:p.28</p>
+
+    <div class="emphasis-block">
+      <strong>これらを必ず確認してから仕事を行うことが重要。</strong><br>
+      経験がないことでも、自分から積極的に仕事をもらいに行く姿勢で臨む。少しでも多くのことを体験し、成長につなげようという意識で取り組む。 <span class="ptr">← S03:p.29</span>
+    </div>
+
+    <div class="voice-block">
+      <div class="blabel">AUDIO SUPPLEMENT</div>
+      就業経験がない方が企業の中で信頼関係を作るためには、チャレンジの意識と責任を持って最後までやり遂げる意識を持ちつつ、企業の方々にもそれがわかるコミュニケーションをすることが非常に重要。 <span class="ptr">← S05</span>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- ===== CHAPTER 3 ===== -->
+  <h2 class="sec" id="ch3">第3章　仕事の進め方</h2>
+
+  <h3 class="sub" id="ch3-scope">3.1 開始〜終了の管理</h3>
+  <div class="card">
+    <figure class="svg-wrap">
+      <!-- 開始→中間→終了 矢印フロー, viewBox 0 0 460 60 -->
+      <svg viewBox="0 0 460 60" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:460px;">
+        <rect x="10" y="10" width="80" height="40" rx="6" fill="#1e2535" stroke="#8a99b8" stroke-width="1.5"/>
+        <text x="50" y="35" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="#8a99b8">開始</text>
+        <polygon points="100,30 110,22 110,38" fill="#5b8dee"/>
+        <rect x="118" y="10" width="220" height="40" rx="6" fill="rgba(91,141,238,.1)" stroke="#5b8dee" stroke-width="2" stroke-dasharray="5,3"/>
+        <text x="228" y="35" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#e2e8f5">いかに効率良く・間違いなく進めるか</text>
+        <polygon points="348,30 358,22 358,38" fill="#5b8dee"/>
+        <rect x="366" y="10" width="80" height="40" rx="6" fill="#1e2535" stroke="#8a99b8" stroke-width="1.5"/>
+        <text x="406" y="35" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="#8a99b8">終了</text>
+      </svg>
+      <figcaption>図：仕事の開始〜終了まで S03:p.33</figcaption>
+    </figure>
+
+    <div class="emphasis-block">
+      <strong>単に作業をするのではなく、常にやり方を見直しながら工夫していく。</strong><br>
+      目の前のことをちょっとずつ改善すれば、1年・2年後には大きな力になる。 <span class="ptr">← S03:p.33</span>
+    </div>
+
+    <div class="voice-block">
+      <div class="blabel">AUDIO SUPPLEMENT</div>
+      仕事がうまくできない人は開始と終了をきちんと把握できていない。終了が来たらダラダラ引き延ばすのではなく、いつが終わりなのかを最初に確認しておく必要がある。期間内に1日1日自分の仕事のやり方を見直し修正すれば、終わった時にはものすごい気づきが得られる。 <span class="ptr">← S05</span>
+    </div>
+  </div>
+
+  <h3 class="sub" id="ch3-todo">3.2 To Doリストの活用</h3>
+  <div class="card">
+    <p>今日すべきことを紙（手帳・メモ帳）に書き出して管理する。 <span class="ptr">← S03:p.34</span></p>
+
+    <table>
+      <tr>
+        <th>To Doリストに記載する項目</th>
+        <th>注意点</th>
+      </tr>
+      <tr>
+        <td>作業内容</td>
+        <td><strong>具体的に書くこと</strong>（×「書類整理」→ ○「営業資料の在庫確認と最新版への入替」）</td>
+      </tr>
+      <tr>
+        <td>期限</td>
+        <td>いつまでに完了すべきか</td>
+      </tr>
+      <tr>
+        <td>予定時間</td>
+        <td>どれくらいの時間で終わるか見積もり</td>
+      </tr>
+      <tr>
+        <td>優先順位</td>
+        <td>誰に受け渡すか・報告するかで変わる（好き嫌いで決めない）</td>
+      </tr>
+    </table>
+
+    <div class="emphasis-block" style="margin-top:14px;">
+      <strong>To Doリスト作成のメリット（予定 vs 実際の比較）</strong><br>
+      最初に予定を書いてから実行すると、予定通りにいかないことが仕事では常。その「ズレ」を見ることで以下が得られる：<br>
+      ① できていないものが何かすぐにわかり、忘れない<br>
+      ② <strong>自分の見積もりの甘さを知り</strong>、次回から時間を多めに取るか同じ設定にするか判断できる<br>
+      ③ 作業にかかる時間が予測できるようになる<br>
+      ④ 作業の前後関係を考え、流れを組み立てられるようになる<br>
+      ⑤ 何を優先すべきかがわかるようになる<br>
+      → 頭の中でシミュレーションができるようになり、<strong>効率的に仕事が進められる</strong> <span class="ptr">← S03:p.35</span>
+    </div>
+
+    <div class="voice-block">
+      <div class="blabel">AUDIO SUPPLEMENT</div>
+      いくら記憶力がよくても優先順位は記憶力でどうにもならない。たくさんの作業項目を期限も決めずにダラダラと1週間・1ヶ月やっていても達成感がない。人間は1つ1つのことを「終わった」と実感することで気分転換ができる。今回の講義で紹介するTo DoリストはWBS（Work Breakdown Structure）と共通の考え方であり、第7回でより詳しく説明される。 <span class="ptr">← S05</span>
+    </div>
+
+    <div class="ext-block">
+      <div class="blabel">外部補足</div>
+      <span class="app-ext-item">WBS（Work Breakdown Structure）は、プロジェクト管理の基本手法で、作業を階層的に分解して一覧化したもの。To Doリストはそのシンプルな実践版といえる。</span>
+    </div>
+  </div>
+
+  <h3 class="sub" id="ch3-schedule">3.3 スケジュールの立て方</h3>
+  <div class="card">
+    <figure class="svg-wrap">
+      <!-- スケジュール逆算図: viewBox 0 0 460 80 -->
+      <svg viewBox="0 0 460 80" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:460px;">
+        <!-- 締切 -->
+        <rect x="370" y="20" width="80" height="40" rx="6" fill="rgba(248,113,113,.15)" stroke="#f87171" stroke-width="2"/>
+        <text x="410" y="45" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="#f87171" font-weight="bold">締切</text>
+        <!-- 矢印（逆算） -->
+        <line x1="365" y1="40" x2="180" y2="40" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="5,3"/>
+        <polygon points="180,40 190,34 190,46" fill="#fbbf24"/>
+        <text x="275" y="32" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#fbbf24">← 逆算</text>
+        <!-- 終了予定（余裕） -->
+        <rect x="90" y="20" width="90" height="40" rx="6" fill="rgba(52,211,153,.1)" stroke="#34d399" stroke-width="1.5"/>
+        <text x="135" y="38" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#34d399">終了予定</text>
+        <text x="135" y="52" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#34d399">（余裕あり）</text>
+        <!-- 開始 -->
+        <rect x="10" y="20" width="70" height="40" rx="6" fill="#1e2535" stroke="#8a99b8" stroke-width="1"/>
+        <text x="45" y="45" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#8a99b8">開始</text>
+        <line x1="85" y1="40" x2="80" y2="40" stroke="#8a99b8" stroke-width="1.5"/>
+        <polygon points="80,40 90,34 90,46" fill="#8a99b8"/>
+      </svg>
+      <figcaption>図：締切から逆算したスケジュール設定 S03:p.36</figcaption>
+    </figure>
+
+    <div class="emphasis-block">
+      <strong>スケジュール設定のポイント</strong><br>
+      ★ 終了予定は<strong>締切ギリギリではなく早めに設定</strong>する（1個ずれると全てずれる）<br>
+      ★ <strong>割り込みの作業やトラブルが発生すること</strong>も見越して余裕をつくる <span class="ptr">← S03:p.36</span>
+    </div>
+
+    <div class="voice-block">
+      <div class="blabel">AUDIO SUPPLEMENT</div>
+      人生設計でも常に逆算している人は、今何をするかを逆算して考えている。スケジュールの中で<strong>自分ができること・苦手なことに対する時間の割り振り</strong>を検証することが重要。苦手なことには時間を多めに配分する。余裕があれば全体的な流れを見ながら今のことに取り組め、割り込み作業が発生しても慌てなくてすむ。ギリギリ設定だと1つずれると全てがずれるので、常に余裕のあるスケジュール設定を意識する。 <span class="ptr">← S05</span>
+    </div>
+  </div>
+
+  <h3 class="sub" id="ch3-organize">3.4 整理整頓の重要性</h3>
+  <div class="card">
+    <table>
+      <tr>
+        <th>用語</th>
+        <th>定義</th>
+      </tr>
+      <tr>
+        <td><strong>整理</strong></td>
+        <td>不必要なものを捨てること</td>
+      </tr>
+      <tr>
+        <td><strong>整頓</strong></td>
+        <td>必要なものだけが残ったら、きちんと並べ替えること</td>
+      </tr>
+    </table>
+    <p style="font-size:13px;color:var(--text-sub);">出典: S03:p.37（整理と整頓は別概念として区別される）</p>
+
+    <div class="emphasis-block">
+      <strong>仕事は整理整頓の繰り返し。</strong><br>
+      終わったものはどんどん目の触れるところからなくしていく。残ったものも常に優先順位を考えながら順番を変える。
+      「探す」ことも仕事のひとつになる＝非効率。 <span class="ptr">← S03:p.37</span>
+    </div>
+
+    <div class="voice-block">
+      <div class="blabel">AUDIO SUPPLEMENT</div>
+      <strong>デスクトップが散らかっている人は仕事ができない</strong>とよく言われる。机の上もパソコンのデスクトップも同じ。整理整頓しておけば散らかるわけがない。散らかっているということは仕事の整理ができていないということ。仕事ができる人の机の上やデスクトップをこっそり見てみることも学習になる。 <span class="ptr">← S05</span>
+    </div>
+
+    <h4 class="subsub">◆ 身の回りを片付ける実践</h4>
+    <ul>
+      <li>完了した仕事の書類はきちんとファイリングする（後で見直す際に探し出す手間をなくす）<span class="ptr">← S03:p.38</span></li>
+      <li>規則的に並べるなど、すぐに見つかる工夫をする</li>
+      <li>不要な書類は処分する（学んだことが記録された書類は保管すること）</li>
+      <li>使用したものは都度片付け、分類・収納する</li>
+    </ul>
+  </div>
+
+  <h3 class="sub" id="ch3-comm">3.5 わかりやすい伝達</h3>
+  <div class="card">
+    <table>
+      <tr>
+        <th>わかりづらい伝達（×）</th>
+        <th>わかりやすい伝達（○）</th>
+      </tr>
+      <tr>
+        <td>要点がわかりづらい</td>
+        <td>伝えたいポイントが明確</td>
+      </tr>
+      <tr>
+        <td>事実・推測・自分の意見が混在</td>
+        <td>内容が具体的</td>
+      </tr>
+      <tr>
+        <td>表現があいまい</td>
+        <td>順序立てた構成になっている</td>
+      </tr>
+      <tr>
+        <td>伝えたいことが多すぎる</td>
+        <td>文章が簡潔</td>
+      </tr>
+      <tr>
+        <td>略語を使用（相手が知らない可能性）</td>
+        <td>（略語は対象者に合わせて使用）</td>
+      </tr>
+      <tr>
+        <td>文章が長い・時間軸がバラバラ</td>
+        <td>時間軸が整理されている</td>
+      </tr>
+    </table>
+    <p style="font-size:13px;color:var(--text-sub);">出典: S03:p.39-40</p>
+
+    <div class="emphasis-block">
+      <strong>わかりやすく・正確に・ミスが起こらないよう、明確に・簡潔に伝えることを心がける。</strong><br>
+      ムダが多く誤解を招く伝達 → ミスにつながりやすい<br>
+      メール・口頭・文書のいずれでも、コミュニケーションの達人を観察して盗む。 <span class="ptr">← S03:p.40</span>
+    </div>
+
+    <div class="voice-block">
+      <div class="blabel">AUDIO SUPPLEMENT</div>
+      「言った・言わない」のトラブルが仕事の中でよく起こる。相手がそのニュアンスで捉えてしまったとすれば、伝えた側の責任。自分の言葉が分かりにくいと言われるなら、補完ツール（メール・文書）をどんどん使うことも有効。1つ1つのセンテンスが長すぎると分かりにくいので、なるべく短く時間軸を整理して伝える。 <span class="ptr">← S05</span>
+    </div>
+
+    <div class="emphasis-block">
+      <strong>第3章 まとめ</strong>：与えられた仕事をただこなすのではなく、少しでも<strong>効率的に</strong>、ミスをしない工夫をしながら<strong>慎重に</strong>進めるよう心がける。 <span class="ptr">← S03:p.41</span>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- ===== CHAPTER 4 ===== -->
+  <h2 class="sec" id="ch4">第4章　メディアリテラシー</h2>
+
+  <h3 class="sub" id="ch4-def">4.1 メディアリテラシーとは</h3>
+  <div class="card">
+    <div class="emphasis-block">
+      <strong>メディアリテラシーの2つの定義</strong><br>
+      ① <strong>情報を伝達する力</strong>：メディアの特性を理解し、適切な手段で自分の考えを伝達・コミュニケーションを生み出す力<br>
+      ② <strong>情報を収集・活用する力</strong>：受け取る情報の本質を見極め活用する力 <span class="ptr">← S03:p.48</span>
+    </div>
+
+    <div class="voice-block">
+      <div class="blabel">AUDIO SUPPLEMENT</div>
+      サイバー大学の学生はインターネットに精通していると思われがちだが、得意不得意に関わらず、インターネットで情報を活用することは現代の学生には必要なこと。インターネットだけでなく、テレビ・新聞・ラジオも含めてメディアの特性を把握することが重要。企業に行く場合、事前にその企業の情報を収集・分析し、何をやるのか・何ができるのかを想定するために、メディアリテラシーが必要となる。 <span class="ptr">← S05</span>
+    </div>
+  </div>
+
+  <h3 class="sub" id="ch4-mass">4.2 マスメディア vs インターネット情報</h3>
+  <div class="card">
+    <table>
+      <tr>
+        <th>種別</th>
+        <th>媒体例</th>
+        <th>特徴・注意点</th>
+        <th>情報の種類</th>
+      </tr>
+      <tr>
+        <td><strong>マスメディア</strong></td>
+        <td>テレビ・雑誌・新聞・ラジオ</td>
+        <td>制作者・広告主などの意図が入っている可能性がある。誰にでもわかりやすく作られているため情報が浅い。</td>
+        <td>二次情報（事実を間接的に伝える）</td>
+      </tr>
+      <tr>
+        <td><strong>インターネット</strong></td>
+        <td>ブログ・SNS・ニュースサイト・メールマガジン・ホームページ等</td>
+        <td>複数人のチェックが入っていない場合が多い。情報の新しさが不明なものもあり、正確性に欠ける場合もある。</td>
+        <td>一次情報に近い（直接入手可能）</td>
+      </tr>
+    </table>
+    <p style="font-size:13px;color:var(--text-sub);">出典: S03:p.49-50</p>
+
+    <div class="emphasis-block">
+      <strong>情報収集の際に気をつけること</strong><br>
+      情報の発信元・発信時期を確かめる → 逆説を探してみる → <strong>複数の視点から検証</strong>し、本質を見極めることが重要 <span class="ptr">← S03:p.51</span>
+    </div>
+
+    <div class="voice-block">
+      <div class="blabel">AUDIO SUPPLEMENT</div>
+      例：「牛乳は体に良い」という情報に対して、「日本人の体には合わない」という説もある。複数の諸説があるので、情報の発信元・発信時期を確かめながら逆説を探してみること。複数の視点から物事を見る力は、職場での指示についても「なぜその指示をしたのか」という裏側が見える力につながる。意見の対立がある場合も「なぜこの方はこういう意見を言って、この方は逆の意見を言っているのか」が見えてくる。 <span class="ptr">← S05</span>
+
+      <div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(91,141,238,.2);">
+        <strong>情報収集の実践的なコツ（講師が企業講演で話す内容）：</strong><br>
+        地下鉄・電車の中吊り広告は、その雑誌がターゲットにしている方々が興味を示す見出しを並べている。記事を読まなくてもキーワードをつかみ、インターネットで検索すればその方々が興味を持っていることが全て見える。<br><br>
+        例えば企業に訪問する前に、<strong>その会社の社員が読みそうな雑誌の見出しを確認</strong>するだけで社員の関心事がつかめる。また<strong>お客さんが興味ありそうな雑誌の見出し</strong>から、お客さんの関心事も調べられる。その内容をインターネットで詳しく調べることも簡単にできる。これがビジネスの知恵。 <span class="ptr">← S05</span>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="sub" id="ch4-edit">4.3 情報処理力と情報編集力</h3>
+  <div class="card">
+    <table>
+      <tr>
+        <th></th>
+        <th>20世紀（成長社会）</th>
+        <th>21世紀（成熟社会）</th>
+      </tr>
+      <tr>
+        <td><strong>求められる力</strong></td>
+        <td>情報処理力</td>
+        <td>情報編集力</td>
+      </tr>
+      <tr>
+        <td><strong>内容</strong></td>
+        <td>早く・正確に処理することが優先。記憶力や計算力が必要。</td>
+        <td>知識や経験を組み合わせ、イメージを広げられることが重要。情報の加工や発信、シミュレーションをする力が必要。</td>
+      </tr>
+      <tr>
+        <td><strong>目的</strong></td>
+        <td>「正解」を導き出す</td>
+        <td>「<strong>納得解</strong>」を導き出す</td>
+      </tr>
+    </table>
+    <p style="font-size:13px;color:var(--text-sub);">参考：藤原和博『「ビミョーな未来」をどう生きるか』ちくまプリマー新書（2006年1月）<span class="ptr">← S03:p.52</span></p>
+
+    <div class="voice-block">
+      <div class="blabel">AUDIO SUPPLEMENT</div>
+      コンピューター・インターネットがなかった時代、人間に必要な資質は記憶力と計算力だった。だから受験で問われるのも記憶力・計算力。しかし、記憶力・計算力でどう人間が逆立ちしてもコンピューターに勝てない。これからの時代は、コンピューターに記憶・計算させたものを活用しながら、複数の方々とコミュニケーションして「そうだよね、これが一番いいよね」という納得感を導き出す力が必要。<br><br>
+      大学の偏差値は記憶力・計算力（20世紀の産物）の指標かもしれない。サイバー大学の学生には、この「納得解を導き出す偏差値」を高めてほしい。入学時に偏差値はないかもしれないが、卒業するときには自分たちで偏差値を作るつもりで臨んでほしい。 <span class="ptr">← S05</span>
+    </div>
+
+    <h4 class="subsub">◆ 情報編集力を磨く5つの力</h4>
+
+    <!-- 5つの力 SVG: 蜂の巣型 viewBox 0 0 440 200 -->
+    <figure class="svg-wrap">
+      <svg viewBox="0 0 440 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:440px;">
+        <!-- 中央: コミュニケーション -->
+        <!-- 六角形近似: 中央x=220,y=100, r≈56 -->
+        <polygon points="220,44 269,72 269,128 220,156 171,128 171,72" fill="rgba(91,141,238,.15)" stroke="#5b8dee" stroke-width="2"/>
+        <text x="220" y="97" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#5b8dee" font-weight="bold">コミュニケーション</text>
+        <text x="220" y="113" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#5b8dee" font-weight="bold">する技術</text>
+
+        <!-- 左上: ロジカル -->
+        <polygon points="117,44 166,72 166,128 117,156 68,128 68,72" fill="rgba(251,191,36,.1)" stroke="#fbbf24" stroke-width="1.5"/>
+        <text x="117" y="97" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#fbbf24">ロジカルに</text>
+        <text x="117" y="113" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#fbbf24">考える技術</text>
+
+        <!-- 右上: シミュレーション -->
+        <polygon points="323,44 372,72 372,128 323,156 274,128 274,72" fill="rgba(251,191,36,.1)" stroke="#fbbf24" stroke-width="1.5"/>
+        <text x="323" y="97" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#fbbf24">シミュレーション</text>
+        <text x="323" y="113" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#fbbf24">する技術</text>
+
+        <!-- 左下: ロールプレイ -->
+        <polygon points="117,128 166,156 166,200 117,200 68,200 68,156" fill="rgba(167,139,250,.1)" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="117" y="166" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#a78bfa">ロールプレイ</text>
+        <text x="117" y="182" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#a78bfa">する技術</text>
+
+        <!-- 右下: プレゼン -->
+        <polygon points="323,128 372,156 372,200 323,200 274,200 274,156" fill="rgba(167,139,250,.1)" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="323" y="166" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#a78bfa">プレゼンテーション</text>
+        <text x="323" y="182" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#a78bfa">する技術</text>
+      </svg>
+      <figcaption>図：情報編集力を磨く5つの力（参考：藤原和博 2006） S03:p.53</figcaption>
+    </figure>
+
+    <h4 class="subsub">◆ 具体的にやること（日頃から頭を柔らかくして思考力を高める）</h4>
+    <ul>
+      <li><strong>人の話をよく聞く</strong></li>
+      <li><strong>次に起こる展開や変化を予測する</strong></li>
+      <li><strong>筋道を立てて結論に導く</strong>（第6・7回のプロジェクト管理に接続）</li>
+      <li><strong>他人の身になって考える</strong>（自分と関わる方々の立場に立つ）</li>
+      <li><strong>考えや感情を体全体で表現する</strong>（声の抑揚・身振り手振り）</li>
+    </ul>
+    <p style="font-size:13px;color:var(--text-sub);margin-top:8px;">出典: S03:p.54</p>
+
+    <div class="voice-block">
+      <div class="blabel">AUDIO SUPPLEMENT</div>
+      インターネットを使えば1つの大学に固執せずいろんな大学で学ぶこともできる。他の大学とのダブルスクール、海外大学の文献・論文を探している方もいる。皆さんの学習する枠はすでに大きく広がっている。単に情報を集めたり1つの情報を過信したりするのは危険。情報の本質を見極める力を身につけることが重要。 <span class="ptr">← S05</span>
+    </div>
+
+    <div class="emphasis-block">
+      <strong>第4章 まとめ</strong>：情報は単に集めたり、1つの情報を過信したりせず、<strong>本質を見極める力</strong>を身につける。実体験から情報を得られる機会を最大限に活用できるよう、事前の準備はしっかりと行う。 <span class="ptr">← S03:p.55</span>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- ===== APPENDIX ===== -->
+  <h2 class="sec" id="appendix">📎 末尾補足</h2>
+
+  <!-- 未確定事項 -->
+  <div class="app-card app-undetermined" id="app-und">
+    <h3>❓ 未確定事項・要確認リスト</h3>
+    <table>
+      <tr>
+        <th>ID</th>
+        <th>内容</th>
+        <th>種別</th>
+        <th>優先度</th>
+        <th>状態</th>
+      </tr>
+      <tr>
+        <td style="color:var(--accent2);">U01</td>
+        <td style="color:var(--accent2);">S05に「森戸さん」という固有名詞が登場する件</td>
+        <td style="color:var(--accent2);">AI変換要確認</td>
+        <td style="color:var(--accent2);">低</td>
+        <td style="color:var(--accent2);">✅ <strong>解決済み</strong>：S05の文脈（「森戸さんはどういう風な形で情報を検索されているんですか」という質問形式）から、講師が企業講演時に自身が受けた質問として自分自身のこと（森戸氏）を語っている場面と確定。授業内容への影響なし。</td>
+      </tr>
+    </table>
+    <p style="margin-top:12px;font-size:13px;color:var(--accent2);">未確定情報: 0件（全件解決済み）</p>
+  </div>
+
+  <!-- 補足A -->
+  <div class="app-card app-a" id="app-a">
+    <h3>⭐ 補足A　最重要ワード一覧</h3>
+    <table>
+      <tr>
+        <th>用語</th>
+        <th>読み</th>
+        <th>定義（原文から抽出）</th>
+        <th>重要度</th>
+      </tr>
+      <tr>
+        <td><strong>気配り</strong></td>
+        <td>きくばり</td>
+        <td>周囲の状況を見て、相手の状況を推測しながら自ら積極的に行動すること。指示を待たずに動く。</td>
+        <td>★★★</td>
+      </tr>
+      <tr>
+        <td><strong>報連相（ほうれんそう）</strong></td>
+        <td>ほうれんそう</td>
+        <td>報告・連絡・相談の略。仕事の進行において上司・同僚とコミュニケーションを取る基本動作。</td>
+        <td>★★★</td>
+      </tr>
+      <tr>
+        <td><strong>プロ（ビジネスパーソン）</strong></td>
+        <td>ぷろ</td>
+        <td>仕事で結果を出してその対価をもらう人。入社すれば全員プロとしての意識が求められる。</td>
+        <td>★★★</td>
+      </tr>
+      <tr>
+        <td><strong>To Doリスト</strong></td>
+        <td>とぅーどぅーりすと</td>
+        <td>今日すべきことを紙に書き出して管理するリスト。作業内容・期限・予定時間・優先順位を具体的に記載する。</td>
+        <td>★★★</td>
+      </tr>
+      <tr>
+        <td><strong>整理</strong></td>
+        <td>せいり</td>
+        <td>不必要なものを捨てること。</td>
+        <td>★★☆</td>
+      </tr>
+      <tr>
+        <td><strong>整頓</strong></td>
+        <td>せいとん</td>
+        <td>必要なものだけを残し、きちんと並べ替えること。</td>
+        <td>★★☆</td>
+      </tr>
+      <tr>
+        <td><strong>メディアリテラシー</strong></td>
+        <td>めでぃありてらしー</td>
+        <td>情報を伝達する力、および情報を収集・活用する力の総称。メディアの特性を理解し、適切な手段で自分の考えを伝達し、情報の本質を見極める力。</td>
+        <td>★★★</td>
+      </tr>
+      <tr>
+        <td><strong>情報処理力</strong></td>
+        <td>じょうほうしょりりょく</td>
+        <td>早く・正確に処理することが優先される力。記憶力や計算力がその基盤。20世紀に重要視された。</td>
+        <td>★★☆</td>
+      </tr>
+      <tr>
+        <td><strong>情報編集力</strong></td>
+        <td>じょうほうへんしゅうりょく</td>
+        <td>知識や経験を組み合わせてイメージを広げ、情報の加工・発信・シミュレーションをしながら、複数の方々とコミュニケーションして「納得解」を導き出す力。21世紀に重要とされる。</td>
+        <td>★★★</td>
+      </tr>
+      <tr>
+        <td><strong>納得解</strong></td>
+        <td>なっとくかい</td>
+        <td>関係者が「そうだよね、これが一番いいよね」と合意できる答え。「正解」とは区別される21世紀型の成果。</td>
+        <td>★★★</td>
+      </tr>
+      <tr>
+        <td><strong>二次情報</strong></td>
+        <td>にじじょうほう</td>
+        <td>事実（一次情報）を間接的に伝えるもの。テレビ・新聞・雑誌・ラジオなどのマスメディアが該当。制作者・広告主の意図が入る可能性がある。</td>
+        <td>★★☆</td>
+      </tr>
+      <tr>
+        <td><strong>WBS</strong></td>
+        <td>だぶりゅびーえす</td>
+        <td>Work Breakdown Structure。プロジェクトの作業を階層的に分解したもの。第7回で詳しく学ぶ。To Doリストの発展形。</td>
+        <td>★☆☆</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- 補足B -->
+  <div class="app-card app-b" id="app-b">
+    <h3>📚 補足B　知っておくべき背景知識</h3>
+    <ul>
+      <li>
+        <strong>藤原和博（ふじわら かずひろ）</strong>：1955年生まれ、元リクルート社員。2003〜2008年に杉並区立和田中学校の民間人校長を務めた。著書『「ビミョーな未来」をどう生きるか』（ちくまプリマー新書、2006年1月刊）の中で「情報処理力」と「情報編集力」の概念を提唱。授業では和田中学校の校長先生として紹介されており（S03:p.52）、S03スライドにも「杉並区の和田中学校の校長先生をされています藤原先生」と記載がある。
+        <span class="app-ext-item"> [S03照合済み / 外部情報確認済み]</span>
+      </li>
+      <li>
+        <strong>報連相（ほうれんそう）</strong>：「報告・連絡・相談」の略。1980年代に山種証券（現SMBC日興証券）社長の山崎富治氏が提唱したとされる、ビジネスコミュニケーションの基本概念。本授業では「頼まれた仕事の期限確認や進捗の共有に必ず活用する」習慣として紹介されている。
+        <span class="app-ext-item"> [外部補足]</span>
+      </li>
+      <li>
+        <strong>マスメディアの二次情報性</strong>：記者が取材した一次情報に対し、編集・報道段階で制作者や広告主の意図が加わる可能性がある。情報リテラシー教育では「情報ソースを複数確認する」「発信元・発信時期を確かめる」「逆説を探す」ことが基本原則とされている。授業の内容と完全に対応する。
+        <span class="app-ext-item"> [外部補足]</span>
+      </li>
+      <li>
+        <strong>中吊り広告を使った情報収集法</strong>（講師が企業講演で紹介）：雑誌の中吊り広告はその雑誌のターゲット層が興味を持つ見出しを集めたもの。ターゲット層の関心キーワードを効率よく抽出でき、インターネット検索と組み合わせることでビジネス情報収集に活用できる。企業訪問前の事前調査や顧客理解に有効な実践的手法。
+        <span class="app-ext-item"> [S05照合済み]</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- 補足C -->
+  <div class="app-card app-c" id="app-c">
+    <h3>🎯 補足C　試験・レポートで重要な観点</h3>
+    <ul>
+      <li>「<strong>整理</strong>」と「<strong>整頓</strong>」の定義の違いを正確に説明できること（整理＝捨てる、整頓＝並べ替え）</li>
+      <li><strong>メディアリテラシーの2つの側面</strong>（伝達する力 / 収集・活用する力）を具体例とともに説明できること</li>
+      <li><strong>情報処理力 vs 情報編集力</strong>の違いと、なぜ21世紀に編集力が求められるかを論理的に説明できること（コンピューターへの機能移行）</li>
+      <li>仕事を受ける際の<strong>4点確認事項</strong>（期限・目的・提出物・提出先）を列挙できること</li>
+      <li><strong>To Doリスト</strong>の作成メリット4点を説明できること</li>
+      <li>声をかけるタイミングにおいて「自分軸」ではなく「相手の状況を見た行動」が重要な理由を説明できること</li>
+    </ul>
+  </div>
+
+  <!-- 補足D -->
+  <div class="app-card app-d" id="app-d">
+    <h3>🔗 補足D　関連概念・次回への接続</h3>
+    <ul>
+      <li>
+        <strong>第5回への接続</strong>：次回（第5回）では「企業側がどんなことを懸念しているか」が扱われる。今回の気配り・仕事の受け方・進め方がインターンシップ先の企業の懸念にどう答えるかという観点でつながる。
+      </li>
+      <li>
+        <strong>第6・7回への接続</strong>：情報編集力の「筋道を立てる」→ プロジェクト管理（第6・7回）、WBS（Work Breakdown Structure）の詳しい書き方が第7回で説明される。
+      </li>
+      <li>
+        <strong>社会人基礎力（第3回）との接続</strong>：第3回で扱った社会人基礎力を踏まえ、今回はそれをどう仕事に活かすか（気配り・仕事の受け方・進め方）を具体化している。
+      </li>
+      <li>
+        <strong>GTD（Getting Things Done）</strong>：To Doリスト・スケジュール管理の背後にあるタスク管理哲学。David Allen（2001）による生産性向上メソッド。今回紹介された「書き出す・優先順位付け・実行」の流れと一致する。
+        <span class="app-ext-item"> [外部補足 / 授業では言及なし]</span>
+      </li>
+      <li>
+        <strong>インターネット上の情報の鮮度確認</strong>：URLのドメイン・公開日・最終更新日を確認する習慣が情報リテラシーの基本。政府統計（e-Stat）・省庁公式サイト・学術論文データベース（CiNii・J-STAGE）などが信頼性の高い一次情報源として挙げられる。
+        <span class="app-ext-item"> [外部補足 / 授業では言及なし]</span>
+      </li>
+    </ul>
+  </div>
+
+  <div style="margin-top:32px;padding:16px 20px;background:var(--bg2);border-radius:8px;border:1px solid var(--border);font-size:12px;color:var(--text-sub);">
+    <strong style="color:var(--text-sub);">ノートメタ情報</strong><br>
+    ファイル名: note_career_04.html &nbsp;|&nbsp; SSP v4.5.1 &nbsp;|&nbsp; ソース: S03（56p）+ S05×2（hynote.ai）<br>
+    v1.0 2026-03-28 &nbsp;初版（Step 5-B完了）<br>
+    v1.1 2026-03-28 &nbsp;ソース再精査・U01解消・各章音声補足補強（1.2ルール分岐追加・1.3週次目安・2.1対比詳細・2.2知識実証・3.2見積もり評価・3.3苦手配分・4.2中吊り活用詳細）
+  </div>
+
+</main>
+</body>
+</html>
