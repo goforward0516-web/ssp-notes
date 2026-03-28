@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>プロジェクトマネジメント入門 第4回 | プロジェクトの立ち上げプロセス</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --bg2: #161b27;
+    --bg3: #1e2535;
+    --card: #1a2133;
+    --border: #2a3550;
+    --text: #e2e8f5;
+    --text-sub: #8a99b8;
+    --accent-blue: #5b8dee;
+    --accent-green: #34d399;
+    --accent-yellow: #fbbf24;
+    --accent-red: #f87171;
+    --accent-purple: #a78bfa;
+    --accent-orange: #fb923c;
+    --audio-border: #3b82f6;
+    --audio-bg: rgba(59,130,246,0.07);
+    --ext-border: #34d399;
+    --ext-bg: rgba(52,211,153,0.07);
+    --warn-border: #fb923c;
+    --warn-bg: rgba(251,146,60,0.07);
+    --infer-border: #a78bfa;
+    --infer-bg: rgba(167,139,250,0.07);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Noto Sans JP',sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.8;
+    font-size:15px;
+    display:flex;
+    min-height:100vh;
+  }
+  /* Sidebar */
+  #sidebar{
+    width:260px;
+    min-width:260px;
+    background:var(--bg2);
+    border-right:1px solid var(--border);
+    position:sticky;
+    top:0;
+    height:100vh;
+    overflow-y:auto;
+    padding:24px 0;
+    flex-shrink:0;
+  }
+  #sidebar .toc-header{
+    padding:0 20px 16px;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:0.12em;
+    color:var(--text-sub);
+    text-transform:uppercase;
+    border-bottom:1px solid var(--border);
+    margin-bottom:12px;
+  }
+  #sidebar a{
+    display:block;
+    padding:6px 20px;
+    color:var(--text-sub);
+    text-decoration:none;
+    font-size:13px;
+    transition:all 0.15s;
+    border-left:2px solid transparent;
+  }
+  #sidebar a:hover,#sidebar a.active{
+    color:var(--accent-blue);
+    border-left-color:var(--accent-blue);
+    background:rgba(91,141,238,0.07);
+  }
+  #sidebar a.toc-h2{padding-left:28px;font-size:12px}
+  /* Main */
+  #main{flex:1;padding:40px 48px;max-width:900px;overflow-x:hidden}
+  /* Header */
+  .note-header{
+    background:linear-gradient(135deg,#1a2540 0%,#0f1724 100%);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:32px 36px;
+    margin-bottom:36px;
+    position:relative;
+    overflow:hidden;
+  }
+  .note-header::before{
+    content:'';
+    position:absolute;
+    top:-40px;right:-40px;
+    width:180px;height:180px;
+    background:radial-gradient(circle,rgba(91,141,238,0.15),transparent 70%);
+    border-radius:50%;
+  }
+  .note-header .course{font-size:12px;color:var(--accent-blue);font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px}
+  .note-header h1{font-size:22px;font-weight:700;color:var(--text);margin-bottom:12px;line-height:1.4}
+  .note-header .meta{display:flex;flex-wrap:wrap;gap:16px}
+  .note-header .meta span{font-size:12px;color:var(--text-sub);font-family:'JetBrains Mono',monospace}
+  .note-header .meta span::before{content:'▸ ';color:var(--accent-green)}
+  .sources-badge{
+    display:inline-flex;gap:8px;flex-wrap:wrap;margin-top:14px;
+  }
+  .badge{
+    font-size:10px;font-family:'JetBrains Mono',monospace;
+    padding:3px 8px;border-radius:4px;font-weight:500;
+    border:1px solid;
+  }
+  .badge-s03{color:#34d399;border-color:rgba(52,211,153,0.4);background:rgba(52,211,153,0.08)}
+  .badge-s05{color:#5b8dee;border-color:rgba(91,141,238,0.4);background:rgba(91,141,238,0.08)}
+  /* Section Cards */
+  .section-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    margin-bottom:28px;
+    overflow:hidden;
+  }
+  .section-card .card-header{
+    padding:16px 24px;
+    border-bottom:1px solid var(--border);
+    background:rgba(255,255,255,0.02);
+    display:flex;align-items:center;gap:10px;
+  }
+  .section-card .card-header .ch-num{
+    font-size:11px;font-family:'JetBrains Mono',monospace;
+    color:var(--accent-blue);font-weight:600;
+    background:rgba(91,141,238,0.12);
+    padding:2px 8px;border-radius:4px;
+  }
+  .section-card .card-header h2{font-size:17px;font-weight:700;color:var(--text)}
+  .section-card .card-body{padding:24px}
+  /* Sub-section */
+  .subsection{margin-bottom:24px}
+  .subsection h3{
+    font-size:14px;font-weight:700;color:var(--accent-blue);
+    margin-bottom:12px;padding-bottom:6px;
+    border-bottom:1px solid rgba(91,141,238,0.2);
+    display:flex;align-items:center;gap:8px;
+  }
+  .subsection h3::before{content:'§';font-family:'JetBrains Mono',monospace;opacity:0.5;font-size:12px}
+  /* Blocks */
+  .audio-block{
+    border-left:3px solid var(--audio-border);
+    background:var(--audio-bg);
+    padding:12px 16px;
+    border-radius:0 6px 6px 0;
+    margin:10px 0;
+    font-size:14px;
+  }
+  .audio-block .label{font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--audio-border);font-weight:600;margin-bottom:4px;display:block}
+  .ext-block{
+    border-left:3px solid var(--ext-border);
+    background:var(--ext-bg);
+    padding:12px 16px;
+    border-radius:0 6px 6px 0;
+    margin:10px 0;
+    font-size:14px;
+  }
+  .ext-block .label{font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--ext-border);font-weight:600;margin-bottom:4px;display:block}
+  .warn-block{
+    border-left:3px solid var(--warn-border);
+    background:var(--warn-bg);
+    padding:12px 16px;
+    border-radius:0 6px 6px 0;
+    margin:10px 0;
+    font-size:14px;
+  }
+  .def-box{
+    background:rgba(91,141,238,0.08);
+    border:1px solid rgba(91,141,238,0.25);
+    border-radius:8px;
+    padding:14px 18px;
+    margin:12px 0;
+  }
+  .def-box .def-label{font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--accent-yellow);font-weight:700;letter-spacing:0.08em;margin-bottom:6px;display:block}
+  .def-box p{font-size:14px;line-height:1.7}
+  /* Pointer */
+  .ptr{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10px;
+    color:var(--text-sub);
+    background:rgba(255,255,255,0.05);
+    padding:1px 5px;
+    border-radius:3px;
+    margin-left:6px;
+  }
+  /* Tables */
+  .styled-table{width:100%;border-collapse:collapse;font-size:13px;margin:12px 0}
+  .styled-table th{
+    background:rgba(91,141,238,0.12);
+    color:var(--accent-blue);
+    font-size:11px;font-weight:700;letter-spacing:0.06em;
+    padding:10px 12px;text-align:left;
+    border-bottom:2px solid rgba(91,141,238,0.25);
+  }
+  .styled-table td{padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.6}
+  .styled-table tr:last-child td{border-bottom:none}
+  .styled-table tr:hover td{background:rgba(255,255,255,0.02)}
+  /* List */
+  ul.note-list,ol.note-list{padding-left:20px;margin:8px 0}
+  ul.note-list li,ol.note-list li{margin-bottom:6px;font-size:14px;line-height:1.7}
+  ul.note-list li::marker{color:var(--accent-blue)}
+  /* SVG container */
+  .svg-wrap{margin:16px 0;background:var(--bg3);border-radius:8px;padding:16px;border:1px solid var(--border)}
+  .svg-wrap figcaption{font-size:11px;color:var(--text-sub);font-family:'JetBrains Mono',monospace;margin-top:8px;text-align:center}
+  /* Appendix Cards */
+  .appendix-header{
+    margin-top:44px;
+    padding-bottom:12px;
+    border-bottom:2px solid var(--border);
+    margin-bottom:24px;
+  }
+  .appendix-header h2{font-size:16px;font-weight:700;color:var(--text-sub);letter-spacing:0.08em;text-transform:uppercase;font-family:'JetBrains Mono',monospace}
+  .app-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    margin-bottom:20px;
+    overflow:hidden;
+  }
+  .app-card .app-card-header{
+    padding:12px 20px;
+    border-bottom:1px solid var(--border);
+    background:rgba(255,255,255,0.02);
+    font-size:13px;font-weight:700;
+    display:flex;align-items:center;gap:8px;
+  }
+  .app-card .app-card-body{padding:20px}
+  .app-card-warn .app-card-header{color:var(--accent-orange);border-left:3px solid var(--accent-orange)}
+  .app-card-star .app-card-header{color:var(--accent-yellow);border-left:3px solid var(--accent-yellow)}
+  .app-card-book .app-card-header{color:var(--accent-green);border-left:3px solid var(--accent-green)}
+  .app-card-target .app-card-header{color:var(--accent-red);border-left:3px solid var(--accent-red)}
+  .app-card-link .app-card-header{color:var(--accent-purple);border-left:3px solid var(--accent-purple)}
+  .ext-small{font-size:11px;color:var(--text-sub)}
+  /* Highlight chips */
+  .chip{display:inline-block;font-size:11px;padding:2px 8px;border-radius:100px;font-weight:600;margin:2px}
+  .chip-blue{background:rgba(91,141,238,0.15);color:var(--accent-blue);border:1px solid rgba(91,141,238,0.3)}
+  .chip-yellow{background:rgba(251,191,36,0.12);color:var(--accent-yellow);border:1px solid rgba(251,191,36,0.3)}
+  .chip-green{background:rgba(52,211,153,0.12);color:var(--accent-green);border:1px solid rgba(52,211,153,0.3)}
+  /* Review box */
+  .review-box{
+    background:rgba(251,191,36,0.06);
+    border:1px solid rgba(251,191,36,0.2);
+    border-radius:8px;
+    padding:14px 18px;
+    margin:12px 0;
+  }
+  .review-box .rev-label{font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--accent-yellow);font-weight:700;margin-bottom:6px;display:block}
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<nav id="sidebar">
+  <div class="toc-header">目次</div>
+  <a href="#header">▸ 講義概要</a>
+  <a href="#review">▸ 前回の振り返り（第3回）</a>
+  <a href="#ch1">▸ 第1章 問題意識を高めよう</a>
+  <a class="toc-h2" href="#ch1-1">問題意識の重要性</a>
+  <a class="toc-h2" href="#ch1-2">過去を振り返る</a>
+  <a class="toc-h2" href="#ch1-3">他を参考にする</a>
+  <a href="#ch2">▸ 第2章 規模の見極め</a>
+  <a class="toc-h2" href="#ch2-1">松・竹・梅プラン</a>
+  <a class="toc-h2" href="#ch2-2">スコープ・期間・資金</a>
+  <a class="toc-h2" href="#ch2-3">人材・リスク・喜び</a>
+  <a href="#ch3">▸ 第3章 関係者を組み立てる</a>
+  <a class="toc-h2" href="#ch3-1">ステークホルダー図式</a>
+  <a class="toc-h2" href="#ch3-2">役割・責任・権限</a>
+  <a class="toc-h2" href="#ch3-3">会議体・メンバー表</a>
+  <a href="#ch4">▸ 第4章 プロジェクトの立ち上げ</a>
+  <a class="toc-h2" href="#ch4-1">立ち上げまでのプロセス</a>
+  <a class="toc-h2" href="#ch4-2">中期計画・年度計画</a>
+  <a class="toc-h2" href="#ch4-3">根回し・決議・キックオフ</a>
+  <a href="#appendix">▸ 末尾補足</a>
+</nav>
+
+<!-- Main -->
+<main id="main">
+
+  <!-- Header -->
+  <div class="note-header" id="header">
+    <div class="course">プロジェクトマネジメント入門</div>
+    <h1>第4回：プロジェクトの立ち上げプロセス</h1>
+    <div class="meta">
+      <span>担当教員: 勝 眞一郎</span>
+      <span>サイバー大学 IT総合学部 専門基礎科目</span>
+    </div>
+    <div class="sources-badge" style="margin-top:14px">
+      <span class="badge badge-s03">S03: スライドPDF</span>
+      <span class="badge badge-s05">S05-A: hynote.ai (音声変換)</span>
+      <span class="badge badge-s05">S05-B: hynote.ai (音声変換)</span>
+    </div>
+  </div>
+
+  <!-- 第4回 学習目標 -->
+  <div class="section-card">
+    <div class="card-header">
+      <span class="ch-num">学習目標</span>
+      <h2>第4回 学習目標</h2>
+    </div>
+    <div class="card-body">
+      <div class="def-box">
+        <span class="def-label">LEARNING GOAL</span>
+        <p>プロジェクトの初期段階である「<strong>立ち上げプロセス</strong>」におけるマネジメントのポイントを理解し、説明できる</p>
+      </div>
+      <p style="font-size:14px;color:var(--text-sub);margin-top:10px">授業構成: 第1章 問題意識を高めよう ／ 第2章 規模の見極め ／ 第3章 関係者を組み立てる ／ 第4章 プロジェクトの立ち上げ <span class="ptr">← S03:p.3</span></p>
+    </div>
+  </div>
+
+  <!-- 前回の振り返り -->
+  <div class="section-card" id="review">
+    <div class="card-header">
+      <span class="ch-num">REVIEW</span>
+      <h2>前回の振り返り：第3回「管理の基本PDCA」</h2>
+    </div>
+    <div class="card-body">
+      <div class="subsection">
+        <h3>第1章 管理するには、まず測る</h3>
+        <div class="def-box">
+          <span class="def-label">核心メッセージ</span>
+          <p>数値で測れないものは、管理できない。<br>管理できないものは、制御できない。<br>制御できないものは、なされるがままの状態を招く。<span class="ptr">← S03:p.5</span></p>
+        </div>
+        <ul class="note-list">
+          <li>活動の状況把握は、<strong>数字で測れるもの</strong>にする <span class="ptr">← S03:p.6</span></li>
+          <li>管理するには、数値で<strong>計画と実績を追っていく</strong> <span class="ptr">← S03:p.6</span></li>
+          <li>問題を認識した時点で、その問題の<strong>8割は解決している</strong>—いかに問題を認識するかが問題解決の鍵 <span class="ptr">← S03:p.6</span></li>
+        </ul>
+      </div>
+      <div class="subsection">
+        <h3>第2章 原因を探って改善する</h3>
+        <ul class="note-list">
+          <li>プロジェクト途中で結果が思わしくないとき、原因を<strong>科学的に</strong>探り速やかに対応する <span class="ptr">← S03:p.7</span></li>
+          <li>表面的な問題でなく<strong>真の原因</strong>を探り、手を打つ。手法例: KJ法 <span class="ptr">← S03:p.7</span></li>
+        </ul>
+        <div class="ext-block">
+          <span class="label">外部補足</span>
+          <p><strong>KJ法</strong>とは、文化人類学者の川喜田二郎が考案した情報整理手法。多数のアイデアや情報をカードに書き出し、類似するものをグループ化して問題の本質を発見する。プロジェクト管理の問題分析や要件定義に広く使われる。</p>
+        </div>
+      </div>
+      <div class="subsection">
+        <h3>第3章 PDCAとは何か？</h3>
+        <div class="svg-wrap">
+          <svg viewBox="0 0 480 200" xmlns="http://www.w3.org/2000/svg" width="100%">
+            <!-- PDCA cycle arrows -->
+            <!-- P box -->
+            <rect x="180" y="10" width="120" height="44" rx="6" fill="rgba(91,141,238,0.18)" stroke="#5b8dee" stroke-width="1.5"/>
+            <text x="240" y="27" text-anchor="middle" fill="#5b8dee" font-size="13" font-weight="700" font-family="Noto Sans JP">P</text>
+            <text x="240" y="44" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="Noto Sans JP">計画</text>
+            <!-- D box -->
+            <rect x="340" y="78" width="120" height="44" rx="6" fill="rgba(52,211,153,0.12)" stroke="#34d399" stroke-width="1.5"/>
+            <text x="400" y="95" text-anchor="middle" fill="#34d399" font-size="13" font-weight="700" font-family="Noto Sans JP">D</text>
+            <text x="400" y="112" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="Noto Sans JP">実行</text>
+            <!-- C box -->
+            <rect x="180" y="146" width="120" height="44" rx="6" fill="rgba(251,191,36,0.12)" stroke="#fbbf24" stroke-width="1.5"/>
+            <text x="240" y="163" text-anchor="middle" fill="#fbbf24" font-size="13" font-weight="700" font-family="Noto Sans JP">C</text>
+            <text x="240" y="180" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="Noto Sans JP">評価</text>
+            <!-- A box -->
+            <rect x="20" y="78" width="120" height="44" rx="6" fill="rgba(248,113,113,0.12)" stroke="#f87171" stroke-width="1.5"/>
+            <text x="80" y="95" text-anchor="middle" fill="#f87171" font-size="13" font-weight="700" font-family="Noto Sans JP">A</text>
+            <text x="80" y="112" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="Noto Sans JP">改善</text>
+            <!-- Arrows P→D -->
+            <path d="M300 32 Q370 32 358 78" fill="none" stroke="#8a99b8" stroke-width="1.5" marker-end="url(#arr)"/>
+            <!-- D→C -->
+            <path d="M402 122 Q402 145 300 168" fill="none" stroke="#8a99b8" stroke-width="1.5" marker-end="url(#arr)"/>
+            <!-- C→A -->
+            <path d="M180 168 Q110 168 102 122" fill="none" stroke="#8a99b8" stroke-width="1.5" marker-end="url(#arr)"/>
+            <!-- A→P -->
+            <path d="M80 78 Q80 32 180 32" fill="none" stroke="#8a99b8" stroke-width="1.5" marker-end="url(#arr)"/>
+            <defs>
+              <marker id="arr" markerWidth="8" markerHeight="6" refX="6" refY="3" orient="auto">
+                <path d="M0,0 L0,6 L8,3 z" fill="#8a99b8"/>
+              </marker>
+            </defs>
+          </svg>
+          <figcaption>図：PDCAサイクル ← S03:p.8</figcaption>
+        </div>
+        <p style="font-size:14px">ゴールを意識して「計画→実行→評価→改善→次の計画」というサイクルを回し、レベルを<strong>スパイラル状に</strong>向上させる。 <span class="ptr">← S03:p.8</span></p>
+      </div>
+      <div class="subsection">
+        <h3>第4章 変更への対応力を磨く</h3>
+        <ul class="note-list">
+          <li>環境の変化は付き物。変更を<strong>受け入れ</strong>、迅速な対応策をプロジェクトとして決定し、直ぐに反映させる <span class="ptr">← S03:p.9</span></li>
+          <li><strong>早いアクションが怪我を浅くする</strong> <span class="ptr">← S03:p.9</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 第1章 -->
+  <div class="section-card" id="ch1">
+    <div class="card-header">
+      <span class="ch-num">第1章</span>
+      <h2>問題意識を高めよう</h2>
+    </div>
+    <div class="card-body">
+
+      <div class="subsection" id="ch1-1">
+        <h3>問題意識の重要性</h3>
+
+        <div class="def-box">
+          <span class="def-label">章の学習目標</span>
+          <p>プロジェクトを始めるにあたりプロジェクトマネージャーとしてどのような意識になっておくべきかについて理解し、説明できる <span class="ptr">← S03:p.11</span></p>
+        </div>
+
+        <p style="font-size:14px;margin:12px 0"><strong>あなた（PM）のプロジェクトに対する目的がブレたら失敗する。</strong> <span class="ptr">← S03:p.12</span></p>
+
+        <h3 style="margin-top:16px">ぶれないための3つの意識</h3>
+        <table class="styled-table">
+          <thead>
+            <tr><th>意識</th><th>内容</th><th>失敗例</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="chip chip-blue">問題意識を高める</span></td>
+              <td>「他人事」を<strong>「自分事」</strong>に。自分がやらなければいけない・達成したいと思う</td>
+              <td>やれと言われたのでやってるだけ → モチベーション低下 → 欠点に気づかない</td>
+            </tr>
+            <tr>
+              <td><span class="chip chip-yellow">タイミングを見極める</span></td>
+              <td>「機が熟したか」を考えてから着手する</td>
+              <td>時期尚早・関係者揃わず・資金難の状態で着手 → 途中でストップ</td>
+            </tr>
+            <tr>
+              <td><span class="chip chip-green">意義を見つめる</span></td>
+              <td>会社にとって・地域にとって・地球にとってやる価値があるかを確認する</td>
+              <td>意義なき着手 → プロジェクトへの前向きな取り組みが生まれない</td>
+            </tr>
+          </tbody>
+        </table>
+        <p style="font-size:11px;color:var(--text-sub);margin-top:4px">← S03:p.12</p>
+
+        <div class="audio-block">
+          <span class="label">🔊 音声補足</span>
+          <p>問題意識が高くなかったら失敗が目に見えている例：「家を建てる気はなかったが金利が低くなったのでなんとなく」「カレーを作る気はなかったが玉ねぎとにんじんがあったのでなんとなく」「システムを作る気はなかったが作れと言われたので」——想像するだけでも、あまりおいしいカレーが作れるとは思えない。<strong>狙っていかないと料理もうまくならない</strong>、同様にシステムも。 <span class="ptr">← S05-A, S05-B</span></p>
+        </div>
+
+        <p style="font-size:14px;margin-top:14px">大規模プロジェクトへの参画は他の要因にも左右するほどの大きな取り組みになる。そのため以下の3点が求められる。 <span class="ptr">← S03:p.14</span></p>
+        <ul class="note-list">
+          <li><strong>専任化</strong>——ある一定期間、プロジェクトに専従する（兼務しない）</li>
+          <li><strong>専門化</strong>——その道のスペシャリストとして携わる</li>
+          <li><strong>評価基準の設定</strong>——「成功するとこうだ・失敗するとこうだ」という評価基準を作った上で参画する。そうしないと成功しているのか失敗しているのかわからなくなる</li>
+        </ul>
+      </div>
+
+      <div class="subsection" id="ch1-2">
+        <h3>過去を振り返る</h3>
+
+        <div class="def-box">
+          <span class="def-label">格言</span>
+          <p>「<strong>過去の失敗は最高の先生</strong>」 <span class="ptr">← S03:p.17</span></p>
+        </div>
+
+        <ul class="note-list">
+          <li>過去に同様の取り組みをして失敗していないか（例: 3年に1回のダイエットプロジェクト）→ 失敗の要因は何だったか？ → 今回それを克服するにはどうするか？</li>
+          <li>これまで<strong>避けられてきた</strong>プロジェクトではないか → 取り組みを避ける要因（例: ブランドイメージに反する・反対勢力がいる）が存在した場合、その理由を取り除くことができる</li>
+        </ul>
+        <p style="font-size:11px;color:var(--text-sub)">← S03:p.17</p>
+
+        <div class="audio-block">
+          <span class="label">🔊 音声補足</span>
+          <p>プロジェクトでも何らかの要因があって取り組みを避けることがある。例えば「こういうことはうちの会社のブランドイメージに反する」「こういうことをやろうとすると必ずどこかから反対がある」。そういう場合でも、同様に失敗するのではなく<strong>その理由を取り除く</strong>ことができるので、過去の失敗事例を振り返っておくことが重要。 <span class="ptr">← S05-A, S05-B</span></p>
+        </div>
+      </div>
+
+      <div class="subsection" id="ch1-3">
+        <h3>他を参考にする</h3>
+
+        <div class="def-box">
+          <span class="def-label">前提</span>
+          <p>「<strong>あなたは特殊ではない</strong>」——探してみると世の中には同じような事例がある。自分たちが考えつく課題は社会の一部で発生するもので、誰かが同じ経験をしていることが多い。 <span class="ptr">← S03:p.18</span></p>
+        </div>
+
+        <ul class="note-list">
+          <li>セミナー・同業の交流会に参加して同様の取り組み事例を学ぶ</li>
+          <li>新聞・雑誌・本に目を通す（料理・スポーツ分野でも有効）</li>
+          <li><strong>TTPS（徹底的にパクって進化）</strong>——他のやり方を真似する「P（パクる）」だけでなく、さらに良くして自分たちのやり方として適用する「S（進化）」が重要 <span class="ptr">← S03:p.18</span></li>
+          <li><strong>先端でなく先進</strong>——世の中の1番でなくてよい。先取りしすぎると不安定要因が多くなり失敗する。どこかがやっている経験を元に取り組むことが成功確率を高める <span class="ptr">← S03:p.18</span></li>
+          <li>他の現場をその目で見に行く——先輩に学ぶことは恥ずかしいことではない。同業・異業種の他社を訪問し、課題・成果・うまくいった点/いかなかった点を聞く <span class="ptr">← S03:p.19</span></li>
+          <li>プロジェクトの途中でも意見交換できる関係性を保つ <span class="ptr">← S03:p.19</span></li>
+        </ul>
+
+        <div class="audio-block">
+          <span class="label">🔊 音声補足</span>
+          <p>TTPSのSが重要。どこかがやったことをさらに良くして自分たちのやり方として<strong>適用</strong>していく。また「先端」ではなく「先進」——例えば技術的な要因でも不安定要素が高い最先端技術はリスクが大きい。1番でなくてもよいものであれば先進として、どこかがやっている経験を元にすることで成功確率が高まる。 <span class="ptr">← S05-A, S05-B</span></p>
+        </div>
+
+        <div class="review-box">
+          <span class="rev-label">章まとめ</span>
+          <ul class="note-list">
+            <li>プロジェクトを始めるにあたり、リーダーとなるあなたは十分に熱くなっただろうか？</li>
+            <li><strong>あなたが熱くならなければ、これからのプロジェクトの立ち上げは成功しない</strong> <span class="ptr">← S03:p.20</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 第2章 -->
+  <div class="section-card" id="ch2">
+    <div class="card-header">
+      <span class="ch-num">第2章</span>
+      <h2>規模の見極め</h2>
+    </div>
+    <div class="card-body">
+
+      <div class="def-box">
+        <span class="def-label">章の学習目標</span>
+        <p>プロジェクトに取り組む際の<strong>規模の見極め</strong>について理解し、説明できる <span class="ptr">← S03:p.23</span></p>
+      </div>
+
+      <p style="font-size:14px;margin:14px 0">プロジェクトには与えられた条件のもと、<strong>適正なサイズ・レベル</strong>がある。条件が変われば変わるが、条件が同じなら適正なレベルが存在する。 <span class="ptr">← S03:p.24</span></p>
+
+      <div class="subsection" id="ch2-1">
+        <h3>松・竹・梅プランで目標を設定する</h3>
+
+        <table class="styled-table">
+          <thead>
+            <tr><th>プラン</th><th>意味</th><th>詳細</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>🌲 松</strong></td>
+              <td>上位目標</td>
+              <td>できたらいいな、という高いレベルの目標</td>
+            </tr>
+            <tr>
+              <td><strong>🎋 竹</strong></td>
+              <td><span class="chip chip-blue">必達目標</span></td>
+              <td>必ず達成すること。ここができないとプロジェクトとして困るレベル。<strong>詳細まで徹底的に詰める</strong></td>
+            </tr>
+            <tr>
+              <td><strong>🌸 梅</strong></td>
+              <td>最低限</td>
+              <td>動かないと大変なことになる最低ライン。本当は竹を達成すべきだが少なくとも梅は必要</td>
+            </tr>
+          </tbody>
+        </table>
+        <p style="font-size:11px;color:var(--text-sub)">← S03:p.24</p>
+
+        <p style="font-size:14px;margin-top:10px">必達目標（竹）については、以下を詰めること。</p>
+        <ul class="note-list">
+          <li>要件として盛り込むべきことの<strong>漏れ</strong>はないか</li>
+          <li>リスクは何か（期間・コスト・技術 etc.）</li>
+        </ul>
+        <p style="font-size:11px;color:var(--text-sub)">← S03:p.24</p>
+
+        <div class="audio-block">
+          <span class="label">🔊 音声補足</span>
+          <p>竹のレベルを達成できなかったとしても、せめて梅のレベルは動かないと大変なことになる——というレベル付けをする。この授業では「松竹梅」という日本的な表現を使っているが、このようなレベル別のプランを作ることが重要。 <span class="ptr">← S05-A, S05-B</span></p>
+        </div>
+      </div>
+
+      <div class="subsection" id="ch2-2">
+        <h3>スコープ・期間・資金の見極め</h3>
+
+        <h3 style="font-size:13px;color:var(--text-sub);font-weight:600;margin-bottom:8px;padding-bottom:0;border:none">スコープ</h3>
+        <div class="def-box">
+          <span class="def-label">定義</span>
+          <p><strong>スコープ（scope）</strong>: プロジェクトの狙いとする領域。スコープを決めなくては目的地がないのでスタートできない。 <span class="ptr">← S03:p.25</span></p>
+        </div>
+        <div class="audio-block">
+          <span class="label">🔊 音声補足 — スコープの例</span>
+          <p>チキンカレーでも「一人前500円のチキンカレー」なのか「800円のチキンカレー」なのか「一人前1万円のチキンカレー」なのかでレベル感が異なる。システムも同様に、どれくらいの規模・ステップ数・投資金額のプロジェクトかを最初に決めておく必要がある。 <span class="ptr">← S05-A, S05-B</span></p>
+        </div>
+
+        <h3 style="font-size:13px;color:var(--text-sub);font-weight:600;margin:16px 0 8px;padding-bottom:0;border:none">期間</h3>
+        <div class="def-box">
+          <span class="def-label">なぜ期間が重要か</span>
+          <p>① <strong>コストにつながる</strong>——期間が延びると大体の場合コストが積み上がっていく<br>
+          ② <strong>効果につながる</strong>——長くかければ効果が出やすい傾向もあるが、かけすぎると失敗するリスクもある<br>
+          ③ <strong>効き目の高いタイミング</strong>——早すぎても遅すぎてもダメ。成果が出るタイミングを見極めて実行する <span class="ptr">← S03:p.26</span></p>
+        </div>
+
+        <table class="styled-table">
+          <thead>
+            <tr><th>例</th><th>コスト観点</th><th>効果観点</th><th>タイミング</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>カレーを作る</td>
+              <td>3日もかけられない（人件費）</td>
+              <td>夕飯に食べたい（いつ提供するか）</td>
+              <td>早すぎ=鍋が使えない<br>遅すぎ=夕飯を逃す</td>
+            </tr>
+            <tr>
+              <td>家づくり</td>
+              <td>2年もかけられない（人件費等）</td>
+              <td>受験勉強に子供部屋が必要</td>
+              <td>早すぎ=頭金が用意できない<br>遅すぎ=狭くて不満が爆発</td>
+            </tr>
+          </tbody>
+        </table>
+        <p style="font-size:11px;color:var(--text-sub)">← S03:p.27-28</p>
+
+        <h3 style="font-size:13px;color:var(--text-sub);font-weight:600;margin:16px 0 8px;padding-bottom:0;border:none">資金（投資対効果分析）</h3>
+        <div class="def-box">
+          <span class="def-label">定義</span>
+          <p><strong>投資対効果分析（ROI分析）</strong>: 投資額と効果額を比較する分析。重要なポイントは<strong>効果を定量的（お金に換算）</strong>に算定すること。お金対お金で比較しないと投資に対して効果が見合っているかどうかがわからない。 <span class="ptr">← S03:p.29</span></p>
+        </div>
+        <ul class="note-list">
+          <li>投資額はプロジェクト計画の中で積み上げて算定できる</li>
+          <li>効果額を金額に換算するのは難しいが必ず行う</li>
+          <li>さらに現実的な分析: <strong>現在価値</strong>に直した評価（リスク率を換算して割り引く） <span class="ptr">← S03:p.29</span></li>
+        </ul>
+
+        <div class="ext-block">
+          <span class="label">外部補足 — ROI・NPVの計算式（Web確認済み）</span>
+          <p><strong>ROI（投資利益率 / Return on Investment）</strong><br>
+          <code style="background:rgba(255,255,255,0.07);padding:2px 6px;border-radius:3px;font-size:13px">ROI(%) = (効果額 − 投資額) ÷ 投資額 × 100</code><br>
+          例: 投資100万円 → 効果150万円のとき、ROI = 50%。プロジェクトの採算性を示すシンプルな指標。</p>
+          <p style="margin-top:10px"><strong>NPV（正味現在価値 / Net Present Value）</strong>: 投資による将来キャッシュフローを、割引率（リスク率）を使って現在価値に換算した総和から投資額を差し引いた値。<br>
+          <code style="background:rgba(255,255,255,0.07);padding:2px 6px;border-radius:3px;font-size:13px">NPV = Σ [ 各年のキャッシュフロー ÷ (1 + 割引率)^年数 ] − 投資額</code><br>
+          <strong>判定基準: NPV &gt; 0 なら投資価値あり / NPV &lt; 0 なら投資価値なし</strong><br>
+          割引率（リスク率）は一般的に資本コスト（WACC）を使用。実務では4〜7%が目安とされる。<br>
+          例: 1年後100万円の効果・割引率5%の場合 → 現在価値 = 100 ÷ 1.05 ≈ 95.2万円</p>
+          <p style="margin-top:10px"><strong>ROI vs NPV の使い分け</strong>: ROIは計算が簡単で直感的。NPVは「将来の不確実性・時間価値」を考慮した精緻な分析。スライドで講師が「現在価値に直した評価」と言っているのはNPVによる分析を指す。</p>
+        </div>
+        <table class="styled-table">
+          <thead>
+            <tr><th>例</th><th>資金の見極め方</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>カレー</td><td>カレーに求める価値にふさわしく、しかも通常の夕食の予算の2倍以内</td></tr>
+            <tr><td>家づくり</td><td>頭金と月々の支払いが可能な範囲か検証（無理な返済計画はプロジェクト失敗につながる）</td></tr>
+            <tr><td>システム</td><td>得られる効果より少ない投資であり、かつ経営への影響を最小限にする額か検討</td></tr>
+          </tbody>
+        </table>
+        <p style="font-size:11px;color:var(--text-sub)">← S03:p.30</p>
+      </div>
+
+      <div class="subsection" id="ch2-3">
+        <h3>人材・リスク・予想される喜び</h3>
+
+        <div class="def-box">
+          <span class="def-label">原則</span>
+          <p>最も重要な資源、それは<strong>人</strong>である。 <span class="ptr">← S03:p.31</span></p>
+        </div>
+
+        <p style="font-size:14px;margin:10px 0">人を集める際に検討すべき3点：</p>
+        <ul class="note-list">
+          <li><strong>どんな役割が必要か</strong>——システムの要件から役割を書いてみる。システムの規模から組織と人数を書いてみる</li>
+          <li><strong>どこにその人はいるか</strong>——社内を含め調達可能なところを探しておく。社内か社外プロフェッショナルか</li>
+          <li><strong>どうすれば採用できるか</strong>——ベストメンバーをそろえるための作戦を立てる <span class="ptr">← S03:p.31</span></li>
+        </ul>
+
+        <h3 style="margin-top:16px">予想される壁（リスク）を顕在化する</h3>
+        <p style="font-size:14px;margin-bottom:10px">プロジェクトをスタートする前に、越えなければいけない大きな問題を書き出して共有し見えるようにする。 <span class="ptr">← S03:p.32</span></p>
+
+        <table class="styled-table">
+          <thead>
+            <tr><th>リスクの種類</th><th>確認すべき内容</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="chip chip-blue">技術リスク</span></td>
+              <td>新しい技術・新しい通信手順が必要か。どれくらい難しくてどうやったら克服できるか</td>
+            </tr>
+            <tr>
+              <td><span class="chip chip-yellow">費用リスク</span></td>
+              <td>費用がプロジェクト途中で増えるとしたら、その要因は何か</td>
+            </tr>
+            <tr>
+              <td><span class="chip chip-green">期間リスク</span></td>
+              <td>期間が延びるとしたら要因は何か。どれくらいかかりそうか</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="audio-block">
+          <span class="label">🔊 音声補足 — 顕在化の方法</span>
+          <p>顕在化の方法として最も基本的なのは「書いておくこと」「書いて共有すること」。潜在的なリスクを書き出して関係者間で共有することで、実際に実行した時の対処の仕方が変わってくる。 <span class="ptr">← S05-A, S05-B</span></p>
+        </div>
+
+        <h3 style="margin-top:16px">予想される喜びの大きさを考える</h3>
+        <div class="def-box">
+          <span class="def-label">重要な視点</span>
+          <p><strong>人はメンタルな動物</strong>。プロジェクトが成功した時にどんな喜びがあるかを想像し、関係者と分かち合う喜びのシーンを思い浮かべて描いておく。 <span class="ptr">← S03:p.33</span></p>
+        </div>
+        <p style="font-size:14px">関係者（上司・仲間・お客様・知り合い・家族）のプロジェクトが終わった後の状態を描いておくと、より積極的にプロジェクトに携わろうという気持ちになる。 <span class="ptr">← S03:p.33</span></p>
+
+        <h3 style="margin-top:16px">ラフなプロジェクト計画書を一人で作る</h3>
+        <div class="def-box">
+          <span class="def-label">定義</span>
+          <p><strong>エレベータートーク</strong>: エレベーターの中にいる間（約1分以内）でプロジェクトの要点を説明できること。自分の頭の整理 = プロジェクトの要点が言語化された状態。 <span class="ptr">← S03:p.34</span></p>
+        </div>
+        <ul class="note-list">
+          <li>ねらい（何のために）</li>
+          <li>取り組みテーマ（何を・どのように）</li>
+          <li>必要な資源（人・モノ・金）</li>
+        </ul>
+        <p style="font-size:11px;color:var(--text-sub)">← S03:p.34</p>
+
+        <div class="review-box">
+          <span class="rev-label">章まとめ</span>
+          <ul class="note-list">
+            <li>プロジェクトを始める前に、自分でラフな（粗い）プロジェクト計画を作ってみよう</li>
+            <li><strong>プロジェクトの全体像を知ることで自分の取り組む内容が明確になってくる</strong> <span class="ptr">← S03:p.35</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 第3章 -->
+  <div class="section-card" id="ch3">
+    <div class="card-header">
+      <span class="ch-num">第3章</span>
+      <h2>関係者を組み立てる</h2>
+    </div>
+    <div class="card-body">
+
+      <div class="def-box">
+        <span class="def-label">章の学習目標</span>
+        <p>プロジェクト推進に必要な関係者の組み立てについて理解し、説明できる <span class="ptr">← S03:p.38</span></p>
+      </div>
+
+      <div class="subsection" id="ch3-1">
+        <h3>ステークホルダー（利害関係者）の図式を作る</h3>
+
+        <div class="def-box">
+          <span class="def-label">定義</span>
+          <p><strong>ステークホルダー（利害関係者）</strong>: プロジェクトに関係する全ての人・組織。 <span class="ptr">← S03:p.39</span></p>
+        </div>
+
+        <div class="svg-wrap">
+          <!-- Stakeholder hierarchy SVG -->
+          <svg viewBox="0 0 560 220" xmlns="http://www.w3.org/2000/svg" width="100%">
+            <!-- Owner -->
+            <rect x="200" y="10" width="160" height="42" rx="6" fill="rgba(91,141,238,0.22)" stroke="#5b8dee" stroke-width="1.5"/>
+            <text x="280" y="29" text-anchor="middle" fill="#5b8dee" font-size="12" font-weight="700" font-family="Noto Sans JP">スポンサー（オーナー）</text>
+            <text x="280" y="45" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP">お金を出してくれる人</text>
+            <!-- Arrow down -->
+            <line x1="280" y1="52" x2="280" y2="80" stroke="#5b8dee" stroke-width="1.5"/>
+            <polygon points="276,78 284,78 280,84" fill="#5b8dee"/>
+            <!-- PM -->
+            <rect x="190" y="84" width="180" height="42" rx="6" fill="rgba(52,211,153,0.15)" stroke="#34d399" stroke-width="1.5"/>
+            <text x="280" y="103" text-anchor="middle" fill="#34d399" font-size="12" font-weight="700" font-family="Noto Sans JP">プロジェクトマネージャー</text>
+            <text x="280" y="119" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP">あなた</text>
+            <!-- Arrow down to members -->
+            <line x1="280" y1="126" x2="280" y2="146" stroke="#34d399" stroke-width="1.5"/>
+            <line x1="100" y1="146" x2="460" y2="146" stroke="#34d399" stroke-width="1.5"/>
+            <line x1="100" y1="146" x2="100" y2="158" stroke="#34d399" stroke-width="1.5"/>
+            <line x1="280" y1="146" x2="280" y2="158" stroke="#34d399" stroke-width="1.5"/>
+            <line x1="460" y1="146" x2="460" y2="158" stroke="#34d399" stroke-width="1.5"/>
+            <!-- Member boxes -->
+            <rect x="30" y="158" width="140" height="40" rx="6" fill="rgba(251,191,36,0.10)" stroke="#fbbf24" stroke-width="1.5"/>
+            <text x="100" y="174" text-anchor="middle" fill="#fbbf24" font-size="11" font-family="Noto Sans JP" font-weight="700">メンバー</text>
+            <text x="100" y="191" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP">必要な役割に応じて</text>
+            <rect x="210" y="158" width="140" height="40" rx="6" fill="rgba(251,191,36,0.10)" stroke="#fbbf24" stroke-width="1.5"/>
+            <text x="280" y="174" text-anchor="middle" fill="#fbbf24" font-size="11" font-family="Noto Sans JP" font-weight="700">メンバー</text>
+            <text x="280" y="191" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP">必要な役割に応じて</text>
+            <rect x="390" y="158" width="140" height="40" rx="6" fill="rgba(248,113,113,0.10)" stroke="#f87171" stroke-width="1.5"/>
+            <text x="460" y="174" text-anchor="middle" fill="#f87171" font-size="11" font-family="Noto Sans JP" font-weight="700">利用者</text>
+            <text x="460" y="191" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP">使っていただく人たち</text>
+          </svg>
+          <figcaption>図：ステークホルダーの図式 ← S03:p.39</figcaption>
+        </div>
+
+        <table class="styled-table">
+          <thead>
+            <tr><th>役割</th><th>例（カレー）</th><th>例（家づくり）</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>スポンサー（オーナー）</td><td>お父さん</td><td>あなた</td></tr>
+            <tr><td>プロジェクトマネージャー</td><td>あなた</td><td>施工主</td></tr>
+            <tr><td>メンバー</td><td>長女・長男</td><td>大工・電気屋・内装屋・造園業者</td></tr>
+            <tr><td>利用者</td><td>家族全員</td><td>家族全員</td></tr>
+          </tbody>
+        </table>
+        <p style="font-size:11px;color:var(--text-sub)">← S03:p.40-41</p>
+      </div>
+
+      <div class="subsection" id="ch3-2">
+        <h3>役割・責任・権限の関係</h3>
+
+        <table class="styled-table">
+          <thead>
+            <tr><th>概念</th><th>定義</th><th>カレーの例</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>役割</strong></td>
+              <td>何々をする役割</td>
+              <td>玉ねぎを炒める役割</td>
+            </tr>
+            <tr>
+              <td><strong>責任</strong></td>
+              <td>役割を果たす責任</td>
+              <td>玉ねぎを期限までにアメ色まで炒める責任</td>
+            </tr>
+            <tr>
+              <td><strong>権限</strong></td>
+              <td>何々を決める権限</td>
+              <td>コンロ・鍋・材料を使う権限。炒め具合（止める判断）の権限</td>
+            </tr>
+          </tbody>
+        </table>
+        <p style="font-size:11px;color:var(--text-sub)">← S03:p.42</p>
+
+        <div class="def-box">
+          <span class="def-label">原則</span>
+          <p>与えられた「役割」を「責任」をもって行う。それに必要なのが「権限」。 <span class="ptr">← S03:p.43</span></p>
+        </div>
+        <ul class="note-list">
+          <li>与えられっぱなしの役割はない——それぞれが責任をもってやる</li>
+          <li>成果につなげるために、権限を<strong>積極的に</strong>使う。権限を使わないと役割を果たせなくなる <span class="ptr">← S03:p.43</span></li>
+        </ul>
+      </div>
+
+      <div class="subsection" id="ch3-3">
+        <h3>会議体とその役割</h3>
+
+        <table class="styled-table">
+          <thead>
+            <tr><th>会議体</th><th>役割</th><th>例</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>家族会議・経営会議</td>
+              <td>投資の承認</td>
+              <td>プロジェクト開始の意思決定</td>
+            </tr>
+            <tr>
+              <td><strong>ステアリング・コミッティ</strong></td>
+              <td>プロジェクトの<strong>方向性</strong>の決定</td>
+              <td>大きな仕様変更・スタート時期変更・投資金額変更</td>
+            </tr>
+            <tr>
+              <td>定例進捗報告会</td>
+              <td>プロジェクト<strong>進捗の共有</strong></td>
+              <td>日次・週次・月次。リリース前日は1時間ごとにリーダー会議</td>
+            </tr>
+          </tbody>
+        </table>
+        <p style="font-size:11px;color:var(--text-sub)">← S03:p.44</p>
+
+        <div class="def-box">
+          <span class="def-label">用語解説</span>
+          <p><strong>ステアリング・コミッティ</strong>（Steering Committee）: ステアリング（舵）＋コミッティ（委員会）。プロジェクトの方向性を決定する会議体。例: 大きな部分での仕様変更・スタート時期変更・投資金額の変更などを決定する。 <span class="ptr">← S03:p.45</span></p>
+        </div>
+
+        <div class="audio-block">
+          <span class="label">🔊 音声補足 — 定例会の刻み方</span>
+          <p>定例会は場面場面によって刻み方が変わる。例えば「関係者のリーダーで月に1回・毎第一月曜日」「関係者のサブリーダーレベルで毎週金曜日午後5時（5時から会議）」「チーム内で9時から10分の朝会」のように、テンポを決めておくと共有のレベルが難なくできる。特殊な場合——例えばシステムのリリース前日は1時間ごとにリーダー会議が行われることもある。 <span class="ptr">← S05-A, S05-B</span></p>
+        </div>
+
+        <h3 style="margin-top:16px">メンバー表を作る</h3>
+        <p style="font-size:14px;margin-bottom:12px">時間軸に沿って、どの時期にどの役割のメンバーが何工数必要かを示した表。コスト・組織・作業スペースの見通しにも使う。 <span class="ptr">← S03:p.47</span></p>
+
+        <div class="audio-block">
+          <span class="label">🔊 音声補足 — メンバー表の例</span>
+          <p>カレーの例: 「炒める・煮る」担当は最初（炒め）と最後（煮る）に工数が集中。「材料を切る」は最初だけ（後半はゼロかも）。「味を整える」は途中と後半に出てくる。<br>家づくりの例: 大工さんは最初から最後まで必要。基礎工事は最初のフェーズだけ集中（後は不要）。内装業者は最後のみ活躍。このように役割ごとに工数の山が異なる。 <span class="ptr">← S05-A, S05-B</span></p>
+        </div>
+
+        <div class="review-box">
+          <span class="rev-label">章まとめ</span>
+          <ul class="note-list">
+            <li>プロジェクトにおいてどんな役割と責任があるのかを書き出す</li>
+            <li>役割のところに加えたいメンバーの名前（または必要なレベル）を書く</li>
+            <li>どんな会議を作るとうまく運営できるかを考え、あらかじめ計画を立てておく <span class="ptr">← S03:p.50</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 第4章 -->
+  <div class="section-card" id="ch4">
+    <div class="card-header">
+      <span class="ch-num">第4章</span>
+      <h2>プロジェクトの立ち上げ</h2>
+    </div>
+    <div class="card-body">
+
+      <div class="def-box">
+        <span class="def-label">章の学習目標</span>
+        <p>プロジェクトの立ち上げプロセスについて理解し、説明できる <span class="ptr">← S03:p.53</span></p>
+      </div>
+
+      <div class="subsection" id="ch4-1">
+        <h3>立ち上げまでのプロセス（全体像）</h3>
+
+        <div class="svg-wrap">
+          <svg viewBox="0 0 560 290" xmlns="http://www.w3.org/2000/svg" width="100%">
+            <!-- Step boxes -->
+            <!-- 中期計画 -->
+            <rect x="30" y="10" width="200" height="46" rx="6" fill="rgba(91,141,238,0.15)" stroke="#5b8dee" stroke-width="1.5"/>
+            <text x="130" y="30" text-anchor="middle" fill="#5b8dee" font-size="12" font-weight="700" font-family="Noto Sans JP">中期計画の確認</text>
+            <text x="130" y="48" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP">組織の大きな方向性を確認</text>
+            <!-- 年度計画 -->
+            <rect x="30" y="76" width="200" height="46" rx="6" fill="rgba(52,211,153,0.12)" stroke="#34d399" stroke-width="1.5"/>
+            <text x="130" y="96" text-anchor="middle" fill="#34d399" font-size="12" font-weight="700" font-family="Noto Sans JP">年度計画の確認</text>
+            <text x="130" y="114" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP">タイミングを確認</text>
+            <!-- 根回し -->
+            <rect x="30" y="142" width="200" height="46" rx="6" fill="rgba(251,191,36,0.10)" stroke="#fbbf24" stroke-width="1.5"/>
+            <text x="130" y="162" text-anchor="middle" fill="#fbbf24" font-size="12" font-weight="700" font-family="Noto Sans JP">参画部門への根回し</text>
+            <text x="130" y="180" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP">「やろう！」という気運を作る</text>
+            <!-- 決議機関 -->
+            <rect x="30" y="208" width="200" height="46" rx="6" fill="rgba(248,113,113,0.10)" stroke="#f87171" stroke-width="1.5"/>
+            <text x="130" y="228" text-anchor="middle" fill="#f87171" font-size="12" font-weight="700" font-family="Noto Sans JP">決議機関に上申</text>
+            <text x="130" y="246" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP">組織としての決定</text>
+            <!-- Arrows -->
+            <line x1="130" y1="56" x2="130" y2="76" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#arr2)"/>
+            <line x1="130" y1="122" x2="130" y2="142" stroke="#34d399" stroke-width="1.5" marker-end="url(#arr2)"/>
+            <line x1="130" y1="188" x2="130" y2="208" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#arr2)"/>
+            <!-- Kickoff -->
+            <rect x="310" y="120" width="220" height="60" rx="8" fill="rgba(167,139,250,0.15)" stroke="#a78bfa" stroke-width="2"/>
+            <text x="420" y="143" text-anchor="middle" fill="#a78bfa" font-size="14" font-weight="700" font-family="Noto Sans JP">🎯 キックオフ</text>
+            <text x="420" y="163" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP">可決 → プロジェクトスタート</text>
+            <!-- Arrow from 決議 to kickoff -->
+            <path d="M230 231 Q270 231 310 150" fill="none" stroke="#a78bfa" stroke-width="1.5" stroke-dasharray="5,3"/>
+            <polygon points="308,144 316,152 310,155" fill="#a78bfa"/>
+            <defs>
+              <marker id="arr2" markerWidth="8" markerHeight="6" refX="6" refY="3" orient="auto">
+                <path d="M0,0 L0,6 L8,3 z" fill="#8a99b8"/>
+              </marker>
+            </defs>
+          </svg>
+          <figcaption>図：プロジェクト立ち上げまでの一般的なプロセス ← S03:p.54</figcaption>
+        </div>
+      </div>
+
+      <div class="subsection" id="ch4-2">
+        <h3>中期計画・年度計画の確認</h3>
+
+        <div class="def-box">
+          <span class="def-label">定義: 中期計画</span>
+          <p><strong>中期計画</strong>: 3〜5年の期間で、組織（家・会社・部門等）が取り組む課題と方向性を書いたもの。1年ではできないことや短期ではできない大きな方向性を示す。 <span class="ptr">← S03:p.55</span></p>
+        </div>
+
+        <p style="font-size:14px;margin:10px 0">中期計画のポイント:</p>
+        <ul class="note-list">
+          <li>組織としての<strong>課題認識</strong>——何が問題だと思っているか</li>
+          <li>組織としての<strong>取り組み</strong>——どう解決しようと思っているか</li>
+          <li>組織としての<strong>スケジュール</strong>——どの順番で、いつ取り掛かろうと思っているか <span class="ptr">← S03:p.56</span></li>
+        </ul>
+
+        <div class="audio-block">
+          <span class="label">🔊 音声補足 — 中期計画の例</span>
+          <p>中期計画の取り組む方向性の例: 「野菜中心の食生活にもっていく」「両親と一緒に暮らす」「品質の優れた定番商品ブランドを作る」など。これを中期的に3〜5年の間に成し遂げようとする方向性などを決めることが中期計画。 <span class="ptr">← S05-A, S05-B</span></p>
+        </div>
+
+        <div class="def-box" style="margin-top:16px">
+          <span class="def-label">定義: 年度計画</span>
+          <p><strong>年度計画</strong>: 今年度はどんなことに取り組むかのテーマを、人・お金の割り振りを具体的に考慮して書いたもの。中期計画の年計画へのブレークダウン。 <span class="ptr">← S03:p.57</span></p>
+        </div>
+
+        <div class="audio-block">
+          <span class="label">🔊 音声補足 — 年度計画の展開例</span>
+          <p>「両親と同居する」という中期計画を例にすると:<br>
+          ・昨年: 両親と家族の意向を固める（家族旅行）<br>
+          ・今年: 土地を決める（今の土地の処分）<br>
+          ・来年: 設計と発注<br>
+          ・再来年: 家の完成と引越し<br>
+          ↑それぞれもプロジェクト。中期計画の達成のために各年度に目標を設け、PDCAで回していく。 <span class="ptr">← S05-A, S05-B (S03:p.59)</span></p>
+        </div>
+
+        <p style="font-size:14px;margin-top:12px">年度計画のポイント（中期計画をより具体的に）:</p>
+        <ul class="note-list">
+          <li>組織としての課題認識をより詳細に確認する</li>
+          <li>どの作戦・施策でどう解決するか</li>
+          <li>どの順番で、いつ取り掛かるか（資源の割り振り）<span class="ptr">← S03:p.58</span></li>
+        </ul>
+      </div>
+
+      <div class="subsection" id="ch4-3">
+        <h3>参画部門への根回し・決議機関への上申・キックオフ</h3>
+
+        <h3 style="font-size:13px;color:var(--text-sub);font-weight:600;margin-bottom:8px;padding-bottom:0;border:none">参画部門への根回し</h3>
+        <p style="font-size:14px;margin-bottom:10px">現場に行って「本当に必要だ！」という想いを取り付ける。 <span class="ptr">← S03:p.60</span></p>
+
+        <ul class="note-list">
+          <li><strong>確認のため</strong>——本当にこの課題は現場で起きている問題なのか確認する</li>
+          <li><strong>味方を増やすため</strong>——一緒に同じ問題を見て「あの辺課題ですよね」と認識を共有する → プロジェクトの仲間が増える</li>
+          <li><strong>メンバーに参加してもらうため</strong>——「こういう解決策はどうですか？」と提示することでメンバー作りの根回しができる <span class="ptr">← S03:p.60</span></li>
+        </ul>
+
+        <div class="audio-block">
+          <span class="label">🔊 音声補足</span>
+          <p>リーダーだけが「やろう！」と声を上げても、プロジェクトのメンバーや参画すべき部門の方々が実際に協力してくれないとプロジェクトは進まない。現場に行くことで課題の共有ができ、「自分もこの辺が課題だと思っていた」「我が社にとってこの課題の解決は非常に重要だ」という気運が生まれる。 <span class="ptr">← S05-A, S05-B</span></p>
+        </div>
+
+        <h3 style="font-size:13px;color:var(--text-sub);font-weight:600;margin:16px 0 8px;padding-bottom:0;border:none">決議機関への上申・提案</h3>
+        <div class="def-box">
+          <span class="def-label">定義</span>
+          <p><strong>決議機関</strong>: 経営会議などの意思決定機関。ここでの決定がないと、正式なプロジェクトとしての活動ができない（組織・人・お金・権限が付かない）。 <span class="ptr">← S03:p.61</span></p>
+        </div>
+        <p style="font-size:14px;margin:10px 0">中期計画・年度計画があり、関係部門への問題意識共有ができた段階で、決議機関に提案する。例: 家族会議・町内会議・職員会など。 <span class="ptr">← S03:p.61</span></p>
+
+        <div class="audio-block">
+          <span class="label">🔊 音声補足</span>
+          <p>課題に思っていて「こういうのはやったらいいよね」と言っているだけではサークル活動。企業や組織で実際に実行するには、正式に組織として意思決定し、資源（人・お金・情報・権限）を投入する必要がある。可決されれば実行に移り、否決されればそのプロジェクトはスタートしない。 <span class="ptr">← S05-A, S05-B</span></p>
+        </div>
+
+        <h3 style="font-size:13px;color:var(--text-sub);font-weight:600;margin:16px 0 8px;padding-bottom:0;border:none">キックオフ</h3>
+        <div class="def-box">
+          <span class="def-label">定義</span>
+          <p><strong>キックオフ（Kickoff）</strong>: プロジェクトの最初の会合。全メンバーが出席する。 <span class="ptr">← S03:p.62</span></p>
+        </div>
+
+        <table class="styled-table">
+          <thead>
+            <tr><th>構成</th><th>内容</th><th>重要ポイント</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>① オーナーから趣旨説明</td>
+              <td>意図・期間・ゴール・投資額・効果見込みの説明</td>
+              <td>トップがどういうことを目指しているかをメンバー全員が把握する</td>
+            </tr>
+            <tr>
+              <td>② プロジェクト概要説明</td>
+              <td>PMが目的・進め方・期間・ステップを説明</td>
+              <td><strong>PMの最初の重要な仕事</strong></td>
+            </tr>
+            <tr>
+              <td>③ メンバー自己紹介・意気込み</td>
+              <td>関わるメンバーが自己紹介と意気込みを話す</td>
+              <td>初めて会うメンバー間のコミュニケーション促進</td>
+            </tr>
+            <tr>
+              <td>④ 懇親会（できれば）</td>
+              <td>飲み食いだけでなく意見交換・心のバリアを取り払う</td>
+              <td>初対面の人は疑心暗鬼からスタート → 懇親会で最初のバリアを取る</td>
+            </tr>
+          </tbody>
+        </table>
+        <p style="font-size:11px;color:var(--text-sub)">← S03:p.62</p>
+
+        <div class="review-box">
+          <span class="rev-label">章まとめ（第4回全体まとめ）</span>
+          <ul class="note-list">
+            <li>プロジェクトの<strong>中期的視点からの位置づけ</strong>を確認する——中期計画の中でのやるべき理由を確認</li>
+            <li><strong>周りの理解を得ながら</strong>、協力の得られる体制を作る——関係部署への根回し・現場訪問</li>
+            <li>議決を得て正式に組織として決定し、<strong>キックオフ</strong>してプロジェクトスタート <span class="ptr">← S03:p.63</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Appendix -->
+  <div class="appendix-header" id="appendix">
+    <h2>// APPENDIX</h2>
+  </div>
+
+  <!-- 未確定事項 -->
+  <div class="app-card app-card-warn">
+    <div class="app-card-header">❓ 未確定事項・要確認リスト（v1.1: パートIV外部補完実施済み）</div>
+    <div class="app-card-body">
+      <p style="font-size:13px;color:var(--accent-green)">✅ 今回の講義で残存していた外部補足情報（PMBOK・ROI/NPV・KJ法・RACI等）を全件Webで確認・補完済みです。真に解消できなかった未確定事項はありません。</p>
+    </div>
+  </div>
+
+  <!-- 補足A -->
+  <div class="app-card app-card-star">
+    <div class="app-card-header">⭐ 補足A: 最重要ワード一覧</div>
+    <div class="app-card-body">
+      <table class="styled-table">
+        <thead>
+          <tr><th>用語</th><th>読み</th><th>定義（原文から抽出）</th><th>重要度</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>プロジェクトスコープ</strong></td>
+            <td>すこーぷ</td>
+            <td>プロジェクトの狙いとする領域。決めなくては目的地がないのでスタートできない</td>
+            <td>★★★</td>
+          </tr>
+          <tr>
+            <td><strong>松・竹・梅プラン</strong></td>
+            <td>まつたけうめ</td>
+            <td>松=できたらいいな（上位目標）/ 竹=必達目標 / 梅=最低限（動かないと大変）</td>
+            <td>★★★</td>
+          </tr>
+          <tr>
+            <td><strong>投資対効果分析</strong></td>
+            <td>とうしたいこうかぶんせき</td>
+            <td>投資額と定量的（金額換算）効果を比較する分析。効果もお金に換算することが重要</td>
+            <td>★★★</td>
+          </tr>
+          <tr>
+            <td><strong>ステークホルダー</strong></td>
+            <td>すてーくほるだー</td>
+            <td>利害関係者。スポンサー（オーナー）・PM・メンバー・利用者</td>
+            <td>★★★</td>
+          </tr>
+          <tr>
+            <td><strong>ステアリング・コミッティ</strong></td>
+            <td>すてありんぐこみってぃ</td>
+            <td>プロジェクトの方向性を決定する会議体（舵取り委員会）</td>
+            <td>★★★</td>
+          </tr>
+          <tr>
+            <td><strong>中期計画</strong></td>
+            <td>ちゅうきけいかく</td>
+            <td>3〜5年の期間で組織が取り組む課題と方向性を書いたもの</td>
+            <td>★★★</td>
+          </tr>
+          <tr>
+            <td><strong>年度計画</strong></td>
+            <td>ねんどけいかく</td>
+            <td>今年度に取り組むテーマを人・お金の割り振りを具体的に考慮して書いたもの</td>
+            <td>★★★</td>
+          </tr>
+          <tr>
+            <td><strong>キックオフ</strong></td>
+            <td>きっくおふ</td>
+            <td>プロジェクト最初の会合。全メンバーが出席。オーナー趣旨説明→PM概要説明→自己紹介→懇親会</td>
+            <td>★★★</td>
+          </tr>
+          <tr>
+            <td><strong>TTPS</strong></td>
+            <td>てぃーてぃーぴーえす</td>
+            <td>徹底的にパクって進化。他のやり方を真似（P）してさらに良くする（S=進化）</td>
+            <td>★★☆</td>
+          </tr>
+          <tr>
+            <td><strong>エレベータートーク</strong></td>
+            <td>えれべーたーとーく</td>
+            <td>エレベーター内の短時間（1分以内）でプロジェクトの要点を説明できること</td>
+            <td>★★☆</td>
+          </tr>
+          <tr>
+            <td><strong>顕在化</strong></td>
+            <td>けんざいか</td>
+            <td>潜在的なリスク・問題を書き出して共有し見えるようにすること</td>
+            <td>★★☆</td>
+          </tr>
+          <tr>
+            <td><strong>専任化</strong></td>
+            <td>せんにんか</td>
+            <td>ある一定期間、プロジェクトに専従すること（兼務しない）</td>
+            <td>★★☆</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 補足B -->
+  <div class="app-card app-card-book">
+    <div class="app-card-header">📚 補足B: 知っておくべき背景知識</div>
+    <div class="app-card-body">
+      <ul class="note-list">
+        <li class="ext-small"><strong>[外部補足]</strong> <strong>PMBOK（Project Management Body of Knowledge）</strong>とは: PMI（Project Management Institute）が策定したプロジェクトマネジメントの知識体系ガイド。1996年初版から始まり、現在は2021年発行の<strong>第7版</strong>まで改訂されている。<br>
+        ・<strong>第6版まで</strong>: プロジェクトの進行を「立ち上げ」「計画」「実行」「監視・コントロール」「終結」の<strong>5つのプロセス群</strong>に分類。立ち上げプロセス群は主に「①プロジェクト憲章の作成」「②ステークホルダーの特定」の2プロセスで構成。<br>
+        ・<strong>第7版</strong>: 5プロセス群の代わりに「12の原則」と「8つのパフォーマンス領域」を導入。「何をするか」よりも「なぜするか」という原則ベースの思想に転換。<br>
+        ・本講義の「立ち上げプロセス」はPMBOK第6版の「立ち上げプロセス群」に相当する。</li>
+
+        <li class="ext-small" style="margin-top:12px"><strong>[外部補足]</strong> <strong>プロジェクト憲章（Project Charter）</strong>（PMBOK第6版）: 「プロジェクトを正式に認可し、プロジェクトマネージャーに組織資源を活用する権限を与える文書」。記載内容: プロジェクトの目的・背景・スコープ・予算・主要マイルストーン・ステークホルダー・PMの権限など。<strong>この文書が承認された瞬間からPMは公式にプロジェクトを動かす権限を得る</strong>。本講義の「決議機関への提案書＋可決」に相当する。</li>
+
+        <li class="ext-small" style="margin-top:12px"><strong>[外部補足]</strong> <strong>ステークホルダー分析の手法（PMBOK）</strong>: ステークホルダーを特定した後、「権限（影響力）の強さ × 関心度の高さ」の2軸マトリクス（Power/Interest Grid）でグループ分けし、対応戦略を決める。グループごとに「重点管理」「情報提供」「満足維持」「観察」の優先度を設定する。ステークホルダー登録簿（識別情報・評価情報・分類情報）を作成して文書化する。</li>
+
+        <li class="ext-small" style="margin-top:12px"><strong>[外部補足]</strong> <strong>KJ法の詳細</strong>: 文化人類学者・川喜田二郎（Jiro Kawakita）が1960年代に考案したことから頭文字をとって「KJ法」と呼ぶ。①情報をカードに書き出す → ②類似カードをグループ化 → ③各グループに見出しをつける → ④グループ間の関係を図示する、というステップで問題の本質を発見する。プロジェクト管理の問題分析・要件定義・アイデア整理に広く使われる。</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 補足C -->
+  <div class="app-card app-card-target">
+    <div class="app-card-header">🎯 補足C: 試験・レポートで重要な観点</div>
+    <div class="app-card-body">
+      <ul class="note-list">
+        <li>プロジェクトマネージャーの<strong>問題意識（自分事化）</strong>がなぜ重要かを説明できるか → 「他人事にするとモチベーション低下・欠点に気づかない・失敗に直結」</li>
+        <li><strong>松・竹・梅プランの定義</strong>と、なぜ「竹（必達目標）」を詳細まで詰めるのかを説明できるか</li>
+        <li><strong>投資対効果分析で効果を定量化（金額換算）することの意義</strong>を説明できるか。ROI（投資利益率）とNPV（現在価値ベース）の違いも押さえておくと尚良い</li>
+        <li><strong>スコープ（scope）の定義</strong>: プロジェクトの「狙いとする領域」。スコープなしにはスタートできない</li>
+        <li><strong>ステークホルダーの4種類</strong>（スポンサー/オーナー・PM・メンバー・利用者）と役割の違いを説明できるか</li>
+        <li><strong>ステアリング・コミッティとは何か</strong>——「舵（ステアリング）取り委員会（コミッティ）」＝プロジェクトの方向性を決定する会議体。決定事項の例（仕様変更・スタート時期変更・投資金額変更）も覚えておく</li>
+        <li><strong>役割・責任・権限の三角形</strong>——「役割を果たすために責任があり、それに権限が必要」。権限を積極的に使うことが役割遂行の条件</li>
+        <li><strong>立ち上げプロセスの流れ（4ステップ）</strong>: 中期計画確認 → 年度計画確認 → 参画部門根回し → 決議機関上申 → キックオフ</li>
+        <li><strong>キックオフの4構成</strong>: ①オーナー趣旨説明 ② PM概要説明（PMの最初の重要な仕事）③メンバー自己紹介・意気込み ④懇親会</li>
+        <li>「<strong>過去の失敗は最高の先生</strong>」「<strong>先端ではなく先進</strong>」「<strong>TTPS（徹底的にパクって進化）</strong>」「<strong>人はメンタルな動物</strong>」「<strong>エレベータートーク</strong>」——講師独特のフレーズの意味と文脈を押さえる</li>
+        <li><strong>定常業務 vs プロジェクト</strong>の違い: プロジェクトは期間が決まっており特殊。日々継続的に発生する問題は定常業務・専門部署での対処が適している場合もある</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 補足D -->
+  <div class="app-card app-card-link">
+    <div class="app-card-header">🔗 補足D: 関連概念・次回への接続</div>
+    <div class="app-card-body">
+      <ul class="note-list">
+        <li class="ext-small"><strong>[外部補足]</strong> <strong>プロジェクトライフサイクルとPMBOK5プロセス群の対応</strong>: 今回（第4回）は最初の「立ち上げ」フェーズ。次回以降は計画フェーズ（WBS・スケジュール・コスト計画・リスク計画）に進む。
+          <table class="styled-table" style="margin-top:8px;font-size:12px">
+            <thead><tr><th>フェーズ</th><th>主な活動</th><th>本講義対応</th></tr></thead>
+            <tbody>
+              <tr><td><strong>立ち上げ</strong></td><td>プロジェクト憲章・ステークホルダー特定</td><td>第4回（今回）</td></tr>
+              <tr><td>計画</td><td>WBS・スケジュール・予算・リスク計画</td><td>以降の回</td></tr>
+              <tr><td>実行</td><td>資源調達・チーム育成・成果物作成</td><td>—</td></tr>
+              <tr><td>監視・コントロール</td><td>進捗管理・変更管理・品質管理</td><td>第3回（PDCA）</td></tr>
+              <tr><td>終結</td><td>プロジェクト完了・教訓の文書化</td><td>—</td></tr>
+            </tbody>
+          </table>
+        </li>
+
+        <li class="ext-small" style="margin-top:12px"><strong>[外部補足]</strong> <strong>RACI チャートとメンバー表の関係</strong>: 本講義の「役割・責任・権限」の整理をより体系化したのがRACIチャート。
+          <table class="styled-table" style="margin-top:8px;font-size:12px">
+            <thead><tr><th>記号</th><th>意味</th><th>本講義との対応</th></tr></thead>
+            <tbody>
+              <tr><td><strong>R</strong> (Responsible)</td><td>実行責任者——実際に作業を行う</td><td>「役割を果たす」</td></tr>
+              <tr><td><strong>A</strong> (Accountable)</td><td>説明責任者——最終的な承認権限を持つ</td><td>「権限を持つ」</td></tr>
+              <tr><td><strong>C</strong> (Consulted)</td><td>相談先——意見を求められる</td><td>ステークホルダーの「相談役」</td></tr>
+              <tr><td><strong>I</strong> (Informed)</td><td>報告先——結果の通知のみ受ける</td><td>ステークホルダーの「利用者」など</td></tr>
+            </tbody>
+          </table>
+        </li>
+
+        <li class="ext-small" style="margin-top:12px"><strong>[外部補足]</strong> <strong>ステークホルダー・マトリクス（影響力 × 関心度）</strong>: ステークホルダー管理の定番ツール。PMBOKでも推奨される。
+          <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" width="100%" style="margin-top:8px;background:var(--bg3);border-radius:6px;padding:8px">
+            <!-- 軸 -->
+            <line x1="60" y1="170" x2="380" y2="170" stroke="#5b8dee" stroke-width="1.5"/>
+            <line x1="60" y1="170" x2="60" y2="10" stroke="#5b8dee" stroke-width="1.5"/>
+            <text x="220" y="190" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">関心度（低 → 高）</text>
+            <text x="15" y="90" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="Noto Sans JP" transform="rotate(-90,15,90)">影響力（低→高）</text>
+            <!-- 4象限 -->
+            <rect x="60" y="10" width="160" height="80" fill="rgba(251,191,36,0.06)" stroke="rgba(251,191,36,0.2)" stroke-width="1"/>
+            <rect x="220" y="10" width="160" height="80" fill="rgba(91,141,238,0.10)" stroke="rgba(91,141,238,0.2)" stroke-width="1"/>
+            <rect x="60" y="90" width="160" height="80" fill="rgba(52,211,153,0.06)" stroke="rgba(52,211,153,0.2)" stroke-width="1"/>
+            <rect x="220" y="90" width="160" height="80" fill="rgba(248,113,113,0.08)" stroke="rgba(248,113,113,0.2)" stroke-width="1"/>
+            <!-- ラベル -->
+            <text x="140" y="45" text-anchor="middle" fill="#fbbf24" font-size="11" font-family="Noto Sans JP" font-weight="700">満足維持</text>
+            <text x="140" y="60" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP">高影響・低関心</text>
+            <text x="140" y="73" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP">（経営層など）</text>
+            <text x="300" y="45" text-anchor="middle" fill="#5b8dee" font-size="11" font-family="Noto Sans JP" font-weight="700">重点管理</text>
+            <text x="300" y="60" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP">高影響・高関心</text>
+            <text x="300" y="73" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP">（スポンサー・PM）</text>
+            <text x="140" y="125" text-anchor="middle" fill="#34d399" font-size="11" font-family="Noto Sans JP" font-weight="700">観察</text>
+            <text x="140" y="140" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP">低影響・低関心</text>
+            <text x="300" y="125" text-anchor="middle" fill="#f87171" font-size="11" font-family="Noto Sans JP" font-weight="700">情報提供</text>
+            <text x="300" y="140" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP">低影響・高関心</text>
+            <text x="300" y="153" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP">（利用者など）</text>
+          </svg>
+          <figcaption style="font-size:10px;color:var(--text-sub);font-family:'JetBrains Mono',monospace;margin-top:4px">図：Power/Interest Grid（PMBOKのステークホルダー管理）</figcaption>
+        </li>
+
+        <li class="ext-small" style="margin-top:12px"><strong>[外部補足]</strong> <strong>前回（第3回）との接続</strong>: 第3回で学んだPDCAは、プロジェクト立ち上げ後の実行フェーズで繰り返し活用される。立ち上げプロセスで計画した「松・竹・梅プラン」と「リスクの顕在化」が、PDCAの「P（計画）」フェーズの基盤となる。特にリスク顕在化は次回以降の「リスクマネジメント計画」（PMBOK）に接続する。</li>
+      </ul>
+    </div>
+  </div>
+
+  <p style="font-size:11px;color:var(--text-sub);margin-top:32px;padding-top:16px;border-top:1px solid var(--border);font-family:'JetBrains Mono',monospace">
+    v1.0 2026-03-28 | 初版（Step 5-B完了）<br>
+    v1.1 2026-03-28 | Step 6 パートIV外部補完実施: ROI/NPV計算式追加・PMBOK第6版/第7版対応・KJ法詳細・RACIチャート・ステークホルダーマトリクス・補足C試験観点充実 | SSP v4.2 / 実行プロンプト v4.5.1 | QC済み
+  </p>
+
+</main>
+
+<script>
+// Sidebar active link highlighting
+const sections = document.querySelectorAll('[id]');
+const links = document.querySelectorAll('#sidebar a');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      links.forEach(l => l.classList.remove('active'));
+      const link = document.querySelector(`#sidebar a[href="#${e.target.id}"]`);
+      if (link) link.classList.add('active');
+    }
+  });
+}, {threshold: 0.3});
+sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
