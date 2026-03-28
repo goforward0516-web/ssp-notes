@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>インターネット入門 第4回｜通信の決まり事</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&family=Noto+Serif+JP:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --bg-card: #161b27;
+    --bg-card2: #1c2335;
+    --bg-hover: #1e2840;
+    --border: #2a3450;
+    --border-light: #354060;
+    --text: #e2e8f5;
+    --text-sub: #8a99b8;
+    --text-muted: #5a6a8a;
+    --accent: #5b8dee;
+    --accent2: #34d399;
+    --accent3: #fbbf24;
+    --accent4: #a78bfa;
+    --red: #f87171;
+    --audio-border: #3b82f6;
+    --audio-bg: rgba(59,130,246,0.08);
+    --infer-border: #a78bfa;
+    --infer-bg: rgba(167,139,250,0.08);
+    --warn-border: #f59e0b;
+    --warn-bg: rgba(245,158,11,0.08);
+    --ext-border: #34d399;
+    --ext-bg: rgba(52,211,153,0.08);
+    --mono: 'JetBrains Mono', monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 15px;
+    line-height: 1.8;
+    display: flex;
+  }
+
+  /* ===== SIDEBAR ===== */
+  #sidebar {
+    width: 260px;
+    min-width: 260px;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    background: var(--bg-card);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    padding: 24px 0 40px;
+    flex-shrink: 0;
+  }
+  #sidebar .logo {
+    padding: 0 20px 20px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+  #sidebar .logo .course { font-size: 11px; color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; }
+  #sidebar .logo .title { font-size: 13px; font-weight: 700; color: var(--text); line-height: 1.4; }
+  #sidebar .logo .session { font-size: 11px; color: var(--accent); margin-top: 4px; font-family: var(--mono); }
+  .toc-group { margin-bottom: 8px; }
+  .toc-group-title { font-size: 10px; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 20px; margin-top: 8px; }
+  .toc-item {
+    display: block;
+    padding: 5px 20px 5px 24px;
+    font-size: 12.5px;
+    color: var(--text-sub);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    transition: all 0.15s;
+    line-height: 1.4;
+  }
+  .toc-item:hover { color: var(--text); border-left-color: var(--accent); background: rgba(91,141,238,0.06); }
+  .toc-item.active { color: var(--accent); border-left-color: var(--accent); background: rgba(91,141,238,0.1); font-weight: 500; }
+  .toc-sub { padding-left: 36px; font-size: 11.5px; }
+
+  /* ===== MAIN ===== */
+  #main {
+    flex: 1;
+    min-width: 0;
+    max-width: 860px;
+    padding: 40px 44px 80px;
+  }
+
+  /* ===== HEADER ===== */
+  .note-header {
+    background: linear-gradient(135deg, #131a2e 0%, #1a2540 100%);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin-bottom: 36px;
+  }
+  .note-header .meta-row { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 16px; align-items: center; }
+  .meta-tag {
+    font-family: var(--mono); font-size: 11px;
+    background: rgba(91,141,238,0.15); color: var(--accent);
+    border: 1px solid rgba(91,141,238,0.3);
+    padding: 3px 10px; border-radius: 4px;
+  }
+  .meta-tag.green { background: rgba(52,211,153,0.12); color: var(--accent2); border-color: rgba(52,211,153,0.3); }
+  .note-header h1 { font-size: 22px; font-weight: 700; color: var(--text); line-height: 1.3; margin-bottom: 10px; }
+  .note-header .desc { font-size: 13px; color: var(--text-sub); line-height: 1.6; }
+  .goals-box { background: rgba(91,141,238,0.07); border: 1px solid rgba(91,141,238,0.2); border-radius: 8px; padding: 14px 18px; margin-top: 16px; }
+  .goals-box .goals-title { font-size: 11px; color: var(--accent); font-family: var(--mono); letter-spacing: 0.05em; margin-bottom: 8px; text-transform: uppercase; }
+  .goals-box ol { padding-left: 18px; }
+  .goals-box li { font-size: 13.5px; color: var(--text-sub); margin-bottom: 4px; }
+
+  /* ===== SECTION ===== */
+  .chapter {
+    margin-bottom: 48px;
+  }
+  .chapter-header {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 8px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .chapter-num {
+    font-family: var(--mono); font-size: 11px;
+    background: var(--accent); color: #fff;
+    padding: 2px 8px; border-radius: 4px; font-weight: 600;
+  }
+  .chapter-title { font-size: 19px; font-weight: 700; color: var(--text); }
+  .chapter-goals { font-size: 12px; color: var(--text-muted); margin-bottom: 20px; padding: 8px 14px; background: var(--bg-card2); border-left: 3px solid var(--border-light); border-radius: 0 6px 6px 0; }
+
+  .section { margin-bottom: 28px; }
+  .section-title { font-size: 15.5px; font-weight: 700; color: var(--accent); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .section-title::before { content: ''; width: 3px; height: 16px; background: var(--accent); border-radius: 2px; display: inline-block; }
+
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin-bottom: 16px;
+  }
+  .card-title { font-size: 13px; font-weight: 700; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 10px; font-family: var(--mono); }
+
+  p { margin-bottom: 10px; font-size: 14.5px; line-height: 1.85; }
+  ul, ol { padding-left: 22px; margin-bottom: 10px; }
+  li { font-size: 14.5px; margin-bottom: 4px; line-height: 1.7; }
+
+  /* ===== ANNOTATION BLOCKS ===== */
+  .block-audio {
+    border-left: 3px solid var(--audio-border);
+    background: var(--audio-bg);
+    padding: 12px 16px;
+    border-radius: 0 8px 8px 0;
+    margin: 12px 0;
+  }
+  .block-infer {
+    border-left: 3px solid var(--infer-border);
+    background: var(--infer-bg);
+    padding: 12px 16px;
+    border-radius: 0 8px 8px 0;
+    margin: 12px 0;
+  }
+  .block-warn {
+    border-left: 3px solid var(--warn-border);
+    background: var(--warn-bg);
+    padding: 12px 16px;
+    border-radius: 0 8px 8px 0;
+    margin: 12px 0;
+  }
+  .block-ext {
+    border-left: 3px solid var(--ext-border);
+    background: var(--ext-bg);
+    padding: 12px 16px;
+    border-radius: 0 8px 8px 0;
+    margin: 12px 0;
+  }
+  .block-label {
+    font-family: var(--mono); font-size: 10px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .block-audio .block-label { color: var(--audio-border); }
+  .block-infer .block-label { color: var(--infer-border); }
+  .block-warn .block-label { color: var(--warn-border); }
+  .block-ext .block-label { color: var(--ext-border); }
+  .block-audio p, .block-infer p, .block-warn p, .block-ext p { margin-bottom: 0; }
+
+  /* ===== SOURCE POINTER ===== */
+  .ptr {
+    font-family: var(--mono); font-size: 10px;
+    color: var(--text-muted); background: var(--bg-card2);
+    border: 1px solid var(--border); border-radius: 3px;
+    padding: 1px 5px; margin-left: 4px; white-space: nowrap;
+  }
+
+  /* ===== TABLES ===== */
+  table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 13.5px; }
+  th { background: var(--bg-card2); color: var(--accent); font-weight: 600; padding: 9px 12px; text-align: left; border: 1px solid var(--border); font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+  td { padding: 8px 12px; border: 1px solid var(--border); color: var(--text); vertical-align: top; }
+  tr:hover td { background: rgba(91,141,238,0.04); }
+  td code, th code { font-family: var(--mono); font-size: 12px; color: var(--accent3); background: rgba(251,191,36,0.1); padding: 1px 5px; border-radius: 3px; }
+
+  /* ===== SVG FIGURES ===== */
+  .fig-wrap { margin: 18px 0; }
+  .fig-wrap figcaption { font-size: 11.5px; color: var(--text-muted); text-align: center; margin-top: 8px; font-family: var(--mono); }
+
+  /* ===== HIGHLIGHT ===== */
+  .emph { color: var(--accent3); font-weight: 600; }
+  .keyword { color: var(--accent2); font-weight: 600; }
+  .danger { color: var(--red); }
+  code { font-family: var(--mono); font-size: 12.5px; color: var(--accent3); background: rgba(251,191,36,0.08); padding: 1px 6px; border-radius: 3px; }
+  strong { color: var(--text); font-weight: 600; }
+
+  /* ===== SUPPLEMENT CARDS ===== */
+  .supp-header {
+    display: flex; align-items: center; gap: 10px;
+    margin: 40px 0 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .supp-icon { font-size: 18px; }
+  .supp-title { font-size: 16px; font-weight: 700; color: var(--text); }
+  .supp-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin-bottom: 14px;
+  }
+  .supp-card.orange { border-color: rgba(245,158,11,0.4); background: rgba(245,158,11,0.04); }
+  .supp-card.green  { border-color: rgba(52,211,153,0.3);  background: rgba(52,211,153,0.04); }
+  .supp-card.purple { border-color: rgba(167,139,250,0.3); background: rgba(167,139,250,0.04); }
+  .supp-card.blue   { border-color: rgba(91,141,238,0.35); background: rgba(91,141,238,0.05); }
+
+  .stars { color: var(--accent3); }
+  td.stars-cell { color: var(--accent3); white-space: nowrap; }
+
+  /* ===== SCROLLBAR ===== */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 3px; }
+
+  @media (max-width: 900px) {
+    #sidebar { display: none; }
+    #main { padding: 24px 20px 60px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== SIDEBAR ===== -->
+<nav id="sidebar">
+  <div class="logo">
+    <div class="course">インターネット入門｜サイバー大学</div>
+    <div class="title">第4回 通信の決まり事</div>
+    <div class="session">担当: 橋本 匡史</div>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">概要</div>
+    <a href="#header" class="toc-item">学習目標・授業構成</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">第1章</div>
+    <a href="#ch1" class="toc-item">通信の決まり事とは</a>
+    <a href="#ch1-proto" class="toc-item toc-sub">プロトコルとは</a>
+    <a href="#ch1-postal" class="toc-item toc-sub">郵便サービスの例</a>
+    <a href="#ch1-arch" class="toc-item toc-sub">ネットワーク・アーキテクチャ</a>
+    <a href="#ch1-osi" class="toc-item toc-sub">OSI参照モデル</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">第2章</div>
+    <a href="#ch2" class="toc-item">TCP/IPとは</a>
+    <a href="#ch2-packet" class="toc-item toc-sub">パケット交換方式</a>
+    <a href="#ch2-tcpip-role" class="toc-item toc-sub">TCPとIPの役割</a>
+    <a href="#ch2-stack" class="toc-item toc-sub">プロトコル群の構造</a>
+    <a href="#ch2-gen" class="toc-item toc-sub">パケット生成の流れ</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">第3章</div>
+    <a href="#ch3" class="toc-item">TCP/IPプロトコル群</a>
+    <a href="#ch3-ni" class="toc-item toc-sub">NI層・ハードウェア</a>
+    <a href="#ch3-inet" class="toc-item toc-sub">インターネット層</a>
+    <a href="#ch3-trans" class="toc-item toc-sub">トランスポート層</a>
+    <a href="#ch3-app" class="toc-item toc-sub">アプリケーション層</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">第4章</div>
+    <a href="#ch4" class="toc-item">ネットワーク上の識別子</a>
+    <a href="#ch4-mac" class="toc-item toc-sub">MACアドレス</a>
+    <a href="#ch4-ip" class="toc-item toc-sub">IPアドレス</a>
+    <a href="#ch4-port" class="toc-item toc-sub">ポート番号</a>
+    <a href="#ch4-uri" class="toc-item toc-sub">URI・ドメイン名</a>
+    <a href="#ch4-resolve" class="toc-item toc-sub">名前解決・アドレス解決</a>
+    <a href="#ch4-example" class="toc-item toc-sub">Web通信の例</a>
+  </div>
+  <div class="toc-group">
+    <div class="toc-group-title">補足</div>
+    <a href="#uncert" class="toc-item">❓ 未確定事項</a>
+    <a href="#suppA" class="toc-item">⭐ 最重要ワード一覧</a>
+    <a href="#suppB" class="toc-item">📚 背景知識</a>
+    <a href="#suppC" class="toc-item">🎯 試験重要観点</a>
+    <a href="#suppD" class="toc-item">🔗 関連概念</a>
+  </div>
+</nav>
+
+<!-- ===== MAIN ===== -->
+<main id="main">
+
+<!-- ===== HEADER ===== -->
+<div class="note-header" id="header">
+  <div class="meta-row">
+    <span class="meta-tag">インターネット入門</span>
+    <span class="meta-tag">第4回</span>
+    <span class="meta-tag green">S03照合済み + S05×2</span>
+    <span class="meta-tag" style="background:rgba(52,211,153,0.12);color:#34d399;border-color:rgba(52,211,153,0.3);">橋本 匡史</span>
+  </div>
+  <h1>通信の決まり事</h1>
+  <div class="desc">通信プロトコルの基本概念、TCP/IPの仕組み、TCP/IPプロトコル群の各層の役割と識別子について学習する。</div>
+  <div class="goals-box">
+    <div class="goals-title">第4回 学習目標</div>
+    <ol>
+      <li>通信プロトコルの基本的な概念について理解し、説明できる</li>
+      <li>TCP/IPに関する基本的な概念について理解し、説明できる</li>
+    </ol>
+  </div>
+</div>
+
+<!-- ================================================================ -->
+<!-- 第1章 -->
+<!-- ================================================================ -->
+<div class="chapter" id="ch1">
+  <div class="chapter-header">
+    <span class="chapter-num">第1章</span>
+    <span class="chapter-title">通信の決まり事とは</span>
+  </div>
+  <div class="chapter-goals">
+    学習目標：① プロトコルとは何かを理解し説明できる　② プロトコルとネットワーク・アーキテクチャの関係を理解し説明できる　③ OSI参照モデルの概要を理解し説明できる
+  </div>
+
+  <!-- プロトコルとは -->
+  <div class="section" id="ch1-proto">
+    <div class="section-title">プロトコルとは</div>
+    <p>ネットワークを介してコンピュータ同士でデータをやり取りするための<strong>形式や手順といった決まり事</strong>を<span class="keyword">プロトコル</span>（通信プロトコル、通信規約とも言う）という。<span class="ptr">← S03:p.7</span></p>
+    <p>プロトコルは主に以下の2つから構成される：</p>
+    <div class="card">
+      <table>
+        <thead><tr><th>構成要素</th><th>意味</th><th>郵便サービスの例</th></tr></thead>
+        <tbody>
+          <tr><td><strong>フォーマット（Format）</strong></td><td>データの表現方法やり取りする情報の構成・形式に関する決まり事</td><td>はがきの書式（裏面に内容、表面に郵便番号・宛名など）</td></tr>
+          <tr><td><strong>プロシージャ（Procedure）</strong></td><td>データをやり取りする際の手順に関する決まり事</td><td>切手を貼ってポストに投函する手順</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="block-audio">
+      <div class="block-label">🔊 音声補足</div>
+      <p>社会生活には暗黙のルール（挨拶など）もあれば、郵便サービスのようにきっちり手順が決まったものもある。コンピュータネットワークも同様に形式と手順がある。<span class="ptr">← S05</span></p>
+    </div>
+  </div>
+
+  <!-- 郵便サービスの例 -->
+  <div class="section" id="ch1-postal">
+    <div class="section-title">プロトコルとしての郵便サービス</div>
+    <p>郵便サービスをプロトコルとして見たとき、差出人が行う手順（書いて・貼って・投函）だけでなく、郵便事業者側にも決まったプロシージャが存在する。<span class="ptr">← S03:p.8</span></p>
+
+    <!-- SVG: 郵便サービスのフロー -->
+    <div class="fig-wrap">
+      <svg viewBox="0 0 720 140" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:720px;display:block;margin:0 auto;">
+        <defs>
+          <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#5b8dee"/>
+          </marker>
+        </defs>
+        <!-- boxes -->
+        <rect x="10" y="40" width="100" height="60" rx="6" fill="#1e2840" stroke="#5b8dee" stroke-width="1.2"/>
+        <text x="60" y="68" text-anchor="middle" font-size="12" fill="#e2e8f5" font-family="'Noto Sans JP',sans-serif">差出人</text>
+        <text x="60" y="84" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="'Noto Sans JP',sans-serif">（書いて投函）</text>
+
+        <rect x="150" y="40" width="110" height="60" rx="6" fill="#1c2335" stroke="#2a3450" stroke-width="1"/>
+        <text x="205" y="68" text-anchor="middle" font-size="12" fill="#e2e8f5" font-family="'Noto Sans JP',sans-serif">集荷</text>
+        <text x="205" y="84" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="'Noto Sans JP',sans-serif">（ポストから収集）</text>
+
+        <rect x="300" y="40" width="110" height="60" rx="6" fill="#1c2335" stroke="#2a3450" stroke-width="1"/>
+        <text x="355" y="68" text-anchor="middle" font-size="12" fill="#e2e8f5" font-family="'Noto Sans JP',sans-serif">仕分け</text>
+        <text x="355" y="84" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="'Noto Sans JP',sans-serif">（地域ごと分類）</text>
+
+        <rect x="450" y="40" width="110" height="60" rx="6" fill="#1c2335" stroke="#2a3450" stroke-width="1"/>
+        <text x="505" y="68" text-anchor="middle" font-size="12" fill="#e2e8f5" font-family="'Noto Sans JP',sans-serif">配達</text>
+        <text x="505" y="84" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="'Noto Sans JP',sans-serif">（宛先へ配達）</text>
+
+        <rect x="600" y="40" width="100" height="60" rx="6" fill="#1e2840" stroke="#34d399" stroke-width="1.2"/>
+        <text x="650" y="68" text-anchor="middle" font-size="12" fill="#e2e8f5" font-family="'Noto Sans JP',sans-serif">受取人</text>
+        <text x="650" y="84" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="'Noto Sans JP',sans-serif">（受け取る）</text>
+
+        <!-- arrows -->
+        <line x1="111" y1="70" x2="148" y2="70" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#arr)"/>
+        <line x1="261" y1="70" x2="298" y2="70" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#arr)"/>
+        <line x1="411" y1="70" x2="448" y2="70" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#arr)"/>
+        <line x1="561" y1="70" x2="598" y2="70" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <!-- label -->
+        <text x="360" y="125" text-anchor="middle" font-size="11" fill="#34d399" font-family="'JetBrains Mono',monospace">ポイント: 各機能は独立 → 分業・独立改良が可能</text>
+      </svg>
+      <figcaption>図: 郵便サービスのプロトコル ← S03:p.8</figcaption>
+    </div>
+
+    <div class="block-audio">
+      <div class="block-label">🔊 音声補足</div>
+      <p><span class="emph">各機能が独立している</span>ことがポイント。例えば、集荷を自転車で行うかバイクで行うかは仕分けには影響しない。現在は仕分けを機械で自動化しているが、それは郵便サービス全体の仕組みを変えずに特定の機能だけ改良した例。コンピュータネットワークでも同じ考え方が適用される。<span class="ptr">← S05</span></p>
+    </div>
+  </div>
+
+  <!-- ネットワーク・アーキテクチャ -->
+  <div class="section" id="ch1-arch">
+    <div class="section-title">プロトコルの階層構造とネットワーク・アーキテクチャ</div>
+    <p>通信プロトコルは、機能ごとに分割されたプロトコルが複数重なった<strong>階層構造</strong>を持つ。下位層は物理（信号）領域、上位層はアプリケーション（ユーザ側）領域に対応する。<span class="ptr">← S03:p.9</span></p>
+    <div class="block-audio">
+      <div class="block-label">🔊 音声補足 — 階層化のメリット</div>
+      <p>各階層間でやり取りする情報（インターフェイス）が決まれば、<span class="emph">その階層の中身のみ</span>に着目して開発できる。例えば有線LANの電話回線を光ファイバに変える場合、階層化されていれば対応する階層のみ変更すればよく、上位の層を変更する必要がない。階層化していない場合は一から全機能を開発し直す必要があり、コストと時間が大幅に増加する。<span class="ptr">← S05</span></p>
+    </div>
+    <div class="card">
+      <div class="card-title">階層化のメリット（S03:p.9）</div>
+      <p>プロトコルに変更がある場合は<span class="emph">対応する階層のみ変更すればよく</span>、開発時間やコストが削減できる。</p>
+    </div>
+    <p>コンピュータネットワークの設計思想（どの機能をどの階層で実現するか）を<span class="keyword">ネットワーク・アーキテクチャ（Network Architecture）</span>という。階層モデルとして表したとき、プロトコルの視点で見たものを<span class="keyword">プロトコル・スタック（Protocol Stack）</span>とも呼ぶ。<span class="ptr">← S03:p.10</span></p>
+    <p>主なネットワーク・アーキテクチャは2つ：</p>
+    <div class="card">
+      <table>
+        <thead><tr><th>モデル</th><th>特徴</th><th>利用状況</th></tr></thead>
+        <tbody>
+          <tr><td><strong>OSI参照モデル</strong></td><td>7階層モデル、デジュール・スタンダード</td><td>実際には利用されていない（理解のための参照モデル）</td></tr>
+          <tr><td><strong>TCP/IPプロトコル群</strong></td><td>5階層モデル（4+1）、デファクト・スタンダード</td><td>インターネットで実際に利用されている</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="block-audio">
+      <div class="block-label">🔊 音声補足</div>
+      <p>OSI参照モデルに従ったプロトコルは利用されていないため厳密にはプロトコル・スタックとは言えないが、TCP/IPプロトコル群はプロトコルに着目した階層モデルなのでプロトコル・スタックとも言える。インターネット上で実際に使われているのはTCP/IPプロトコル群だが、機能の理解のしやすさという点ではOSI参照モデルがわかりやすい。<span class="ptr">← S05</span></p>
+    </div>
+  </div>
+
+  <!-- OSI参照モデル -->
+  <div class="section" id="ch1-osi">
+    <div class="section-title">OSI参照モデル</div>
+    <p>ISO（国際標準化機構）によって標準化された7階層モデル。当時のソフトウェア工学の知見を反映した、理想的な形で整理されたモデルとされている。公的な国際標準化組織が策定したため<span class="keyword">デジュール・スタンダード（De Jure Standard）</span>に分類される。<span class="ptr">← S03:p.11</span></p>
+
+    <!-- SVG: OSI 7階層 -->
+    <div class="fig-wrap">
+      <svg viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:600px;display:block;margin:0 auto;">
+        <!-- layers -->
+        <!-- Layer 7 -->
+        <rect x="20" y="10" width="340" height="36" rx="5" fill="#1e2840" stroke="#5b8dee" stroke-width="1.2"/>
+        <text x="40" y="33" font-size="13" fill="#e2e8f5" font-family="'Noto Sans JP',sans-serif">第7層　アプリケーション層</text>
+        <text x="380" y="33" font-size="12" fill="#8a99b8" font-family="'Noto Sans JP',sans-serif">Application Layer</text>
+        <!-- Layer 6 -->
+        <rect x="20" y="52" width="340" height="36" rx="5" fill="#1e2840" stroke="#5b8dee" stroke-width="1.0"/>
+        <text x="40" y="75" font-size="13" fill="#e2e8f5" font-family="'Noto Sans JP',sans-serif">第6層　プレゼンテーション層</text>
+        <text x="380" y="75" font-size="12" fill="#8a99b8" font-family="'Noto Sans JP',sans-serif">Presentation Layer</text>
+        <!-- Layer 5 -->
+        <rect x="20" y="94" width="340" height="36" rx="5" fill="#1e2840" stroke="#5b8dee" stroke-width="1.0"/>
+        <text x="40" y="117" font-size="13" fill="#e2e8f5" font-family="'Noto Sans JP',sans-serif">第5層　セッション層</text>
+        <text x="380" y="117" font-size="12" fill="#8a99b8" font-family="'Noto Sans JP',sans-serif">Session Layer</text>
+        <!-- Layer 4 -->
+        <rect x="20" y="136" width="340" height="36" rx="5" fill="#1c2b45" stroke="#fbbf24" stroke-width="1.2"/>
+        <text x="40" y="159" font-size="13" fill="#fbbf24" font-family="'Noto Sans JP',sans-serif" font-weight="bold">第4層　トランスポート層</text>
+        <text x="380" y="159" font-size="12" fill="#8a99b8" font-family="'Noto Sans JP',sans-serif">← TCP</text>
+        <!-- Layer 3 -->
+        <rect x="20" y="178" width="340" height="36" rx="5" fill="#1c2b45" stroke="#34d399" stroke-width="1.2"/>
+        <text x="40" y="201" font-size="13" fill="#34d399" font-family="'Noto Sans JP',sans-serif" font-weight="bold">第3層　ネットワーク層</text>
+        <text x="380" y="201" font-size="12" fill="#8a99b8" font-family="'Noto Sans JP',sans-serif">← IP</text>
+        <!-- Layer 2 -->
+        <rect x="20" y="220" width="340" height="36" rx="5" fill="#1e2840" stroke="#2a3450" stroke-width="1.0"/>
+        <text x="40" y="243" font-size="13" fill="#e2e8f5" font-family="'Noto Sans JP',sans-serif">第2層　データリンク層</text>
+        <!-- Layer 1 -->
+        <rect x="20" y="262" width="340" height="32" rx="5" fill="#1e2840" stroke="#2a3450" stroke-width="1.0"/>
+        <text x="40" y="283" font-size="13" fill="#e2e8f5" font-family="'Noto Sans JP',sans-serif">第1層　物理層</text>
+
+        <!-- arrow -->
+        <line x1="370" y1="28" x2="370" y2="280" stroke="#2a3450" stroke-width="1.5"/>
+        <text x="375" y="28" font-size="10" fill="#5b8dee" font-family="'JetBrains Mono',monospace">上位層</text>
+        <text x="375" y="280" font-size="10" fill="#5b8dee" font-family="'JetBrains Mono',monospace">下位層</text>
+      </svg>
+      <figcaption>図: OSI参照モデル 7階層 ← S03:p.11,13</figcaption>
+    </div>
+
+    <table>
+      <thead><tr><th>層</th><th>名称</th><th>役割</th><th>例</th></tr></thead>
+      <tbody>
+        <tr><td>第7層</td><td>アプリケーション層</td><td>アプリに合わせた通信サービスのプロトコルを決める</td><td>HTTP</td></tr>
+        <tr><td>第6層</td><td>プレゼンテーション層</td><td>データの表現方法を決める</td><td>HTMLでWebページを記述</td></tr>
+        <tr><td>第5層</td><td>セッション層</td><td>異なるコンピュータ間の接続状態の管理方法を決める</td><td>—</td></tr>
+        <tr><td>第4層</td><td><strong>トランスポート層</strong></td><td>エンドツーエンドで正確なデータ転送を実現</td><td><strong>TCP</strong></td></tr>
+        <tr><td>第3層</td><td><strong>ネットワーク層</strong></td><td>エンドツーエンドの経路を決める</td><td><strong>IP</strong></td></tr>
+        <tr><td>第2層</td><td>データリンク層</td><td>直接つながった機器同士のデータ通信を実現</td><td>—</td></tr>
+        <tr><td>第1層</td><td>物理層</td><td>通信に関する物理的な事柄（ケーブル・信号方式等）を決める</td><td>—</td></tr>
+      </tbody>
+    </table>
+
+    <div class="card">
+      <div class="card-title">OSI参照モデルが普及しなかった理由 ← S03:p.12</div>
+      <ul>
+        <li>登場時（1983年初出、改訂版1995年）には既にTCP/IPの実装が広がっていた</li>
+        <li>OSI参照モデルに準拠したプロトコルは複雑で品質が悪かった</li>
+        <li>ネットワーク機器のベンダーがすでにTCP/IP対応機器に多額の投資をしていた</li>
+      </ul>
+    </div>
+    <div class="block-audio">
+      <div class="block-label">🔊 音声補足</div>
+      <p>OSI参照モデルは「最初にルールをきっちり作って、それに沿ったプロトコルを作成する」という流れで開発された。一方のTCP/IPは実際に動くプロトコルが先に実装されてから後で体系化された。OSI参照モデルは実際には使われないが、ネットワーク機能を理解する上では非常に分かりやすいモデルとして教育的な目的で今も参照される。<span class="ptr">← S05</span></p>
+    </div>
+  </div>
+</div><!-- /chapter 1 -->
+
+
+<!-- ================================================================ -->
+<!-- 第2章 -->
+<!-- ================================================================ -->
+<div class="chapter" id="ch2">
+  <div class="chapter-header">
+    <span class="chapter-num">第2章</span>
+    <span class="chapter-title">TCP/IPとは</span>
+  </div>
+  <div class="chapter-goals">
+    学習目標：① パケットの構造・生成を中心にパケット交換の仕組みを理解し説明できる　② TCP/IPプロトコル群での各層の大まかな役割の概要を理解し説明できる
+  </div>
+
+  <div class="section" id="ch2-overview">
+    <div class="section-title">TCP/IPの概要</div>
+    <p>TCP/IPはインターネットの中心的なネットワーク技術。<span class="ptr">← S03:p.18</span></p>
+    <div class="card">
+      <table>
+        <thead><tr><th>略称</th><th>正式名称</th></tr></thead>
+        <tbody>
+          <tr><td><code>TCP</code></td><td>Transmission Control Protocol（トランスミッション・コントロール・プロトコル）</td></tr>
+          <tr><td><code>IP</code></td><td>Internet Protocol（インターネット・プロトコル）</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul>
+      <li>異なる技術で実現された複数のネットワークを<strong>相互接続</strong>することを目的に開発</li>
+      <li>開発当初はTCP/IPは1つのプロトコルだったが、改良の過程でTCPとIPの2つに分割された</li>
+      <li><span class="emph">1981年</span>に現在のTCP/IPの仕様が公開（以降、部分的な改良はあるが基本は継続利用）<span class="ptr">← S03:p.12,18</span></li>
+      <li>TCP/IPは<strong>パケット交換</strong>を前提として設計されている</li>
+    </ul>
+  </div>
+
+  <!-- パケット交換 -->
+  <div class="section" id="ch2-packet">
+    <div class="section-title">パケット交換方式</div>
+    <p><span class="keyword">パケット交換（Packet Switching）</span>とは、データをパケット単位に分割して転送する方式。パケット交換機（ルータ）がパケットを次々と次のルータに転送することで宛先ホストまで届ける。<span class="ptr">← S03:p.19</span></p>
+    <div class="card">
+      <div class="card-title">パケット交換の2つのポイント ← S03:p.20</div>
+      <ul>
+        <li><strong>ルータ共有による効率化：</strong>ルータのバッファに様々なユーザのパケットが混在する。転送量が異なる多様なユーザが混在することで<span class="emph">ルータの利用率が高く無駄が少なくなる</span></li>
+        <li><strong>パケット廃棄の発生：</strong>バッファの容量には限りがあり、バッファが満杯の場合に到着したパケットは<span class="keyword">パケット損失（パケット廃棄）</span>となる。パケット交換では基本的にパケット廃棄が発生する仕組みであるため、<span class="emph">通信品質の保証はしづらい（ベストエフォート）</span></li>
+      </ul>
+    </div>
+    <div class="block-audio">
+      <div class="block-label">🔊 音声補足</div>
+      <p>パケット廃棄が発生することでルータの構造がシンプルになり、コストが下がる。廃棄されたパケットは通常再送する必要がある。ベストエフォートの考え方に従った方式であり、通信品質の保証は難しい。<span class="ptr">← S05</span></p>
+    </div>
+
+    <div class="section-title" style="margin-top:20px;">パケットの構造</div>
+    <p>パケットは以下の要素から構成される：<span class="ptr">← S03:p.21</span></p>
+    <div class="card">
+      <table>
+        <thead><tr><th>要素</th><th>意味</th><th>郵便サービスの対応</th></tr></thead>
+        <tbody>
+          <tr><td><strong>ヘッダ（Header）</strong></td><td>パケットの先頭に付与される制御情報（宛先など転送に必要な情報）</td><td>はがき表面の郵便番号・宛名・住所</td></tr>
+          <tr><td><strong>ペイロード（Payload）</strong></td><td>送りたいデータ本体</td><td>はがき裏面の内容</td></tr>
+          <tr><td><strong>トレイラ（Trailer）</strong></td><td>パケットの末尾に付与される制御情報（利用される場面は限定的）</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="block-audio">
+      <div class="block-label">🔊 音声補足</div>
+      <p>単にデータを複数パケットに分割しただけでは「誰のパケットでどこへ送るか」が分からない。そのため分割したデータに宛先などの情報をヘッダとして付与する。パケットの基本構造として「先頭にヘッダ、その後にペイロード」と理解しておくこと。<span class="ptr">← S05</span></p>
+    </div>
+  </div>
+
+  <!-- TCP と IP の役割 -->
+  <div class="section" id="ch2-tcpip-role">
+    <div class="section-title">TCPとIPの役割</div>
+    <p>パケット交換で解決すべき2つの課題：<span class="ptr">← S03:p.22</span></p>
+    <div class="block-ext"><div class="block-label">📖 用語定義</div><p><span class="keyword">エンドホスト（End Host）</span>：インターネットで通信する端と端のホスト。送信元ホストや宛先ホストを指す。<span class="ptr">← S03:p.22 *1</span></p></div>
+    <ul>
+      <li>送信元ホストから宛先ホストへ、どのネットワークやルータを経由するか</li>
+      <li>ルータでパケット廃棄が発生した場合にどうするか</li>
+    </ul>
+
+    <!-- SVG: IPとTCPの役割分担 -->
+    <div class="fig-wrap">
+      <svg viewBox="0 0 680 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:680px;display:block;margin:0 auto;">
+        <!-- IP box -->
+        <rect x="20" y="20" width="300" height="140" rx="8" fill="#1c2335" stroke="#34d399" stroke-width="1.5"/>
+        <text x="170" y="48" text-anchor="middle" font-size="15" fill="#34d399" font-weight="bold" font-family="'JetBrains Mono',monospace">IP</text>
+        <text x="170" y="68" text-anchor="middle" font-size="11" fill="#8a99b8" font-family="'Noto Sans JP',sans-serif">（シンプルな機能）</text>
+        <text x="35" y="93" font-size="12" fill="#e2e8f5" font-family="'Noto Sans JP',sans-serif">・IPアドレスによるホスト識別</text>
+        <text x="35" y="113" font-size="12" fill="#e2e8f5" font-family="'Noto Sans JP',sans-serif">・複数ネットワーク経由の転送</text>
+        <text x="35" y="133" font-size="12" fill="#e2e8f5" font-family="'Noto Sans JP',sans-serif">※到達は保証しない（ベストエフォート）</text>
+
+        <!-- arrow -->
+        <text x="340" y="110" text-anchor="middle" font-size="20" fill="#5b8dee">+</text>
+
+        <!-- TCP box -->
+        <rect x="360" y="20" width="300" height="140" rx="8" fill="#1c2335" stroke="#fbbf24" stroke-width="1.5"/>
+        <text x="510" y="48" text-anchor="middle" font-size="15" fill="#fbbf24" font-weight="bold" font-family="'JetBrains Mono',monospace">TCP</text>
+        <text x="510" y="68" text-anchor="middle" font-size="11" fill="#8a99b8" font-family="'Noto Sans JP',sans-serif">（複雑な機能）</text>
+        <text x="375" y="93" font-size="12" fill="#e2e8f5" font-family="'Noto Sans JP',sans-serif">・パケット廃棄の検出と再送</text>
+        <text x="375" y="113" font-size="12" fill="#e2e8f5" font-family="'Noto Sans JP',sans-serif">・パケット順序の入れ替え</text>
+        <text x="375" y="133" font-size="12" fill="#e2e8f5" font-family="'Noto Sans JP',sans-serif">・データ転送量の調整</text>
+        <text x="375" y="153" font-size="11" fill="#fbbf24" font-family="'Noto Sans JP',sans-serif">→ エンドホストで実現（エンドツーエンド）</text>
+      </svg>
+      <figcaption>図: IPとTCPの役割分担 ← S03:p.22</figcaption>
+    </div>
+
+    <div class="block-audio">
+      <div class="block-label">🔊 音声補足 — エンドツーエンドの概念</div>
+      <p>第2回でも触れた<span class="keyword">エンドツーエンド</span>の重要な概念を実現している。「ネットワークは簡単な仕組みで実現して、複雑な処理はホストで行う」ということ。IPがパケットをエンドホスト間で転送する部分を実現し、信頼性の低いネットワークを前提にした複雑な処理（再送など）はTCPとしてホストで行う。<span class="ptr">← S05</span></p>
+    </div>
+  </div>
+
+  <!-- プロトコル群の構造 -->
+  <div class="section" id="ch2-stack">
+    <div class="section-title">TCP/IPプロトコル群の構造</div>
+    <p>TCP/IPを中心としたプロトコル・スタックをOSI参照モデルのように整理したものが<span class="keyword">TCP/IPプロトコル群（TCP/IP Protocol Suite）</span>。<span class="ptr">← S03:p.24</span></p>
+    <div class="block-audio"><div class="block-label">🔊 音声補足 — Web通信のプロトコルスタック</div><p>Web通信を例にプロトコルスタックを見ると、HTTP → TCP → IP → Ethernet/無線LAN という積み重ねになる。IPの層には注意点があり、<span class="emph">ネットワーク上でパケット廃棄が発生する場合がある</span>。この「信頼性の低い通信」を前提にエンドホスト間の確実な転送をTCPが実現している。<span class="ptr">← S03:p.23</span></p></div>
+
+    <div class="card">
+      <div class="card-title">TCP/IPプロトコル群 5階層モデル</div>
+      <table>
+        <thead><tr><th>層番号</th><th>層名</th><th>対応プロトコル例</th></tr></thead>
+        <tbody>
+          <tr><td>第5層</td><td>アプリケーション層</td><td>HTTP, SMTP, POP3, IMAP, DNS, FTP …</td></tr>
+          <tr><td>第4層</td><td>トランスポート層</td><td>TCP, UDP</td></tr>
+          <tr><td>第3層</td><td>インターネット層</td><td>IPv4, IPv6, ICMP</td></tr>
+          <tr><td>第2層</td><td>ネットワークインターフェイス層</td><td>Ethernet(IEEE 802.3), 無線LAN(IEEE 802.11), ARP</td></tr>
+          <tr><td>第1層</td><td>（ハードウェア）</td><td>ケーブル・コネクタ・電波など物理媒体</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="block-audio">
+      <div class="block-label">🔊 音声補足 — 注意点</div>
+      <p>TCP/IPプロトコル群はOSI参照モデルのようにきっちり決められたものではなく、利用されているプロトコルをもとに後から体系化したもの。そのため階層モデルとしてはきれいに整理されていない面があり、文献によって階層数や階層名が異なる場合がある。本科目では4階層+1階層の5階層モデルとして紹介している。<span class="ptr">← S05</span></p>
+    </div>
+
+    <div class="card" style="margin-top:16px;">
+      <div class="card-title">OSI参照モデル vs TCP/IPプロトコル群 比較 ← S03:p.25,26</div>
+      <table>
+        <thead><tr><th>比較項目</th><th>OSI参照モデル</th><th>TCP/IPプロトコル群</th></tr></thead>
+        <tbody>
+          <tr><td>標準の種別</td><td>デジュール・スタンダード（公的標準）</td><td>デファクト・スタンダード（事実上の標準）</td></tr>
+          <tr><td>策定方法</td><td>ルールを先に決め、プロトコルを作成</td><td>先に動くプロトコルを実装し、後から体系化</td></tr>
+          <tr><td>階層数</td><td>7階層</td><td>5階層（4+1）</td></tr>
+          <tr><td>実利用</td><td>利用されていない</td><td>インターネットで実際に利用</td></tr>
+        </tbody>
+      </table>
+      <div class="block-audio" style="margin-top:12px;">
+        <div class="block-label">🔊 音声補足 — 2つの対応関係のポイント</div>
+        <p>OSI参照モデルとTCP/IPプロトコル群では階層名が異なる層がある。また、OSIの第5層〜第7層（セッション層・プレゼンテーション層・アプリケーション層）がTCP/IPプロトコル群では1つのアプリケーション層にまとめられている。実際にアプリケーションを作ると第5・6層を分けるほどのものではなく、アプリケーション層としてまとめた方が合理的だったということ。<span class="ptr">← S05</span></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- パケット生成の流れ -->
+  <div class="section" id="ch2-gen">
+    <div class="section-title">パケット生成の流れ</div>
+    <p>アプリケーションでデータが生成されてからネットワークにパケットが流れるまで、各層でヘッダが先頭に追加されていく（カプセル化）。<span class="ptr">← S03:p.27</span></p>
+
+    <!-- SVG: パケット生成フロー -->
+    <div class="fig-wrap">
+      <svg viewBox="0 0 680 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:680px;display:block;margin:0 auto;">
+        <defs>
+          <marker id="arrd" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#5b8dee"/>
+          </marker>
+        </defs>
+        <!-- Layer labels -->
+        <text x="10" y="42" font-size="11" fill="#8a99b8" font-family="'Noto Sans JP',sans-serif">アプリ層</text>
+        <text x="10" y="100" font-size="11" fill="#8a99b8" font-family="'Noto Sans JP',sans-serif">トランス</text>
+        <text x="10" y="113" font-size="11" fill="#8a99b8" font-family="'Noto Sans JP',sans-serif">ポート層</text>
+        <text x="10" y="162" font-size="11" fill="#8a99b8" font-family="'Noto Sans JP',sans-serif">インター</text>
+        <text x="10" y="175" font-size="11" fill="#8a99b8" font-family="'Noto Sans JP',sans-serif">ネット層</text>
+        <text x="10" y="228" font-size="11" fill="#8a99b8" font-family="'Noto Sans JP',sans-serif">NI層</text>
+
+        <!-- 行1: App layer data -->
+        <rect x="90" y="22" width="260" height="30" rx="4" fill="#1e2840" stroke="#5b8dee" stroke-width="1"/>
+        <text x="220" y="42" text-anchor="middle" font-size="12" fill="#e2e8f5" font-family="'Noto Sans JP',sans-serif">データ</text>
+        <rect x="70" y="22" width="20" height="30" rx="3" fill="#5b8dee" opacity="0.5"/>
+        <text x="80" y="42" text-anchor="middle" font-size="9" fill="#fff" font-family="'JetBrains Mono',monospace">HA</text>
+        <text x="370" y="42" font-size="11" fill="#5b8dee" font-family="'JetBrains Mono',monospace">ヘッダ追加</text>
+
+        <!-- down arrow -->
+        <line x1="220" y1="56" x2="220" y2="74" stroke="#5b8dee" stroke-width="1.2" marker-end="url(#arrd)"/>
+
+        <!-- 行2: Transport -->
+        <rect x="90" y="78" width="206" height="30" rx="4" fill="#1e2840" stroke="#5b8dee" stroke-width="1"/>
+        <text x="193" y="98" text-anchor="middle" font-size="12" fill="#e2e8f5" font-family="'Noto Sans JP',sans-serif">データ</text>
+        <rect x="68" y="78" width="22" height="30" rx="3" fill="#5b8dee" opacity="0.5"/>
+        <text x="79" y="98" text-anchor="middle" font-size="9" fill="#fff" font-family="'JetBrains Mono',monospace">HA</text>
+        <rect x="44" y="78" width="24" height="30" rx="3" fill="#fbbf24" opacity="0.7"/>
+        <text x="56" y="98" text-anchor="middle" font-size="9" fill="#1a1a1a" font-family="'JetBrains Mono',monospace" font-weight="bold">HT</text>
+        <text x="370" y="98" font-size="11" fill="#fbbf24" font-family="'JetBrains Mono',monospace">TCPヘッダ付与</text>
+
+        <!-- down arrow -->
+        <line x1="200" y1="112" x2="200" y2="130" stroke="#5b8dee" stroke-width="1.2" marker-end="url(#arrd)"/>
+
+        <!-- 行3: Internet -->
+        <rect x="90" y="134" width="180" height="30" rx="4" fill="#1e2840" stroke="#5b8dee" stroke-width="1"/>
+        <text x="180" y="154" text-anchor="middle" font-size="12" fill="#e2e8f5" font-family="'Noto Sans JP',sans-serif">データ</text>
+        <rect x="66" y="134" width="24" height="30" rx="3" fill="#5b8dee" opacity="0.5"/>
+        <text x="78" y="154" text-anchor="middle" font-size="9" fill="#fff" font-family="'JetBrains Mono',monospace">HA</text>
+        <rect x="42" y="134" width="24" height="30" rx="3" fill="#fbbf24" opacity="0.7"/>
+        <text x="54" y="154" text-anchor="middle" font-size="9" fill="#1a1a1a" font-family="'JetBrains Mono',monospace" font-weight="bold">HT</text>
+        <rect x="18" y="134" width="24" height="30" rx="3" fill="#34d399" opacity="0.7"/>
+        <text x="30" y="154" text-anchor="middle" font-size="9" fill="#1a1a1a" font-family="'JetBrains Mono',monospace" font-weight="bold">HI</text>
+        <text x="370" y="154" font-size="11" fill="#34d399" font-family="'JetBrains Mono',monospace">IPヘッダ付与</text>
+
+        <!-- down arrow -->
+        <line x1="180" y1="168" x2="180" y2="186" stroke="#5b8dee" stroke-width="1.2" marker-end="url(#arrd)"/>
+
+        <!-- 行4: NI -->
+        <rect x="90" y="190" width="155" height="30" rx="4" fill="#1e2840" stroke="#5b8dee" stroke-width="1"/>
+        <text x="168" y="210" text-anchor="middle" font-size="12" fill="#e2e8f5" font-family="'Noto Sans JP',sans-serif">データ</text>
+        <rect x="64" y="190" width="26" height="30" rx="3" fill="#5b8dee" opacity="0.5"/>
+        <text x="77" y="210" text-anchor="middle" font-size="9" fill="#fff" font-family="'JetBrains Mono',monospace">HA</text>
+        <rect x="38" y="190" width="26" height="30" rx="3" fill="#fbbf24" opacity="0.7"/>
+        <text x="51" y="210" text-anchor="middle" font-size="9" fill="#1a1a1a" font-family="'JetBrains Mono',monospace" font-weight="bold">HT</text>
+        <rect x="12" y="190" width="26" height="30" rx="3" fill="#34d399" opacity="0.7"/>
+        <text x="25" y="210" text-anchor="middle" font-size="9" fill="#1a1a1a" font-family="'JetBrains Mono',monospace" font-weight="bold">HI</text>
+        <!-- NI header slightly taller/left overflow -->
+        <rect x="-10" y="190" width="22" height="30" rx="3" fill="#a78bfa" opacity="0.7"/>
+        <text x="2" y="210" text-anchor="middle" font-size="8" fill="#fff" font-family="'JetBrains Mono',monospace">HNI</text>
+        <text x="370" y="210" font-size="11" fill="#a78bfa" font-family="'JetBrains Mono',monospace">NIヘッダ付与 → 送信</text>
+
+        <!-- 凡例 -->
+        <text x="90" y="260" font-size="10" fill="#5b8dee" font-family="'JetBrains Mono',monospace">HA=アプリ  HT=TCP  HI=IP  HNI=ネットワークIF</text>
+        <text x="90" y="275" font-size="10" fill="#8a99b8" font-family="'Noto Sans JP',sans-serif">受信側では逆の順でヘッダを取り除きながら上位層へ渡す</text>
+      </svg>
+      <figcaption>図: TCP/IPプロトコル群とパケット生成（送信側） ← S03:p.27</figcaption>
+    </div>
+    <div class="block-audio">
+      <div class="block-label">🔊 音声補足</div>
+      <p>宛先ホストにパケットが到着すると、送信時と逆の手順でヘッダを各層で取り除きながら上位層へ渡す。トランスポート層（TCP）では分割したパケットを連結して元のデータに復元してアプリケーション層に渡す。最終的に送信元ホストから送られたデータを宛先ホストのアプリケーションが受け取る。<span class="ptr">← S05</span></p>
+    </div>
+  </div>
+</div><!-- /chapter 2 -->
+
+
+<!-- ================================================================ -->
+<!-- 第3章 -->
+<!-- ================================================================ -->
+<div class="chapter" id="ch3">
+  <div class="chapter-header">
+    <span class="chapter-num">第3章</span>
+    <span class="chapter-title">TCP/IPプロトコル群</span>
+  </div>
+  <div class="chapter-goals">
+    学習目標：TCP/IPプロトコル群の各階層の機能・役割・使用プロトコルについて理解し説明できる
+  </div>
+
+  <!-- NI層・HW -->
+  <div class="section" id="ch3-ni">
+    <div class="section-title">ネットワークインターフェイス層とハードウェア</div>
+    <table>
+      <thead><tr><th>層</th><th>役割</th><th>例</th></tr></thead>
+      <tbody>
+        <tr><td><strong>ネットワークインターフェイス層</strong></td><td>直接つながったコンピュータ間でのデータ通信を実現（LAN内通信の機能を提供）</td><td>Ethernet, Wi-Fi</td></tr>
+        <tr><td><strong>ハードウェア</strong></td><td>通信機器の機械的・物理的な接続条件を規定（ケーブルの種類、コネクタの形状、通信メディア、周波数帯など）</td><td>LANケーブル、無線電波</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:12px;"><strong>主なプロトコル：</strong><span class="ptr">← S03:p.35</span></p>
+    <div class="card">
+      <table>
+        <thead><tr><th>プロトコル</th><th>正式名称・規格番号</th><th>説明</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Ethernet</strong></td><td>IEEE 802.3</td><td>IEEEによって標準化された有線LANの規格。NI層とハードウェアの両方を規定</td></tr>
+          <tr><td><strong>無線LAN</strong></td><td>IEEE 802.11</td><td>IEEEによって標準化された無線LANの規格。NI層とハードウェアの両方を規定。IEEE 802.11の仕様に基づいてWi-Fi AllianceがWi-Fi CERTIFIEDの認定を行う</td></tr>
+          <tr><td><strong>ARP</strong></td><td>Address Resolution Protocol</td><td>インターネット層のIPアドレスからNI層のMACアドレスに変換するプロトコル（詳細は第4章）</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="block-audio">
+      <div class="block-label">🔊 音声補足</div>
+      <p>IEEEは"Institute of Electrical and Electronics Engineers"の略。IEEE 802.3と802.11はどちらもNI層の機能とハードウェアの両方を規定している点が特徴。<span class="ptr">← S05</span></p>
+    </div>
+  </div>
+
+  <!-- インターネット層 -->
+  <div class="section" id="ch3-inet">
+    <div class="section-title">インターネット層</div>
+    <p>インターネット上のエンドホスト間で<strong>通信経路を実現</strong>することが主な役割。ホストを特定する識別子（アドレス）の定義、アドレスを利用した経路決定、エラー通知なども担う。<span class="ptr">← S03:p.36</span></p>
+    <div class="block-warn">
+      <div class="block-label">⚠️ 注意点</div>
+      <p>インターネット層では宛先ホストへの経路は確保するが、<span class="danger">正確にデータが届くことは保証しない</span>。エンドツーエンドの考え方に基づき、ネットワーク内の仕組みはできる限りシンプルにするのがTCP/IPの設計思想。<span class="ptr">← S03:p.36</span></p>
+    </div>
+    <div class="card" style="margin-top:12px;">
+      <table>
+        <thead><tr><th>プロトコル</th><th>役割</th></tr></thead>
+        <tbody>
+          <tr><td><strong>IP（IPv4 / IPv6）</strong></td><td>IPアドレスを利用してインターネット上のホストを識別。IPv4とIPv6は互換性なし</td></tr>
+          <tr><td><strong>ICMP</strong></td><td>Internet Control Message Protocol。ネットワーク上でエラーが発生した場合に通知。ネットワーク管理でよく利用</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="block-audio">
+      <div class="block-label">🔊 音声補足 — IPv6の背景</div>
+      <p>IPv6はIPv4で発覚した問題に対処したもの。インターネットが広がりすぎてIPv4のIPアドレスが足りなくなったこと（アドレス枯渇問題）への対処や、実際には使われなかった機能の整理、処理の高速化のための改良が行われている。IPv4とIPv6は同じIPでも全く互換性がない（IPv4のみ対応のホストとIPv6のみ対応のホストは通信できない）。本科目ではIPv4を中心に説明。IPv6の詳細は後継科目「ネットワーク技術基礎」で学習。<span class="ptr">← S05</span></p>
+    </div>
+  </div>
+
+  <!-- トランスポート層 -->
+  <div class="section" id="ch3-trans">
+    <div class="section-title">トランスポート層</div>
+    <p>エンドホスト間で<span class="keyword">確実なデータ転送（信頼性の高い通信）</span>を実現することが主な役割。「確実なデータ転送」とは送信元ホストから送られたデータが<strong>1bitの誤りもなく</strong>宛先ホストのアプリケーションに届くこと。<span class="ptr">← S03:p.38</span></p>
+    <div class="card">
+      <table>
+        <thead><tr><th>プロトコル</th><th>種別</th><th>特徴・主な機能</th><th>用途</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>TCP</strong></td>
+            <td>コネクション型</td>
+            <td>
+              ① 通信リソースの確保と管理（コネクション型）<br>
+              ② パケット廃棄の検知とパケットの再送<br>
+              ③ パケット順序の入れ替え<br>
+              ④ パケット転送量の調整
+            </td>
+            <td>信頼性が必要な通信全般（HTTP, メールなど）</td>
+          </tr>
+          <tr>
+            <td><strong>UDP</strong><br><span style="font-size:11px;color:var(--text-muted);">User Datagram Protocol</span></td>
+            <td>コネクションレス型</td>
+            <td>最低限の機能しかないプロトコル。TCPで実現されている機能がない。コネクションレス型<span class="ptr">← S03:p.39</span></td>
+            <td>リアルタイム性が要求されるアプリケーション向け（例：音声や動画）<span class="ptr">← S03:p.39</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="block-audio">
+      <div class="block-label">🔊 音声補足 — コネクション型の概念</div>
+      <p>TCPはコネクション型プロトコル。実際のデータ転送を始まる前に情報をやり取りしてデータ転送の準備（通信リソースの確保など）を行う。準備が完了するとアプリケーションから見るとエンドホスト間で信頼性の高い論理的な通信路（<span class="keyword">コネクション</span>）があるように見える。<span class="ptr">← S05</span></p>
+    </div>
+    <div class="card">
+      <div class="card-title">用語定義（S03:p.39）</div>
+      <table>
+        <thead><tr><th>用語</th><th>定義</th></tr></thead>
+        <tbody>
+          <tr><td><strong>コネクション型プロトコル</strong></td><td>データ転送を始まる前に、その準備（通信リソースの確保など）を行うプロトコル</td></tr>
+          <tr><td><strong>コネクション</strong></td><td>エンドホスト間の論理的な通信路</td></tr>
+          <tr><td><strong>コネクションレス型プロトコル</strong></td><td>データ転送を始まる前に、その準備を行わないプロトコル</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="block-audio">
+      <div class="block-label">🔊 音声補足 — UDPが使われる場面</div>
+      <p>LAN内ではパケット廃棄が起こりにくいため輻輳制御が不要。パケット1つ分しかデータを送信しない場合や、音声・動画のように一部のパケットがなくなってもリアルタイムに再生できることの方が重要なアプリケーションではUDPが適切。TCPの機能は過剰になる場合がある。<span class="ptr">← S05</span></p>
+    </div>
+  </div>
+
+  <!-- アプリケーション層 -->
+  <div class="section" id="ch3-app">
+    <div class="section-title">アプリケーション層</div>
+    <p>ネットワーク・アプリケーションそれぞれのための通信サービスを実現することが役割。トランスポート層まででエンドホスト間の確実なデータ転送が保証されているため、アプリケーション層は自身のサービスに必要な機能の開発のみに集中できる。<span class="ptr">← S03:p.40</span></p>
+    <div class="card">
+      <table>
+        <thead><tr><th>プロトコル</th><th>正式名称</th><th>用途</th></tr></thead>
+        <tbody>
+          <tr><td><strong>HTTP</strong></td><td>HyperText Transfer Protocol</td><td>Web(WWW)で利用されるプロトコル。テキスト情報（HTMLファイル）やマルチメディア（音声、動画像）を転送<span class="ptr">← S03:p.41</span></td></tr>
+          <tr><td><strong>SMTP</strong></td><td>Simple Mail Transfer Protocol</td><td>電子メールの<em>転送</em></td></tr>
+          <tr><td><strong>POP3</strong></td><td>Post Office Protocol version 3</td><td>電子メールの<em>受信</em>。ユーザの手元でメールを管理</td></tr>
+          <tr><td><strong>IMAP</strong></td><td>Internet Message Access Protocol</td><td>電子メールの<em>受信</em>。メールサーバ上でメールを管理</td></tr>
+          <tr><td><strong>DNS</strong></td><td>Domain Name System</td><td>インターネット上でサーバの位置を表す文字列（ドメイン名）を、IPアドレスに変換するシステム/プロトコル<span class="ptr">← S03:p.42</span></td></tr>
+          <tr><td><strong>FTP</strong></td><td>File Transfer Protocol</td><td>ファイル転送専用プロトコル</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="block-audio">
+      <div class="block-label">🔊 音声補足</div>
+      <p>電子メールに関するプロトコルの詳細は第6回で改めて説明される。POP3はユーザの手元（端末）でメールを管理、IMAPはサーバ上でメールを管理する違いがある。FTPはHTTPもある意味ファイル転送を行っているが、FTPはファイル転送のみに特化したプロトコル。<span class="ptr">← S05</span></p>
+    </div>
+  </div>
+</div><!-- /chapter 3 -->
+
+
+<!-- ================================================================ -->
+<!-- 第4章 -->
+<!-- ================================================================ -->
+<div class="chapter" id="ch4">
+  <div class="chapter-header">
+    <span class="chapter-num">第4章</span>
+    <span class="chapter-title">TCP/IPとネットワーク上の識別子</span>
+  </div>
+  <div class="chapter-goals">
+    学習目標：① ネットワーク上の識別子（ポート番号・IPアドレス・MACアドレス）を理解し説明できる　② それらの役割と利用のされ方を理解し説明できる
+  </div>
+
+  <div class="section">
+    <div class="section-title">各階層の識別子まとめ</div>
+    <p>TCP/IPプロトコル群の各階層ごとに、ホストやサービスを識別する識別子がある。<span class="ptr">← S03:p.47</span></p>
+    <div class="card">
+      <table>
+        <thead><tr><th>層</th><th>識別子</th><th>識別対象</th></tr></thead>
+        <tbody>
+          <tr><td>第5層 アプリケーション層</td><td>URI、ドメイン名</td><td>インターネット上の資源（人が理解しやすい文字列）</td></tr>
+          <tr><td>第4層 トランスポート層</td><td>ポート番号</td><td>アプリケーションのプログラム</td></tr>
+          <tr><td>第3層 インターネット層</td><td>IPアドレス</td><td>インターネット上のホスト（世界で一意）</td></tr>
+          <tr><td>第2層 NI層</td><td>MACアドレス</td><td>LAN内のコンピュータ・ネットワーク機器</td></tr>
+          <tr><td>第1層 ハードウェア</td><td>—</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- MACアドレス -->
+  <div class="section" id="ch4-mac">
+    <div class="section-title">MACアドレス</div>
+    <p>ネットワークインターフェイス層で利用されるコンピュータの識別子。<span class="keyword">MAC</span>はMedia Access Control（メディア・アクセス・コントロール）の略で、LAN内で複数の機器が適切に通信できるよう調整する制御のこと。<span class="ptr">← S03:p.48</span></p>
+    <div class="card">
+      <table>
+        <thead><tr><th>項目</th><th>内容</th></tr></thead>
+        <tbody>
+          <tr><td>ビット長</td><td><strong>48bit</strong>（16進数で表記。例: <code>00:00:5E:00:52:1F</code>）</td></tr>
+          <tr><td>一意性</td><td>建前として世界で一意の番号。少なくともLAN内で重複がなければよい</td></tr>
+          <tr><td>割り当て単位</td><td>ネットワークインターフェイスごとに1つ</td></tr>
+          <tr><td>構成</td><td>前半24bit：ベンダー識別子（ベンダーを表す）／後半24bit：ベンダーが決めた番号</td></tr>
+          <tr><td>用途</td><td>LAN内でコンピュータやネットワーク機器を識別。スイッチが宛先MACアドレスを見てどのポートに送るか判断</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="block-audio">
+      <div class="block-label">🔊 音声補足</div>
+      <p>第2回で学習したようにLAN内ではHubやSwitchを経由して通信する。特にスイッチでは宛先MACアドレスを見てそのパケットがどのコンピュータ宛かを判断し、そのコンピュータが接続されているポートにのみパケットを送信する。LAN内で送信されたパケットには送信元MACアドレスと宛先MACアドレスがNI層のヘッダ情報として含まれる。<span class="ptr">← S05</span></p>
+    </div>
+  </div>
+
+  <!-- IPアドレス -->
+  <div class="section" id="ch4-ip">
+    <div class="section-title">IPアドレス</div>
+    <p>インターネット上でホストを特定するために利用される識別子。<strong>世界で一意の番号</strong>（MACアドレスは「建前として」世界で一意だが、IPアドレスは本当に世界で一意でなければならない）。<span class="ptr">← S03:p.49</span></p>
+    <div class="card">
+      <table>
+        <thead><tr><th>項目</th><th>IPv4</th><th>IPv6</th></tr></thead>
+        <tbody>
+          <tr><td>ビット長</td><td><strong>32bit</strong></td><td><strong>128bit</strong>（IPv4の4倍）</td></tr>
+          <tr><td>表記例</td><td><code>198.51.100.20</code>（32bitを8bitずつ4ブロックに分割し、各ブロックを10進数（0〜255）に変換してドットで結合）<span class="ptr">← S03:p.49</span></td><td>—</td></tr>
+          <tr><td>互換性</td><td colspan="2" style="color:#f87171;">IPv4とIPv6に互換性はない（両者対応のホストのみ相互通信可能）</td></tr>
+          <tr><td>管理機関</td><td colspan="2">ICANN（地域別・国別・ISPという階層的にIPアドレスの範囲を分割して最終的にユーザに割り振る）</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="block-audio">
+      <div class="block-label">🔊 音声補足 — IPアドレスと地理的位置</div>
+      <p>ICANNの割り当て方法によりIPアドレスとホストの地理的な位置はざっくり関係があるが、様々な理由から地理的な位置と紐づいていない場合があるので注意。<span class="ptr">← S05</span></p>
+    </div>
+
+    <div class="section-title" style="margin-top:18px;">IPアドレスの種類（IPv4）<span class="ptr">← S03:p.50</span></div>
+    <div class="card">
+      <table>
+        <thead><tr><th>種類</th><th>説明</th><th>例</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>グローバルIPアドレス</strong></td>
+            <td>ICANNから割り振られるIPアドレス。インターネット接続に必須</td>
+            <td>ISPから払い出されるアドレス</td>
+          </tr>
+          <tr>
+            <td><strong>プライベートIPアドレス</strong></td>
+            <td>自宅・オフィス内などのプライベートなネットワークで利用。IPv4アドレス不足への対策として、使用するグローバルIPアドレス数を削減するために利用。利用できる範囲は決まっている</td>
+            <td>
+              例：<code>192.168.0.0〜192.168.255.255</code><span class="ptr">← S03:p.50</span><br>
+              <span style="font-size:12px;color:var(--text-muted);">[外部補足] RFC 1918では3範囲を定義：10.0.0.0/8、172.16.0.0/12、192.168.0.0/16。スライドは192.168系の例のみ。</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="block-audio">
+      <div class="block-label">🔊 音声補足 — NAT</div>
+      <p>自宅のネットワークからインターネットに接続する場合、プライベートIPアドレスとグローバルIPアドレスの相互変換が必要になる。その変換する技術を<span class="keyword">NAT（Network Address Translation）</span>という。インターネット接続には必ずグローバルIPアドレスが必要であることを覚えておくこと。<span class="ptr">← S05</span></p>
+    </div>
+  </div>
+
+  <!-- ポート番号 -->
+  <div class="section" id="ch4-port">
+    <div class="section-title">ポート番号</div>
+    <p>トランスポート層で利用される、<strong>アプリケーションのプログラムを識別</strong>するための識別子。コンピュータ上では複数のプログラムが同時に動作しているため、IPアドレスだけではどのプログラム宛のパケットか判断できない。ポート番号とIPアドレスを組み合わせることで「どのホストのどのプログラムか」を特定できる。<span class="ptr">← S03:p.51</span></p>
+    <div class="card">
+      <div class="card-title">ウェルノウンポート番号（Well Known Port Number）</div>
+      <p>よく使われるネットワーク・アプリケーションに予め決められたポート番号。</p>
+      <table>
+        <thead><tr><th>番号</th><th>プロトコル</th><th>用途</th></tr></thead>
+        <tbody>
+          <tr><td><code>80</code></td><td>HTTP</td><td>Web通信</td></tr>
+          <tr><td><code>443</code></td><td>HTTPS</td><td>暗号化されたWeb通信</td></tr>
+          <tr><td><code>25</code></td><td>SMTP</td><td>メール転送</td></tr>
+          <tr><td><code>110</code></td><td>POP3</td><td>メール受信</td></tr>
+          <tr><td><code>143</code></td><td>IMAP</td><td>メール受信（サーバ管理型）</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="block-audio">
+      <div class="block-label">🔊 音声補足</div>
+      <p>ウェルノウンポート番号は特にWebサーバ側のポート番号として決まっている。ユーザがWebブラウザからWebサーバにアクセスする場合は80番や443番といった決まったポート番号を指定すればよいため、ユーザ側はサーバのポート番号を事前に調べる必要がない。ホスト側は使用されていないポート番号が動的に選ばれる。<span class="ptr">← S05</span></p>
+    </div>
+  </div>
+
+  <!-- URI・ドメイン名 -->
+  <div class="section" id="ch4-uri">
+    <div class="section-title">URI・ドメイン名</div>
+    <p>アプリケーション層で利用される識別子のひとつ。<span class="keyword">URI（Uniform Resource Identifier）</span>はWeb（WWW）において、インターネット上の資源の位置や資源そのものを表す識別子。人が理解しやすい文字列になっている。<span class="ptr">← S03:p.52</span></p>
+    <div class="block-audio">
+      <div class="block-label">🔊 音声補足</div>
+      <p>URIはWeb以外でも利用されることが多い汎用的な識別子。URIはURIスキームと資源情報を表すパートから構成される。特に資源情報の最初の部分であるWebサーバの位置を表す文字列をドメイン名という。<span class="ptr">← S05</span></p>
+    </div>
+    <div class="card">
+      <div class="card-title">ドメイン名の階層構造 ← S03:p.53</div>
+      <p>ドメイン名は後ろから前に向かって詳細になっていく階層構造を持つ。</p>
+      <div style="background:var(--bg-card2);border-radius:6px;padding:14px 18px;margin:10px 0;font-family:var(--mono);font-size:13px;color:var(--text);">
+        <span style="color:#fbbf24;">www</span>.<span style="color:#34d399;">cyber-u</span>.<span style="color:#a78bfa;">ac</span>.<span style="color:#5b8dee;">jp</span>
+      </div>
+      <table>
+        <thead><tr><th>部分</th><th>意味</th></tr></thead>
+        <tbody>
+          <tr><td><code style="color:#5b8dee;">jp</code></td><td>日本を表すトップレベルドメイン名（国コード）</td></tr>
+          <tr><td><code style="color:#a78bfa;">ac</code></td><td>大学・研究機関を表すドメイン名</td></tr>
+          <tr><td><code style="color:#34d399;">cyber-u</code></td><td>サイバー大学を表すドメイン名</td></tr>
+          <tr><td><code style="color:#fbbf24;">www</code></td><td>慣習的に利用されるWebサーバのホスト名</td></tr>
+        </tbody>
+      </table>
+      <p style="margin-top:8px;font-size:13px;color:var(--text-sub);">「日本の大学であるサイバー大学のWebサーバ」を構造的に表している。ドメイン名もICANNが世界的に管理しており、地域・国ごとに詳細化して管理されている。</p>
+    </div>
+  </div>
+
+  <!-- 名前解決・アドレス解決 -->
+  <div class="section" id="ch4-resolve">
+    <div class="section-title">名前解決・アドレス解決</div>
+    <p>インターネット上のエンドホスト間で通信するためには、各階層の識別子を事前に知っているか、あるいは知る仕組みが必要。<span class="ptr">← S03:p.54</span></p>
+    <div class="card">
+      <table>
+        <thead><tr><th>変換</th><th>プロトコル・システム</th><th>内容</th></tr></thead>
+        <tbody>
+          <tr><td><strong>名前解決</strong><br><small>（ドメイン名 → IPアドレス）</small></td><td><strong>DNS</strong>（Domain Name System）</td><td>URIのドメイン名からIPアドレスを取得する</td></tr>
+          <tr><td><strong>アドレス解決</strong><br><small>（IPアドレス → MACアドレス）</small></td><td><strong>ARP</strong>（Address Resolution Protocol）</td><td>IPアドレスからMACアドレスを取得する</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="block-audio">
+      <div class="block-label">🔊 音声補足</div>
+      <p>DNS・ARPの仕組みの詳細は本科目では扱わないが、後継科目「ネットワーク技術基礎」で詳しく学習できる。ここでは「名前解決 = DNS」「アドレス解決 = ARP」という対応関係を覚えておくこと。<span class="ptr">← S05</span></p>
+    </div>
+  </div>
+
+  <!-- Web通信の例 -->
+  <div class="section" id="ch4-example">
+    <div class="section-title">インターネット上でのWebサーバとの通信例</div>
+    <p>2つのネットワークが接続している状況でホストAがWebサーバにアクセスする例。<span class="ptr">← S03:p.55</span></p>
+
+    <!-- SVG: 通信例 -->
+    <div class="fig-wrap">
+      <svg viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;display:block;margin:0 auto;">
+        <!-- Network A background -->
+        <rect x="10" y="10" width="290" height="260" rx="8" fill="rgba(91,141,238,0.04)" stroke="rgba(91,141,238,0.2)" stroke-width="1" stroke-dasharray="4,3"/>
+        <text x="155" y="30" text-anchor="middle" font-size="11" fill="#5b8dee" font-family="'JetBrains Mono',monospace">ネットワークA</text>
+        <!-- Network B background -->
+        <rect x="400" y="10" width="290" height="260" rx="8" fill="rgba(52,211,153,0.04)" stroke="rgba(52,211,153,0.2)" stroke-width="1" stroke-dasharray="4,3"/>
+        <text x="545" y="30" text-anchor="middle" font-size="11" fill="#34d399" font-family="'JetBrains Mono',monospace">ネットワークB</text>
+
+        <!-- Host A -->
+        <rect x="30" y="90" width="110" height="120" rx="6" fill="#1c2335" stroke="#5b8dee" stroke-width="1.2"/>
+        <text x="85" y="115" text-anchor="middle" font-size="12" fill="#e2e8f5" font-weight="bold" font-family="'Noto Sans JP',sans-serif">ホストA</text>
+        <text x="85" y="133" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="'JetBrains Mono',monospace">port:43200</text>
+        <text x="85" y="148" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="'JetBrains Mono',monospace">IP:192.0.2.100</text>
+        <text x="85" y="163" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="'JetBrains Mono',monospace">MAC:00:00:5E:</text>
+        <text x="85" y="176" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="'JetBrains Mono',monospace">00:52:01</text>
+
+        <!-- Router X -->
+        <rect x="290" y="90" width="120" height="120" rx="6" fill="#1c2335" stroke="#fbbf24" stroke-width="1.2"/>
+        <text x="350" y="115" text-anchor="middle" font-size="12" fill="#fbbf24" font-weight="bold" font-family="'Noto Sans JP',sans-serif">ルータX</text>
+        <text x="350" y="133" text-anchor="middle" font-size="9.5" fill="#8a99b8" font-family="'JetBrains Mono',monospace">IP-A:192.0.2.1</text>
+        <text x="350" y="148" text-anchor="middle" font-size="9.5" fill="#8a99b8" font-family="'JetBrains Mono',monospace">IP-B:203.0.113.1</text>
+        <text x="350" y="163" text-anchor="middle" font-size="9.5" fill="#8a99b8" font-family="'JetBrains Mono',monospace">MAC-A:00:00:5E:</text>
+        <text x="350" y="176" text-anchor="middle" font-size="9.5" fill="#8a99b8" font-family="'JetBrains Mono',monospace">00:52:10</text>
+        <text x="350" y="191" text-anchor="middle" font-size="9.5" fill="#8a99b8" font-family="'JetBrains Mono',monospace">MAC-B:00:00:5E:</text>
+        <text x="350" y="204" text-anchor="middle" font-size="9.5" fill="#8a99b8" font-family="'JetBrains Mono',monospace">00:52:20</text>
+
+        <!-- Web Server -->
+        <rect x="560" y="90" width="120" height="120" rx="6" fill="#1c2335" stroke="#34d399" stroke-width="1.2"/>
+        <text x="620" y="115" text-anchor="middle" font-size="12" fill="#34d399" font-weight="bold" font-family="'Noto Sans JP',sans-serif">Webサーバ</text>
+        <text x="620" y="133" text-anchor="middle" font-size="9.5" fill="#8a99b8" font-family="'JetBrains Mono',monospace">port:80 (HTTP)</text>
+        <text x="620" y="148" text-anchor="middle" font-size="9.5" fill="#8a99b8" font-family="'JetBrains Mono',monospace">IP:203.0.113.20</text>
+        <text x="620" y="163" text-anchor="middle" font-size="9.5" fill="#8a99b8" font-family="'JetBrains Mono',monospace">MAC:00:00:5E:</text>
+        <text x="620" y="176" text-anchor="middle" font-size="9.5" fill="#8a99b8" font-family="'JetBrains Mono',monospace">00:52:A0</text>
+        <text x="620" y="195" text-anchor="middle" font-size="9" fill="#5b8dee" font-family="'JetBrains Mono',monospace">URI:http://</text>
+        <text x="620" y="208" text-anchor="middle" font-size="9" fill="#5b8dee" font-family="'JetBrains Mono',monospace">www.example.jp</text>
+
+        <!-- Connection lines -->
+        <line x1="141" y1="150" x2="288" y2="150" stroke="#5b8dee" stroke-width="1.5"/>
+        <line x1="411" y1="150" x2="559" y2="150" stroke="#5b8dee" stroke-width="1.5"/>
+
+        <!-- DNS/ARP labels -->
+        <text x="85" y="240" text-anchor="middle" font-size="10" fill="#a78bfa" font-family="'JetBrains Mono',monospace">① DNS（名前解決）</text>
+        <text x="85" y="256" text-anchor="middle" font-size="10" fill="#a78bfa" font-family="'JetBrains Mono',monospace">ドメイン名→IP取得</text>
+        <text x="350" y="240" text-anchor="middle" font-size="10" fill="#34d399" font-family="'JetBrains Mono',monospace">② ARP（アドレス解決）</text>
+        <text x="350" y="256" text-anchor="middle" font-size="10" fill="#34d399" font-family="'JetBrains Mono',monospace">RouterX IP→MAC取得</text>
+        <text x="620" y="240" text-anchor="middle" font-size="10" fill="#34d399" font-family="'JetBrains Mono',monospace">③ ARP（アドレス解決）</text>
+        <text x="620" y="256" text-anchor="middle" font-size="10" fill="#34d399" font-family="'JetBrains Mono',monospace">WebサーバIP→MAC取得</text>
+      </svg>
+      <figcaption>図: インターネット上でのWebサーバとの通信例 ← S03:p.55</figcaption>
+    </div>
+
+    <div class="block-audio">
+      <div class="block-label">🔊 音声補足 — 通信の流れ</div>
+      <p>通信の流れ（図の①〜③と対応）：<br>
+      <span class="emph">アプリ層（第5層）</span>：WebサーバのURI（<code>http://www.example.jp</code>）はユーザが既知、または検索エンジンで取得<br>
+      <span class="emph">トランスポート層（第4層）</span>：HTTPのポート番号は80番と既知。ホストA側ポートは未使用の番号（例：43200）が選ばれる<br>
+      <span class="emph">インターネット層（第3層）</span>：WebサーバのIPアドレスは不明なため、<strong>① DNS（名前解決）</strong>でドメイン名からIPアドレス（203.0.113.20）を取得<br>
+      <span class="emph">NI層（第2層）</span>：WebサーバのIPアドレスはネットワークAの外→まずルータXに転送。<strong>② ARP（アドレス解決）</strong>でルータXのIPアドレス（192.0.2.1）からMACアドレス（00:00:5E:00:52:10）を取得<br>
+      ルータXはヘッダの宛先IPアドレスからネットワークBに転送することを判断。<strong>③ ARP</strong>でWebサーバのMACアドレス（00:00:5E:00:52:A0）を取得してパケットを転送<br>
+      WebサーバはトランスポートR層で宛先ポート番号が80番であることからWebサーバプログラムにパケットを渡す<span class="ptr">← S03:p.54,55 + S05</span></p>
+    </div>
+  </div>
+</div><!-- /chapter 4 -->
+
+
+<!-- ================================================================ -->
+<!-- 補足セクション -->
+<!-- ================================================================ -->
+
+<!-- 未確定事項 -->
+<div id="uncert">
+  <div class="supp-header">
+    <span class="supp-icon">❓</span>
+    <span class="supp-title">未確定事項・要確認リスト</span>
+  </div>
+  <div class="supp-card orange">
+    <p style="color:var(--text-sub);font-size:13.5px;">S03（_CS102_4_インターネット入門_第4回_学習資料.pdf）とS05×2の全ソース照合により、すべての主要情報がS03で確認・解消済み。真に解消できなかった未確定事項はなし。</p>
+    <p style="color:var(--text-muted);font-size:12px;margin-top:6px;">v1.0時点でのS05×2のみによる推測情報はS03照合により全て確認または[外部補足]タグ付きに分類済み。</p>
+  </div>
+</div>
+
+<!-- 補足A -->
+<div id="suppA">
+  <div class="supp-header">
+    <span class="supp-icon">⭐</span>
+    <span class="supp-title">補足A：最重要ワード一覧</span>
+  </div>
+  <div class="supp-card blue">
+    <table>
+      <thead><tr><th>用語</th><th>読み</th><th>定義（S03原文から抽出）</th><th>重要度</th></tr></thead>
+      <tbody>
+        <tr><td><strong>プロトコル</strong></td><td>ぷろとこる</td><td>ネットワークを介してコンピュータ同士でデータをやり取りするための形式や手順といった決まり事</td><td class="stars-cell">★★★</td></tr>
+        <tr><td><strong>フォーマット</strong></td><td>ふぉーまっと</td><td>データの表現方法ややり取りする情報の構成や形式に関する決まり事</td><td class="stars-cell">★★☆</td></tr>
+        <tr><td><strong>プロシージャ</strong></td><td>ぷろしーじゃ</td><td>データをやり取りする際の手順に関する決まり事</td><td class="stars-cell">★★☆</td></tr>
+        <tr><td><strong>ネットワーク・アーキテクチャ</strong></td><td>ねっとわーくあーきてくちゃ</td><td>コンピュータ・ネットワークの設計思想</td><td class="stars-cell">★★★</td></tr>
+        <tr><td><strong>プロトコル・スタック</strong></td><td>ぷろとこるすたっく</td><td>ネットワーク・アーキテクチャをプロトコルの視点で見た階層モデル</td><td class="stars-cell">★★☆</td></tr>
+        <tr><td><strong>OSI参照モデル</strong></td><td>OSIさんしょうもでる</td><td>ISOによって標準化された7階層の階層モデル（デジュール・スタンダード）</td><td class="stars-cell">★★★</td></tr>
+        <tr><td><strong>TCP/IPプロトコル群</strong></td><td>TCPIPぷろとこるぐん</td><td>TCP/IPを中心としたプロトコル・スタックをOSI参照モデルのように整理したもの（デファクト・スタンダード）</td><td class="stars-cell">★★★</td></tr>
+        <tr><td><strong>パケット交換</strong></td><td>ぱけっとこうかん</td><td>データをパケット単位に分割して転送する方式</td><td class="stars-cell">★★★</td></tr>
+        <tr><td><strong>パケット廃棄</strong></td><td>ぱけっとはいき</td><td>ルータのバッファが満杯の場合に到着したパケットがなくなること（パケット損失とも言う）</td><td class="stars-cell">★★☆</td></tr>
+        <tr><td><strong>ベストエフォート</strong></td><td>べすとえふぉーと</td><td>通信品質の保証はしないが最大限の努力でデータを転送するという考え方</td><td class="stars-cell">★★☆</td></tr>
+        <tr><td><strong>ヘッダ</strong></td><td>へっだ</td><td>パケットの先頭に付与される制御情報</td><td class="stars-cell">★★★</td></tr>
+        <tr><td><strong>ペイロード</strong></td><td>ぺいろーど</td><td>パケットを構成する送りたいデータの部分</td><td class="stars-cell">★★☆</td></tr>
+        <tr><td><strong>エンドツーエンド</strong></td><td>えんどつーえんど</td><td>ネットワークは簡単な仕組みで実現し、複雑な処理はエンドホストで行うという設計思想</td><td class="stars-cell">★★★</td></tr>
+        <tr><td><strong>コネクション型プロトコル</strong></td><td>こねくしょんがた</td><td>データ転送を始まる前にその準備（通信リソースの確保など）を行うプロトコル</td><td class="stars-cell">★★☆</td></tr>
+        <tr><td><strong>MACアドレス</strong></td><td>まっくあどれす</td><td>LAN内でコンピュータやネットワーク機器を識別するための48bitの識別子</td><td class="stars-cell">★★★</td></tr>
+        <tr><td><strong>IPアドレス</strong></td><td>IPあどれす</td><td>インターネット上でホストを特定するために利用される世界で一意の識別子</td><td class="stars-cell">★★★</td></tr>
+        <tr><td><strong>グローバルIPアドレス</strong></td><td>ぐろーばるIPあどれす</td><td>ICANNから割り振られるIPアドレス。インターネット接続に必須</td><td class="stars-cell">★★☆</td></tr>
+        <tr><td><strong>プライベートIPアドレス</strong></td><td>ぷらいべーとIPあどれす</td><td>自宅やオフィス内などのプライベートなネットワークで利用されるIPアドレス</td><td class="stars-cell">★★☆</td></tr>
+        <tr><td><strong>NAT</strong></td><td>なっと</td><td>Network Address Translation。プライベートIPアドレスとグローバルIPアドレスを相互変換する技術</td><td class="stars-cell">★★☆</td></tr>
+        <tr><td><strong>ポート番号</strong></td><td>ぽーとばんごう</td><td>トランスポート層で利用される、アプリケーションのプログラムを識別するための識別子</td><td class="stars-cell">★★★</td></tr>
+        <tr><td><strong>ウェルノウンポート番号</strong></td><td>うぇるのうんぽーとばんごう</td><td>よく使われるネットワーク・アプリケーションに予め決められたポート番号</td><td class="stars-cell">★★☆</td></tr>
+        <tr><td><strong>URI</strong></td><td>ゆーあーるあい</td><td>Webにおいてインターネット上の資源の位置や資源そのものを表す識別子</td><td class="stars-cell">★★★</td></tr>
+        <tr><td><strong>ドメイン名</strong></td><td>どめいんめい</td><td>URIに含まれるWebサーバの位置を表す文字列。階層的に名称が決められている</td><td class="stars-cell">★★☆</td></tr>
+        <tr><td><strong>名前解決</strong></td><td>なまえかいけつ</td><td>ドメイン名からIPアドレスを得ること。DNSが行う</td><td class="stars-cell">★★★</td></tr>
+        <tr><td><strong>アドレス解決</strong></td><td>あどれすかいけつ</td><td>IPアドレスからMACアドレスを得ること。ARPが行う</td><td class="stars-cell">★★★</td></tr>
+        <tr><td><strong>デジュール・スタンダード</strong></td><td>でじゅーるすたんだーど</td><td>公的な国際標準化組織によって標準化されたもの</td><td class="stars-cell">★★☆</td></tr>
+        <tr><td><strong>デファクト・スタンダード</strong></td><td>でふぁくとすたんだーど</td><td>競争などの結果、事実上の標準となった規格<span style="font-size:11px;color:var(--text-muted);">（De Facto Standard）</span></td><td class="stars-cell">★★☆</td></tr>
+        <tr><td><strong>エンドホスト</strong></td><td>えんどほすと</td><td>インターネットで通信する端と端のホスト。送信元ホストや宛先ホストを指す（End Host）</td><td class="stars-cell">★★☆</td></tr>
+        <tr><td><strong>コネクション</strong></td><td>こねくしょん</td><td>エンドホスト間の論理的な通信路</td><td class="stars-cell">★★☆</td></tr>
+        <tr><td><strong>コネクションレス型プロトコル</strong></td><td>こねくしょんれすがた</td><td>データ転送を始まる前に、その準備を行わないプロトコル（UDPが該当）</td><td class="stars-cell">★★☆</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- 補足B -->
+<div id="suppB">
+  <div class="supp-header">
+    <span class="supp-icon">📚</span>
+    <span class="supp-title">補足B：知っておくべき背景知識</span>
+  </div>
+  <div class="supp-card green">
+    <ul style="font-size:13.5px;color:var(--text-sub);">
+      <li style="margin-bottom:10px;"><span style="color:var(--accent2);font-weight:600;">ICANN</span>（Internet Corporation for Assigned Names and Numbers）は1998年設立の非営利法人で、IPアドレスとドメイン名を世界的に管理する国際機関。[外部補足]</li>
+      <li style="margin-bottom:10px;"><span style="color:var(--accent2);font-weight:600;">IPv4アドレス枯渇問題：</span>32bitで表現できるIPv4アドレスは約43億個（2<sup>32</sup>≈4.3×10<sup>9</sup>）。インターネット普及によりアドレスが不足し、プライベートIPアドレス+NAT、IPv6移行などの対策が取られた。日本（APNIC/JPNIC地域）では<strong>2011年4月15日</strong>に通常の新規割り振りが終了（IANAの中央在庫枯渇は2011年2月3日）。[外部補足]</li>
+      <li style="margin-bottom:10px;"><span style="color:var(--accent2);font-weight:600;">Wi-Fi Alliance</span>は無線LAN機器の相互接続性認定（Wi-Fi CERTIFIED）を行う業界団体。IEEE 802.11の規格に基づいた認定を行う。[外部補足]</li>
+      <li style="margin-bottom:10px;"><span style="color:var(--accent2);font-weight:600;">ARPの動作：</span>LAN内でIPアドレスからMACアドレスを知るため、ブロードキャストで「このIPアドレスを持つ機器はどこ？」と問い合わせ、対象機器が自分のMACアドレスで応答する仕組み。[外部補足]</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 補足C -->
+<div id="suppC">
+  <div class="supp-header">
+    <span class="supp-icon">🎯</span>
+    <span class="supp-title">補足C：試験・レポートで重要な観点</span>
+  </div>
+  <div class="supp-card purple">
+    <ul style="font-size:13.5px;color:var(--text-sub);">
+      <li style="margin-bottom:8px;">プロトコルの構成要素（フォーマットとプロシージャ）を郵便サービスの例で説明できるか</li>
+      <li style="margin-bottom:8px;">階層化のメリット：「対応する階層のみ変更すればよい」という点を具体例で説明できるか</li>
+      <li style="margin-bottom:8px;">OSI参照モデルの7層の名称と役割、対応するTCP/IPプロトコル（TCP↔第4層、IP↔第3層）を答えられるか</li>
+      <li style="margin-bottom:8px;">OSI参照モデルとTCP/IPプロトコル群の対応関係（特にOSIの第5〜7層がTCP/IPでは1つのアプリケーション層にまとめられる点）</li>
+      <li style="margin-bottom:8px;">パケット廃棄が発生する仕組みとベストエフォートの関係</li>
+      <li style="margin-bottom:8px;">TCPとIPの役割の違い（IPは経路確保、TCPはエンドツーエンドの確実な転送）</li>
+      <li style="margin-bottom:8px;">TCPとUDPの違い（コネクション型vs.コネクションレス型、使用場面の違い）</li>
+      <li style="margin-bottom:8px;">各階層の識別子（MAC・IP・ポート番号・URI）とその役割の対応を答えられるか</li>
+      <li style="margin-bottom:8px;">名前解決（DNS）とアドレス解決（ARP）の違い</li>
+      <li style="margin-bottom:8px;">HTTP=80番、HTTPS=443番などのウェルノウンポート番号</li>
+      <li style="margin-bottom:8px;">IPv4アドレスは32bit・IPv6アドレスは128bit（IPv4の4倍）。グローバルIPとプライベートIPの違い</li>
+      <li style="margin-bottom:8px;">MACアドレスは48bit、前半24bitはベンダー識別子、後半24bitはベンダーが決めた番号</li>
+      <li style="margin-bottom:8px;">デジュール・スタンダード（公的標準）とデファクト・スタンダード（事実上の標準）の違い：OSI参照モデルは前者、TCP/IPプロトコル群は後者</li>
+      <li style="margin-bottom:8px;">コネクション型（TCP）とコネクションレス型（UDP）の違いと用途を説明できるか</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 補足D -->
+<div id="suppD">
+  <div class="supp-header">
+    <span class="supp-icon">🔗</span>
+    <span class="supp-title">補足D：関連概念・次回への接続</span>
+  </div>
+  <div class="supp-card">
+    <ul style="font-size:13.5px;color:var(--text-sub);">
+      <li style="margin-bottom:10px;"><span style="color:var(--accent);font-weight:600;">次回・関連回への接続：</span>電子メールのプロトコル（SMTP/POP3/IMAP）の詳細は第6回で学習予定。DNS・ARPの詳細な仕組みは後継科目「ネットワーク技術基礎」で学習。IPv6の詳細も同科目で扱われる。</li>
+      <li style="margin-bottom:10px;"><span style="color:var(--accent);font-weight:600;">HTTPSとTLS/SSL：</span>HTTPSは443番ポートを使用する暗号化されたHTTP通信。TLS（Transport Layer Security）プロトコルによってデータが暗号化される。[外部補足]</li>
+      <li style="margin-bottom:10px;"><span style="color:var(--accent);font-weight:600;">スリーウェイハンドシェイク：</span>TCPのコネクション確立手順。SYN→SYN-ACK→ACKの3つのパケット交換でコネクションを確立する。[外部補足]</li>
+      <li style="margin-bottom:10px;"><span style="color:var(--accent);font-weight:600;">DHCP：</span>Dynamic Host Configuration Protocol。ネットワークに接続したホストに自動的にIPアドレスなどの設定情報を割り当てるプロトコル。一般家庭ではルータがDHCPサーバとして動作していることが多い。[外部補足]</li>
+    </ul>
+  </div>
+</div>
+
+<!-- Footer meta -->
+<div style="margin-top:48px;padding:16px 0;border-top:1px solid var(--border);font-size:11px;color:var(--text-muted);font-family:var(--mono);">
+  <div>note_internet_04.html　v1.2　2026-03-29</div>
+  <div style="margin-top:4px;">ソース: S03（スライドPDF, _CS102_4_インターネット入門_第4回_学習資料.pdf）+ S05×2（hynote.ai AI変換テキスト）　S03権威ソース</div>
+  <div style="margin-top:4px;">既知S05誤変換パターン（今回検出）: PCPIP/GCPIP→TCP/IP、ROCK3→POP3、iMac→IMAP、TNS→DNS、ICAN→ICANN、コスト→ホスト、ベルノームポート→ウェルノウンポート、syberhu→cyber-u</div>
+  <div style="margin-top:4px;">v1.1 2026-03-29 S03（スライドPDF）照合による全面修正：エンドホスト定義追加、コネクション3用語追加、IPv4アドレス説明精緻化、Web通信例数値をS03に完全準拠、HTTPの正式説明追加、DNS定義修正
+  v1.2 2026-03-29 [外部補足]全件検証：IPv4枯渇日をJPNIC公式に基づき2011年4月15日（APNIC/JPNIC通常割り振り終了日）に精緻化。他8件は全て正確と確認</div>
+</div>
+
+</main>
+
+<script>
+// Sidebar active highlight on scroll
+const sections = document.querySelectorAll('[id]');
+const tocLinks = document.querySelectorAll('.toc-item');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.id;
+      tocLinks.forEach(l => l.classList.remove('active'));
+      const active = document.querySelector(`.toc-item[href="#${id}"]`);
+      if (active) active.classList.add('active');
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
