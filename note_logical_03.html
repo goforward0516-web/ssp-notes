@@ -1,0 +1,2115 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ロジカルシンキング 第3回｜図を使って状況を分析してみよう</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f1117;
+  --bg2: #161b27;
+  --bg3: #1e2535;
+  --bg4: #252d40;
+  --card: #1a2133;
+  --border: #2d3a52;
+  --text: #e2e8f5;
+  --text-sub: #8a99b8;
+  --text-dim: #5b6a8a;
+  --accent: #5b8dee;
+  --accent2: #34d399;
+  --accent3: #fbbf24;
+  --accent4: #a78bfa;
+  --accent5: #f87171;
+  --voice-bg: rgba(91,141,238,0.08);
+  --voice-border: #5b8dee;
+  --ext-bg: rgba(52,211,153,0.08);
+  --ext-border: #34d399;
+  --guess-bg: rgba(167,139,250,0.08);
+  --guess-border: #a78bfa;
+  --warn-bg: rgba(251,191,36,0.08);
+  --warn-border: #fbbf24;
+  --mono: 'JetBrains Mono', monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 15px;
+  line-height: 1.8;
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ===== SIDEBAR ===== */
+#sidebar {
+  width: 280px;
+  min-width: 280px;
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  overflow-y: auto;
+  z-index: 100;
+  padding: 0 0 40px 0;
+}
+
+#sidebar-header {
+  padding: 20px 18px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg3);
+}
+
+#sidebar-header .course {
+  font-size: 10px;
+  font-family: var(--mono);
+  color: var(--accent);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+#sidebar-header .title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.4;
+}
+
+#toc {
+  padding: 12px 0;
+}
+
+.toc-section {
+  margin-bottom: 2px;
+}
+
+.toc-chapter {
+  display: block;
+  padding: 7px 18px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-sub);
+  text-decoration: none;
+  letter-spacing: 0.03em;
+  transition: all 0.15s;
+  border-left: 3px solid transparent;
+}
+.toc-chapter:hover {
+  color: var(--accent);
+  border-left-color: var(--accent);
+  background: rgba(91,141,238,0.06);
+}
+
+.toc-sub {
+  display: block;
+  padding: 5px 18px 5px 28px;
+  font-size: 11px;
+  color: var(--text-dim);
+  text-decoration: none;
+  transition: all 0.15s;
+}
+.toc-sub:hover {
+  color: var(--text-sub);
+  background: rgba(255,255,255,0.03);
+}
+
+.toc-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 8px 18px;
+}
+
+.toc-badge {
+  display: inline-block;
+  font-size: 9px;
+  font-family: var(--mono);
+  padding: 1px 5px;
+  border-radius: 3px;
+  margin-left: 4px;
+  vertical-align: middle;
+}
+.badge-matrix { background: rgba(251,191,36,0.2); color: #fbbf24; }
+.badge-tree   { background: rgba(52,211,153,0.2);  color: #34d399; }
+.badge-scatter{ background: rgba(167,139,250,0.2); color: #a78bfa; }
+.badge-flow   { background: rgba(91,141,238,0.2);  color: #5b8dee; }
+
+/* ===== MAIN ===== */
+#main {
+  margin-left: 280px;
+  flex: 1;
+  max-width: 900px;
+  padding: 0 40px 80px;
+}
+
+/* ===== PAGE HEADER ===== */
+#page-header {
+  padding: 40px 0 32px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 40px;
+}
+.header-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.header-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.3;
+  margin-bottom: 16px;
+}
+.header-meta {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.meta-item {
+  font-size: 12px;
+  color: var(--text-sub);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.meta-item .label {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 0.05em;
+}
+
+/* ===== GOAL CARD ===== */
+.goal-card {
+  background: linear-gradient(135deg, rgba(91,141,238,0.12), rgba(52,211,153,0.08));
+  border: 1px solid rgba(91,141,238,0.3);
+  border-radius: 10px;
+  padding: 18px 22px;
+  margin-bottom: 36px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+.goal-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+.goal-content .label {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+.goal-content p {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* ===== CHAPTER HEADER ===== */
+.chapter-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 52px 0 24px;
+  padding-bottom: 14px;
+  border-bottom: 2px solid var(--border);
+}
+.chapter-number {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+  background: rgba(91,141,238,0.12);
+  padding: 4px 10px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+.chapter-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.3;
+}
+
+/* ===== SECTION ===== */
+.section {
+  margin-bottom: 32px;
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 12px;
+  padding-left: 12px;
+  border-left: 3px solid var(--accent);
+  line-height: 1.5;
+}
+
+.subsection-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-sub);
+  margin: 20px 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.subsection-title::before {
+  content: '';
+  display: inline-block;
+  width: 6px; height: 6px;
+  background: var(--accent3);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+p { margin-bottom: 10px; color: var(--text); }
+
+/* ===== QUOTE ===== */
+.quote-block {
+  border-left: 4px solid var(--accent3);
+  background: rgba(251,191,36,0.06);
+  padding: 14px 18px;
+  margin: 14px 0;
+  border-radius: 0 6px 6px 0;
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.7;
+}
+.quote-block strong { color: var(--accent3); }
+
+/* ===== VOICE SUPPLEMENT ===== */
+.voice-block {
+  border-left: 4px solid var(--voice-border);
+  background: var(--voice-bg);
+  padding: 12px 16px;
+  margin: 10px 0;
+  border-radius: 0 6px 6px 0;
+}
+.voice-block .voice-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+  margin-bottom: 5px;
+  display: block;
+}
+.voice-block p { margin-bottom: 0; font-size: 14px; }
+
+/* ===== EXT SUPPLEMENT ===== */
+.ext-block {
+  border-left: 4px solid var(--ext-border);
+  background: var(--ext-bg);
+  padding: 12px 16px;
+  margin: 10px 0;
+  border-radius: 0 6px 6px 0;
+}
+.ext-block .ext-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--accent2);
+  letter-spacing: 0.08em;
+  margin-bottom: 5px;
+  display: block;
+}
+.ext-block p { margin-bottom: 0; font-size: 14px; color: var(--text-sub); }
+
+/* ===== SOURCE POINTER ===== */
+.src {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-dim);
+  background: var(--bg4);
+  padding: 1px 5px;
+  border-radius: 3px;
+  margin-left: 4px;
+  white-space: nowrap;
+}
+
+/* ===== TABLE ===== */
+.table-wrap {
+  overflow-x: auto;
+  margin: 14px 0;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+th {
+  background: var(--bg3);
+  color: var(--text-sub);
+  padding: 10px 14px;
+  text-align: left;
+  font-weight: 700;
+  border-bottom: 2px solid var(--border);
+  font-size: 12px;
+  letter-spacing: 0.03em;
+}
+td {
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  vertical-align: top;
+  line-height: 1.6;
+}
+tr:hover td { background: rgba(255,255,255,0.02); }
+td.highlight {
+  background: rgba(91,141,238,0.12);
+  font-weight: 700;
+  color: var(--accent);
+}
+td.today {
+  background: rgba(251,191,36,0.1);
+  font-weight: 700;
+  color: var(--accent3);
+}
+
+/* ===== FLOW CHART (图タイプ選択) ===== */
+.flowchart {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 24px;
+  margin: 16px 0;
+}
+.flow-node {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.flow-question {
+  background: var(--bg4);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 20px;
+  font-size: 13px;
+}
+.flow-yes { background: rgba(52,211,153,0.15); border: 1px solid var(--accent2); color: var(--accent2); }
+.flow-no  { background: rgba(248,113,113,0.1); border: 1px solid #f87171; color: #f87171; }
+.flow-result-flow   { background: rgba(91,141,238,0.15); border: 1px solid var(--accent); color: var(--accent); font-weight: 700; }
+.flow-result-ven    { background: rgba(52,211,153,0.15); border: 1px solid var(--accent2); color: var(--accent2); font-weight: 700; }
+.flow-result-tree   { background: rgba(251,191,36,0.15); border: 1px solid var(--accent3); color: var(--accent3); font-weight: 700; }
+.flow-result-dot    { background: rgba(167,139,250,0.15); border: 1px solid var(--accent4); color: var(--accent4); font-weight: 700; }
+.flow-result-matrix { background: rgba(248,113,113,0.15); border: 1px solid var(--accent5); color: var(--accent5); font-weight: 700; }
+
+.flow-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.flow-arrow {
+  color: var(--text-dim);
+  font-size: 12px;
+  padding: 0 2px;
+}
+.flow-indent { margin-left: 20px; }
+.flow-branch {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 4px 0 4px 20px;
+}
+.flow-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+.flow-label-yes { background: rgba(52,211,153,0.15); color: var(--accent2); }
+.flow-label-no  { background: rgba(248,113,113,0.1); color: #f87171; }
+
+/* ===== PROCESS STEPS ===== */
+.process-steps {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  margin: 16px 0;
+  flex-wrap: wrap;
+}
+.process-step {
+  flex: 1;
+  min-width: 150px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+  position: relative;
+}
+.process-step:not(:last-child)::after {
+  content: '→';
+  position: absolute;
+  right: -16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--accent);
+  font-size: 16px;
+  z-index: 1;
+}
+.step-num {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+  margin-bottom: 5px;
+}
+.step-label {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--text);
+}
+
+/* ===== MATRIX TABLE ===== */
+.matrix-wrap {
+  margin: 16px 0;
+}
+.matrix-title {
+  font-size: 12px;
+  font-family: var(--mono);
+  color: var(--text-dim);
+  margin-bottom: 8px;
+  letter-spacing: 0.05em;
+}
+.matrix-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.matrix-table th {
+  background: var(--bg4);
+  text-align: center;
+  padding: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  border: 1px solid var(--border);
+}
+.matrix-table td {
+  border: 1px solid var(--border);
+  padding: 12px;
+  vertical-align: middle;
+  text-align: center;
+  line-height: 1.5;
+  font-size: 13px;
+}
+.matrix-table .row-header {
+  background: var(--bg4);
+  font-weight: 700;
+  font-size: 12px;
+  color: var(--text-sub);
+  width: 130px;
+  text-align: left;
+  padding: 12px;
+}
+.matrix-table .today-cell {
+  background: rgba(251,191,36,0.12);
+  color: var(--accent3);
+  font-weight: 700;
+  border: 2px solid var(--accent3);
+}
+.matrix-table .normal-cell {
+  background: var(--bg3);
+  color: var(--text);
+}
+
+/* ===== TREE DIAGRAM ===== */
+.tree-wrap {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px 24px;
+  margin: 16px 0;
+  overflow-x: auto;
+}
+.tree-title {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
+  margin-bottom: 14px;
+  display: block;
+}
+
+/* ===== SVG styles ===== */
+svg { max-width: 100%; }
+
+figcaption {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-dim);
+  margin-top: 6px;
+  text-align: center;
+}
+
+/* ===== SUPPLEMENT CARDS ===== */
+.supplement-section {
+  margin-top: 56px;
+  padding-top: 40px;
+  border-top: 2px solid var(--border);
+}
+.supplement-section-title {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+.supp-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 22px 24px;
+  margin-bottom: 20px;
+}
+.supp-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.supp-card-icon { font-size: 18px; }
+.supp-card-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.supp-card-undecided { border-color: rgba(251,191,36,0.4); background: rgba(251,191,36,0.04); }
+.supp-card-terms { border-color: rgba(91,141,238,0.3); }
+.supp-card-bg { border-color: rgba(52,211,153,0.3); }
+.supp-card-exam { border-color: rgba(248,113,113,0.3); }
+.supp-card-related { border-color: rgba(167,139,250,0.3); }
+
+.undecided-empty {
+  text-align: center;
+  padding: 20px;
+  color: var(--text-dim);
+  font-size: 13px;
+}
+.undecided-empty .check { font-size: 24px; margin-bottom: 6px; }
+
+.term-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 10px;
+}
+.term-item {
+  background: var(--bg3);
+  border-radius: 7px;
+  padding: 12px 14px;
+}
+.term-name {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--text);
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.term-yomi {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-dim);
+}
+.term-def {
+  font-size: 12px;
+  color: var(--text-sub);
+  line-height: 1.6;
+}
+.star-3 { color: #fbbf24; }
+.star-2 { color: #8a99b8; }
+
+.exam-list {
+  list-style: none;
+  counter-reset: exam;
+}
+.exam-list li {
+  counter-increment: exam;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  font-size: 14px;
+}
+.exam-list li:last-child { border-bottom: none; }
+.exam-list li::before {
+  content: counter(exam, decimal-leading-zero);
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--accent5);
+  background: rgba(248,113,113,0.12);
+  padding: 2px 7px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.related-list {
+  list-style: none;
+}
+.related-list li {
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.related-list li:last-child { border-bottom: none; }
+.related-list .tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  background: rgba(167,139,250,0.15);
+  color: var(--accent4);
+  padding: 2px 7px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.related-list .ext-note {
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.bg-list { list-style: none; }
+.bg-list li {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+  color: var(--text-sub);
+  line-height: 1.7;
+}
+.bg-list li:last-child { border-bottom: none; }
+.bg-list strong { color: var(--text); }
+
+/* ===== SCATTER GRAPH (点グラフ) ===== */
+.scatter-wrap {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+  margin: 16px 0;
+  overflow: hidden;
+}
+
+/* ===== 3-STEP PROCESS ===== */
+.steps-flow {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin: 16px 0;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.step-block {
+  flex: 1;
+  padding: 16px 14px;
+  text-align: center;
+  border-right: 1px solid var(--border);
+  position: relative;
+}
+.step-block:last-child { border-right: none; }
+.step-block::after {
+  content: '▶';
+  position: absolute;
+  right: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--accent);
+  font-size: 12px;
+  z-index: 1;
+  background: var(--bg3);
+}
+.step-block:last-child::after { display: none; }
+.step-n {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  margin-bottom: 6px;
+}
+.step-name {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--text);
+}
+
+/* ===== SMALL INFO BOXES ===== */
+.info-box {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin: 12px 0;
+  font-size: 13px;
+}
+.info-box .info-title {
+  font-weight: 700;
+  color: var(--accent3);
+  margin-bottom: 8px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+ul { padding-left: 20px; margin: 8px 0; }
+ul li { margin-bottom: 5px; font-size: 14px; line-height: 1.7; }
+ol { padding-left: 20px; margin: 8px 0; }
+ol li { margin-bottom: 5px; font-size: 14px; line-height: 1.7; }
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 32px 0;
+}
+
+.verdict-box {
+  border: 2px solid;
+  border-radius: 8px;
+  padding: 12px 18px;
+  margin: 14px 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 700;
+  font-size: 14px;
+}
+.verdict-matrix { border-color: var(--accent5); background: rgba(248,113,113,0.08); color: var(--accent5); }
+.verdict-tree   { border-color: var(--accent3); background: rgba(251,191,36,0.08); color: var(--accent3); }
+.verdict-dot    { border-color: var(--accent4); background: rgba(167,139,250,0.08); color: var(--accent4); }
+.verdict-icon   { font-size: 20px; }
+
+.analysis-result {
+  background: linear-gradient(135deg, rgba(91,141,238,0.12), rgba(52,211,153,0.06));
+  border: 1px solid rgba(91,141,238,0.3);
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin: 14px 0;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.7;
+  color: var(--text);
+}
+
+.chapter-summary {
+  background: var(--bg3);
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin-top: 20px;
+}
+.chapter-summary .summary-title {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  margin-bottom: 8px;
+}
+.chapter-summary ul { margin: 0; }
+.chapter-summary li { font-size: 13px; color: var(--text-sub); }
+
+.note-banner {
+  background: rgba(52,211,153,0.08);
+  border: 1px solid rgba(52,211,153,0.25);
+  border-radius: 8px;
+  padding: 12px 18px;
+  margin: 20px 0;
+  font-size: 13px;
+  color: var(--text-sub);
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.note-banner .note-icon { color: var(--accent2); flex-shrink: 0; }
+
+@media (max-width: 900px) {
+  #sidebar { display: none; }
+  #main { margin-left: 0; padding: 0 20px 60px; }
+  .header-meta { gap: 14px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== SIDEBAR ===== -->
+<nav id="sidebar">
+  <div id="sidebar-header">
+    <div class="course">Logical Thinking / 第3回</div>
+    <div class="title">図を使って状況を分析してみよう</div>
+  </div>
+  <nav id="toc">
+    <div class="toc-section">
+      <a href="#goal" class="toc-chapter">🎯 学習目標・授業構成</a>
+    </div>
+
+    <div class="toc-section">
+      <a href="#ch1" class="toc-chapter">第1章 状況を分析するとは</a>
+      <a href="#ch1-1" class="toc-sub">1-1. 状況把握が問題解決の鍵</a>
+      <a href="#ch1-2" class="toc-sub">1-2. 視座によって見え方が変わる</a>
+      <a href="#ch1-3" class="toc-sub">1-3. フッサールの現象学</a>
+      <a href="#ch1-4" class="toc-sub">1-4. ソシュールの言語論</a>
+      <a href="#ch1-5" class="toc-sub">1-5. 差異・関係による定義</a>
+      <a href="#ch1-6" class="toc-sub">1-6. 状況分析図の作成手順</a>
+    </div>
+
+    <div class="toc-divider"></div>
+
+    <div class="toc-section">
+      <a href="#ch2" class="toc-chapter">第2章 マトリクス図<span class="toc-badge badge-matrix">MATRIX</span></a>
+      <a href="#ch2-case" class="toc-sub">CASE: 工場の転倒事故分類</a>
+      <a href="#ch2-scatter" class="toc-sub">発散思考・軸を探す</a>
+      <a href="#ch2-flow" class="toc-sub">図タイプ選択フロー</a>
+      <a href="#ch2-result" class="toc-sub">分析結果</a>
+    </div>
+
+    <div class="toc-divider"></div>
+
+    <div class="toc-section">
+      <a href="#ch3" class="toc-chapter">第3章 ツリー図<span class="toc-badge badge-tree">TREE</span></a>
+      <a href="#ch3-case" class="toc-sub">CASE: 新型コロナの位置づけ</a>
+      <a href="#ch3-scope" class="toc-sub">似たもの探しのポイント</a>
+      <a href="#ch3-result" class="toc-sub">ツリー図と分析結果</a>
+    </div>
+
+    <div class="toc-divider"></div>
+
+    <div class="toc-section">
+      <a href="#ch4" class="toc-chapter">第4章 点グラフ<span class="toc-badge badge-scatter">SCATTER</span></a>
+      <a href="#ch4-case" class="toc-sub">CASE: ベストプラクティスを探す</a>
+      <a href="#ch4-axis" class="toc-sub">軸の増やし方・絞り込み方</a>
+      <a href="#ch4-result" class="toc-sub">分析結果</a>
+    </div>
+
+    <div class="toc-divider"></div>
+
+    <div class="toc-section">
+      <a href="#undecided" class="toc-chapter">❓ 未確定事項リスト</a>
+      <a href="#suppA" class="toc-chapter">⭐ 補足A 最重要ワード</a>
+      <a href="#suppB" class="toc-chapter">📚 補足B 背景知識</a>
+      <a href="#suppC" class="toc-chapter">🎯 補足C 試験・レポート</a>
+      <a href="#suppD" class="toc-chapter">🔗 補足D 関連概念</a>
+    </div>
+  </nav>
+</nav>
+
+<!-- ===== MAIN ===== -->
+<main id="main">
+
+<!-- PAGE HEADER -->
+<header id="page-header">
+  <div class="header-label">Logical Thinking — Lecture Notes</div>
+  <h1 class="header-title">第3回　図を使って状況を分析してみよう</h1>
+  <div class="header-meta">
+    <div class="meta-item"><span class="label">科目</span> ロジカルシンキング</div>
+    <div class="meta-item"><span class="label">担当</span> 奥村 隆一</div>
+    <div class="meta-item"><span class="label">回</span> 第3回</div>
+    <div class="meta-item"><span class="label">ソース</span> S03（スライド）+ S05（hynote.ai ×2）</div>
+  </div>
+</header>
+
+<!-- GOAL -->
+<div id="goal" class="goal-card">
+  <div class="goal-icon">🎯</div>
+  <div class="goal-content">
+    <div class="label">第3回 学習目標</div>
+    <p>図を活用して状況分析を行う手順と方法を説明できる <span class="src">← S03:p.2</span></p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">授業構成</div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>章</th><th>タイトル</th></tr></thead>
+      <tbody>
+        <tr><td>第1章</td><td>状況を分析するとはどういうことか？</td></tr>
+        <tr><td>第2章</td><td>状況分析図を描いてみよう（マトリクス図を描く）</td></tr>
+        <tr><td>第3章</td><td>状況分析図を描いてみよう（ツリー図を描く）</td></tr>
+        <tr><td>第4章</td><td>状況分析図を描いてみよう（点グラフを描く）</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <span class="src">← S03:p.3</span>
+</div>
+
+<!-- ===================== CHAPTER 1 ===================== -->
+<section id="ch1">
+  <div class="chapter-header">
+    <span class="chapter-number">CHAPTER 01</span>
+    <h2 class="chapter-title">状況を分析するとはどういうことか？</h2>
+  </div>
+
+  <div class="goal-card" style="margin-bottom:24px">
+    <div class="goal-icon">📌</div>
+    <div class="goal-content">
+      <div class="label">第1章 学習目標</div>
+      <p>「状況を分析する」とはどのようなことか、また、それを的確に実施するには具体的にどのような方法や手順を取ればよいかについて説明できる <span class="src">← S03:p.5</span></p>
+    </div>
+  </div>
+
+  <!-- 1-1 -->
+  <div id="ch1-1" class="section">
+    <div class="section-title">1-1. 状況把握が問題解決の鍵</div>
+
+    <div class="quote-block">
+      <strong>状況が的確に分かれば、抱えている問題や課題の半分以上は解決したことと同じ</strong>
+      <span class="src">← S03:p.6</span>
+    </div>
+
+    <div class="voice-block">
+      <span class="voice-label">🎙 音声補足</span>
+      <p>問題に悩んだり解決の糸口が見つからないときの多くは、状況を適切に理解していないことによる。入り口が違えば答えは全く異なってくる。 <span class="src">← S05</span></p>
+    </div>
+
+    <div class="subsection-title">具体例：福島第一原発事故の捉え方</div>
+    <p>同じ事故であっても、捉え方によってまったく異なる問題定義になる。どれが正しいというものでもない。 <span class="src">← S03:p.6</span></p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>捉え方の視点</th><th>問題の定義</th></tr></thead>
+        <tbody>
+          <tr><td>防災・設備</td><td>原発の津波被害への対策の問題</td></tr>
+          <tr><td>応急対応</td><td>二次災害を食い止める対処方法の問題</td></tr>
+          <tr><td>避難・生活</td><td>避難誘導および仮設住宅での生活確保の問題</td></tr>
+          <tr><td>技術・リスク</td><td>原発に対する技術的な信頼性やリスクに関する問題</td></tr>
+          <tr><td>情報・社会</td><td>放射線被ばくに関する政府の発表や風評被害の問題</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <span class="src">← S03:p.6, S05</span>
+
+    <div class="voice-block">
+      <span class="voice-label">🎙 音声補足</span>
+      <p>問題を解決するにあたっては、その問題をどのように捉えているのか、どういう捉え方をしているのかということを常に意識し明確化することが重要。 <span class="src">← S05</span></p>
+    </div>
+  </div>
+
+  <!-- 1-2 -->
+  <div id="ch1-2" class="section">
+    <div class="section-title">1-2. 視座によって状況の見え方が変わる</div>
+
+    <div class="quote-block">
+      <strong>「状況」を分析するためには、必ず特定の視座が存在する。「自分は今、どこに視座を置いて考えているのか」を常に意識することが大切</strong>
+      <span class="src">← S03:p.7</span>
+    </div>
+
+    <div class="voice-block">
+      <span class="voice-label">🎙 円錐の比喩</span>
+      <p>ある状況を紫色の円錐で象徴する。真横から見た人は「三角形」、真下から見上げた人は「正円」と言う。でも実態は円錐という立体。一つの状況も、捉え方・姿勢・見方によってそのあり様は変わる。どの角度から捉えるかによって解決の方向性は全く変わる。 <span class="src">← S03:p.7, S05</span></p>
+    </div>
+
+    <!-- SVG: 円錐の比喩 -->
+    <figure>
+      <svg viewBox="0 0 640 200" xmlns="http://www.w3.org/2000/svg" style="background:#1e2535;border-radius:8px;padding:10px;">
+        <!-- Cone center -->
+        <g transform="translate(320,20)">
+          <!-- Cone shape -->
+          <polygon points="0,0 -55,130 55,130" fill="rgba(167,139,250,0.3)" stroke="#a78bfa" stroke-width="1.5"/>
+          <ellipse cx="0" cy="130" rx="55" ry="15" fill="rgba(167,139,250,0.2)" stroke="#a78bfa" stroke-width="1.5"/>
+          <text x="0" y="85" text-anchor="middle" fill="#e2e8f5" font-size="12" font-family="Noto Sans JP" font-weight="700">状況</text>
+        </g>
+
+        <!-- Left view: circle -->
+        <g transform="translate(90,85)">
+          <circle cx="0" cy="30" r="30" fill="rgba(52,211,153,0.2)" stroke="#34d399" stroke-width="2"/>
+          <text x="0" y="-14" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">真下から</text>
+          <text x="0" y="-2" text-anchor="middle" fill="#34d399" font-size="11" font-family="Noto Sans JP">見上げれば</text>
+          <text x="0" y="35" text-anchor="middle" fill="#e2e8f5" font-size="12" font-family="Noto Sans JP" font-weight="700">正円に見える</text>
+          <!-- arrow to center -->
+          <line x1="40" y1="30" x2="165" y2="30" stroke="#5b6a8a" stroke-width="1" stroke-dasharray="4,3"/>
+          <polygon points="165,30 159,27 159,33" fill="#5b6a8a"/>
+        </g>
+
+        <!-- Right view: triangle -->
+        <g transform="translate(490,55)">
+          <polygon points="40,0 0,90 80,90" fill="rgba(91,141,238,0.2)" stroke="#5b8dee" stroke-width="2"/>
+          <text x="40" y="-14" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">真横から</text>
+          <text x="40" y="-2" text-anchor="middle" fill="#5b8dee" font-size="11" font-family="Noto Sans JP">見れば</text>
+          <text x="40" y="108" text-anchor="middle" fill="#e2e8f5" font-size="12" font-family="Noto Sans JP" font-weight="700">三角形に見える</text>
+          <!-- arrow from center -->
+          <line x1="-5" y1="45" x2="-120" y2="45" stroke="#5b6a8a" stroke-width="1" stroke-dasharray="4,3"/>
+          <polygon points="-120,45 -114,42 -114,48" fill="#5b6a8a"/>
+        </g>
+      </svg>
+      <figcaption>図：同じ状況（円錐）も見る角度によって異なって見える　S03:p.7</figcaption>
+    </figure>
+  </div>
+
+  <!-- 1-3 -->
+  <div id="ch1-3" class="section">
+    <div class="section-title">1-3. 状況を認知するとは？（1）フッサールの現象学</div>
+
+    <p><strong>エトムント・フッサール（Edmund Husserl）</strong> — オーストリアの哲学者。現象学の創始者。 <span class="src">← S03:p.8</span></p>
+
+    <div class="quote-block">
+      <strong>「主観と客観は一致するか？」</strong><br>
+      ⇒ 『ここにあるコップは幻想か、現実か？』
+      <span class="src">← S03:p.8</span>
+    </div>
+
+    <div class="voice-block">
+      <span class="voice-label">🎙 音声補足</span>
+      <p>コップという外部世界の事物がそこに本当に存在するかどうかをどうやって確かめたらよいか。目の前に見えて触ることもできるから存在するに決まっている…と言わないでほしい。なぜなら、今あなたは夢の中にいるかもしれないから。夢の中にいるのではないことを自身が証明することは、原理的に不可能。 <span class="src">← S05</span></p>
+    </div>
+
+    <div class="quote-block">
+      <strong>「客観的世界が実在している」という思い込みを一時的に保留（エポケー）した上で、この確信がなぜ成り立っているのかを問い直す。意識の外部世界を否定するのではなく、「外部世界がある」という確信が成立する条件を問う。（現象学）</strong>
+      <span class="src">← S03:p.8</span>
+    </div>
+
+    <div class="ext-block">
+      <span class="ext-label">🔗 外部補足</span>
+      <p>映画「マトリックス」の例：仮想世界に生きる人たちはそこが現実だと信じており、それが偽りの世界であることを確かめる術を持たない。フッサールの問いと同様のジレンマを描いている。 <span class="src">← S05</span></p>
+    </div>
+
+    <div class="ext-block">
+      <span class="ext-label">🔗 外部補足（現象学の主要概念）</span>
+      <p>フッサールは意識の働き（思考する作用）を<strong>ノエシス</strong>、意識に現れる対象（コップ・机など）を<strong>ノエマ</strong>と呼んだ。エポケー後に残るのはこのノエシス＝ノエマの相関関係であり、そこから意識の構造を純粋に記述しようとするのが現象学的還元。ハイデガー・サルトル・メルロ＝ポンティが後継者として現象学を発展させた。</p>
+    </div>
+  </div>
+
+  <!-- 1-4 -->
+  <div id="ch1-4" class="section">
+    <div class="section-title">1-4. 状況を認知するとは？（2）ソシュールの言語論</div>
+
+    <p><strong>フェルディナン・ド・ソシュール（Ferdinand de Saussure）</strong> — スイスの言語学者。 <span class="src">← S03:p.9</span></p>
+
+    <div class="quote-block">
+      <strong>「言葉によって世界は分節され（分けられ）認知される。」</strong>
+      <span class="src">← S03:p.9</span>
+    </div>
+
+    <div class="subsection-title">虹の色数の例</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>文化圏</th><th>虹の色数</th><th>色名</th></tr></thead>
+        <tbody>
+          <tr><td>日本</td><td class="highlight">7色</td><td>紫・藍・青・緑・黄・橙・赤</td></tr>
+          <tr><td>アメリカ</td><td>6色</td><td>赤・橙・黄・緑・青・紫</td></tr>
+          <tr><td>マヤ族（メキシコ原住民）</td><td>5色</td><td>黒・白・赤・黄・青</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <span class="src">← S03:p.9, S05</span>
+
+    <div class="voice-block">
+      <span class="voice-label">🎙 音声補足</span>
+      <p>虹の本質は赤から紫までの色のスペクトルが並んだ光の帯であり、色自体は連続的に並んでいる。隣り合った色と色の間に線引きはない。どこからどこまでを一つの色とするかはその国の文化が規定するものであって、「何色が正しいか」という問い自体が不毛。 <span class="src">← S03:p.9, S05</span></p>
+    </div>
+
+    <div class="quote-block">
+      <strong>「いかなる言葉も実体的な何かを名状しているのではなく、他の言葉との差異・関係を通して初めて意味を与えられる」</strong><br>
+      <strong>「命名（言葉）を通して、初めて事物の存在を認めることができる」</strong>
+      <span class="src">← S03:p.10</span>
+    </div>
+
+    <div class="voice-block">
+      <span class="voice-label">🎙 音声補足</span>
+      <p>これは「事物が命名に先立って存在し、命名は後から行われる」という従来の考え方を逆転した斬新な発想。世界という連続体を言葉によって分割・区別することで「コップはコップ、スプーンはスプーン、土は土、川は川」と認識している。 <span class="src">← S03:p.10, S05</span></p>
+    </div>
+
+    <div class="ext-block">
+      <span class="ext-label">🔗 外部補足</span>
+      <p>「自由」や「夢」といった目に見えない概念も、言葉を通して初めて人は理解できる。言葉が存在しなければ、それらの概念の存在自体も認識できない。 <span class="src">← S05</span></p>
+    </div>
+
+    <div class="ext-block">
+      <span class="ext-label">🔗 外部補足（ソシュールの言語記号論）</span>
+      <p>ソシュールは言語記号を<strong>シニフィアン</strong>（記号表現：音・文字のイメージ）と<strong>シニフィエ</strong>（記号内容：概念・意味）の二面からなるとした。たとえば「イヌ」という音がシニフィアン、「犬という動物の概念」がシニフィエ。この結びつきは<strong>恣意的</strong>（文化・歴史で決まる必然性のない関係）であり、「犬」を「Dog」「Chien」「狗」と呼んでも意味は同じ。この発想が「言語は差異の体系である」という構造主義の出発点となった。</p>
+    </div>
+  </div>
+
+  <!-- 1-5 -->
+  <div id="ch1-5" class="section">
+    <div class="section-title">1-5. 状況を認知するとは？（3）差異・関係による定義</div>
+
+    <div class="quote-block">
+      <strong>A という事物（状況）は「A と似ているもの」との違いや共通点（関係性）をもって記述できる</strong>
+      <span class="src">← S03:p.11</span>
+    </div>
+
+    <div class="subsection-title">「曇り」の認識方法</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>形式</th><th>表現</th><th>評価</th></tr></thead>
+        <tbody>
+          <tr><td>A = A</td><td>「曇りとは曇りである」</td><td>同語反復（トートロジー）：誤りではないが何も説明していない</td></tr>
+          <tr><td>A = B</td><td>「曇りとは雨のことである」</td><td>論理矛盾：説明になっていない</td></tr>
+          <tr><td class="today">A ≠ B</td><td class="today">「曇りとは、晴れでも雨でも雪でもないもの」</td><td class="today"><strong>これでのみ事物を論理的に認識できる</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <span class="src">← S03:p.11, S05</span>
+
+    <div class="voice-block">
+      <span class="voice-label">🎙 音声補足</span>
+      <p>A という事物を認識し説明するためには、それ以外のものとの違い、あるいはそこの共通性・関係性をもってしか説明や定義ができない。 <span class="src">← S05</span></p>
+    </div>
+  </div>
+
+  <!-- 1-6 -->
+  <div id="ch1-6" class="section">
+    <div class="section-title">1-6. 状況分析図の作成手順（復習）</div>
+
+    <div class="steps-flow">
+      <div class="step-block">
+        <div class="step-n">STEP 01</div>
+        <div class="step-name">「似たもの」を探す</div>
+      </div>
+      <div class="step-block">
+        <div class="step-n">STEP 02</div>
+        <div class="step-name">「軸」を探す</div>
+      </div>
+      <div class="step-block">
+        <div class="step-n">STEP 03</div>
+        <div class="step-name">図にして分析する</div>
+      </div>
+    </div>
+    <span class="src">← S03:p.12</span>
+
+    <div class="subsection-title">ステップ1：似たものを探す <span class="src">← S03:p.13</span></div>
+    <ul>
+      <li>状況を分析したい対象（A）を把握するため、Aの<strong>比較要素</strong>を取り出す</li>
+      <li>比較要素には、Aと<strong>似ているもの</strong>を探す</li>
+      <li>「似ている」とは、何らかのカテゴリーで括ることができるということ</li>
+    </ul>
+
+    <div class="subsection-title">ステップ2：軸（関係性）を探す <span class="src">← S03:p.14</span></div>
+    <ul>
+      <li>対象（A）と比較要素（B, C, D…）を比べて、共通する事項（＝軸）を抽出する</li>
+      <li>例：「曇り」と「雨」→ どちらも「空を雲が覆っている状態」（共通項）</li>
+    </ul>
+
+    <div class="subsection-title">ステップ3：図にして分析する <span class="src">← S03:p.15</span></div>
+    <p>「空を雲が覆っているか」×「空から何かが降ってくるか」の2軸でマトリクス図を描くと：</p>
+
+    <div class="matrix-wrap">
+      <table class="matrix-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>空を雲が覆っている（YES）</th>
+            <th>空を雲が覆っていない（NO）</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="row-header">何かが降ってくる（YES）</td>
+            <td class="normal-cell">雨・雪</td>
+            <td class="normal-cell">—</td>
+          </tr>
+          <tr>
+            <td class="row-header">何も降ってこない（NO）</td>
+            <td class="today-cell">曇り ★</td>
+            <td class="normal-cell">晴れ</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <span class="src">← S03:p.15</span>
+
+    <div class="analysis-result">
+      「曇り」とは、「空を雲が覆っているが、何も降っていない天気」のことであると分析できる。
+    </div>
+
+    <div class="chapter-summary">
+      <div class="summary-title">▎第1章 まとめ <span class="src">← S03:p.16</span></div>
+      <ul>
+        <li>状況を的確に把握できれば、「問題」の半分以上は解決したことと同じ</li>
+        <li>状況を分析するためには、必ず特定の視座が存在する</li>
+        <li>知りたいことを「深く知る」には、知りたいことと似ている比較要素を出し、それらとの関係の分析を行うのが良い</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CHAPTER 2 ===================== -->
+<section id="ch2">
+  <div class="chapter-header">
+    <span class="chapter-number">CHAPTER 02</span>
+    <h2 class="chapter-title">状況分析図を描いてみよう（マトリクス図を描く）</h2>
+  </div>
+
+  <div class="goal-card" style="margin-bottom:24px;background:linear-gradient(135deg,rgba(248,113,113,0.1),rgba(251,191,36,0.06));border-color:rgba(248,113,113,0.3)">
+    <div class="goal-icon">📌</div>
+    <div class="goal-content">
+      <div class="label" style="color:#f87171">第2章 学習目標</div>
+      <p>具体的な事例を元にマトリクス図を描くことを通して、状況分析の方法を説明できる <span class="src">← S03:p.19</span></p>
+    </div>
+  </div>
+
+  <!-- CASE -->
+  <div id="ch2-case" class="section">
+    <div class="section-title">CASE：マトリクス図を使って工場の事故を分類する</div>
+
+    <div class="info-box">
+      <div class="info-title">🏭 事例の状況 <span class="src">← S03:p.20</span></div>
+      <ul>
+        <li>最近、工場で床に流れた油が原因で<strong>転倒事故</strong>が起きた</li>
+        <li>部下の作業員が考え事をしながら作業をしていたところ、油が床に飛び散ったことに気付かず、足を滑らして転倒した</li>
+        <li>工場長のBさんはこの事故の状況について分析を行いたい</li>
+      </ul>
+    </div>
+
+    <div class="subsection-title">（1）「似たもの」を探す <span class="src">← S03:p.21</span></div>
+    <p><strong>目的：</strong>今回生じた転倒事故の特徴を明らかにしたい → 似たもの＝<strong>他の転倒事故</strong></p>
+
+    <div class="voice-block">
+      <span class="voice-label">🎙 音声補足</span>
+      <p>他の転倒事故の中で今回の転倒事故を位置づけることで、今回の事故の特徴を浮き彫りにできる。重要なのは「どのような目的で図を描きたいか」という目的に照らして、何を似たものにするかを決めること。 <span class="src">← S03:p.21, S05</span></p>
+    </div>
+
+    <div class="subsection-title">発散思考で似たものを列挙 <span class="src">← S03:p.22</span></div>
+    <ol>
+      <li>昨年、中堅社員が急ぎの電気計器部品を調達するため倉庫内を小走りに<strong>手押し台車</strong>で移動中、<strong>側溝</strong>に乗り上げて<strong>脱輪</strong>して転倒した</li>
+      <li>新人作業員が運搬作業中に、凍結していた路面に足を取られて転倒した</li>
+      <li>先月、<strong>フリーローラー</strong>の上に置いた板に乗り、ボルトを締めつける作業に慣れない作業員が頭から転落した</li>
+    </ol>
+  </div>
+
+  <!-- 発散思考 -->
+  <div id="ch2-scatter" class="section">
+    <div class="section-title">発散思考とブレインストーミング（復習）</div>
+
+    <p><strong>ブレインストーミング</strong>とは<strong>アレックス・F・オズボーン（Alex F. Osborn）</strong>が考案した集団思考法。各自が他を批判することなく、自由に多くの意見を出し合って独創的なアイデアを引き出す方法。 <span class="src">← S03:p.23</span></p>
+
+    <div class="voice-block">
+      <span class="voice-label">🎙 音声補足</span>
+      <p>ブレインストーミングは複数の人間が行う集団思考法だが、<strong>図解思考はそれを一人の頭の中で行う</strong>。自分の頭の中に何人もの自分をイメージして、複数の自分の間でブレストを行う方法。 <span class="src">← S03:p.23, S05</span></p>
+    </div>
+
+    <div class="subsection-title">発散思考のポイント <span class="src">← S03:p.23</span></div>
+    <ol>
+      <li>少しでも正しそうであれば<strong>思いつきでもよい</strong></li>
+      <li><strong>関連するものでもよい</strong></li>
+      <li>書き出す量は<strong>多いほど良い</strong>（質より量）</li>
+      <li>書き出した内容を見て新たに思いつくものも書き出す（連想）</li>
+    </ol>
+
+    <div class="voice-block">
+      <span class="voice-label">🎙 音声補足</span>
+      <p>適切な内容を初めから考えようとすると、一見重要そうでない実は重要な似たものを見落とす危険がある。メンタルも大切で、不安や悩みを抱えているときは発散思考が機能しにくい。気持ちにゆとりがある時、ポジティブな感情で臨むこと。 <span class="src">← S05</span></p>
+    </div>
+
+    <hr>
+
+    <div class="section-title" style="margin-top:20px">共通項を出していくポイント <span class="src">← S03:p.25-27</span></div>
+
+    <div class="subsection-title">方法①：特徴を考える <span class="src">← S03:p.25</span></div>
+    <p>それぞれの比較要素を見比べて、共通する特徴を探し出す。</p>
+    <div class="info-box">
+      <div class="info-title">例：犬・猫・うさぎの共通特徴</div>
+      <ul>
+        <li>哺乳類（生物学的分類）</li>
+        <li>ペットになることがある</li>
+        <li>ひげが生えている</li>
+      </ul>
+      <p style="margin-top:8px;font-size:12px;color:var(--text-sub)">抽象概念（「哺乳類」）だけでなく、<strong>具体的な言葉</strong>で共通項を繰り出すことが状況分析の解像度を高める。</p>
+    </div>
+
+    <div class="subsection-title">方法②：効果や影響を考える <span class="src">← S03:p.26</span></div>
+    <p>各要素が周囲のステークホルダーにどのような効果・影響を与えているかを考え、共通する効果や影響をイメージする。</p>
+    <div class="info-box">
+      <div class="info-title">例：犬・猫・うさぎを飼うことで…</div>
+      <ul>
+        <li>メリット：寂しくない・癒しになる</li>
+        <li>デメリット：餌が必要、世話の手間</li>
+      </ul>
+    </div>
+
+    <div class="subsection-title">方法③：背景や理由を考える <span class="src">← S03:p.27</span></div>
+    <p>あらゆる存在が社会の中で周囲と関係を持ちながら何らかの位置づけを持っていることを踏まえ、その存在の背景や理由を考える。</p>
+    <div class="info-box">
+      <div class="info-title">例：なぜ人間はこれらの動物をペットとして飼うか</div>
+      <ul>
+        <li>一人暮らしが増えた</li>
+        <li>経済的に豊かになった</li>
+        <li>ストレスの多い社会になった</li>
+      </ul>
+    </div>
+
+    <div class="voice-block">
+      <span class="voice-label">🎙 音声補足</span>
+      <p>発散思考というと適当にイメージする態度と思われるかもしれないが、発散思考はロジカルな側面を持っている。<strong>発想を広げる手段として論理力を活用するのが発散思考</strong>。 <span class="src">← S05</span></p>
+    </div>
+
+    <hr>
+
+    <div class="section-title" style="margin-top:20px">（2）「軸」を探す <span class="src">← S03:p.24</span></div>
+    <p>4つの転倒事故を比較して共通項・相違点を探す。</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>軸</th><th>発見</th><th>事例</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>第I軸（作業員要因）</strong></td>
+            <td>注意力不足 vs 経験・スキル不足</td>
+            <td>床油転倒・手押し台車転倒 → 注意力不足<br>凍結路面転倒・フリーローラー転落 → スキル要求</td>
+          </tr>
+          <tr>
+            <td><strong>第II軸（環境要因）</strong></td>
+            <td>特殊事情 vs 常日頃の作業環境</td>
+            <td>床油転倒・凍結路面転倒 → 特殊事情<br>手押し台車・フリーローラー → 常日頃の環境</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <span class="src">← S03:p.24, S05</span>
+  </div>
+
+  <!-- 図タイプ選択 -->
+  <div id="ch2-flow" class="section">
+    <div class="section-title">図タイプの選択フローチャート</div>
+
+    <div class="flowchart">
+      <div class="flow-row">
+        <span class="flow-node flow-question">似たものは因果関係または順序関係にある？</span>
+      </div>
+      <div class="flow-branch">
+        <span class="flow-label flow-label-yes">YES</span>
+        <span class="flow-node flow-result-flow">フロー図</span>
+      </div>
+      <div class="flow-branch">
+        <span class="flow-label flow-label-no">NO ↓</span>
+      </div>
+      <div class="flow-row flow-indent">
+        <span class="flow-node flow-question">抽出した「軸」が重なり合っている？</span>
+      </div>
+      <div class="flow-branch flow-indent">
+        <span class="flow-label flow-label-yes">YES</span>
+        <span class="flow-node flow-result-ven">ベン図</span>
+      </div>
+      <div class="flow-branch flow-indent">
+        <span class="flow-label flow-label-no">NO ↓</span>
+      </div>
+      <div class="flow-row" style="margin-left:40px">
+        <span class="flow-node flow-question">抽出した「軸」が3項目以上になる？</span>
+      </div>
+      <div class="flow-branch" style="margin-left:40px">
+        <span class="flow-label flow-label-yes">YES</span>
+        <span class="flow-node flow-result-tree">ツリー図</span>
+      </div>
+      <div class="flow-branch" style="margin-left:40px">
+        <span class="flow-label flow-label-no">NO ↓</span>
+      </div>
+      <div class="flow-row" style="margin-left:60px">
+        <span class="flow-node flow-question">「軸」は定量化できる？</span>
+      </div>
+      <div class="flow-branch" style="margin-left:60px">
+        <span class="flow-label flow-label-yes">YES</span>
+        <span class="flow-node flow-result-dot">点グラフ</span>
+      </div>
+      <div class="flow-branch" style="margin-left:60px">
+        <span class="flow-label flow-label-no">NO</span>
+        <span class="flow-node flow-result-matrix">マトリクス図</span>
+      </div>
+    </div>
+    <span class="src">← S03:p.28</span>
+
+    <div class="verdict-box verdict-matrix">
+      <span class="verdict-icon">📋</span>
+      今回の判定：因果関係なし / 重なりなし / 2軸のみ / 定量化できない → <strong>マトリクス図が適切</strong>
+    </div>
+  </div>
+
+  <!-- 分析結果 -->
+  <div id="ch2-result" class="section">
+    <div class="section-title">（3）図にして分析する <span class="src">← S03:p.29</span></div>
+
+    <div class="matrix-wrap">
+      <div class="matrix-title">マトリクス図：工場の転倒事故分類</div>
+      <table class="matrix-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>作業環境：常日頃の作業環境に原因</th>
+            <th>作業環境：特殊事情が原因</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="row-header">作業員：経験・スキルの不足</td>
+            <td class="normal-cell">フリーローラーでの作業で頭から転落</td>
+            <td class="normal-cell">新人作業員が凍結路面に足を取られて転倒</td>
+          </tr>
+          <tr>
+            <td class="row-header">作業員：注意力不足</td>
+            <td class="normal-cell">手押し台車で移動中、側溝に乗り上げて脱輪して転倒</td>
+            <td class="today-cell">床の油で転倒<br>★今回の事故</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <span class="src">← S03:p.29</span>
+
+    <div class="analysis-result">
+      今回の事故は、<strong>「普段発生しない特殊な状況の下で、作業員の注意力不足が重なり生じた事故」</strong>と位置づけることができる。 <span class="src">← S03:p.30</span>
+    </div>
+
+    <div class="subsection-title">収束思考のポイント（図を描く際に実施）<span class="src">← S03:p.31</span></div>
+    <ol>
+      <li>適切な表現に変える</li>
+      <li>重要でない事項は削除する</li>
+      <li>冗長な表現を省きコンパクトにする</li>
+      <li>似た内容の事項はまとめるか、一つに絞る</li>
+    </ol>
+
+    <div class="chapter-summary">
+      <div class="summary-title">▎第2章 まとめ <span class="src">← S03:p.32</span></div>
+      <ul>
+        <li>今回生じた転倒事故の特徴を明らかにしたい場合は、「他の転倒事故」を似たものに位置づけるのが良い</li>
+        <li>「因果関係になく」「重なり合わず」「3項目以上でなく」「定量化できない」ので、マトリクス図が適切</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CHAPTER 3 ===================== -->
+<section id="ch3">
+  <div class="chapter-header">
+    <span class="chapter-number">CHAPTER 03</span>
+    <h2 class="chapter-title">状況分析図を描いてみよう（ツリー図を描く）</h2>
+  </div>
+
+  <div class="goal-card" style="margin-bottom:24px;background:linear-gradient(135deg,rgba(52,211,153,0.1),rgba(91,141,238,0.06));border-color:rgba(52,211,153,0.3)">
+    <div class="goal-icon">📌</div>
+    <div class="goal-content">
+      <div class="label" style="color:#34d399">第3章 学習目標</div>
+      <p>具体的な事例を元にツリー図を描くことを通して、状況分析の方法を説明できる <span class="src">← S03:p.35</span></p>
+    </div>
+  </div>
+
+  <!-- CASE -->
+  <div id="ch3-case" class="section">
+    <div class="section-title">CASE：ツリー図を使って「新型コロナ」を捉える</div>
+
+    <div class="voice-block">
+      <span class="voice-label">🎙 音声補足</span>
+      <p>5つの図の中でおそらく最も利用する局面の多いツリー図を使ってみる。 <span class="src">← S05</span></p>
+    </div>
+
+    <p><strong>お題：</strong>新型コロナとはどういった感染症なのか <span class="src">← S03:p.36</span></p>
+
+    <div class="subsection-title">（1）「似たもの」を探す：スコープ設定が重要 <span class="src">← S03:p.37</span></div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>似たもの候補</th><th>評価</th></tr></thead>
+        <tbody>
+          <tr><td>「新型コロナと似た言葉」</td><td>❌ 言葉の特徴を比べたいわけではない</td></tr>
+          <tr><td>「流行のファッション・新商品」</td><td>❌ 明らかに違うカテゴリー</td></tr>
+          <tr><td class="today"><strong>感染症</strong>（結核・コレラ・O157・ペスト・ノロウイルス・インフルエンザ etc.）</td><td class="today">✅ 「新型コロナはどのような感染症か」を明らかにしたいなら感染症カテゴリーが適切</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <span class="src">← S03:p.37, S05</span>
+  </div>
+
+  <!-- 似たもの探しのポイント -->
+  <div id="ch3-scope" class="section">
+    <div class="section-title">似たもの探しのポイント：目的依存のスコープ設定 <span class="src">← S03:p.38</span></div>
+
+    <div class="quote-block">
+      <strong>似たものの範囲の設定の仕方は目的に依存する。まず初めに、状況を分析しなければならない背景・目的・理由・動機を明確にする。</strong>
+    </div>
+
+    <div class="subsection-title">DXを例にした目的別の似たもの設定</div>
+
+    <div class="ext-block">
+      <span class="ext-label">🔗 外部補足</span>
+      <p>DX（Digital Transformation）とは：デジタルテクノロジーを使用してビジネスプロセス、文化、顧客体験を新たに創造し、変わり続けるビジネスや市場の要求を満たすプロセスのこと。 <span class="src">← S03:p.38</span></p>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>背景</th><th>目的</th><th>似たものの範囲</th><th>似たものの例</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>DXに関する新規事業を生み出したい</td>
+            <td>DXがもたらす価値を知る</td>
+            <td>顧客にDXと似たような価値を提供する手法</td>
+            <td>IT化・ブロックチェーン・情報銀行</td>
+          </tr>
+          <tr>
+            <td>社内業務プロセスのDXを推進中</td>
+            <td>業務プロセス改革におけるDXの特徴を明らかに</td>
+            <td>業務プロセスを変革する手段</td>
+            <td>AI活用・IoT導入・RPA導入</td>
+          </tr>
+          <tr>
+            <td>ビジネスモデル変革にDXを活用したい</td>
+            <td>BM変革手法としてDXを位置づけた特徴を明らかに</td>
+            <td>ビジネスモデル変革の手法</td>
+            <td>オープンイノベーション・デザイン思考・アジャイル開発・サステナビリティ戦略</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <span class="src">← S03:p.38</span>
+
+    <div class="ext-block">
+      <span class="ext-label">🔗 外部補足</span>
+      <p>RPA（Robotic Process Automation）：PC上で行っている事務作業を自動化できるソフトウェアロボット技術。仮想知的労働者とも呼ばれる。 <span class="src">← S03:p.38</span></p>
+    </div>
+
+    <div class="subsection-title">（2）「軸」を探す <span class="src">← S03:p.39</span></div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>比較</th><th>共通点・相違点</th><th>導き出す軸</th></tr></thead>
+        <tbody>
+          <tr><td>新型コロナ vs ノロウイルス</td><td>病原体タイプ：同じウイルス性</td><td rowspan="2"><strong>病原タイプ</strong></td></tr>
+          <tr><td>新型コロナ vs O157</td><td>病原体タイプ：O157は細菌性（異なる）</td></tr>
+          <tr><td>新型コロナ vs インフルエンザ</td><td>感染経路：同じ飛沫感染・接触感染</td><td rowspan="2"><strong>感染経路</strong></td></tr>
+          <tr><td>新型コロナ vs ノロウイルス</td><td>感染経路：ノロウイルスは経口感染（異なる）</td></tr>
+          <tr><td>ペスト・天然痘 vs 現代の感染症</td><td>流行時期：近代以前に収束 vs 現代流行</td><td><strong>流行時期</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <span class="src">← S03:p.39</span>
+
+    <div class="verdict-box verdict-tree">
+      <span class="verdict-icon">🌳</span>
+      今回の判定：因果関係なし / 重なりなし / <strong>軸3項目以上</strong> → <strong>ツリー図が適切</strong>
+    </div>
+
+    <div class="note-banner">
+      <span class="note-icon">📝</span>
+      <span>注：2項目でもツリー図は描ける。点グラフとマトリクス図は「3項目以上」では描けないため、便宜的にツリー図をこの位置に置いている。 <span class="src">← S03:p.40</span></span>
+    </div>
+  </div>
+
+  <!-- ツリー図と分析結果 -->
+  <div id="ch3-result" class="section">
+    <div class="section-title">（3）図にして分析する：感染症のツリー図 <span class="src">← S03:p.41</span></div>
+
+    <!-- SVG Tree Diagram -->
+    <figure>
+      <svg viewBox="0 0 780 340" xmlns="http://www.w3.org/2000/svg" style="background:#1e2535;border-radius:10px;display:block;">
+        <defs>
+          <marker id="arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L6,3 Z" fill="#5b6a8a"/>
+          </marker>
+        </defs>
+
+        <!-- 感染症 root -->
+        <rect x="20" y="145" width="100" height="36" rx="6" fill="rgba(91,141,238,0.25)" stroke="#5b8dee" stroke-width="1.5"/>
+        <text x="70" y="168" text-anchor="middle" fill="#e2e8f5" font-size="13" font-family="Noto Sans JP" font-weight="700">感染症</text>
+
+        <!-- branch lines from root -->
+        <line x1="120" y1="163" x2="155" y2="105" stroke="#5b6a8a" stroke-width="1"/>
+        <line x1="120" y1="163" x2="155" y2="225" stroke="#5b6a8a" stroke-width="1"/>
+
+        <!-- 細菌感染 -->
+        <rect x="155" y="87" width="100" height="36" rx="6" fill="rgba(248,113,113,0.2)" stroke="#f87171" stroke-width="1.5"/>
+        <text x="205" y="110" text-anchor="middle" fill="#f87171" font-size="12" font-family="Noto Sans JP" font-weight="700">細菌感染</text>
+
+        <!-- ウイルス感染 -->
+        <rect x="155" y="208" width="100" height="36" rx="6" fill="rgba(52,211,153,0.2)" stroke="#34d399" stroke-width="1.5"/>
+        <text x="205" y="231" text-anchor="middle" fill="#34d399" font-size="12" font-family="Noto Sans JP" font-weight="700">ウイルス感染</text>
+
+        <!-- 細菌感染 branches -->
+        <line x1="255" y1="105" x2="285" y2="58" stroke="#5b6a8a" stroke-width="1"/>
+        <line x1="255" y1="105" x2="285" y2="105" stroke="#5b6a8a" stroke-width="1"/>
+        <line x1="255" y1="105" x2="285" y2="152" stroke="#5b6a8a" stroke-width="1"/>
+
+        <!-- 感染経路（細菌）-->
+        <rect x="285" y="40" width="120" height="34" rx="5" fill="#252d40" stroke="#2d3a52" stroke-width="1"/>
+        <text x="345" y="62" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">飛沫感染</text>
+
+        <rect x="285" y="88" width="120" height="34" rx="5" fill="#252d40" stroke="#2d3a52" stroke-width="1"/>
+        <text x="345" y="110" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">経口感染</text>
+
+        <rect x="285" y="136" width="120" height="34" rx="5" fill="#252d40" stroke="#2d3a52" stroke-width="1"/>
+        <text x="345" y="158" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP">ノミ吸血/接触感染</text>
+
+        <!-- 時期・疾患（細菌）-->
+        <line x1="405" y1="57" x2="435" y2="57" stroke="#5b6a8a" stroke-width="1"/>
+        <rect x="435" y="40" width="80" height="34" rx="5" fill="#252d40" stroke="#2d3a52" stroke-width="1"/>
+        <text x="475" y="55" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP">近代以前</text>
+        <text x="475" y="68" text-anchor="middle" fill="#5b8dee" font-size="11" font-family="Noto Sans JP" font-weight="700">結核</text>
+
+        <line x1="405" y1="105" x2="435" y2="85" stroke="#5b6a8a" stroke-width="1"/>
+        <rect x="435" y="68" width="80" height="34" rx="5" fill="#252d40" stroke="#2d3a52" stroke-width="1"/>
+        <text x="475" y="83" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP">近代以前</text>
+        <text x="475" y="96" text-anchor="middle" fill="#5b8dee" font-size="11" font-family="Noto Sans JP" font-weight="700">コレラ</text>
+
+        <line x1="405" y1="105" x2="435" y2="120" stroke="#5b6a8a" stroke-width="1"/>
+        <rect x="435" y="103" width="80" height="34" rx="5" fill="#252d40" stroke="#2d3a52" stroke-width="1"/>
+        <text x="475" y="118" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP">現代</text>
+        <text x="475" y="131" text-anchor="middle" fill="#5b8dee" font-size="11" font-family="Noto Sans JP" font-weight="700">O157</text>
+
+        <line x1="405" y1="153" x2="435" y2="153" stroke="#5b6a8a" stroke-width="1"/>
+        <rect x="435" y="136" width="80" height="34" rx="5" fill="#252d40" stroke="#2d3a52" stroke-width="1"/>
+        <text x="475" y="151" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP">近代以前</text>
+        <text x="475" y="164" text-anchor="middle" fill="#5b8dee" font-size="11" font-family="Noto Sans JP" font-weight="700">ペスト</text>
+
+        <!-- ウイルス感染 branches -->
+        <line x1="255" y1="226" x2="285" y2="196" stroke="#5b6a8a" stroke-width="1"/>
+        <line x1="255" y1="226" x2="285" y2="240" stroke="#5b6a8a" stroke-width="1"/>
+        <line x1="255" y1="226" x2="285" y2="285" stroke="#5b6a8a" stroke-width="1"/>
+
+        <rect x="285" y="178" width="120" height="34" rx="5" fill="#252d40" stroke="#2d3a52" stroke-width="1"/>
+        <text x="345" y="200" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">飛沫と接触感染</text>
+
+        <rect x="285" y="222" width="120" height="34" rx="5" fill="#252d40" stroke="#2d3a52" stroke-width="1"/>
+        <text x="345" y="244" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">経口感染</text>
+
+        <rect x="285" y="266" width="120" height="34" rx="5" fill="#252d40" stroke="#2d3a52" stroke-width="1"/>
+        <text x="345" y="288" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">飛沫と接触感染</text>
+
+        <!-- ウイルス 疾患 -->
+        <line x1="405" y1="195" x2="435" y2="195" stroke="#5b6a8a" stroke-width="1"/>
+        <rect x="435" y="178" width="80" height="34" rx="5" fill="#252d40" stroke="#2d3a52" stroke-width="1"/>
+        <text x="475" y="193" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP">近代以前</text>
+        <text x="475" y="206" text-anchor="middle" fill="#5b8dee" font-size="11" font-family="Noto Sans JP" font-weight="700">天然痘</text>
+
+        <line x1="405" y1="239" x2="435" y2="239" stroke="#5b6a8a" stroke-width="1"/>
+        <rect x="435" y="222" width="80" height="34" rx="5" fill="#252d40" stroke="#2d3a52" stroke-width="1"/>
+        <text x="475" y="237" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP">現代</text>
+        <text x="475" y="250" text-anchor="middle" fill="#5b8dee" font-size="11" font-family="Noto Sans JP" font-weight="700">ノロウイルス</text>
+
+        <line x1="405" y1="283" x2="435" y2="270" stroke="#5b6a8a" stroke-width="1"/>
+        <rect x="435" y="253" width="80" height="34" rx="5" fill="#252d40" stroke="#2d3a52" stroke-width="1"/>
+        <text x="475" y="268" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP">現代</text>
+        <text x="475" y="281" text-anchor="middle" fill="#5b8dee" font-size="11" font-family="Noto Sans JP" font-weight="700">インフルエンザ</text>
+
+        <line x1="405" y1="283" x2="435" y2="300" stroke="#5b6a8a" stroke-width="1"/>
+        <!-- 新型コロナ（highlight）-->
+        <rect x="435" y="283" width="100" height="38" rx="6" fill="rgba(52,211,153,0.25)" stroke="#34d399" stroke-width="2"/>
+        <text x="485" y="298" text-anchor="middle" fill="#34d399" font-size="11" font-family="Noto Sans JP" font-weight="700">新型コロナ</text>
+        <text x="485" y="312" text-anchor="middle" fill="#34d399" font-size="10" font-family="Noto Sans JP">★ここ</text>
+
+        <!-- column labels -->
+        <text x="205" y="30" text-anchor="middle" fill="#5b6a8a" font-size="10" font-family="Noto Sans JP">病原体タイプ</text>
+        <text x="345" y="20" text-anchor="middle" fill="#5b6a8a" font-size="10" font-family="Noto Sans JP">感染経路</text>
+        <text x="475" y="20" text-anchor="middle" fill="#5b6a8a" font-size="10" font-family="Noto Sans JP">流行時期 / 感染症</text>
+      </svg>
+      <figcaption>図：感染症のツリー図（病原タイプ × 感染経路 × 流行時期）　S03:p.41</figcaption>
+    </figure>
+
+    <div class="note-banner">
+      <span class="note-icon">⚠️</span>
+      <span>感染経路は複数の感染経路を持つ感染症もある（重なり合う）ため、ここでは単純化している。本来はツリー図とベン図を組み合わせる発想も必要な場合がある。 <span class="src">← S05</span></span>
+    </div>
+
+    <div class="analysis-result">
+      新型コロナとは<strong>ウイルスを病原体とし、飛沫/接触感染を感染経路とし、現代に流行しているインフルエンザと同じ感染症</strong>である。 <span class="src">← S03:p.42</span>
+    </div>
+
+    <div class="chapter-summary">
+      <div class="summary-title">▎第3章 まとめ <span class="src">← S03:p.43</span></div>
+      <ul>
+        <li>似たものを出す際は発散思考を行う</li>
+        <li>「新型コロナはどのような感染症か」を明らかにしたい場合は、「感染症」を似たものにすればよい</li>
+        <li>似たものと比較し、共通している事項（軸）を見つける</li>
+        <li>図を描く際は収束思考を行う</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CHAPTER 4 ===================== -->
+<section id="ch4">
+  <div class="chapter-header">
+    <span class="chapter-number">CHAPTER 04</span>
+    <h2 class="chapter-title">状況分析図を描いてみよう（点グラフを描く）</h2>
+  </div>
+
+  <div class="goal-card" style="margin-bottom:24px;background:linear-gradient(135deg,rgba(167,139,250,0.1),rgba(91,141,238,0.06));border-color:rgba(167,139,250,0.3)">
+    <div class="goal-icon">📌</div>
+    <div class="goal-content">
+      <div class="label" style="color:#a78bfa">第4章 学習目標</div>
+      <p>具体的な事例を元に点グラフを描くことを通して、状況分析の方法を説明できる <span class="src">← S03:p.46</span></p>
+    </div>
+  </div>
+
+  <!-- CASE -->
+  <div id="ch4-case" class="section">
+    <div class="section-title">点グラフの特徴</div>
+
+    <p>これまでと異なり<strong>数量を扱う</strong>点グラフを題材に状況分析図を描く。 <span class="src">← S03:p.47</span></p>
+
+    <div class="voice-block">
+      <span class="voice-label">🎙 音声補足</span>
+      <p>手本やベストプラクティスなどを探し出す点グラフの特徴は、<strong>数量という要素を図で表現することが可能</strong>なところにある。 <span class="src">← S05</span></p>
+    </div>
+
+    <div class="section-title" style="margin-top:24px">CASE：点グラフを使って「手本」を探し出す <span class="src">← S03:p.47</span></div>
+
+    <div class="info-box">
+      <div class="info-title">📊 事例の状況</div>
+      <p>K社の経営企画部に所属するDさんは、今後の経営戦略を検討するため、自社の戦略作成に参考になる会社を選定しなければならない。ベストプラクティスとなる企業を探し出して、そこと比較することによって、より良い経営戦略を立案することが求められている。</p>
+      <p style="margin-top:8px"><strong>お題：</strong>参考にする会社をどのようにして選んだらよいか</p>
+    </div>
+
+    <div class="subsection-title">（1）「似たもの」を探す <span class="src">← S03:p.48</span></div>
+    <p>経営戦略の参考となる企業を見つけたい → 似たもの＝<strong>同業他社</strong>（取り扱う商品やサービスの内容が似ている会社）</p>
+    <p>今回は同業企業 A社〜F社 の計6社をピックアップ。 <span class="src">← S03:p.48</span></p>
+
+    <div class="ext-block">
+      <span class="ext-label">🔗 外部補足</span>
+      <p>もし経営本心や事業戦略・ビジネスモデルを一から見直したい場合は、同業他社ではなく、異業種・異業体で先進的なチャレンジをして成功している企業を選ぶのが良い。 <span class="src">← S05</span></p>
+    </div>
+  </div>
+
+  <!-- 軸の探し方 -->
+  <div id="ch4-axis" class="section">
+    <div class="section-title">（2）「軸」を探す <span class="src">← S03:p.49</span></div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>共通点（軸の候補）</th><th>発見の根拠</th></tr></thead>
+        <tbody>
+          <tr><td>従業員規模</td><td>C社とK社は約300人程度と似ている</td></tr>
+          <tr><td>創立時期</td><td>A社とK社は創立時期が近い</td></tr>
+          <tr><td>売上規模</td><td>各社共通で比較できる財務指標</td></tr>
+          <tr><td>利益率</td><td>K社とB社の利益が近い水準</td></tr>
+          <tr><td>アフターサービス</td><td>K社とD社はアフターサービスの方法が似ている</td></tr>
+          <tr><td>出店エリア</td><td>K社とF社は関西地域で出店エリアが重なっている</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <span class="src">← S03:p.49, S05</span>
+
+    <div class="voice-block">
+      <span class="voice-label">🎙 音声補足</span>
+      <p>似たもの探しは重要だが、もっと重要なのはここから<strong>軸を探すこと</strong>。似たものの洗い出しは、適切な軸を探すためのヒントに過ぎない。 <span class="src">← S05</span></p>
+    </div>
+
+    <div class="subsection-title">点グラフのための軸の増やし方 <span class="src">← S05</span></div>
+    <ol>
+      <li><strong>変形：</strong>思いついた軸の内容を変形させる（例：利益率 → 社員一人当たり利益率・利益額）</li>
+      <li><strong>分割：</strong>既存の軸を分割する（例：従業員規模 → 正社員規模 + 非正規社員規模）</li>
+      <li><strong>逆を探す：</strong>思いついた軸の逆（例：従業員数 → 役員の人数）</li>
+    </ol>
+
+    <div class="subsection-title">軸の絞り込み方 <span class="src">← S05</span></div>
+    <ol>
+      <li><strong>まとめる：</strong>複数の軸を大括りにする（例：正社員規模＋非正規規模 → 従業員規模）</li>
+      <li><strong>捨てる：</strong>目的に最も重要な2つを残して残りを落とす</li>
+    </ol>
+
+    <div class="info-box">
+      <div class="info-title">⚠️ 重要：2軸は全く異なるものにすること <span class="src">← S03:p.51</span></div>
+      <p>例えば「昨年の売上高」と「3年前の売上高」の2軸は非常に似た傾向になり（右肩上がりの直線上に並ぶ）、解釈がほとんど意味をなさない。<strong>全く異なる視点の軸</strong>を選ぶことが必要。</p>
+    </div>
+
+    <div class="verdict-box verdict-dot">
+      <span class="verdict-icon">📍</span>
+      今回の判定：因果関係なし / 重なりなし / 2軸のみ / <strong>定量化できる</strong> → <strong>点グラフが適切</strong>
+    </div>
+  </div>
+
+  <!-- 分析結果 -->
+  <div id="ch4-result" class="section">
+    <div class="section-title">（3）図にして分析する <span class="src">← S03:p.52</span></div>
+
+    <p><strong>2軸の設定：</strong>横軸＝利益率（高い→右）、縦軸＝売上高（高い→上）</p>
+    <div class="voice-block">
+      <span class="voice-label">🎙 音声補足</span>
+      <p>中心は0ではなく<strong>7社の平均値</strong>にすることで、点が程よく分散した図になる。 <span class="src">← S03:p.52, S05</span></p>
+    </div>
+
+    <!-- SVG Scatter Plot -->
+    <figure>
+      <svg viewBox="0 0 520 380" xmlns="http://www.w3.org/2000/svg" style="background:#1e2535;border-radius:10px;display:block;">
+        <!-- background -->
+        <rect x="60" y="30" width="400" height="300" fill="#252d40" rx="4"/>
+        <!-- quadrant lines (center = average) -->
+        <line x1="260" y1="30" x2="260" y2="330" stroke="#3a4a66" stroke-width="1" stroke-dasharray="4,3"/>
+        <line x1="60" y1="180" x2="460" y2="180" stroke="#3a4a66" stroke-width="1" stroke-dasharray="4,3"/>
+
+        <!-- Axes -->
+        <line x1="60" y1="330" x2="460" y2="330" stroke="#5b6a8a" stroke-width="1.5"/>
+        <line x1="60" y1="330" x2="60" y2="30" stroke="#5b6a8a" stroke-width="1.5"/>
+
+        <!-- Arrow heads -->
+        <polygon points="460,330 454,326 454,334" fill="#5b6a8a"/>
+        <polygon points="60,30 56,36 64,36" fill="#5b6a8a"/>
+
+        <!-- Axis labels -->
+        <text x="470" y="334" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">高い</text>
+        <text x="30" y="334" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">低い</text>
+        <text x="250" y="360" text-anchor="middle" fill="#8a99b8" font-size="12" font-family="Noto Sans JP" font-weight="700">利益率</text>
+        <text x="18" y="185" fill="#8a99b8" font-size="11" font-family="Noto Sans JP" transform="rotate(-90,18,185)">売上高</text>
+        <text x="55" y="40" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">高い</text>
+        <text x="55" y="330" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">低い</text>
+
+        <!-- center label -->
+        <text x="265" y="195" fill="#5b6a8a" font-size="10" font-family="Noto Sans JP">7社の平均</text>
+
+        <!-- Quadrant labels -->
+        <text x="155" y="58" text-anchor="middle" fill="#5b6a8a" font-size="10" font-family="Noto Sans JP">第2象限</text>
+        <text x="370" y="58" text-anchor="middle" fill="#5b6a8a" font-size="10" font-family="Noto Sans JP">第1象限</text>
+        <text x="155" y="320" text-anchor="middle" fill="#5b6a8a" font-size="10" font-family="Noto Sans JP">第3象限</text>
+        <text x="370" y="320" text-anchor="middle" fill="#5b6a8a" font-size="10" font-family="Noto Sans JP">第4象限</text>
+
+        <!-- Data points -->
+        <!-- A社: 高売上・低利益 (left-upper) -->
+        <circle cx="155" cy="85" r="6" fill="rgba(91,141,238,0.5)" stroke="#5b8dee" stroke-width="1.5"/>
+        <text x="165" y="82" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">A社</text>
+
+        <!-- B社: 高売上・高利益 (right-upper) → BEST -->
+        <circle cx="370" cy="70" r="8" fill="rgba(251,191,36,0.6)" stroke="#fbbf24" stroke-width="2"/>
+        <text x="382" y="67" fill="#fbbf24" font-size="12" font-family="Noto Sans JP" font-weight="700">B社 ★</text>
+
+        <!-- C社: 低売上・低利益 (left-lower) -->
+        <circle cx="185" cy="270" r="6" fill="rgba(91,141,238,0.5)" stroke="#5b8dee" stroke-width="1.5"/>
+        <text x="195" y="267" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">C社</text>
+
+        <!-- D社: 中売上・中利益 (near center) -->
+        <circle cx="275" cy="140" r="6" fill="rgba(91,141,238,0.5)" stroke="#5b8dee" stroke-width="1.5"/>
+        <text x="285" y="137" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">D社</text>
+
+        <!-- E社: 低売上・低利益 (far left) -->
+        <circle cx="80" cy="195" r="6" fill="rgba(91,141,238,0.5)" stroke="#5b8dee" stroke-width="1.5"/>
+        <text x="88" y="192" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">E社</text>
+
+        <!-- F社: 低売上・低利益 (lower-left) -->
+        <circle cx="90" cy="280" r="6" fill="rgba(91,141,238,0.5)" stroke="#5b8dee" stroke-width="1.5"/>
+        <text x="98" y="277" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">F社</text>
+
+        <!-- K社: right-of-center lower -->
+        <circle cx="295" cy="215" r="6" fill="rgba(248,113,113,0.6)" stroke="#f87171" stroke-width="1.5"/>
+        <text x="305" y="212" fill="#f87171" font-size="12" font-family="Noto Sans JP" font-weight="700">K社</text>
+
+        <!-- Arrow from K to B -->
+        <defs>
+          <marker id="arrowBlue" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L0,8 L8,4 Z" fill="#fbbf24"/>
+          </marker>
+        </defs>
+        <line x1="301" y1="209" x2="363" y2="78" stroke="#fbbf24" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arrowBlue)"/>
+      </svg>
+      <figcaption>図：K社と同業他社の点グラフ（横軸=利益率、縦軸=売上高）　S03:p.52</figcaption>
+    </figure>
+
+    <div class="analysis-result">
+      売上高・利益率のいずれも高い<strong>B社</strong>の経営戦略を参考にするのが望ましい、との結論を得た。 <span class="src">← S03:p.52</span>
+    </div>
+
+    <div class="chapter-summary">
+      <div class="summary-title">▎第4章 まとめ <span class="src">← S03:p.53</span></div>
+      <ul>
+        <li>今後の経営戦略を検討するために役立つ他社を探す場合は、取り扱う商品やサービスの内容が似ている会社を「似たもの」にすればよい</li>
+        <li>点グラフを描く場合は、定量的な（数値で表現できる）軸を出すようにする</li>
+        <li>軸の絞り込みについては、作図の目的に最も重要な2つの軸を絞り込む</li>
+      </ul>
+    </div>
+
+    <div class="note-banner">
+      <span class="note-icon">📝</span>
+      <span>第3回のまとめは意図的に省略。次の第4回で第3回と第4回を一緒にまとめる。 <span class="src">← S05</span></span>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SUPPLEMENTS ===================== -->
+<div class="supplement-section">
+  <div class="supplement-section-title">── 末尾補足 ──</div>
+
+  <!-- 未確定事項 -->
+  <div id="undecided" class="supp-card supp-card-undecided">
+    <div class="supp-card-header">
+      <span class="supp-card-icon">❓</span>
+      <span class="supp-card-title">未確定事項・要確認リスト</span>
+    </div>
+    <div class="undecided-empty">
+      <div class="check">✅</div>
+      <p>今回の授業では全ての事項がS03・S05照合により解消できた。未確定事項なし。</p>
+    </div>
+  </div>
+
+  <!-- 補足A -->
+  <div id="suppA" class="supp-card supp-card-terms">
+    <div class="supp-card-header">
+      <span class="supp-card-icon">⭐</span>
+      <span class="supp-card-title">補足A：最重要ワード一覧</span>
+    </div>
+    <div class="term-grid">
+      <div class="term-item">
+        <div class="term-name"><span class="star-3">★★★</span> 状況分析</div>
+        <div class="term-yomi">じょうきょうぶんせき</div>
+        <div class="term-def">問題解決のために状況を的確に把握・整理すること</div>
+      </div>
+      <div class="term-item">
+        <div class="term-name"><span class="star-3">★★★</span> フッサール</div>
+        <div class="term-def">エトムント・フッサール（1859-1938）。オーストリアの哲学者。現象学の創始者。主著『論理学研究』（1900）、『イデーン』（1913）</div>
+      </div>
+      <div class="term-item">
+        <div class="term-name"><span class="star-3">★★★</span> ソシュール</div>
+        <div class="term-def">フェルディナン・ド・ソシュール（1857-1913）。スイスの言語学者。言葉による世界の分節を主張。近代言語学の父</div>
+      </div>
+      <div class="term-item">
+        <div class="term-name"><span class="star-3">★★★</span> 言語による世界の分節</div>
+        <div class="term-def">言葉によって連続した世界を切り分け認知するというソシュールの考え方</div>
+      </div>
+      <div class="term-item">
+        <div class="term-name"><span class="star-3">★★★</span> 発散思考</div>
+        <div class="term-yomi">はっさんしこう</div>
+        <div class="term-def">アイデアを批判せず量を重視して出す思考法。ブレインストーミングの核心</div>
+      </div>
+      <div class="term-item">
+        <div class="term-name"><span class="star-3">★★★</span> 収束思考</div>
+        <div class="term-yomi">しゅうそくしこう</div>
+        <div class="term-def">発散した情報を整理・精査・圧縮する思考法。図を確定する際に使う</div>
+      </div>
+      <div class="term-item">
+        <div class="term-name"><span class="star-3">★★★</span> 似たもの探し</div>
+        <div class="term-yomi">にたものさがし</div>
+        <div class="term-def">状況分析の第1ステップ。分析対象と同カテゴリーの比較要素を列挙すること</div>
+      </div>
+      <div class="term-item">
+        <div class="term-name"><span class="star-3">★★★</span> 軸</div>
+        <div class="term-yomi">じく</div>
+        <div class="term-def">比較要素間の共通項。状況分析図の分類基準となる事項</div>
+      </div>
+      <div class="term-item">
+        <div class="term-name"><span class="star-3">★★★</span> ツリー図</div>
+        <div class="term-def">因果関係なく・重なりなく・3項目以上の軸がある場合に適する状況分析図</div>
+      </div>
+      <div class="term-item">
+        <div class="term-name"><span class="star-3">★★★</span> マトリクス図</div>
+        <div class="term-def">因果関係なく・重なりなく・2項目で定量化できない場合に適する状況分析図</div>
+      </div>
+      <div class="term-item">
+        <div class="term-name"><span class="star-3">★★★</span> 点グラフ</div>
+        <div class="term-def">因果関係なく・重なりなく・2項目で定量化できる場合に適する状況分析図</div>
+      </div>
+      <div class="term-item">
+        <div class="term-name"><span class="star-2">★★☆</span> 視座</div>
+        <div class="term-yomi">しざ</div>
+        <div class="term-def">物事を見る立場・観点。分析する際に必ず存在する特定の視点</div>
+      </div>
+      <div class="term-item">
+        <div class="term-name"><span class="star-2">★★☆</span> エポケー</div>
+        <div class="term-def">客観的世界の実在という思い込みを一時保留し、確信の成立条件を問う態度（現象学）</div>
+      </div>
+      <div class="term-item">
+        <div class="term-name"><span class="star-2">★★☆</span> トートロジー</div>
+        <div class="term-def">同語反復。「AはAである」形式で、何も説明していない命題</div>
+      </div>
+      <div class="term-item">
+        <div class="term-name"><span class="star-2">★★☆</span> ベン図</div>
+        <div class="term-def">軸が重なり合っている場合に適する状況分析図</div>
+      </div>
+      <div class="term-item">
+        <div class="term-name"><span class="star-2">★★☆</span> フロー図</div>
+        <div class="term-def">似たものが因果関係または順序関係にある場合に適する状況分析図</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 補足B -->
+  <div id="suppB" class="supp-card supp-card-bg">
+    <div class="supp-card-header">
+      <span class="supp-card-icon">📚</span>
+      <span class="supp-card-title">補足B：知っておくべき背景知識</span>
+    </div>
+    <ul class="bg-list">
+      <li>
+        <strong>エトムント・フッサール（1859-1938）と現象学</strong>：オーストリアのプロニッツ（現チェコ）生まれ。もとは数学研究者だったが哲学に転向し、現象学を創始。主著は『論理学研究』（1900）・『イデーン』（1913）・『ヨーロッパ諸学の危機と超越論的現象学』など。意識の働きを「志向性（ノエシス）」と呼び、意識に現れる対象を「ノエマ」と名付けた。弟子にハイデガー・サルトル・メルロ＝ポンティを輩出し、現象学は20世紀哲学の主要潮流となった。<span style="font-size:11px;color:var(--text-dim)">（[外部補足]）</span>
+      </li>
+      <li>
+        <strong>フェルディナン・ド・ソシュール（1857-1913）と言語記号論</strong>：スイスのジュネーブ生まれ。近代言語学の父。主著『一般言語学講義』はソシュールの死後、弟子たちが1906-1911年の講義ノートをまとめ1916年に出版。言語記号は <em>シニフィアン</em>（記号表現：音や文字のイメージ）と <em>シニフィエ</em>（記号内容：概念・意味）の二面からなるとした。この結びつきは恣意的（必然性がなく歴史・文化で決まる）であり、例えば「犬」という概念は日本語では「イヌ」、英語では「Dog」と呼ばれても構わない。言語はモノに後から名前を付けるのではなく、言語（差異の体系）が世界を切り分け認識を成立させる——これが構造主義思想の源流となった。<span style="font-size:11px;color:var(--text-dim)">（[外部補足]）</span>
+      </li>
+      <li>
+        <strong>オズボーンのブレインストーミング4原則（1953年）</strong>：Alex F. Osborn（1888-1966）が著書『Applied Imagination』で体系化。授業で紹介された4ポイントは、オズボーンが定めた4原則に対応している。① <em>批判厳禁</em>（他者のアイデアを否定しない）→ 思いつきでよい②  <em>自由奔放</em>（どんな突飛なアイデアも歓迎）→ 関連するものでよい③ <em>質より量</em>（できるだけ多く出す）④ <em>結合改善</em>（他者のアイデアを組み合わせ発展させる）→ 書き出した内容から連想する。現在も広告・製品開発・教育現場で広く活用される。<span style="font-size:11px;color:var(--text-dim)">（[外部補足]）</span>
+      </li>
+      <li>
+        <strong>DXの定義（経済産業省）</strong>：日本の経済産業省は「企業がビジネス環境の激しい変化に対応し、データとデジタル技術を活用して、顧客や社会のニーズを基に、製品やサービス、ビジネスモデルを変革するとともに、業務そのものや、組織、プロセス、企業文化・風土を変革し、競争上の優位性を確立すること」と定義している（2018年DXレポート）。<span style="font-size:11px;color:var(--text-dim)">（[外部補足]）</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- 補足C -->
+  <div id="suppC" class="supp-card supp-card-exam">
+    <div class="supp-card-header">
+      <span class="supp-card-icon">🎯</span>
+      <span class="supp-card-title">補足C：試験・レポートで重要な観点</span>
+    </div>
+    <ol class="exam-list">
+      <li>図タイプ選択フローチャートの正確な運用：「因果関係→フロー図」「重なり→ベン図」「3項目以上→ツリー図」「定量化可能→点グラフ」「それ以外→マトリクス図」の順序を正確に適用できるか</li>
+      <li>似たものの範囲設定は<strong>「目的に依存する」</strong>が重要。目的が違えば似たものの範囲も全く変わる</li>
+      <li>発散思考と収束思考の使い分け：図を描く前は発散、図を確定する際は収束</li>
+      <li>点グラフの2軸設定の注意点：相関する指標（昨年・3年前売上）を2軸にしても意味がない。<strong>全く異なる視点</strong>のものにすること</li>
+      <li>第3回まとめは第4回と合わせて行われる点に注意</li>
+    </ol>
+  </div>
+
+  <!-- 補足D -->
+  <div id="suppD" class="supp-card supp-card-related">
+    <div class="supp-card-header">
+      <span class="supp-card-icon">🔗</span>
+      <span class="supp-card-title">補足D：関連概念・次回への接続</span>
+    </div>
+    <ul class="related-list">
+      <li>
+        <span class="tag">次回</span>
+        <div>
+          <div><strong>第4回へ</strong>：第3回のまとめが意図的に省略されており、第4回で第3・4回を合わせてまとめる予定</div>
+        </div>
+      </li>
+      <li>
+        <span class="tag">外部</span>
+        <div>
+          <div><strong>構造主義へのソシュールの影響</strong>：ソシュールの「言語は差異の体系である」という発想は、レヴィ＝ストロース（文化人類学への応用）・ロラン・バルト（記号論・テクスト批評）・ミシェル・フーコー（権力の構造分析）など20世紀構造主義思想の源流となった。なおジャック・デリダはその構造主義を批判した「脱構築（ポスト構造主義）」で知られる。</div>
+          <div class="ext-note">[外部補足]</div>
+        </div>
+      </li>
+      <li>
+        <span class="tag">外部</span>
+        <div>
+          <div><strong>KJ法（川喜田二郎）</strong>：発散思考で出したアイデアや情報を、関連性でグルーピングして整理する手法。ブレインストーミングの後工程として組み合わせて使うことが多い。収束思考の代表的な実践ツール。</div>
+          <div class="ext-note">[外部補足]</div>
+        </div>
+      </li>
+      <li>
+        <span class="tag">外部</span>
+        <div>
+          <div><strong>MECE（Mutually Exclusive, Collectively Exhaustive）</strong>：マトリクス図・ツリー図作成時に重要な概念。「モレなくダブりなく」分類することで、軸の選定精度が上がる。マッキンゼーが普及させたロジカルシンキングの基本フレーム。</div>
+          <div class="ext-note">[外部補足]</div>
+        </div>
+      </li>
+      <li>
+        <span class="tag">外部</span>
+        <div>
+          <div><strong>BCGマトリクス</strong>：点グラフの応用例。ボストン・コンサルティング・グループが開発した「市場成長率×相対的市場シェア」の2軸で事業を分類するフレームワーク。「花形」「金のなる木」「問題児」「負け犬」の4象限で事業ポートフォリオを評価する。</div>
+          <div class="ext-note">[外部補足]</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- footer -->
+  <div style="margin-top:32px;padding:16px 20px;background:var(--bg3);border-radius:8px;font-family:var(--mono);font-size:11px;color:var(--text-dim);">
+    <div>note_logical_03.html　v1.1 2026-03-28　補足強化（フッサール/ソシュール生没年・概念深化、BS4原則、KJ法追記）</div>
+    <div style="margin-top:2px;">note_logical_03.html　v1.0 2026-03-28　初版（SSP v4.5.1 / Step 5-B完了）</div>
+    <div style="margin-top:4px;">ソース：S03（スライドPDF 55p）+ S05（hynote.ai ×2バリアント）　Step 6 QC: PASS 100%</div>
+  </div>
+</div>
+
+</main>
+</body>
+</html>
