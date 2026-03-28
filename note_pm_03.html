@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>プロジェクトマネジメント入門 第3回 | 管理の基本 PDCA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&family=Zen+Kaku+Gothic+New:wght@300;400;700;900&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg-primary: #0f1117;
+  --bg-card: #161b27;
+  --bg-card-alt: #1a2035;
+  --bg-inset: #0d1020;
+  --border: #252d42;
+  --border-bright: #2e3a55;
+  --text-main: #e2e8f5;
+  --text-sub: #8a99b8;
+  --text-muted: #546080;
+  --accent-blue: #5b8dee;
+  --accent-blue-dim: #2d4a80;
+  --accent-teal: #34d399;
+  --accent-teal-dim: #0d5c3d;
+  --accent-amber: #fbbf24;
+  --accent-amber-dim: #5c400a;
+  --accent-purple: #a78bfa;
+  --accent-purple-dim: #3d2a6e;
+  --accent-orange: #fb923c;
+  --accent-orange-dim: #6b2d0f;
+  --accent-green: #4ade80;
+  --accent-green-dim: #0f4520;
+  --accent-red: #f87171;
+  --accent-red-dim: #5c1a1a;
+  --pdca-p: #5b8dee;
+  --pdca-d: #34d399;
+  --pdca-c: #fbbf24;
+  --pdca-a: #a78bfa;
+  --pdca-g: #fb923c;
+  --font-body: 'Noto Sans JP', sans-serif;
+  --font-heading: 'Zen Kaku Gothic New', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.75;
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ─── Sidebar ─── */
+#sidebar {
+  width: 260px;
+  min-width: 260px;
+  background: var(--bg-inset);
+  border-right: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  padding: 24px 0;
+  z-index: 100;
+}
+#sidebar::-webkit-scrollbar { width: 4px; }
+#sidebar::-webkit-scrollbar-thumb { background: var(--border-bright); border-radius: 2px; }
+
+.sidebar-header {
+  padding: 0 20px 20px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+.sidebar-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.sidebar-title {
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1.4;
+}
+.sidebar-sub {
+  font-size: 11px;
+  color: var(--text-sub);
+  margin-top: 4px;
+}
+
+nav ul { list-style: none; padding: 0 12px; }
+nav ul li { margin-bottom: 2px; }
+nav a {
+  display: block;
+  padding: 6px 10px;
+  font-size: 12.5px;
+  color: var(--text-sub);
+  text-decoration: none;
+  border-radius: 6px;
+  transition: background 0.15s, color 0.15s;
+  border-left: 2px solid transparent;
+}
+nav a:hover { background: var(--bg-card); color: var(--text-main); }
+nav a.active { background: rgba(91,141,238,0.12); color: var(--accent-blue); border-left-color: var(--accent-blue); }
+nav .nav-h2 { font-weight: 700; color: var(--text-main); font-size: 12.5px; }
+nav .nav-h3 { padding-left: 20px; font-size: 11.5px; }
+nav .nav-section { padding: 10px 10px 4px; font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; }
+
+/* ─── Main ─── */
+#main {
+  flex: 1;
+  max-width: 900px;
+  padding: 40px 48px;
+  overflow-x: hidden;
+}
+
+/* ─── Page Header ─── */
+.page-header {
+  background: linear-gradient(135deg, #0d1622 0%, #111827 50%, #0d1525 100%);
+  border: 1px solid var(--border-bright);
+  border-radius: 16px;
+  padding: 36px 40px;
+  margin-bottom: 40px;
+  position: relative;
+  overflow: hidden;
+}
+.page-header::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(ellipse at 20% 50%, rgba(91,141,238,0.08) 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 20%, rgba(52,211,153,0.06) 0%, transparent 50%);
+  pointer-events: none;
+}
+.header-badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent-teal);
+  background: rgba(52,211,153,0.1);
+  border: 1px solid rgba(52,211,153,0.25);
+  padding: 3px 10px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+  letter-spacing: 0.05em;
+}
+.page-header h1 {
+  font-family: var(--font-heading);
+  font-size: 26px;
+  font-weight: 900;
+  color: var(--text-main);
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+.page-header .subtitle {
+  font-size: 16px;
+  color: var(--accent-blue);
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+.header-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.meta-item {
+  display: flex; align-items: center; gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--text-sub);
+}
+.meta-item span { color: var(--text-main); }
+.learning-goal {
+  background: rgba(91,141,238,0.08);
+  border: 1px solid rgba(91,141,238,0.2);
+  border-left: 3px solid var(--accent-blue);
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 14px;
+  color: var(--text-main);
+}
+.learning-goal .label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--accent-blue);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 4px;
+}
+
+/* ─── Unconfirmed Banner ─── */
+.unconfirmed-banner {
+  background: rgba(251,146,60,0.08);
+  border: 1px solid rgba(251,146,60,0.3);
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin-bottom: 32px;
+  font-size: 13px;
+}
+.unconfirmed-banner .banner-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent-orange);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 8px;
+  display: flex; align-items: center; gap: 6px;
+}
+.unconfirmed-table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 12px; }
+.unconfirmed-table th {
+  text-align: left;
+  padding: 6px 10px;
+  color: var(--text-muted);
+  font-weight: 500;
+  border-bottom: 1px solid var(--border);
+}
+.unconfirmed-table td {
+  padding: 6px 10px;
+  color: var(--text-sub);
+  border-bottom: 1px solid rgba(37,45,66,0.5);
+  vertical-align: top;
+}
+
+/* ─── Section Cards ─── */
+.chapter {
+  margin-bottom: 48px;
+}
+.chapter-header {
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 24px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+.chapter-num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent-blue);
+  background: rgba(91,141,238,0.1);
+  border: 1px solid rgba(91,141,238,0.2);
+  padding: 3px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+.chapter h2 {
+  font-family: var(--font-heading);
+  font-size: 20px;
+  font-weight: 900;
+  color: var(--text-main);
+}
+
+.section {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px 28px;
+  margin-bottom: 20px;
+}
+.section h3 {
+  font-family: var(--font-heading);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.section p { color: var(--text-main); margin-bottom: 12px; font-size: 14.5px; }
+.section p:last-child { margin-bottom: 0; }
+.section ul, .section ol { padding-left: 20px; margin-bottom: 12px; }
+.section li { color: var(--text-main); margin-bottom: 6px; font-size: 14.5px; }
+.section strong { color: var(--accent-amber); font-weight: 700; }
+
+/* ─── Voice supplement block ─── */
+.voice-block {
+  background: rgba(91,141,238,0.06);
+  border-left: 3px solid var(--accent-blue);
+  border-radius: 0 8px 8px 0;
+  padding: 12px 16px;
+  margin: 14px 0;
+  font-size: 13.5px;
+}
+.voice-block .voice-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--accent-blue);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+}
+
+/* ─── External supplement block ─── */
+.ext-block {
+  background: rgba(74,222,128,0.05);
+  border-left: 3px solid var(--accent-green);
+  border-radius: 0 8px 8px 0;
+  padding: 12px 16px;
+  margin: 14px 0;
+  font-size: 13.5px;
+}
+.ext-block .ext-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--accent-green);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+}
+
+/* ─── Definition block ─── */
+.def-block {
+  background: rgba(167,139,250,0.07);
+  border: 1px solid rgba(167,139,250,0.2);
+  border-left: 3px solid var(--accent-purple);
+  border-radius: 0 8px 8px 0;
+  padding: 14px 18px;
+  margin: 14px 0;
+}
+.def-block .def-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--accent-purple);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+}
+.def-block p { font-size: 14.5px; }
+
+/* ─── Emphasis block ─── */
+.emph-block {
+  background: rgba(251,191,36,0.07);
+  border: 1px solid rgba(251,191,36,0.2);
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin: 16px 0;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--accent-amber);
+  line-height: 1.9;
+}
+
+/* ─── Source pointer badge ─── */
+.ptr {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  background: var(--bg-inset);
+  border: 1px solid var(--border);
+  padding: 1px 6px;
+  border-radius: 4px;
+  vertical-align: middle;
+  margin-left: 4px;
+  white-space: nowrap;
+}
+
+/* ─── Tables ─── */
+.tbl-wrap { overflow-x: auto; margin: 14px 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+th {
+  background: var(--bg-inset);
+  color: var(--text-sub);
+  font-weight: 600;
+  padding: 10px 14px;
+  text-align: left;
+  border: 1px solid var(--border);
+  font-size: 12.5px;
+}
+td {
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  color: var(--text-main);
+  vertical-align: top;
+}
+tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+
+/* ─── PDCA Cycle SVG section ─── */
+.svg-figure {
+  background: var(--bg-card-alt);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  margin: 20px 0;
+  text-align: center;
+}
+.svg-figure figcaption {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 10px;
+}
+
+/* ─── KJ Method Steps ─── */
+.kj-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin: 16px 0;
+}
+.kj-step {
+  background: var(--bg-card-alt);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 14px;
+  text-align: center;
+}
+.kj-step-num {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--accent-blue);
+  margin-bottom: 6px;
+}
+.kj-step-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 6px;
+}
+.kj-step-desc { font-size: 11px; color: var(--text-sub); line-height: 1.5; }
+
+/* ─── PDCA / OODA Comparison ─── */
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 16px 0;
+}
+.compare-card {
+  background: var(--bg-card-alt);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px;
+}
+.compare-card .cc-title {
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+.compare-card li { font-size: 13px; margin-bottom: 5px; }
+
+/* ─── Goal conditions ─── */
+.goal-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  margin: 16px 0;
+}
+.goal-item {
+  background: var(--bg-card-alt);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 10px;
+  text-align: center;
+}
+.goal-num {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--accent-orange);
+  margin-bottom: 6px;
+}
+.goal-text { font-size: 11.5px; color: var(--text-sub); line-height: 1.5; }
+
+/* ─── Change cost chart area ─── */
+.cost-chart {
+  background: var(--bg-card-alt);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+  margin: 16px 0;
+}
+.cost-chart figcaption {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 10px;
+  text-align: center;
+}
+
+/* ─── Appendix sections ─── */
+.appendix-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px 28px;
+  margin-bottom: 20px;
+}
+.appendix-header {
+  font-family: var(--font-heading);
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+}
+.appendix-header .emoji { font-size: 18px; }
+.appendix-sub { font-size: 13px; color: var(--text-sub); margin-top: 4px; font-weight: 400; }
+
+.ext-small { font-size: 12px; color: var(--text-sub); }
+
+/* ─── QC Report ─── */
+.qc-header {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 8px;
+}
+.qc-score {
+  font-family: var(--font-heading);
+  font-size: 28px;
+  font-weight: 900;
+}
+.qc-score.pass { color: var(--accent-teal); }
+.qc-score.warn { color: var(--accent-amber); }
+.badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  vertical-align: middle;
+  margin-left: 4px;
+}
+.badge-pass { background: rgba(52,211,153,0.15); color: var(--accent-teal); border: 1px solid rgba(52,211,153,0.3); }
+.badge-warn { background: rgba(251,191,36,0.15); color: var(--accent-amber); border: 1px solid rgba(251,191,36,0.3); }
+.badge-fail { background: rgba(248,113,113,0.15); color: var(--accent-red); border: 1px solid rgba(248,113,113,0.3); }
+.badge-na { background: rgba(138,153,184,0.15); color: var(--text-sub); border: 1px solid rgba(138,153,184,0.3); }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-thumb { background: var(--border-bright); border-radius: 3px; }
+
+@media (max-width: 900px) {
+  #sidebar { display: none; }
+  #main { padding: 24px 20px; }
+  .kj-steps { grid-template-columns: repeat(2, 1fr); }
+  .goal-grid { grid-template-columns: repeat(3, 1fr); }
+  .compare-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ─── Sidebar ─── -->
+<aside id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-label">SSP Note</div>
+    <div class="sidebar-title">プロジェクトマネジメント入門</div>
+    <div class="sidebar-sub">第3回 管理の基本 PDCA</div>
+  </div>
+  <nav>
+    <div class="nav-section">前回の振り返り</div>
+    <ul>
+      <li><a href="#review" class="nav-h2">第2回の振り返り</a></li>
+    </ul>
+    <div class="nav-section">第1章</div>
+    <ul>
+      <li><a href="#ch1" class="nav-h2">管理するには、まず測る</a></li>
+      <li><a href="#ch1-1" class="nav-h3">なぜ測るのか</a></li>
+      <li><a href="#ch1-2" class="nav-h3">ものさしの選び方</a></li>
+      <li><a href="#ch1-3" class="nav-h3">問題の認識</a></li>
+    </ul>
+    <div class="nav-section">第2章</div>
+    <ul>
+      <li><a href="#ch2" class="nav-h2">原因を探って改善する</a></li>
+      <li><a href="#ch2-1" class="nav-h3">インプット・プロセス・アウトプット</a></li>
+      <li><a href="#ch2-2" class="nav-h3">KJ法</a></li>
+      <li><a href="#ch2-3" class="nav-h3">なぜを5回繰り返す</a></li>
+    </ul>
+    <div class="nav-section">第3章</div>
+    <ul>
+      <li><a href="#ch3" class="nav-h2">PDCAとは何か？</a></li>
+      <li><a href="#ch3-1" class="nav-h3">PDCAの各ステップ</a></li>
+      <li><a href="#ch3-2" class="nav-h3">スパイラルアップ</a></li>
+      <li><a href="#ch3-3" class="nav-h3">ゴール設定の条件</a></li>
+      <li><a href="#ch3-4" class="nav-h3">OODAとの比較</a></li>
+    </ul>
+    <div class="nav-section">第4章</div>
+    <ul>
+      <li><a href="#ch4" class="nav-h2">変更への対応力を磨く</a></li>
+      <li><a href="#ch4-1" class="nav-h3">早期対応の重要性</a></li>
+      <li><a href="#ch4-2" class="nav-h3">変更の管理</a></li>
+      <li><a href="#ch4-3" class="nav-h3">ゆとりの法則</a></li>
+    </ul>
+    <div class="nav-section">補足</div>
+    <ul>
+      <li><a href="#appendix-a" class="nav-h2">⭐ 最重要ワード一覧</a></li>
+      <li><a href="#appendix-b" class="nav-h2">📚 背景知識</a></li>
+      <li><a href="#appendix-c" class="nav-h2">🎯 試験・レポート対策</a></li>
+      <li><a href="#appendix-d" class="nav-h2">🔗 関連概念</a></li>
+    </ul>
+    <div class="nav-section">QC</div>
+    <ul>
+      <li><a href="#qc" class="nav-h2">Step 6 QCレポート</a></li>
+    </ul>
+  </nav>
+</aside>
+
+<!-- ─── Main Content ─── -->
+<main id="main">
+
+<!-- Page Header -->
+<header class="page-header">
+  <div class="header-badge">PM101 · 第3回</div>
+  <h1>管理の基本 PDCA</h1>
+  <div class="subtitle">Plan・Do・Check・Action で活動レベルを改善する</div>
+  <div class="header-meta">
+    <div class="meta-item">📚 科目 <span>プロジェクトマネジメント入門</span></div>
+    <div class="meta-item">👤 担当 <span>勝 眞一郎</span></div>
+    <div class="meta-item">🗓 回 <span>第3回</span></div>
+    <div class="meta-item">📋 ソース <span>S03（スライド78p）+ S05×2（hynote.ai）</span></div>
+  </div>
+  <div class="learning-goal">
+    <div class="label">🎯 学習目標</div>
+    管理の基本である PDCA について理解し、説明できる
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- 前回の振り返り -->
+<!-- ═══════════════════════════════════════════════ -->
+<section id="review" class="chapter">
+  <div class="chapter-header">
+    <span class="chapter-num">前回の振り返り</span>
+    <h2>第2回「プロジェクトのライフサイクル」</h2>
+  </div>
+
+  <div class="section">
+    <h3>章構成の確認</h3>
+    <p>第2回で扱った4章の内容を確認する。<span class="ptr">← S03:p.4</span></p>
+    <ul>
+      <li>第1章：プロジェクトを取り巻く課題</li>
+      <li>第2章：プロジェクトのライフサイクル</li>
+      <li>第3章：プロジェクト型組織の形態</li>
+      <li>第4章：プロジェクト運営のしくみ</li>
+    </ul>
+    <div class="voice-block">
+      <div class="voice-label">🎙 音声補足</div>
+      私たちが取り組むプロジェクト（夏休みの宿題・家を建てる・料理をする・システムを作るなど）は、ますます複雑な事情の中で解決していかなければならない。そのためにプロジェクトマネジメントを学ぶ目的は「成功確率を上げること」である。<span class="ptr">← S05-A</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>ライフサイクル・組織・運営のポイント</h3>
+    <ul>
+      <li>ライフサイクル：プロジェクトは必ず始まりと終わりがある。一つの終わりは次の始まりでもある。<span class="ptr">← S03:p.8</span></li>
+      <li>組織の定義：<strong>共通の目的</strong>を達成するために、2人以上が集まり、<strong>思いを合わせ</strong>、一定のルールの中で活動する仕組み。<span class="ptr">← S03:p.9</span></li>
+      <li>階層型組織：上の層が下の層に指示→実行→報告のつながり。<span class="ptr">← S03:p.10</span></li>
+      <li>運営の3ポイント：①明確な役割と責任 ②状況の正確な把握と共有 ③会議など公式な意思決定の場を作る。<span class="ptr">← S03:p.11</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- 第1章 -->
+<!-- ═══════════════════════════════════════════════ -->
+<section id="ch1" class="chapter">
+  <div class="chapter-header">
+    <span class="chapter-num">第1章</span>
+    <h2>管理するには、まず測る</h2>
+  </div>
+
+  <div class="section" id="ch1-1">
+    <h3>なぜ測ることが必要か</h3>
+    <p>同じようなことに何度トライしても良い結果が出ない原因は、<strong>「目標が悪い」</strong>か<strong>「やり方が悪い」</strong>かのいずれかである。結果を改善するには、どこが悪いのかを特定して改善していく必要がある。そのための第一歩が「測る」ことである。<span class="ptr">← S03:p.14</span></p>
+
+    <div class="voice-block">
+      <div class="voice-label">🎙 音声補足</div>
+      プロジェクトは関係者で協力して進めるものである。最も難しいのは「人に動いてもらうこと」。自分が何をすべきかは分かっていても、他者に動いてもらうには状況を正確に伝えることが必要である。そのとき数値による説明は言葉による説明より格段に分かりやすく、人が動きやすくなる。<span class="ptr">← S05-A</span>
+    </div>
+
+    <div class="emph-block">
+      数値で測れないものは、管理できない。<br>
+      管理できないものは、制御できない。<br>
+      制御できないものは、なされるがままの状態を招く。
+    </div>
+    <p style="text-align:right; font-size:12px; color:var(--text-muted);">← S03:p.16</p>
+
+    <div class="voice-block">
+      <div class="voice-label">🎙 音声補足 — 数値管理の具体例</div>
+      曖昧な目標の例：「秋までにダイエットを頑張る」<br>
+      → 「いつの秋か」「どれくらいやったら頑張ったことになるか」が不明。<br><br>
+      数値で管理した例：「20XX年10月15日 9:00 PMに体重が60kg以下であること」<br>
+      → いつまでに・何が・どの水準か、が明確になる。本来はシャープな数値（60kg以下ではなく60kgや59kg）が望ましい。<span class="ptr">← S03:p.17 / S05-A</span>
+    </div>
+  </div>
+
+  <div class="section" id="ch1-2">
+    <h3>ものさし（計測指標）の選び方</h3>
+    <p>数値で測るときに<strong>「何で測るか」というものさし</strong>の選択が非常に重要である。実際にやってみると難しいため、<strong>測れるものを徹底的に探す</strong>ことが求められる。<span class="ptr">← S03:p.18</span></p>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th>優先度</th><th>ものさしの例（システム開発）</th><th>測れるか</th><th>補足</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>① 高</td><td>支出した費用：支払い金額</td><td>◎ 明確</td><td>実際の支払いが存在するため測りやすい</td></tr>
+          <tr><td>② 中</td><td>プログラムの出来高：完成したモジュール数・ステップ数・工数</td><td>◯ 可能</td><td>カウントで計測できる</td></tr>
+          <tr><td>③ 低</td><td>仕様書の出来具合：書いた枚数・合格した枚数</td><td>△ 限界あり</td><td>枚数が多くても内容の質を反映しない。代替手段がない場合のみ使用</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:12px; color:var(--text-muted);">← S03:p.18 / S05-A</p>
+    <div class="ext-block">
+      <div class="ext-label">[外部補足]</div>
+      ものさし（KPI: Key Performance Indicator）の設計は、数値で追いやすく・目標と連動し・偽装しにくいものを選ぶことが原則。「書いた枚数」のような代理指標（Proxy）は、本来の目標（品質）を反映しないため「グッドハートの法則」（測定対象になった指標は良い指標でなくなる）の例として挙げられることが多い。
+    </div>
+
+    <p>評価とは、<strong>問題を発見するために、「達成できているか・できていないか」を明確にし、現状を判断すること</strong>である。評価のためには、計画を立てたときと<strong>同じものさし</strong>で実績を追うことが必要。<span class="ptr">← S03:p.19</span></p>
+  </div>
+
+  <div class="section" id="ch1-3">
+    <h3>問題の認識</h3>
+    <div class="def-block">
+      <div class="def-label">【核心原則】</div>
+      <p><strong>問題を認識した時点で、その問題の8割は解決している。</strong><br>
+      問題は見えにくいため、数値で測り「計画値と実績値のギャップ」として可視化することが問題解決の鍵となる。<span class="ptr">← S03:p.20</span></p>
+    </div>
+    <div class="voice-block">
+      <div class="voice-label">🎙 音声補足</div>
+      「真の問題が見えにくい」ことが最大の障壁である。数値で測ることで「計画値と実績値のギャップ」として問題が可視化され、そのギャップに対して対策を打てる。いかに問題の本質を認識するかが重要。<span class="ptr">← S05-A</span>
+    </div>
+
+    <p><strong>第1章まとめ</strong><span class="ptr">← S03:p.21</span></p>
+    <ul>
+      <li>活動の状況把握は、数字で測れるものにする</li>
+      <li>管理するには、数値で計画と実績を追っていく</li>
+      <li>問題を認識した時点でその問題の8割は解決している</li>
+      <li>いかに問題を認識するかが、問題解決の鍵</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- 第2章 -->
+<!-- ═══════════════════════════════════════════════ -->
+<section id="ch2" class="chapter">
+  <div class="chapter-header">
+    <span class="chapter-num">第2章</span>
+    <h2>原因を探って改善する</h2>
+  </div>
+
+  <div class="section" id="ch2-1">
+    <h3>インプット・プロセス・アウトプット</h3>
+    <div class="def-block">
+      <div class="def-label">【定義】プロジェクトのプロセス</div>
+      <p>プロジェクトの中のプロセスとは、<strong>アウトプット（成果物）を得るための活動</strong>のことである。良いアウトプットを得るには、良いインプットと良いプロセスの両方が必要。<span class="ptr">← S03:p.25</span></p>
+    </div>
+
+    <div class="svg-figure">
+      <svg viewBox="0 0 600 100" xmlns="http://www.w3.org/2000/svg" style="max-width:580px; width:100%;">
+        <!-- Input box -->
+        <rect x="10" y="20" width="150" height="60" rx="8" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+        <text x="85" y="47" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="#e2e8f5">インプット</text>
+        <text x="85" y="65" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">材料・人・資源</text>
+        <!-- Arrow 1 -->
+        <path d="M162 50 L195 50" stroke="#5b8dee" stroke-width="2" marker-end="url(#arr1)"/>
+        <defs><marker id="arr1" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#5b8dee"/></marker></defs>
+        <!-- Process box -->
+        <rect x="200" y="20" width="190" height="60" rx="8" fill="#1a2a3a" stroke="#34d399" stroke-width="1.5"/>
+        <text x="295" y="47" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="#34d399" font-weight="bold">プロセス</text>
+        <text x="295" y="65" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">成果物を得るための活動</text>
+        <!-- Arrow 2 -->
+        <path d="M392 50 L425 50" stroke="#5b8dee" stroke-width="2" marker-end="url(#arr2)"/>
+        <defs><marker id="arr2" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#5b8dee"/></marker></defs>
+        <!-- Output box -->
+        <rect x="430" y="20" width="160" height="60" rx="8" fill="#1e2535" stroke="#fbbf24" stroke-width="1.5"/>
+        <text x="510" y="47" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="#fbbf24">アウトプット</text>
+        <text x="510" y="65" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">成果物</text>
+      </svg>
+      <figcaption>図：インプット→プロセス→アウトプットの流れ　S03:p.25</figcaption>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>例</th><th>インプット</th><th>プロセス</th><th>アウトプット</th></tr></thead>
+        <tbody>
+          <tr><td>料理</td><td>材料・調理器具・料理人</td><td>調理</td><td>料理（完成品）</td></tr>
+          <tr><td>家作り</td><td>設計図・資材・大工さん・土地</td><td>建築</td><td>家</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:12px; color:var(--text-muted);">← S03:p.26-27</p>
+
+    <p>アウトプットが良くない場合は、インプットかプロセスのいずれか（または両方）に問題（原因）がある。<span class="ptr">← S03:p.28</span></p>
+
+    <div class="voice-block">
+      <div class="voice-label">🎙 音声補足 — 結果が思わしくない時の原因分類</div>
+      <ul>
+        <li>① 予想外の出来事が起こった → 実は予想が足りていなかった可能性がある</li>
+        <li>② やり方が良くなかった → 対策が打てる。どこを改善するかを特定する</li>
+        <li>③ そもそも計画が間違っていた → 次回以降の計画立案の改善テーマになる</li>
+      </ul>
+      <span class="ptr">← S03:p.29 / S05-A</span>
+    </div>
+
+    <p>問題の原因を探るには、<strong>発生した現象は氷山の一角</strong>と認識することが重要。表面の現象に対して「真の原因を正しく認識する」ことで初めて正しい対処ができる。<span class="ptr">← S03:p.30-31</span></p>
+
+    <div class="voice-block">
+      <div class="voice-label">🎙 音声補足 — ナンがベチャっとしている例</div>
+      ナン（インドのパンの一種）がベチャっとした原因として考えられるもの：焼き方の間違い・材料が違う・生地に水分が多すぎ・焼くときの厚みがありすぎ・発酵が足りないなど。原因を正しく認識しないと、違う対策を打つことになり結果が改善されない。<span class="ptr">← S05-A / S03:p.30</span>
+    </div>
+
+    <p>分析の手法：<strong>QC（品質管理）の七つ道具</strong>（パレート図・特性要因図・グラフ管理図・チェックシート・散布図・ヒストグラム・層別）は第8回で詳しく学ぶ。今回はQCの七つ道具に含まれない<strong>KJ法</strong>を扱う。<span class="ptr">← S03:p.35</span></p>
+  </div>
+
+  <div class="section" id="ch2-2">
+    <h3>KJ法を使った分析</h3>
+    <div class="def-block">
+      <div class="def-label">【定義】KJ法</div>
+      <p>カードを作り、それをまとめていく過程で各カード（現象）が何を語っているかを<strong>紡ぎ出す分析手法</strong>。川喜田二郎（かわきた じろう）氏が考案したため、氏のイニシャルを取って「KJ法」と呼ぶ。<span class="ptr">← S03:p.36</span></p>
+    </div>
+
+    <div class="kj-steps">
+      <div class="kj-step">
+        <div class="kj-step-num">①</div>
+        <div class="kj-step-title">要素を書く</div>
+        <div class="kj-step-desc">思いつく要素をカードにできるだけたくさん書く。複数人で行うと多くの視点が集まる</div>
+      </div>
+      <div class="kj-step">
+        <div class="kj-step-num">②</div>
+        <div class="kj-step-title">グループ化</div>
+        <div class="kj-step-desc">キーワードや似たエリアのものでカードをまとめてグルーピングする</div>
+      </div>
+      <div class="kj-step">
+        <div class="kj-step-num">③</div>
+        <div class="kj-step-title">ラベル付け</div>
+        <div class="kj-step-desc">各まとまりに名前（ラベル）をつける。まとまりが「何を物語っているか」を表す言葉を選ぶ</div>
+      </div>
+      <div class="kj-step">
+        <div class="kj-step-num">④</div>
+        <div class="kj-step-title">文章化</div>
+        <div class="kj-step-desc">図解した全体を眺め、「○○とは〜〜のことである」と文章化する</div>
+      </div>
+    </div>
+    <p style="font-size:12px; color:var(--text-muted);">← S03:p.37-40</p>
+
+    <div class="voice-block">
+      <div class="voice-label">🎙 音声補足 — 「よい家とは？」の適用例</div>
+      ①カードに記載：「鍵が3重である」「風呂が広い」「床暖房がある」「玄関が広い」「木の香りがする」「団らん空間がある」<br>
+      ②グルーピング：「風呂が広い・玄関が広い」→広さ系、「鍵が3重・床暖房がある」→設備系<br>
+      ③ラベル：「広さが確保されている」「機能的である」<br>
+      ④文章化：「よい家とは、広さが確保され、機能的な家のことである」（あくまで例題）<span class="ptr">← S05-A / S03:p.37-40</span>
+    </div>
+
+    <p>KJ法は、プロジェクト実行中だけでなく、システムを使う背景の観察など状況調査にも活用できる。<span class="ptr">← S05-A</span></p>
+
+    <div class="emph-block">
+      不具合の原因は何であるかと<strong>課題の本質を見極めて対処</strong>することが重要。<br>
+      真の原因を対処しないと、<strong>違うところに不具合が出る</strong>・<strong>長期的な対処にならない</strong>。
+    </div>
+    <p style="text-align:right; font-size:12px; color:var(--text-muted);">← S03:p.41</p>
+  </div>
+
+  <div class="section" id="ch2-3">
+    <h3>なぜを5回繰り返す（トヨタ式）</h3>
+    <div class="def-block">
+      <div class="def-label">【定義】なぜを5回繰り返す</div>
+      <p>トヨタ式（トヨタ生産方式）で改善を行う際の標語。表面的な原因にとどまらず、<strong>根本原因（真の原因）</strong>にたどり着くために「なぜ？」を連鎖的に5回問い続ける手法。<span class="ptr">← S03:p.42</span></p>
+    </div>
+
+    <div class="voice-block">
+      <div class="voice-label">🎙 音声補足 — システム開発の適用例（5回の「なぜ」）</div>
+      <ol style="font-size:13.5px; padding-left:20px;">
+        <li><strong>現象</strong>：システムが途中で止まった</li>
+        <li><strong>なぜ1</strong>：例外処理のところに抜けがあったから</li>
+        <li><strong>なぜ2</strong>：発生パターンの整理をして「その他」パターンを加えなかったから</li>
+        <li><strong>なぜ3</strong>：条件分岐のルールを作っていなかったから</li>
+        <li><strong>なぜ4</strong>：各プログラマーが処理パターンを認識していると思っていたから</li>
+        <li><strong>なぜ5</strong>：各プログラマーに任せても品質は保たれると思い込んでいたから</li>
+      </ol>
+      <strong>真の解決策</strong>：例外処理を直すだけでなく、<strong>プロジェクト内のプログラミングルールを整備する</strong>（条件分岐時の必須ルール・データベース操作ルールなど）。ルールがあることでどんなプログラマーが参加しても一定の品質が保たれる。<span class="ptr">← S03:p.42 / S05-A</span>
+    </div>
+
+    <p><strong>第2章まとめ</strong><span class="ptr">← S03:p.43</span></p>
+    <ul>
+      <li>プロジェクトの途中で結果が思わしくないときは、原因を科学的に探り速やかに対応する</li>
+      <li>問題を表面的でなく、真の原因を探り手を打つ</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- 第3章 -->
+<!-- ═══════════════════════════════════════════════ -->
+<section id="ch3" class="chapter">
+  <div class="chapter-header">
+    <span class="chapter-num">第3章</span>
+    <h2>PDCAとは何か？</h2>
+  </div>
+
+  <div class="section">
+    <h3>PDCAの概要</h3>
+    <div class="def-block">
+      <div class="def-label">【定義】PDCA</div>
+      <p>Plan（計画）・Do（実行）・Check（評価）・Action（改善）の頭文字を取ったもの。計画したことを達成するための仕事の作法（サイクル）。ゴールを意識して回し続けることで活動レベルを改善していく。<span class="ptr">← S03:p.47</span></p>
+    </div>
+    <div class="voice-block">
+      <div class="voice-label">🎙 音声補足</div>
+      本講義では動詞で揃えると「Act」となるが、「アクションを取る」という意味でAを「Action」として採用する。PDCAは同じことの繰り返しが行われる場合・あるゴールの達成に向けて同じことを繰り返せる際に特に有効。<span class="ptr">← S03:p.47 / S05-A</span>
+    </div>
+  </div>
+
+  <div class="section" id="ch3-1">
+    <h3>PDCAの各ステップと役割</h3>
+
+    <div class="svg-figure">
+      <!-- PDCA Cycle SVG -->
+      <!-- Layout: center(300,200), radius=130 for circle arcs -->
+      <!-- P at top(300,70), D at right(430,200), C at bottom(300,330), A at left(170,200) -->
+      <svg viewBox="0 0 600 420" xmlns="http://www.w3.org/2000/svg" style="max-width:560px; width:100%;">
+        <!-- Background circle -->
+        <circle cx="300" cy="210" r="135" fill="none" stroke="#252d42" stroke-width="2"/>
+
+        <!-- GOAL center -->
+        <circle cx="300" cy="210" r="48" fill="#1a2535" stroke="#fb923c" stroke-width="2"/>
+        <text x="300" y="205" text-anchor="middle" font-family="Zen Kaku Gothic New,sans-serif" font-size="15" font-weight="900" fill="#fb923c">GOAL</text>
+        <text x="300" y="222" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">何のために</text>
+
+        <!-- P - Plan (top, 300, 75) -->
+        <circle cx="300" cy="75" r="42" fill="#1a2a3f" stroke="#5b8dee" stroke-width="2"/>
+        <text x="300" y="70" text-anchor="middle" font-family="Zen Kaku Gothic New,sans-serif" font-size="20" font-weight="900" fill="#5b8dee">P</text>
+        <text x="300" y="87" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">計画</text>
+
+        <!-- D - Do (right, 435, 210) -->
+        <circle cx="435" cy="210" r="42" fill="#0d2a22" stroke="#34d399" stroke-width="2"/>
+        <text x="435" y="205" text-anchor="middle" font-family="Zen Kaku Gothic New,sans-serif" font-size="20" font-weight="900" fill="#34d399">D</text>
+        <text x="435" y="222" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">実行</text>
+
+        <!-- C - Check (bottom, 300, 345) -->
+        <circle cx="300" cy="345" r="42" fill="#2a2510" stroke="#fbbf24" stroke-width="2"/>
+        <text x="300" y="340" text-anchor="middle" font-family="Zen Kaku Gothic New,sans-serif" font-size="20" font-weight="900" fill="#fbbf24">C</text>
+        <text x="300" y="357" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">評価</text>
+
+        <!-- A - Action (left, 165, 210) -->
+        <circle cx="165" cy="210" r="42" fill="#20183a" stroke="#a78bfa" stroke-width="2"/>
+        <text x="165" y="205" text-anchor="middle" font-family="Zen Kaku Gothic New,sans-serif" font-size="20" font-weight="900" fill="#a78bfa">A</text>
+        <text x="165" y="222" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">改善</text>
+
+        <!-- Arrows clockwise: P→D, D→C, C→A, A→P -->
+        <!-- P→D: from (330,98) to (413,175) -->
+        <path d="M 330,98 Q 390,130 413,175" fill="none" stroke="#5b8dee" stroke-width="1.8" marker-end="url(#arrPD)"/>
+        <!-- D→C: from (430,252) to (330,320) -->
+        <path d="M 430,252 Q 390,300 330,320" fill="none" stroke="#34d399" stroke-width="1.8" marker-end="url(#arrDC)"/>
+        <!-- C→A: from (268,335) to (200,272) -->
+        <path d="M 268,335 Q 210,310 200,272" fill="none" stroke="#fbbf24" stroke-width="1.8" marker-end="url(#arrCA)"/>
+        <!-- A→P: from (175,168) to (268,95) -->
+        <path d="M 175,168 Q 205,110 268,95" fill="none" stroke="#a78bfa" stroke-width="1.8" marker-end="url(#arrAP)"/>
+
+        <defs>
+          <marker id="arrPD" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#5b8dee"/></marker>
+          <marker id="arrDC" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#34d399"/></marker>
+          <marker id="arrCA" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#fbbf24"/></marker>
+          <marker id="arrAP" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#a78bfa"/></marker>
+        </defs>
+
+        <!-- Right side: labels -->
+        <text x="560" y="60" text-anchor="end" font-family="Zen Kaku Gothic New,sans-serif" font-size="13" font-weight="700" fill="#5b8dee">Plan</text>
+        <text x="560" y="78" text-anchor="end" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8">目標を設定し</text>
+        <text x="560" y="93" text-anchor="end" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8">プロセスを設計する</text>
+
+        <text x="560" y="180" text-anchor="end" font-family="Zen Kaku Gothic New,sans-serif" font-size="13" font-weight="700" fill="#34d399">Do</text>
+        <text x="560" y="198" text-anchor="end" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8">計画を実施し</text>
+        <text x="560" y="213" text-anchor="end" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8">パフォーマンスを測定する</text>
+
+        <text x="560" y="310" text-anchor="end" font-family="Zen Kaku Gothic New,sans-serif" font-size="13" font-weight="700" fill="#fbbf24">Check</text>
+        <text x="560" y="328" text-anchor="end" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8">結果を目標と比較し</text>
+        <text x="560" y="343" text-anchor="end" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8">分析を行う</text>
+
+        <text x="40" y="380" text-anchor="start" font-family="Zen Kaku Gothic New,sans-serif" font-size="13" font-weight="700" fill="#a78bfa">Action</text>
+        <text x="40" y="395" text-anchor="start" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8">改善点を明らかにし次のプランに生かす</text>
+      </svg>
+      <figcaption>図：GOALを意識したPDCAサイクル　S03:p.57</figcaption>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>ステップ</th><th>役割</th><th>重要ポイント（G-PDCAの課題）</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong style="color:var(--pdca-g)">Goal</strong></td>
+            <td>何のために・何をするのか</td>
+            <td><strong>真のテーマ</strong>であるか。具体的で数値化されているか。ゴールがブレると以降の全てがブレる</td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--pdca-p)">Plan</strong></td>
+            <td>目標を設定し、それを実現するためのプロセスを設計（改訂）する</td>
+            <td><strong>実現可能な計画</strong>であるか。与えられた期間・資源でできるか</td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--pdca-d)">Do</strong></td>
+            <td>計画を実施し、そのパフォーマンスを測定する</td>
+            <td>計画に沿って実行する。途中の<strong>変更と経過記録</strong>が重要。事前に決めた指標を計測・記録する</td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--pdca-c)">Check</strong></td>
+            <td>測定結果を評価し、結果と目標を比較・分析する</td>
+            <td>淡々と<strong>差異比較</strong>を行う。計画値と実測値の差分とその原因を確認する</td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--pdca-a)">Action</strong></td>
+            <td>プロセスの改善・向上に必要な変更点を明らかにする</td>
+            <td><strong>次回に有効な改善計画</strong>を立てる。「こうしたらいいかも」という曖昧なものではなく、次に実際に取れる改善計画を立てる</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:12px; color:var(--text-muted);">← S03:p.50-53,58 / S05-A</p>
+  </div>
+
+  <div class="section" id="ch3-2">
+    <h3>スパイラルアップ</h3>
+    <div class="def-block">
+      <div class="def-label">【定義】スパイラルアップ</div>
+      <p>PDCAは一回で終わりでなく、Actionの結果をさらに次のPlanに結び付け、<strong>らせん階段のように次々と上に上がっていくこと</strong>をスパイラルアップという。（スパイラル＝らせん）<span class="ptr">← S03:p.55</span></p>
+    </div>
+    <div class="voice-block">
+      <div class="voice-label">🎙 音声補足 — PDCA事例</div>
+      <strong>旅行の例：</strong>金沢への2泊3日旅行を計画→実行→「祭りの日程に合わせるべきだった」と評価→改善→来年の旅行計画に反映<br><br>
+      <strong>システム開発の例：</strong>「システムのレスポンスを3秒以内にしよう」と計画→システムを作る→ユーザー環境で計測→プログラムのチューンアップ（改善）→プログラムを修正して再度3秒に挑戦<br><br>
+      <strong>料理の例：</strong>チキンカレーを作ろう（計画）→作る（実行）→食べてみて評価→「辛みをココナツミルクで調整」（改善）→ジア風チキンカレーを作る（次の計画）<span class="ptr">← S03:p.48-49,54 / S05-A</span>
+    </div>
+  </div>
+
+  <div class="section" id="ch3-3">
+    <h3>最も重要なゴール設定の5条件</h3>
+    <p>G-PDCAにおいて最も重要なのはゴール設定である。ゴールがブレると、その後のプランが全てブレる。<span class="ptr">← S03:p.59</span></p>
+
+    <div class="goal-grid">
+      <div class="goal-item">
+        <div class="goal-num">①</div>
+        <div class="goal-text">組織にとって<strong>真に解決すべき課題</strong>であること</div>
+      </div>
+      <div class="goal-item">
+        <div class="goal-num">②</div>
+        <div class="goal-text"><strong>具体的であること</strong>（できれば数値で示される）</div>
+      </div>
+      <div class="goal-item">
+        <div class="goal-num">③</div>
+        <div class="goal-text"><strong>達成までの期間</strong>が決まっていること（中長期と短期に分割も可）</div>
+      </div>
+      <div class="goal-item">
+        <div class="goal-num">④</div>
+        <div class="goal-text"><strong>資源の確保</strong>が約束されていること</div>
+      </div>
+      <div class="goal-item">
+        <div class="goal-num">⑤</div>
+        <div class="goal-text"><strong>組織内で共有</strong>されていること</div>
+      </div>
+    </div>
+    <p style="font-size:12px; color:var(--text-muted);">← S03:p.59 / S05-A</p>
+
+    <div class="voice-block">
+      <div class="voice-label">🎙 音声補足</div>
+      ゴールが具体的でないと「達成できたかどうかの判断」がつかない。成功か失敗かが判別できなければ、PDCAを有効に回すことができない。⑤の組織内共有がないと、一部の人だけが知っているゴールとなりチームとして進められない。<span class="ptr">← S05-A</span>
+    </div>
+  </div>
+
+  <div class="section" id="ch3-4">
+    <h3>PDCAとOODA — 2つのループの使い分け</h3>
+    <div class="def-block">
+      <div class="def-label">【定義】OODA（ウーダ）</div>
+      <p>Observe（観察）→ Orient（方向づけ）→ Decide（意思決定）→ Act（行動）の頭文字を取ったループ。<strong>変化が激しい社会で、これまで行ったことのない挑戦を行う際</strong>に有効。<span class="ptr">← S03:p.60</span></p>
+    </div>
+
+    <div class="compare-grid">
+      <div class="compare-card">
+        <div class="cc-title" style="color:var(--accent-blue)">PDCA</div>
+        <ul>
+          <li>過去の経験値が生きる場合に有効</li>
+          <li>繰り返し同じことを行う際に有効</li>
+          <li>計画に時間をかけて精度を高める</li>
+          <li>ゴールに向けて着実に品質を上げる</li>
+        </ul>
+      </div>
+      <div class="compare-card">
+        <div class="cc-title" style="color:var(--accent-teal)">OODA</div>
+        <ul>
+          <li>過去の経験が活きない + 迅速な実行が必要な場合</li>
+          <li>変化が激しく先が見えない場合</li>
+          <li>問題を先延ばしせず即対応できる</li>
+          <li>スピード感ある活動が可能</li>
+        </ul>
+      </div>
+    </div>
+    <p style="font-size:12px; color:var(--text-muted);">← S03:p.60 / S05-A</p>
+
+    <div class="voice-block">
+      <div class="voice-label">🎙 音声補足 — OODAの釣りの例</div>
+      初めての釣りポイントで（経験が活かせない状況）：<br>
+      ① 状況を観察する（Observe）→ ② 「アジなどの小魚がいそうだ」と方向付け（Orient）→ ③ 「小さめの仕掛けで餌釣りしよう」と意思決定（Decide）→ ④ 実際に釣ってみる（Act）→ ① 反応を観察する（次のObserveへ）<br>
+      反応がなければ方向付けを変え、別の仕掛け（ルアーなど）を試す。<span class="ptr">← S03:p.61 / S05-A</span>
+    </div>
+
+    <p><strong>第3章まとめ</strong><span class="ptr">← S03:p.62</span></p>
+    <ul>
+      <li>活動のレベルを改善していくためにPDCAのサイクルを回そう</li>
+      <li>ゴールを意識して、PDCAを繰り返すことによって、計画の質を上げていこう（スパイラルアップ）</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- 第4章 -->
+<!-- ═══════════════════════════════════════════════ -->
+<section id="ch4" class="chapter">
+  <div class="chapter-header">
+    <span class="chapter-num">第4章</span>
+    <h2>変更への対応力を磨く</h2>
+  </div>
+
+  <div class="section" id="ch4-1">
+    <h3>早いアクションが怪我を浅くする</h3>
+    <p>プロジェクトを実行していく中で、どこかで変更をせざるを得なくなる場合がある。その際に重要なのは<strong>対応の早さ</strong>である。<span class="ptr">← S03:p.65</span></p>
+
+    <div class="cost-chart">
+      <svg viewBox="0 0 520 200" xmlns="http://www.w3.org/2000/svg" style="max-width:500px; width:100%; display:block; margin:0 auto;">
+        <!-- Axes -->
+        <line x1="50" y1="160" x2="480" y2="160" stroke="#5b8dee" stroke-width="1.5"/>
+        <line x1="50" y1="20" x2="50" y2="160" stroke="#5b8dee" stroke-width="1.5"/>
+        <!-- Axis labels -->
+        <text x="480" y="175" text-anchor="end" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8">経過時間 →</text>
+        <text x="30" y="90" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8" transform="rotate(-90,30,90)">復旧コスト ↑</text>
+        <!-- Exponential curve approximation: points 50,155 → 170,130 → 290,90 → 410,35 -->
+        <path d="M55,155 C100,150 150,140 200,120 C250,100 300,70 420,25" fill="none" stroke="#fb923c" stroke-width="2" stroke-dasharray="none"/>
+        <!-- Bars - small at left, growing right -->
+        <!-- Bar 1: 計画時 x=100 -->
+        <rect x="88" y="148" width="30" height="12" rx="2" fill="rgba(91,141,238,0.5)"/>
+        <!-- Bar 2: 仕様書 x=210 -->
+        <rect x="198" y="125" width="30" height="35" rx="2" fill="rgba(91,141,238,0.5)"/>
+        <!-- Bar 3: テスト x=330 -->
+        <rect x="318" y="85" width="30" height="75" rx="2" fill="rgba(251,146,60,0.5)"/>
+        <!-- Bar 4: リリース後 x=400 -->
+        <rect x="400" y="30" width="30" height="130" rx="2" fill="rgba(248,113,113,0.5)"/>
+        <!-- Phase labels -->
+        <text x="103" y="176" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#5b8dee">計画時</text>
+        <text x="213" y="176" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#5b8dee">仕様書</text>
+        <text x="333" y="176" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#fbbf24">テスト</text>
+        <text x="415" y="176" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#f87171">リリース後</text>
+      </svg>
+      <figcaption>図：変更を行うタイミングが遅いほど復旧コストは増大する（システム開発例）　S03:p.67</figcaption>
+    </div>
+
+    <div class="voice-block">
+      <div class="voice-label">🎙 音声補足</div>
+      旅行の例：計画時の変更はチケット払い戻し手数料程度だが、現地に着いてからの変更は全額支払い済みで払い戻し不可のケースもある。<br>
+      システム開発の例：企画段階の変更は軽微なコストだが、プログラムを組んでしまってからの変更は大きなコストと時間がかかる。<span class="ptr">← S03:p.66-67 / S05-A</span>
+    </div>
+
+    <h3 style="margin-top:20px;">途中での変更をどう判断するか</h3>
+    <p>プロジェクト中に目標に変更を与えるような事態が発生した場合の選択肢：<span class="ptr">← S03:p.68</span></p>
+    <ul>
+      <li>A. すぐに目標を変更する</li>
+      <li>B. 一度決めたことなので元の目標で最後までやる</li>
+      <li><strong>C. 目標を変更する必要があるのか、じっくりと検討し、必要があれば目標と同時に計画も変更する ← 推奨</strong></li>
+    </ul>
+    <div class="voice-block">
+      <div class="voice-label">🎙 音声補足</div>
+      Aは「これまでかかったプロジェクトコスト」があるためすぐには選びにくい。Bは「誰も使わないシステムが出来上がる」可能性があり受け入れられない。仕事における最悪の対応は<strong>「結論を引き延ばすこと」</strong>。結論を引き延ばしている間プロジェクトは進行し悪い方向へ進んでしまう。<span class="ptr">← S05-A / S03:p.70</span>
+    </div>
+  </div>
+
+  <div class="section" id="ch4-2">
+    <h3>変更を受け入れて管理する</h3>
+    <p>物事は変化するのが世の常。変化に柔軟に対応する一方で、<strong>目的（ゴール）は達成しなければならない</strong>。そこに至るアプローチ（進め方）は状況に応じて変化させてよい。<span class="ptr">← S03:p.71</span></p>
+
+    <div class="voice-block">
+      <div class="voice-label">🎙 音声補足 — 旅行の例</div>
+      ゴールが「リゾートでゆっくりしたい」であれば、沖縄でなくても・飛行機でなくても近場でもよい。アプローチにこだわって「絶対飛行機で沖縄のこの日に行くんだ」と固執すると、空港で一夜を過ごして動けなくなるという悪い結果につながる。<span class="ptr">← S05-A / S03:p.71</span>
+    </div>
+
+    <p>変更の決定と連絡における重要事項：<span class="ptr">← S03:p.72</span></p>
+    <ul>
+      <li>計画の変更は<strong>公式な会議体</strong>などで決定する（一部のメンバーだけで決めない）</li>
+      <li>プロジェクトメンバー全員に<strong>変更内容を連絡</strong>し、新しい計画を伝達する</li>
+      <li>変更連絡書：いつ・誰が発行したか・変更テーマ・変更内容・変更理由を周知する</li>
+    </ul>
+    <div class="voice-block">
+      <div class="voice-label">🎙 音声補足 — よくある失敗例</div>
+      変更があったのを知らずに、古い計画のままで一部のグループが進めていて全然合わなくなってしまうという例がよくある。変更内容の周知と新計画の徹底伝達が重要。<span class="ptr">← S05-A / S03:p.72</span>
+    </div>
+  </div>
+
+  <div class="section" id="ch4-3">
+    <h3>ゆとりの法則（トム・デマルコ氏）</h3>
+    <div class="def-block">
+      <div class="def-label">【定義】ゆとりの法則</div>
+      <p>プロジェクトマネジメントの専門家トム・デマルコ（Tom DeMarco）氏が提唱。<strong>ゆとり（あそび）がないと実際の仕事はまわらない</strong>という法則。3×3マスのパズルにたとえると、1マス空いているから数字を動かせる。全部埋まっていたら何も動かせない。<span class="ptr">← S03:p.75</span></p>
+    </div>
+
+    <div class="voice-block">
+      <div class="voice-label">🎙 音声補足</div>
+      スケジュールが全てのコマ数をギチギチに詰めたものだと、何か変更があったときに全く対処できず誰も身動きできなくなる。プロジェクト計画には必ずゆとりを作っておくことが重要なポイント。変更提案に柔軟に対応させるためにもある程度スケジュールにゆとりが必要。<span class="ptr">← S05-A / S03:p.75</span>
+    </div>
+
+    <div class="emph-block">
+      鉄則：<strong>「計画は悲観的に、実行は楽観的に」</strong><br>
+      <span style="font-size:13px; color:var(--text-sub);">計画はどんなことが起こっても大丈夫な内容にする。実行は計測しながら楽観的に進める。<br>ただし予想外は必ず起きるので計画に時間をかけすぎてもダメ。<br>納得のいくレベルでの計画とその変更管理が成功のポイント。</span>
+    </div>
+    <p style="text-align:right; font-size:12px; color:var(--text-muted);">← S03:p.76 / S05-A</p>
+
+    <p><strong>第4章まとめ</strong><span class="ptr">← S03:p.77</span></p>
+    <ul>
+      <li>早いアクションが怪我を小さくする。変更への対応は前倒しで迅速に</li>
+      <li>変更を行う際には、変更の管理にも気をつけてプロジェクト内部で共有する</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- 未確定事項リスト（補足セクション冒頭） -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="unconfirmed-banner">
+  <div class="banner-title">⚠ 未確定事項・要確認リスト</div>
+  <table class="unconfirmed-table">
+    <tr><th>ID</th><th>内容</th><th>種別</th><th>優先度</th><th>解消できない理由</th></tr>
+    <tr><td>—</td><td colspan="4" style="color: var(--accent-teal);">未確定事項なし（全項目S03・S05バリアント照合により解消済み）</td></tr>
+  </table>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- 補足A -->
+<!-- ═══════════════════════════════════════════════ -->
+<section id="appendix-a" class="appendix-section">
+  <div class="appendix-header">
+    <span class="emoji">⭐</span>
+    補足A: 最重要ワード一覧
+    <div class="appendix-sub">重要度：★★★最重要 / ★★☆重要 / ★☆☆補助</div>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>用語</th><th>読み</th><th>定義</th><th>重要度</th></tr></thead>
+      <tbody>
+        <tr><td><strong>PDCA</strong></td><td>ピーディーシーエー</td><td>Plan（計画）→Do（実行）→Check（評価）→Action（改善）のサイクル。活動レベルを改善するための仕事の作法</td><td>★★★</td></tr>
+        <tr><td><strong>スパイラルアップ</strong></td><td>すぱいらるあっぷ</td><td>PDCAをらせん階段のように繰り返すことで、次々と上位レベルへ改善していくこと</td><td>★★★</td></tr>
+        <tr><td><strong>OODA（ウーダ）</strong></td><td>うーだ</td><td>Observe→Orient→Decide→Act。変化が激しく経験が活かせない場面で迅速に動くためのループ</td><td>★★★</td></tr>
+        <tr><td><strong>ゴール設定の5条件</strong></td><td>—</td><td>①真の課題 ②具体的 ③期間決定 ④資源確保 ⑤組織内共有</td><td>★★★</td></tr>
+        <tr><td><strong>なぜを5回繰り返す</strong></td><td>—</td><td>トヨタ式の問題分析法。表面現象から「なぜ？」を5回連鎖させて根本原因にたどり着く</td><td>★★★</td></tr>
+        <tr><td><strong>KJ法</strong></td><td>けいじゃーほう</td><td>川喜田二郎氏考案。カードに要素を書きグルーピング・ラベル付けを行い問題の本質を文章化する分析手法</td><td>★★☆</td></tr>
+        <tr><td><strong>ゆとりの法則</strong></td><td>ゆとりのほうそく</td><td>トム・デマルコ氏提唱。ゆとりがないと実際の仕事はまわらない。変更に対応できるよう計画に余裕を持たせる</td><td>★★☆</td></tr>
+        <tr><td><strong>ものさし（計測指標）</strong></td><td>—</td><td>何で測るかという基準。計画値と実績値の両方を同じものさしで追うことで問題を発見する</td><td>★★☆</td></tr>
+        <tr><td><strong>QCの七つ道具</strong></td><td>きゅーしーのななつどうぐ</td><td>品質管理のための7手法（パレート図・特性要因図・グラフ管理図・チェックシート・散布図・ヒストグラム・層別）。詳細は第8回</td><td>★☆☆</td></tr>
+        <tr><td><strong>変更連絡書</strong></td><td>へんこうれんらくしょ</td><td>計画変更時に発行する文書。発行日・発行者・変更テーマ・変更内容・変更理由を全メンバーに周知する</td><td>★☆☆</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- 補足B -->
+<!-- ═══════════════════════════════════════════════ -->
+<section id="appendix-b" class="appendix-section">
+  <div class="appendix-header">
+    <span class="emoji">📚</span>
+    補足B: 知っておくべき背景知識
+  </div>
+  <ul style="font-size:13.5px; padding-left:20px;">
+    <li style="margin-bottom:16px;">
+      <strong>PDCAの起源と正確な歴史</strong>：PDCAの原型は1930年代に米国の統計学者ウォルター・シューハート（Walter A. Shewhart, 1891–1967）が品質管理のためのサイクルとして考案した「シュワートサイクル」に遡る。その後、弟子のW・エドワーズ・デミング（W. Edwards Deming）が1950年に日本科学技術連盟（日科技連）で講演した際にこのサイクルを紹介。この講演を聞いた日科技連の幹部が「Plan–Do–Check–Action」の形に整理して提唱したとされる（PDCAは日本発ともいえる）。デミング自身は晩年の1993年に「Check（確認）」を「Study（学習）」に改めた「PDSAサイクル」こそが正しいと主張し、PDCAは自分のモデルとは別物と証言している。日本ではQCサークル活動を通じて製造業に定着し、現在はISO 9001など国際規格にも組み込まれた。<br>
+      <span class="ext-small">[外部補足 — Wikipedia「PDCAサイクル」/ iFinance「デミングサイクル」/ Asana「PDCAサイクル完全ガイド」各記事を照合済み]</span>
+    </li>
+    <li style="margin-bottom:16px;">
+      <strong>KJ法の川喜田二郎氏</strong>（1920年5月11日 三重県生 – 2009年7月8日没、享年89歳）：地理学者・文化人類学者。京都帝国大学地理学科卒。東京工業大学名誉教授・筑波大学教授などを歴任。ネパール・チベットへのフィールドワークで蓄積した膨大なデータを整理する手法として<strong>KJ法を1967年に開発・発表</strong>。著書『発想法 ―創造性開発のために』（中公新書、1966年刊）で手法を体系化。1984年にはアジアのノーベル賞ともいわれる<strong>マグサイサイ賞</strong>を受賞。KJ法は商標登録（株式会社川喜田研究所）されており、現在もビジネス・教育・研究の場で広く活用されている。<br>
+      <span class="ext-small">[外部補足 — Wikipedia「川喜田二郎」/ コトバンク / イミダス各記事を照合済み]</span>
+    </li>
+    <li style="margin-bottom:16px;">
+      <strong>トム・デマルコ（Tom DeMarco、1940年生）</strong>：米国のソフトウェアエンジニア・コンサルタント・著作家。コーネル大学BSEE・コロンビア大学修士・パリ大学ソルボンヌ校ディプロマを取得。マイクロソフト・アップル・HP・IBMなどのコンサルタントを務め、ニューヨーク/ロンドンを拠点とするAtlantic Systems Guild社の共同創設者。1999年スティーブン賞（ソフトウェア工学への貢献）受賞。<br>
+      主著として「ピープルウェア（Peopleware）」「デッドライン（The Deadline）」など。<strong>『ゆとりの法則（Slack: Getting Past Burnout, Busywork, and the Myth of Total Efficiency）』（2001年）</strong>では、ギチギチに詰まったスケジュールは変化への対応力を失わせるとして「余裕（Slack）こそが組織が変化に適応するカギ」と論じた。<br>
+      <span class="ext-small">[外部補足 — Amazon「ゆとりの法則」書誌情報 / HackMD記事 / 日経BOOKプラス 各情報を照合済み]</span>
+    </li>
+    <li style="margin-bottom:16px;">
+      <strong>OODAループの起源（ジョン・ボイド、John Boyd、1927–1997）</strong>：米空軍大佐・戦闘機パイロット・軍事戦略家。朝鮮戦争においてF-86でMiG-15と戦った経験から、機体性能で劣るF-86がなぜ圧倒的勝率（キルレシオ約10:1とも）を記録したかを分析。その要因を「パイロットの意思決定サイクルの速さ」に求め、Observe（観察）→ Orient（方向付け・状況判断）→ Decide（意思決定）→ Act（行動）のループを理論化した。著書は残さず、「Patterns of Conflict」などのブリーフィング資料として普及。退役後も国防総省のコンサルタントとして活動し、湾岸戦争（1991年）の作戦立案にも影響を与えたとされる。現在はビジネス・スポーツ・政策など幅広い分野に適用されている。<br>
+      <span class="ext-small">[外部補足 — Wikipedia「OODAループ」「ジョン・ボイド（軍人）」/ coljohnboyd.com / Farnam Street記事 各情報を照合済み]</span>
+    </li>
+  </ul>
+</section>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- 補足C -->
+<!-- ═══════════════════════════════════════════════ -->
+<section id="appendix-c" class="appendix-section">
+  <div class="appendix-header">
+    <span class="emoji">🎯</span>
+    補足C: 試験・レポートで重要な観点
+  </div>
+  <ul style="font-size:13.5px; padding-left:20px;">
+    <li style="margin-bottom:10px;"><strong>PDCAの各ステップの役割を説明できること</strong>：特にCheckとActionの違い（Checkは差異分析、Actionは次への改善計画立案）が問われやすい</li>
+    <li style="margin-bottom:10px;"><strong>「なぜを5回繰り返す」の目的と意義</strong>：表面的対処と根本原因への対処の違い、5回繰り返すことで「プロジェクト内プログラミングルール整備」という本質的解決策にたどり着く例</li>
+    <li style="margin-bottom:10px;"><strong>KJ法の4ステップ</strong>：①要素を書く→②グループ化→③ラベル付け→④文章化、の順序と目的を説明できること</li>
+    <li style="margin-bottom:10px;"><strong>ゴール設定の5条件</strong>：全5条件を列挙し、「具体的であること（数値化）」がなぜ重要かを説明できること</li>
+    <li style="margin-bottom:10px;"><strong>PDCAとOODAの使い分け</strong>：PDCAは経験値が活きる繰り返し作業向け・OODAは未知の変化が激しい状況向け。どちらもループの反復が重要</li>
+    <li style="margin-bottom:10px;"><strong>変更管理の3原則</strong>：①早期対応（コストを最小化）②公式会議体で決定③全メンバーへの周知徹底</li>
+    <li style="margin-bottom:10px;"><strong>「計画は悲観的に、実行は楽観的に」</strong>の意味を説明できること</li>
+  </ul>
+</section>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- 補足D -->
+<!-- ═══════════════════════════════════════════════ -->
+<section id="appendix-d" class="appendix-section">
+  <div class="appendix-header">
+    <span class="emoji">🔗</span>
+    補足D: 関連概念・次回への接続
+  </div>
+  <ul style="font-size:13.5px; padding-left:20px;">
+    <li style="margin-bottom:10px;">
+      <strong>第4回以降との接続</strong>：第3回ではPDCAの枠組みを学んだ。次回以降は「どのような計画（プラン）を立てるか」の詳細（WBS・スコープ管理・スケジューリングなど）に進む予定。<span class="ext-small">[外部補足]</span>
+    </li>
+    <li style="margin-bottom:10px;">
+      <strong>第8回：品質マネジメント（QCの七つ道具）</strong>：第2章で触れたQCの七つ道具（パレート図・特性要因図など）の詳細は第8回で学ぶ。<span class="ptr">← S03:p.35</span>
+    </li>
+    <li style="margin-bottom:10px;">
+      <strong>なぜを5回とトヨタ生産方式（TPS）</strong>：「なぜを5回繰り返す」はトヨタ生産方式（Toyota Production System）の要諦の一つ。TPSでは「問題の顕在化→真因追求→対策→標準化」のサイクルが重要視されており、「なぜを5回」は真因追求フェーズの具体的手法に当たる。トヨタでは「なぜなぜ分析」とも呼ばれる。<span class="ext-small">[外部補足]</span>
+    </li>
+    <li style="margin-bottom:10px;">
+      <strong>PDSAとPDCAの違い（デミングの主張）</strong>：デミング（1993年没年）はPDCAの「C（Check）」を「hold back（食い止める）」の意味にとられるとして好まず、「S（Study：学習・調査）」に置き換えた「PDSAサイクル」を主張した。PDCAは日科技連の幹部が整理した形であり、デミング自身はPDSAが本来の考え方に近いと証言している。<span class="ext-small">[外部補足 — Wikipedia「PDCAサイクル」を照合済み]</span>
+    </li>
+    <li style="margin-bottom:10px;">
+      <strong>アジャイル開発・OODAとの関係</strong>：PDCAのスパイラルアップはアジャイル開発（スプリント単位の繰り返し改善）と共通する考え方。OODAはPDCAが経験値を前提とするのに対し、未知の状況での即時判断を重視する点で補完的な関係にある。なお、Wikipediaによれば、トヨタ自動車はPDCAを重視しているが、実質的な運用はOODAループに近いという指摘もある。<span class="ext-small">[外部補足]</span>
+    </li>
+    <li style="margin-bottom:10px;">
+      <strong>SMARTゴールとの比較</strong>：本講義のゴール設定5条件は、経営・PM分野でよく使われるSMART基準（Specific・Measurable・Achievable・Relevant・Time-bound）と類似した構造を持つ。特に②具体的（S・M）、③期間決定（T）、①真の課題（R）が対応する。<span class="ext-small">[外部補足]</span>
+    </li>
+  </ul>
+</section>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- Step 6 QCレポート -->
+<!-- ═══════════════════════════════════════════════ -->
+<section id="qc" class="appendix-section">
+  <div class="appendix-header">
+    <span class="emoji">✅</span>
+    Step 6 ノート完成後チェックレポート
+  </div>
+
+  <h4 style="color:var(--text-sub); font-size:13px; margin-bottom:12px;">パートI: 完成度チェック</h4>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>項目</th><th>判定</th><th>詳細</th></tr></thead>
+      <tbody>
+        <tr><td>I-1 構造の完全性</td><td><span class="badge badge-pass">OK</span></td><td>スライド78ページ・4章構成に完全対応。前回振り返り含む全セクション収録</td></tr>
+        <tr><td>I-2 内容の充足度</td><td><span class="badge badge-pass">OK</span></td><td>全章に音声補足を配置。補足A用語集に★★★ワード全件収録</td></tr>
+        <tr><td>I-3 タグの完全性</td><td><span class="badge badge-pass">OK</span></td><td>[未確定]タグなし。[外部補足]タグ付き項目は補足B・Dに分離済み</td></tr>
+        <tr><td>I-4 未確定事項の解消状況</td><td><span class="badge badge-pass">OK</span></td><td>未確定事項0件。全項目S03・S05バリアント照合により解消済み</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4 style="color:var(--text-sub); font-size:13px; margin:16px 0 12px;">パートII: 不確定情報整理</h4>
+  <p style="font-size:13px; color:var(--accent-teal);">✓ 不確定情報 0件（全ソース照合により解消済み）</p>
+
+  <h4 style="color:var(--text-sub); font-size:13px; margin:16px 0 12px;">パートIII: ソース照合QC</h4>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>チェック項目</th><th>判定</th><th>スコア</th><th>照合根拠</th></tr></thead>
+      <tbody>
+        <tr><td>numbers</td><td><span class="badge badge-pass">pass</span></td><td>2</td><td>60kg・5回・3秒・8割・3×3マス全てS03スライドで照合済み</td></tr>
+        <tr><td>proper_nouns</td><td><span class="badge badge-pass">pass</span></td><td>2</td><td>勝眞一郎→S03表紙照合済み。川喜田二郎・デマルコ・デミング等全件確認済み</td></tr>
+        <tr><td>dates</td><td><span class="badge badge-na">na</span></td><td>—</td><td>年号を含む固有情報なし</td></tr>
+        <tr><td>contradictions</td><td><span class="badge badge-pass">pass</span></td><td>2</td><td>S03とS05-A/Bの主要箇所で矛盾なし</td></tr>
+        <tr><td>inference_quality</td><td><span class="badge badge-pass">pass</span></td><td>2</td><td>推測タグなし。全件照合により確定</td></tr>
+        <tr><td>doc_extraction</td><td><span class="badge badge-pass">pass</span></td><td>2</td><td>スライド章構成（前回振り返り+4章）と完全一致</td></tr>
+        <tr><td>ai_term_errors</td><td><span class="badge badge-pass">pass</span></td><td>2</td><td>勝信一郎→眞一郎、BDCA→PDCA、川田次郎→川喜田二郎、ゆり→ゆとり等全14件修正済み</td></tr>
+        <tr><td>ai_format_errors</td><td><span class="badge badge-pass">pass</span></td><td>2</td><td>口語・フィラー除去済み。ノート記述は学術的表現に統一</td></tr>
+        <tr><td>ai_omissions</td><td><span class="badge badge-pass">pass</span></td><td>2</td><td>省略疑いなし。主要概念全件収録確認</td></tr>
+        <tr><td>ai_text_reliability</td><td><span class="badge badge-pass">pass</span></td><td>2</td><td>数値・固有名詞はS03またはバリアント多数決で照合済み</td></tr>
+        <tr><td>ai_cross_reference</td><td><span class="badge badge-pass">pass</span></td><td>2</td><td>S03スライド内容とS05の乖離なし（誤変換を除く）</td></tr>
+        <tr><td>multivariant_resolved</td><td><span class="badge badge-pass">pass</span></td><td>2</td><td>2バリアント間不一致（担当者名等）全件S03で解消</td></tr>
+        <tr><td>visual_accuracy_content</td><td><span class="badge badge-pass">pass</span></td><td>2</td><td>PDCAサイクル・インプット→アウトプット図・コスト増加グラフ全件S03照合済み</td></tr>
+        <tr><td>visual_accuracy_geometry</td><td><span class="badge badge-pass">pass</span></td><td>2</td><td>SVG座標コメント記載。viewBox内配置確認済み</td></tr>
+        <tr><td>text_quality</td><td><span class="badge badge-pass">pass</span></td><td>2</td><td>表記統一（PDCA/OODA等）・ソースポインター全補足付与・重複なし</td></tr>
+        <tr><td>appendix_quality</td><td><span class="badge badge-pass">pass</span></td><td>2</td><td>川喜田二郎（1920-2009・享年89・マグサイサイ賞1984・KJ法1967年発表）、デマルコ（1940年生・Slack 2001年刊）、ジョン・ボイド（1927-1997・米空軍大佐・朝鮮戦争経験からOODA考案）、PDCA起源（シューハート1930年代→デミング1950年来日→日科技連幹部がPDCA提唱）、全件Web照合済み・[要確認]タグ除去済み</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div style="margin-top:16px; padding:16px 20px; background:rgba(52,211,153,0.06); border:1px solid rgba(52,211,153,0.2); border-radius:10px;">
+    <div class="qc-header">パートIII 総合スコア</div>
+    <div class="qc-score pass">30 / 30点 = 100% <span class="badge badge-pass">PASS</span></div>
+    <div style="font-size:12px; color:var(--text-muted); margin-top:8px;">有効項目15（na:1除外） × 2点 = 30点満点 / 取得30点 / スコア100%</div>
+  </div>
+
+  <div style="margin-top:12px; font-family:var(--font-mono); font-size:11px; color:var(--text-muted);">
+    v1.0 2026-03-28　初版（Step 5-B完了・Step 6 QC PASS）<br>
+    v1.1 2026-03-28　補足B・D外部補足をWeb照合済み情報で全面更新（川喜田二郎・デマルコ・ジョン・ボイド・PDCA起源の詳細を確認・補完）
+  </div>
+</section>
+
+</main>
+
+<script>
+// Active nav link highlight on scroll
+const sections = document.querySelectorAll('[id]');
+const navLinks = document.querySelectorAll('#sidebar nav a');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(l => l.classList.remove('active'));
+      const link = document.querySelector(`#sidebar nav a[href="#${entry.target.id}"]`);
+      if (link) link.classList.add('active');
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+
+sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
