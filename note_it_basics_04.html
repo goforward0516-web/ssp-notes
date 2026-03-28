@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ITのための基礎知識 第4回 | 技術戦略とビジネスインダストリ</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f1117;
+  --bg-card: #1e2535;
+  --bg-card2: #161c2a;
+  --text: #e2e8f5;
+  --text-sub: #8a99b8;
+  --text-dim: #5b6a8a;
+  --accent-blue: #5b8dee;
+  --accent-green: #34d399;
+  --accent-yellow: #fbbf24;
+  --accent-orange: #f97316;
+  --accent-purple: #a78bfa;
+  --accent-red: #f87171;
+  --border: #2a3450;
+  --border-light: #3a4570;
+  --mono: 'JetBrains Mono', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 14px;
+  line-height: 1.8;
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ── SIDEBAR ── */
+#sidebar {
+  width: 260px;
+  min-width: 260px;
+  background: var(--bg-card2);
+  border-right: 1px solid var(--border);
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  overflow-y: auto;
+  padding: 20px 0;
+  z-index: 100;
+}
+
+.sidebar-header {
+  padding: 0 16px 16px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 12px;
+}
+
+.sidebar-header .course-tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--accent-blue);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.sidebar-header .course-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.4;
+}
+
+.toc-section { margin-bottom: 4px; }
+
+.toc-h2 {
+  display: block;
+  padding: 6px 16px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-sub);
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.toc-h2:hover { color: var(--accent-blue); }
+
+.toc-h3 {
+  display: block;
+  padding: 4px 16px 4px 28px;
+  font-size: 11px;
+  color: var(--text-dim);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.2s;
+  border-left: 2px solid transparent;
+  margin-left: 4px;
+}
+.toc-h3:hover { color: var(--text); border-left-color: var(--accent-blue); }
+
+/* ── MAIN ── */
+#main {
+  margin-left: 260px;
+  flex: 1;
+  padding: 32px 40px 80px;
+  max-width: 1000px;
+}
+
+/* ── HEADER ── */
+.page-header {
+  background: linear-gradient(135deg, #1a2340 0%, #0f1b30 100%);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px 32px;
+  margin-bottom: 28px;
+}
+
+.page-header .lecture-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--accent-blue);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.page-header h1 {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+
+.meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-sub);
+}
+
+.meta-item .label {
+  font-family: var(--mono);
+  font-size: 10px;
+  background: var(--border);
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: var(--text-dim);
+}
+
+/* ── SECTION CARDS ── */
+.chapter-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 24px 28px;
+  margin-bottom: 20px;
+}
+
+.chapter-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.chapter-num {
+  font-family: var(--mono);
+  font-size: 10px;
+  background: var(--accent-blue);
+  color: var(--bg);
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.chapter-card h2 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.section-block {
+  margin-bottom: 20px;
+}
+
+.section-block h3 {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent-blue);
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-block h3::before {
+  content: '';
+  display: inline-block;
+  width: 3px;
+  height: 14px;
+  background: var(--accent-blue);
+  border-radius: 2px;
+}
+
+.section-block p { margin-bottom: 8px; color: var(--text); }
+
+/* ── VOICE BLOCK ── */
+.voice-block {
+  border-left: 3px solid var(--accent-blue);
+  background: rgba(91,141,238,0.07);
+  padding: 10px 14px;
+  border-radius: 0 6px 6px 0;
+  margin: 8px 0;
+  font-size: 13px;
+}
+
+.voice-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--accent-blue);
+  margin-bottom: 4px;
+  letter-spacing: 0.08em;
+}
+
+/* ── EXT BLOCK ── */
+.ext-block {
+  border-left: 3px solid var(--accent-green);
+  background: rgba(52,211,153,0.07);
+  padding: 10px 14px;
+  border-radius: 0 6px 6px 0;
+  margin: 8px 0;
+  font-size: 13px;
+}
+
+.ext-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--accent-green);
+  margin-bottom: 4px;
+}
+
+/* ── POINTER ── */
+.ptr {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-dim);
+  background: var(--bg);
+  padding: 1px 5px;
+  border-radius: 3px;
+  border: 1px solid var(--border);
+  margin-left: 6px;
+  white-space: nowrap;
+}
+
+/* ── TABLE ── */
+.table-wrap { overflow-x: auto; margin: 10px 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+th {
+  background: var(--bg-card2);
+  color: var(--accent-blue);
+  font-weight: 600;
+  padding: 8px 12px;
+  text-align: left;
+  border: 1px solid var(--border);
+  font-size: 11px;
+  letter-spacing: 0.03em;
+}
+td {
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  color: var(--text);
+  vertical-align: top;
+}
+tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+tr:hover td { background: rgba(91,141,238,0.05); }
+
+/* ── LIST ── */
+ul, ol { padding-left: 20px; margin: 6px 0; }
+li { margin-bottom: 4px; color: var(--text); }
+li::marker { color: var(--accent-blue); }
+
+/* ── SVG FIGURE ── */
+.fig-wrap {
+  margin: 14px 0;
+  background: var(--bg-card2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+}
+figcaption {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-sub);
+  margin-top: 8px;
+  text-align: center;
+}
+
+/* ── APPENDIX ── */
+.appendix-section { margin-top: 32px; }
+
+.appendix-card {
+  border-radius: 10px;
+  padding: 20px 24px;
+  margin-bottom: 16px;
+}
+
+.appendix-card.uncert {
+  background: rgba(249,115,22,0.08);
+  border: 1px solid rgba(249,115,22,0.3);
+}
+
+.appendix-card.word-list {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+}
+
+.appendix-card.bg-know {
+  background: rgba(52,211,153,0.06);
+  border: 1px solid rgba(52,211,153,0.2);
+}
+
+.appendix-card.exam {
+  background: rgba(251,191,36,0.06);
+  border: 1px solid rgba(251,191,36,0.2);
+}
+
+.appendix-card.related {
+  background: rgba(167,139,250,0.06);
+  border: 1px solid rgba(167,139,250,0.2);
+}
+
+.appendix-title {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.appendix-card.uncert .appendix-title { color: var(--accent-orange); }
+.appendix-card.word-list .appendix-title { color: var(--accent-yellow); }
+.appendix-card.bg-know .appendix-title { color: var(--accent-green); }
+.appendix-card.exam .appendix-title { color: var(--accent-yellow); }
+.appendix-card.related .appendix-title { color: var(--accent-purple); }
+
+.ext-small { font-size: 12px; color: var(--text-sub); }
+
+/* ── QC BADGE ── */
+.qc-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--mono);
+  font-size: 10px;
+  background: rgba(52,211,153,0.15);
+  color: var(--accent-green);
+  border: 1px solid rgba(52,211,153,0.3);
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+
+/* ── DIVIDER ── */
+.divider { border: none; border-top: 1px solid var(--border); margin: 18px 0; }
+
+/* ── SOURCE TAG ── */
+.src-tag {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 3px;
+  margin: 0 2px;
+}
+.src-s03 { background: rgba(91,141,238,0.15); color: var(--accent-blue); border: 1px solid rgba(91,141,238,0.3); }
+.src-s05 { background: rgba(167,139,250,0.12); color: var(--accent-purple); border: 1px solid rgba(167,139,250,0.3); }
+
+/* ── HIGHLIGHT BOX ── */
+.highlight-box {
+  background: rgba(251,191,36,0.07);
+  border: 1px solid rgba(251,191,36,0.25);
+  border-radius: 6px;
+  padding: 10px 14px;
+  margin: 8px 0;
+  font-size: 13px;
+}
+
+/* ── DIFF TAG ── */
+.diff-poc { background: rgba(91,141,238,0.12); border-left: 3px solid var(--accent-blue); }
+.diff-pov { background: rgba(52,211,153,0.12); border-left: 3px solid var(--accent-green); }
+
+.section-block .subsection { margin-left: 12px; margin-bottom: 12px; }
+</style>
+</head>
+<body>
+
+<!-- ── SIDEBAR ── -->
+<nav id="sidebar">
+  <div class="sidebar-header">
+    <div class="course-tag">CS101</div>
+    <div class="course-title">ITのための基礎知識<br>第4回</div>
+  </div>
+
+  <div class="toc-section">
+    <a class="toc-h2" href="#ch1">第1章 技術戦略マネジメント</a>
+    <a class="toc-h3" href="#ch1-1">技術戦略マネジメント</a>
+    <a class="toc-h3" href="#ch1-2">技術開発戦略と計画</a>
+    <a class="toc-h3" href="#ch1-3">技術ロードマップ</a>
+    <a class="toc-h3" href="#ch1-4">特許戦略</a>
+    <a class="toc-h3" href="#ch1-5">オープンイノベーション</a>
+    <a class="toc-h3" href="#ch1-6">プロセスイノベーション</a>
+    <a class="toc-h3" href="#ch1-7">プロダクトイノベーション</a>
+    <a class="toc-h3" href="#ch1-8">PoC と PoV</a>
+  </div>
+
+  <div class="toc-section">
+    <a class="toc-h2" href="#ch2">第2章 ビジネスシステムとエンジニアリング</a>
+    <a class="toc-h3" href="#ch2-1">ビジネスシステム</a>
+    <a class="toc-h3" href="#ch2-2">代表的なビジネスシステム</a>
+    <a class="toc-h3" href="#ch2-3">行政分野のシステム</a>
+    <a class="toc-h3" href="#ch2-4">エンジニアリングシステム</a>
+    <a class="toc-h3" href="#ch2-5">生産管理システムと生産方式</a>
+    <a class="toc-h3" href="#ch2-6">AIの利活用と留意事項</a>
+  </div>
+
+  <div class="toc-section">
+    <a class="toc-h2" href="#ch3">第3章 e-ビジネス戦略</a>
+    <a class="toc-h3" href="#ch3-1">e-ビジネスとは</a>
+    <a class="toc-h3" href="#ch3-2">電子商取引の基本概念</a>
+    <a class="toc-h3" href="#ch3-3">取引形態の種類</a>
+    <a class="toc-h3" href="#ch3-4">具体的な利用例</a>
+    <a class="toc-h3" href="#ch3-5">リスクとセキュリティ</a>
+  </div>
+
+  <div class="toc-section">
+    <a class="toc-h2" href="#ch4">第4章 IoTと組込みシステム</a>
+    <a class="toc-h3" href="#ch4-1">IoTとは</a>
+    <a class="toc-h3" href="#ch4-2">IoTシステムの例</a>
+    <a class="toc-h3" href="#ch4-3">Society 5.0</a>
+    <a class="toc-h3" href="#ch4-4">組み込みシステム</a>
+    <a class="toc-h3" href="#ch4-5">課題と対策</a>
+  </div>
+
+  <div class="toc-section">
+    <a class="toc-h2" href="#appendix">末尾補足</a>
+    <a class="toc-h3" href="#app-a">補足A: 最重要ワード</a>
+    <a class="toc-h3" href="#app-b">補足B: 背景知識</a>
+    <a class="toc-h3" href="#app-c">補足C: 試験ポイント</a>
+    <a class="toc-h3" href="#app-d">補足D: 関連概念</a>
+  </div>
+</nav>
+
+<!-- ── MAIN ── -->
+<main id="main">
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="lecture-num">ITのための基礎知識 · 第4回</div>
+  <h1>技術戦略とビジネスインダストリ</h1>
+  <div class="meta-row">
+    <div class="meta-item"><span class="label">担当</span> 山口 晋一</div>
+    <div class="meta-item"><span class="label">科目</span> CS101</div>
+    <div class="meta-item"><span class="label">ソース</span> S03 · S05×2</div>
+    <div class="meta-item"><span class="label">SSP</span> v4.5.1</div>
+    <div class="meta-item"><span class="qc-badge">✓ QC PASS 100%</span></div>
+  </div>
+</div>
+
+<!-- ── CHAPTER 1 ── -->
+<div class="chapter-card" id="ch1">
+  <div class="chapter-header">
+    <span class="chapter-num">CH.1</span>
+    <h2>技術戦略マネジメント</h2>
+  </div>
+
+  <!-- 1-1 -->
+  <div class="section-block" id="ch1-1">
+    <h3>技術戦略マネジメントとは</h3>
+    <p><strong>定義：</strong>企業が競争力を高めるために技術の開発と活用を計画・管理する手法。単に技術を持つだけでなく、それをどう使い、どう発展させるかを考えることがポイント。<span class="ptr">← S03:p.6</span></p>
+
+    <p><strong>重要性（3点）：</strong></p>
+    <ul>
+      <li>技術を基盤にした<strong>競争優位の確立</strong>：優れた技術により他社との差別化を図る</li>
+      <li>技術の進化に対応し<strong>市場の変化に適応</strong>する</li>
+      <li><strong>研究開発資源の効果的な配分</strong>：限られた資源をどこに投資するかが企業の成長を左右する</li>
+    </ul>
+    <div class="voice-block">
+      <div class="voice-label">▶ 音声補足</div>
+      単なる技術の活用ではなく、それを戦略的にどう活かすかが成功の鍵。Appleは iPhone という革新的な製品を開発することで市場での競争優位を確立した。<span class="ptr">← S05</span>
+    </div>
+  </div>
+
+  <!-- 1-2 -->
+  <div class="section-block" id="ch1-2">
+    <h3>技術開発戦略の立案と計画</h3>
+    <p><strong>技術開発戦略の意義：</strong>将来的に市場での競争力を確保するために、技術動向や製品動向を調査・分析すること。<span class="ptr">← S03:p.7</span></p>
+    <p><strong>技術開発計画の作成：</strong>技術動向予測に基づいてロードマップを作成し、技術開発を推進する。</p>
+    <p><strong>イノベーションとの関係：</strong>イノベーションは新しい製品・サービスの創出や既存製品の改良を通じて企業の競争力を強化する手段。技術開発は単に技術を生み出すだけでなく、イノベーションを推進することが求められる。<span class="ptr">← S03:p.7</span></p>
+    <div class="voice-block">
+      <div class="voice-label">▶ 音声補足</div>
+      新しいスマートフォンを開発する際、技術そのものだけでなく、その技術を製品やサービスにどう組み込んで市場のニーズを満たすかが重要になる。<span class="ptr">← S05</span>
+    </div>
+  </div>
+
+  <!-- 1-3 -->
+  <div class="section-block" id="ch1-3">
+    <h3>技術ロードマップ</h3>
+    <p><strong>定義：</strong>技術開発の長期的な方向性や計画を示し、技術の進化や市場動向に対応するための戦略的な計画図。<span class="ptr">← S03:p.8</span></p>
+    <p><strong>目的（2点）：</strong></p>
+    <ul>
+      <li><strong>技術開発の計画と管理</strong>：時間・資源を効率的に配分する</li>
+      <li><strong>目標の明確化</strong>：チーム全体で同じ方向を目指せるようにする</li>
+    </ul>
+    <div class="voice-block">
+      <div class="voice-label">▶ 音声補足</div>
+      ロードマップ図では「青い部分が技術、赤い部分が製品」を表す。時間軸に沿って技術がどのように発展し、それが製品にどう結びついているかを可視化できる。<span class="ptr">← S05</span>
+    </div>
+
+    <p><strong>事例：メタバースのITロードマップ（2022〜2027年度以降）</strong><span class="ptr">← S03:p.9</span></p>
+    <div class="ext-block">
+      <div class="ext-label">外部補足：メタバースの定義</div>
+      メタバースとは、ユーザーがアバターを使い3DCGの仮想空間を移動しながら現実を超える体験を楽しみ、人々と交流したり企業のサービスを利用できる仮想空間のこと。
+    </div>
+    <div class="table-wrap">
+      <table>
+        <tr><th>時期</th><th>全体の流れ</th><th>関連技術動向（例）</th><th>ユースケース</th></tr>
+        <tr><td>〜2022年度</td><td>コンシューマー向けユースケースの拡大</td><td>VR HMDの利用拡大<br>★Metaのメタ MRグラス発売</td><td>BtoC：エンタメ・マーケティング</td></tr>
+        <tr><td>2023〜2024年度</td><td>企業内・企業間利用が普及<br>標準化・相互運用を支える仕組みづくり</td><td>VR HMDの普及<br>ARグラスの利用者拡大</td><td>BtoE：社内交流・セミナー<br>BtoB：VR会議</td></tr>
+        <tr><td>2025〜2026年度</td><td>本格普及の段階へ</td><td>MRデバイスの普及<br>ARグラスの普及</td><td>BtoC：送客のための顧客接点利用</td></tr>
+        <tr><td>2027年度以降</td><td>メタバースの相互運用による本格普及</td><td>リアルコンテンツの拡大<br>共通アバターサービス普及</td><td>現実世界と並行する生活・仕事の場</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 1-4 -->
+  <div class="section-block" id="ch1-4">
+    <h3>特許戦略</h3>
+    <p><strong>定義：</strong>知的財産権を活用して競争優位を維持・強化する戦略。<span class="ptr">← S03:p.10</span></p>
+    <p><strong>目的（3点）：</strong></p>
+    <ul>
+      <li><strong>模倣の防止</strong>：特許取得により他者が同じ技術を使えないよう自社技術を守る</li>
+      <li><strong>ライセンス収益の確保</strong>：他者に特許をライセンスして収益を得る</li>
+      <li><strong>交渉力の強化</strong>：特許を多く保有することで取引・提携時に有利な立場を築く</li>
+    </ul>
+    <div class="voice-block">
+      <div class="voice-label">▶ 音声補足</div>
+      IBMは多くの特許を保有しそれを活用することで他社に対する競争優位性を確立している。これは特許の力をうまく使った好例といえる。<span class="ptr">← S05</span>
+    </div>
+  </div>
+
+  <!-- 1-5 -->
+  <div class="section-block" id="ch1-5">
+    <h3>オープンイノベーション</h3>
+    <p><strong>定義：</strong>外部の技術やアイデアを取り入れ、それを内部資源と組み合わせることで新しいイノベーションを生み出すアプローチ。<strong>ハッカソン</strong>（開発者が一堂に集まりアイデアを出し合い短期間で製品を作り成果を競うイベント）などの手法が使われる。<span class="ptr">← S03:p.11</span></p>
+    <p><strong>利点（3点）：</strong></p>
+    <ul>
+      <li><strong>多様なアイデアの活用</strong>：社外の知見を取り入れ企業内だけでは生まれない革新的なアイデアが生まれる</li>
+      <li><strong>リスク分散</strong>：開発資源を分散させることでリスクを軽減</li>
+      <li><strong>市場投入の迅速化</strong>：外部との協力により新製品・サービスをより早く市場に届けられる</li>
+    </ul>
+    <div class="voice-block">
+      <div class="voice-label">▶ 音声補足（事例）</div>
+      Google Maps は API を公開したことで、多くの企業や開発者が独自のアプリやサービスを開発した。その結果、多様なアプリやサービスが生まれ、Google Maps を基盤とした新しいサービスが大きく拡大した。<span class="ptr">← S05</span>
+    </div>
+  </div>
+
+  <!-- 1-6 -->
+  <div class="section-block" id="ch1-6">
+    <h3>プロセスイノベーション</h3>
+    <p><strong>定義：</strong>製造プロセスや業務プロセスの革新を通じて生産性や品質を向上させる手法。ものづくりや業務の流れを効率化し、より良い結果を生み出すアプローチ。<span class="ptr">← S03:p.12</span></p>
+    <p><strong>利点（3点）：</strong></p>
+    <ul>
+      <li><strong>生産コストの削減</strong>：効率的なプロセス導入により無駄なコストを削減</li>
+      <li><strong>製品・サービスの品質向上</strong>：改善されたプロセスにより高品質な製品・サービスを提供</li>
+      <li><strong>業務プロセスの効率化</strong>：業務の流れをスムーズにし時間・リソースを有効活用</li>
+    </ul>
+    <div class="voice-block">
+      <div class="voice-label">▶ 音声補足（事例）</div>
+      トヨタの<strong>かんばん方式</strong>は、必要な部品を必要なタイミングで供給する在庫管理システム。在庫の無駄を削減し生産効率を大幅に向上させた事例であり、世界中の企業で採用されている。<span class="ptr">← S05</span>
+    </div>
+  </div>
+
+  <!-- 1-7 -->
+  <div class="section-block" id="ch1-7">
+    <h3>プロダクトイノベーション</h3>
+    <p><strong>定義：</strong>新しい製品やサービスの開発を通じて市場に革新をもたらす手法。新しいアイデアを形にしてユーザーに新しい価値を提供すること。<span class="ptr">← S03:p.13</span></p>
+    <p><strong>利点（3点）：</strong></p>
+    <ul>
+      <li><strong>市場シェアの拡大</strong>：新製品が市場で注目されることでシェアを広げる</li>
+      <li><strong>顧客満足度の向上</strong>：革新的な製品が顧客のニーズをよりよく満たす</li>
+      <li><strong>競争力の強化</strong>：他者との差別化により市場での優位性を確立</li>
+    </ul>
+    <div class="voice-block">
+      <div class="voice-label">▶ 音声補足（事例）</div>
+      スマートフォンの進化は日常生活やビジネスにおいて不可欠な存在となり、その市場は年々拡大している。新しい機能やデザインを取り入れることでユーザーへの期待を超える価値を提供している。<span class="ptr">← S05</span>
+    </div>
+
+    <p style="margin-top: 12px;"><strong>各イノベーションの比較：</strong></p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>種類</th><th>利点</th><th>導入タイミング</th><th>適した場面</th></tr>
+        <tr><td><strong>オープン<br>イノベーション</strong></td><td>多様アイデア活用<br>リスク分散<br>市場投入迅速化</td><td>外部アイデア・技術を取り入れたい時</td><td>ハッカソン・API公開</td></tr>
+        <tr><td><strong>プロセス<br>イノベーション</strong></td><td>コスト削減<br>品質向上<br>業務効率化</td><td>既存プロセスの改善が必要な時</td><td>生産性・品質向上を図りたい時</td></tr>
+        <tr><td><strong>プロダクト<br>イノベーション</strong></td><td>市場シェア拡大<br>顧客満足度向上<br>競争力強化</td><td>新製品・サービスを市場投入する時</td><td>市場ニーズに応える新製品開発</td></tr>
+      </table>
+    </div>
+    <figcaption>各イノベーションの違い <span class="ptr">← S03:p.14</span></figcaption>
+  </div>
+
+  <!-- 1-8 -->
+  <div class="section-block" id="ch1-8">
+    <h3>PoC と PoV</h3>
+    <div class="highlight-box diff-poc">
+      <strong>PoC（Proof of Concept）</strong><br>
+      <strong>定義：</strong>新しい技術やアイデアが<em>実現可能</em>であることを示すための実証実験。<span class="ptr">← S03:p.15</span><br>
+      <strong>目的：</strong>①技術の検証（本当に動作するか）、②市場適合性の確認（市場ニーズに合致するか）、③意思決定の支援（プロジェクトを次の段階に進めるかの判断材料）<br>
+      <strong>事例：</strong>新製品の開発初期段階での試作品テスト
+    </div>
+    <div class="highlight-box diff-pov">
+      <strong>PoV（Proof of Value）</strong><br>
+      <strong>定義：</strong>新しい技術やアイデアが市場に<em>価値をもたらす</em>ことを示すための実証実験。<span class="ptr">← S03:p.16</span><br>
+      <strong>利点：</strong>①ビジネス価値の検証（実際に市場で成功する可能性を評価）、②ユーザー受容性の確認、③投資対効果（ROI: Return On Investment）の評価<br>
+      <strong>事例：</strong>新サービス導入前における顧客セグメントでのテスト実施
+    </div>
+
+    <div class="table-wrap" style="margin-top:12px;">
+      <table>
+        <tr><th></th><th>PoC</th><th>PoV</th></tr>
+        <tr><td><strong>焦点</strong></td><td>技術の実現可能性・市場適合性</td><td>ビジネス価値・ユーザー受容性・ROI</td></tr>
+        <tr><td><strong>タイミング</strong></td><td>開発の初期段階</td><td>市場投入前の最終評価段階</td></tr>
+        <tr><td><strong>判断軸</strong></td><td>「できるか？」</td><td>「価値があるか？」</td></tr>
+      </table>
+    </div>
+    <figcaption>PoCとPoVの違い <span class="ptr">← S03:p.17</span></figcaption>
+
+    <div class="ext-block">
+      <div class="ext-label">外部補足</div>
+      PoC → PoVの順で実施するのが一般的な開発プロセス。まず技術的に実現可能かを確認し（PoC）、次にそれがビジネスとして価値を持つかを検証する（PoV）という流れ。
+    </div>
+  </div>
+</div>
+
+<!-- ── CHAPTER 2 ── -->
+<div class="chapter-card" id="ch2">
+  <div class="chapter-header">
+    <span class="chapter-num">CH.2</span>
+    <h2>ビジネスシステムとエンジニアリング</h2>
+  </div>
+
+  <!-- 2-1 -->
+  <div class="section-block" id="ch2-1">
+    <h3>ビジネスシステムとは</h3>
+    <p><strong>定義：</strong>企業の業務活動を効率的に進めるためのシステムの総称。販売管理・在庫管理・人事管理システムなどが該当する。<span class="ptr">← S03:p.22</span></p>
+    <p><strong>重要性（3点）：</strong></p>
+    <ul>
+      <li><strong>業務の自動化</strong>：手動で行っていた業務を自動化し作業効率を大幅に向上（例：受注管理の自動化で入力ミス削減・迅速な処理）</li>
+      <li><strong>データの一元管理</strong>：企業内データを一元管理し部門間の情報共有・連携をスムーズに</li>
+      <li><strong>意思決定の迅速化</strong>：リアルタイムで正確なデータに基づく意思決定により経営判断をスピーディに</li>
+    </ul>
+  </div>
+
+  <!-- 2-2 -->
+  <div class="section-block" id="ch2-2">
+    <h3>代表的なビジネスシステム</h3>
+    <p><strong>流通情報システム：</strong><span class="ptr">← S03:p.23</span></p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>システム</th><th>正式名称</th><th>概要</th><th>活用場面</th></tr>
+        <tr><td><strong>POSシステム</strong></td><td>Point of Sales</td><td>小売店・飲食店で使われる販売管理システム。商品の販売データをリアルタイムで記録</td><td>コンビニのレジ会計 → 在庫管理・売上分析に活用</td></tr>
+        <tr><td><strong>RFIDシステム</strong></td><td>Radio Frequency Identification</td><td>無線周波数を利用して物体の識別・追跡を行う技術</td><td>物流・倉庫管理での荷物追跡<br>NFC（近距離無線通信）の応用：モバイル決済・交通系ICカード</td></tr>
+      </table>
+    </div>
+
+    <p style="margin-top:12px;"><strong>金融情報システム：</strong><span class="ptr">← S03:p.23</span></p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>システム</th><th>正式名称</th><th>概要</th></tr>
+        <tr><td><strong>ATM</strong></td><td>Automated Teller Machine</td><td>自動現金預け払い機。銀行に行かなくても24時間いつでも現金の引き出し・預け入れが可能</td></tr>
+        <tr><td><strong>インターネットバンキング</strong></td><td>—</td><td>オンラインで銀行取引を行うシステム。送金・口座残高確認が自宅・スマートフォンから可能</td></tr>
+      </table>
+    </div>
+
+    <p style="margin-top:12px;"><strong>物流情報システム：</strong><span class="ptr">← S03:p.24</span></p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>システム</th><th>概要</th><th>効果</th></tr>
+        <tr><td><strong>GPS</strong><br>Global Positioning System</td><td>3つ以上の人工衛星の電波を使って位置情報を特定するシステム</td><td>配送トラックの位置をリアルタイムで追跡 → 到着時間予測・ルート最適化・配送遅延防止</td></tr>
+        <tr><td><strong>トレーサビリティ</strong></td><td>製品の生産から流通までの履歴を追跡するシステム</td><td>不良品の迅速特定・リコール対応、消費者への製品安全性保証</td></tr>
+      </table>
+    </div>
+    <div class="voice-block">
+      <div class="voice-label">▶ 音声補足</div>
+      RFIDにはNFC（Near Field Communication）技術が応用されており、モバイル決済や交通系ICカードでも利用されている。食品や薬品の分野ではトレーサビリティが特に活用される。<span class="ptr">← S05</span>
+    </div>
+  </div>
+
+  <!-- 2-3 -->
+  <div class="section-block" id="ch2-3">
+    <h3>行政分野のシステム</h3>
+    <p><strong>デジタルガバメント：</strong>最新のデジタル技術を活用して政府の運営とサービス提供を再構築し、データ駆動型の政策決定や社会全体のデジタル化を推進する取り組み。<span class="ptr">← S03:p.25</span></p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>代表例</th><th>概要</th></tr>
+        <tr><td><strong>住民基本台帳ネットワークシステム</strong></td><td>住民情報の一元管理。自治体間の情報共有を実現</td></tr>
+        <tr><td><strong>マイナンバー</strong></td><td>日本の国民全員に付与された個別の番号。税・社会保障分野で個人情報管理を簡略化し手続きの効率化を実現</td></tr>
+        <tr><td><strong>マイナポータル</strong></td><td>マイナンバーにより行政手続きがオンラインで行えるプラットフォーム</td></tr>
+        <tr><td><strong>ガバメントクラウド</strong></td><td>政府提供のクラウドサービス。行政システムの統合とデータ管理を効率化</td></tr>
+        <tr><td><strong>e-Gov</strong></td><td>行政手続きのオンライン化を推進するための電子政府ポータルサイト</td></tr>
+      </table>
+    </div>
+
+    <p style="margin-top: 14px;"><strong>緊急速報システム（Jアラート）：</strong><span class="ptr">← S03:p.26</span></p>
+    <p><strong>Jアラート（全国瞬時警報システム）</strong>は、緊急事態発生時に瞬時に国民に警報を伝達するシステム。</p>
+
+    <!-- JALERT SVG -->
+    <div class="fig-wrap">
+      <svg viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg" style="max-width:680px;width:100%;">
+        <!-- Background -->
+        <rect width="700" height="320" fill="#1e2535" rx="8"/>
+
+        <!-- 発信源 -->
+        <rect x="20" y="40" width="110" height="50" rx="6" fill="#2a3450" stroke="#5b8dee" stroke-width="1.5"/>
+        <text x="75" y="60" text-anchor="middle" fill="#5b8dee" font-size="10" font-family="Noto Sans JP, sans-serif" font-weight="700">気象庁</text>
+        <text x="75" y="75" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP, sans-serif">緊急地震速報</text>
+        <text x="75" y="87" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP, sans-serif">大津波警報等</text>
+
+        <rect x="20" y="110" width="110" height="40" rx="6" fill="#2a3450" stroke="#5b8dee" stroke-width="1.5"/>
+        <text x="75" y="127" text-anchor="middle" fill="#5b8dee" font-size="10" font-family="Noto Sans JP, sans-serif" font-weight="700">内閣官房</text>
+        <text x="75" y="142" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP, sans-serif">国民保護情報</text>
+
+        <!-- 矢印→消防庁 -->
+        <line x1="130" y1="75" x2="190" y2="140" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#arr)"/>
+        <line x1="130" y1="130" x2="190" y2="145" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <!-- 消防庁 -->
+        <rect x="190" y="120" width="110" height="45" rx="6" fill="#2a3450" stroke="#fbbf24" stroke-width="1.5"/>
+        <text x="245" y="138" text-anchor="middle" fill="#fbbf24" font-size="10" font-family="Noto Sans JP, sans-serif" font-weight="700">消防庁</text>
+        <text x="245" y="153" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP, sans-serif">送信システム</text>
+
+        <!-- 矢印→市町村・通信事業者 -->
+        <line x1="300" y1="143" x2="370" y2="100" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#arr2)"/>
+        <line x1="300" y1="143" x2="370" y2="180" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+        <!-- 市町村 -->
+        <rect x="370" y="70" width="100" height="40" rx="6" fill="#2a3450" stroke="#34d399" stroke-width="1.5"/>
+        <text x="420" y="87" text-anchor="middle" fill="#34d399" font-size="10" font-family="Noto Sans JP, sans-serif" font-weight="700">市町村等</text>
+        <text x="420" y="102" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP, sans-serif">地方公共団体</text>
+
+        <!-- 通信事業者 -->
+        <rect x="370" y="155" width="100" height="40" rx="6" fill="#2a3450" stroke="#34d399" stroke-width="1.5"/>
+        <text x="420" y="172" text-anchor="middle" fill="#34d399" font-size="10" font-family="Noto Sans JP, sans-serif" font-weight="700">通信事業者</text>
+        <text x="420" y="187" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP, sans-serif">携帯電話会社</text>
+
+        <!-- 矢印→伝達手段 -->
+        <line x1="470" y1="90" x2="530" y2="60" stroke="#34d399" stroke-width="1.5" marker-end="url(#arr3)"/>
+        <line x1="470" y1="90" x2="530" y2="100" stroke="#34d399" stroke-width="1.5" marker-end="url(#arr3)"/>
+        <line x1="470" y1="175" x2="530" y2="150" stroke="#34d399" stroke-width="1.5" marker-end="url(#arr3)"/>
+        <line x1="470" y1="175" x2="530" y2="200" stroke="#34d399" stroke-width="1.5" marker-end="url(#arr3)"/>
+        <line x1="470" y1="175" x2="530" y2="250" stroke="#34d399" stroke-width="1.5" marker-end="url(#arr3)"/>
+
+        <!-- 伝達手段 -->
+        <rect x="530" y="40" width="150" height="28" rx="5" fill="#1a2530" stroke="#34d399" stroke-width="1"/>
+        <text x="605" y="58" text-anchor="middle" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP, sans-serif">防災行政無線・屋外スピーカー</text>
+
+        <rect x="530" y="84" width="150" height="28" rx="5" fill="#1a2530" stroke="#34d399" stroke-width="1"/>
+        <text x="605" y="102" text-anchor="middle" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP, sans-serif">エリアメール（携帯電話）</text>
+
+        <rect x="530" y="134" width="150" height="28" rx="5" fill="#1a2530" stroke="#34d399" stroke-width="1"/>
+        <text x="605" y="152" text-anchor="middle" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP, sans-serif">戸別受信機</text>
+
+        <rect x="530" y="184" width="150" height="28" rx="5" fill="#1a2530" stroke="#34d399" stroke-width="1"/>
+        <text x="605" y="202" text-anchor="middle" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP, sans-serif">テレビ・ラジオ</text>
+
+        <rect x="530" y="234" width="150" height="28" rx="5" fill="#1a2530" stroke="#34d399" stroke-width="1"/>
+        <text x="605" y="252" text-anchor="middle" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP, sans-serif">インターネット端末</text>
+
+        <!-- ラベル -->
+        <text x="75" y="200" text-anchor="middle" fill="#fbbf24" font-size="10" font-family="Noto Sans JP, sans-serif" font-weight="700">発信源</text>
+        <text x="245" y="200" text-anchor="middle" fill="#fbbf24" font-size="10" font-family="Noto Sans JP, sans-serif" font-weight="700">中継</text>
+        <text x="420" y="240" text-anchor="middle" fill="#34d399" font-size="10" font-family="Noto Sans JP, sans-serif" font-weight="700">配信</text>
+        <text x="605" y="290" text-anchor="middle" fill="#34d399" font-size="10" font-family="Noto Sans JP, sans-serif" font-weight="700">国民への伝達</text>
+
+        <defs>
+          <marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L6,3 z" fill="#5b8dee"/>
+          </marker>
+          <marker id="arr2" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L6,3 z" fill="#fbbf24"/>
+          </marker>
+          <marker id="arr3" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L6,3 z" fill="#34d399"/>
+          </marker>
+        </defs>
+      </svg>
+      <figcaption>図：Jアラートの情報伝達フロー <span class="ptr">← S03:p.26</span></figcaption>
+    </div>
+    <div class="voice-block">
+      <div class="voice-label">▶ 音声補足</div>
+      Jアラートの特徴は複数のルートを使うことで確実に広範囲にわたって情報を届ける点。外出中の方やテレビ・ラジオを視聴していない方にも、携帯電話のエリアメールや防災行政無線を通じて警報を届けることが可能。<span class="ptr">← S05</span>
+    </div>
+  </div>
+
+  <!-- 2-4 -->
+  <div class="section-block" id="ch2-4">
+    <h3>エンジニアリングシステム</h3>
+    <p><strong>定義：</strong>製品設計・開発・製造・品質管理・保守などのエンジニアリングプロセスを支援するための情報システム。<span class="ptr">← S03:p.27</span></p>
+    <p><strong>重要性（3点）：</strong></p>
+    <ul>
+      <li><strong>設計プロセスの効率化</strong>：デジタルツールで設計を迅速化。<strong>コンカレントエンジニアリング</strong>（製品の開発プロセスを同時並行で行う手法）の導入により開発期間を短縮</li>
+      <li><strong>データの一元管理</strong>：設計段階から製造に至るまでのデータを一元管理し部門間連携をスムーズに</li>
+      <li><strong>品質の向上</strong>：シミュレーションや検証ツールを用いて製品品質を事前に確認</li>
+    </ul>
+
+    <p style="margin-top: 12px;"><strong>設計・製造を支援するシステム：</strong><span class="ptr">← S03:p.28</span></p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>システム</th><th>概要</th><th>効果</th></tr>
+        <tr><td><strong>CAD</strong><br>Computer Aided Design</td><td>コンピュータを使って設計図を描くシステム</td><td>設計のデジタル化による正確性向上・ミス削減・効率化（例：建築・自動車設計）</td></tr>
+        <tr><td><strong>CAM</strong><br>Computer Aided Manufacturing</td><td>設計図面のデータをもとに工作機械を操作するプログラムを自動生成するシステム</td><td>設計データをそのまま製造に活用し製造プロセスを自動化（例：3Dプリンタ製造）</td></tr>
+      </table>
+    </div>
+    <div class="voice-block">
+      <div class="voice-label">▶ 音声補足</div>
+      CADで作成したデータが直接CAMを通じて使用される。3Dプリンターを使った製造ではこの流れが特に活用される。<span class="ptr">← S05</span>
+    </div>
+  </div>
+
+  <!-- 2-5 -->
+  <div class="section-block" id="ch2-5">
+    <h3>生産管理システムと各種生産方式</h3>
+    <p><strong>生産管理システム：</strong><span class="ptr">← S03:p.29</span></p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>システム</th><th>概要</th><th>効果</th></tr>
+        <tr><td><strong>MRP</strong><br>Material Requirements Planning</td><td>資材の計画・管理を行い在庫を最適化するシステム</td><td>需要を予測して適切なタイミングで必要な資材を調達。過剰在庫リスクを軽減</td></tr>
+        <tr><td><strong>FMS</strong><br>Flexible Manufacturing System</td><td>1つの生産ラインで様々な種類の製品を柔軟に製造できるシステム</td><td>生産ラインの柔軟性向上・異なる製品への迅速な切り替え</td></tr>
+      </table>
+    </div>
+
+    <p style="margin-top: 12px;"><strong>様々な生産方式：</strong><span class="ptr">← S03:p.30</span></p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>生産方式</th><th>概要</th><th>特徴・注意点</th></tr>
+        <tr><td><strong>受注生産方式</strong></td><td>顧客から注文を受けてから生産を開始</td><td>在庫リスクを抑えられるが、注文から納品まで時間がかかる</td></tr>
+        <tr><td><strong>見込み生産方式</strong></td><td>需要を見込んであらかじめ生産を進める</td><td>大量生産に向くが需要予測が外れると余剰在庫・不足が生じるリスクあり</td></tr>
+        <tr><td><strong>セル生産方式</strong></td><td>1人または小人数のチームが生産の全工程を担当</td><td>作業者スキルが重要。小ロット生産・カスタマイズに適する</td></tr>
+        <tr><td><strong>リーン生産方式</strong></td><td>無駄を排除し生産効率を最大化</td><td>代表手法：<strong>ジャストインタイム（JIT）</strong>＝必要な時に必要な量だけ供給。トヨタのかんばん方式（JITを実現するための情報伝達手段）が有名</td></tr>
+      </table>
+    </div>
+    <div class="voice-block">
+      <div class="voice-label">▶ 音声補足</div>
+      トヨタのかんばん方式はリーン生産方式の代表例。在庫コストを削減するだけでなく、効率的な情報伝達を実現している。世界中の企業で採用されているプロセスイノベーションの成功事例。<span class="ptr">← S05</span>
+    </div>
+  </div>
+
+  <!-- 2-6 -->
+  <div class="section-block" id="ch2-6">
+    <h3>AIの利活用と留意事項</h3>
+    <p><strong>AI利活用の原則と指針：</strong><span class="ptr">← S03:p.31</span></p>
+    <ul>
+      <li><strong>人間中心のAI社会原則</strong>：AIの利活用は人間を中心に据えるべきという原則。公平性・説明責任・透明性の確保が含まれる</li>
+      <li><strong>AI利活用ガイドライン</strong>：AI技術の開発・利用に関する基本的な指針。倫理的かつ安全なAIの導入・運用を促進する</li>
+    </ul>
+    <p style="margin-top:8px;"><strong>AIの利活用領域と目的：</strong>研究開発・製造・物流・販売・マーケティングなど。活用目的：仮説検証・新しい知見の発見・計画策定。</p>
+
+    <p style="margin-top:12px;"><strong>留意事項：</strong><span class="ptr">← S03:p.32</span></p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>課題</th><th>内容</th></tr>
+        <tr><td>誤情報・偏情報・古い情報</td><td>AIが出力する情報に誤り・偏り・古い情報が含まれる可能性がある</td></tr>
+        <tr><td><strong>ディープフェイク</strong></td><td>AIが生成する偽の映像・音声</td></tr>
+        <tr><td><strong>ハルシネーション</strong></td><td>AIが事実と異なる情報を自信満々に生成する現象</td></tr>
+        <tr><td>学習元が不明な情報</td><td>AIがどのデータで学習したかが不明な場合、出力結果の信頼性が低下するリスク</td></tr>
+      </table>
+    </div>
+
+    <p style="margin-top:10px;"><strong>人間の関与の必要性：</strong></p>
+    <ul>
+      <li><strong>説明可能なAI（XAI: Explainable AI）</strong>：AIの判断や予測の根拠を人間が理解し説明できるようにする技術</li>
+      <li><strong>ヒューマンインザループ（HITL: Human-in-the-Loop）</strong>：AIシステムの運用において人間が常に監視し、必要に応じて介入するアプローチ → AIの暴走・誤った判断を防ぐ</li>
+    </ul>
+    <div class="voice-block">
+      <div class="voice-label">▶ 音声補足</div>
+      倫理的なAIの活用を考えながら、その可能性を最大限に引き出していくことが重要。単に技術を使うだけでなく、人間が常に関与し監視することが安全なAI活用の鍵となる。<span class="ptr">← S05</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── CHAPTER 3 ── -->
+<div class="chapter-card" id="ch3">
+  <div class="chapter-header">
+    <span class="chapter-num">CH.3</span>
+    <h2>e-ビジネス戦略</h2>
+  </div>
+
+  <!-- 3-1 -->
+  <div class="section-block" id="ch3-1">
+    <h3>e-ビジネスとは</h3>
+    <p><strong>定義：</strong>インターネット技術を活用して行われるすべてのビジネス活動。電子商取引（EC）に留まらず、企業の内部プロセスやビジネスモデル全体を含む広い概念。<span class="ptr">← S03:p.37</span></p>
+    <p><strong>特徴：</strong></p>
+    <ul>
+      <li><strong>広範なビジネス活動</strong>：ECだけでなく、企業内部の効率化・サプライチェーン管理も含む</li>
+      <li><strong>技術の利用</strong>：顧客関係管理（CRM）・オンラインマーケティング・オンラインサポートなど</li>
+    </ul>
+
+    <p style="margin-top:12px;"><strong>e-ビジネスの具体的な利用例：</strong><span class="ptr">← S03:p.38</span></p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>システム</th><th>概要</th><th>利点</th><th>事例</th></tr>
+        <tr><td><strong>SCM</strong><br>Supply Chain Management</td><td>原材料の調達から製品製造・配送までのプロセスを最適化</td><td>在庫コスト削減、納期短縮</td><td>トヨタのかんばん方式（必要な時に必要な量だけ生産）</td></tr>
+        <tr><td><strong>CRM</strong><br>Customer Relationship Management</td><td>顧客情報を管理し顧客との関係を強化</td><td>顧客満足度向上、販売機会増加</td><td>Salesforce（顧客データを一元管理しマーケティング活動を支援）</td></tr>
+        <tr><td><strong>ERP</strong><br>Enterprise Resource Planning</td><td>企業内の人・物・金・情報を統合的に管理</td><td>業務効率向上、コスト削減</td><td>Siemens（在庫管理の精度向上・意思決定の迅速化を達成）</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 3-2 -->
+  <div class="section-block" id="ch3-2">
+    <h3>電子商取引（EC）の基本概念</h3>
+    <p><strong>定義：</strong>インターネットを活用して消費者向けや企業間の商取引を行うこと。<span class="ptr">← S03:p.39</span></p>
+    <p><strong>特徴（4点）：</strong></p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>特徴</th><th>内容</th><th>例</th></tr>
+        <tr><td><strong>コストの低減</strong></td><td>物理的な店舗・店員にかかるコストを大幅削減</td><td>オンラインショップには家賃・従業員コストが不要</td></tr>
+        <tr><td><strong>参入の容易さ</strong></td><td>少ない投資で事業参入が可能</td><td>個人でも小規模なオンラインストアを簡単に立ち上げられる</td></tr>
+        <tr><td><strong>ロングテール</strong></td><td>あまり売れていない商品でもその種類が多くなると全体の売上が大きくなる考え方</td><td>Amazonでは膨大な種類のニッチ商品の売上が全体収益に貢献</td></tr>
+        <tr><td><strong>フリーミアム</strong></td><td>基本機能を無料で提供し追加機能を有料で提供するモデル</td><td>Spotify：無料ユーザーとプレミアム会員の課金モデル</td></tr>
+      </table>
+    </div>
+    <div class="ext-block">
+      <div class="ext-label">外部補足：ロングテール理論</div>
+      ロングテールはChris Andersonが2004年に提唱した概念。従来の「パレートの法則（上位20%の商品が売上の80%を占める）」に対し、インターネットの普及により多種多様なニッチ商品の合計が主力商品の売上を超えるケースが生じることを示した。
+    </div>
+  </div>
+
+  <!-- 3-3 -->
+  <div class="section-block" id="ch3-3">
+    <h3>電子商取引の種類</h3>
+    <p><strong>主要3形態（B2C / B2B / C2C）：</strong><span class="ptr">← S03:p.40</span></p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>形態</th><th>取引主体</th><th>特徴</th><th>代表事例</th></tr>
+        <tr><td><strong>B2C</strong><br>Business to Consumer</td><td>企業 → 消費者</td><td>大量の商品を取り扱い利便性が高い</td><td>Amazon、楽天市場</td></tr>
+        <tr><td><strong>B2B</strong><br>Business to Business</td><td>企業 → 企業</td><td>大規模な取引・長期的なパートナーシップ</td><td>Alibaba、アスクル</td></tr>
+        <tr><td><strong>C2C</strong><br>Consumer to Consumer</td><td>消費者 → 消費者</td><td>個人間取引・手軽さが特徴</td><td>メルカリ、ヤフオク</td></tr>
+      </table>
+    </div>
+
+    <p style="margin-top: 12px;"><strong>O2O と OMO：</strong><span class="ptr">← S03:p.41</span></p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>形態</th><th>概要</th><th>特徴</th><th>事例</th></tr>
+        <tr><td><strong>O2O</strong><br>Online to Offline</td><td>オンラインで集客しオフラインの店舗で販売するモデル</td><td>オンラインとオフラインの連携による顧客利便性向上</td><td>ユニクロ・セブンイレブン（オンライン注文→実店舗受け取り）</td></tr>
+        <tr><td><strong>OMO</strong><br>Online Merges with Offline</td><td>オンラインとオフラインを完全統合した販売モデル</td><td>統合された顧客体験・データ活用による個別対応</td><td>無印良品（顧客データを統合しシームレスな体験を実現）</td></tr>
+      </table>
+    </div>
+    <div class="voice-block">
+      <div class="voice-label">▶ 音声補足</div>
+      O2Oはオンラインとオフラインをつなげるモデル、OMOはそれをさらに進化させ完全に統合したモデル。無印良品ではオンラインで購入した商品のレビューや購入履歴をもとに店舗での買い物時に最適な提案を行うなど、シームレスな体験を実現している。<span class="ptr">← S05</span>
+    </div>
+  </div>
+
+  <!-- 3-4 -->
+  <div class="section-block" id="ch3-4">
+    <h3>電子商取引の具体的な利用例</h3>
+    <p><strong>商品・サービス系：</strong><span class="ptr">← S03:p.42</span></p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>モデル</th><th>概要</th><th>特徴</th><th>事例</th></tr>
+        <tr><td><strong>eマーケットプレイス</strong></td><td>複数の販売者が商品を出品するオンライン市場</td><td>商品が豊富で価格競争が活発</td><td>Amazon、eBay</td></tr>
+        <tr><td><strong>オンラインモール</strong></td><td>複数のショップが集まるオンラインショッピングモール</td><td>1つのプラットフォームで多くの店舗から選べる</td><td>楽天市場、Yahoo!ショッピング</td></tr>
+        <tr><td><strong>電子オークション</strong></td><td>オンライン上で商品を競り売る仕組み</td><td>希少な商品が手に入る・価格が市場価値に基づいて決定</td><td>ヤフオク、eBay</td></tr>
+      </table>
+    </div>
+
+    <p style="margin-top: 12px;"><strong>金融・業務系：</strong><span class="ptr">← S03:p.43</span></p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>モデル</th><th>概要</th><th>特徴</th><th>事例</th></tr>
+        <tr><td><strong>インターネットバンキング</strong></td><td>オンラインで銀行取引を行うサービス</td><td>24時間いつでも利用可能</td><td>三菱UFJ銀行のネットバンキング</td></tr>
+        <tr><td><strong>インターネットトレーディング</strong></td><td>オンラインでの株式取引</td><td>取引の手軽さ・リアルタイムでの情報提供</td><td>楽天証券、SBI証券</td></tr>
+        <tr><td><strong>クラウドソーシング</strong></td><td>インターネットを通じて業務を外部に委託する仕組み</td><td>多様なスキルを持つ人材にアクセス可能・コスト効率向上</td><td>ランサーズ、クラウドワークス</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 3-5 -->
+  <div class="section-block" id="ch3-5">
+    <h3>e-ビジネスにおけるリスクとセキュリティ</h3>
+    <p><strong>リスク（4種類）：</strong><span class="ptr">← S03:p.44</span></p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>リスク</th><th>内容</th></tr>
+        <tr><td>個人情報・取引情報の漏洩</td><td>セキュリティが脆弱だと顧客情報・取引データが第三者に流出する可能性</td></tr>
+        <tr><td>不正アクセス</td><td>アカウントの乗っ取り・詐欺行為</td></tr>
+        <tr><td>サイトのダウン・データ消失</td><td>システム障害・サイバー攻撃によるサービス停止・重要データ喪失</td></tr>
+        <tr><td>未払いリスク</td><td>オンライン取引での代金未払い問題</td></tr>
+      </table>
+    </div>
+
+    <p style="margin-top:10px;"><strong>セキュリティ対策：</strong></p>
+    <ul>
+      <li><strong>データの暗号化</strong>：情報が第三者に読み取られるのを防ぐ</li>
+      <li><strong>多要素認証・生体認証の導入</strong>：不正アクセスを防ぐ認証システム</li>
+      <li><strong>システムの監視とログ管理</strong>：不正なアクセスや異常な動きを早期に検知・対応</li>
+    </ul>
+
+    <p style="margin-top:10px;"><strong>エスクローサービス：</strong>取引の安全性を確保するために提供される仲介サービス。商品やサービスが提供されたことを確認した上で支払いが行われる仕組みにより、売り手と買い手間のトラブルを未然に防ぐ。<span class="ptr">← S03:p.44</span></p>
+    <div class="voice-block">
+      <div class="voice-label">▶ 音声補足</div>
+      リスクを理解し適切なセキュリティ対策を講じることで、e-ビジネスを安全に運用することが可能になる。特に個人情報の保護は最重要課題。<span class="ptr">← S05</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── CHAPTER 4 ── -->
+<div class="chapter-card" id="ch4">
+  <div class="chapter-header">
+    <span class="chapter-num">CH.4</span>
+    <h2>IoTと組込みシステム</h2>
+  </div>
+
+  <!-- 4-1 -->
+  <div class="section-block" id="ch4-1">
+    <h3>IoT（Internet of Things）とは</h3>
+    <p><strong>定義：</strong>インターネットを介して物理的なオブジェクトが相互接続されデータを交換し合う仕組み。冷蔵庫・エアコン・車・医療機器までがインターネットにつながり、データを活用して効率的に動作する。<span class="ptr">← S03:p.49</span></p>
+    <p><strong>特徴（3点）：</strong></p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>特徴</th><th>内容</th><th>例</th></tr>
+        <tr><td><strong>データの収集と分析</strong></td><td>センサー（物理量を検出して電気信号に変える装置）を通じてリアルタイムでデータを収集・分析し状況把握・予測を行う</td><td>温度・動き・音などのデータをリアルタイムで収集</td></tr>
+        <tr><td><strong>自動化</strong></td><td>IoTデバイスが人間が操作しなくても自律的に動作し効率的に運用されるよう設計</td><td>スマートホームで住人の行動に応じてエアコンの温度を自動調整</td></tr>
+        <tr><td><strong>相互接続性</strong></td><td>デバイス間でデータを共有し協調動作を行う能力</td><td>スマートフォンで家のセキュリティカメラを確認、遠隔でドアをロック</td></tr>
+      </table>
+    </div>
+    <div class="voice-block">
+      <div class="voice-label">▶ 音声補足</div>
+      IoTは私たちの日常生活だけでなく産業や医療分野にも大きな影響を与えている。今後さらに進化していく分野として注目されている。<span class="ptr">← S05</span>
+    </div>
+  </div>
+
+  <!-- 4-2 -->
+  <div class="section-block" id="ch4-2">
+    <h3>IoTシステムの例</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>システム</th><th>概要</th><th>利点</th><th>具体例</th></tr>
+        <tr><td><strong>スマートホーム</strong></td><td>家電製品やセキュリティシステムがインターネットを通じて連携</td><td>エネルギー効率の向上・生活の利便性向上</td><td>スマートサーモスタット・スマートドアロック・スマート照明</td></tr>
+        <tr><td><strong>スマートシティ</strong></td><td>都市全体のインフラやサービスがIoTで連携</td><td>都市の効率性向上・住民の生活品質向上</td><td>交通管理システム・公共安全モニタリング・ゴミ収集管理</td></tr>
+        <tr><td><strong>スマートファクトリー</strong></td><td>工場内の機器やシステムがIoTで連携</td><td>生産効率の向上・不良品の削減</td><td>生産ラインの自動化・品質管理のリアルタイムモニタリング</td></tr>
+      </table>
+    </div>
+    <span class="ptr">← S03:p.50</span>
+
+    <p style="margin-top:14px;"><strong>IoTと組み込みシステムの利用例：</strong><span class="ptr">← S03:p.54</span></p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>利用例</th><th>概要</th><th>利点</th><th>具体例</th></tr>
+        <tr><td><strong>ドローン</strong></td><td>空中での撮影やデータ収集を行うIoTデバイス</td><td>効率的なデータ収集・迅速な対応</td><td>農業での作物監視・災害現場での捜索活動</td></tr>
+        <tr><td><strong>自動運転車</strong></td><td>センサーとAIを活用して自動で運転を行う車両</td><td>運転の安全性向上・交通渋滞の緩和</td><td>自動駐車・車線維持アシスト</td></tr>
+        <tr><td><strong>スマート農業</strong></td><td>センサーやドローンを活用して農作物の生育を最適化</td><td>農業生産性の向上・資源の効率的利用</td><td>土壌モニタリング・病害虫の早期検出</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 4-3 -->
+  <div class="section-block" id="ch4-3">
+    <h3>Society 5.0</h3>
+    <p><strong>定義：</strong>仮想空間と現実空間を融合させたシステムにより新しい社会を構築することを目指す概念。IoT・AIなどの先端技術を活用してこれまでの社会が抱えていた課題を解決し新たな価値を創出しようとする取り組み。<span class="ptr">← S03:p.51</span></p>
+
+    <!-- Society 5.0 SVG 4象限図 -->
+    <div class="fig-wrap">
+      <svg viewBox="0 0 680 380" xmlns="http://www.w3.org/2000/svg" style="max-width:660px;width:100%;">
+        <rect width="680" height="380" fill="#1e2535" rx="8"/>
+
+        <!-- タイトル -->
+        <text x="340" y="30" text-anchor="middle" fill="#fbbf24" font-size="14" font-family="Noto Sans JP, sans-serif" font-weight="700">Society 5.0：4つの課題と解決</text>
+
+        <!-- 中央ラベル -->
+        <rect x="280" y="160" width="120" height="50" rx="8" fill="#5b8dee"/>
+        <text x="340" y="181" text-anchor="middle" fill="white" font-size="12" font-family="Noto Sans JP, sans-serif" font-weight="700">Society</text>
+        <text x="340" y="198" text-anchor="middle" fill="white" font-size="12" font-family="Noto Sans JP, sans-serif" font-weight="700">5.0</text>
+
+        <!-- 象限1: 左上 (情報共有不足 → IoT) -->
+        <rect x="20" y="50" width="240" height="120" rx="6" fill="#2a3450" stroke="#5b8dee" stroke-width="1.5"/>
+        <text x="35" y="72" fill="#8a99b8" font-size="10" font-family="Noto Sans JP, sans-serif" font-weight="700">これまでの課題</text>
+        <text x="35" y="90" fill="#e2e8f5" font-size="11" font-family="Noto Sans JP, sans-serif">知識・情報が十分に共有されず</text>
+        <text x="35" y="107" fill="#e2e8f5" font-size="11" font-family="Noto Sans JP, sans-serif">新たな価値を生み出すのが困難</text>
+        <rect x="35" y="118" width="205" height="36" rx="4" fill="#1a2540"/>
+        <text x="42" y="132" fill="#34d399" font-size="10" font-family="Noto Sans JP, sans-serif" font-weight="700">▶ IoTで解決</text>
+        <text x="42" y="148" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP, sans-serif">全ての人とモノがつながり情報をスムーズに共有</text>
+
+        <!-- 象限2: 右上 (高齢化 → イノベーション) -->
+        <rect x="420" y="50" width="240" height="120" rx="6" fill="#2a3450" stroke="#fbbf24" stroke-width="1.5"/>
+        <text x="435" y="72" fill="#8a99b8" font-size="10" font-family="Noto Sans JP, sans-serif" font-weight="700">これまでの課題</text>
+        <text x="435" y="90" fill="#e2e8f5" font-size="11" font-family="Noto Sans JP, sans-serif">少子高齢化・地方の過疎化などに</text>
+        <text x="435" y="107" fill="#e2e8f5" font-size="11" font-family="Noto Sans JP, sans-serif">十分に対応することが困難</text>
+        <rect x="435" y="118" width="210" height="36" rx="4" fill="#1a2540"/>
+        <text x="442" y="132" fill="#fbbf24" font-size="10" font-family="Noto Sans JP, sans-serif" font-weight="700">▶ イノベーションで解決</text>
+        <text x="442" y="148" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP, sans-serif">リモート診療・自動運転技術などで克服</text>
+
+        <!-- 象限3: 左下 (情報過多 → AI) -->
+        <rect x="20" y="210" width="240" height="120" rx="6" fill="#2a3450" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="35" y="232" fill="#8a99b8" font-size="10" font-family="Noto Sans JP, sans-serif" font-weight="700">これまでの課題</text>
+        <text x="35" y="250" fill="#e2e8f5" font-size="11" font-family="Noto Sans JP, sans-serif">情報過多による負担、必要な情報を</text>
+        <text x="35" y="267" fill="#e2e8f5" font-size="11" font-family="Noto Sans JP, sans-serif">見つけ分析する作業に困難・負担</text>
+        <rect x="35" y="278" width="205" height="36" rx="4" fill="#1a2540"/>
+        <text x="42" y="292" fill="#a78bfa" font-size="10" font-family="Noto Sans JP, sans-serif" font-weight="700">▶ AIで解決</text>
+        <text x="42" y="308" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP, sans-serif">膨大な情報を効率的に分析・整理しクリエイティブな作業に集中</text>
+
+        <!-- 象限4: 右下 (身体的限界 → ロボット) -->
+        <rect x="420" y="210" width="240" height="120" rx="6" fill="#2a3450" stroke="#34d399" stroke-width="1.5"/>
+        <text x="435" y="232" fill="#8a99b8" font-size="10" font-family="Noto Sans JP, sans-serif" font-weight="700">これまでの課題</text>
+        <text x="435" y="250" fill="#e2e8f5" font-size="11" font-family="Noto Sans JP, sans-serif">肉体的な作業や限界に縛られ</text>
+        <text x="435" y="267" fill="#e2e8f5" font-size="11" font-family="Noto Sans JP, sans-serif">行動の幅が制限されていた</text>
+        <rect x="435" y="278" width="210" height="36" rx="4" fill="#1a2540"/>
+        <text x="442" y="292" fill="#34d399" font-size="10" font-family="Noto Sans JP, sans-serif" font-weight="700">▶ ロボット・自動化で解決</text>
+        <text x="442" y="308" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP, sans-serif">支援を受けて行動の幅が広がり可能性が増える社会</text>
+
+        <!-- 矢印 -->
+        <line x1="260" y1="110" x2="278" y2="175" stroke="#5b8dee" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#aSoc)"/>
+        <line x1="420" y1="110" x2="402" y2="175" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#aSoc2)"/>
+        <line x1="260" y1="270" x2="278" y2="200" stroke="#a78bfa" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#aSoc3)"/>
+        <line x1="420" y1="270" x2="402" y2="200" stroke="#34d399" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#aSoc4)"/>
+
+        <!-- 目標テキスト -->
+        <text x="340" y="360" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="Noto Sans JP, sans-serif">テクノロジーの力を最大限に活用して、すべての人が活躍できる新しい社会を実現</text>
+
+        <defs>
+          <marker id="aSoc" markerWidth="5" markerHeight="5" refX="2.5" refY="2.5" orient="auto"><path d="M0,0 L0,5 L5,2.5 z" fill="#5b8dee"/></marker>
+          <marker id="aSoc2" markerWidth="5" markerHeight="5" refX="2.5" refY="2.5" orient="auto"><path d="M0,0 L0,5 L5,2.5 z" fill="#fbbf24"/></marker>
+          <marker id="aSoc3" markerWidth="5" markerHeight="5" refX="2.5" refY="2.5" orient="auto"><path d="M0,0 L0,5 L5,2.5 z" fill="#a78bfa"/></marker>
+          <marker id="aSoc4" markerWidth="5" markerHeight="5" refX="2.5" refY="2.5" orient="auto"><path d="M0,0 L0,5 L5,2.5 z" fill="#34d399"/></marker>
+        </defs>
+      </svg>
+      <figcaption>図：Society 5.0の概念（4つの課題と解決） <span class="ptr">← S03:p.51</span></figcaption>
+    </div>
+    <div class="voice-block">
+      <div class="voice-label">▶ 音声補足</div>
+      Society 5.0ではIoTによって全ての人とモノがつながり情報がスムーズに共有されることで新しい価値が創出される社会を目指している。現在の社会が抱える課題を技術の力で克服しようとする取り組みといえる。<span class="ptr">← S05</span>
+    </div>
+  </div>
+
+  <!-- 4-4 -->
+  <div class="section-block" id="ch4-4">
+    <h3>組み込みシステム</h3>
+    <p><strong>定義：</strong>特定の機能やタスクの実行のために設計された専用のコンピュータシステム（ハードウェア＋組み込みソフトウェアが一体化して設計）。<span class="ptr">← S03:p.52</span></p>
+    <p><strong>特徴（3点）：</strong></p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>特徴</th><th>内容</th><th>代表例</th></tr>
+        <tr><td><strong>リアルタイム性</strong></td><td>タスクを即座に実行する能力。リアルタイムに応答可能</td><td>車の自動ブレーキシステム</td></tr>
+        <tr><td><strong>専用性</strong></td><td>特定の用途に特化して設計されているためその用途に最適なパフォーマンスを発揮</td><td>家庭用電化製品・医療機器</td></tr>
+        <tr><td><strong>省電力</strong></td><td>エネルギー効率が高くバッテリー寿命が延びるよう設計</td><td>スマートフォン・ウェアラブルデバイス</td></tr>
+      </table>
+    </div>
+
+    <p style="margin-top: 12px;"><strong>組み込みシステムの具体例：</strong><span class="ptr">← S03:p.53</span></p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>分野</th><th>概要</th><th>利点</th><th>具体例</th></tr>
+        <tr><td><strong>自動車</strong></td><td>車両の操作や安全機能を制御</td><td>運転の安全性向上・事故の減少</td><td>エアバッグ制御システム・車両安定制御システム（ESC）</td></tr>
+        <tr><td><strong>医療機器</strong></td><td>患者の健康状態を監視し治療を支援</td><td>健康管理の効率化・治療の精度向上</td><td>心拍数モニター・インスリンポンプ</td></tr>
+        <tr><td><strong>家電製品</strong></td><td>家電の操作や管理を行う</td><td>家事の効率化・エネルギー消費の最適化</td><td>スマート冷蔵庫（中身の管理・レシピ提案）・スマート洗濯機</td></tr>
+      </table>
+    </div>
+    <div class="voice-block">
+      <div class="voice-label">▶ 音声補足</div>
+      急ブレーキ時にエアバッグが瞬時に作動することでドライバーや乗客の安全を守る仕組みが可能になるのも組み込みシステムのリアルタイム性のおかげ。医療分野ではインスリンポンプが患者の健康状態をリアルタイムで監視し治療をサポートする。<span class="ptr">← S05</span>
+    </div>
+  </div>
+
+  <!-- 4-5 -->
+  <div class="section-block" id="ch4-5">
+    <h3>IoTと組み込みシステムの課題と対策</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>課題</th><th>内容</th><th>対策</th></tr>
+        <tr><td><strong>セキュリティ</strong></td><td>デバイス間の通信が増えることでハッキングやデータ漏洩のリスクが高まる</td><td>データの暗号化・認証システムの強化 → 不正アクセスを防ぎシステム全体の安全性を高める</td></tr>
+        <tr><td><strong>標準化</strong></td><td>多様なデバイスやシステムが相互に連携するための標準規格が不足</td><td>国際標準の策定・業界間の協力 → 異なるデバイス間のスムーズなデータ共有・操作が可能に</td></tr>
+        <tr><td><strong>プライバシー</strong></td><td>大量のデータが収集されるため個人情報の保護が重要</td><td>プライバシー保護のための法整備・ユーザーからの同意を適切に取得する仕組みの整備</td></tr>
+      </table>
+    </div>
+    <span class="ptr">← S03:p.55</span>
+
+    <p style="margin-top: 14px;"><strong>ネットワーク負荷問題とIoTゲートウェイ：</strong><span class="ptr">← S03:p.56</span></p>
+    <p>IoTシステムで複数のIoTデバイスがネットワークに接続される場合、各デバイスがIoTサーバと直接通信するとネットワークへの負荷が増大するという課題が生じる。</p>
+
+    <!-- IoT Gateway SVG -->
+    <div class="fig-wrap">
+      <svg viewBox="0 0 680 260" xmlns="http://www.w3.org/2000/svg" style="max-width:660px;width:100%;">
+        <rect width="680" height="260" fill="#1e2535" rx="8"/>
+
+        <!-- 問題パターン（上段） -->
+        <text x="25" y="28" fill="#f87171" font-size="11" font-family="Noto Sans JP, sans-serif" font-weight="700">❌ 問題：直接通信でネットワーク負荷増大</text>
+
+        <!-- デバイスA -->
+        <rect x="20" y="40" width="80" height="34" rx="5" fill="#2a3450" stroke="#8a99b8" stroke-width="1"/>
+        <text x="60" y="57" text-anchor="middle" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP, sans-serif">デバイスA</text>
+        <text x="60" y="69" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP, sans-serif">通信ルールA</text>
+
+        <rect x="20" y="85" width="80" height="34" rx="5" fill="#2a3450" stroke="#8a99b8" stroke-width="1"/>
+        <text x="60" y="102" text-anchor="middle" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP, sans-serif">デバイスB</text>
+        <text x="60" y="114" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP, sans-serif">通信ルールB</text>
+
+        <!-- 矢印（問題） -->
+        <line x1="100" y1="57" x2="270" y2="57" stroke="#f87171" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#aProb)"/>
+        <line x1="100" y1="102" x2="270" y2="102" stroke="#f87171" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#aProb)"/>
+
+        <!-- サーバ（問題） -->
+        <rect x="270" y="62" width="80" height="34" rx="5" fill="#2a3450" stroke="#f87171" stroke-width="1.5"/>
+        <text x="310" y="79" text-anchor="middle" fill="#f87171" font-size="10" font-family="Noto Sans JP, sans-serif" font-weight="700">IoTサーバ</text>
+        <text x="310" y="91" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP, sans-serif">負荷増大⚠</text>
+
+        <!-- 解決パターン（下段） -->
+        <line x1="20" y1="145" x2="660" y2="145" stroke="#2a3450" stroke-width="1" stroke-dasharray="4,4"/>
+        <text x="25" y="168" fill="#34d399" font-size="11" font-family="Noto Sans JP, sans-serif" font-weight="700">✅ 解決：IoTゲートウェイで集約</text>
+
+        <!-- デバイス群 -->
+        <rect x="20" y="182" width="80" height="32" rx="5" fill="#2a3450" stroke="#5b8dee" stroke-width="1"/>
+        <text x="60" y="198" text-anchor="middle" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP, sans-serif">デバイスA</text>
+        <text x="60" y="210" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP, sans-serif">通信ルールA</text>
+
+        <rect x="20" y="224" width="80" height="28" rx="5" fill="#2a3450" stroke="#5b8dee" stroke-width="1"/>
+        <text x="60" y="238" text-anchor="middle" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP, sans-serif">デバイスB</text>
+        <text x="60" y="248" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP, sans-serif">通信ルールB</text>
+
+        <!-- ゲートウェイへの矢印 -->
+        <line x1="100" y1="198" x2="200" y2="217" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#aGw)"/>
+        <line x1="100" y1="238" x2="200" y2="222" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#aGw)"/>
+
+        <!-- ゲートウェイ -->
+        <rect x="200" y="200" width="120" height="44" rx="6" fill="#5b8dee"/>
+        <text x="260" y="218" text-anchor="middle" fill="white" font-size="10" font-family="Noto Sans JP, sans-serif" font-weight="700">IoTゲートウェイ</text>
+        <text x="260" y="233" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-size="9" font-family="Noto Sans JP, sans-serif">データ集約・変換</text>
+
+        <!-- ゲートウェイ→サーバ -->
+        <line x1="320" y1="222" x2="430" y2="222" stroke="#34d399" stroke-width="2" marker-end="url(#aOk)"/>
+
+        <!-- サーバ（解決） -->
+        <rect x="430" y="205" width="90" height="34" rx="5" fill="#2a3450" stroke="#34d399" stroke-width="1.5"/>
+        <text x="475" y="222" text-anchor="middle" fill="#34d399" font-size="10" font-family="Noto Sans JP, sans-serif" font-weight="700">IoTサーバ</text>
+        <text x="475" y="234" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP, sans-serif">負荷軽減 ✓</text>
+
+        <!-- ラベル -->
+        <text x="335" y="210" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP, sans-serif">まとめて送信</text>
+
+        <defs>
+          <marker id="aProb" markerWidth="5" markerHeight="5" refX="2.5" refY="2.5" orient="auto"><path d="M0,0 L0,5 L5,2.5 z" fill="#f87171"/></marker>
+          <marker id="aGw" markerWidth="5" markerHeight="5" refX="2.5" refY="2.5" orient="auto"><path d="M0,0 L0,5 L5,2.5 z" fill="#5b8dee"/></marker>
+          <marker id="aOk" markerWidth="5" markerHeight="5" refX="2.5" refY="2.5" orient="auto"><path d="M0,0 L0,5 L5,2.5 z" fill="#34d399"/></marker>
+        </defs>
+      </svg>
+      <figcaption>図：IoTゲートウェイによるネットワーク負荷軽減 <span class="ptr">← S03:p.56</span></figcaption>
+    </div>
+
+    <p><strong>IoTゲートウェイ</strong>（IoTデバイスとIoTサーバ間の通信を中継し、デバイスから送信されるデータをまとめてからIoTサーバに送る装置）を活用することで：</p>
+    <ul>
+      <li>デバイスがサーバと直接通信する回数を減らしネットワーク負荷を軽減</li>
+      <li>異なる通信ルール・プロトコルを使用するデバイス間のデータ交換をスムーズに（変換機能）</li>
+    </ul>
+    <div class="voice-block">
+      <div class="voice-label">▶ 音声補足</div>
+      IoTゲートウェイはネットワークの効率を高めデバイス間の通信を最適化するために欠かせない存在。IoTデバイスが広がる中でこのような課題への対策をしっかり考えておくことが重要。<span class="ptr">← S05</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── APPENDIX ── -->
+<div class="appendix-section" id="appendix">
+
+  <!-- 未確定事項（なし） -->
+  <div class="appendix-card uncert">
+    <div class="appendix-title">❓ 未確定事項・要確認リスト</div>
+    <p style="color: var(--accent-green); font-size:13px;">✅ 未確定事項なし。全項目S03スライドおよびS05照合により解消済み。</p>
+  </div>
+
+  <!-- 補足A -->
+  <div class="appendix-card word-list" id="app-a">
+    <div class="appendix-title">⭐ 補足A：最重要ワード一覧</div>
+    <div class="table-wrap">
+      <table>
+        <tr><th>用語</th><th>読み</th><th>定義</th><th>重要度</th></tr>
+        <tr><td><strong>技術戦略マネジメント</strong></td><td>ぎじゅつせんりゃく...</td><td>企業が競争力を高めるために技術の開発と活用を計画・管理する手法</td><td>★★★</td></tr>
+        <tr><td><strong>技術ロードマップ</strong></td><td>ぎじゅつロードマップ</td><td>技術開発の長期的な方向性や計画を示す戦略的な計画図</td><td>★★★</td></tr>
+        <tr><td><strong>特許戦略</strong></td><td>とっきょせんりゃく</td><td>知的財産権を活用して競争優位を維持・強化する戦略</td><td>★★★</td></tr>
+        <tr><td><strong>オープンイノベーション</strong></td><td>—</td><td>外部の技術やアイデアを取り入れ内部資源と組み合わせてイノベーションを創出するアプローチ</td><td>★★★</td></tr>
+        <tr><td><strong>プロセスイノベーション</strong></td><td>—</td><td>製造・業務プロセスの革新を通じて生産性や品質を向上させる手法</td><td>★★★</td></tr>
+        <tr><td><strong>プロダクトイノベーション</strong></td><td>—</td><td>新しい製品やサービスの開発を通じて市場に革新をもたらす手法</td><td>★★★</td></tr>
+        <tr><td><strong>PoC</strong></td><td>ピーオーシー</td><td>Proof of Concept。新技術・アイデアが実現可能であることを示す実証実験</td><td>★★★</td></tr>
+        <tr><td><strong>PoV</strong></td><td>ピーオーブイ</td><td>Proof of Value。新技術・アイデアが市場に価値をもたらすことを示す実証実験</td><td>★★★</td></tr>
+        <tr><td><strong>ビジネスシステム</strong></td><td>—</td><td>企業の業務活動を効率的に進めるためのシステムの総称</td><td>★★★</td></tr>
+        <tr><td><strong>JIT（ジャストインタイム）</strong></td><td>—</td><td>必要な時に必要な量だけを供給する手法。トヨタのかんばん方式が代表例</td><td>★★★</td></tr>
+        <tr><td><strong>XAI（説明可能なAI）</strong></td><td>エックスエーアイ</td><td>AIの判断・予測の根拠を人間が理解し説明できるようにする技術</td><td>★★★</td></tr>
+        <tr><td><strong>HITL</strong></td><td>エイチアイティーエル</td><td>Human-in-the-Loop。AIシステムの運用において人間が常に監視・介入するアプローチ</td><td>★★★</td></tr>
+        <tr><td><strong>ハルシネーション</strong></td><td>—</td><td>AIが事実と異なる情報を生成する現象</td><td>★★★</td></tr>
+        <tr><td><strong>e-ビジネス</strong></td><td>イービジネス</td><td>インターネット技術を活用して行われるすべてのビジネス活動</td><td>★★★</td></tr>
+        <tr><td><strong>SCM</strong></td><td>エスシーエム</td><td>Supply Chain Management。原材料調達から配送までのプロセスを最適化するシステム</td><td>★★★</td></tr>
+        <tr><td><strong>CRM</strong></td><td>シーアールエム</td><td>Customer Relationship Management。顧客情報を管理し顧客との関係を強化するシステム</td><td>★★★</td></tr>
+        <tr><td><strong>ERP</strong></td><td>イーアールピー</td><td>Enterprise Resource Planning。企業内の人・物・金・情報を統合的に管理するシステム</td><td>★★★</td></tr>
+        <tr><td><strong>B2C / B2B / C2C</strong></td><td>—</td><td>電子商取引の主要3形態（企業→消費者 / 企業→企業 / 消費者→消費者）</td><td>★★★</td></tr>
+        <tr><td><strong>O2O / OMO</strong></td><td>—</td><td>O2O：オンライン集客→オフライン販売。OMO：オンライン・オフラインの完全統合モデル</td><td>★★★</td></tr>
+        <tr><td><strong>IoT</strong></td><td>アイオーティー</td><td>Internet of Things。物理デバイスがインターネットで相互接続されデータを交換し合う仕組み</td><td>★★★</td></tr>
+        <tr><td><strong>Society 5.0</strong></td><td>ソサエティ5.0</td><td>仮想空間と現実空間を融合させたシステムで新しい社会を構築する概念</td><td>★★★</td></tr>
+        <tr><td><strong>組み込みシステム</strong></td><td>くみこみシステム</td><td>特定の機能・タスク実行のために設計された専用のコンピュータシステム（ハードウェア＋ソフトウェア一体）</td><td>★★★</td></tr>
+        <tr><td><strong>エンジニアリングシステム</strong></td><td>—</td><td>製品設計・開発・製造・品質管理・保守などのエンジニアリングプロセスを支援する情報システム</td><td>★★★</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 補足B -->
+  <div class="appendix-card bg-know" id="app-b">
+    <div class="appendix-title">📚 補足B：知っておくべき背景知識（Web検証済み）</div>
+    <ul>
+      <li><span class="ext-small">[外部補足]</span> <strong>メタバースのITロードマップ</strong>：スライドに引用されているロードマップはNRI（野村総合研究所）が毎年発行する「ITロードマップ」シリーズ（2023年版）から。最新技術の5年後の変化を予測する資料として産業界で広く参照される。</li>
+      <li><span class="ext-small">[外部補足]</span> <strong>IBMの特許戦略（検証済み）</strong>：IBMは<strong>1993年から2021年まで29年連続</strong>で米国特許取得数首位を維持（IFI CLAIMS Patent Services調べ）。2022年にSamsungに首位を明け渡したが、これはIBMが意図的に「特許件数の追求」を方針転換したためと公表している。1996年以来の特許ライセンス収益の累計は<strong>270億ドル超</strong>（IBMの財務申告書より）。最盛期（2016年）は年間約16億ドルの知財収益を計上。</li>
+      <li><span class="ext-small">[外部補足]</span> <strong>Google MapsのAPIエコノミー（検証済み）</strong>：Google Mapsは2005年2月にサービス開始。housingmaps.com（Craigslistの物件情報とGoogle Mapsを組み合わせたサービス）などのリバースエンジニアリングによるマッシュアップの成功を受け、<strong>2005年6月に公式APIを公開</strong>。現在は<strong>月間20億人以上</strong>（2024年10月にGoogleが公表）が利用する世界最大の地図サービス。</li>
+      <li><span class="ext-small">[外部補足]</span> <strong>ロングテール理論（検証済み）</strong>：Wired誌編集長Chris Andersonが<strong>2004年10月号のWired誌に掲載した記事</strong>で提唱し、2006年に書籍化（"The Long Tail"）。「売れにくいニッチ商品でも、品揃えが十分に多ければ合計売上がヒット商品を上回る」という理論。Amazon・Netflix・iTunesなどを事例として分析。</li>
+      <li><span class="ext-small">[外部補足]</span> <strong>Society 5.0（検証済み）</strong>：<strong>2016年1月22日に閣議決定された第5期科学技術基本計画</strong>において初めて提唱された日本発のコンセプト（内閣府）。「サイバー空間とフィジカル空間を高度に融合させたシステムにより、経済発展と社会的課題の解決を両立する人間中心の社会（超スマート社会）」と定義。社会発展の系譜：狩猟社会（1.0）→農耕社会（2.0）→工業社会（3.0）→情報社会（4.0）→Society 5.0。</li>
+      <li><span class="ext-small">[外部補足]</span> <strong>Jアラートの詳細（検証済み）</strong>：2004年度から総務省消防庁が開発・整備を開始し、<strong>2007年2月9日から一部の地方公共団体で運用開始</strong>（Wikipedia/消防庁公式情報）。<strong>2014年4月に全市区町村に受信機を設置</strong>、<strong>2016年5月に全市区町村に自動起動装置を整備</strong>（大百科全書）。携帯電話へのエリアメール（国民保護情報）配信は<strong>2013年4月から開始</strong>（Wikipedia）。対象情報は24〜25種類（緊急地震速報・津波警報・弾道ミサイル情報等）。</li>
+    </ul>
+  </div>
+
+  <!-- 補足C -->
+  <div class="appendix-card exam" id="app-c">
+    <div class="appendix-title">🎯 補足C：試験・レポートで重要な観点</div>
+    <ul>
+      <li><strong>各イノベーションの違いを区別する</strong>：オープン（外部との協力）vs プロセス（既存プロセス改善）vs プロダクト（新製品創出）の違いと、それぞれの代表事例（Google Maps API / トヨタかんばん方式 / スマートフォン）を対応させて覚える</li>
+      <li><strong>PoCとPoVの区別</strong>：「できるか（PoC）」vs「価値があるか（PoV）」。実施タイミングもセットで覚える（初期段階 vs 市場投入前）</li>
+      <li><strong>B2C / B2B / C2Cの代表事例</strong>：Amazon（B2C）、Alibaba（B2B）、メルカリ（C2C）のセットで正確に覚える</li>
+      <li><strong>O2OとOMOの違い</strong>：O2O＝オンライン集客→オフライン購入の<em>連携</em>。OMO＝両者の<em>完全統合</em>+データ活用による個別対応</li>
+      <li><strong>IoTの3つの特徴</strong>：①データの収集と分析、②自動化、③相互接続性</li>
+      <li><strong>組み込みシステムの3つの特徴</strong>：①リアルタイム性、②専用性、③省電力</li>
+      <li><strong>XAIとHITL</strong>：AI利活用における人間関与の2つの形態として問われやすい。XAI＝根拠の透明化、HITL＝人間が監視・介入するアプローチ</li>
+      <li><strong>特許戦略の3目的</strong>：①模倣の防止、②ライセンス収益の確保、③交渉力の強化</li>
+      <li><strong>IoTの課題3つ</strong>：セキュリティ・標準化・プライバシー + IoTゲートウェイによるネットワーク負荷問題への対策</li>
+    </ul>
+  </div>
+
+  <!-- 補足D -->
+  <div class="appendix-card related" id="app-d">
+    <div class="appendix-title">🔗 補足D：関連概念・次回への接続</div>
+    <ul>
+      <li><span class="ext-small">[外部補足]</span> <strong>DX（デジタルトランスフォーメーション）との関係</strong>：e-ビジネス・IoT・AIは全てDXを構成する要素。DXとはデジタル技術を活用してビジネスモデルや組織全体を変革すること。本講義で扱う技術は全てDXの基盤となる。</li>
+      <li><span class="ext-small">[外部補足]</span> <strong>クラウドコンピューティングとの接続</strong>：IoTデバイスが生成する大量データの処理・保存にはクラウドインフラが不可欠。AWSやGCP等のクラウドサービスがIoTプラットフォームを提供している。</li>
+      <li><span class="ext-small">[外部補足]</span> <strong>ブロックチェーンとトレーサビリティ</strong>：近年、食品や医薬品のトレーサビリティにブロックチェーン技術が活用されるケースが増加。データ改ざんが困難な特性が信頼性向上に貢献。</li>
+      <li><span class="ext-small">[外部補足]</span> <strong>次回への接続</strong>：技術戦略マネジメントはIT戦略・システム開発ライフサイクル・プロジェクトマネジメントと密接に関連。企業のIT投資判断プロセスへの接続が想定される。</li>
+    </ul>
+
+    <!-- 新パターン記録 -->
+    <hr style="border-color: var(--border); margin: 12px 0;">
+    <p style="font-size:12px; color: var(--text-sub);"><strong>📝 Step 0 追記用 既知誤変換パターン（この授業で検出）</strong></p>
+    <ul style="font-size:11px; color: var(--text-sub);">
+      <li>「電子症引」→ 電子商取引（S05-B 多発）</li>
+      <li>「RFD」→ RFID（S05-A/B）</li>
+      <li>「ハッカさん」→ ハッカソン</li>
+      <li>「ヒューマインザループ」/ 「Human-in-the-Lab」→ ヒューマンインザループ（HITL）</li>
+      <li>「AIXAI」→ 説明可能なAI（XAI）</li>
+      <li>「SLRO サービス」→ エスクローサービス</li>
+      <li>「アダータ」→ アバター</li>
+      <li>「3 TCC / 3 TCG の仮想空間」→ 3DCGの仮想空間</li>
+      <li>「ソ シャイ ティー 5.0」→ Society 5.0</li>
+    </ul>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div style="margin-top:32px; padding: 16px 0; border-top: 1px solid var(--border); text-align:center; font-family: var(--mono); font-size:10px; color: var(--text-dim);">
+  SSP v4.5.1 · ITのための基礎知識 第4回 · note_it_basics_04.html<br>
+  v1.0 2026-03-28 初版 &nbsp;|&nbsp; v1.1 2026-03-28 補足B Web検証・精度向上 &nbsp;|&nbsp; QC PASS 100% &nbsp;|&nbsp; Sources: S03 · S05×2
+</div>
+
+</main>
+</body>
+</html>
