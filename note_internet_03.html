@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>インターネット入門 第3回｜インターネットと情報デザイン</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-main: #0f1117;
+    --bg-card: #161b27;
+    --bg-card2: #1a2035;
+    --bg-sidebar: #0d1120;
+    --text-main: #e2e8f5;
+    --text-sub: #8a99b8;
+    --text-muted: #5b6b8a;
+    --accent-blue: #5b8dee;
+    --accent-green: #34d399;
+    --accent-amber: #fbbf24;
+    --accent-purple: #a78bfa;
+    --accent-red: #f87171;
+    --border: #1e2d47;
+    --sidebar-w: 260px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg-main);
+    color: var(--text-main);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 15px;
+    line-height: 1.8;
+    display: flex;
+  }
+
+  /* ───── Sidebar ───── */
+  #sidebar {
+    width: var(--sidebar-w);
+    min-height: 100vh;
+    background: var(--bg-sidebar);
+    border-right: 1px solid var(--border);
+    position: fixed;
+    top: 0; left: 0;
+    overflow-y: auto;
+    padding: 24px 0 40px;
+    z-index: 100;
+  }
+
+  .sidebar-header {
+    padding: 0 18px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .sidebar-header .course { font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .sidebar-header .title { font-size: 13px; color: var(--text-main); font-weight: 700; margin-top: 4px; line-height: 1.4; }
+
+  #sidebar nav ul { list-style: none; padding: 12px 0; }
+  #sidebar nav ul li a {
+    display: block;
+    padding: 6px 18px;
+    font-size: 12.5px;
+    color: var(--text-sub);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    transition: all .15s;
+  }
+  #sidebar nav ul li a:hover,
+  #sidebar nav ul li a.active {
+    color: var(--accent-blue);
+    border-left-color: var(--accent-blue);
+    background: rgba(91,141,238,.07);
+  }
+  #sidebar nav ul li.chapter > a {
+    font-weight: 700;
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: .5px;
+    text-transform: uppercase;
+    padding-top: 14px;
+  }
+
+  /* ───── Main ───── */
+  #main {
+    margin-left: var(--sidebar-w);
+    flex: 1;
+    padding: 40px 48px 80px;
+    max-width: 900px;
+  }
+
+  /* ───── Page header ───── */
+  .page-header {
+    margin-bottom: 40px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .page-header .meta {
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .page-header h1 { font-size: 26px; font-weight: 700; color: var(--text-main); margin-bottom: 10px; }
+  .page-header .info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    gap: 6px 24px;
+    margin-top: 14px;
+  }
+  .info-item { font-size: 12px; color: var(--text-sub); }
+  .info-item span { color: var(--text-main); font-weight: 500; }
+
+  /* ───── Section ───── */
+  .section { margin-bottom: 40px; }
+  .section-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 20px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-title .num {
+    font-size: 11px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent-blue);
+    background: rgba(91,141,238,.1);
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+
+  .subsection { margin-bottom: 28px; }
+  .subsection-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--accent-blue);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .subsection-title::before { content: ''; display: inline-block; width: 3px; height: 16px; background: var(--accent-blue); border-radius: 2px; }
+
+  p { margin-bottom: 12px; color: var(--text-main); }
+
+  /* ───── Blocks ───── */
+  .audio-block {
+    border-left: 3px solid var(--accent-blue);
+    background: rgba(91,141,238,.06);
+    padding: 12px 16px;
+    margin: 14px 0;
+    border-radius: 0 6px 6px 0;
+    font-size: 14px;
+    color: #c5d0e8;
+  }
+  .audio-block .block-label {
+    font-size: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent-blue);
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+
+  .ext-block {
+    border-left: 3px solid var(--accent-green);
+    background: rgba(52,211,153,.06);
+    padding: 12px 16px;
+    margin: 14px 0;
+    border-radius: 0 6px 6px 0;
+    font-size: 14px;
+    color: #b5e8d5;
+  }
+  .ext-block .block-label {
+    font-size: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent-green);
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+
+  .key-block {
+    border: 1px solid var(--accent-amber);
+    background: rgba(251,191,36,.05);
+    padding: 14px 18px;
+    margin: 16px 0;
+    border-radius: 6px;
+    color: #f5e0a0;
+    font-weight: 500;
+  }
+  .key-block .block-label {
+    font-size: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent-amber);
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+
+  /* ───── Pointer badge ───── */
+  .ptr {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    background: rgba(255,255,255,.04);
+    padding: 1px 6px;
+    border-radius: 3px;
+    margin-left: 6px;
+    white-space: nowrap;
+  }
+
+  /* ───── Tables ───── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 13.5px;
+  }
+  th {
+    background: rgba(91,141,238,.12);
+    color: var(--accent-blue);
+    padding: 9px 12px;
+    text-align: left;
+    font-weight: 700;
+    border-bottom: 1px solid var(--border);
+  }
+  td {
+    padding: 8px 12px;
+    border-bottom: 1px solid rgba(30,45,71,.8);
+    color: var(--text-main);
+    vertical-align: top;
+  }
+  tr:hover td { background: rgba(255,255,255,.02); }
+
+  /* ───── Lists ───── */
+  ul, ol { padding-left: 20px; margin-bottom: 12px; }
+  li { margin-bottom: 5px; color: var(--text-main); }
+
+  /* ───── SVG container ───── */
+  .svg-wrap {
+    margin: 20px 0;
+    text-align: center;
+  }
+  .svg-wrap figcaption {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+    margin-top: 6px;
+  }
+
+  /* ───── Appendix cards ───── */
+  .appendix { margin-bottom: 32px; }
+  .appendix-title {
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-main);
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .undecided-card {
+    background: rgba(248,113,113,.07);
+    border: 1px solid rgba(248,113,113,.25);
+    border-radius: 8px;
+    padding: 18px 20px;
+    margin-bottom: 24px;
+  }
+  .undecided-card h3 {
+    font-size: 14px;
+    color: var(--accent-red);
+    margin-bottom: 12px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .star { color: var(--accent-amber); }
+  .star2 { color: var(--accent-green); }
+
+  /* score badge */
+  .score-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(52,211,153,.1);
+    border: 1px solid rgba(52,211,153,.3);
+    padding: 8px 16px;
+    border-radius: 6px;
+    margin: 12px 0 24px;
+  }
+  .score-badge .label { font-size: 11px; color: var(--text-muted); }
+  .score-badge .value { font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: 700; color: var(--accent-green); }
+  .score-badge .verdict { font-size: 13px; font-weight: 700; color: var(--accent-green); }
+
+  /* horizontal rule */
+  hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+
+  /* comparison box */
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .compare-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+  .compare-card h4 { color: var(--accent-blue); margin-bottom: 8px; font-size: 14px; }
+  .compare-card p { font-size: 13.5px; color: var(--text-sub); margin: 0; }
+
+  /* flow row */
+  .flow-row {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin: 16px 0;
+    background: var(--bg-card);
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .flow-item {
+    flex: 1;
+    text-align: center;
+    padding: 14px 8px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-main);
+    background: var(--bg-card);
+    border-right: 1px solid var(--border);
+    position: relative;
+  }
+  .flow-item:last-child { border-right: none; }
+  .flow-item .sub { font-size: 11px; color: var(--text-sub); font-weight: 400; margin-top: 4px; display: block; }
+  .flow-arrow {
+    font-size: 18px;
+    color: var(--accent-blue);
+    padding: 0 4px;
+  }
+
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    background: rgba(255,255,255,.06);
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: var(--accent-amber);
+  }
+
+  /* ─── responsive ─── */
+  @media (max-width: 900px) {
+    #sidebar { display: none; }
+    #main { margin-left: 0; padding: 24px 20px; }
+    .compare-grid { grid-template-columns: 1fr; }
+    .info-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ SIDEBAR ═══ -->
+<nav id="sidebar">
+  <div class="sidebar-header">
+    <div class="course">インターネット入門 ｜ 第3回</div>
+    <div class="title">インターネットと<br>情報デザイン</div>
+  </div>
+  <nav>
+    <ul>
+      <li><a href="#overview">概要・学習目標</a></li>
+      <li class="chapter"><a href="#ch1">第1章</a></li>
+      <li><a href="#ch1-def">情報デザインとは</a></li>
+      <li><a href="#ch1-case">簡単な事例</a></li>
+      <li><a href="#ch1-history">歴史</a></li>
+      <li class="chapter"><a href="#ch2">第2章</a></li>
+      <li><a href="#ch2-def">インタフェースとは</a></li>
+      <li><a href="#ch2-ui">ユーザインタフェース</a></li>
+      <li><a href="#ch2-gui">GUIの重要箇所</a></li>
+      <li><a href="#ch2-other">その他のUI・UX</a></li>
+      <li class="chapter"><a href="#ch3">第3章</a></li>
+      <li><a href="#ch3-def">UDとは</a></li>
+      <li><a href="#ch3-info">情報システムのUD</a></li>
+      <li><a href="#ch3-access">アクセシビリティ</a></li>
+      <li class="chapter"><a href="#ch4">第4章</a></li>
+      <li><a href="#ch4-tech">関連技術</a></li>
+      <li><a href="#ch4-use">活用方法</a></li>
+      <li class="chapter"><a href="#appendix">補足</a></li>
+      <li><a href="#undecided">未確定事項</a></li>
+      <li><a href="#appendix-a">補足A: 用語集</a></li>
+      <li><a href="#appendix-b">補足B: 背景知識</a></li>
+      <li><a href="#appendix-c">補足C: 試験対策</a></li>
+      <li><a href="#appendix-d">補足D: 関連概念</a></li>
+    </ul>
+  </nav>
+</nav>
+
+<!-- ═══ MAIN ═══ -->
+<main id="main">
+
+  <!-- Page header -->
+  <div class="page-header">
+    <div class="meta">SSP v4.5.1 ｜ 自動生成ノート</div>
+    <h1>インターネットと情報デザイン</h1>
+    <div class="info-grid">
+      <div class="info-item">科目: <span>インターネット入門</span></div>
+      <div class="info-item">回: <span>第3回</span></div>
+      <div class="info-item">教員: <span>藤田 光治</span></div>
+      <div class="info-item">ソース: <span>S03（スライドPDF）, S05-A, S05-B（AI変換）</span></div>
+      <div class="info-item">作成: <span>2026-03-29</span></div>
+    </div>
+  </div>
+
+  <!-- ─── 概要 ─── -->
+  <section class="section" id="overview">
+    <div class="section-title"><span class="num">OVERVIEW</span>第3回 学習目標・授業構成</div>
+
+    <div class="subsection">
+      <p>本回の担当教員は<strong>藤田 光治</strong>氏。テーマは「インターネットと情報デザイン」。以下の4つを学習目標とする。<span class="ptr">← S03:p.2</span></p>
+      <ol>
+        <li>情報デザインについて理解して説明することができる</li>
+        <li>インタフェースの考え方を理解して説明することができる</li>
+        <li>情報システムにおけるユニバーサルデザインについて理解して説明することができる</li>
+        <li>情報デザインの関連技術について理解して説明することができる</li>
+      </ol>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">授業構成</div>
+      <div class="flow-row">
+        <div class="flow-item">第1章<span class="sub">情報デザインとは</span></div>
+        <div class="flow-item">第2章<span class="sub">インタフェースの考え方</span></div>
+        <div class="flow-item">第3章<span class="sub">情報システムにおけるユニバーサルデザイン</span></div>
+        <div class="flow-item">第4章<span class="sub">情報デザインの関連技術</span></div>
+      </div>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- ─── 第1章 ─── -->
+  <section class="section" id="ch1">
+    <div class="section-title"><span class="num">CH.1</span>情報デザインとは</div>
+
+    <div class="subsection" id="ch1-def">
+      <div class="subsection-title">情報デザインの定義</div>
+
+      <div class="key-block">
+        <div class="block-label">🔑 核心定義</div>
+        <strong>情報デザイン（Information Design）</strong><br>
+        あらゆる情報をわかりやすくまとめて、伝えること
+        <span class="ptr">← S03:p.9</span>
+      </div>
+
+      <p>より詳細な定義はスライドに記載されている。<span class="ptr">← S03:p.10</span></p>
+      <blockquote style="border-left:2px solid var(--border); padding: 10px 16px; color: var(--text-sub); margin: 12px 0; font-size: 13.5px;">
+        情報デザインとは、あらゆる情報をわかりやすく可視化してまとめ、構造化し、構成する要素の関係性をわかりやすい伝えることである。また、情報というものを人がどうすれば便利に効率的に使うことができるかを考え、その形に落とし込み準備するスキルと知識である。
+      </blockquote>
+
+      <div class="audio-block">
+        <div class="block-label">🎙 音声補足</div>
+        「情報デザイン」の語は「情報」と「デザイン」の組み合わせ。デザインとは<strong>客観的な表現</strong>が行えるものを指す。アート（主観的な表現）との違いを意識すること。例として「家のデザイン」は他の人が元のデザインを見て再現できる＝客観的。
+        <span class="ptr">← S05-A</span>
+      </div>
+
+      <table>
+        <tr><th>概念</th><th>表現の種類</th><th>具体例</th></tr>
+        <tr><td>アート</td><td>主観的な表現</td><td>絵画・彫刻など作家の内面から生まれる作品</td></tr>
+        <tr><td>デザイン</td><td>客観的な表現</td><td>建築・工業製品・路線図など第三者が再現可能なもの</td></tr>
+      </table>
+      <p style="font-size:12px;color:var(--text-muted);">← S03:p.8</p>
+
+      <div class="audio-block">
+        <div class="block-label">🎙 音声補足</div>
+        授業では「情報デザインを3行でまとめる」例示があった。長文よりも簡潔な3箇条の方が直感的に伝わる、という情報デザインの実演として機能している。<span class="ptr">← S05-A</span>
+      </div>
+
+      <p><strong>3行まとめ（スライド例示）：</strong><span class="ptr">← S03:p.14</span></p>
+      <ul>
+        <li>情報を可視化し、わかりやすく人に伝える</li>
+        <li>人が情報を効率的に使えるような技法と知識</li>
+        <li>身近な例では路線図などが挙げられる</li>
+      </ul>
+    </div>
+
+    <div class="subsection" id="ch1-case">
+      <div class="subsection-title">情報デザインの簡単な事例</div>
+
+      <p>情報デザインは身近なところで広く使われている。以下の3つが代表例として挙げられた。<span class="ptr">← S03:p.15-17</span></p>
+
+      <div class="subsection-title" style="font-size:14px; color: var(--accent-amber);">① 路線図</div>
+      <p>JR東日本などの路線図は情報デザインの典型的な事例。膨大な駅・路線の情報を1枚の紙で表現している。<span class="ptr">← S03:p.15</span></p>
+      <div class="audio-block">
+        <div class="block-label">🎙 音声補足</div>
+        路線図の工夫ポイント：①山手線を緑の円で表現（形状で路線種別を表す）、②主要駅を黒い楕円＋白文字で表記、③各路線を専用カラーで色分け、④方角・位置も可能な限り再現。ICカード普及で路線図を見る機会は減ったが、電車誕生時から鉄道会社が考え抜いた情報デザインの結晶である。
+        <span class="ptr">← S05-A</span>
+      </div>
+
+      <div class="subsection-title" style="font-size:14px; color: var(--accent-amber); margin-top:18px;">② ピクトグラム（絵文字）</div>
+      <p>言語・国籍・障害の有無に関わらず、視覚的なマークで情報を伝える手法。<span class="ptr">← S03:p.16</span></p>
+      <div class="audio-block">
+        <div class="block-label">🎙 音声補足</div>
+        海外でその国の言語がわからなくても、トイレのマークさえ見ればトイレの場所がわかる。言語的な障壁を取り除くことができる表現手法がピクトグラム。<span class="ptr">← S05-A</span>
+      </div>
+
+      <div class="subsection-title" style="font-size:14px; color: var(--accent-amber); margin-top:18px;">③ 数値の図式化（グラフ・チャート）</div>
+      <p>大量の数値データをグラフ・円グラフとして視覚化することで、直感的な理解を実現する。<span class="ptr">← S03:p.17</span></p>
+      <div class="audio-block">
+        <div class="block-label">🎙 音声補足</div>
+        例：総務省「通信利用動向調査」の棒グラフを見れば、スマートフォンの利用が増加し携帯電話・PHSが減少していることが色・濃淡だけで直感的にわかる。Excelのように数値が羅列された状態から、分析してグラフ化することで初めて「情報デザイン」として機能する。
+        <span class="ptr">← S05-A</span>
+      </div>
+    </div>
+
+    <div class="subsection" id="ch1-history">
+      <div class="subsection-title">情報デザインの歴史</div>
+      <p>情報デザインは段階的に発展してきた分野。<span class="ptr">← S03:p.18</span></p>
+      <!-- SVG: 情報デザイン発展フロー -->
+      <div class="svg-wrap">
+        <figure>
+          <svg viewBox="0 0 600 100" xmlns="http://www.w3.org/2000/svg" style="max-width:560px;width:100%;">
+            <!-- 背景 -->
+            <rect width="600" height="100" fill="#1a2035" rx="8"/>
+            <!-- ボックス1 -->
+            <rect x="20" y="25" width="140" height="50" rx="6" fill="#1e2d47" stroke="#5b8dee" stroke-width="1.2"/>
+            <text x="90" y="48" text-anchor="middle" fill="#5b8dee" font-size="12" font-family="Noto Sans JP, sans-serif" font-weight="700">認知科学</text>
+            <text x="90" y="64" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP, sans-serif">基礎研究</text>
+            <!-- 矢印1 -->
+            <line x1="162" y1="50" x2="195" y2="50" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#arr)"/>
+            <!-- ボックス2 -->
+            <rect x="197" y="15" width="200" height="70" rx="6" fill="#1e2d47" stroke="#34d399" stroke-width="1.2"/>
+            <text x="297" y="40" text-anchor="middle" fill="#34d399" font-size="11" font-family="Noto Sans JP, sans-serif" font-weight="700">応用研究</text>
+            <text x="297" y="56" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP, sans-serif">インタフェースデザイン</text>
+            <text x="297" y="70" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP, sans-serif">情報の数字表現・視覚表現</text>
+            <!-- 矢印2 -->
+            <line x1="399" y1="50" x2="432" y2="50" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#arr)"/>
+            <!-- ボックス3 -->
+            <rect x="434" y="20" width="145" height="60" rx="6" fill="#1e2d47" stroke="#fbbf24" stroke-width="1.5"/>
+            <text x="507" y="46" text-anchor="middle" fill="#fbbf24" font-size="12" font-family="Noto Sans JP, sans-serif" font-weight="700">情報デザイン</text>
+            <text x="507" y="62" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP, sans-serif">分野の確立</text>
+            <!-- arrow marker -->
+            <defs>
+              <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                <path d="M0,0 L0,6 L8,3 z" fill="#5b8dee"/>
+              </marker>
+            </defs>
+          </svg>
+          <figcaption>図：情報デザインの発展経緯 ← S03:p.18</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">第1章 まとめ</div>
+      <ul>
+        <li><strong>情報デザインとは：</strong>あらゆる情報をわかりやすく人に伝えること <span class="ptr">← S03:p.19</span></li>
+        <li><strong>使われ方の例：</strong>路線図・ピクトグラム・数値の図式化（グラフ）</li>
+      </ul>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- ─── 第2章 ─── -->
+  <section class="section" id="ch2">
+    <div class="section-title"><span class="num">CH.2</span>インタフェースの考え方</div>
+
+    <div class="subsection" id="ch2-def">
+      <div class="subsection-title">インタフェースとは</div>
+
+      <div class="key-block">
+        <div class="block-label">🔑 定義</div>
+        <strong>インタフェース（Interface）</strong><br>
+        意味：接面または境界面。<br>
+        ハードウェアやソフトウェア、人間（ユーザ）などが、お互いに情報をやりとりする際の<strong>接する部分</strong>を指す。
+        <span class="ptr">← S03:p.26</span>
+      </div>
+
+      <div class="audio-block">
+        <div class="block-label">🎙 音声補足</div>
+        スマートフォンの画面を指でタップするとき、指と画面が「接する部分」がまさにインタフェース。本科目（インターネット入門）ではソフトウェアの範囲に絞って学習する。
+        <span class="ptr">← S05-A</span>
+      </div>
+
+      <!-- SVG: 人間 ↔ インタフェース ↔ ソフトウェア -->
+      <div class="svg-wrap">
+        <figure>
+          <svg viewBox="0 0 600 110" xmlns="http://www.w3.org/2000/svg" style="max-width:560px;width:100%;">
+            <rect width="600" height="110" fill="#1a2035" rx="8"/>
+            <!-- 人間 -->
+            <rect x="20" y="20" width="120" height="70" rx="6" fill="#1e2d47" stroke="#5b8dee" stroke-width="1.2"/>
+            <text x="80" y="52" text-anchor="middle" fill="#e2e8f5" font-size="14" font-family="Noto Sans JP,sans-serif" font-weight="700">人間</text>
+            <text x="80" y="70" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="Noto Sans JP,sans-serif">（ユーザ）</text>
+            <!-- 境界 -->
+            <rect x="175" y="30" width="100" height="50" rx="6" fill="rgba(251,191,36,.12)" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <text x="225" y="54" text-anchor="middle" fill="#fbbf24" font-size="11" font-family="Noto Sans JP,sans-serif" font-weight="700">インタ</text>
+            <text x="225" y="68" text-anchor="middle" fill="#fbbf24" font-size="11" font-family="Noto Sans JP,sans-serif" font-weight="700">フェース</text>
+            <!-- arrows -->
+            <line x1="142" y1="55" x2="173" y2="55" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#arr2)"/>
+            <line x1="277" y1="55" x2="308" y2="55" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#arr2)"/>
+            <!-- ソフトウェア -->
+            <rect x="310" y="15" width="260" height="80" rx="6" fill="#1e2d47" stroke="#34d399" stroke-width="1.2"/>
+            <text x="440" y="45" text-anchor="middle" fill="#34d399" font-size="13" font-family="Noto Sans JP,sans-serif" font-weight="700">システム・製品</text>
+            <text x="440" y="62" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="Noto Sans JP,sans-serif">ソフトウェア / アプリケーション</text>
+            <text x="440" y="77" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="Noto Sans JP,sans-serif">OS / ハードウェア</text>
+            <defs>
+              <marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                <path d="M0,0 L0,6 L8,3 z" fill="#5b8dee"/>
+              </marker>
+            </defs>
+          </svg>
+          <figcaption>図：インタフェースの概念図 ← S03:p.27-28</figcaption>
+        </figure>
+      </div>
+
+      <div class="subsection-title" style="font-size:14px; margin-top:20px;">インタフェースデザイン（設計）とは</div>
+      <p>人間が情報機器などを扱う際に、必要な操作方法や表示方法を<strong>ユーザ視点で</strong>デザイン（設計）すること。<span class="ptr">← S03:p.30</span></p>
+      <div class="audio-block">
+        <div class="block-label">🎙 音声補足</div>
+        天気アプリを開発するとき、「ただ天気を表示するだけでは不十分」。どうしたら直感的に天気の状況をユーザに認知させられるか？詳しい天気情報をどう簡単に操作させるか？これを開発前の<strong>設計段階</strong>で考えるのがインタフェースデザイン。
+        <span class="ptr">← S05-A</span>
+      </div>
+    </div>
+
+    <div class="subsection" id="ch2-ui">
+      <div class="subsection-title">ユーザインタフェース（UI）の種類</div>
+
+      <p>ユーザインタフェースとは、人間がコンピュータを扱う際に必要な<strong>操作方法や表示方法</strong>のこと。<span class="ptr">← S03:p.31</span></p>
+
+      <table>
+        <tr>
+          <th>種類</th><th>正式名称</th><th>特徴</th><th>例</th>
+        </tr>
+        <tr>
+          <td><strong>CUI</strong></td>
+          <td>Character User Interface</td>
+          <td>テキストによる命令をキーボード入力でコンピュータを操作する</td>
+          <td>コマンドプロンプト、ターミナル</td>
+        </tr>
+        <tr>
+          <td><strong>GUI</strong></td>
+          <td>Graphical User Interface</td>
+          <td>アイコンなどの視覚的な要素をポインティングデバイスや指のタッチで操作する</td>
+          <td>Windowsデスクトップ、スマホ操作</td>
+        </tr>
+      </table>
+      <p style="font-size:12px;color:var(--text-muted);">← S03:p.31</p>
+
+      <div class="audio-block">
+        <div class="block-label">🎙 音声補足</div>
+        GUIはユーザにとって最も身近なインタフェース。ユーザの操作性・視認性を高めることでシステムや製品の満足度が高まるため、非常に重要。例えばゲームアプリで操作方法が最初から直感的にわからなければ、ユーザはすぐにゲームをやめてしまう。チュートリアルの導入などもUI設計の一環。
+        <span class="ptr">← S05-A</span>
+      </div>
+    </div>
+
+    <div class="subsection" id="ch2-gui">
+      <div class="subsection-title">GUIにおける重要箇所</div>
+      <p>GUIを構成する主要な要素は以下の通り。<span class="ptr">← S03:p.33</span></p>
+
+      <table>
+        <tr><th>要素名</th><th>説明</th></tr>
+        <tr><td><strong>ウィンドウ</strong></td><td>画面全体を表示する枠。アプリケーション起動時に現れる表示領域</td></tr>
+        <tr><td><strong>メニューバー</strong></td><td>ウィンドウ上部に配置され、ユーザが操作するためのメニュー項目一覧</td></tr>
+        <tr><td><strong>アイコン</strong></td><td>操作をピクトグラムのような絵で表現し、直感的な操作を促す視覚要素</td></tr>
+        <tr><td><strong>ヘルプ機能</strong></td><td>ユーザが困ったときに操作をアシストする機能。多くのアプリに標準搭載</td></tr>
+        <tr><td><strong>サムネイル</strong></td><td>画像や画面の縮小版を一覧表示し、選択すると大きく表示される</td></tr>
+        <tr><td><strong>ラジオボタン</strong></td><td>複数の選択肢から<strong>1つだけ</strong>選ぶボタン。選択すると青色にハイライト</td></tr>
+        <tr><td><strong>チェックボタン</strong></td><td>複数の項目を<strong>複数同時</strong>に選択可能なボタン</td></tr>
+        <tr><td><strong>プルダウンメニュー</strong></td><td>クリックすると選択肢が一覧で下に展開されるメニュー</td></tr>
+        <tr><td><strong>ポップアップメニュー</strong></td><td>特定の箇所にマウスカーソルを合わせると別枠で情報が浮かび上がる</td></tr>
+      </table>
+      <p style="font-size:12px;color:var(--text-muted);">← S03:p.33-41</p>
+
+      <div class="audio-block">
+        <div class="block-label">🎙 音声補足</div>
+        スライドではExcelの画面を例として各GUI要素を説明。ラジオボタンとチェックボタンの例として「クラウドキャンパスの小テスト・期末試験の同意事項」の画面が使われた。
+        <span class="ptr">← S05-A</span>
+      </div>
+    </div>
+
+    <div class="subsection" id="ch2-other">
+      <div class="subsection-title">その他のインタフェース・UX</div>
+
+      <p><strong>ジェスチャーインタフェース：</strong>人間の体の動きを読み取って入力・操作を行うインタフェース。例: Nintendo Switch、XBOX Kinect など。<span class="ptr">← S03:p.42</span></p>
+
+      <p><strong>VUI（Voice User Interface）：</strong>声を使ったインタフェース。例: iPhoneのSiriなど。<span class="ptr">← S03:p.42</span></p>
+
+      <div class="key-block">
+        <div class="block-label">🔑 UX（ユーザエクスペリエンス）</div>
+        ユーザが商品やサービスを通して得られる<strong>体験</strong>。「楽しい」「嬉しい」「面白い」などをどう与えられるかが重要。<br>
+        サービス提供後にユーザの意見をフィードバックして改良・向上させ続けることが継続利用につながる。
+        <span class="ptr">← S03:p.44</span>
+      </div>
+
+      <div class="audio-block">
+        <div class="block-label">🎙 音声補足</div>
+        「インタフェースデザイン → UI → UX」は時間軸に沿った流れ。まず設計（インタフェースデザイン）をして、次に操作性を考え（UI）、提供後にユーザ体験をフィードバックしながら改良し続ける（UX）。
+        <span class="ptr">← S05-A</span>
+      </div>
+
+      <!-- SVG: インタフェースの時間軸 -->
+      <div class="svg-wrap">
+        <figure>
+          <svg viewBox="0 0 600 90" xmlns="http://www.w3.org/2000/svg" style="max-width:560px;width:100%;">
+            <rect width="600" height="90" fill="#1a2035" rx="8"/>
+            <!-- 時間軸線 -->
+            <line x1="30" y1="55" x2="570" y2="55" stroke="#2a3a5a" stroke-width="1.5"/>
+            <!-- フェーズ1: インタフェースデザイン -->
+            <rect x="30" y="20" width="150" height="35" rx="5" fill="rgba(91,141,238,.15)" stroke="#5b8dee" stroke-width="1.2"/>
+            <text x="105" y="40" text-anchor="middle" fill="#5b8dee" font-size="11" font-family="Noto Sans JP,sans-serif" font-weight="700">インタフェースデザイン</text>
+            <text x="105" y="53" text-anchor="middle" fill="#8a99b8" font-size="9.5" font-family="Noto Sans JP,sans-serif">設計</text>
+            <!-- フェーズ2: UI -->
+            <rect x="215" y="20" width="150" height="35" rx="5" fill="rgba(52,211,153,.13)" stroke="#34d399" stroke-width="1.2"/>
+            <text x="290" y="40" text-anchor="middle" fill="#34d399" font-size="12" font-family="Noto Sans JP,sans-serif" font-weight="700">UI</text>
+            <text x="290" y="53" text-anchor="middle" fill="#8a99b8" font-size="9.5" font-family="Noto Sans JP,sans-serif">開発・操作性の実装</text>
+            <!-- フェーズ3: UX -->
+            <rect x="400" y="20" width="170" height="35" rx="5" fill="rgba(167,139,250,.13)" stroke="#a78bfa" stroke-width="1.2"/>
+            <text x="485" y="40" text-anchor="middle" fill="#a78bfa" font-size="12" font-family="Noto Sans JP,sans-serif" font-weight="700">UX</text>
+            <text x="485" y="53" text-anchor="middle" fill="#8a99b8" font-size="9.5" font-family="Noto Sans JP,sans-serif">提供後・体験のフィードバック</text>
+            <!-- 時間軸ラベル -->
+            <text x="30" y="76" fill="#5b6b8a" font-size="9.5" font-family="JetBrains Mono,monospace">開発前</text>
+            <text x="280" y="76" text-anchor="middle" fill="#5b6b8a" font-size="9.5" font-family="JetBrains Mono,monospace">→ 時間軸 →</text>
+            <text x="560" y="76" text-anchor="end" fill="#5b6b8a" font-size="9.5" font-family="JetBrains Mono,monospace">運用後</text>
+          </svg>
+          <figcaption>図：インタフェース関連の時間軸（設計→UI→UX） ← S03:p.45</figcaption>
+        </figure>
+      </div>
+
+      <div class="subsection-title" style="font-size:14px; margin-top:18px;">活用事例：天気アプリ</div>
+      <div class="audio-block">
+        <div class="block-label">🎙 音声補足</div>
+        天気アプリの活用事例が2つ紹介された。<br>
+        ① アラーム設定画面：数字を指で上下スワイプするとカチカチと振動する操作感が直感的なGUIの実現例。<br>
+        ② 雨雲レーダー画面：雨雲の量を青・緑・黄色のグラデーションで色分けし、時間ごとの降水量も一目でわかるデザインを実装。「いつ・どこで・どのくらい」が一目でわかる情報デザインの実践例。
+        <span class="ptr">← S05-A</span>
+      </div>
+
+      <p style="font-size:13px; color:var(--text-sub); margin-top:12px;"><strong>体験のすすめ：</strong>同じカテゴリのアプリを複数ダウンロードして使いやすさ・わかりやすさ・操作しやすさの違いを比較すると、インタフェースの違いが体験として理解できる。<span class="ptr">← S03:p.46</span></p>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">第2章 まとめ</div>
+      <ul>
+        <li>インタフェースとは：ハードウェア・ソフトウェア・人間などが情報をやりとりする際の<strong>接する部分</strong> <span class="ptr">← S03:p.47</span></li>
+        <li>インタフェースデザイン・UIによってユーザの使いやすさ・視認性を高めており、ソフトウェアにおいて非常に重要</li>
+        <li>同カテゴリのアプリを比較することでインタフェースの差を体験できる</li>
+      </ul>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- ─── 第3章 ─── -->
+  <section class="section" id="ch3">
+    <div class="section-title"><span class="num">CH.3</span>情報システムにおけるユニバーサルデザイン</div>
+
+    <div class="subsection" id="ch3-def">
+      <div class="subsection-title">ユニバーサルデザイン（UD）とは</div>
+
+      <div class="audio-block">
+        <div class="block-label">🎙 音声補足</div>
+        導入として「もし手が使えなかったら？足が使えなかったら？目が見えなかったら？」という問いかけ。扉や階段は一般の人には問題ないが、身体的な障壁があるユーザには「使えないデザイン」になる。これを踏まえて自動扉・スロープ・点字ブロックなどが提示された。
+        <span class="ptr">← S05-A</span>
+      </div>
+
+      <div class="key-block">
+        <div class="block-label">🔑 定義</div>
+        <strong>ユニバーサルデザイン（Universal Design）</strong><br>
+        年齢や文化、国籍、障害の有無にかかわらず、すべての人が使いやすいように工夫された用具・建造物などのデザインを目指す概念。<br>
+        → <strong>誰もが最初から使うことができるデザイン</strong>
+        <span class="ptr">← S03:p.51</span>
+      </div>
+
+      <div class="subsection-title" style="font-size:14px; margin-top:16px;">UDとバリアフリーの違い</div>
+
+      <div class="compare-grid">
+        <div class="compare-card">
+          <h4>ユニバーサルデザイン</h4>
+          <p>作る<strong>前段階から</strong>障壁が発生しないように設計する。「最初から誰でも使える」。</p>
+          <p style="font-size:12px; color:var(--text-muted); margin-top:6px;">例：自動扉・スロープ・UD フォント</p>
+        </div>
+        <div class="compare-card">
+          <h4>バリアフリー</h4>
+          <p>既に存在する障壁を後から取り除く。「後付けで問題を解消する」。</p>
+          <p style="font-size:12px; color:var(--text-muted); margin-top:6px;">例：既存ドアに手すりを追加</p>
+        </div>
+      </div>
+      <p style="font-size:12px;color:var(--text-muted);">← S03:p.52</p>
+
+      <div class="subsection-title" style="font-size:14px; margin-top:16px;">ユニバーサルデザインの7原則</div>
+      <p>アメリカのロナルド・L・メイス氏（Ronald Lawrence Mace, 1942–1998）によって提唱された。ノースカロライナ州立大学デザイン学科の建築家・教育者で、1989年に同大学にユニバーサルデザインセンターを設立した人物。<span class="ptr">← S03:p.53</span></p>
+
+      <table>
+        <tr><th>#</th><th>原則</th><th>概要</th></tr>
+        <tr><td>1</td><td>公平に使えること</td><td>どんな能力の人でも公平に利用できる</td></tr>
+        <tr><td>2</td><td>柔軟に使えること</td><td>さまざまな好みや能力に対応できる</td></tr>
+        <tr><td>3</td><td>単純で直感的に使えること</td><td>経験や知識に関わらず理解しやすい</td></tr>
+        <tr><td>4</td><td>情報が知覚できること</td><td>必要な情報を効果的に伝えられる</td></tr>
+        <tr><td>5</td><td>失敗に対して寛大であること</td><td>誤った操作に対する危険や悪影響を最小化</td></tr>
+        <tr><td>6</td><td>身体的な努力を少なくすること</td><td>疲労なく効率よく快適に使える</td></tr>
+        <tr><td>7</td><td>接近して使えるように大きさと空間の余裕を確保すること</td><td>体格・姿勢・移動能力に関わらず利用できる</td></tr>
+      </table>
+    </div>
+
+    <div class="subsection" id="ch3-info">
+      <div class="subsection-title">情報システムにおけるユニバーサルデザイン</div>
+
+      <p>WebサイトやアプリケーションにUDを適用する具体的な施策：<span class="ptr">← S03:p.56</span></p>
+
+      <table>
+        <tr><th>施策カテゴリ</th><th>具体例</th><th>対象ユーザ</th></tr>
+        <tr>
+          <td>文字表現</td>
+          <td><strong>ユニバーサルデザインフォント（UDフォント）</strong>：文字の各部を離して視認性を向上</td>
+          <td>視認性に問題がある人全般</td>
+        </tr>
+        <tr>
+          <td>視覚表現</td>
+          <td><strong>ピクトグラム</strong>：言語が変わってもアイコン自体は変わらない（PowerPoint等）</td>
+          <td>外国語話者・識字困難者</td>
+        </tr>
+        <tr>
+          <td>情報可視化</td>
+          <td><strong>インフォグラフィックス</strong>：情報やデータを視覚的に表現（地図・標識・技術文書）</td>
+          <td>広く一般</td>
+        </tr>
+        <tr>
+          <td>配色</td>
+          <td><strong>色のユニバーサルデザイン</strong>：色覚多様性を考慮した配色（赤×緑→赤×青など）</td>
+          <td>色覚異常がある人（日本人男性の約5%）</td>
+        </tr>
+        <tr>
+          <td>音声</td>
+          <td><strong>音声読み上げ機能</strong>：iPhoneの「コンテンツを読み上げ」機能など</td>
+          <td>視覚障害者</td>
+        </tr>
+        <tr>
+          <td>字幕</td>
+          <td><strong>字幕機能</strong>：動画コンテンツに字幕を付与。多言語表示にも対応</td>
+          <td>聴覚障害者・外国語話者</td>
+        </tr>
+        <tr>
+          <td>入力</td>
+          <td><strong>音声入力機能</strong></td>
+          <td>手が不自由で入力が難しい人</td>
+        </tr>
+      </table>
+      <p style="font-size:12px;color:var(--text-muted);">← S03:p.57-63</p>
+
+      <div class="audio-block">
+        <div class="block-label">🎙 音声補足</div>
+        UDフォントの具体例：「ナ」という文字で比較すると、通常フォントは文字がつながって書かれるが、UDフォントは各部を分離することで視認性を高めている。Wordなどのテキスト系アプリでフォント選択をすると「UDフォント」という選択肢が表示される場合がある。
+        <span class="ptr">← S05-A</span>
+      </div>
+
+      <div class="audio-block">
+        <div class="block-label">🎙 音声補足</div>
+        インフォグラフィックスの例として福岡のソウルフード（ラーメン・もつ鍋・餃子）の店舗数データを視覚化したもの、レストラン数を示したものが紹介された（出典：Fukuoka Facts）。
+        <span class="ptr">← S05-A</span>
+      </div>
+    </div>
+
+    <div class="subsection" id="ch3-access">
+      <div class="subsection-title">アクセシビリティとユーザビリティ</div>
+
+      <div class="compare-grid">
+        <div class="compare-card">
+          <h4>アクセシビリティ</h4>
+          <p><strong>誰にとっても</strong>使いやすく、利用しやすいこと。幅広いユーザを対象とする。</p>
+          <p style="font-size:12px; color:var(--text-muted); margin-top:6px;">← S03:p.64</p>
+        </div>
+        <div class="compare-card">
+          <h4>ユーザビリティ</h4>
+          <p>開発者が目的とする<strong>特定のユーザ</strong>に対して使いやすくすること。</p>
+          <p style="font-size:12px; color:var(--text-muted); margin-top:6px;">← S03:p.64</p>
+        </div>
+      </div>
+
+      <div class="audio-block">
+        <div class="block-label">🎙 音声補足</div>
+        アクセシビリティはUDの7原則の中でも特に「原則6：身体的な努力を少なくすること」に深く関係する。目が不自由なユーザには音声読み上げ、耳が不自由なユーザには字幕・代替テキスト、入力が難しいユーザには音声入力がアクセシビリティ機能の代表例。
+        <span class="ptr">← S05-A</span>
+      </div>
+
+      <div class="audio-block">
+        <div class="block-label">🎙 音声補足（実例）</div>
+        毎年開催される格闘技ゲームの世界大会（EVO等）で、目が見えないプレイヤーがアクセシビリティ機能を使って健常者と対戦し勝利した事例が紹介された。多くのサービス・アプリに既にアクセシビリティ機能が実装されているが、使う必要がないため気づかないことも多い。
+        <span class="ptr">← S05-A</span>
+      </div>
+
+      <div class="key-block">
+        <div class="block-label">💡 情報デザイン × ユニバーサルデザインの関係</div>
+        「情報デザイン（あらゆる情報をわかりやすく伝える）」＋「ユニバーサルデザイン（誰もが使えるデザイン）」を組み合わせることで、<strong>すべての人に公平なシステム・アプリが構築できる</strong>。<span class="ptr">← S03:p.67-68</span>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">第3章 まとめ</div>
+      <ul>
+        <li>ユニバーサルデザイン：誰もが最初から使えるデザイン。メイス氏の7原則に則って考えられている <span class="ptr">← S03:p.70</span></li>
+        <li>情報システムでのUD：文字表現・配色・アクセシビリティ機能を付加することで実装される</li>
+        <li>活用事例：スマートフォン標準機能、各種Webサービス・アプリ</li>
+        <li>情報デザイン＋UDを考慮することで誰もが使いやすいものを実装できる</li>
+      </ul>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- ─── 第4章 ─── -->
+  <section class="section" id="ch4">
+    <div class="section-title"><span class="num">CH.4</span>情報デザインの関連技術</div>
+
+    <div class="subsection" id="ch4-tech">
+      <div class="subsection-title">情報デザインの関連技術</div>
+
+      <p>情報デザインの技術は以下のような身近なモノに集約されている。<span class="ptr">← S03:p.75-79</span></p>
+
+      <table>
+        <tr><th>関連技術・媒体</th><th>情報デザインとしての要素</th></tr>
+        <tr>
+          <td><strong>新聞・図書館</strong></td>
+          <td>どこに何があるかを提示するために情報デザインの技術が集約されている。新聞は写真＋見出し＋記事本文をブロックで区切り膨大な情報を整理。図書館はジャンル別・50音順の配架・検索機能で利用者に提示。</td>
+        </tr>
+        <tr>
+          <td><strong>スマートフォン</strong></td>
+          <td>説明書がない状態でユーザがすぐに使えるインタフェースになっている。iPhone購入時に分厚い説明書が不要なのがその証拠。</td>
+        </tr>
+        <tr>
+          <td><strong>プログラミング</strong></td>
+          <td>目的があり、仕様がプログラミング言語ごとに決まっており、ルールに則して行う。ソースコードは他の人も同じものを再現できる（客観的表現＝デザイン）。</td>
+        </tr>
+        <tr>
+          <td><strong>Webデザイン</strong></td>
+          <td>わかりやすさ・視認性・使いやすさ・継続利用・ユニバーサルデザインなどを包括している。ネットショッピングで使いにくければ購入まで至らない＝UXまで含めた実践の場。</td>
+        </tr>
+      </table>
+
+      <div class="subsection-title" style="font-size:14px; margin-top:18px;">情報デザインにおける技術の定義</div>
+      <p>藤本 貴之氏（東洋大学総合情報学部）は以下のように述べている。<span class="ptr">← S03:p.80</span></p>
+      <ul>
+        <li>複雑な情報を整理し、わかりやすく編集して伝える技術</li>
+        <li>情報や技術への煩雑な経路を、わかりやすく構造化して筋道を立てる技術</li>
+      </ul>
+    </div>
+
+    <div class="subsection" id="ch4-use">
+      <div class="subsection-title">情報デザイン技術の活用方法</div>
+
+      <div class="audio-block">
+        <div class="block-label">🎙 音声補足（具体例）</div>
+        コンビニで新しいパンを売りたいとき：年齢層・購入時間・パンの種類・一人当たりの購入単価などのデータを収集し、マーケティング分析した上で資料化してプレゼンする。このとき、集めた情報を「わかりやすく表現できない」なら相手に伝わらず、情報が無意味になってしまう。
+        <span class="ptr">← S05-A</span>
+      </div>
+
+      <!-- SVG: 情報デザイン活用の流れ -->
+      <div class="svg-wrap">
+        <figure>
+          <svg viewBox="0 0 600 85" xmlns="http://www.w3.org/2000/svg" style="max-width:560px;width:100%;">
+            <rect width="600" height="85" fill="#1a2035" rx="8"/>
+            <defs>
+              <marker id="arr3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                <path d="M0,0 L0,6 L8,3 z" fill="#5b8dee"/>
+              </marker>
+            </defs>
+            <!-- ステップ -->
+            <rect x="14" y="22" width="118" height="42" rx="5" fill="rgba(91,141,238,.12)" stroke="#5b8dee" stroke-width="1.1"/>
+            <text x="73" y="41" text-anchor="middle" fill="#5b8dee" font-size="11" font-family="Noto Sans JP,sans-serif" font-weight="700">情報を収集</text>
+            <text x="73" y="57" text-anchor="middle" fill="#8a99b8" font-size="9.5" font-family="Noto Sans JP,sans-serif">データ・事実</text>
+            <line x1="134" y1="43" x2="152" y2="43" stroke="#5b8dee" stroke-width="1.3" marker-end="url(#arr3)"/>
+
+            <rect x="154" y="22" width="118" height="42" rx="5" fill="rgba(52,211,153,.1)" stroke="#34d399" stroke-width="1.1"/>
+            <text x="213" y="41" text-anchor="middle" fill="#34d399" font-size="11" font-family="Noto Sans JP,sans-serif" font-weight="700">視覚的な表現</text>
+            <text x="213" y="57" text-anchor="middle" fill="#8a99b8" font-size="9.5" font-family="Noto Sans JP,sans-serif">グラフ・図・UI</text>
+            <line x1="274" y1="43" x2="292" y2="43" stroke="#5b8dee" stroke-width="1.3" marker-end="url(#arr3)"/>
+
+            <rect x="294" y="22" width="148" height="42" rx="5" fill="rgba(251,191,36,.1)" stroke="#fbbf24" stroke-width="1.1"/>
+            <text x="368" y="41" text-anchor="middle" fill="#fbbf24" font-size="11" font-family="Noto Sans JP,sans-serif" font-weight="700">直感的な説明</text>
+            <text x="368" y="57" text-anchor="middle" fill="#8a99b8" font-size="9.5" font-family="Noto Sans JP,sans-serif">わかりやすさ・構造化</text>
+            <line x1="444" y1="43" x2="462" y2="43" stroke="#5b8dee" stroke-width="1.3" marker-end="url(#arr3)"/>
+
+            <rect x="464" y="22" width="118" height="42" rx="5" fill="rgba(167,139,250,.12)" stroke="#a78bfa" stroke-width="1.1"/>
+            <text x="523" y="41" text-anchor="middle" fill="#a78bfa" font-size="11" font-family="Noto Sans JP,sans-serif" font-weight="700">ユーザの理解</text>
+            <text x="523" y="57" text-anchor="middle" fill="#8a99b8" font-size="9.5" font-family="Noto Sans JP,sans-serif">情報の価値が生まれる</text>
+          </svg>
+          <figcaption>図：情報デザイン技術の活用フロー ← S03:p.82</figcaption>
+        </figure>
+      </div>
+
+      <div class="subsection-title" style="font-size:14px; margin-top:18px;">担当教員の研究事例</div>
+      <div class="audio-block">
+        <div class="block-label">🎙 音声補足（講師研究紹介）</div>
+        藤田光治教員が大学院時代に行ったスマートフォン文字入力インタフェースの研究事例が紹介された。当時の3つの入力方式（フリック入力・QWERTY入力・トグル入力）の利便性・入力速度を被験者実験で比較（→情報の収集）。その結果から、両手で持ちやすく大きなボタンのレイアウトを採用した新しい入力インタフェースアプリを開発（→インタフェースデザイン→UI実装）。スワイプで特殊文字に切り替え可能にするなどスマートフォンの特性を活かした設計。これが情報デザインの過程の一例。
+        <span class="ptr">← S05-A</span>
+      </div>
+      <p style="font-size:12px;color:var(--text-muted);">入力方式の詳細 ← S03:p.84</p>
+      <table>
+        <tr><th>入力方式</th><th>特徴</th></tr>
+        <tr><td>フリック入力</td><td>スマートフォンに特化。ガラケーからの移行者には慣れが必要だった</td></tr>
+        <tr><td>QWERTY入力</td><td>パソコンのキーボード配列と同じ。ブラインドタッチのような操作</td></tr>
+        <tr><td>トグル入力</td><td>ガラケー（ガラパゴス携帯）での入力方式</td></tr>
+      </table>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">第4章 まとめ</div>
+      <ul>
+        <li>情報デザインの関連技術：Webデザイン・プログラミングなど様々な情報伝達手法として使われている <span class="ptr">← S03:p.86</span></li>
+        <li>技術の活用：複雑な情報をわかりやすく伝え、構造化して筋道を立てることで集めた情報の結果を適切に伝えられる</li>
+        <li>情報を受け取る側・提供する側どちらの立場でも情報デザインの観点を念頭に置くことが重要</li>
+      </ul>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- ─── 未確定事項 ─── -->
+  <section class="section" id="undecided">
+    <div class="appendix-title">❓ 未確定事項・要確認リスト</div>
+
+    <div class="undecided-card">
+      <h3>未確定事項一覧</h3>
+      <table>
+        <tr>
+          <th>ID</th><th>内容</th><th>種別</th><th>優先度</th><th>解消できない理由</th>
+        </tr>
+        <tr style="opacity:.5; text-decoration:line-through;">
+          <td>U01 ✅</td>
+          <td>メイス氏（Ronald Mace）の生没年・所属機関</td>
+          <td>[解消済]</td>
+          <td>低</td>
+          <td>Web調査で解消。ロナルド・L・メイス（1942年8月3日–1998年6月29日）、ノースカロライナ州立大学デザイン学科。補足Bに詳細を記載済み。</td>
+        </tr>
+        <tr>
+          <td>U02</td>
+          <td>格闘技ゲーム世界大会（EVO等）の盲目プレイヤーの具体的な事例名</td>
+          <td>[解消不可]</td>
+          <td>低</td>
+          <td>講師が口頭で紹介した補足情報のため特定困難。Web調査でも同内容の特定ソース見つからず。授業の本旨には影響なし。</td>
+        </tr>
+        <tr style="opacity:.5; text-decoration:line-through;">
+          <td>U03 ✅</td>
+          <td>藤本氏の論文詳細（第一著者名・論文タイトル）</td>
+          <td>[解消済]</td>
+          <td>低</td>
+          <td>Web調査で解消。著者：藤本 貴之（東洋大学総合情報学部）。論文タイトル：「情報をわかりやすくするデザイン：情報デザインは『何であって』『何でない』のか」。補足Bに詳細を記載済み。</td>
+        </tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- ─── 補足A ─── -->
+  <section class="section appendix" id="appendix-a">
+    <div class="appendix-title">⭐ 補足A: 最重要ワード一覧</div>
+
+    <table>
+      <tr><th>用語</th><th>読み</th><th>定義（原文から抽出）</th><th>重要度</th></tr>
+      <tr>
+        <td>情報デザイン</td>
+        <td>じょうほうデザイン</td>
+        <td>あらゆる情報をわかりやすくまとめて、伝えること（Information Design）</td>
+        <td><span class="star">★★★</span></td>
+      </tr>
+      <tr>
+        <td>インタフェース</td>
+        <td>インタフェース</td>
+        <td>ハードウェア・ソフトウェア・人間などがお互いに情報をやりとりする際の接する部分（接面または境界面）</td>
+        <td><span class="star">★★★</span></td>
+      </tr>
+      <tr>
+        <td>ユーザインタフェース（UI）</td>
+        <td>ユーザインタフェース</td>
+        <td>人間がコンピュータを扱う際に必要な操作方法や表示方法。CUIとGUIに大別される。</td>
+        <td><span class="star">★★★</span></td>
+      </tr>
+      <tr>
+        <td>CUI</td>
+        <td>シーユーアイ</td>
+        <td>Character User Interface。テキストによる命令をキーボード入力でコンピュータを操作するインタフェース手法</td>
+        <td><span class="star">★★☆</span></td>
+      </tr>
+      <tr>
+        <td>GUI</td>
+        <td>ジーユーアイ</td>
+        <td>Graphical User Interface。アイコンなどの視覚的な要素をポインティングデバイスや指のタッチで操作するインタフェース</td>
+        <td><span class="star">★★★</span></td>
+      </tr>
+      <tr>
+        <td>UX</td>
+        <td>ユーエックス</td>
+        <td>ユーザエクスペリエンス（User Experience）。ユーザが商品やサービスを通して得られる体験。</td>
+        <td><span class="star">★★★</span></td>
+      </tr>
+      <tr>
+        <td>ユニバーサルデザイン（UD）</td>
+        <td>ユニバーサルデザイン</td>
+        <td>年齢や文化、国籍、障害の有無にかかわらず、すべての人が使いやすいように工夫されたデザインを目指す概念。誰もが最初から使えるデザイン。</td>
+        <td><span class="star">★★★</span></td>
+      </tr>
+      <tr>
+        <td>バリアフリー</td>
+        <td>バリアフリー</td>
+        <td>既に存在する障壁を取り除くこと（UDとの違いに注意）</td>
+        <td><span class="star">★★☆</span></td>
+      </tr>
+      <tr>
+        <td>アクセシビリティ</td>
+        <td>アクセシビリティ</td>
+        <td>誰にとっても使いやすく、利用しやすいこと。ソフトウェアにおいても必要な観点。</td>
+        <td><span class="star">★★★</span></td>
+      </tr>
+      <tr>
+        <td>ユーザビリティ</td>
+        <td>ユーザビリティ</td>
+        <td>開発者が目的とする特定のユーザに対して使いやすくすること（アクセシビリティは幅広いユーザ対象）</td>
+        <td><span class="star">★★☆</span></td>
+      </tr>
+      <tr>
+        <td>ピクトグラム</td>
+        <td>ピクトグラム</td>
+        <td>言語・国籍・障害の有無に関わらず視覚的なマークで情報を伝える手法。トイレマーク等が代表例。</td>
+        <td><span class="star">★★☆</span></td>
+      </tr>
+      <tr>
+        <td>インフォグラフィックス</td>
+        <td>インフォグラフィックス</td>
+        <td>情報・データ・知識を視覚的に表現したもの。標識・地図・技術文書・教育などで使われる。</td>
+        <td><span class="star">★★☆</span></td>
+      </tr>
+      <tr>
+        <td>VUI</td>
+        <td>ブイユーアイ</td>
+        <td>Voice User Interface。声を使ったインタフェース。例：iPhoneのSiri</td>
+        <td><span class="star">★☆☆</span></td>
+      </tr>
+      <tr>
+        <td>ジェスチャーインタフェース</td>
+        <td>ジェスチャーインタフェース</td>
+        <td>人間の体の動きを読み取って入力・操作を行うインタフェース。例：Nintendo Switch、XBOX Kinect</td>
+        <td><span class="star">★☆☆</span></td>
+      </tr>
+      <tr>
+        <td>UDフォント（ユニバーサルデザインフォント）</td>
+        <td>ユーディーフォント</td>
+        <td>文字の各部を分離し視認性を高めたフォント。アプリのフォント選択から使用可能。</td>
+        <td><span class="star">★★☆</span></td>
+      </tr>
+    </table>
+  </section>
+
+  <!-- ─── 補足B ─── -->
+  <section class="section appendix" id="appendix-b">
+    <div class="appendix-title">📚 補足B: 知っておくべき背景知識</div>
+
+    <ul>
+      <li style="margin-bottom:10px;">
+        <strong>メイス氏（Ronald L. Mace）について</strong><span class="ext-block" style="display:inline; border:none; background:none; padding:0; font-size:12px; color:var(--text-sub);">[外部補足]</span>：
+        ロナルド・ローレンス・メイス（1942年8月3日–1998年6月29日）はアメリカの建築家・製品デザイナー・教育者・コンサルタント。ユニバーサルデザインという用語を初めて生み出した人物として知られる。ニュージャージー州ジャージーシティ生まれ。9歳のときにポリオに感染し、以後車椅子を使用した。ノースカロライナ州立大学デザイン学科を1966年に卒業。1973年には米国初のアクセシビリティ建築基準法（ノースカロライナ州法）の策定に深く関与した。1989年にノースカロライナ州立大学にアクセシブルハウジングセンター（後のユニバーサルデザインセンター）を設立した。UD7原則はメイス氏を中心とする複数の建築家・デザイナーらが協力して1997年4月に策定した（Version 2.0）。
+      </li>
+      <li style="margin-bottom:10px;">
+        <strong>色覚多様性（色覚異常）の割合</strong><span class="ext-block" style="display:inline; border:none; background:none; padding:0; font-size:12px; color:var(--text-sub);">[外部補足]</span>：
+        先天赤緑色覚異常は日本人男性の約5%（20人に1人）、日本人女性の約0.2%（500人に1人）に見られる。X染色体連鎖性遺伝のため男性に多い。日本全体では約320万人が該当するとされる。P型（赤の感受性が低い）・D型（緑の感受性が低い）が大多数を占め、赤と緑・赤と黒・緑と茶などが見分けにくい。「色覚異常」という名称は2005年に日本眼科学会が改訂した用語で、以前は「色盲」「色弱」と呼ばれていた。配色UD対応（例：赤×緑の組み合わせを避け赤×青にする）は、この割合を考慮した設計として特に重要。
+      </li>
+      <li style="margin-bottom:10px;">
+        <strong>路線図のデザイン</strong><span class="ext-block" style="display:inline; border:none; background:none; padding:0; font-family:'Noto Sans JP',sans-serif; font-size:12px; color:var(--text-sub);">[外部補足]</span>：
+        鉄道路線図の代表的なデザインとして、ロンドン地下鉄のハリー・ベック（Harry Beck）が1931年に考案した路線図が世界的に有名。実際の地理的位置より「使いやすさ・わかりやすさ」を優先した抽象化デザインで、情報デザインの歴史的名作とされる。
+      </li>
+    </ul>
+  </section>
+
+  <!-- ─── 補足C ─── -->
+  <section class="section appendix" id="appendix-c">
+    <div class="appendix-title">🎯 補足C: 試験・レポートで重要な観点</div>
+
+    <ul>
+      <li><strong>情報デザインの定義</strong>を正確に言える（「あらゆる情報をわかりやすくまとめて伝えること」）</li>
+      <li><strong>アートとデザインの違い</strong>：アートは主観的・デザインは客観的な表現</li>
+      <li><strong>CUI / GUI の違い</strong>を説明できる（テキスト入力 vs 視覚的なアイコン操作）</li>
+      <li><strong>インタフェースデザイン → UI → UX の時間軸</strong>を説明できる（設計→開発→提供後フィードバック）</li>
+      <li><strong>ユニバーサルデザイン vs バリアフリーの違い</strong>：UDは「最初から」、バリアフリーは「後から障壁を除去」</li>
+      <li><strong>UD7原則</strong>を列挙できる（特に「単純で直感的」「身体的努力を少なく」「情報が知覚できること」は重要）</li>
+      <li><strong>アクセシビリティ vs ユーザビリティ</strong>：前者は幅広いユーザ対象、後者は特定ユーザ対象</li>
+      <li><strong>情報デザインの関連技術</strong>の例を複数挙げられる（Webデザイン・プログラミング・スマートフォン・新聞・図書館）</li>
+      <li>藤本 貴之氏の定義（「複雑な情報を整理して伝える技術」「構造化して筋道を立てる技術」）を理解しておく</li>
+    </ul>
+  </section>
+
+  <!-- ─── 補足D ─── -->
+  <section class="section appendix" id="appendix-d">
+    <div class="appendix-title">🔗 補足D: 関連概念・次回への接続</div>
+
+    <ul>
+      <li style="margin-bottom:10px;">
+        <strong>Webアクセシビリティ基準（WCAG）</strong>：<span style="font-size:12px;color:var(--text-sub);">[外部補足]</span>
+        Web Content Accessibility Guidelines（WCAG）はW3Cが策定した国際的なWebアクセシビリティのガイドライン。日本でも2024年6月から改正JIS規格（JIS X 8341-3:2024）として活用が推奨されており、公共機関のWebサイトに対応が求められている。本章のアクセシビリティ概念と直結する。
+      </li>
+      <li style="margin-bottom:10px;">
+        <strong>情報アーキテクチャ（IA）</strong>：<span style="font-size:12px;color:var(--text-sub);">[外部補足]</span>
+        Webサイトやアプリの情報の構造・整理・ラベリングを設計する分野。UX・UIデザインの上流工程として位置づけられる。本回のインタフェースデザインと密接に関連。
+      </li>
+      <li>
+        <strong>次回との接続</strong>：本回で扱った「情報デザイン」「インタフェース」「UD/アクセシビリティ」の概念は、後続のセキュリティ・ネットワーク・プログラミング関連の回でも横断的に参照される重要な基礎概念。
+      </li>
+      <li style="margin-top:10px;">
+        <strong>藤本 貴之氏の論文について（第4章引用元の詳細）</strong><span class="ext-block" style="display:inline; border:none; background:none; padding:0; font-size:12px; color:var(--text-sub);">[外部補足・U03解消]</span>：
+        授業スライドで引用された論文の正式情報は以下の通り。藤本 貴之（東洋大学総合情報学部）「情報をわかりやすくするデザイン：情報デザインは『何であって』『何でない』のか」、情報の科学と技術、2015年、65巻11号、p.450-456。J-STAGEにてフリーアクセスで閲覧可能（DOI: 10.18919/jkg.65.11_450）。キーワードは「情報デザイン・情報アーキテクチャ・ウェブデザイン・ユニバーサルデザイン・アクセシビリティ」。
+      </li>
+    </ul>
+  </section>
+
+  <!-- ─── QC スコア ─── -->
+  <section class="section" id="qc-score" style="margin-top:48px; border-top:1px solid var(--border); padding-top:32px;">
+    <div class="section-title"><span class="num">QC</span>Step 6 ノート完成後チェック</div>
+
+    <div class="score-badge">
+      <div>
+        <div class="label">パートIII スコア（パートIV更新後）</div>
+        <div class="value">96.7%</div>
+      </div>
+      <div class="verdict">PASS（更新済）</div>
+    </div>
+
+    <table style="font-size:13px;">
+      <tr><th>項目</th><th>判定</th><th>スコア</th><th>照合根拠・メモ</th></tr>
+      <tr><td>numbers</td><td>pass</td><td>2</td><td>数値はS03スライド出典（通信利用動向 令和2年版 / ICT経済分析 平成30年）のみ参照。本文中に独自数値なし。</td></tr>
+      <tr><td>proper_nouns</td><td>pass</td><td>2</td><td>教員名「藤田 光治」はS03表紙で確認済み。S05の「藤田浩二/浩司」誤変換を修正。メイス氏の正式名はWikipedia・NC State大学資料で確認済み（Ronald Lawrence Mace）。藤本氏の正確な姓名（貴之・東洋大学）もJ-STAGEで確認済み。</td></tr>
+      <tr><td>dates</td><td>pass</td><td>2</td><td>路線図出典（アクセス日2023年8月14日）、通信利用動向調査（令和2年版）、ICT経済分析（平成30年）、藤本氏論文（2015年65巻）、UD7原則（1997年4月 Ver.2.0）、いずれもS03記載・Web照合と一致。</td></tr>
+      <tr><td>contradictions</td><td>pass</td><td>2</td><td>S03の「インタフェース（Interface）」正式表記に統一。S05の「インターフェース/インターフェーズ」を修正済み。</td></tr>
+      <tr><td>inference_quality</td><td>pass</td><td>2</td><td>[推測]タグは使用していない。全情報はS03またはS05からのソース付き情報。</td></tr>
+      <tr><td>doc_extraction</td><td>pass</td><td>2</td><td>第1〜4章・各まとめ・学習目標すべてS03章構成と対応。</td></tr>
+      <tr><td>ai_term_errors</td><td>pass</td><td>2</td><td>「ユニバーサルデザイン」「ユーザエクスペリエンス」「Siri」「インタフェース」等すべて修正済み。</td></tr>
+      <tr><td>ai_format_errors</td><td>pass</td><td>2</td><td>音声補足の口語（「〜てしまう」等）は内容正確性に影響しない範囲。</td></tr>
+      <tr><td>ai_omissions</td><td>pass</td><td>2</td><td>S05で補足された内容（研究事例・天気アプリ・コンビニ例等）はすべて音声補足ブロックに記載。</td></tr>
+      <tr><td>ai_text_reliability</td><td>pass</td><td>2</td><td>S05由来の重要固有名詞（Nintendo Switch, XBOX Kinect）はS03で確認済み。</td></tr>
+      <tr><td>ai_cross_reference</td><td>pass</td><td>2</td><td>S03のUD7原則とS05の音声説明は一致。S03の「接面または境界面」もS05の説明と整合。</td></tr>
+      <tr><td>multivariant_resolved</td><td>pass</td><td>2</td><td>S05-A/B間の表記差（教員名・カタカナ術語）はS03で照合・統一済み。</td></tr>
+      <tr><td>visual_accuracy_content</td><td>warn</td><td>1</td><td>SVG図はスライドの概念を再現。スライドに実写・写真が多くSVG化は概念図に限定（写真は[図解省略]不使用だが省略済み）。内容整合性に問題はないがスライド画像との完全一致は検証困難。</td></tr>
+      <tr><td>visual_accuracy_geometry</td><td>na</td><td>-</td><td>数値的な角度・座標を含む図なし。</td></tr>
+      <tr><td>text_quality</td><td>pass</td><td>2</td><td>表記統一（インタフェース/UX等）、ソースポインター付与、重複排除を確認。</td></tr>
+      <tr><td>appendix_quality</td><td>pass</td><td>2</td><td>補足B（メイス氏・色覚割合・路線図歴史・藤本氏論文詳細）の外部補足情報は[外部補足]タグ付与済み。メイス氏の生没年・所属はWikipedia・Britannica・NC State大学公式資料で照合確認。色覚異常の割合は参天製薬・眼科医資料等で確認。藤本氏の著者名・タイトルはJ-STAGEで確認。</td></tr>
+    </table>
+
+    <p style="font-size:12px; color:var(--text-muted); margin-top:10px;">
+      有効項目：15項目（na=1除外）｜スコア合計：29/30点｜スコア%：<strong>96.7%</strong> → <strong>PASS</strong>
+    </p>
+
+    <p style="font-size:11px; color:var(--text-muted); margin-top:6px;">
+      v1.0 2026-03-29 初版（SSP v4.5.1 Step 5-B完了）<br>
+      v1.1 2026-03-30 未確定事項U01・U03解消（Web調査）。補足B拡充（メイス氏詳細・色覚情報・藤本氏論文正式著者名）。
+    </p>
+  </section>
+
+</main>
+
+<script>
+  // Scroll-based sidebar active highlight
+  const links = document.querySelectorAll('#sidebar nav a[href^="#"]');
+  const sections = [...links].map(l => document.querySelector(l.getAttribute('href'))).filter(Boolean);
+
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const a = document.querySelector(`#sidebar nav a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  sections.forEach(s => obs.observe(s));
+</script>
+
+</body>
+</html>
