@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>キャリア入門 第5回 — ビジネスプロデュース力について</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --bg-card: #1a1f2e;
+    --bg-card2: #1e2535;
+    --text: #e2e8f5;
+    --text-sub: #8a99b8;
+    --border: #2d3a55;
+    --accent-blue: #5b8dee;
+    --accent-green: #34d399;
+    --accent-orange: #fbbf24;
+    --accent-purple: #a78bfa;
+    --accent-red: #f87171;
+    --sidebar-w: 260px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 15px;
+    line-height: 1.8;
+    display: flex;
+  }
+  /* ── Sidebar ── */
+  #sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    width: var(--sidebar-w);
+    height: 100vh;
+    background: #111827;
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    padding: 20px 0;
+    z-index: 100;
+  }
+  #sidebar .logo {
+    padding: 0 18px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--text-sub);
+    letter-spacing: .05em;
+  }
+  #sidebar .logo strong { display: block; font-size: 13px; color: var(--accent-blue); margin-bottom: 2px; }
+  #sidebar nav { padding: 12px 0; }
+  #sidebar nav a {
+    display: block;
+    padding: 6px 18px;
+    color: var(--text-sub);
+    text-decoration: none;
+    font-size: 12.5px;
+    line-height: 1.4;
+    transition: color .15s, background .15s;
+    border-left: 3px solid transparent;
+  }
+  #sidebar nav a:hover, #sidebar nav a.active {
+    color: var(--text);
+    background: #1e2535;
+    border-left-color: var(--accent-blue);
+  }
+  #sidebar nav .nav-h1 { font-weight: 700; font-size: 12px; color: var(--text); }
+  #sidebar nav .nav-h2 { padding-left: 28px; font-size: 12px; }
+  #sidebar nav .nav-h3 { padding-left: 38px; font-size: 11.5px; }
+  #sidebar nav .nav-sep {
+    margin: 8px 18px;
+    border-top: 1px solid var(--border);
+    font-size: 10px;
+    color: var(--text-sub);
+    padding-top: 8px;
+    letter-spacing: .08em;
+    font-weight: 600;
+  }
+  /* ── Main ── */
+  #main {
+    margin-left: var(--sidebar-w);
+    max-width: 900px;
+    width: 100%;
+    padding: 40px 40px 80px;
+  }
+  /* ── Page header ── */
+  .page-header {
+    background: linear-gradient(135deg, #1a1f2e 0%, #0f172a 100%);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin-bottom: 32px;
+  }
+  .page-header .tag {
+    display: inline-block;
+    background: var(--accent-blue);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    letter-spacing: .05em;
+  }
+  .page-header h1 { font-size: 22px; font-weight: 700; line-height: 1.4; color: var(--text); }
+  .page-header .meta { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 16px; font-size: 12.5px; color: var(--text-sub); }
+  .page-header .meta span::before { margin-right: 4px; }
+  /* ── Section card ── */
+  .section-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 28px 32px;
+    margin-bottom: 24px;
+  }
+  .section-card h2 {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--accent-blue);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 10px;
+    margin-bottom: 18px;
+  }
+  .section-card h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #c4d0e8;
+    margin: 20px 0 10px;
+  }
+  .section-card h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-sub);
+    margin: 14px 0 6px;
+  }
+  .section-card p { margin-bottom: 10px; }
+  .section-card ul, .section-card ol { padding-left: 20px; margin-bottom: 10px; }
+  .section-card li { margin-bottom: 4px; }
+  /* ── Block types ── */
+  .blk {
+    border-left: 4px solid;
+    border-radius: 0 6px 6px 0;
+    padding: 10px 14px;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+  .blk-audio { border-color: var(--accent-blue); background: rgba(91,141,238,.08); }
+  .blk-audio::before { content: "🔊 音声補足"; font-size: 11px; font-weight: 700; color: var(--accent-blue); display: block; margin-bottom: 4px; font-family: 'JetBrains Mono', monospace; }
+  .blk-ext { border-color: var(--accent-green); background: rgba(52,211,153,.07); }
+  .blk-ext::before { content: "📎 外部補足"; font-size: 11px; font-weight: 700; color: var(--accent-green); display: block; margin-bottom: 4px; font-family: 'JetBrains Mono', monospace; }
+  .blk-unconf { border-color: var(--accent-orange); background: rgba(251,191,36,.07); }
+  .blk-unconf::before { content: "❓ 未確定"; font-size: 11px; font-weight: 700; color: var(--accent-orange); display: block; margin-bottom: 4px; font-family: 'JetBrains Mono', monospace; }
+  .blk-key { border-color: var(--accent-orange); background: rgba(251,191,36,.1); border-left-width: 5px; }
+  .blk-key::before { content: "⭐ KEY POINT"; font-size: 11px; font-weight: 700; color: var(--accent-orange); display: block; margin-bottom: 4px; font-family: 'JetBrains Mono', monospace; }
+  /* ── Source pointer ── */
+  .sp {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    background: #252d3f;
+    color: var(--text-sub);
+    padding: 1px 6px;
+    border-radius: 3px;
+    margin-left: 4px;
+    white-space: nowrap;
+  }
+  /* ── Table ── */
+  .tbl-wrap { overflow-x: auto; margin: 14px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  th { background: #252d3f; color: var(--accent-blue); font-weight: 600; padding: 9px 12px; text-align: left; border-bottom: 2px solid var(--accent-blue); }
+  td { padding: 8px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:hover td { background: rgba(91,141,238,.04); }
+  .star3 { color: var(--accent-orange); }
+  .star2 { color: var(--accent-blue); }
+  .star1 { color: var(--text-sub); }
+  /* ── Appendix cards ── */
+  .appendix-card {
+    border-radius: 10px;
+    padding: 24px 28px;
+    margin-bottom: 20px;
+    border: 1px solid;
+  }
+  .appendix-card h2 { font-size: 16px; font-weight: 700; margin-bottom: 14px; }
+  .app-orange { background: rgba(251,191,36,.06); border-color: rgba(251,191,36,.3); }
+  .app-orange h2 { color: var(--accent-orange); }
+  .app-blue { background: rgba(91,141,238,.06); border-color: rgba(91,141,238,.3); }
+  .app-blue h2 { color: var(--accent-blue); }
+  .app-green { background: rgba(52,211,153,.06); border-color: rgba(52,211,153,.3); }
+  .app-green h2 { color: var(--accent-green); }
+  .app-purple { background: rgba(167,139,250,.06); border-color: rgba(167,139,250,.3); }
+  .app-purple h2 { color: var(--accent-purple); }
+  .app-red { background: rgba(248,113,113,.06); border-color: rgba(248,113,113,.3); }
+  .app-red h2 { color: var(--accent-red); }
+  /* ── SVG figures ── */
+  figure { margin: 18px 0; }
+  figcaption { font-size: 11.5px; color: var(--text-sub); text-align: center; margin-top: 6px; font-family: 'JetBrains Mono', monospace; }
+  /* ── Comparison table (problem solving) ── */
+  .cmp-table th { font-size: 13px; }
+  .cmp-table .col-rational { color: #93c5fd; }
+  .cmp-table .col-produce { color: var(--accent-green); }
+  /* ── flow div ── */
+  .flow-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 14px 0;
+  }
+  .flow-node {
+    background: var(--bg-card2);
+    border: 1px solid var(--accent-blue);
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 13px;
+    text-align: center;
+  }
+  .flow-arrow { color: var(--accent-blue); font-size: 20px; }
+  /* ── 3 elements triangle ── */
+  .tri-wrap { display: flex; justify-content: center; margin: 20px 0; }
+</style>
+</head>
+<body>
+
+<!-- ═══ SIDEBAR ═══ -->
+<aside id="sidebar">
+  <div class="logo">
+    <strong>キャリア入門 第5回</strong>
+    ビジネスプロデュース力について
+  </div>
+  <nav>
+    <div class="nav-sep">📖 本文</div>
+    <a href="#ch1" class="nav-h1">第1章 プロデュース力の理解</a>
+    <a href="#ch1-def" class="nav-h2">定義とキーワード</a>
+    <a href="#ch1-music" class="nav-h2">身近な例：音楽プロデュース</a>
+    <a href="#ch1-vs" class="nav-h2">問題解決 vs プロデュース思考</a>
+    <a href="#ch1-zero" class="nav-h2">ゼロベース思考</a>
+    <a href="#ch2" class="nav-h1">第2章 プロデュースの3要素</a>
+    <a href="#ch2-create" class="nav-h2">創造</a>
+    <a href="#ch2-fusion" class="nav-h2">融合</a>
+    <a href="#ch2-realize" class="nav-h2">実現</a>
+    <a href="#ch3" class="nav-h1">第3章 社会のパラダイムシフト</a>
+    <a href="#ch3-digital" class="nav-h2">デジタル化</a>
+    <a href="#ch3-flat" class="nav-h2">フラット化</a>
+    <a href="#ch3-global" class="nav-h2">グローバル化</a>
+    <a href="#ch4" class="nav-h1">第4章 プロデューサーに必要な7つの能力</a>
+    <a href="#ch4-job" class="nav-h2">プロデューサーの仕事</a>
+    <a href="#ch4-7" class="nav-h2">7つの能力</a>
+    <div class="nav-sep">📌 補足</div>
+    <a href="#appA" class="nav-h2">補足A 最重要ワード</a>
+    <a href="#appB" class="nav-h2">補足B 背景知識</a>
+    <a href="#appC" class="nav-h2">補足C 試験・レポート</a>
+    <a href="#appD" class="nav-h2">補足D 関連概念</a>
+    <a href="#unresolved" class="nav-h2">❓ 未確定事項リスト</a>
+  </nav>
+</aside>
+
+<!-- ═══ MAIN ═══ -->
+<main id="main">
+
+<!-- Page header -->
+<header class="page-header">
+  <span class="tag">サイバー大学 · 学部共通教養科目</span>
+  <h1>第5回 ビジネスプロデュース力について</h1>
+  <div class="meta">
+    <span>📚 キャリア入門</span>
+    <span>👤 森戸裕一</span>
+    <span>🗂 S03 スライドPDF ✓ &nbsp;|&nbsp; S05 AI変換テキスト (hynote.ai) ×2 ✓</span>
+    <span>📅 v1.0 2025</span>
+  </div>
+</header>
+
+<!-- ═══ CH1 ═══ -->
+<section id="ch1" class="section-card">
+  <h2>第1章 プロデュース力の理解</h2>
+
+  <h3 id="ch1-def">1-1 ビジネスプロデュースとは</h3>
+
+  <div class="blk blk-key">
+    既存の枠にとらわれず、様々な人や組織と連携し、新しいビジネスを創造することで現状を変えること。<span class="sp">← S03:p.4</span>
+  </div>
+
+  <p>「ビジネスプロデュース」が対象とする範囲は広く、以下のような要素が含まれる。<span class="sp">← S03:p.4</span></p>
+
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>カテゴリ</th><th>具体例</th></tr>
+      <tr><td>事業・商品</td><td>新規事業、新商品・サービス、新しい仕事</td></tr>
+      <tr><td>職場環境</td><td>職場のムード、モチベーション、リレーション（人間関係）</td></tr>
+      <tr><td>個人</td><td>場、キャリア</td></tr>
+    </table>
+  </div>
+
+  <div class="blk blk-audio">
+    単に0から1を生み出すだけでなく、すでに1として存在する既存のものを組み合わせて新しい価値を作ることも重要。既存の枠組みの中だけで考えると「思考が固定化」してしまうため、様々な人・組織との連携で新しい考え方を取り込む。<span class="sp">← S05:A</span>
+  </div>
+
+  <div class="blk blk-key">
+    キーワードは「<strong>連携</strong>」。人と人・能力と能力・場と場を繋ぎ、今まで存在しなかった組み合わせを作ることで、お互いのポテンシャルを引き出す。<span class="sp">← S03:p.6</span>
+  </div>
+
+  <h3 id="ch1-music">1-2 身近なプロデュースの例：音楽業界</h3>
+
+  <!-- SVG: プロデューサーの役割 -->
+  <figure>
+    <svg viewBox="0 0 720 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;background:#1e2535;border-radius:8px">
+      <!-- Producer node -->
+      <rect x="290" y="110" width="140" height="44" rx="8" fill="#252d3f" stroke="#5b8dee" stroke-width="2"/>
+      <text x="360" y="137" text-anchor="middle" fill="#e2e8f5" font-family="Noto Sans JP" font-size="14" font-weight="700">プロデューサー</text>
+      <!-- Artist node -->
+      <rect x="20" y="110" width="110" height="44" rx="8" fill="#252d3f" stroke="#34d399" stroke-width="1.5"/>
+      <text x="75" y="137" text-anchor="middle" fill="#e2e8f5" font-family="Noto Sans JP" font-size="13">歌手A</text>
+      <!-- Arrow artist→producer -->
+      <line x1="130" y1="132" x2="290" y2="132" stroke="#8a99b8" stroke-width="1.5" marker-end="url(#arr)"/>
+      <!-- Vision node -->
+      <rect x="590" y="110" width="110" height="44" rx="8" fill="#252d3f" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="645" y="137" text-anchor="middle" fill="#fbbf24" font-family="Noto Sans JP" font-size="13" font-weight="700">ビジョン</text>
+      <!-- Arrow producer→vision -->
+      <line x1="430" y1="132" x2="590" y2="132" stroke="#5b8dee" stroke-width="2" marker-end="url(#arr2)"/>
+      <!-- Top labels from producer -->
+      <!-- キャラクター -->
+      <rect x="20" y="20" width="150" height="36" rx="6" fill="#1a1f2e" stroke="#5b8dee" stroke-width="1"/>
+      <text x="95" y="43" text-anchor="middle" fill="#c4d0e8" font-family="Noto Sans JP" font-size="12">どんなキャラクターで売り出すか？</text>
+      <line x1="290" y1="120" x2="170" y2="55" stroke="#5b8dee" stroke-width="1" stroke-dasharray="4"/>
+      <!-- 曲方向性 -->
+      <rect x="210" y="20" width="130" height="36" rx="6" fill="#1a1f2e" stroke="#5b8dee" stroke-width="1"/>
+      <text x="275" y="43" text-anchor="middle" fill="#c4d0e8" font-family="Noto Sans JP" font-size="12">曲の方向性は？</text>
+      <line x1="340" y1="110" x2="310" y2="56" stroke="#5b8dee" stroke-width="1" stroke-dasharray="4"/>
+      <!-- CD内容 -->
+      <rect x="380" y="20" width="140" height="36" rx="6" fill="#1a1f2e" stroke="#5b8dee" stroke-width="1"/>
+      <text x="450" y="43" text-anchor="middle" fill="#c4d0e8" font-family="Noto Sans JP" font-size="12">CDの内容・発売時期は？</text>
+      <line x1="400" y1="110" x2="420" y2="56" stroke="#5b8dee" stroke-width="1" stroke-dasharray="4"/>
+      <!-- 宣伝 -->
+      <rect x="560" y="20" width="140" height="36" rx="6" fill="#1a1f2e" stroke="#5b8dee" stroke-width="1"/>
+      <text x="630" y="43" text-anchor="middle" fill="#c4d0e8" font-family="Noto Sans JP" font-size="12">宣伝方法・キャンペーンは？</text>
+      <line x1="430" y1="115" x2="580" y2="56" stroke="#5b8dee" stroke-width="1" stroke-dasharray="4"/>
+      <!-- Bottom label -->
+      <text x="360" y="220" text-anchor="middle" fill="#34d399" font-family="Noto Sans JP" font-size="13" font-weight="700">流行を創り出しヒットさせる ― その全行程に関わる</text>
+      <!-- Arrow markers -->
+      <defs>
+        <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#8a99b8"/>
+        </marker>
+        <marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#5b8dee"/>
+        </marker>
+      </defs>
+    </svg>
+    <figcaption>図：身近なプロデュースの例（音楽業界） ← S03:p.5</figcaption>
+  </figure>
+
+  <div class="blk blk-audio">
+    プロデュースと聞いて多くの人が思い浮かべるのは音楽・芸能界。講義では代表的な名プロデューサーとして <strong>小室哲哉・つんく♂・秋元康</strong> の3名が挙げられた。<span class="sp">← S05:A（固有名詞はWeb調査で確認・補正）</span>
+    <div style="margin-top:8px;padding:8px 12px;background:rgba(91,141,238,.06);border-radius:6px;font-size:13px">
+      <p><strong>小室哲哉</strong>：1990年代にTK名義でglobeや篠原涼子・華原朋美等を次々とプロデュース。J-POP黄金期を牽引したヒットメーカー。</p>
+      <p><strong>つんく♂</strong>（シャ乱Q出身）：モーニング娘。をプロデュースし「LOVEマシーン」（175万枚超）等のヒットを生む。ハロー！プロジェクトを長年主導。</p>
+      <p><strong>秋元康</strong>：放送作家・作詞家として出発し、おニャン子クラブからAKB48グループ・坂道シリーズを総合プロデュース。JASRAC賞を2年連続三賞独占。</p>
+    </div>
+  </div>
+
+  <div class="blk blk-audio">
+    <strong>プロデューサーが考えること：</strong>歌手の潜在能力をどう引き出すか（場を与える・モチベーションを付ける等）。これは製品やサービスのプロデュースでも同じ。「最終的に誰に対して売るのか」「どうなれば成功と言えるか」を十分に考えながらプロデュースする。<span class="sp">← S05:A</span>
+  </div>
+
+  <!-- 連携図 SVG -->
+  <h4>ビジョン実現のための連携</h4>
+
+  <figure>
+    <svg viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;background:#1e2535;border-radius:8px">
+      <!-- アイデア -->
+      <circle cx="80" cy="130" r="36" fill="#fbbf24" opacity=".9"/>
+      <text x="80" y="126" text-anchor="middle" fill="#111" font-family="Noto Sans JP" font-size="11" font-weight="700">アイデア</text>
+      <text x="80" y="140" text-anchor="middle" fill="#111" font-family="Noto Sans JP" font-size="10">（プロデューサー）</text>
+      <!-- Arrow -->
+      <line x1="118" y1="120" x2="620" y2="65" stroke="#5b8dee" stroke-width="3" marker-end="url(#arr3)"/>
+      <!-- Nodes along path -->
+      <!-- レコーディングスタッフ -->
+      <rect x="160" y="55" width="130" height="34" rx="6" fill="#252d3f" stroke="#5b8dee" stroke-width="1"/>
+      <text x="225" y="75" text-anchor="middle" fill="#c4d0e8" font-family="Noto Sans JP" font-size="11">曲方向性に合った</text>
+      <text x="225" y="87" text-anchor="middle" fill="#c4d0e8" font-family="Noto Sans JP" font-size="11">レコーディングスタッフ</text>
+      <!-- TV -->
+      <rect x="310" y="25" width="120" height="34" rx="6" fill="#252d3f" stroke="#5b8dee" stroke-width="1"/>
+      <text x="370" y="45" text-anchor="middle" fill="#c4d0e8" font-family="Noto Sans JP" font-size="11">キャラクターを打ち</text>
+      <text x="370" y="57" text-anchor="middle" fill="#c4d0e8" font-family="Noto Sans JP" font-size="11">出せるTV番組スタッフ</text>
+      <!-- デザイナー -->
+      <rect x="310" y="100" width="120" height="34" rx="6" fill="#252d3f" stroke="#5b8dee" stroke-width="1"/>
+      <text x="370" y="120" text-anchor="middle" fill="#c4d0e8" font-family="Noto Sans JP" font-size="11">イメージに合った</text>
+      <text x="370" y="132" text-anchor="middle" fill="#c4d0e8" font-family="Noto Sans JP" font-size="11">CDジャケットデザイナー</text>
+      <!-- プロモーター -->
+      <rect x="450" y="60" width="120" height="34" rx="6" fill="#252d3f" stroke="#5b8dee" stroke-width="1"/>
+      <text x="510" y="80" text-anchor="middle" fill="#c4d0e8" font-family="Noto Sans JP" font-size="11">魅力を伝えられる</text>
+      <text x="510" y="92" text-anchor="middle" fill="#c4d0e8" font-family="Noto Sans JP" font-size="11">プロモーター</text>
+      <!-- CDショップ -->
+      <rect x="450" y="120" width="120" height="34" rx="6" fill="#252d3f" stroke="#5b8dee" stroke-width="1"/>
+      <text x="510" y="140" text-anchor="middle" fill="#c4d0e8" font-family="Noto Sans JP" font-size="11">販促に協力して</text>
+      <text x="510" y="152" text-anchor="middle" fill="#c4d0e8" font-family="Noto Sans JP" font-size="11">くれるCDショップ</text>
+      <!-- ビジョン -->
+      <circle cx="658" cy="60" r="36" fill="#5b8dee" opacity=".9"/>
+      <text x="658" y="56" text-anchor="middle" fill="#fff" font-family="Noto Sans JP" font-size="12" font-weight="700">ビジョン</text>
+      <text x="658" y="72" text-anchor="middle" fill="#fff" font-family="Noto Sans JP" font-size="10">(実現)</text>
+      <defs>
+        <marker id="arr3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#5b8dee"/>
+        </marker>
+      </defs>
+    </svg>
+    <figcaption>図：キーワードは「連携」― ビジョンを実現するために最適な人々が集まり連携する ← S03:p.6</figcaption>
+  </figure>
+
+  <h3 id="ch1-vs">1-3 合理的問題解決思考 vs プロデュース思考</h3>
+
+  <div class="blk blk-audio">
+    講師・森戸裕一氏はコンサルタントとして多くの企業支援・次世代人材育成に携わってきた。感じる昨今のニーズ変化：従来の「ちゃんとした経営」では通用しなくなってきた。「ちゃんとしろ」と言えばちゃんとできるのが日本人だが、その形態では実はうまくいかなくなった。今までの常識ではなかった形を模索することが求められている。<span class="sp">← S05:A</span>
+  </div>
+
+  <div class="tbl-wrap">
+    <table class="cmp-table">
+      <tr>
+        <th></th>
+        <th class="col-rational">合理的問題解決思考</th>
+        <th class="col-produce">プロデュース思考</th>
+      </tr>
+      <tr>
+        <td><strong>判断基準</strong></td>
+        <td>正しい vs 正しくない<br>可能 vs 不可能</td>
+        <td>その気になる vs その気にならない<br>やってみる vs やめておく</td>
+      </tr>
+      <tr>
+        <td><strong>情と理</strong></td>
+        <td>情 &lt; 理（理屈優先）</td>
+        <td>情 → 理（気持ちが理屈を作る）</td>
+      </tr>
+      <tr>
+        <td><strong>重視要素</strong></td>
+        <td>合理性・客観性</td>
+        <td>アイディア・思い ＋ 大義名分</td>
+      </tr>
+      <tr>
+        <td><strong>改善か革新か</strong></td>
+        <td>改善 &gt; 革新</td>
+        <td>改善 &lt; 革新</td>
+      </tr>
+      <tr>
+        <td><strong>ゴール</strong></td>
+        <td>予期される成果</td>
+        <td>予期せぬ成果（ワクワクするゴール）</td>
+      </tr>
+      <tr>
+        <td><strong>はじめの思考</strong></td>
+        <td>原因（なぜ問題が起きたか）</td>
+        <td>未来（問題をヒントに課題設定し前進）</td>
+      </tr>
+    </table>
+    <p style="font-size:12px;color:var(--text-sub);margin-top:6px;">出典: 佐々木直彦著『プロデュース能力 ビジョンを形にする問題解決の思考と行動』日本能率協会マネジメントセンター、2008年、p.100 <span class="sp">← S03:p.7</span></p>
+  </div>
+
+  <div class="blk blk-audio">
+    <strong>「不可能を可能にするのは気合ではなくテクノロジー」：</strong>強い気持ちが不可能を可能にするが、それを実現するのはテクノロジー。プロデュース思考では、アイデアや思いつきに「大義名分（社会的に求められているか）」が加わると、実行してみると多くの賛同者が現れる。<span class="sp">← S05:A</span>
+  </div>
+
+  <div class="blk blk-audio">
+    <strong>「前に進みながら考える」：</strong>昔のように多大な時間とお金が必要ではなくなった今、まずやってみて、うまくいかなそうなら一旦止めて、次にまた進む ― というプロセス自体がプロデュース能力の核心。<span class="sp">← S05:A</span>
+  </div>
+
+  <h3 id="ch1-zero">1-4 ゼロベース思考：既存の枠にとらわれない</h3>
+
+  <p>「9つの点を一筆書きの直線4本以内でつなぐ」問題を例に、思考の枠の解放を説明。<span class="sp">← S03:p.8</span></p>
+
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>解答パターン</th><th>説明</th><th>プロデュース力</th></tr>
+      <tr>
+        <td>外にはみ出す（標準解）</td>
+        <td>9点の外側に直線をはみ出させて4本でつなぐ</td>
+        <td>中程度（枠を少し超える）</td>
+      </tr>
+      <tr>
+        <td>太さを変える</td>
+        <td>非常に太い1本線で全点を覆う</td>
+        <td>高い（前提を疑う）</td>
+      </tr>
+      <tr>
+        <td>3次元で考える</td>
+        <td>直線を真上から差し込み9点を同時に貫く</td>
+        <td>非常に高い（次元を変える）</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="blk blk-audio">
+    過去の成功体験や常識に基づくと「枠の中でどうにかして4本で結ぼう」という発想になり、うまくいかない。はみ出す・視点を変えることが重要。こういうことを言い出せる方はプロデュース力が非常に高い。<span class="sp">← S05:A</span>
+  </div>
+
+  <div class="blk blk-key">
+    <strong>第1章まとめ：</strong>プロデュースにおいて重要なのは、既存の枠にとらわれない柔軟な発想。描いたビジョンに向けて必要な人や組織を選んでチームを作り（連携）、実現までまとめていくことで、一人では達成できない大きな仕事を成し遂げる。<span class="sp">← S03:p.10</span>
+  </div>
+</section>
+
+<!-- ═══ CH2 ═══ -->
+<section id="ch2" class="section-card">
+  <h2>第2章 プロデュースの3要素</h2>
+
+  <!-- Triangle SVG -->
+  <figure>
+    <!-- Triangle: 創造(top)、融合(left)、実現(right) -->
+    <svg viewBox="0 0 480 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:480px;display:block;margin:0 auto;background:#1e2535;border-radius:8px">
+      <!-- Triangle lines -->
+      <!-- top to left -->
+      <line x1="240" y1="50" x2="80" y2="240" stroke="#8a99b8" stroke-width="1.5"/>
+      <!-- top to right -->
+      <line x1="240" y1="50" x2="400" y2="240" stroke="#8a99b8" stroke-width="1.5"/>
+      <!-- left to right -->
+      <line x1="80" y1="240" x2="400" y2="240" stroke="#8a99b8" stroke-width="1.5"/>
+      <!-- Center label -->
+      <text x="240" y="155" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP" font-size="13">プロデュース</text>
+      <text x="240" y="173" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP" font-size="12">=</text>
+      <text x="240" y="191" text-anchor="middle" fill="#34d399" font-family="Noto Sans JP" font-size="13" font-weight="700">新しい付加価値を</text>
+      <text x="240" y="208" text-anchor="middle" fill="#34d399" font-family="Noto Sans JP" font-size="13" font-weight="700">創り出す</text>
+      <!-- 創造 circle -->
+      <circle cx="240" cy="50" r="38" fill="#7c6ee0"/>
+      <text x="240" y="55" text-anchor="middle" fill="#fff" font-family="Noto Sans JP" font-size="15" font-weight="700">創造</text>
+      <!-- 融合 circle -->
+      <circle cx="80" cy="240" r="38" fill="#2d8a6a"/>
+      <text x="80" y="245" text-anchor="middle" fill="#fff" font-family="Noto Sans JP" font-size="15" font-weight="700">融合</text>
+      <!-- 実現 circle -->
+      <circle cx="400" cy="240" r="38" fill="#e07c2d"/>
+      <text x="400" y="245" text-anchor="middle" fill="#fff" font-family="Noto Sans JP" font-size="15" font-weight="700">実現</text>
+    </svg>
+    <figcaption>図：プロデュースの3要素 ← S03:p.14</figcaption>
+  </figure>
+
+  <h3 id="ch2-create">2-1 創造（0→1）</h3>
+
+  <div class="blk blk-key">
+    自らビジョンを持って「何か」を創り出すこと。「人」やビジネスの成功に寄与する「ヒットの可能性」を見出し、新しい何かを生み出す。<span class="sp">← S03:p.15</span>
+  </div>
+
+  <div class="blk blk-audio">
+    ビジネスの種は日常生活にたくさん隠れている。コンビニの商品を見たとき、商店街を歩いているとき、ショッピングセンターの中を歩いているとき ― 「ヒットの可能性を探そう」という意識を持てば、いろんなものが見えてくる。日常的に意識することが重要。<span class="sp">← S05:A</span>
+  </div>
+
+  <h4>具体例：デザイナーがキャラクターをデザインする</h4>
+  <div class="flow-box">
+    <div class="flow-node" style="border-color:#a78bfa">若者の流行を<br>ウォッチ</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-node" style="border-color:#a78bfa">気づいたことを<br>写真・メモ→DB</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-node" style="border-color:#a78bfa">依頼が来たら<br>DBを全部引き出す</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-node" style="border-color:#34d399">組み合わせて<br>キャラクター完成</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-node" style="border-color:#fbbf24">プロモーション<br>で拡大</div>
+  </div>
+  <p style="font-size:13px;color:var(--text-sub)">←S03:p.16 / ← S05:A</p>
+
+  <div class="blk blk-audio">
+    ゆるキャラも最初は小さなメモ書きから始まる。地域の特産品・伝説などを頭に入れながら「どう表現すれば協力者が出てくるか」をイメージして1つのキャラクターを作る。キャラクターだけでは地域活性化にならないため、いろんな方々が関わる（融合フェーズへ）。<span class="sp">← S05:A</span>
+  </div>
+
+  <h3 id="ch2-fusion">2-2 融合（1→1+1&gt;2）</h3>
+
+  <div class="blk blk-key">
+    「何か」と「何か」を組み合わせて効果を倍増させる。人・組織・場所・商品・ツールや技術など、様々な要素を融合させることで新たな価値が生まれる。<span class="sp">← S03:p.17</span>
+  </div>
+
+  <h4>融合の効果</h4>
+  <ul>
+    <li>意外性が話題になる → ニュース・新聞に取り上げられる（既存のものはニュースにならない）</li>
+    <li>協力者が増える → 高いスキルを持つ協力者がさらにブラッシュアップ</li>
+    <li>参加者が増える → マーケットが広がる</li>
+    <li>これまで不可能だったことが可能になる</li>
+  </ul>
+  <p><span class="sp">← S03:p.17</span></p>
+
+  <div class="blk blk-audio">
+    プロデュース思考で働いている方々は、組織に所属していても「違うオフィスで働いたら？ノマドで働いたら？メンバーが変われば？商品が変われば？」と常にイメージする。これは硬直化した組織とは全く逆の動き方であり、個人が意識して行動・思考していくことが必要。<span class="sp">← S05:A</span>
+  </div>
+
+  <div class="blk blk-audio">
+    不可能かどうかは、そこに携わっている方々が個人で判断していること。IT化時代に距離の問題・人の能力の問題も含め、新しい組み合わせによってそれが引き出されると「不可能」が「不可能じゃなく」なる。だから今は新しい技術・商品・サービスが非常に生まれやすい環境にある。<span class="sp">← S05:A</span>
+  </div>
+
+  <h3 id="ch2-realize">2-3 実現（1→100）</h3>
+
+  <div class="blk blk-key">
+    ビジネスプロデュース力を発揮してビジョンを具現化する。創造した「1」の可能性をあらゆる手法・あらゆる人を絡めて高め、具体的なビジョンを描き出し、みんなを巻き込んで引っ張っていく。<span class="sp">← S03:p.19</span>
+  </div>
+
+  <!-- 実現プロセス flow -->
+  <figure>
+    <div class="flow-box" style="margin:16px 0;">
+      <div class="flow-node" style="border-color:#34d399">「1」<br>（ビジネスの芽）</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node" style="border-color:#5b8dee">工夫<br>ゴール設定<br>コーディネーション</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node" style="border-color:#fbbf24">「100」<br>（ビジネスの成功）</div>
+    </div>
+    <figcaption>図：実現プロセス ← S03:p.19-20</figcaption>
+  </figure>
+
+  <div class="blk blk-audio">
+    <strong>1を100にする3段階：</strong>
+    ①調整：どういう人々に絡んでもらうかを決める。
+    ②マーケティング：世の中が何を求めているかを確認し、ヒットの芽をマーケットに受け入れやすい形に少し変える。
+    ③プロモーション：知らなかったものを「価値がある」と認識させる形で広める。<span class="sp">← S05:A</span>
+  </div>
+
+  <div class="blk blk-audio">
+    <strong>キャリアへの応用：</strong>自分が今1の存在でも、いろんな方々と組み合わせを変えていくことで、100・1000という形の能力を発揮できる人材になれる。転職を繰り返すのではなく、新たな要素の組み合わせによって現状を打破する考え方もある。<span class="sp">← S05:A</span>
+  </div>
+
+  <div class="blk blk-key">
+    <strong>第2章まとめ：</strong>常にアンテナを張り、ビジネスの種となりそうな世の中の動き・人をチェックする。何かを実現しようとするとき、これまで考えたことのなかった人やモノを巻き込んで、成功のノウハウや失敗からの教訓を得る。まず自分から情報を発信（ギブ）することで、相手からのノウハウ・教訓を得られる。<span class="sp">← S03:p.21</span>
+  </div>
+</section>
+
+<!-- ═══ CH3 ═══ -->
+<section id="ch3" class="section-card">
+  <h2>第3章 社会のパラダイムシフトとプロデュース</h2>
+
+  <div class="blk blk-key">
+    <strong>パラダイムシフト</strong>：これまで常識だと考えられていたことが、時代の変遷により劇的に変化すること。<br>例：天動説 → 地動説<span class="sp">← S03:p.25</span>
+  </div>
+
+  <!-- 3 paradigm shifts -->
+  <figure>
+    <svg viewBox="0 0 680 120" xmlns="http://www.w3.org/2000/svg" style="width:100%;background:#1e2535;border-radius:8px">
+      <!-- デジタル化 -->
+      <rect x="20" y="20" width="200" height="80" rx="10" fill="#252d3f" stroke="#5b8dee" stroke-width="2"/>
+      <text x="120" y="55" text-anchor="middle" fill="#5b8dee" font-family="Noto Sans JP" font-size="18" font-weight="700">デジタル化</text>
+      <text x="120" y="80" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP" font-size="12">異なるものを同時処理</text>
+      <!-- フラット化 -->
+      <rect x="240" y="20" width="200" height="80" rx="10" fill="#252d3f" stroke="#5b8dee" stroke-width="2"/>
+      <text x="340" y="55" text-anchor="middle" fill="#5b8dee" font-family="Noto Sans JP" font-size="18" font-weight="700">フラット化</text>
+      <text x="340" y="80" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP" font-size="12">異なるPJチームで活躍</text>
+      <!-- グローバル化 -->
+      <rect x="460" y="20" width="200" height="80" rx="10" fill="#252d3f" stroke="#5b8dee" stroke-width="2"/>
+      <text x="560" y="55" text-anchor="middle" fill="#5b8dee" font-family="Noto Sans JP" font-size="18" font-weight="700">グローバル化</text>
+      <text x="560" y="80" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP" font-size="12">ビジョンで人材を一つに</text>
+    </svg>
+    <figcaption>図：社会に起きた3つのパラダイムシフト ← S03:p.25</figcaption>
+  </figure>
+
+  <h3 id="ch3-digital">3-1 デジタル化の影響</h3>
+
+  <h4>デジタル化の2つの側面</h4>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>側面①</th><th>側面②</th></tr>
+      <tr>
+        <td>デジタル化が可能なあらゆるものがデジタル化する<br>（検索・編集・記録・格納が可能になる）</td>
+        <td>デジタル化不可能なものがあり、デジタルとアナログが明確に分かれる</td>
+      </tr>
+    </table>
+  </div>
+  <p><span class="sp">← S03:p.26</span></p>
+
+  <div class="blk blk-audio">
+    <strong>アナログの究極＝人間がクローズアップされる：</strong>人間は非常に不完全な存在で、コンピューターとは違い勝手に妄想したり、コンピューターでは分からない行動をする。デジタル化が進むほど人間の存在がクローズアップされる。キャリアを考える中で「超デジタル化時代に自分はどの立ち位置にマッピングされると能力が最大に発揮できるか」を考えることが重要。<span class="sp">← S05:A</span>
+  </div>
+
+  <h4>デジタル化によるプロデュースの必要性</h4>
+  <p>デジタルコミュニケーションにより、大量のコンテンツが個人に届くようになった。良いコンテンツも不要な情報も混在する中で、処理容量を超えてしまう可能性もある。<span class="sp">← S03:p.27</span></p>
+
+  <div class="blk blk-key">
+    求められるのは「情報の質の追求と届け方の最適化」。異なるものを同時に処理する仕事スタイル。<span class="sp">← S03:p.27</span>
+  </div>
+
+  <div class="blk blk-audio">
+    副業禁止という企業も多いが、競合他社との副業でなければ、異業種・異分野であれば副業させた方が情報の処理効率が良くなるという見方もある。クラウド・スマホ・タブレット・ノートPCなどにより、オフィスに出勤して顔を合わせてパソコンの前に座るというスタイルから大きく変革する。<span class="sp">← S05:A</span>
+  </div>
+
+  <h3 id="ch3-flat">3-2 フラット化の影響</h3>
+
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>これまで（ピラミッド型）</th><th>これから（フラット型）</th></tr>
+      <tr>
+        <td>稟議ヒエラルキーによる組織<br>上位者が情報を把握・判断</td>
+        <td>デジタル情報の共有によるフラットな組織<br>全員が均一に情報を集め合議する</td>
+      </tr>
+      <tr>
+        <td>最下層が顧客窓口・営業担当</td>
+        <td>上位層も顧客・現場と直接接点を持つ</td>
+      </tr>
+    </table>
+  </div>
+  <p><span class="sp">← S03:p.28</span></p>
+
+  <div class="blk blk-audio">
+    フラット化によって全体に影響を与えるような重要な情報を現場の一担当者が発見するなど「現場が非常に重要」になる。情報を上の層の人間だけが判断するのではなく、みんなが均一に集める中で重要な情報が入手しやすくなる。<span class="sp">← S05:A</span>
+  </div>
+
+  <div class="blk blk-key">
+    フラットな組織内に目的やタスクごとのプロジェクトチームがたくさん生まれる。固定チームではなく、解決するための最高のメンバーを抜粋してプロジェクトチームで実行する形。<span class="sp">← S03:p.29</span>
+  </div>
+
+  <h4>求められる人材：プロデューサー特性を持つ人材</h4>
+  <ul>
+    <li>周囲を巻き込むことができる</li>
+    <li>変化に対応することができる</li>
+    <li>主体的に動くことができる</li>
+  </ul>
+  <p><span class="sp">← S03:p.30</span></p>
+
+  <h3 id="ch3-global">3-3 グローバル化の影響</h3>
+
+  <p>様々な情報がインターネットにより世界中でシェアされる。検索エンジンでキーワードを入れれば全世界の情報が一瞬で手元に現れるようになった。<span class="sp">← S03:p.31</span></p>
+
+  <div class="blk blk-audio">
+    これまでは「先に情報を入手した会社が強い」という産業構造が通用していたが、今は大きく崩れ始めている。情報が均一にシェアされると、国家間での相互リスペクト（お互いの違いを認め合い尊重しながら共存する）が必要になる。情報の均一化は民族紛争・国家間紛争にも関係しており、止めようとする方々も出てくる。<span class="sp">← S05:A</span>
+  </div>
+
+  <div class="blk blk-key">
+    グローバル化の環境下で必要なのは：<br>
+    ① 異なるものを受け入れる【背反共存性】<br>
+    ② 同じ方向に向かわせる【ビジョン到達性】<br>
+    他者をリスペクトしながら自分を主張すること。<span class="sp">← S03:p.32</span>
+  </div>
+
+  <div class="blk blk-audio">
+    求心力・発信力が問われる時代。情報を知っていることが前提になり、その情報を発信・再発信することで多くの人を巻き込む力が発揮できる。キャリアを考える上でも「情報発信による自分自身のブランディング」が必要な時代になっている。<span class="sp">← S05:A</span>
+  </div>
+
+  <div class="blk blk-key">
+    <strong>第3章まとめ：</strong>デジタル化・フラット化・グローバル化という3つのパラダイムシフトにより、ビジネスプロデュース力が必要になっている。<span class="sp">← S03:p.33</span>
+    <ul style="margin-top:8px">
+      <li><strong>デジタル化</strong>→ 異なるものを同時に処理できる。複数組織に所属しながら仕事できる時代へ。</li>
+      <li><strong>フラット化</strong>→ 異なるプロジェクトチームで活躍できる。アメーバ的に組み合わさっていく。</li>
+      <li><strong>グローバル化</strong>→ 異なる人材をビジョンによって一つにまとめる。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══ CH4 ═══ -->
+<section id="ch4" class="section-card">
+  <h2>第4章 プロデューサーに必要な7つの能力</h2>
+
+  <h3 id="ch4-job">4-1 プロデューサーの仕事（3ステップ）</h3>
+
+  <div class="flow-box">
+    <div class="flow-node" style="border-color:#93c5fd;background:#1a253a">
+      <strong style="color:#93c5fd">① ビジョンを設定する</strong><br>
+      <span style="font-size:12px;color:var(--text-sub)">成し遂げたいことを<br>明確にし、魅力的に伝える</span>
+    </div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-node" style="border-color:#86efac;background:#1a2a23">
+      <strong style="color:#86efac">② 戦略を提示する</strong><br>
+      <span style="font-size:12px;color:var(--text-sub)">どうやってビジョンを<br>実現するか説明する</span>
+    </div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-node" style="border-color:#fbbf24;background:#2a2115">
+      <strong style="color:#fbbf24">③ チームを創造する</strong><br>
+      <span style="font-size:12px;color:var(--text-sub)">必要なメンバーを選出し<br>ネットワークする</span>
+    </div>
+  </div>
+  <p style="font-size:13px;color:var(--text-sub)">←S03:p.37</p>
+
+  <div class="blk blk-audio">
+    ビジョンを実現するための「最適なメンバーがいる会社に就職する」という形もあるし、今の会社でそういう方々と信頼関係を作るというところから始めてネットワーク化していくことで、初めてビジョンの実現に一歩近づく。<span class="sp">← S05:A</span>
+  </div>
+
+  <h3 id="ch4-7">4-2 ビジネスプロデューサーに必要な7つの能力</h3>
+
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>#</th><th>能力</th><th>定義</th><th>重要度</th></tr>
+      <tr>
+        <td>1</td>
+        <td><strong>発見力</strong></td>
+        <td>チャンスやヒットの芽、新しい人財などを発見する力</td>
+        <td class="star3">★★★</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td><strong>理解力</strong></td>
+        <td>世の中の動きや物事の本質を理解する力</td>
+        <td class="star3">★★★</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td><strong>目標力</strong></td>
+        <td>ビジョンを描きゴールまでの道筋・プロセスをイメージできる力</td>
+        <td class="star3">★★★</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td><strong>組織力</strong></td>
+        <td>様々なビジネス資源を組織化して有効活用する力</td>
+        <td class="star3">★★★</td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td><strong>働きかけ力</strong></td>
+        <td>人や組織を励まし、力を吹き込み、目標に向かって育てる力</td>
+        <td class="star2">★★☆</td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td><strong>柔軟力</strong></td>
+        <td>トラブルや環境変化に対応するなど、柔軟に物事を調整する力</td>
+        <td class="star2">★★☆</td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td><strong>完結力</strong></td>
+        <td>様々なことを乗り越えて実行し、達成して、次への蓄積とする力</td>
+        <td class="star2">★★☆</td>
+      </tr>
+    </table>
+    <p style="font-size:12px;color:var(--text-sub);margin-top:6px;">出典: 吉田就彦著『アイデアをカタチにする仕事術 ビジネス・プロデューサーの7つの能力』東洋経済新報社、2010年3月、p.57 <span class="sp">← S03:p.38</span></p>
+  </div>
+
+  <h4>① 発見力</h4>
+  <p>日常生活の中で常に周りに気を配り、1つ1つの事象の裏側を探る。「なぜ売れたのか」「なぜこの人はこういう行動をするのか」を常に見ておく。<span class="sp">← S03:p.39</span></p>
+  <div class="blk blk-audio">
+    2011年ヒット商品（日経トレンディ 2011年12月号）の例：1位スマートフォン、2位Facebook、3位"節電"扇風機 等。「なぜそれが流行ったのか」「誰がプロモーションしたのか」「その人は何をやったのか」まで見ると大きな発見につながる。<span class="sp">← S03:p.39 / ← S05:A</span>
+  </div>
+
+  <h4>② 理解力</h4>
+  <p>既存の価値観・方法・成功体験にとらわれず、「本質」を見抜く力。<span class="sp">← S03:p.40</span></p>
+  <div class="blk blk-audio">
+    <strong>例：ビリーズブートキャンプ</strong><br>
+    既成概念：「楽して痩せたい」「人がやっているものを真似すれば痩せる」<br>
+    本質：「痩せるためには努力が必要」<br>
+    → 既存の価値観を外すと「努力を楽しくやるにはどうすればよいか」という発想が生まれ、苦しいことを楽しく・大勢の方と一緒にというコンセプトのコンテンツが生まれた。<span class="sp">← S05:A</span>
+  </div>
+
+  <h4>③ 目標力</h4>
+  <p>ビジョンへの共感を生むため、言葉・スローガン・画像・映像など、あらゆる方法でビジョンを分かりやすく伝え、チームメンバーと一緒にゴールに向かう。<span class="sp">← S03:p.41</span></p>
+  <div class="blk blk-audio">
+    キャリアでも同じ。「自分がこうなりたいからみんな手伝って」では誰も動かない。「これを手伝うことでチームとしてこういう成果がある。その中で自分はこういうキャリアを積み上げることができる」という形を頭の中で戦略的に考え、目標とうまく繋げることがポイント。<span class="sp">← S05:A</span>
+  </div>
+
+  <h4>④ 組織力</h4>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>問い</th><th>手段</th><th>目標</th></tr>
+      <tr><td>誰を巻き込むか</td><td>影響力・各人の得意分野・組み合わせ効果（シナジー）</td><td rowspan="3" style="vertical-align:middle;text-align:center;color:var(--accent-green)">融合して<br>組織化<br>（Win-Win）</td></tr>
+      <tr><td>どうやって巻き込むか</td><td>熱意を持った説得、相手の思考を理解した上での交渉</td></tr>
+      <tr><td>それぞれのメリットは</td><td>プロジェクトに関わる全員がWin-Winになるよう</td></tr>
+    </table>
+  </div>
+  <p><span class="sp">← S03:p.42</span></p>
+
+  <h4>⑤ 働きかけ力</h4>
+  <p>相手が最高のパフォーマンスを出せるよう働きかける。<span class="sp">← S03:p.43</span></p>
+  <ul>
+    <li>「その気にさせる言葉」をかける</li>
+    <li>アイデアをぶつけて可能性を引き出す</li>
+    <li>細かい指示を出さず任せながら観察する</li>
+  </ul>
+  <div class="blk blk-audio">
+    人は褒められると嬉しい・やる気が出る。だが「褒めれば育つ」と分かっているからといって、自分が「褒めてもらえれば育つ」というのはおかしい。褒められることをやる必要がある。プロデューサーはタイミングよく褒め、気づいてあげることが重要。最初にそれをしてあげることで、自分がやったときに逆のお返しが返ってくる。<span class="sp">← S05:A</span>
+  </div>
+
+  <h4>⑥ 柔軟力</h4>
+  <p>垂直思考（本質を深く掘り下げる）と水平思考（幅広い情報を持つ）を同時に発揮する。<span class="sp">← S03:p.44</span></p>
+
+  <figure>
+    <svg viewBox="0 0 480 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:480px;background:#1e2535;border-radius:8px">
+      <!-- 水平軸 -->
+      <line x1="40" y1="110" x2="440" y2="110" stroke="#5b8dee" stroke-width="2" marker-end="url(#ah)"/>
+      <!-- 垂直軸 -->
+      <line x1="240" y1="30" x2="240" y2="190" stroke="#34d399" stroke-width="2" marker-end="url(#av)"/>
+      <!-- 水平ラベル -->
+      <text x="430" y="100" text-anchor="end" fill="#5b8dee" font-family="Noto Sans JP" font-size="13" font-weight="700">水平思考</text>
+      <text x="430" y="130" text-anchor="end" fill="#8a99b8" font-family="Noto Sans JP" font-size="11">幅広い情報を持つ</text>
+      <!-- 垂直ラベル -->
+      <text x="248" y="45" fill="#34d399" font-family="Noto Sans JP" font-size="13" font-weight="700">垂直思考</text>
+      <text x="248" y="62" fill="#8a99b8" font-family="Noto Sans JP" font-size="11">本質を深く掘り下げる</text>
+      <!-- 交点 -->
+      <circle cx="240" cy="110" r="10" fill="#fbbf24"/>
+      <text x="254" y="108" fill="#fbbf24" font-family="Noto Sans JP" font-size="11" font-weight="700">同時</text>
+      <!-- ボトムメッセージ -->
+      <text x="240" y="205" text-anchor="middle" fill="#e2e8f5" font-family="Noto Sans JP" font-size="12">制約があるから勝つ理由がここで生まれる</text>
+      <defs>
+        <marker id="ah" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#5b8dee"/></marker>
+        <marker id="av" markerWidth="8" markerHeight="8" refX="3" refY="6" orient="auto"><path d="M0,0 L6,0 L3,8 z" fill="#34d399"/></marker>
+      </defs>
+    </svg>
+    <figcaption>図：柔軟力 ― 垂直思考と水平思考 ← S03:p.44</figcaption>
+  </figure>
+
+  <div class="blk blk-audio">
+    制約があるからできない、ではなく「制約があるから競合他者がそこで詰まる。それを乗り越えた方だけがうまくいく」という考え方。小さなことにこだわらず、どうすればチームの力を最大限にできるかを考える。1人で深掘りしなくても、複数の方々で深掘りしていけば意外と容易だったりする。<span class="sp">← S05:A</span>
+  </div>
+
+  <h4>⑦ 完結力</h4>
+  <p>成功しても失敗しても、まずそれをまとめ（Aプロジェクト・Bプロジェクト・Cプロジェクトの事例として完結させ）、成功要因・失敗要因の本質を捉えることで次に動くときのヒントになる。<span class="sp">← S03:p.45</span></p>
+  <div class="blk blk-audio">
+    プロデュース力が高い方々はこれ（完結→学習→次へ）を繰り返している。経験を何回も繰り返すことで人材は育つ。サイバー大学で学ぶ皆さんにも日常生活でそういう視野を持ってほしい。そうすれば、ビジネスのヒットの芽、キャリアを考えるときの成功の芽が生まれてくる。<span class="sp">← S05:A</span>
+  </div>
+
+  <div class="blk blk-key">
+    <strong>第4章まとめ：</strong>これからどのようなキャリアを選択するうえでもプロデュース力が必要。世の中の動き・人・モノゴトをよく見て本質を理解し、プロジェクトを遂行することが重要。<span class="sp">← S03:p.46</span>
+  </div>
+</section>
+
+<!-- ═══ APPENDIX A ═══ -->
+<section id="appA">
+  <div class="appendix-card app-blue">
+    <h2>⭐ 補足A：最重要ワード一覧</h2>
+    <div class="tbl-wrap">
+      <table>
+        <tr><th>用語</th><th>読み</th><th>定義（原文から抽出）</th><th>重要度</th></tr>
+        <tr>
+          <td><strong>ビジネスプロデュース力</strong></td>
+          <td>びじねすぷろでゅーすりょく</td>
+          <td>既存の枠にとらわれず、様々な人や組織と連携し、新しいビジネスを創造することで現状を変える力</td>
+          <td class="star3">★★★</td>
+        </tr>
+        <tr>
+          <td><strong>パラダイムシフト</strong></td>
+          <td>ぱらだいむしふと</td>
+          <td>これまで常識だと考えられていたことが、時代の変遷により劇的に変化すること（例：天動説→地動説）</td>
+          <td class="star3">★★★</td>
+        </tr>
+        <tr>
+          <td><strong>プロデュース思考</strong></td>
+          <td>ぷろでゅーすしこう</td>
+          <td>「その気になるか・やってみるか」を判断基準とし、気持ちが理屈を作り、革新・予期せぬ成果・未来志向を重視する思考様式</td>
+          <td class="star3">★★★</td>
+        </tr>
+        <tr>
+          <td><strong>連携</strong></td>
+          <td>れんけい</td>
+          <td>人と人・能力と能力・場と場をつなぎ、お互いのポテンシャルを引き出す行為。ビジネスプロデュースのキーワード</td>
+          <td class="star3">★★★</td>
+        </tr>
+        <tr>
+          <td><strong>創造</strong></td>
+          <td>そうぞう</td>
+          <td>自らビジョンを持って「何か」を創り出すこと（0→1）。人とヒットの可能性を組み合わせビジネスの種を作る</td>
+          <td class="star3">★★★</td>
+        </tr>
+        <tr>
+          <td><strong>融合</strong></td>
+          <td>ゆうごう</td>
+          <td>「何か」と「何か」を組み合わせて効果を倍増させること（1+1→3以上）</td>
+          <td class="star3">★★★</td>
+        </tr>
+        <tr>
+          <td><strong>実現</strong></td>
+          <td>じつげん</td>
+          <td>ビジネスプロデュース力を発揮してビジョンを具現化すること。創造した「1」を市場が求める形にブラッシュアップし「100」にする</td>
+          <td class="star3">★★★</td>
+        </tr>
+        <tr>
+          <td><strong>フラット化</strong></td>
+          <td>ふらっとか</td>
+          <td>デジタル情報の共有によりピラミッド型ヒエラルキーからフラットな組織構造へ移行すること</td>
+          <td class="star3">★★★</td>
+        </tr>
+        <tr>
+          <td><strong>発見力</strong></td>
+          <td>はっけんりょく</td>
+          <td>チャンスやヒットの芽、新しい人財などを発見する力</td>
+          <td class="star3">★★★</td>
+        </tr>
+        <tr>
+          <td><strong>ビジョン到達性</strong></td>
+          <td>びじょんとうたつせい</td>
+          <td>グローバル化の中で異なる人材をビジョンによって同じ方向に向かわせる力</td>
+          <td class="star2">★★☆</td>
+        </tr>
+        <tr>
+          <td><strong>背反共存性</strong></td>
+          <td>はいはんきょうぞんせい</td>
+          <td>異なるものを受け入れる姿勢・能力</td>
+          <td class="star2">★★☆</td>
+        </tr>
+        <tr>
+          <td><strong>ゼロベース思考</strong></td>
+          <td>ぜろべーすしこう</td>
+          <td>過去の成功体験・常識に縛られず、既存の枠を外して物事を考える思考法</td>
+          <td class="star2">★★☆</td>
+        </tr>
+        <tr>
+          <td><strong>合理的問題解決思考</strong></td>
+          <td>ごうりてきもんだいかいけつしこう</td>
+          <td>正しい/不可能の二元論で判断し、原因追求・改善・予期される成果を重視する従来型思考</td>
+          <td class="star2">★★☆</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ APPENDIX B ═══ -->
+<section id="appB">
+  <div class="appendix-card app-green">
+    <h2>📚 補足B：知っておくべき背景知識</h2>
+    <p><strong>佐々木直彦『プロデュース能力 ビジョンを形にする問題解決の思考と行動』</strong><br>
+    日本能率協会マネジメントセンター、2008年12月発行（ISBN: 9784820717332）。スライドp.7の「合理的問題解決思考 vs プロデュース思考」比較表（p.100）の出典。著者は株式会社メディアフォーラム代表取締役・一橋大学社会学部卒。リクルート・産業能率大学研究員を経て起業。「プロデュース」を問題解決の方法論として初めて体系化した一冊とされる。</p>
+    <p style="margin-top:12px"><strong>吉田就彦『アイデアをカタチにする仕事術 ビジネス・プロデューサーの7つの能力』</strong><br>
+    東洋経済新報社、2010年3月発行（ISBN: 9784492043677、238p）。スライドp.38の「7つの能力」の出典（p.57）。著者はキャニオンレコード（現ポニーキャニオン）に1979年入社し音楽・映像・ゲーム等の制作に20年従事。「おくりびと」「相棒」「モンスターハンター」等のヒットプロデューサーの事例を用いて7つの能力を解説。著者はデジタルハリウッド大学大学院教授も兼任。</p>
+    <p style="margin-top:12px"><strong>日経トレンディ 2011年12月号（ヒット商品ランキング）</strong><br>
+    発見力の事例として使用。1位スマートフォン、2位Facebook、3位"節電"扇風機（東日本大震災の影響で「節電」がキーワードとなった年）、4位GOPAN、5位日清カップヌードルごはん 等。講義スライド（S03:p.39）に明記。</p>
+    <p style="margin-top:12px"><strong>小室哲哉・つんく♂・秋元康について（U01解消情報）</strong><br>
+    <span style="font-size:12.5px">S05AIテキストで「秋本泰」「竹本靖」と誤変換されていた3人目のプロデューサー名は、Web調査により<strong>秋元康</strong>（あきもと やすし）が正しいと確認。3名はいずれも1990〜2000年代に日本の音楽・アイドル業界で時代を画したプロデューサー。秋元康とつんく♂は同じ作詞家・アイドルプロデューサーとして親交があることも確認済み。</span></p>
+  </div>
+</section>
+
+<!-- ═══ APPENDIX C ═══ -->
+<section id="appC">
+  <div class="appendix-card app-purple">
+    <h2>🎯 補足C：試験・レポートで重要な観点</h2>
+    <ul>
+      <li><strong>「ビジネスプロデュース力」の定義を正確に書けるか</strong>：既存の枠・連携・新しいビジネスの創造・現状を変える、という4要素を含める</li>
+      <li><strong>プロデュースの3要素（創造・融合・実現）を説明できるか</strong>：それぞれ「0→1」「1+1→3以上」「1→100」と対応させると整理しやすい</li>
+      <li><strong>合理的問題解決思考 vs プロデュース思考の比較表</strong>：判断基準・情と理・重視要素・改善か革新か・ゴール・はじめの思考の6軸を覚える</li>
+      <li><strong>3つのパラダイムシフト</strong>：デジタル化・フラット化・グローバル化と、それぞれがプロデュース力にどう結びつくかを説明できること</li>
+      <li><strong>7つの能力</strong>：名称と定義を覚える。特に「発見力・理解力・目標力・組織力」の4つは★★★重要度</li>
+      <li><strong>キーワードは「連携」</strong>：0から1だけでなく、既存の1同士を組み合わせて新しい価値を作るという視点</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══ APPENDIX D ═══ -->
+<section id="appD">
+  <div class="appendix-card app-red">
+    <h2>🔗 補足D：関連概念・次回への接続</h2>
+    <p><strong>プロジェクトマネジメントとの接続</strong><br>
+    第3章で「プロジェクト概念」「プロジェクトマネジメント」が後の章で扱われると予告されている。フラット組織でのタスクフォース運営を学ぶ。</p>
+    <p style="margin-top:12px"><strong>デザイン思考との関連</strong><br>
+    プロデュース思考は「ユーザー中心のデザイン思考」と近い。どちらも「問題の原因追求」ではなく「望む未来の設定」から始める点が共通。</p>
+    <p style="margin-top:12px"><strong>オープンイノベーション</strong><br>
+    「既存の組み合わせで新しい価値を作る」という融合の考え方は、オープンイノベーション（社外リソースを積極活用するR&amp;D手法）と本質的に同じ方向性。</p>
+    <p style="margin-top:12px"><strong>個人ブランディングとの関連</strong><br>
+    第3章で「情報発信による自分自身のブランディング」が言及されている。後続の章（ソーシャルメディア活用等）との接続が予想される。</p>
+    <p style="margin-top:12px;font-size:12px;color:var(--text-sub)"><em>※補足D の内容は授業で直接触れていない関連知識です。</em></p>
+  </div>
+</section>
+
+<!-- ═══ UNRESOLVED ═══ -->
+<section id="unresolved">
+  <div class="appendix-card app-orange">
+    <h2>❓ 未確定事項・要確認リスト</h2>
+    <p style="font-size:13px;color:var(--accent-green);margin-bottom:12px">✅ Step 6 Web調査により、全2件を解消済み。未確定事項なし。</p>
+    <div class="tbl-wrap">
+      <table>
+        <tr><th>ID</th><th>内容</th><th>種別</th><th>状態</th><th>解消根拠</th></tr>
+        <tr>
+          <td>U01</td>
+          <td>S05で「秋本泰」「竹本靖」と誤変換されていた著名プロデューサー名</td>
+          <td>AI変換修正</td>
+          <td style="color:var(--accent-green)">✅ 解消</td>
+          <td>Web調査で確認：小室哲哉・つんく♂・<strong>秋元康</strong>（AKB48等）の3名が正しい。S05は固有名詞の音読み誤変換パターン。</td>
+        </tr>
+        <tr>
+          <td>U02</td>
+          <td>S03 p.4のバブルに「場」が含まれるか</td>
+          <td>内容確認</td>
+          <td style="color:var(--accent-green)">✅ 解消</td>
+          <td>S03 p.4テキスト抽出で「場」が含まれることを確認済み。</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- footer -->
+<div style="text-align:center;padding:20px 0;font-size:12px;color:var(--text-sub)">
+  キャリア入門 第5回 ノート — SSP v4.2 / v1.2
+</div>
+
+</main>
+
+<script>
+// Sidebar active link on scroll
+const links = document.querySelectorAll('#sidebar nav a');
+const sections = [];
+links.forEach(a => {
+  const id = a.getAttribute('href').slice(1);
+  const el = document.getElementById(id);
+  if (el) sections.push({ el, a });
+});
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      links.forEach(l => l.classList.remove('active'));
+      const found = sections.find(s => s.el === e.target);
+      if (found) found.a.classList.add('active');
+    }
+  });
+}, { threshold: 0.3, rootMargin: '-80px 0px -60% 0px' });
+sections.forEach(s => obs.observe(s.el));
+</script>
+</body>
+</html>
