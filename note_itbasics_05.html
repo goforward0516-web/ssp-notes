@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第5回 システム戦略 | ITのための基礎知識</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&family=Zen+Kaku+Gothic+New:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:           #0b0f1a;
+  --bg2:          #111827;
+  --bg3:          #1a2236;
+  --card:         #162033;
+  --border:       #253352;
+  --border2:      #1e2d47;
+  --text:         #dde5f4;
+  --text-sub:     #7a90b8;
+  --text-dim:     #4a5a7a;
+  --accent:       #4f8ef7;
+  --accent2:      #34d399;
+  --accent3:      #fbbf24;
+  --accent4:      #f472b6;
+  --accent5:      #a78bfa;
+  --audio-bg:     #0f2033;
+  --audio-border: #1d4ed8;
+  --ext-bg:       #0f2018;
+  --ext-border:   #15803d;
+  --infer-bg:     #1a1030;
+  --infer-border: #7c3aed;
+  --warn-bg:      #1f1500;
+  --warn-border:  #d97706;
+  --sidebar-w:    280px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+  font-size: 15px;
+}
+
+/* ── LAYOUT ── */
+.layout { display: flex; min-height: 100vh; }
+
+/* ── SIDEBAR ── */
+nav.sidebar {
+  width: var(--sidebar-w);
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  overflow-y: auto;
+  padding: 24px 0;
+  z-index: 100;
+}
+nav.sidebar::-webkit-scrollbar { width: 4px; }
+nav.sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+.sidebar-header {
+  padding: 0 20px 20px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+.sidebar-header .course { font-size: 11px; color: var(--text-sub); letter-spacing: .05em; text-transform: uppercase; margin-bottom: 4px; }
+.sidebar-header .title { font-size: 14px; font-weight: 700; color: var(--text); line-height: 1.4; }
+.sidebar-header .badge {
+  display: inline-block; margin-top: 8px;
+  font-size: 10px; padding: 2px 8px;
+  background: var(--accent); color: #fff;
+  border-radius: 99px; font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.nav-section { margin-bottom: 4px; }
+.nav-section-label {
+  font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--text-dim); padding: 8px 20px 4px;
+}
+.nav-item {
+  display: block; padding: 6px 20px;
+  font-size: 12.5px; color: var(--text-sub);
+  text-decoration: none; line-height: 1.4;
+  border-left: 2px solid transparent;
+  transition: all .15s;
+}
+.nav-item:hover { color: var(--text); background: var(--bg3); border-left-color: var(--accent); }
+.nav-item.active { color: var(--accent); border-left-color: var(--accent); background: rgba(79,142,247,.08); }
+.nav-item.sub { padding-left: 32px; font-size: 12px; }
+
+/* ── MAIN ── */
+main.content {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  max-width: 900px;
+  padding: 40px 48px;
+}
+
+/* ── HEADER ── */
+.page-header {
+  background: linear-gradient(135deg, #111e38 0%, #0b1628 100%);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 32px 36px;
+  margin-bottom: 36px;
+  position: relative;
+  overflow: hidden;
+}
+.page-header::before {
+  content: '';
+  position: absolute; top: 0; right: 0;
+  width: 300px; height: 200px;
+  background: radial-gradient(ellipse at 80% 20%, rgba(79,142,247,.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+.header-meta { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 16px; }
+.meta-chip {
+  font-size: 11px; font-family: 'JetBrains Mono', monospace;
+  padding: 3px 10px; border-radius: 4px;
+  background: var(--bg3); border: 1px solid var(--border);
+  color: var(--text-sub);
+}
+.meta-chip span { color: var(--accent3); margin-right: 4px; }
+.page-header h1 {
+  font-family: 'Zen Kaku Gothic New', 'Noto Sans JP', sans-serif;
+  font-size: 28px; font-weight: 700;
+  line-height: 1.3;
+  background: linear-gradient(135deg, #e2e8f5 0%, #93b4f8 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 12px;
+}
+.page-header .subtitle { color: var(--text-sub); font-size: 13px; }
+.source-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.source-tag {
+  font-size: 11px; font-family: 'JetBrains Mono', monospace;
+  padding: 3px 8px; border-radius: 4px;
+  background: rgba(52,211,153,.1); border: 1px solid rgba(52,211,153,.25);
+  color: var(--accent2);
+}
+
+/* ── SECTIONS ── */
+.section { margin-bottom: 40px; scroll-margin-top: 80px; }
+
+.section-header {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 20px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
+  border-radius: 8px;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+.section-header h2 {
+  font-size: 17px; font-weight: 700; color: var(--text);
+  flex: 1;
+}
+.section-header .ch-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; color: var(--accent);
+  background: rgba(79,142,247,.12);
+  padding: 2px 8px; border-radius: 4px;
+}
+
+.subsection { margin-bottom: 28px; }
+.subsection h3 {
+  font-size: 15px; font-weight: 700; color: var(--accent3);
+  margin-bottom: 12px;
+  display: flex; align-items: center; gap: 8px;
+}
+.subsection h3::before {
+  content: '▶'; font-size: 10px; color: var(--accent3);
+}
+
+/* ── CONTENT BLOCKS ── */
+p { margin-bottom: 12px; }
+ul, ol { padding-left: 20px; margin-bottom: 12px; }
+li { margin-bottom: 6px; }
+
+/* 音声補足ブロック */
+.audio-block {
+  background: var(--audio-bg);
+  border-left: 3px solid var(--audio-border);
+  border-radius: 0 6px 6px 0;
+  padding: 12px 16px;
+  margin: 14px 0;
+  font-size: 13.5px;
+}
+.audio-block .block-label {
+  font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  color: #60a5fa; margin-bottom: 6px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* 外部補足ブロック */
+.ext-block {
+  background: var(--ext-bg);
+  border-left: 3px solid var(--ext-border);
+  border-radius: 0 6px 6px 0;
+  padding: 12px 16px;
+  margin: 14px 0;
+  font-size: 13.5px;
+}
+.ext-block .block-label {
+  font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--accent2); margin-bottom: 6px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* 推測補完ブロック */
+.infer-block {
+  background: var(--infer-bg);
+  border-left: 3px solid var(--infer-border);
+  border-radius: 0 6px 6px 0;
+  padding: 12px 16px;
+  margin: 14px 0;
+  font-size: 13.5px;
+}
+
+/* 強調ボックス */
+.callout {
+  background: linear-gradient(135deg, #131f35 0%, #0f1828 100%);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent3);
+  border-radius: 6px;
+  padding: 16px 20px;
+  margin: 16px 0;
+}
+.callout .callout-title {
+  font-size: 11px; font-weight: 700; color: var(--accent3);
+  text-transform: uppercase; letter-spacing: .08em;
+  margin-bottom: 8px; font-family: 'JetBrains Mono', monospace;
+}
+
+/* ポインタバッジ */
+.ptr {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: var(--text-dim);
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 3px; padding: 1px 5px;
+  display: inline-block; vertical-align: middle;
+  margin-left: 6px;
+}
+
+/* テーブル */
+.tbl-wrap { overflow-x: auto; margin: 16px 0; }
+table {
+  width: 100%; border-collapse: collapse;
+  font-size: 13px; min-width: 500px;
+}
+th {
+  background: var(--bg3); color: var(--text-sub);
+  font-size: 11px; font-weight: 700; letter-spacing: .05em;
+  padding: 8px 12px; text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border2);
+  vertical-align: top; line-height: 1.6;
+}
+tr:hover td { background: rgba(255,255,255,.02); }
+.td-center { text-align: center; }
+.star { color: var(--accent3); }
+
+/* ── SVG FIGURES ── */
+.fig-wrap { margin: 20px 0; }
+.fig-wrap figcaption {
+  font-size: 11px; color: var(--text-dim);
+  text-align: center; margin-top: 8px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ── APPENDIX ── */
+.appendix-card {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+.appendix-card .app-header {
+  padding: 14px 20px;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  font-size: 15px; font-weight: 700;
+}
+.appendix-card .app-body { padding: 20px; }
+
+.unconfirmed-card {
+  border-color: var(--warn-border);
+}
+.unconfirmed-card .app-header {
+  background: var(--warn-bg);
+  border-bottom-color: var(--warn-border);
+  color: var(--accent3);
+}
+
+/* ── MISC ── */
+code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px; background: var(--bg3);
+  border: 1px solid var(--border); border-radius: 3px;
+  padding: 1px 5px; color: var(--accent2);
+}
+.tag-unconfirmed { color: var(--accent3); font-weight: 700; }
+.tag-ext { color: var(--accent2); }
+.importance-3 { color: var(--accent3); }
+.importance-2 { color: var(--accent2); }
+.importance-1 { color: var(--text-sub); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  nav.sidebar { display: none; }
+  main.content { margin-left: 0; padding: 24px 20px; }
+}
+</style>
+</head>
+<body>
+<div class="layout">
+
+<!-- ================== SIDEBAR ================== -->
+<nav class="sidebar">
+  <div class="sidebar-header">
+    <div class="course">ITのための基礎知識 · CS101</div>
+    <div class="title">第5回 システム戦略</div>
+    <div class="badge">第5回</div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">はじめに</div>
+    <a class="nav-item" href="#overview">学習目標・変遷史</a>
+    <a class="nav-item sub" href="#history-detail">システム戦略変遷の詳細</a>
+    <a class="nav-item sub" href="#turning-points">過去の転換点</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">第1章</div>
+    <a class="nav-item" href="#ch1">情報システム戦略</a>
+    <a class="nav-item sub" href="#ch1-sis">戦略情報システム事例</a>
+    <a class="nav-item sub" href="#ch1-travel">旅行業界の競争</a>
+    <a class="nav-item sub" href="#ch1-strategy">戦略目標の設定</a>
+    <a class="nav-item sub" href="#ch1-ea">EA（エンタープライズアーキテクチャ）</a>
+    <a class="nav-item sub" href="#ch1-sor-soe">SoR・SoE</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">第2章</div>
+    <a class="nav-item" href="#ch2">業務プロセス</a>
+    <a class="nav-item sub" href="#ch2-modeling">モデリング手法</a>
+    <a class="nav-item sub" href="#ch2-er">ER図</a>
+    <a class="nav-item sub" href="#ch2-dfd">DFD</a>
+    <a class="nav-item sub" href="#ch2-bpmn">BPMN</a>
+    <a class="nav-item sub" href="#ch2-bpr-bpm">BPR・BPM</a>
+    <a class="nav-item sub" href="#ch2-it-kaizen">ITを活用した業務改善</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">第3章</div>
+    <a class="nav-item" href="#ch3">ソリューションビジネス</a>
+    <a class="nav-item sub" href="#ch3-cloud">クラウドコンピューティング</a>
+    <a class="nav-item sub" href="#ch3-data">データビジネス</a>
+    <a class="nav-item sub" href="#ch3-info-bank">情報銀行・医療データ</a>
+    <a class="nav-item sub" href="#ch3-provider">プロバイダーの課題</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">第4章</div>
+    <a class="nav-item" href="#ch4">システム活用促進・評価</a>
+    <a class="nav-item sub" href="#ch4-literacy">デジタルリテラシー</a>
+    <a class="nav-item sub" href="#ch4-case">都営浅草線の事例</a>
+    <a class="nav-item sub" href="#ch4-eval">システム評価・検証</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">まとめ</div>
+    <a class="nav-item" href="#future">未来の転換点・AI</a>
+    <a class="nav-item sub" href="#it-human">IT人材の偏り</a>
+    <a class="nav-item sub" href="#summary">システム戦略立案能力</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">補足</div>
+    <a class="nav-item" href="#unconfirmed">❓ 未確定事項</a>
+    <a class="nav-item" href="#appendix-a">⭐ 補足A: 最重要ワード</a>
+    <a class="nav-item" href="#appendix-b">📚 補足B: 背景知識</a>
+    <a class="nav-item" href="#appendix-c">🎯 補足C: 試験重要点</a>
+    <a class="nav-item" href="#appendix-d">🔗 補足D: 関連概念</a>
+  </div>
+</nav>
+
+<!-- ================== MAIN ================== -->
+<main class="content">
+
+<!-- ページヘッダー -->
+<div class="page-header">
+  <div class="header-meta">
+    <div class="meta-chip"><span>科目</span>ITのための基礎知識（CS101）</div>
+    <div class="meta-chip"><span>回</span>第5回</div>
+    <div class="meta-chip"><span>担当</span>福泉 武史（ふくいずみ たけし）</div>
+  </div>
+  <h1>第5回 システム戦略</h1>
+  <div class="subtitle">情報システム戦略 / 業務プロセス / ソリューションビジネス / システム活用促進・評価</div>
+  <div class="source-tags">
+    <span class="source-tag">S03: スライドPDF</span>
+    <span class="source-tag">S05-A: AI変換テキスト（hynote.ai）</span>
+    <span class="source-tag">S05-B: AI変換テキスト（hynote.ai）</span>
+  </div>
+</div>
+
+<!-- =========================================================
+     学習目標・変遷史概要
+     ========================================================= -->
+<div class="section" id="overview">
+  <div class="section-header">
+    <span class="ch-num">イントロ</span>
+    <h2>学習目標・システム戦略変遷の歴史</h2>
+  </div>
+
+  <div class="subsection">
+    <h3>第5回 学習目標</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>#</th><th>学習目標</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>システム戦略の意義と目的を理解し、戦略目標の設定方法を説明できる</td></tr>
+          <tr><td>2</td><td>業務プロセスのモデル化手法を理解し、業務改革・効率化のための使い方を説明できる</td></tr>
+          <tr><td>3</td><td>ソリューションビジネスの概念と代表的なサービスを理解し、具体的な利用方法を説明できる</td></tr>
+          <tr><td>4</td><td>システムの活用促進と評価の意義を理解し、デジタルリテラシーの重要性と高める方法を説明できる</td></tr>
+          <tr><td>5</td><td>システム戦略変遷の歴史を学び、システム戦略立案能力に必要な要素を説明できる</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <span class="ptr">← S03:p.4</span>
+  </div>
+
+  <div class="subsection" id="history-detail">
+    <h3>ITの進歩とシステム戦略変遷の歴史</h3>
+    <p>この講義全体を通じて繰り返し参照される重要なタイムライン。日本のITの歴史を3フェーズに分けて理解する。<span class="ptr">← S03:p.5</span></p>
+
+    <!-- SVG: タイムライン -->
+    <div class="fig-wrap">
+      <figure>
+        <svg viewBox="0 0 820 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;background:#131e30;border-radius:8px;padding:8px 0;">
+          <!-- 背景帯 -->
+          <!-- フェーズ1: 1960-1990 先進的 -->
+          <rect x="40" y="60" width="240" height="80" rx="4" fill="#0d2547" stroke="#1d4ed8" stroke-width="1"/>
+          <!-- フェーズ2: 1990-2010 モバイルリード -->
+          <rect x="285" y="60" width="230" height="80" rx="4" fill="#0d2a1a" stroke="#15803d" stroke-width="1"/>
+          <!-- フェーズ3: 2010- デジタル赤字 -->
+          <rect x="520" y="60" width="260" height="80" rx="4" fill="#2a1005" stroke="#b45309" stroke-width="1"/>
+
+          <!-- ラベル -->
+          <text x="160" y="82" text-anchor="middle" fill="#60a5fa" font-size="9" font-family="Noto Sans JP,sans-serif">日本が最も先進的だった時代</text>
+          <text x="400" y="82" text-anchor="middle" fill="#34d399" font-size="9" font-family="Noto Sans JP,sans-serif">モバイルインターネットをリード</text>
+          <text x="650" y="82" text-anchor="middle" fill="#fbbf24" font-size="9" font-weight="bold" font-family="Noto Sans JP,sans-serif">デジタル赤字が拡大</text>
+
+          <!-- 軸ライン -->
+          <line x1="40" y1="148" x2="780" y2="148" stroke="#253352" stroke-width="1.5"/>
+          <polygon points="780,144 788,148 780,152" fill="#253352"/>
+
+          <!-- 年マーカー -->
+          <!-- 1960 -->
+          <line x1="40" y1="148" x2="40" y2="155" stroke="#4a5a7a" stroke-width="1"/>
+          <text x="40" y="166" text-anchor="middle" fill="#7a90b8" font-size="10" font-family="JetBrains Mono,monospace">1960</text>
+          <!-- みどりの窓口 1965 -->
+          <line x1="70" y1="148" x2="70" y2="135" stroke="#60a5fa" stroke-width="1" stroke-dasharray="2,2"/>
+          <text x="72" y="132" fill="#60a5fa" font-size="8.5" font-family="Noto Sans JP,sans-serif">みどりの窓口</text>
+          <text x="72" y="142" fill="#60a5fa" font-size="8" font-family="JetBrains Mono,monospace">1965</text>
+          <!-- 全銀 1973 -->
+          <line x1="110" y1="148" x2="110" y2="112" stroke="#60a5fa" stroke-width="1" stroke-dasharray="2,2"/>
+          <text x="112" y="109" fill="#60a5fa" font-size="8.5" font-family="Noto Sans JP,sans-serif">全銀システム</text>
+          <text x="112" y="119" fill="#60a5fa" font-size="8" font-family="JetBrains Mono,monospace">1973</text>
+          <!-- 1980 -->
+          <line x1="200" y1="148" x2="200" y2="155" stroke="#4a5a7a" stroke-width="1"/>
+          <text x="200" y="166" text-anchor="middle" fill="#7a90b8" font-size="10" font-family="JetBrains Mono,monospace">1980</text>
+          <!-- PC98 1982 -->
+          <line x1="220" y1="148" x2="220" y2="135" stroke="#60a5fa" stroke-width="1" stroke-dasharray="2,2"/>
+          <text x="222" y="132" fill="#60a5fa" font-size="8.5" font-family="Noto Sans JP,sans-serif">PC-98</text>
+          <text x="222" y="142" fill="#60a5fa" font-size="8" font-family="JetBrains Mono,monospace">1982</text>
+          <!-- 1990 -->
+          <!-- 境界1 -->
+          <line x1="285" y1="58" x2="285" y2="148" stroke="#253352" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <line x1="285" y1="148" x2="285" y2="180" stroke="#4a5a7a" stroke-width="1"/>
+          <text x="285" y="190" text-anchor="middle" fill="#7a90b8" font-size="10" font-family="JetBrains Mono,monospace">1990</text>
+          <!-- iモード 1999 -->
+          <line x1="340" y1="148" x2="340" y2="135" stroke="#34d399" stroke-width="1" stroke-dasharray="2,2"/>
+          <text x="342" y="132" fill="#34d399" font-size="8.5" font-family="Noto Sans JP,sans-serif">iモード</text>
+          <text x="342" y="142" fill="#34d399" font-size="8" font-family="JetBrains Mono,monospace">1999</text>
+          <!-- カメラ付き 2000 -->
+          <line x1="380" y1="148" x2="380" y2="112" stroke="#34d399" stroke-width="1" stroke-dasharray="2,2"/>
+          <text x="382" y="109" fill="#34d399" font-size="8.5" font-family="Noto Sans JP,sans-serif">カメラ付き携帯</text>
+          <text x="382" y="119" fill="#34d399" font-size="8" font-family="JetBrains Mono,monospace">2000</text>
+          <!-- 2000 -->
+          <line x1="360" y1="180" x2="360" y2="195" stroke="#4a5a7a" stroke-width="1"/>
+          <text x="365" y="195" fill="#7a90b8" font-size="10" font-family="JetBrains Mono,monospace">2000</text>
+          <!-- 境界2 -->
+          <line x1="520" y1="58" x2="520" y2="148" stroke="#253352" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <line x1="520" y1="148" x2="520" y2="180" stroke="#4a5a7a" stroke-width="1"/>
+          <text x="520" y="190" text-anchor="middle" fill="#7a90b8" font-size="10" font-family="JetBrains Mono,monospace">2010</text>
+          <!-- iPhone 2007 -->
+          <line x1="470" y1="148" x2="470" y2="135" stroke="#fbbf24" stroke-width="1" stroke-dasharray="2,2"/>
+          <text x="472" y="132" fill="#fbbf24" font-size="8.5" font-family="Noto Sans JP,sans-serif">iPhone発売</text>
+          <text x="472" y="142" fill="#fbbf24" font-size="8" font-family="JetBrains Mono,monospace">2007</text>
+          <!-- Suica -->
+          <line x1="500" y1="148" x2="500" y2="112" stroke="#fbbf24" stroke-width="1" stroke-dasharray="2,2"/>
+          <text x="502" y="109" fill="#fbbf24" font-size="8.5" font-family="Noto Sans JP,sans-serif">Suica</text>
+          <!-- 2020 -->
+          <line x1="680" y1="148" x2="680" y2="155" stroke="#4a5a7a" stroke-width="1"/>
+          <text x="680" y="166" text-anchor="middle" fill="#7a90b8" font-size="10" font-family="JetBrains Mono,monospace">2020</text>
+          <!-- 2030 -->
+          <line x1="760" y1="148" x2="760" y2="155" stroke="#4a5a7a" stroke-width="1"/>
+          <text x="760" y="166" text-anchor="middle" fill="#7a90b8" font-size="10" font-family="JetBrains Mono,monospace">2030</text>
+
+          <!-- 技術ラベル -->
+          <text x="150" y="98" text-anchor="middle" fill="#e2e8f5" font-size="9" font-family="Noto Sans JP,sans-serif">メインフレーム</text>
+          <text x="330" y="98" text-anchor="middle" fill="#e2e8f5" font-size="9" font-family="Noto Sans JP,sans-serif">クライアントサーバ → クラウド</text>
+          <text x="640" y="98" text-anchor="middle" fill="#e2e8f5" font-size="9" font-family="Noto Sans JP,sans-serif">クラウド / BigData / AI</text>
+        </svg>
+        <figcaption>図: ITの進歩とシステム戦略変遷の歴史 ← S03:p.5</figcaption>
+      </figure>
+    </div>
+
+    <div class="audio-block">
+      <div class="block-label">🎙 音声補足</div>
+      <p>1965年のみどりの窓口は、団体旅行向け指定席チケット販売を効率化したいという国鉄社員の発想によるもので、開始当初から全国45都道府県を一気にカバーするという極めて野心的なシステム戦略だった。<span class="ptr">← S05:A/B</span></p>
+      <p>iモードは1999年開始。2005年時点でモバイル端末からのインターネット利用者数は<strong>7,000万人</strong>に達し、PCを上回っていたとされる。ただし携帯電話というデバイスの制約からPC向けサイトはそのまま表示できず、水平展開に限界があった。このビジネスモデルをそっくり模倣したのがAppleだった。<span class="ptr">← S05:A/B</span></p>
+    </div>
+  </div>
+
+  <div class="subsection" id="turning-points">
+    <h3>過去の転換点（ターニングポイント）</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>転換点</th><th>変化の内容</th></tr></thead>
+        <tbody>
+          <tr><td><strong>垂直統合 → 水平分業</strong></td><td>1社がHW・OS・ミドルウェア・アプリを全て提供する垂直統合型から、各レイヤーを専門企業が担う水平分業型へ</td></tr>
+          <tr><td><strong>プロプライエタリ → オープン</strong></td><td>各メーカー独自仕様の専用設計から、技術的にオープンな仕様に基づき量産・他社製品との組み合わせが容易な製品へ</td></tr>
+          <tr><td><strong>専用線 → インターネット</strong></td><td>IPを標準で話す汎用品が普及し、専用線が駆逐されて世界どこでも簡単につながるインターネットが標準に</td></tr>
+          <tr><td><strong>ハードウェア → ソフトウェアサービス</strong></td><td>ハードの調達が誰でもできるようになり、差別化点がミドルウェア・仮想化技術へ移行</td></tr>
+          <tr><td><strong>生産財主導 → 消費財主導</strong></td><td>1980年代以前は法人向けが先行→後に消費者向けに転用。1990年代後半以降は消費者向けサービスが先行し、後に法人向けへ転用</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <span class="ptr">← S03:p.11</span>
+  </div>
+</div>
+
+<!-- =========================================================
+     第1章: 情報システム戦略
+     ========================================================= -->
+<div class="section" id="ch1">
+  <div class="section-header">
+    <span class="ch-num">第1章</span>
+    <h2>情報システム戦略</h2>
+  </div>
+
+  <div class="subsection">
+    <h3>情報システム戦略とは</h3>
+    <div class="callout">
+      <div class="callout-title">定義</div>
+      <p><strong>情報システム戦略</strong>とは、企業の経営戦略を実現するために情報システムを<strong>計画・設計・導入・運用</strong>するための基本方針。</p>
+    </div>
+    <p><strong>情報システム戦略の重要性（3つの役割）：</strong></p>
+    <ul>
+      <li><strong>競争優位の確立</strong>：ITを活用して競争力を強化</li>
+      <li><strong>経営戦略のサポート</strong>：企業の目標達成を支援するためのシステム導入</li>
+      <li><strong>組織全体の効率化</strong>：業務プロセスの標準化と効率化</li>
+    </ul>
+    <span class="ptr">← S03:p.14</span>
+    <div class="audio-block">
+      <div class="block-label">🎙 音声補足</div>
+      <p>あらゆる業種でITが不可欠になっているため、情報システム戦略の重要性は増す一方。ITが進歩し続ける以上、この流れが逆に戻ることはない。冒頭で触れた日本のデジタル赤字拡大も、日本企業がシステム戦略の立案で劣っていたのかという問いにつながる（答えは1〜4章全体を通じて考察）。<span class="ptr">← S05:A/B</span></p>
+    </div>
+  </div>
+
+  <div class="subsection" id="ch1-sis">
+    <h3>戦略情報システムの事例：American Airlines SABRE</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>年</th><th>出来事</th></tr></thead>
+        <tbody>
+          <tr><td>1964年</td><td>手作業だった航空券予約をコンピュータ処理化</td></tr>
+          <tr><td>1976年</td><td>旅行代理店にオンライン端末を開放。<strong>650航空会社・15,000代理店</strong>のトップシェアを獲得</td></tr>
+          <tr><td>1981年</td><td>検索結果でAAが必ずトップに表示されるアルファベット表記順ロジックを実装し莫大な利益を獲得</td></tr>
+          <tr><td>1984年</td><td>米国議会でバイアス表示が問題となり禁止（それまでに十分に元を取った）</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <span class="ptr">← S03:p.15</span>
+    <div class="audio-block">
+      <div class="block-label">🎙 音声補足</div>
+      <p>SABREはAmerican AirlinesがIBMと協力して開発。IBM公式サイト・Wikipedia等の複数ソースによると開発投資は約4,000万ドル（2024年価値で約425百万ドル、日本円換算で現在約500億円以上相当）。講義音声の「約500億円規模」はこの現在価値換算と合致する。SABREは旧国鉄の緑の窓口と類似したシステム。1953年の偶然の出会いから1957年正式契約、1960年実験稼働、1964年全機能稼働、1976年旅行代理店開放という経緯を経た。<span class="ptr">← S05:A/B, IBM公式, Wikipedia</span></p>
+      <p>上位表示バイアスという「情報システムで競争優位を作る発想」は現代にも続く。旅行業界では1980年代からシステム戦略の熾烈な競争が続いている。<span class="ptr">← S05:A/B</span></p>
+    </div>
+  </div>
+
+  <div class="subsection" id="ch1-travel">
+    <h3>旅行業界の情報システム戦略競争</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>略語</th><th>正式名称</th><th>役割</th></tr></thead>
+        <tbody>
+          <tr><td><code>OTA</code></td><td>Online Travel Agency</td><td>じゃらん・Expedia等の需要側プレイヤー。CRS/GDSを運用</td></tr>
+          <tr><td><code>CRS</code></td><td>Computer Reservation System</td><td>予約管理システム（SABREもこの一種）</td></tr>
+          <tr><td><code>GDS</code></td><td>Global Distribution System</td><td>複数航空会社・ホテルの在庫を統合した流通システム</td></tr>
+          <tr><td><code>PMS</code></td><td>Property Management System</td><td>供給側（ホテル・航空会社）が商品在庫を管理するシステム</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <span class="ptr">← S03:p.16</span>
+    <div class="audio-block">
+      <div class="block-label">🎙 音声補足</div>
+      <p>需要側（OTA）は多くの顧客を集客するため広告費を投入し、割安商品を仕入れようとする。供給側（ホテル・航空会社）はOTAを利用しながらも高手数料・値引き圧力に対抗するため複数OTAを競わせ、独自のCRSで直販も行う。買収・系列化・アライアンス戦略で規模を追求する競争が続いている。<span class="ptr">← S05:A/B</span></p>
+    </div>
+  </div>
+
+  <div class="subsection" id="ch1-strategy">
+    <h3>戦略目標の設定方法（SWOT分析）</h3>
+    <div class="callout">
+      <div class="callout-title">SWOT分析とは</div>
+      <p><strong>S</strong>trengths（強み）・<strong>W</strong>eaknesses（弱み）・<strong>O</strong>pportunities（機会）・<strong>T</strong>hreats（脅威）の4要素を明確にし、自社の立ち位置を評価するツール。</p>
+    </div>
+    <p><strong>SWOT分析からシステム要件を導出するプロセス：</strong></p>
+    <ol>
+      <li>SWOT分析で経営戦略を立案</li>
+      <li>具体的な<strong>戦略目標</strong>を定義する（例：受注〜出荷リードタイムを50%短縮する）</li>
+      <li>戦略目標を達成する<strong>情報システムの要件</strong>を具体化する（例：情報伝達の高速化・精度向上・意思決定の迅速化）</li>
+    </ol>
+    <span class="ptr">← S03:p.18,19</span>
+    <div class="audio-block">
+      <div class="block-label">🎙 音声補足</div>
+      <p>例として、カスタマイズ可能な専用ネットワーク機器メーカーで考えると：強み（顧客ニーズへの対応能力）・弱み（受注〜出荷リードタイムが長い）・機会（優良顧客の存在）・脅威（製品技術のコモディティ化）。短期目標はリードタイム短縮、長期目標は新タイプの製品開発となる。<span class="ptr">← S05:A/B</span></p>
+    </div>
+  </div>
+
+  <div class="subsection" id="ch1-ea">
+    <h3>エンタープライズアーキテクチャ（EA）</h3>
+    <div class="callout">
+      <div class="callout-title">EA（Enterprise Architecture）の定義</div>
+      <p>企業全体のビジネス戦略とIT戦略の<strong>整合性を確保</strong>するため、組織全体の情報システムと関連する業務プロセス・データの構造を整理し、<strong>全体最適化</strong>を図る検討フレームワーク。</p>
+    </div>
+    <p><strong>EAのメリット：</strong></p>
+    <ul>
+      <li>経営資源の効率的な配分・優先順位付け</li>
+      <li>長期的な開発ロードマップの策定</li>
+      <li>変化に対応する柔軟性の確保</li>
+      <li>業務標準化の推進</li>
+      <li>データ資産の価値の明確化と利活用促進</li>
+    </ul>
+    <span class="ptr">← S03:p.20</span>
+
+    <p><strong>EAの4レイヤー：</strong></p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>レイヤー</th><th>内容</th></tr></thead>
+        <tbody>
+          <tr><td>ビジネスアーキテクチャ</td><td>業務プロセス・ビジネスの仕組み</td></tr>
+          <tr><td>データアーキテクチャ</td><td>データの構造・管理方針</td></tr>
+          <tr><td>アプリケーションアーキテクチャ</td><td>システムの機能・アプリ群</td></tr>
+          <tr><td>テクノロジーアーキテクチャ</td><td>技術基盤・インフラ</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <span class="ptr">← S03:p.21</span>
+    <div class="audio-block">
+      <div class="block-label">🎙 音声補足</div>
+      <p>EAをしっかり検討しないと、情報伝達の高速化・精度向上といっても特定製品だけで有効な個別実装になってしまう。また関連部門の業務標準化を同時に進めなければ「知っている人しか動かせないシステム」になりがち。複数事業部がある場合でも、各事業ごとの個別最適にならないよう全体最適化の視点で4レイヤーの要件を検討することが必要。<span class="ptr">← S05:A/B</span></p>
+    </div>
+  </div>
+
+  <div class="subsection" id="ch1-sor-soe">
+    <h3>SoR（記録システム）と SoE（エンゲージメントシステム）</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>略語</th><th>正式名称</th><th>定義</th><th>例</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>SoR</strong></td>
+            <td>Systems of Record</td>
+            <td>企業の運営に必要な基本的なデータ・情報を管理するシステム。正確で信頼性の高いデータ管理を行い業務の基盤となる</td>
+            <td>顧客マスタ・商品マスタ・生産計画・製造記録</td>
+          </tr>
+          <tr>
+            <td><strong>SoE</strong></td>
+            <td>Systems of Engagement</td>
+            <td>顧客や従業員と積極的に関わり、コミュニケーションを促進するシステム。顧客体験の向上や従業員エンゲージメント向上を図る</td>
+            <td>ECサイト・コールセンター・従業員ポータル・メール・モバイルアプリ</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <span class="ptr">← S03:p.22</span>
+    <div class="audio-block">
+      <div class="block-label">🎙 音声補足</div>
+      <p>消費者向け事業では販売データや行動ログがSoRの重要な情報資産となる。製造業では生産ラインのIoTデバイスから発生する製造記録が品質管理・コスト管理に重要なデータとなる。インターネットの普及で顧客と企業が直接つながるようになった現在、SoEの重要性は非常に大きくなっている。<span class="ptr">← S05:A/B</span></p>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================
+     第2章: 業務プロセス
+     ========================================================= -->
+<div class="section" id="ch2">
+  <div class="section-header">
+    <span class="ch-num">第2章</span>
+    <h2>業務プロセス</h2>
+  </div>
+
+  <div class="subsection">
+    <h3>業務プロセスとは・その重要性</h3>
+    <div class="callout">
+      <div class="callout-title">定義</div>
+      <p><strong>業務プロセス</strong>とは、組織で行われる一連の業務活動や手続き。</p>
+    </div>
+    <p>業務プロセスが重要な理由：</p>
+    <ul>
+      <li><strong>効率化</strong>：無駄な工程を排除し業務の流れをスムーズに</li>
+      <li><strong>問題解決</strong>：組織内の問題点を明確にし改善策を導き出す</li>
+      <li><strong>標準化</strong>：組織全体で一貫した業務進行が可能になり品質均一化・ミスを削減</li>
+    </ul>
+    <span class="ptr">← S03:p.28</span>
+    <div class="audio-block">
+      <div class="block-label">🎙 音声補足</div>
+      <p>業務プロセスは無駄な工程を含んでいたり、時間がかかる問題を抱えていたり、特定の知識を持つ人にしかできない「俗人的な内容」を含んでいたりする。このため可視化が業務プロセス改善の前提条件となる。<span class="ptr">← S05:A/B</span></p>
+    </div>
+  </div>
+
+  <div class="subsection" id="ch2-modeling">
+    <h3>業務プロセスのモデリング手法</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>手法</th><th>何を表すか</th><th>強み</th><th>弱点</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>ER図</strong></td>
+            <td>データのエンティティとその関係性</td>
+            <td>データ構造の可視化・オーナーシップの明確化</td>
+            <td>時間軸・フローの情報なし。業務プロセスを表せない</td>
+          </tr>
+          <tr>
+            <td><strong>DFD</strong>（データフローダイアグラム）</td>
+            <td>データの受け渡しの流れ（プロセス・データストア・矢印）</td>
+            <td>部門間の情報の流れ・タイミングを時系列で表現</td>
+            <td>データ構造の表現に不向き</td>
+          </tr>
+          <tr>
+            <td><strong>BPMN</strong></td>
+            <td>業務の手順・フロー（部門横断的に）</td>
+            <td>部門間の業務フロー・分岐ポイントを書きやすい。国際規格（ISO 19510）</td>
+            <td>データ構造の表現に不向き</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <span class="ptr">← S03:p.29</span>
+    <div class="audio-block">
+      <div class="block-label">🎙 音声補足</div>
+      <p>3手法の長短を理解して使い分けることが重要。ER図から始めてデータ構造を明確にし、DFDで情報の流れ・タイミングを描き、BPMNで業務フローを整理するという順序が実践的。BPMNはOMGという非営利の国際機関が保守するISO 19510規格。細かい表記法にこだわるより現場メンバーにわかりやすいことが重要。<span class="ptr">← S05:A/B</span></p>
+    </div>
+  </div>
+
+  <div class="subsection" id="ch2-er">
+    <h3>ER図の事例と役割</h3>
+    <p>ER図（Entity Relationship Diagram）のIIDEF記法では、四角（エンティティ）と線（リレーション）でデータの構造を可視化する。</p>
+    <p><strong>ER図で明確になること：</strong>データ構造の可視化・データのオーナーシップ</p>
+    <ul>
+      <li>注文番号のオーナー → 営業部門</li>
+      <li>部品表（BOM）のオーナー → 設計部門</li>
+      <li>製造番号のオーナー → 製造部門</li>
+    </ul>
+    <p><strong>ER図の限界：</strong>時間軸の情報がない。「いつその情報を生成するか」というフローの情報がないため、業務プロセスを表せているとは言えない。しかしER図から始めることでデータ構造が明確になり、次のDFDへのステップにつながる。</p>
+    <span class="ptr">← S03:p.30,31,32</span>
+  </div>
+
+  <div class="subsection" id="ch2-dfd">
+    <h3>DFD：「ポンチ絵」への警告と正しいアプローチ</h3>
+    <div class="callout">
+      <div class="callout-title">⚠ 悪い事例：「ポンチ絵」</div>
+      <p>真ん中に大きなデータベースを描き、各部門が更新・参照すればリードタイムが短縮できるという概念図。コンサルタントでさえよく描くもので、顧客が騙されやすい。</p>
+      <p><strong>問題点：</strong>共有される情報の粒度（粒つぶの大きさ）・情報の精度・オーナーシップ・確定手順や権限と責任を無視している。実際には役に立たない。</p>
+    </div>
+    <p><strong>正しいアプローチ（DFD）：</strong></p>
+    <ul>
+      <li>丸 → プロセス、矢印 → データの流れ、二重線 → データストア</li>
+      <li>受注変更が発生するイレギュラーパターン（異常系）を含めて描く</li>
+      <li>情報の伝わるタイミングと精度を高める目標を各プロセスのシステム設計に組み込む</li>
+    </ul>
+    <span class="ptr">← S03:p.33,34,35,36</span>
+    <div class="audio-block">
+      <div class="block-label">🎙 音声補足</div>
+      <p>多くの企業では営業・設計といった上流部門の立場が強く、生産管理以降の下流工程に皺寄せが行くことが多い。下流工程は「変更を吸収して何とか間に合わせろ」と無理難題を押し付けられる。しかしそれを続けても問題解決にはならない。全体最適の視点で「調達に時間がかかる部品を使う設計変更を抑制するルール」「受注後X日以降は受注変更を不可とするルール」を営業部門と合意するような業務改善が必要。<span class="ptr">← S05:A/B</span></p>
+    </div>
+  </div>
+
+  <div class="subsection" id="ch2-bpmn">
+    <h3>BPMN（Business Process Model and Notation）</h3>
+    <p>業務プロセスを中心に書く方法。部門間の業務フローや分岐ポイントを書きやすい。ワークフロー技術とほぼ同じ。</p>
+    <p>福泉先生の実践では、BPMNの最上行に「システム」という行を追加し、情報システムの処理と人間が行う業務との関連を一枚の図に表現する。</p>
+    <div class="callout">
+      <div class="callout-title">キーポイント</div>
+      <p><strong>よくある問題：</strong>図を描こうとすると、自分の担当部分のプロセスはわかっても全体を理解できている人がいない。特にイレギュラーパターンは現場の特定の人にしかできない俗人的業務になっていることが多い。また、図を描く訓練ができていない場合も多い。<br>→ <strong>業務プロセスの見える化は外注に頼らず組織内リソースで実行できることが重要。</strong></p>
+    </div>
+    <span class="ptr">← S03:p.37,43</span>
+  </div>
+
+  <div class="subsection" id="ch2-bpr-bpm">
+    <h3>BPR・BPM・ワークフロー管理</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>用語</th><th>内容</th></tr></thead>
+        <tbody>
+          <tr><td><strong>BPR</strong>（Business Process Reengineering）</td><td>既存の業務プロセスを抜本的に見直し、業務フローを革新する手法</td></tr>
+          <tr><td><strong>BPM</strong>（Business Process Management）</td><td>業務プロセスを継続的に最適化するための管理手法。各プロセスにかかる日数計測・後戻り頻度計測・地道な改善</td></tr>
+          <tr><td><strong>ワークフロー管理</strong></td><td>業務の流れを自動化し、定型化できる業務をシステムに登録して次工程への遷移・分岐を自動化する</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <span class="ptr">← S03:p.38</span>
+
+    <div class="callout">
+      <div class="callout-title">BPR事例：東芝の生産座席予約方式（BTO方式）</div>
+      <p><strong>背景：</strong>1980年代の東芝青梅工場でパソコンのBTO（Build to Order：受注生産方式）を実装。従来の見込み生産では製品がすぐに陳腐化し値引き販売になる問題があった。また適切なスペックのPCを適切な台数だけ見込み生産することが困難だった。</p>
+      <p><strong>解決策の核心：「生産座席」という概念の発明</strong></p>
+      <ul>
+        <li>1日あたりの生産台数（例：5,000台 <span class="tag-unconfirmed">[外部補足：S03未記載・一次資料での確認困難。東芝青梅工場は最盛期4,000人超が勤務した大規模工場であり、1日数千台規模の生産は技術的に整合する]</span>）を「座席」とみなし、受注オーダーを割り当てる</li>
+        <li>未来の工場生産能力を予約して割り当てることで、余剰製品問題・生産の平準化を同時解決</li>
+        <li><strong>製品コンフィギュレーター</strong>（CPU・メモリ等の仕様選択を自動化する機能）を実装することで設計部門の存在を不要にした</li>
+      </ul>
+      <p><strong>効果：</strong>受注生産であるにも関わらず、実質的に営業・設計・生産計画・資材調達の各部門を不要にすることができた。</p>
+      <p><strong>現在も継続：</strong>ほぼ全てのパソコンメーカーでネット注文はBTO方式。自動車も受注生産になり製品コンフィギュレーターが動いている。コンビニも販売動向を生産計画に半自動で反映するシステムが存在する。</p>
+    </div>
+    <span class="ptr">← S03:p.39</span>
+  </div>
+
+  <div class="subsection" id="ch2-it-kaizen">
+    <h3>ITを活用した業務改善・定型業務と非定型業務の分類</h3>
+
+    <!-- SVG: 定型/非定型マトリクス -->
+    <div class="fig-wrap">
+      <figure>
+        <svg viewBox="0 0 560 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;background:#131e30;border-radius:8px;">
+          <!-- 定型業務 エリア -->
+          <rect x="20" y="20" width="250" height="160" rx="6" fill="#0d2547" stroke="#1d4ed8" stroke-width="1.5"/>
+          <text x="145" y="40" text-anchor="middle" fill="#60a5fa" font-size="11" font-weight="bold" font-family="Noto Sans JP,sans-serif">定型業務</text>
+          <!-- 基幹システムボックス -->
+          <rect x="35" y="50" width="220" height="50" rx="4" fill="#0f2033" stroke="#253352" stroke-width="1"/>
+          <text x="145" y="72" text-anchor="middle" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP,sans-serif">基幹システム</text>
+          <text x="145" y="87" text-anchor="middle" fill="#7a90b8" font-size="9" font-family="Noto Sans JP,sans-serif">受注管理・生産計画・製品設計 etc</text>
+          <!-- RPA -->
+          <rect x="35" y="115" width="220" height="30" rx="4" fill="#1a1030" stroke="#7c3aed" stroke-width="1"/>
+          <text x="145" y="134" text-anchor="middle" fill="#a78bfa" font-size="10" font-family="Noto Sans JP,sans-serif">RPA（中間的：現場で柔軟に変更可能）</text>
+          <!-- 境界 -->
+          <line x1="275" y1="20" x2="275" y2="180" stroke="#253352" stroke-width="1.5" stroke-dasharray="6,3"/>
+          <!-- 非定型業務 エリア -->
+          <rect x="285" y="20" width="250" height="160" rx="6" fill="#0f2018" stroke="#15803d" stroke-width="1.5"/>
+          <text x="410" y="40" text-anchor="middle" fill="#34d399" font-size="11" font-weight="bold" font-family="Noto Sans JP,sans-serif">非定型業務</text>
+          <text x="410" y="62" text-anchor="middle" fill="#e2e8f5" font-size="9.5" font-family="Noto Sans JP,sans-serif">グループウェア / E-mail / チャット</text>
+          <text x="410" y="77" text-anchor="middle" fill="#e2e8f5" font-size="9.5" font-family="Noto Sans JP,sans-serif">掲示板 / エンタープライズSNS</text>
+          <text x="410" y="92" text-anchor="middle" fill="#e2e8f5" font-size="9.5" font-family="Noto Sans JP,sans-serif">Web会議 / タスク管理ツール</text>
+          <text x="410" y="115" text-anchor="middle" fill="#7a90b8" font-size="8.5" font-family="Noto Sans JP,sans-serif">← コンシューマ向けサービスから発展したものが多い</text>
+        </svg>
+        <figcaption>図: 定型業務と非定型業務のシステム化方針 ← S03:p.41</figcaption>
+      </figure>
+    </div>
+
+    <div class="callout">
+      <div class="callout-title">重要な設計原則</div>
+      <p><strong>「すべての業務機能をガチガチにシステム化する必要はない」</strong></p>
+      <p>情報システム化すると業務機能が固定化され、頻繁な更新ができなくなる傾向が強い。定型業務であるほど基幹システムとして構築し、発生頻度が低かったり一時的に発生する業務はグループウェア・Eメールに外出しする設計の工夫が必要。これにより変化への柔軟性を確保できる。</p>
+    </div>
+    <span class="ptr">← S03:p.41</span>
+    <div class="audio-block">
+      <div class="block-label">🎙 音声補足</div>
+      <p>RPA（Robotic Process Automation）は中間的な性格を持つ。現場の社員が柔軟に機能変更できる一方で、定型的な業務システムとしての機能も実装できる。この特性を生かして使い分けを検討するのがよい。タスク管理ツールも、社内の20〜30人程度のスモールチームで使う場合はとても効果的（福泉先生の実感）。<span class="ptr">← S05:A/B</span></p>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================
+     第3章: ソリューションビジネス
+     ========================================================= -->
+<div class="section" id="ch3">
+  <div class="section-header">
+    <span class="ch-num">第3章</span>
+    <h2>ソリューションビジネス</h2>
+  </div>
+
+  <div class="subsection">
+    <h3>ソリューションビジネスとは・代表的な形態</h3>
+    <div class="callout">
+      <div class="callout-title">定義</div>
+      <p><strong>ソリューションビジネス</strong>とは、顧客の課題を解決するためにサービスや製品を提供するビジネス。</p>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>形態</th><th>内容</th><th>特徴</th></tr></thead>
+        <tbody>
+          <tr><td><strong>SI（System Integration）</strong></td><td>異なるシステムを統合し企業全体の効率を向上させるサービス</td><td>1980年代以前からIBM・富士通・日立等が担う。2010年代以降はコンサル系SIerがシェア拡大</td></tr>
+          <tr><td><strong>クラウドコンピューティング</strong></td><td>ITリソースをインターネット経由で提供するサービス</td><td>設備投資型からサービス利用型へのシフトを可能にした。IaaS・PaaS・SaaS・DaaSなど</td></tr>
+          <tr><td><strong>アウトソーシング</strong></td><td>特定業務・プロセスを外部企業に委託する形態</td><td>ITを非中核機能と考える株主重視経営の潮流で1990年代以降拡大したが、SIer依存体質を生む原因にも</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <span class="ptr">← S03:p.48,50</span>
+    <div class="audio-block">
+      <div class="block-label">🎙 音声補足</div>
+      <p><strong>ベンダーロックイン：</strong>ソリューションプロバイダーとの長期的関係は継続的収益をプロバイダー側にもたらす一方、ユーザー側にとってはプロバイダーを切り替えることが困難になるベンダーロックインという課題と表裏一体。<span class="ptr">← S05:A/B</span></p>
+      <p><strong>SIerへの依存体質：</strong>1990年代以降の過度なアウトソース・SIer依存により、IT内製化力が低下。SIerは自身の売上が減少する方向の提案はしないため、技術進歩のスピードに比して新しいソリューション採用のスピードが致命的に遅かった。<span class="ptr">← S05:A/B</span></p>
+    </div>
+  </div>
+
+  <div class="subsection" id="ch3-cloud">
+    <h3>クラウドコンピューティングの発展</h3>
+
+    <!-- SVG: インフラ形態の変遷 -->
+    <div class="fig-wrap">
+      <figure>
+        <svg viewBox="0 0 560 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;background:#131e30;border-radius:8px;">
+          <!-- ヘッダー -->
+          <text x="310" y="24" text-anchor="middle" fill="#7a90b8" font-size="10" font-family="Noto Sans JP,sans-serif">データセンタとラック</text>
+          <text x="470" y="24" text-anchor="middle" fill="#7a90b8" font-size="10" font-family="Noto Sans JP,sans-serif">サーバ</text>
+          <line x1="390" y1="10" x2="390" y2="170" stroke="#253352" stroke-width="1" stroke-dasharray="4,2"/>
+          <!-- オンプレミス -->
+          <text x="80" y="50" text-anchor="middle" fill="#7a90b8" font-size="10.5" font-family="Noto Sans JP,sans-serif">オンプレミス</text>
+          <rect x="160" y="37" width="350" height="22" rx="3" fill="#0f2018" stroke="#15803d" stroke-width="1"/>
+          <text x="335" y="51" text-anchor="middle" fill="#34d399" font-size="10" font-family="Noto Sans JP,sans-serif">自社（データセンタ・ラック・サーバすべて）</text>
+          <!-- ハウジング -->
+          <text x="80" y="80" text-anchor="middle" fill="#7a90b8" font-size="10.5" font-family="Noto Sans JP,sans-serif">ハウジング</text>
+          <rect x="160" y="67" width="225" height="22" rx="3" fill="#0d1f3a" stroke="#1d4ed8" stroke-width="1"/>
+          <text x="272" y="81" text-anchor="middle" fill="#60a5fa" font-size="10" font-family="Noto Sans JP,sans-serif">他社特定（データセンタ・ラック）</text>
+          <rect x="390" y="67" width="120" height="22" rx="3" fill="#0f2018" stroke="#15803d" stroke-width="1"/>
+          <text x="450" y="81" text-anchor="middle" fill="#34d399" font-size="10" font-family="Noto Sans JP,sans-serif">自社（サーバ）</text>
+          <!-- ホスティング -->
+          <text x="80" y="110" text-anchor="middle" fill="#7a90b8" font-size="10.5" font-family="Noto Sans JP,sans-serif">ホスティング</text>
+          <rect x="160" y="97" width="350" height="22" rx="3" fill="#0d1f3a" stroke="#1d4ed8" stroke-width="1"/>
+          <text x="335" y="111" text-anchor="middle" fill="#60a5fa" font-size="10" font-family="Noto Sans JP,sans-serif">他社特定（データセンタ・ラック・サーバ）</text>
+          <!-- クラウド -->
+          <text x="80" y="140" text-anchor="middle" fill="#7a90b8" font-size="10.5" font-family="Noto Sans JP,sans-serif">クラウド</text>
+          <rect x="160" y="127" width="350" height="22" rx="3" fill="#1a1030" stroke="#7c3aed" stroke-width="1"/>
+          <text x="335" y="141" text-anchor="middle" fill="#a78bfa" font-size="10" font-family="Noto Sans JP,sans-serif">他社非特定（場所すら意識しない・VMを借りるだけ）</text>
+          <!-- 矢印 -->
+          <text x="22" y="147" fill="#fbbf24" font-size="20">↑</text>
+          <text x="15" y="40" fill="#fbbf24" font-size="8" font-family="Noto Sans JP,sans-serif" writing-mode="vertical-lr">サービス化レベル</text>
+        </svg>
+        <figcaption>図: インフラソリューションの変遷 ← S03:p.51</figcaption>
+      </figure>
+    </div>
+
+    <p><strong>クラウドサービスの分類（IaaS → SaaS へと発展）：</strong></p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>名称</th><th>正式名称</th><th>サービス対象</th><th>例</th></tr></thead>
+        <tbody>
+          <tr><td><code>IaaS</code></td><td>Infrastructure as a Service</td><td>サーバー・NW機器をサービス化</td><td>HW, NW, VPN</td></tr>
+          <tr><td><code>PaaS</code></td><td>Platform as a Service</td><td>OS・DBもサービス化</td><td>OS, DB, Storage</td></tr>
+          <tr><td><code>SaaS</code></td><td>Software as a Service</td><td>ソフト機能もサービス化</td><td>ERP, CRM, BI, AI, Web会議</td></tr>
+          <tr><td><code>DaaS</code></td><td>Desktop as a Service</td><td>デスクトップ機能をサービス化</td><td>PC, Windows OS</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <span class="ptr">← S03:p.52</span>
+    <p>SaaS・DaaSのレベルに来ると、ユーザー企業はほとんどインフラを意識せずに使えるようになる。<strong>「もはやインフラエンジニアは一般企業に不要になった」</strong>（S03:p.52）</p>
+
+    <div class="audio-block">
+      <div class="block-label">🎙 音声補足</div>
+      <p><strong>Facebookの事例：</strong> 2004年にHarvard大学在籍中で資金の限られていたザッカーバーグは、ホスティングサービスとMySQL等のオープンソースを全面的に採用してシステムを開発。最小の資金で急激な利用者拡大に対応し競合（Friendster・MySpaceなど）に勝ち切った。ベンチャーキャピタルの資金に頼らずに事業価値を証明できたことが成功の鍵。以後、多くのIT系スタートアップにとってクラウドサービス利用は常識となった。<span class="ptr">← S05:A/B, S03:p.53</span></p>
+      <p><strong>AWSの成長：</strong>2006年開始のAmazon Web Services（AWS）の売上は2013年に約31億ドルだったものが、2023年には<strong>908億ドル</strong>（前年比13%増）と約29倍に成長した。この数値はAmazon公式IRおよびSEC提出資料で確認済み。講義のS05が示した「30億ドル→907億ドル、約30倍」は丸め表現として概ね正確。<span class="ptr">← Amazon 2023 Annual Report (SEC 8-K, 2024-02-01)</span></p>
+    </div>
+
+    <p><strong>クラウドサービスのタイプ：</strong></p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>タイプ</th><th>環境</th><th>特徴</th></tr></thead>
+        <tbody>
+          <tr><td><strong>プライベートクラウド</strong></td><td>専有環境</td><td>サービスレベルが高い。費用は高め</td></tr>
+          <tr><td><strong>パブリッククラウド</strong></td><td>共有環境</td><td>コスト安</td></tr>
+          <tr><td><strong>ハイブリッドクラウド</strong></td><td>異なるタイプを使い分け</td><td>コスト最適化・セキュリティレベルの維持が可能</td></tr>
+          <tr><td><strong>マルチクラウド</strong></td><td>異なる提供者を使い分け</td><td>ベンダーロックイン回避</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <span class="ptr">← S03:p.54,55,56</span>
+  </div>
+
+  <div class="subsection" id="ch3-data">
+    <h3>データビジネス（ビッグデータビジネス）</h3>
+    <p>クラウドコンピューティングの登場と機を一にして成長したのがデータビジネス。データ蓄積・分析コストが圧倒的に低下し、データそのものが競争力の源泉となった。</p>
+
+    <!-- SVG: データビジネスのパイプライン -->
+    <div class="fig-wrap">
+      <figure>
+        <svg viewBox="0 0 700 80" xmlns="http://www.w3.org/2000/svg" style="width:100%;background:#131e30;border-radius:8px;">
+          <!-- 各ステージ -->
+          <!-- Stage1 -->
+          <rect x="10" y="20" width="120" height="40" rx="5" fill="#0d2547" stroke="#1d4ed8" stroke-width="1.2"/>
+          <text x="70" y="38" text-anchor="middle" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP,sans-serif">データソース</text>
+          <text x="70" y="52" text-anchor="middle" fill="#7a90b8" font-size="8.5" font-family="Noto Sans JP,sans-serif">1st/2nd/3rd Party</text>
+          <!-- arrow -->
+          <polygon points="134,40 142,36 142,44" fill="#4a5a7a"/>
+          <!-- Stage2 -->
+          <rect x="144" y="20" width="120" height="40" rx="5" fill="#0d2547" stroke="#1d4ed8" stroke-width="1.2"/>
+          <text x="204" y="38" text-anchor="middle" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP,sans-serif">データ収集</text>
+          <text x="204" y="52" text-anchor="middle" fill="#7a90b8" font-size="8.5" font-family="Noto Sans JP,sans-serif">変換・クレンジング</text>
+          <!-- arrow -->
+          <polygon points="268,40 276,36 276,44" fill="#4a5a7a"/>
+          <!-- Stage3 -->
+          <rect x="278" y="20" width="120" height="40" rx="5" fill="#0d2547" stroke="#1d4ed8" stroke-width="1.2"/>
+          <text x="338" y="38" text-anchor="middle" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP,sans-serif">データ蓄積</text>
+          <text x="338" y="52" text-anchor="middle" fill="#7a90b8" font-size="8.5" font-family="Noto Sans JP,sans-serif">Data Lake / DWH</text>
+          <!-- arrow -->
+          <polygon points="402,40 410,36 410,44" fill="#4a5a7a"/>
+          <!-- Stage4 -->
+          <rect x="412" y="20" width="130" height="40" rx="5" fill="#0d2547" stroke="#1d4ed8" stroke-width="1.2"/>
+          <text x="477" y="38" text-anchor="middle" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP,sans-serif">目的別データ構築</text>
+          <text x="477" y="52" text-anchor="middle" fill="#7a90b8" font-size="8.5" font-family="Noto Sans JP,sans-serif">Data Mart</text>
+          <!-- arrow -->
+          <polygon points="546,40 554,36 554,44" fill="#4a5a7a"/>
+          <!-- Stage5 -->
+          <rect x="556" y="20" width="130" height="40" rx="5" fill="#0d2547" stroke="#1d4ed8" stroke-width="1.2"/>
+          <text x="621" y="38" text-anchor="middle" fill="#e2e8f5" font-size="10" font-family="Noto Sans JP,sans-serif">分析・出力</text>
+          <text x="621" y="52" text-anchor="middle" fill="#7a90b8" font-size="8.5" font-family="Noto Sans JP,sans-serif">BIツール / データマイニング</text>
+        </svg>
+        <figcaption>図: データビジネスのパイプライン ← S03:p.57</figcaption>
+      </figure>
+    </div>
+    <span class="ptr">← S03:p.57</span>
+  </div>
+
+  <div class="subsection" id="ch3-info-bank">
+    <h3>日本のデータビジネス：阻害要因と打開策</h3>
+    <p>日本ではビッグデータビジネスの成功事例が少ない。主な原因：</p>
+    <ul>
+      <li><strong>個人情報保護法（2003年制定）</strong>：プライバシーに関する情報の取り扱いが厳格化</li>
+      <li><strong>2013年のSuica炎上事件</strong>：JR東日本の乗降履歴データ販売ビジネス化の試みが批判され断念。データは匿名化されていたが炎上。<span class="ptr">← S03:p.58</span></li>
+      <li><strong>キャンセルカルチャーの増長</strong>：国内プレイヤーには厳しく、海外サービスは平気で使うという風潮</li>
+      <li><strong>「goo」検索エンジンの著作権問題</strong>：和製検索エンジンが著作権違反と騒がれたが、現在はGoogle検索を平気で使っている<span class="ptr">← S05:A/B</span></li>
+    </ul>
+
+    <p><strong>打開策（アクセルの法律）：</strong></p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>制度</th><th>創設</th><th>内容</th></tr></thead>
+        <tbody>
+          <tr><td><strong>情報銀行認定制度</strong></td><td>2018年（総務省・経産省）</td><td>個人との契約に基づきパーソナルデータを預かり、情報の分析サービスや匿名化した統計情報の提供を認定事業者が行う制度</td></tr>
+          <tr><td><strong>次世代医療基盤法</strong></td><td>2018年施行</td><td>医療情報を研究開発に活用するため、認定事業者が多数の医療機関から個人単位の患者情報を収集・暗号化して研究機関等に提供する法律</td></tr>
+          <tr><td><strong>NDB</strong>（National Database）</td><td>—</td><td>匿名医療保険等関連情報データベース。厚生労働省が医療費適正化計画の調査・分析に活用</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <span class="ptr">← S03:p.59,60,61</span>
+    <div class="audio-block">
+      <div class="block-label">🎙 音声補足</div>
+      <p>情報銀行では、入口（情報収集）においても出口（マネタイズ）においても、米国BigTechに対抗するのは困難で時すでに遅しだった。Suicaのデータ販売ビジネスを再開する判断がされたのは2022年。2013年からの「空白の8年間」は取り戻せるのか。マイナ保険証によって初めて医療機関をまたがる情報連携が可能になる基盤ができた。医療の領域では国内でぜひ成功してほしいと講師は述べている。<span class="ptr">← S05:A/B</span></p>
+    </div>
+  </div>
+
+  <div class="subsection" id="ch3-provider">
+    <h3>ソリューションプロバイダーの課題と解決策</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>課題</th><th>解決策</th></tr></thead>
+        <tbody>
+          <tr><td>顧客要求の高度化（個々に異なるニーズ・高度な要求への対応）</td><td rowspan="3">①先行技術開発投資<br>②社員の技術スキルを最新にアップデート<br>③他社とのパートナーシップでソリューションの幅を拡大</td></tr>
+          <tr><td>競争激化（クラウドサービスのサーバー・ストレージ価格競争など）</td></tr>
+          <tr><td>技術変化への対応（AI基盤インターフェース・セキュリティ機能の追加）</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <span class="ptr">← S03:p.62</span>
+    <div class="audio-block">
+      <div class="block-label">🎙 音声補足</div>
+      <p>日本企業は過度なSIer依存・業界横並び体質によるリーダー企業不在等により、ユーザー企業としても、プロバイダーとしても先進的なソリューションの活用と創出に致命的な遅れを取ってしまった。これらの課題をクリアする体力を有する日本企業はかなり限られてきてしまっている。<span class="ptr">← S05:A/B</span></p>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================
+     第4章: システム活用促進・評価
+     ========================================================= -->
+<div class="section" id="ch4">
+  <div class="section-header">
+    <span class="ch-num">第4章</span>
+    <h2>システム活用促進・評価</h2>
+  </div>
+
+  <div class="subsection">
+    <h3>システム活用促進の意義</h3>
+    <p>経営ビジョン → システム戦略 → システム企画 → 要件定義 → 調達計画 → システム開発 → システム運用・保守 → 評価検証 → （フィードバック）</p>
+    <div class="callout">
+      <div class="callout-title">重要な認識</div>
+      <p><strong>「理念と現実の乖離は常にある」</strong>：一発で100点満点のシステムができあがることは稀。そのためシステムを導入し、定着化させ、継続的に改善することが重要。</p>
+    </div>
+    <p><strong>「開発しても使われない」は実によくある話。</strong>システム活用促進活動の目的：</p>
+    <ul>
+      <li>システム導入目標の達成：計画通りに利用し目標を達成する</li>
+      <li>定着化：システムの利用を定着させ利用範囲を広げる</li>
+      <li>継続的な改善：現場が問題点を洗い出し、継続的に機能の追加・改善を行う</li>
+    </ul>
+    <span class="ptr">← S03:p.67,68</span>
+  </div>
+
+  <div class="subsection" id="ch4-literacy">
+    <h3>デジタルリテラシーの重要性と普及啓発</h3>
+    <div class="callout">
+      <div class="callout-title">デジタルリテラシーとは</div>
+      <p>①新しい技術・ソリューションの見極め力（目利き力）<br>
+      ②調達先選定において過度なベンダー依存・ベンダーロックインにならないよう相手を選べる能力<br>
+      ③プロジェクトに過剰な目標設定を押し付けず、業務・技術面のリスクがどこにあるかを判断できる能力</p>
+    </div>
+    <p><strong>重要なポイント：</strong>経営者がデジタルリテラシーの重要性を認識していることが必須。現実にはシステム投資の判断に無関心な経営者も多い（福泉先生の実感）。<span class="ptr">← S03:p.70</span></p>
+    <p><strong>デジタルリテラシーの普及啓発方法：</strong></p>
+    <ul>
+      <li>社員教育・ワークショップ・セミナーの定期開催</li>
+      <li>eラーニング（時間・場所にとらわれずに自分のペースで）</li>
+      <li>ゲーミフィケーション（ポイント制・バッジ・ランキング等でモチベーション向上）</li>
+      <li><strong>デジタルディバイドの解消</strong>：デジタル化から取り残されている人がいないか確認。50代以上の社員は業務ノウハウを最もよく知っている人でもあり、全員がシステムやツールを使えなければせっかく開発したシステムが活用されずに終わる</li>
+    </ul>
+    <span class="ptr">← S03:p.71,72</span>
+  </div>
+
+  <div class="subsection" id="ch4-case">
+    <h3>現場社員のデジタルリテラシー成功事例：都営浅草線のホームドア</h3>
+    <div class="callout">
+      <div class="callout-title">背景と課題</div>
+      <p>都営浅草線には4つの鉄道会社が乗り入れ、車両によってドアの位置が異なる。ホームに到着した車両の種別を判定してホームドアを開閉させるソリューションが必要だった。2023年に整備完了。</p>
+    </div>
+    <p><strong>当初案：</strong>車両側に無線通信装置を搭載してホームドアと通信。しかし全車両に設備投資が必要でコスト大。→ 見積もり <strong>20億円</strong></p>
+    <p><strong>現場職員（当時60代）の発想：</strong>車両側のドアにQRコードシートを貼り、ホーム側からカメラで読み取る方式。QRコード発明元のデンソーウェーブとも交渉し、車両が多少汚れていても・雨でも確実に読み取れる専用QRコードを開発。<span class="ptr">← S03:p.73</span></p>
+    <p><strong>結果：</strong>導入コストが <strong>20億円 → 270万円</strong> に削減。</p>
+    <div class="callout">
+      <div class="callout-title">示唆</div>
+      <p>もしこれを外部のSIerに頼んでいたら、SIerからこのような提案は出てこない。経営者でもシステム部門でもなく、現場職員の発想と努力によるものだった。<strong>全社員のデジタルリテラシーがシステム戦略の具現化力を左右する。</strong></p>
+    </div>
+    <span class="ptr">← S03:p.73</span>
+  </div>
+
+  <div class="subsection" id="ch4-eval">
+    <h3>システム利用実態の評価・検証</h3>
+    <p>システムリリース後の評価検証の重要性：</p>
+    <ul>
+      <li><strong>定量的評価</strong>：当初計画した費用対効果が達成できているか（例：受注〜出荷リードタイムが平均何日短縮できているか、失注を減らして売上を増やせているか）</li>
+      <li><strong>定性的評価</strong>：利用者満足度調査</li>
+      <li><strong>レガシーシステムの刷新確認</strong>：コスト面・技術面で時代遅れのシステムから新システムへ移行できているか</li>
+    </ul>
+    <p>評価結果を継続的改善や次の投資計画に生かす。</p>
+    <span class="ptr">← S03:p.74</span>
+  </div>
+</div>
+
+<!-- =========================================================
+     まとめ：未来の転換点・IT人材・システム戦略立案能力
+     ========================================================= -->
+<div class="section" id="future">
+  <div class="section-header">
+    <span class="ch-num">まとめ</span>
+    <h2>未来の転換点・AI・システム戦略立案能力</h2>
+  </div>
+
+  <div class="subsection">
+    <h3>今後10年：未来の転換点（福泉先生の予想）</h3>
+    <ul>
+      <li><strong>AIや生成AIの劇的な進歩</strong>（巨大データセンター処理からエッジコンピューティングへの多様化）</li>
+      <li>企業の経営戦略とシステム戦略の<strong>連動性がさらに高まる</strong></li>
+      <li>BigTechの競争優位がさらに強化される（資金力合計が日本のGDPを超えるとの試算）</li>
+      <li>特定の技術領域では、過去20年の水平分業化の流れが逆転し<strong>垂直統合型</strong>へ（技術のコモディティ化前段階でよくあること）</li>
+    </ul>
+    <span class="ptr">← S03:p.79,80</span>
+    <div class="audio-block">
+      <div class="block-label">🎙 音声補足</div>
+      <p>生成AIは現状、MicrosoftやGoogleが原子力発電所1基の長期契約を結ぶ・1回の学習処理で一般家庭40年分の電力を消費するとされる。このような技術は持続性がないため、より身近なツールの中で生成AIを気軽に使えるようになるだろう。<span class="ptr">← S05:A/B</span></p>
+    </div>
+  </div>
+
+  <div class="subsection">
+    <h3>BigTechがリードする技術投資</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>BigTech</th><th>リードする技術投資領域</th></tr></thead>
+        <tbody>
+          <tr><td>Microsoft</td><td>AI、データセンター、原子力</td></tr>
+          <tr><td>Amazon</td><td>AI、次世代倉庫、次世代原子炉</td></tr>
+          <tr><td>Meta</td><td>VRゴーグル、データセンター、海底ケーブル</td></tr>
+          <tr><td>Alphabet</td><td>スマホOS、ブラウザ、海底ケーブル、AI、次世代原子炉</td></tr>
+          <tr><td>Tesla・SpaceX</td><td>自動運転、エネルギー貯蔵（電池）、ロケット</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <span class="ptr">← S03:p.80</span>
+  </div>
+
+  <div class="subsection">
+    <h3>多様な業種で必要となるシステム戦略</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>従来の業種ドメイン</th><th>必要となる技術領域</th></tr></thead>
+        <tbody>
+          <tr><td>自動車・物流</td><td>MaaS、自動運転、自動倉庫</td></tr>
+          <tr><td>金融</td><td>キャッシュレスサービス、FinTech</td></tr>
+          <tr><td>農業・介護・建築</td><td>ロボット</td></tr>
+          <tr><td>医療</td><td>AI診断、AI創薬、個別ゲノム医療</td></tr>
+          <tr><td>エンタメ</td><td>生成AIコンテンツ</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <span class="ptr">← S03:p.81</span>
+  </div>
+
+  <div class="subsection" id="it-human">
+    <h3>IT人材の偏り問題</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>国</th><th>IT企業に従事</th><th>非IT企業（ユーザー企業）に従事</th></tr></thead>
+        <tbody>
+          <tr><td><strong>日本</strong></td><td><strong class="importance-3">72.0%（752,600人）</strong></td><td>28.0%（292,600人）</td></tr>
+          <tr><td>米国</td><td>34.6%（1,453,300人）</td><td><strong class="importance-2">65.4%（2,741,810人）</strong></td></tr>
+          <tr><td>カナダ</td><td>44.0%</td><td>56.0%</td></tr>
+          <tr><td>イギリス</td><td>46.1%</td><td>53.9%</td></tr>
+          <tr><td>ドイツ</td><td>38.6%</td><td>61.4%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="ptr">← S03:p.82（出典: IPA IT人材白書2017）</p>
+    <div class="callout">
+      <div class="callout-title">問題の本質</div>
+      <p>日本はIT人材の72%がIT企業（SIer・ソリューションプロバイダー等のベンダー）に偏在。ベンダーは顧客の要望に応じてソリューション提供・システム開発をする受け身の立場。このようなベンダー頼みでは優れたシステム戦略は生み出せない。<strong>戦略立案者は非IT企業（ユーザー側企業）になければならない。</strong></p>
+      <p><strong>「IT人材こそ、非IT企業に行かねばならない」</strong><span class="ptr">← S03:p.81,82</span></p>
+    </div>
+  </div>
+
+  <div class="subsection" id="summary">
+    <h3>システム戦略立案能力を左右する要素（福泉先生の見解）</h3>
+    <div class="callout">
+      <div class="callout-title">システム戦略立案能力の本質</div>
+      <p><strong>「システム戦略立案能力とは、先を読む力であり、リスクテイクする意思である」</strong></p>
+    </div>
+    <ul>
+      <li>システム戦略と技術戦略は<strong>表裏一体</strong>。技術的な先見性が重要</li>
+      <li>戦略を立てるべきは経営者・上層部こそ<strong>デジタルリテラシーが必要</strong></li>
+      <li>他社の様子見ではなく、<strong>他社より先行するリスクテイカー</strong>が必須</li>
+      <li>外部のSIerに頼らない<strong>社内人材による戦略立案</strong></li>
+    </ul>
+    <span class="ptr">← S03:p.83</span>
+    <div class="audio-block">
+      <div class="block-label">🎙 音声補足</div>
+      <p>サイバー大学でITとビジネスの両方を学んでいる学生が、各企業の中で主体的なリーダーとしてシステム戦略立案者になることを講師は期待している。<span class="ptr">← S05:A/B</span></p>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================
+     APPENDIX
+     ========================================================= -->
+<!-- 未確定事項 -->
+<div class="section" id="unconfirmed">
+  <div class="appendix-card unconfirmed-card">
+    <div class="app-header">❓ 未確定事項・要確認リスト（パートIV補完後）</div>
+    <div class="app-body">
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>ID</th><th>内容</th><th>種別</th><th>優先度</th><th>状態</th><th>根拠・備考</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>U01</td>
+              <td>AWSの2013年売上・2023年売上</td>
+              <td>[外部補足]</td>
+              <td>中</td>
+              <td style="color:var(--accent2);font-weight:700;">✅ 解決済み</td>
+              <td>Amazon公式IR・SEC 8-K（2024-02-01）で確認。2013年：$3.1B（約31億ドル）、2023年：$90.8B（約908億ドル）。講義の「30億→907億、約30倍」は丸め表現として妥当</td>
+            </tr>
+            <tr>
+              <td>U02</td>
+              <td>SABREの開発投資「現在の日本円で約500億円規模」</td>
+              <td>[外部補足]</td>
+              <td>低</td>
+              <td style="color:var(--accent2);font-weight:700;">✅ 解決済み</td>
+              <td>IBM公式サイト・Wikipedia等複数ソースで$40 million（2024年価値で約$425M）と確認。円換算（2024年レート適用）で約620億円超相当。講義の「約500億円規模」は2000年前後の円換算値として合理的な表現</td>
+            </tr>
+            <tr>
+              <td>U03</td>
+              <td>東芝BTO 1日生産台数「5,000台」</td>
+              <td>[外部補足]</td>
+              <td>低</td>
+              <td style="color:var(--accent3);font-weight:700;">⚠ 部分解決</td>
+              <td>一次資料での数値確認困難。ただし東芝青梅工場は最盛期従業員4,000人超の大規模工場（1968年設立・2017年閉鎖）であり、1日数千台規模は技術的に整合。講義での例示数値として残存</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:12px;color:var(--text-sub);margin-top:12px;">U01・U02は外部調査により解決済み。U03は低優先度のため現状維持。</p>
+    </div>
+  </div>
+</div>
+
+<!-- 補足A: 最重要ワード -->
+<div class="section" id="appendix-a">
+  <div class="appendix-card">
+    <div class="app-header">⭐ 補足A: 最重要ワード一覧</div>
+    <div class="app-body">
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>用語</th><th>読み</th><th>定義（原文から抽出）</th><th>重要度</th></tr></thead>
+          <tbody>
+            <tr><td><strong>情報システム戦略</strong></td><td>じょうほうしすてむせんりゃく</td><td>経営戦略を実現するために情報システムを計画・設計・導入・運用するための基本方針</td><td><span class="star">★★★</span></td></tr>
+            <tr><td><strong>SWOT分析</strong></td><td>すうぉっとぶんせき</td><td>強み・弱み・機会・脅威の4要素で自社立ち位置を評価するツール</td><td><span class="star">★★★</span></td></tr>
+            <tr><td><strong>EA（エンタープライズアーキテクチャ）</strong></td><td>えんたーぷらいずあーきてくちゃ</td><td>企業全体のビジネス戦略とIT戦略の整合性確保・全体最適化を図る検討フレームワーク。4レイヤー：ビジネス・データ・アプリ・テクノロジー</td><td><span class="star">★★★</span></td></tr>
+            <tr><td><strong>SoR</strong></td><td>えす・おー・あーる</td><td>Systems of Record。企業運営に必要な基本データを管理するシステム</td><td><span class="star">★★★</span></td></tr>
+            <tr><td><strong>SoE</strong></td><td>えす・おー・いー</td><td>Systems of Engagement。顧客・従業員との接点を司るシステム</td><td><span class="star">★★★</span></td></tr>
+            <tr><td><strong>ER図</strong></td><td>いーあーるず</td><td>データのエンティティとその関係性を可視化する手法。オーナーシップを明確化するが時間軸情報はない</td><td><span class="star">★★★</span></td></tr>
+            <tr><td><strong>DFD</strong></td><td>でぃーえふでぃー</td><td>Data Flow Diagram。データの受け渡しの流れを表す手法。丸=プロセス、矢印=データの流れ、二重線=データストア</td><td><span class="star">★★★</span></td></tr>
+            <tr><td><strong>BPMN</strong></td><td>びーぴーえむえぬ</td><td>Business Process Model and Notation。業務手順・フローを詳細表現。国際規格ISO 19510、OMG保守</td><td><span class="star">★★★</span></td></tr>
+            <tr><td><strong>BPR</strong></td><td>びーぴーあーる</td><td>Business Process Reengineering。既存業務プロセスを抜本的に見直し革新する手法</td><td><span class="star">★★★</span></td></tr>
+            <tr><td><strong>BTO（Build to Order）</strong></td><td>びーてぃーおー</td><td>受注生産方式。注文を受けてから製造する方式。生産座席予約方式と組み合わせて実現</td><td><span class="star">★★★</span></td></tr>
+            <tr><td><strong>生産座席予約方式</strong></td><td>せいさんざせきよやくほうしき</td><td>工場の1日あたり生産能力（座席）に受注オーダーを割り当て未来の生産能力を予約する方式。東芝が1980年代に開発</td><td><span class="star">★★★</span></td></tr>
+            <tr><td><strong>IaaS / PaaS / SaaS / DaaS</strong></td><td>各略称</td><td>クラウドサービスの層。インフラ→OS/DB→ソフト→デスクトップへとサービス化が進む</td><td><span class="star">★★★</span></td></tr>
+            <tr><td><strong>ベンダーロックイン</strong></td><td>べんだーろっくいん</td><td>ソリューションプロバイダーを切り替えることが困難になる状態</td><td><span class="star">★★★</span></td></tr>
+            <tr><td><strong>SIer（システムインテグレーター）</strong></td><td>えすあいあー</td><td>システム統合・構築・運用を行う企業。ユーザー企業のIT業務を受託する立場</td><td><span class="star">★★★</span></td></tr>
+            <tr><td><strong>デジタルリテラシー</strong></td><td>でじたるりてらしー</td><td>新技術の見極め力・調達先の適切な選定・プロジェクトリスクの判断能力の総称</td><td><span class="star">★★★</span></td></tr>
+            <tr><td><strong>デジタルディバイド</strong></td><td>でじたるでぃばいど</td><td>ITスキルやアクセス環境の格差</td><td><span class="star">★★★</span></td></tr>
+            <tr><td><strong>垂直統合型 / 水平分業型</strong></td><td>すいちょくとうごう / すいへいぶんぎょう</td><td>垂直統合：1社がHW〜アプリまで全て提供。水平分業：各レイヤーを専門企業が担う</td><td><span class="star">★★★</span></td></tr>
+            <tr><td><strong>SABRE</strong></td><td>せいばー</td><td>American Airlinesの航空機座席予約システム（CRS）。1964年開始。情報システム戦略で競争優位を確立した代表例</td><td><span class="star">★★★</span></td></tr>
+            <tr><td><strong>オンプレミス</strong></td><td>おんぷれみす</td><td>データセンター・ラック・サーバー全て自社で設備投資するパターン</td><td><span class="star">★★★</span></td></tr>
+            <tr><td><strong>BPM</strong></td><td>びーぴーえむ</td><td>Business Process Management。業務プロセスを継続的に最適化する管理手法（BPRとの違いに注意）</td><td><span class="importance-2">★★☆</span></td></tr>
+            <tr><td><strong>RPA</strong></td><td>あーるぴーえー</td><td>Robotic Process Automation。現場社員が柔軟に変更できる定型・非定型中間の業務自動化ツール</td><td><span class="importance-2">★★☆</span></td></tr>
+            <tr><td><strong>製品コンフィギュレーター</strong></td><td>せいひんこんふぃぎゅれーたー</td><td>CPU・メモリ等の仕様選択を自動化する機能。BTO実現の核心技術</td><td><span class="importance-2">★★☆</span></td></tr>
+            <tr><td><strong>データマイニング</strong></td><td>でーたまいにんぐ</td><td>大量データに統計・AIを駆使した分析で何らかの知見を得る活動</td><td><span class="importance-2">★★☆</span></td></tr>
+            <tr><td><strong>情報銀行認定制度</strong></td><td>じょうほうぎんこうにんていせいど</td><td>個人との契約に基づきパーソナルデータを預かり情報活用を行う認定制度。2018年創設（総務省・経産省）</td><td><span class="importance-2">★★☆</span></td></tr>
+            <tr><td><strong>次世代医療基盤法</strong></td><td>じせだいいりょうきばんほう</td><td>医療情報を研究開発に活用するための法律。2018年施行</td><td><span class="importance-2">★★☆</span></td></tr>
+            <tr><td><strong>ゲーミフィケーション</strong></td><td>げーみふぃけーしょん</td><td>学習プログラムにゲーム要素を導入してモチベーションを高める手法</td><td><span class="importance-2">★★☆</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 補足B: 背景知識 -->
+<div class="section" id="appendix-b">
+  <div class="appendix-card">
+    <div class="app-header">📚 補足B: 知っておくべき背景知識</div>
+    <div class="app-body">
+      <p style="font-size:13px;color:var(--text-sub);">[外部補足] タグ付きの情報。数値・年・名称はWeb確認済み。</p>
+      <ul style="margin-top:12px;font-size:13.5px;">
+        <li><strong>全銀システム（全国銀行データ通信システム）</strong>：1973年4月9日稼働開始（第1次）。正式名称「全国銀行データ通信システム」、全銀ネット（一般社団法人全国銀行資金決済ネットワーク）が運営。稼働当初の処理能力100万件/日→現在（第7次・2019年〜）は3,000万件/日。1営業日平均約675万件・約12.2兆円の取引を処理。2018年10月から24時間365日稼働（モアタイムシステム追加）。2023年10月に史上初の一般取引影響障害が発生。米国ACH（Automated Clearing House）と同等機能を持ちつつ即時入金では世界に先駆けていた。</li>
+        <li><strong>みどりの窓口</strong>：1965年11月に国鉄が全国で開業したマルス（MARS: Magnetic Electronic Reservation System）を利用した指定席予約システム。</li>
+        <li><strong>iモード</strong>：1999年2月NTTドコモが開始。HTMLサブセット（cHTML）を使用。このビジネスモデルをAppleがApp StoreおよびiTunesで模倣したとされる。</li>
+        <li><strong>OMG（Object Management Group）</strong>：1989年設立の非営利コンソーシアム。UML・BPMN等の標準化を推進。ISO 19510はBPMN 2.0を採用した国際規格（2013年）。</li>
+        <li><strong>AWS（Amazon Web Services）</strong>：2006年3月にS3（ストレージ）、同7月にEC2（コンピューティング）をリリース。2013年売上は$3.1 billion（約31億ドル）、2023年売上は$90.8 billion（約908億ドル）と約29倍に成長（Amazon公式IR確認済み）。2024年には$107.6 billion（前年比19%増）を達成し、クラウドインフラ市場シェア約30%（2024年Q4時点）で1位を維持。</li>
+        <li><strong>SABRE（Semi-Automated Business Research Environment）</strong>：1953年にAmerican Airlines社長C.R. SmithとIBMセールスマンR. Blair Smithが偶然飛行機で隣席になり着想。1957年正式開発契約、1960年実験稼働（IBM 7090 × 2台）、1964年全機能稼働、1976年旅行代理店への外部開放。全稼働時は7,500件/時の予約処理・8.4万件/日の電話対応が可能。開発費$40 million（IBM公式確認済み、2024年価値で約$425M）。稼働前は予約に90分かかっていたものが数秒に短縮され、エラー率も8%から1%未満に低下。</li>
+        <li><strong>Suica乗降履歴データ販売事件（2013年）</strong>：JR東日本が日立製作所に駅の乗降履歴データを販売・提供しようとしたことが批判を受け断念。2022年に個人識別ができない形での再販に向けて準備再開。</li>
+        <li><strong>個人情報保護法</strong>：2003年5月成立、2005年4月全面施行。その後2015年・2020年・2022年に改正。</li>
+        <li><strong>NDB（National Database）</strong>：2009年開始。レセプト情報・特定健診等情報データベース。高齢者の医療の確保に関する法律に基づく。</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- 補足C: 試験重要点 -->
+<div class="section" id="appendix-c">
+  <div class="appendix-card">
+    <div class="app-header">🎯 補足C: 試験・レポートで重要な観点</div>
+    <div class="app-body">
+      <ul style="font-size:13.5px;">
+        <li><strong>情報システム戦略の3つの役割</strong>（競争優位の確立・経営戦略サポート・組織全体の効率化）を具体例とともに説明できるようにする</li>
+        <li><strong>SWOT分析→戦略目標→システム要件の導出プロセス</strong>を一連の流れで説明できるようにする（例：リードタイム短縮→情報伝達高速化→ERPシステム導入）</li>
+        <li><strong>EAの4レイヤー</strong>（ビジネス・データ・アプリ・テクノロジー）の名称と意味を覚える</li>
+        <li><strong>SoRとSoEの違い</strong>：SoRは内部記録・業務基盤（顧客マスタ等）、SoEは顧客接点（ECサイト・コールセンター等）</li>
+        <li><strong>ER図・DFD・BPMNの使い分け</strong>：何を表すために使うかを説明できること。特にER図の「時間軸がない」という限界と、DFDで時系列のデータフローを表現することの意味</li>
+        <li><strong>「ポンチ絵」批判の意味</strong>：情報の粒度・オーナーシップ・確定責任を無視したシステム設計がなぜ機能しないかを説明できること</li>
+        <li><strong>BPRとBPMの違い</strong>：BPR＝抜本的見直し（一時的な革新）、BPM＝継続的最適化（日常的な管理）</li>
+        <li><strong>東芝BTO事例のポイント</strong>：生産座席・製品コンフィギュレーターの概念と、設計・営業・生産管理部門を実質不要にした点</li>
+        <li><strong>IaaS/PaaS/SaaS/DaaSの階層</strong>：何がサービス化されているかの違いを説明できること</li>
+        <li><strong>日本のIT人材偏在</strong>：72%がIT企業、非IT企業は28%（米国は逆転）。ベンダー頼みではシステム戦略が生まれない理由</li>
+        <li><strong>「システム戦略立案能力とは先を読む力とリスクテイクする意思」</strong>という講師の結論命題</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- 補足D: 関連概念・次回への接続 -->
+<div class="section" id="appendix-d">
+  <div class="appendix-card">
+    <div class="app-header">🔗 補足D: 関連概念・次回への接続</div>
+    <div class="app-body">
+      <p style="font-size:13px;color:var(--text-sub);">授業で触れていない関連知識。[外部補足]</p>
+      <ul style="margin-top:12px;font-size:13.5px;">
+        <li><strong>ERP（Enterprise Resource Planning）</strong>：企業の基幹業務（財務・人事・在庫・販売等）を統合管理するソフトウェア。SaaSの代表例。SAP・Oracle等が有名。</li>
+        <li><strong>CRM（Customer Relationship Management）</strong>：顧客との関係を管理・強化するためのシステム。SoEの代表例。Salesforce等が有名。</li>
+        <li><strong>IoT（Internet of Things）</strong>：センサー・デバイスをインターネットに接続し製造記録等を収集する技術。SoRに格納されるデータの重要な発生源となる。</li>
+        <li><strong>コモディティ化（Commoditization）</strong>：製品・技術が普及して差別化が難しくなり、価格競争に陥る現象。垂直統合から水平分業への移行の背景にある。</li>
+        <li><strong>MVP（Minimum Viable Product）</strong>：最小限の機能を持つ製品を最速でリリースし市場検証する手法。Facebookの事例のように「まず出す」思想と親和性が高い。</li>
+        <li><strong>スケーラビリティ（Scalability）</strong>：システムの負荷増大に対して柔軟に性能を拡張できる性質。クラウドコンピューティングの最大のメリットの一つ。</li>
+        <li><strong>レガシーシステム</strong>：技術的・コスト的に時代遅れとなったシステム。多くの日本企業の基幹系システムがこの問題を抱えており、DX推進の障壁となっている。</li>
+        <li><strong>DX（デジタルトランスフォーメーション）</strong>：ITを活用して製品・サービス・ビジネスモデルを変革し競争優位を確立すること。情報システム戦略のゴールと深く関連する。</li>
+        <li><strong>エッジコンピューティング</strong>：データが発生するデバイス・現場の近くで処理を行う技術。生成AIを軽量化して端末上で動かす方向性。IoTとも密接に関連。</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- フッター -->
+<div style="margin-top:60px;padding:20px 0;border-top:1px solid var(--border);color:var(--text-dim);font-size:11px;font-family:'JetBrains Mono',monospace;">
+  <p>note_itbasics_05.html | SSP v4.2 | 生成: 2026-03-31</p>
+  <p>ソース: S03（スライドPDF）+ S05-A（hynote.ai）+ S05-B（hynote.ai）</p>
+  <p>v1.0 2026-03-31  初版（Step 5-B完了）</p>
+  <p>v1.1 2026-03-31  パートIV外部補完：U01（AWS売上・Amazon公式IR確認）・U02（SABRE開発費・IBM公式確認）解決、SABRE詳細情報補強、全銀システム詳細情報補強、補足B更新</p>
+</div>
+
+</main>
+</div>
+
+<script>
+// アクティブナビアイテムのハイライト
+const navItems = document.querySelectorAll('.nav-item');
+const sections = document.querySelectorAll('[id]');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting) {
+      navItems.forEach(n => n.classList.remove('active'));
+      const active = document.querySelector(`.nav-item[href="#${entry.target.id}"]`);
+      if(active) active.classList.add('active');
+    }
+  });
+}, { rootMargin: '-30% 0px -60% 0px' });
+sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
