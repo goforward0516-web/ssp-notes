@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>第5回 プロジェクトのタイムマネジメント | プロジェクトマネジメント入門</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0d1117;--bg2:#161c28;--bg3:#1c2336;
+  --border:#263050;--borderL:#374a6e;
+  --text:#dde6f7;--tsub:#8a9bbf;--tmut:#4e5e80;
+  --blue:#5b8dee;--blueBg:rgba(91,141,238,.09);--blueBr:rgba(91,141,238,.4);
+  --green:#34d399;--greenBg:rgba(52,211,153,.09);--greenBr:rgba(52,211,153,.35);
+  --orange:#fbbf24;--orBg:rgba(251,191,36,.09);--orBr:rgba(251,191,36,.38);
+  --purple:#a78bfa;--purBg:rgba(167,139,250,.09);--purBr:rgba(167,139,250,.35);
+  --red:#f87171;--redBg:rgba(248,113,113,.09);--redBr:rgba(248,113,113,.35);
+  --sw:268px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans JP',sans-serif;font-size:14px;line-height:1.85;display:flex}
+
+/* SIDEBAR */
+#sb{width:var(--sw);min-height:100vh;background:var(--bg2);border-right:1px solid var(--border);position:fixed;top:0;left:0;overflow-y:auto;z-index:200;padding-bottom:48px}
+#sbh{padding:18px 16px 14px;border-bottom:1px solid var(--border)}
+#sbh .course{font-size:9.5px;font-family:'JetBrains Mono',monospace;color:var(--tmut);letter-spacing:.07em;text-transform:uppercase;margin-bottom:5px}
+#sbh .ttl{font-size:12px;font-weight:700;color:var(--blue);line-height:1.5}
+#toc{padding:6px 0}
+.t2{display:block;padding:7px 15px;font-size:11.5px;font-weight:700;color:var(--tsub);text-decoration:none;transition:.15s;border-left:2px solid transparent;line-height:1.4}
+.t2:hover{color:var(--text);background:rgba(91,141,238,.07)}
+.t2.on{color:var(--blue);border-left-color:var(--blue);background:var(--blueBg)}
+.t3{display:block;padding:3px 15px 3px 25px;font-size:10.5px;color:var(--tmut);text-decoration:none;transition:color .15s}
+.t3:hover{color:var(--tsub)}
+.t3.on{color:var(--blue)}
+.tg{padding:4px 15px 2px;font-size:9px;font-family:'JetBrains Mono',monospace;color:var(--tmut);text-transform:uppercase;letter-spacing:.06em;margin-top:6px}
+
+/* MAIN */
+#main{margin-left:var(--sw);flex:1;max-width:940px;padding:36px 42px 100px}
+
+/* PAGE HEADER */
+.ph{background:linear-gradient(140deg,#1a2338 0%,#0d1117 100%);border:1px solid var(--border);border-radius:12px;padding:26px 30px;margin-bottom:26px;position:relative;overflow:hidden}
+.ph::after{content:'';position:absolute;top:-60px;right:-60px;width:260px;height:260px;background:radial-gradient(circle,rgba(91,141,238,.1) 0%,transparent 65%);pointer-events:none}
+.mbr{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.mb{font-family:'JetBrains Mono',monospace;font-size:10px;padding:3px 8px;border-radius:4px;background:var(--bg3);border:1px solid var(--border);color:var(--tsub)}
+.mb.hi{border-color:var(--blueBr);color:var(--blue)}
+.ph h1{font-family:'Noto Serif JP',serif;font-size:21px;font-weight:700;margin-bottom:6px;line-height:1.4}
+.ph .sub{font-size:11.5px;color:var(--tmut);font-family:'JetBrains Mono',monospace}
+
+/* CARDS */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:22px 26px;margin-bottom:18px}
+.card h2{font-size:15px;font-weight:700;color:var(--blue);margin-bottom:14px;padding-bottom:9px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+.card h2 .nb{font-family:'JetBrains Mono',monospace;font-size:10.5px;background:var(--blueBg);border:1px solid var(--blueBr);border-radius:4px;padding:1px 7px;color:var(--blue)}
+.card h3{font-size:13.5px;font-weight:700;color:var(--text);margin:18px 0 8px;padding-left:9px;border-left:2px solid var(--blue)}
+.card h4{font-size:12.5px;font-weight:700;color:var(--tsub);margin:13px 0 5px}
+.card p{margin-bottom:9px;font-size:13.5px}
+.card ul,.card ol{padding-left:20px;margin-bottom:9px}
+.card li{margin-bottom:5px;font-size:13.5px}
+
+/* src badge */
+.s{font-family:'JetBrains Mono',monospace;font-size:9.5px;padding:1px 5px;border-radius:3px;background:rgba(78,94,128,.2);color:var(--tmut);margin-left:4px;vertical-align:middle;white-space:nowrap}
+
+/* blocks */
+.blk{border-radius:0 6px 6px 0;padding:10px 14px;margin:10px 0;font-size:13px}
+.blk .lbl{font-size:9.5px;font-family:'JetBrains Mono',monospace;font-weight:700;letter-spacing:.05em;margin-bottom:4px}
+.aud{border-left:3px solid var(--blue);background:var(--blueBg)}.aud .lbl{color:var(--blue)}
+.ext{border-left:3px solid var(--green);background:var(--greenBg)}.ext .lbl{color:var(--green)}
+.wrn{border-left:3px solid var(--orange);background:var(--orBg)}.wrn .lbl{color:var(--orange)}
+
+/* def box */
+.df{background:var(--bg3);border:1px solid var(--blueBr);border-radius:8px;padding:12px 15px;margin:11px 0}
+.df.or{border-color:var(--orBr)}
+.df .trm{font-size:14.5px;font-weight:700;color:var(--blue);margin-bottom:4px}
+.df.or .trm{color:var(--orange)}
+.df .bd{font-size:13px}
+
+/* formula */
+.fml{background:var(--bg3);border:1px solid var(--purBr);border-radius:8px;padding:13px 17px;margin:11px 0;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--purple);line-height:2.1}
+
+/* tables */
+table{width:100%;border-collapse:collapse;font-size:12.5px;margin:11px 0}
+th{background:var(--bg3);border:1px solid var(--border);padding:7px 10px;text-align:left;font-weight:700;color:var(--tsub);font-size:10.5px;text-transform:uppercase;letter-spacing:.04em}
+td{border:1px solid var(--border);padding:7px 10px;vertical-align:top}
+tr:hover td{background:rgba(91,141,238,.04)}
+.c3{color:var(--orange)}.c2{color:var(--blue)}.c1{color:var(--tmut)}
+
+/* steps */
+.steps{display:flex;flex-direction:column;gap:7px;margin:12px 0}
+.step{display:flex;align-items:flex-start;gap:11px;padding:9px 13px;background:var(--bg3);border:1px solid var(--border);border-radius:8px}
+.sn{font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:700;background:var(--blueBg);border:1px solid var(--blueBr);color:var(--blue);border-radius:4px;padding:2px 7px;min-width:26px;text-align:center;flex-shrink:0;margin-top:2px}
+.sc{font-size:13px}.sc strong{color:var(--text);font-weight:700}
+.sc .ch{font-size:10.5px;color:var(--tmut);font-family:'JetBrains Mono',monospace}
+
+/* dep grid */
+.dg{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:13px 0}
+.dc{padding:11px;border-radius:8px;border:1px solid;font-size:12.5px}
+.dc h4{font-size:11.5px;font-weight:700;margin-bottom:4px}
+.dc.m{border-color:var(--redBr);background:var(--redBg)}.dc.m h4{color:var(--red)}
+.dc.o{border-color:var(--blueBr);background:var(--blueBg)}.dc.o h4{color:var(--blue)}
+.dc.e{border-color:var(--greenBr);background:var(--greenBg)}.dc.e h4{color:var(--green)}
+
+/* figures */
+figure{margin:14px 0;text-align:center}
+figure svg{max-width:100%}
+figcaption{font-size:10.5px;color:var(--tmut);font-family:'JetBrains Mono',monospace;margin-top:5px}
+
+/* supp */
+.supp{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin-bottom:16px}
+.supp h2{font-size:13.5px;font-weight:700;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.unconf{background:var(--bg2);border:1px solid var(--orBr);border-radius:10px;padding:20px 24px;margin-bottom:16px}
+.unconf h2{font-size:13.5px;font-weight:700;color:var(--orange);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--orBr)}
+
+/* highlight */
+.hl{color:var(--blue);font-weight:700}
+.hlo{color:var(--orange);font-weight:700}
+.hlg{color:var(--green);font-weight:700}
+.sm{font-size:12px;color:var(--tsub)}
+
+/* scrollbar */
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--borderL);border-radius:3px}
+</style>
+</head>
+<body>
+<nav id="sb">
+  <div id="sbh">
+    <div class="course">プロジェクトマネジメント入門</div>
+    <div class="ttl">第5回 プロジェクトのタイムマネジメント</div>
+  </div>
+  <div id="toc">
+    <a href="#top" class="t2 on">▲ ページ先頭</a>
+    <a href="#goal" class="t2">🎯 学習目標・授業構成</a>
+    <a href="#rev" class="t2">◀ 第4回振り返り</a>
+    <div class="tg">第1章</div>
+    <a href="#ch1" class="t2">WBSの描き方</a>
+    <a href="#ch1-def" class="t3">WBSとは</a>
+    <a href="#ch1-task" class="t3">タスクの記述と粒度</a>
+    <a href="#ch1-ext" class="t3">タスク抽出法</a>
+    <a href="#ch1-form" class="t3">WBSフォーム</a>
+    <div class="tg">第2章</div>
+    <a href="#ch2" class="t2">タスクの順序決め</a>
+    <a href="#ch2-dan" class="t3">段取り八分</a>
+    <a href="#ch2-dep" class="t3">依存関係の3種類</a>
+    <a href="#ch2-net" class="t3">スケジュールネットワーク図</a>
+    <a href="#ch2-chk" class="t3">3つのチェックポイント</a>
+    <a href="#ch2-ll" class="t3">リードとラグ</a>
+    <div class="tg">第3章</div>
+    <a href="#ch3" class="t2">所要時間の見積り</a>
+    <a href="#ch3-res" class="t3">必要資源の書き出し</a>
+    <a href="#ch3-met" class="t3">5つの見積り手法</a>
+    <a href="#ch3-buf" class="t3">バッファーと妥当性確認</a>
+    <div class="tg">第4章</div>
+    <a href="#ch4" class="t2">スケジュールの作成と利用</a>
+    <a href="#ch4-vis" class="t3">見える化の重要性</a>
+    <a href="#ch4-gnt" class="t3">ガントチャート</a>
+    <a href="#ch4-cp" class="t3">クリティカルパス（次回予告）</a>
+    <a href="#ch4-cyc" class="t3">スケジュール管理サイクル</a>
+    <a href="#ch4-ms" class="t3">マイルストンと変更管理</a>
+    <div class="tg">補足</div>
+    <a href="#sA" class="t2">⭐ 補足A 最重要ワード</a>
+    <a href="#sB" class="t2">📚 補足B 背景知識</a>
+    <a href="#sC" class="t2">🎯 補足C 試験観点</a>
+    <a href="#sD" class="t2">🔗 補足D 関連概念</a>
+    <a href="#unc" class="t2">❓ 未確定事項</a>
+  </div>
+</nav>
+
+<main id="main">
+<div id="top"></div>
+
+<!-- PAGE HEADER -->
+<div class="ph">
+  <div class="mbr">
+    <span class="mb hi">第5回</span>
+    <span class="mb">プロジェクトマネジメント入門</span>
+    <span class="mb">担当: 勝 眞一郎</span>
+    <span class="mb">S03 + S05-A/B | v1.1</span>
+  </div>
+  <h1>プロジェクトのタイムマネジメント</h1>
+  <div class="sub">WBS の描き方 ／ タスクの順序決め ／ 所要時間の見積り ／ スケジュールの作成と利用</div>
+</div>
+
+<!-- 学習目標 -->
+<div class="card" id="goal">
+  <h2>🎯 学習目標・授業構成</h2>
+  <p><strong>学習目標:</strong> プロジェクト運営における <span class="hl">タイムマネジメントのポイント</span> を理解し、説明できる。<span class="s">← S03:p.2</span></p>
+  <p>スケジュールを正しく作るための <strong>4段階の手順</strong>（スライドp.11 ★重要）を今回全て学ぶ。</p>
+  <div class="steps">
+    <div class="step"><div class="sn">①</div><div class="sc"><strong>全体の作業の構成図を書く</strong> → WBS <div class="ch">第1章</div></div></div>
+    <div class="step"><div class="sn">②</div><div class="sc"><strong>各作業の明細を決める</strong> → 内容の記入・所要時間 <div class="ch">第1章・第3章</div></div></div>
+    <div class="step"><div class="sn">③</div><div class="sc"><strong>各作業同士の関連を確認する</strong> → 順序決め <div class="ch">第2章</div></div></div>
+    <div class="step"><div class="sn">④</div><div class="sc"><strong>各作業をスケジュールに展開する</strong> → スケジュール作成 <div class="ch">第4章</div></div></div>
+  </div>
+  <div class="blk aud"><div class="lbl">🎧 音声補足</div>この①〜④の順番は非常に重要。必ずこの順序で進めること。スケジュールに落とし込む順番を守らないと後で矛盾が生じる。<span class="s">← S05</span></div>
+</div>
+
+<!-- 前回振り返り -->
+<div class="card" id="rev">
+  <h2><span class="nb">前回</span> 第4回「プロジェクトの立ち上げプロセス」振り返り</h2>
+  <p>今回のタイムマネジメントは、第4回でキックオフしたプロジェクトが実際に動き始めた後のフェーズにあたる。<span class="s">← S03:p.4-8</span></p>
+  <table>
+    <tr><th>章</th><th>テーマ</th><th>要点</th></tr>
+    <tr><td>第1章</td><td>問題意識を高めよう</td><td>リーダーが自分ごととして熱くなり取り組まないと、途中でプロジェクトの軸がブレる</td></tr>
+    <tr><td>第2章</td><td>規模の見極め</td><td>スコープ（目的・期間・予算）を把握し、自分でラフなプロジェクト計画を事前に作成する</td></tr>
+    <tr><td>第3章</td><td>関係者を組み立てる</td><td>まず「役割」を定義してからメンバーをアサインする順番が重要。会議体の設計も行う</td></tr>
+    <tr><td>第4章</td><td>プロジェクトの立ち上げ</td><td>中期計画確認 → 年度計画確認 → 参画部門への根回し → 決議機関に上申 → キックオフ</td></tr>
+  </table>
+</div>
+
+<!-- ============================================================ -->
+<!--  第1章                                                       -->
+<!-- ============================================================ -->
+<div class="card" id="ch1">
+  <h2><span class="nb">第1章</span> WBSの描き方</h2>
+  <p><strong>学習目標:</strong> WBS（Work Breakdown Structure）の基本について理解し、説明できる。<span class="s">← S03:p.10</span></p>
+
+  <h3 id="ch1-def">WBSとは</h3>
+  <div class="df">
+    <div class="trm">WBS（Work Breakdown Structure）</div>
+    <div class="bd">目標を達成するために、<strong>W</strong>ork（仕事）を <strong>B</strong>reakdown（詳細分割・定義）して <strong>S</strong>tructure（階層構造化）したもの。<span class="s">← S03:p.12</span></div>
+  </div>
+  <p>WBSはスケジュールマネジメントでもコストマネジメントでも、<strong>あらゆるプロジェクトマネジメントの中で使う</strong>非常に重要なツール。<span class="s">← S03:p.12</span></p>
+  <div class="blk ext"><div class="lbl">📖 外部補足 — PMBOK定義（確認済み）</div>PMI（米国プロジェクトマネジメント協会）のPMBOKでは「プロジェクトチームが実行する作業の<strong>成果物指向の階層的分解</strong>（deliverable-oriented hierarchical decomposition）」と定義。授業定義と本質は同じ。「成果物指向」「100%ルール（WBSはスコープの100%を網羅し、それを超えない）」がPMBOKでの強調点。WBSはスコープ・コスト・スケジュール3つのベースラインを統合する中核ツール。</div>
+  <div class="blk aud"><div class="lbl">🎧 音声補足</div>WBSはスケジュールマネジメントでもコストマネジメントでも使う。この後のスケジュール管理・コスト管理など、プロジェクトマネジメント全般の出発点になる。<span class="s">← S05</span></div>
+
+  <h3 id="ch1-task">タスクの記述と粒度</h3>
+  <div class="df">
+    <div class="trm">タスク（＝アクティビティ）</div>
+    <div class="bd">成果物を産み出すための仕事・作業の単位。<span class="s">← S03:p.13</span></div>
+  </div>
+  <p><strong>記述ルール:</strong> 「<span class="hl">〇〇を〇〇する</span>」という動詞形で書く。</p>
+  <ul>
+    <li>○ 「テストデータを作成する」「テスト計画書を作成する」</li>
+    <li>✕ 「テストデータ」のように名詞だけでは意図が伝わらない<span class="s">← S03:p.13</span></li>
+  </ul>
+  <div class="df or">
+    <div class="trm">粒度（りゅうど）</div>
+    <div class="bd">タスクの荒さ・細かさのレベル感のこと。<strong>同じ階層（横一列）のタスクは粒度を揃える</strong>。一段下の階層はさらに細かい粒度に揃える。<span class="s">← S03:p.13</span></div>
+  </div>
+  <div class="blk aud"><div class="lbl">🎧 音声補足 — カレー定食・家作りの例</div>
+    カレー定食: 「ナン・カレー・サラダ」が Level 2 で同粒度。カレー配下の「材料を切る・炒める・煮込む」が Level 3 で同粒度。<br>
+    家作り: 「基礎工事・家屋建築・造園」が Level 2 で同粒度。その下の「基本構造を作る・電気ガス水道を引く・内装工事をする」が Level 3 で同粒度。「造園」と「内装」は階層が違うのでレベルが異なる（NG例）。<span class="s">← S05</span>
+  </div>
+
+  <!-- SVG: WBS 家作りツリー -->
+  <figure>
+    <svg viewBox="0 0 680 230" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:680px">
+      <!-- L1 -->
+      <rect x="250" y="10" width="180" height="38" rx="6" fill="#1c2336" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="340" y="33" text-anchor="middle" fill="#dde6f7" font-family="Noto Sans JP" font-size="13" font-weight="700">家作り</text>
+      <!-- connector L1→L2 -->
+      <line x1="340" y1="48" x2="340" y2="74" stroke="#374a6e"/>
+      <line x1="110" y1="74" x2="570" y2="74" stroke="#374a6e"/>
+      <line x1="110" y1="74" x2="110" y2="86" stroke="#374a6e"/>
+      <line x1="340" y1="74" x2="340" y2="86" stroke="#374a6e"/>
+      <line x1="570" y1="74" x2="570" y2="86" stroke="#374a6e"/>
+      <!-- L2 -->
+      <rect x="30" y="86" width="160" height="36" rx="5" fill="#1c2336" stroke="#374a6e"/>
+      <text x="110" y="108" text-anchor="middle" fill="#8a9bbf" font-family="Noto Sans JP" font-size="12">基礎工事</text>
+      <rect x="260" y="86" width="160" height="36" rx="5" fill="#1c2336" stroke="#374a6e"/>
+      <text x="340" y="108" text-anchor="middle" fill="#8a9bbf" font-family="Noto Sans JP" font-size="12">家屋建築</text>
+      <rect x="490" y="86" width="160" height="36" rx="5" fill="#1c2336" stroke="#374a6e"/>
+      <text x="570" y="108" text-anchor="middle" fill="#8a9bbf" font-family="Noto Sans JP" font-size="12">造園</text>
+      <!-- connector L2→L3 (家屋建築) -->
+      <line x1="340" y1="122" x2="340" y2="148" stroke="#374a6e"/>
+      <line x1="170" y1="148" x2="510" y2="148" stroke="#374a6e"/>
+      <line x1="170" y1="148" x2="170" y2="160" stroke="#374a6e"/>
+      <line x1="340" y1="148" x2="340" y2="160" stroke="#374a6e"/>
+      <line x1="510" y1="148" x2="510" y2="160" stroke="#374a6e"/>
+      <!-- L3 -->
+      <rect x="86" y="160" width="168" height="36" rx="5" fill="#1c2336" stroke="#263050"/>
+      <text x="170" y="182" text-anchor="middle" fill="#dde6f7" font-family="Noto Sans JP" font-size="11">基本構造を作る</text>
+      <rect x="256" y="160" width="168" height="36" rx="5" fill="#1c2336" stroke="#263050"/>
+      <text x="340" y="175" text-anchor="middle" fill="#dde6f7" font-family="Noto Sans JP" font-size="11">電気・ガス・</text>
+      <text x="340" y="190" text-anchor="middle" fill="#dde6f7" font-family="Noto Sans JP" font-size="11">水道を引く</text>
+      <rect x="426" y="160" width="168" height="36" rx="5" fill="#1c2336" stroke="#263050"/>
+      <text x="510" y="182" text-anchor="middle" fill="#dde6f7" font-family="Noto Sans JP" font-size="11">内装工事をする</text>
+      <!-- Level labels -->
+      <text x="4"  y="33"  fill="#4e5e80" font-family="JetBrains Mono" font-size="10">L1</text>
+      <text x="4"  y="108" fill="#4e5e80" font-family="JetBrains Mono" font-size="10">L2</text>
+      <text x="4"  y="182" fill="#4e5e80" font-family="JetBrains Mono" font-size="10">L3</text>
+      <!-- 粒度注釈バー -->
+      <rect x="30" y="204" width="600" height="22" rx="4" fill="rgba(91,141,238,.07)" stroke="rgba(91,141,238,.2)"/>
+      <text x="330" y="219" text-anchor="middle" fill="#5b8dee" font-family="Noto Sans JP" font-size="10">L2「基礎工事・家屋建築・造園」は同粒度 ／ L3も同粒度で揃える</text>
+    </svg>
+    <figcaption>図: WBSの例（家作り）— 階層ごとに粒度を揃えるイメージ <span class="s">S03:p.15</span></figcaption>
+  </figure>
+
+  <h3 id="ch1-ext">タスクの抽出法</h3>
+  <h4>① ブレークダウン（上から下）で分解</h4>
+  <p>最終成果物 → 中間成果物 → やるべきこと の順で細分化。問い: 「<span class="hl">これができるためには、何と何があればよいか</span>」<span class="s">← S03:p.17</span></p>
+  <h4>② ボトムアップ（下から上）で検証</h4>
+  <p>「これをやれば、これが完成するか？」と逆方向に確認。ブレークダウンの <span class="hl">漏れ・重複を防止</span> するための必須工程。<span class="s">← S03:p.17</span></p>
+  <div class="blk aud"><div class="lbl">🎧 音声補足 — タスク抽出のコツ</div>
+    ①<strong>類似プロジェクトの記録を参照する</strong>（成功・失敗の両方から学ぶ）。②<strong>関係者全員で角度を変えた相互チェック</strong>をする。「人のあら探し」をする視点で確認することで抜け漏れが減る。漏れが無いか・重複が無いかをじっくりチェックし、タスクを抽出しきる。<span class="s">← S03:p.18, S05</span>
+  </div>
+
+  <h3 id="ch1-form">WBSフォームと運用</h3>
+  <p>ツリー図（チャート式）で作成したWBSは最終的に <strong>表形式（フォーム）</strong> に落とし込み、管理ツールへインプットする。<span class="s">← S03:p.19-21</span></p>
+  <table>
+    <tr><th>列名</th><th>内容</th></tr>
+    <tr><td>タスクNo.</td><td>階層を反映した番号（例: 1.1.1）</td></tr>
+    <tr><td>タスク名</td><td>「〇〇を〇〇する」形式</td></tr>
+    <tr><td>先行タスク</td><td>このタスクの前に完了すべきタスクのNo.</td></tr>
+    <tr><td>所要時間</td><td>1wk / 3day / 2hr など</td></tr>
+    <tr><td>担当者</td><td>担当者名またはイニシャル</td></tr>
+    <tr><td>予定 開始日/終了日</td><td>計画値</td></tr>
+    <tr><td>実績 開始日/終了日</td><td>実行後に記入</td></tr>
+  </table>
+  <div class="blk aud"><div class="lbl">🎧 音声補足</div>フォームの行数・枚数を見るだけで仕事の分量が見えてくる。大きなプロジェクトでは Microsoft Project などの管理ツールにインプットして使う。<span class="s">← S05</span></div>
+</div>
+
+<!-- ============================================================ -->
+<!--  第2章                                                       -->
+<!-- ============================================================ -->
+<div class="card" id="ch2">
+  <h2><span class="nb">第2章</span> タスクの順序決め</h2>
+  <p><strong>学習目標:</strong> プロジェクトにおけるタスクの順序決めについて、その基本を理解し、説明できる。<span class="s">← S03:p.25</span></p>
+
+  <h3 id="ch2-dan">段取り八分（ダンドリ師になろう）</h3>
+  <div class="df or">
+    <div class="trm">段取り八分（だんどりはちぶ）</div>
+    <div class="bd">前準備を十分にしておくことで実行時の効率が飛躍的に高まる。<strong>成功の80%は前準備にかかっている</strong>という製造業の格言。<span class="s">← S03:p.26</span></div>
+  </div>
+  <div class="blk aud"><div class="lbl">🎧 音声補足</div>
+    「ダンドリスト」は講師の造語で「段取りができる人」のこと。<strong>前段取り（準備）</strong>だけでなく<strong>後段取り（後片付け・整理）</strong>もセットで行えることが本物のダンドリスト。中華料理の例: 事前準備→一気に調理→配膳→片付け。しっかりと後段取りをしないと次の料理ができない。<span class="s">← S05</span>
+  </div>
+
+  <h3 id="ch2-dep">タスク間の依存関係（3種類）</h3>
+  <div class="dg">
+    <div class="dc m"><h4>① 強制依存関係</h4><p>選択の余地なく順序が固定。物理的・法的な制約による。</p><p class="sm">例: 基礎工事→上部工事</p></div>
+    <div class="dc o"><h4>② 任意依存関係</h4><p>特に制約はないが一般的な順序のつながり。<strong>理由メモを必ず残す。</strong></p><p class="sm">例: 昼食 ↔ 本を読む（順不同）</p></div>
+    <div class="dc e"><h4>③ 外部依存関係</h4><p>プロジェクト外のアクティビティとの関係。</p><p class="sm">例: HW納品→システムテスト開始</p></div>
+  </div>
+  <p class="sm">出典: S03:p.27</p>
+  <div class="blk aud"><div class="lbl">🎧 音声補足 — 任意依存関係のポイント</div>
+    任意依存関係では「なぜ今回 A→B の順番にしたか」の理由を書き残す。後から見た人が「制約がなければ入れ替えてもよい」と判断できるようになる。特に理由がない場合でも「特に制約なし、入替可能」と書いておく。<span class="s">← S05</span>
+  </div>
+
+  <h3 id="ch2-net">スケジュール・ネットワーク図</h3>
+  <p>タスクの順序関係を有向グラフで表現する図。必ず <strong>「開始」ノード</strong> と <strong>「終了」ノード</strong> を持つ。<span class="s">← S03:p.29</span></p>
+
+  <!-- SVG: ネットワーク図 -->
+  <figure>
+    <svg viewBox="0 0 620 160" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:620px">
+      <defs>
+        <marker id="aB" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#5b8dee"/></marker>
+        <marker id="aG" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#34d399"/></marker>
+      </defs>
+      <!-- 開始 -->
+      <rect x="8" y="62" width="72" height="34" rx="5" fill="#1c2336" stroke="#4e5e80"/>
+      <text x="44" y="83" text-anchor="middle" fill="#8a9bbf" font-family="Noto Sans JP" font-size="12">開始</text>
+      <!-- プログラム開発 -->
+      <rect x="112" y="20" width="136" height="34" rx="5" fill="#1c2336" stroke="#374a6e"/>
+      <text x="180" y="41" text-anchor="middle" fill="#dde6f7" font-family="Noto Sans JP" font-size="11">プログラム開発</text>
+      <!-- HW設置（外部依存） -->
+      <rect x="112" y="102" width="136" height="34" rx="5" fill="#1c2336" stroke="#34d399" stroke-dasharray="5"/>
+      <text x="180" y="123" text-anchor="middle" fill="#34d399" font-family="Noto Sans JP" font-size="11">ハードウェア設置</text>
+      <!-- ユーザー教育 -->
+      <rect x="296" y="10" width="116" height="34" rx="5" fill="#1c2336" stroke="#374a6e"/>
+      <text x="354" y="31" text-anchor="middle" fill="#dde6f7" font-family="Noto Sans JP" font-size="11">ユーザー教育</text>
+      <!-- テスト -->
+      <rect x="296" y="68" width="116" height="34" rx="5" fill="#1c2336" stroke="#374a6e"/>
+      <text x="354" y="89" text-anchor="middle" fill="#dde6f7" font-family="Noto Sans JP" font-size="11">テスト</text>
+      <!-- 終了 -->
+      <rect x="464" y="52" width="72" height="34" rx="5" fill="#1c2336" stroke="#4e5e80"/>
+      <text x="500" y="73" text-anchor="middle" fill="#8a9bbf" font-family="Noto Sans JP" font-size="12">終了</text>
+      <!-- arrows -->
+      <line x1="80" y1="79" x2="112" y2="37" stroke="#5b8dee" stroke-width="1.2" marker-end="url(#aB)"/>
+      <line x1="80" y1="79" x2="112" y2="119" stroke="#34d399" stroke-width="1.2" marker-end="url(#aG)"/>
+      <line x1="248" y1="37" x2="296" y2="27" stroke="#5b8dee" stroke-width="1.2" marker-end="url(#aB)"/>
+      <line x1="248" y1="37" x2="296" y2="85" stroke="#5b8dee" stroke-width="1.2" marker-end="url(#aB)"/>
+      <line x1="248" y1="119" x2="296" y2="85" stroke="#5b8dee" stroke-width="1.2" marker-end="url(#aB)"/>
+      <line x1="412" y1="27" x2="464" y2="62" stroke="#5b8dee" stroke-width="1.2" marker-end="url(#aB)"/>
+      <line x1="412" y1="85" x2="464" y2="70" stroke="#5b8dee" stroke-width="1.2" marker-end="url(#aB)"/>
+      <!-- legend -->
+      <line x1="112" y1="148" x2="140" y2="148" stroke="#34d399" stroke-width="1.2" stroke-dasharray="5"/>
+      <text x="145" y="152" fill="#34d399" font-family="Noto Sans JP" font-size="10">外部依存（HW納品待ち）</text>
+      <line x1="340" y1="148" x2="368" y2="148" stroke="#5b8dee" stroke-width="1.2"/>
+      <text x="373" y="152" fill="#5b8dee" font-family="Noto Sans JP" font-size="10">通常の依存関係</text>
+    </svg>
+    <figcaption>図: スケジュール・ネットワーク図の記入例（システム開発） <span class="s">S03:p.30</span></figcaption>
+  </figure>
+
+  <h3 id="ch2-chk">ネットワーク図の3つのチェックポイント</h3>
+  <p>必ず「開始」と「終了」が存在すること。以下3点を確認する。<span class="s">← S03:p.32</span></p>
+  <table>
+    <tr><th>#</th><th>確認内容</th><th>問題が起きると</th></tr>
+    <tr><td><span class="hl">①</span></td><td><strong>ループになっていないか</strong> — A→B→C→Aのような循環</td><td>終了に到達できない。プロジェクトが永遠に終わらない状態になる</td></tr>
+    <tr><td><span class="hl">②</span></td><td><strong>宙に浮いているものはないか</strong> — 終了に繋がらないタスク</td><td>そのタスクが完了しても終了判定に反映されない</td></tr>
+    <tr><td><span class="hl">③</span></td><td><strong>重複しているものはないか</strong> — A→Cと A→B→Cが同時存在</td><td>終了の判断がつきにくくなる</td></tr>
+  </table>
+  <div class="blk aud"><div class="lbl">🎧 音声補足 — 並べて眺める</div>
+    ネットワーク図を書いたら <strong>実際に並べて眺める</strong> ことが大切。アナログ: ポストイットを模造紙に貼って俯瞰する。デジタル: プロジェクターで大画面に映して全員でチェック。テレワーク: オンラインツールで共有。「この順番おかしくない？」「前回この順序で失敗した」という発言が自然と出てくる。発想の柔軟性と閲覧性が高まる。<span class="s">← S03:p.34-35, S05</span>
+  </div>
+
+  <h3 id="ch2-ll">リードとラグ</h3>
+  <table>
+    <tr><th>概念</th><th>定義</th><th>具体例</th></tr>
+    <tr><td><span class="hl">リード（Lead）</span></td><td>先行タスクの<strong>終了前</strong>に後続タスクを開始する（オーバーラップ）<span class="s">← S03:p.33</span></td><td>Aが終わる5日前にBを開始 → B完了が早まる</td></tr>
+    <tr><td><span class="hl">ラグ（Lag）</span></td><td>先行タスク終了後に<strong>一定期間を置いて</strong>から後続タスクを開始<span class="s">← S03:p.33</span></td><td>コンクリート打設後2日間乾燥を待ってから次工程へ</td></tr>
+  </table>
+  <div class="blk aud"><div class="lbl">🎧 音声補足</div>リードとラグはそれぞれ「何日前から始めるか」「何日間待つか」がノウハウになる。ラグの例としてコンクリートが固まるまでの待機時間が挙げられた。<span class="s">← S05</span></div>
+
+  <div class="blk ext"><div class="lbl">📖 外部補足 — 既存業務がある場合の現状分析手順</div>
+    ①ホワイトボードに思いつくまま書き出す → ②ポストイットに書き写す → ③グループ化して名前をつける → ④グループごとに伝票・帳票・画面コピーをフローとして並べる（アナログ版）。デジタル版は付箋ツールで同様の作業をオンラインで全員共有しながら実施。新旧業務を横に並べて比較することでタスクの見直しができる。<span class="s">← S03:p.36</span>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!--  第3章                                                       -->
+<!-- ============================================================ -->
+<div class="card" id="ch3">
+  <h2><span class="nb">第3章</span> 所要時間の見積り</h2>
+  <p><strong>学習目標:</strong> プロジェクトの各タスクと全体の所要時間の見積りの基本について理解し、説明できる。<span class="s">← S03:p.40</span></p>
+
+  <h3 id="ch3-res">必要資源の書き出し</h3>
+  <p>プロジェクトに必要な資源（人員・機器・部屋・物資など）をリストアップし、リソース情報として記録する。<span class="s">← S03:p.41</span></p>
+  <ul>
+    <li><strong>利用できる条件を調べる</strong>: 期間・時間・単価など</li>
+    <li><strong>代替案（外注化など）もリストアップ</strong>する</li>
+    <li><strong>プロジェクト・カレンダーに期間を入力</strong>する</li>
+    <li>確認後は必ず<strong>算出の根拠を明確に残す</strong><span class="s">← S03:p.42</span></li>
+  </ul>
+  <table>
+    <tr><th>資源種別</th><th>役割の例</th><th>分量の例</th></tr>
+    <tr><td>人（役割）</td><td>ネットワーク構築リーダー / メンバー</td><td>6月より2ヶ月間、10人月</td></tr>
+    <tr><td>設備</td><td>開発機2号機</td><td>1年間</td></tr>
+  </table>
+  <div class="blk wrn"><div class="lbl">⚠️ 根拠を必ず残す</div>「なぜネットワーク構築リーダーが6月から2ヶ月間必要なのか」の根拠を残さないと、後で変更が必要になったとき修正してよいかどうかの判断ができなくなる。<span class="s">← S05</span></div>
+
+  <h3 id="ch3-met">5つの所要期間見積り手法</h3>
+  <table>
+    <tr><th>#</th><th>手法</th><th>長所</th><th>短所</th></tr>
+    <tr><td class="hl">①</td><td><strong>専門家見積り</strong><br><span class="sm">過去の経験・専門知識を使う</span></td><td>豊富な経験から迅速に判断可能。専門的な視点での検討がなされる</td><td>スケジュールに意志・決意が入りにくい。判断根拠がブラックボックス化。費用が高い</td></tr>
+    <tr><td class="hl">②</td><td><strong>類推見積り</strong><br><span class="sm">過去の類似タスクを参考</span></td><td>短期間で見積り可能。「これぐらいでやり遂げよう」という決意を込めることができる</td><td>具体的な根拠に乏しい。できる人が限られる</td></tr>
+    <tr><td class="hl">③</td><td><strong>係数見積り</strong><br><span class="sm">作業量 ÷ 生産性</span></td><td>具体的な作業量が事前に明確になる。投入資源の調整（単価・人数変更）がしやすい</td><td>見積り準備に時間と費用がかかる。係数が外れるリスク。人間の生産性は一定でない</td></tr>
+    <tr><td class="hl">④</td><td><strong>三点見積り</strong><br><span class="sm">楽観値・最頻値・悲観値の加重平均</span></td><td>見積りリスクを数値として考慮できる。一点見積りより確からしい</td><td>見積りに時間がかかる。決意が入りにくい</td></tr>
+    <tr><td class="hl">⑤</td><td><strong>ファンクションポイント法</strong><br><span class="sm">機能数 × 複雑さ・特性</span></td><td>詳細分析に基づく確からしい数値が出る</td><td>分析準備に相当な時間と費用がかかる。主にシステム開発向け</td></tr>
+  </table>
+
+  <h4>三点見積り — PERT公式（確認済み）</h4>
+  <p>授業では「最頻値・楽観値・悲観値の平均」と説明されているが、PMBOKおよびPERT分析の正式公式は最頻値に<strong>4倍の重みをかける加重平均</strong>である。<span class="s">← S03:p.43</span></p>
+  <div class="fml">
+    期待時間 E = ( 楽観値 O + 最頻値 M × 4 + 悲観値 P ) ÷ 6<br>
+    標準偏差 σ = ( 悲観値 P − 楽観値 O ) ÷ 6<br>
+    <span style="font-size:11px;color:var(--tsub)">例) O=6日, M=10日, P=20日 → E=(6+40+20)÷6=11日, σ=(20-6)÷6≈2.3日</span>
+  </div>
+  <div class="blk ext"><div class="lbl">📖 外部補足 — 三点見積りの起源（確認済み）</div>
+    1950年代に米海軍の弾道ミサイル開発プロジェクト（Polaris計画）でPERT法（Program Evaluation and Review Technique）とともに開発。確率統計（ベータ分布仮定）を活用し、「期待時間±σ以内に完了する確率≈68%」「±2σ以内≈95%」として見積りを確率的な範囲として扱える。単一数値の見積りより確からしい根拠として広く採用されている。
+  </div>
+
+  <h4>ファンクションポイント法 — 機能の例</h4>
+  <table>
+    <tr><th>記号</th><th>英語名</th><th>説明</th></tr>
+    <tr><td><strong>EI</strong></td><td>External Input</td><td>外部入力（画面入力・データ入力）</td></tr>
+    <tr><td><strong>EQ</strong></td><td>External Inquiry</td><td>外部照会（外部DBを参照して結果を返す）</td></tr>
+    <tr><td><strong>EO</strong></td><td>External Output</td><td>外部出力（処理結果を外部システムへ出力）</td></tr>
+  </table>
+  <p>各機能数に「複雑さ」と「特性」を加味して調整した値の合計 = ファンクションポイント数 → 所要工数を算出。<span class="s">← S03:p.48, S05</span></p>
+  <div class="blk aud"><div class="lbl">🎧 音声補足</div>ファンクションポイント法は詳細分析が必要で時間・費用がかかるが、出てきた見積りは「割と確からしい数字」になる。システム開発で使われる手法。<span class="s">← S05</span></div>
+
+  <h4>難易度の高いタスクへの対応</h4>
+  <p>新技術への挑戦など難易度の高いタスクについては、<strong>代替案（プランB）を事前に検討</strong>し、見積りにリスクを反映しておく。キツキツで見積もると失敗時にスケジュールが押し続けるため、余裕を持たせることが重要。<span class="s">← S03:p.49</span></p>
+
+  <h3 id="ch3-buf">バッファーと見積り妥当性確認</h3>
+  <div class="df or">
+    <div class="trm">バッファー（緩衝）</div>
+    <div class="bd">コンティンジェンシープラン（緊急時対応計画）用の <strong>予備時間</strong>。<span class="s">← S03:p.50</span></div>
+  </div>
+  <div class="blk wrn"><div class="lbl">⚠️ バッファー管理の3原則（最重要）</div>
+    <ul style="margin-top:6px">
+      <li>① <strong>各メンバーに公開しない</strong>（「11時間あるからゆっくりやればいい」という意識になる）</li>
+      <li>② <strong>管理者のみが管理する</strong></li>
+      <li>③ <strong>各タスクではなく実行時用に隠して管理する</strong></li>
+    </ul>
+    10時間で間に合わない状況が生じたとき、管理者が判断して1時間の予備（バッファー）を使う。<span class="s">← S03:p.50, S05</span>
+  </div>
+  <div class="blk ext"><div class="lbl">📖 外部補足</div>各タスクに個別バッファーを持たせるのではなく、プロジェクト全体として一括でバッファーを設けるアプローチが「クリティカルチェーン法」（エリヤフ・ゴールドラット提唱）の考え方に近い。部分最適（各タスクバッファー）は全体最適にならないという原則と授業内容は整合している。</div>
+
+  <h4>見積り妥当性確認の3ステップ <span class="s">← S03:p.51</span></h4>
+  <div class="steps">
+    <div class="step"><div class="sn">①</div><div class="sc">現場担当者のチェック</div></div>
+    <div class="step"><div class="sn">②</div><div class="sc">専門家・経験者で見積り内容を検証</div></div>
+    <div class="step"><div class="sn">③</div><div class="sc"><strong>全員で承認する</strong> — チームが一枚岩になるために必須。コストとスケジュールの両方について全員が「これなら絶対大丈夫」と思える水準を目指す</div></div>
+  </div>
+  <div class="blk aud"><div class="lbl">🎧 音声補足</div>見積りへの姿勢として「挑戦する姿勢で、かつ悲観的に」という言葉が使われている。旅行の日程表のように「これで行くんだ」という共通認識を全員が持つことが重要。全員承認がないとチームが一枚岩にならない。<span class="s">← S05</span></div>
+</div>
+
+<!-- ============================================================ -->
+<!--  第4章                                                       -->
+<!-- ============================================================ -->
+<div class="card" id="ch4">
+  <h2><span class="nb">第4章</span> スケジュールの作成とその利用</h2>
+  <p><strong>学習目標:</strong> プロジェクトのスケジュールの作成とその利用について理解し、説明できる。<span class="s">← S03:p.55</span></p>
+
+  <h3 id="ch4-vis">見える化の重要性</h3>
+  <div class="df or">
+    <div class="trm">課題や遅れは、時間が解決しない</div>
+    <div class="bd">放置すれば問題は悪化するだけ。積極的に自らが「自分ごと」として解決する。<span class="s">← S03:p.56</span></div>
+  </div>
+  <div class="df">
+    <div class="trm">見える化（みえるか）</div>
+    <div class="bd">問題の本質を考えられるようにデータを提供すること。単にビジュアルで見えることではなく、誰が見ても問題の本質がわかるようにする仕組みを作ること。（トヨタ生産方式の用語）<span class="s">← S03:p.56</span></div>
+  </div>
+  <p>スケジュールはプロジェクトメンバー全員が以下を満たすよう整備する: <span class="s">← S03:p.61</span></p>
+  <ol><li>全体・後の作業工程が見える</li><li>自分のなすべきことがわかる</li><li>実行したら記録できる（予定・実績が書き込める）</li></ol>
+
+  <h3 id="ch4-gnt">ガントチャート</h3>
+  <div class="df">
+    <div class="trm">ガントチャート</div>
+    <div class="bd"><strong>米国</strong>の Henry Laurence Gantt（1861–1919）が <strong>1910〜1915年頃</strong> に開発したスケジュール表。縦軸にタスク、横軸に時間をとり、タスク間の依存関係を記述する。<span class="s">← S03:p.57</span></div>
+  </div>
+  <div class="blk ext"><div class="lbl">📖 外部補足 — ガントチャートの歴史（確認済み）</div>
+    ガントはアメリカ・メリーランド州出身の機械技師・経営コンサルタント。フレデリック・テイラーとともに科学的管理法を発展させ、1910〜1915年頃にガントチャートを開発した。第一次世界大戦（1917〜）での米軍の兵器生産管理に活用され急速に普及。フーバーダムやインターステートハイウェイの建設管理にも使われた。なお、同時期にポーランドの技術者カロル・アダミエツキが類似の図（ハルモノグラフ）を独自に開発していたが、英語で発表しなかったため西洋での普及が遅れ、ガントの名が定着した。
+  </div>
+
+  <table>
+    <tr><th>構成要素</th><th>説明</th></tr>
+    <tr><td><strong>横軸</strong></td><td>時間（プロジェクト規模に応じて1時間/1日/1週/1ヶ月単位を選ぶ）</td></tr>
+    <tr><td><strong>縦軸</strong></td><td>タスク（WBSの階層に対応）</td></tr>
+    <tr><td><strong>バー</strong></td><td>開始から終了までの期間を示す横棒</td></tr>
+    <tr><td><strong>稲妻線</strong></td><td>ある時点での遅れ・進みを示す折れ線。縦にまっすぐが最も順調な状態</td></tr>
+    <tr><td><strong>予実績（よじっせき）</strong></td><td>予定（白抜き）と実績（塗り潰し）を重ねて表示。遅れが一目でわかる</td></tr>
+  </table>
+  <div class="blk aud"><div class="lbl">🎧 音声補足</div>
+    稲妻線が当日より後ろに引っ張られているとそのタスクは遅れている。逆に前に出ていても「どこかでトラブルを引き起こす可能性がある」ので褒められたことではない。最もよい状態は稲妻線が縦にまっすぐ引かれている状態。予実績が見えることで「予定に対して遅れているな」「予定通りだな」が一目でわかる。<span class="s">← S05</span>
+  </div>
+
+  <h3 id="ch4-cp">クリティカルパスとは（次回詳細解説）</h3>
+  <div class="df">
+    <div class="trm">クリティカルパス（Critical Path）</div>
+    <div class="bd">スケジュール・ネットワーク図において、プロジェクト開始から完了までをつなぐ <strong>余裕時間（フロート）がゼロの最長経路</strong> のこと。このパス上のタスクが1日でも遅延すると、プロジェクト全体の完了日が遅延する → 集中管理の対象。詳細は <strong>次回講義で解説</strong>。<span class="s">← S03:p.60</span></div>
+  </div>
+  <div class="blk ext"><div class="lbl">📖 外部補足 — クリティカルパス法（CPM）の背景（確認済み）</div>
+    クリティカルパス法（Critical Path Method, CPM）は <strong>1950年代にデュポン社（DuPont）</strong> が化学プラント建設の工期短縮を目的に開発した。同時期に米海軍がPERT（Program Evaluation and Review Technique）を別途開発しており、両手法はしばしば比較される。主な違い: CPMは各タスクの所要時間を「固定値」として扱うのに対し、PERTは三点見積りで不確実性を考慮する。現在は Microsoft Project・Jira・Asana 等のほぼ全ての主要プロジェクト管理ツールに標準搭載。ガントチャート上でクリティカルパスは赤いバーで表示されることが多い。
+  </div>
+
+  <h3 id="ch4-cyc">スケジュール管理サイクル</h3>
+  <p>スケジュール第一版が完成したら以下のサイクルを繰り返す。<span class="s">← S03:p.62</span></p>
+  <div class="steps">
+    <div class="step"><div class="sn">1</div><div class="sc"><strong>実行</strong> したら実績を記入する</div></div>
+    <div class="step"><div class="sn">2</div><div class="sc"><strong>状況を確認</strong> する（順調・遅れ・進み過ぎを把握）</div></div>
+    <div class="step"><div class="sn">3</div><div class="sc"><strong>対応策を検討</strong> する</div></div>
+    <div class="step"><div class="sn">4</div><div class="sc"><strong>会議体での承認を得てから</strong> 必要最小限の変更を加える → 第2版スケジュールへ</div></div>
+  </div>
+  <div class="blk wrn"><div class="lbl">⚠️ 変更管理の原則</div>
+    計画変更を「許さない」と実態とどんどんズレる。変更は認めるが <strong>プロジェクトの会議体での承認を必ず得てから</strong> 実施する。自分たちで勝手に変更しない。難易度が高いプロジェクトほどスケジュール変更は起こるので、迅速かつ的確に対処してリカバリーを図ることが重要。<span class="s">← S03:p.63</span>
+  </div>
+
+  <h3 id="ch4-ms">マイルストンと計画変更管理</h3>
+  <div class="df">
+    <div class="trm">マイルストン（milestone）</div>
+    <div class="bd">語源: 道路の起点よりの距離を彫った石。プロジェクト中で <strong>重要な意味を持つ節目</strong> のこと。通常は大きなプロセスのレビュー時または終了時に設定する。スケジュール管理では <strong>マイルストンでの進捗評価が大きな目安</strong> となる。<span class="s">← S03:p.64</span></div>
+  </div>
+
+  <!-- SVG: マイルストンタイムライン -->
+  <figure>
+    <svg viewBox="0 0 600 86" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:600px">
+      <line x1="36" y1="46" x2="570" y2="46" stroke="#374a6e" stroke-width="2"/>
+      <polygon points="28,42 36,46 28,50" fill="#374a6e"/>
+      <!-- milestones -->
+      <circle cx="130" cy="46" r="8" fill="#fbbf24"/>
+      <circle cx="320" cy="46" r="8" fill="#fbbf24"/>
+      <circle cx="500" cy="46" r="8" fill="#fbbf24"/>
+      <!-- labels above -->
+      <text x="130" y="24" text-anchor="middle" fill="#fbbf24" font-family="Noto Sans JP" font-size="11" font-weight="700">1/17</text>
+      <text x="130" y="36" text-anchor="middle" fill="#fbbf24" font-family="Noto Sans JP" font-size="9">計画承認</text>
+      <text x="320" y="24" text-anchor="middle" fill="#fbbf24" font-family="Noto Sans JP" font-size="11" font-weight="700">4/3</text>
+      <text x="320" y="36" text-anchor="middle" fill="#fbbf24" font-family="Noto Sans JP" font-size="9">要件承認</text>
+      <text x="500" y="24" text-anchor="middle" fill="#fbbf24" font-family="Noto Sans JP" font-size="11" font-weight="700">5/3</text>
+      <text x="500" y="36" text-anchor="middle" fill="#fbbf24" font-family="Noto Sans JP" font-size="9">プログラム納品</text>
+      <!-- phase -->
+      <text x="225" y="66" text-anchor="middle" fill="#4e5e80" font-family="Noto Sans JP" font-size="10">要件定義フェーズ</text>
+      <text x="410" y="66" text-anchor="middle" fill="#4e5e80" font-family="Noto Sans JP" font-size="10">開発フェーズ</text>
+      <!-- axis -->
+      <text x="36" y="82" fill="#4e5e80" font-family="JetBrains Mono" font-size="9">▶ プロジェクト開始</text>
+      <text x="540" y="82" fill="#4e5e80" font-family="JetBrains Mono" font-size="9">終了</text>
+    </svg>
+    <figcaption>図: マイルストンの設定例 <span class="s">S03:p.64</span></figcaption>
+  </figure>
+
+  <h4>ガントチャートへの反映ルール <span class="s">← S03:p.65</span></h4>
+  <ul>
+    <li><strong>元の計画を残したまま新しい計画を記入する</strong>（後の振り返りのために元計画を必ず保存）</li>
+    <li>マイルストンをガントチャートに明記する（= 重要管理ポイント）</li>
+    <li><strong>全てのスケジュール情報をガントチャートに集約して管理する</strong>（ガントチャートを見ればプロジェクト全体がわかる状態にする）</li>
+  </ul>
+  <div class="blk aud"><div class="lbl">🎧 音声補足</div>
+    メンバーは「次のマイルストンで何を目指すか」「その次は何か」を意識してプロジェクト全体の節目を把握する。計画変更の際もバージョン管理して元の計画を残しておくことで「どこで何が変わったか」が後からわかる。<span class="s">← S05</span>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!--  補足セクション                                              -->
+<!-- ============================================================ -->
+
+<!-- 補足A -->
+<div class="supp" id="sA">
+  <h2 style="color:var(--orange)">⭐ 補足A: 最重要ワード一覧</h2>
+  <table>
+    <tr><th>用語</th><th>読み</th><th>定義（授業より）</th><th>重要度</th></tr>
+    <tr><td><strong>WBS</strong></td><td>ダブリュービーエス</td><td>Work Breakdown Structure。目標達成のために仕事を詳細分割・定義して階層構造化したもの</td><td class="c3">★★★</td></tr>
+    <tr><td><strong>タスク（アクティビティ）</strong></td><td>たすく</td><td>成果物を産み出すための仕事・作業の単位。「〇〇を〇〇する」形式で記述</td><td class="c3">★★★</td></tr>
+    <tr><td><strong>粒度</strong></td><td>りゅうど</td><td>タスクの荒さ・細かさのレベル感。同じ階層のタスクは粒度を揃える</td><td class="c3">★★★</td></tr>
+    <tr><td><strong>強制依存関係</strong></td><td>きょうせいいぞんかんけい</td><td>選択の余地なく順序が固定された依存関係（例: 基礎工事→上部工事）</td><td class="c3">★★★</td></tr>
+    <tr><td><strong>任意依存関係</strong></td><td>にんいいぞんかんけい</td><td>特に制約はないが一般的な順序のつながり。理由メモが必須</td><td class="c3">★★★</td></tr>
+    <tr><td><strong>外部依存関係</strong></td><td>がいぶいぞんかんけい</td><td>プロジェクト外のアクティビティとの関係（例: HW納品→テスト開始）</td><td class="c3">★★★</td></tr>
+    <tr><td><strong>リード</strong></td><td>りーど</td><td>先行タスクの終了前に後続タスクを開始する（オーバーラップ）</td><td class="c2">★★☆</td></tr>
+    <tr><td><strong>ラグ</strong></td><td>らぐ</td><td>先行タスク終了後に一定期間を置いてから後続タスクを開始する</td><td class="c2">★★☆</td></tr>
+    <tr><td><strong>三点見積り</strong></td><td>さんてんみつもり</td><td>楽観値・最頻値・悲観値の加重平均で所要時間を見積る手法。PERT公式: E=(O+4M+P)÷6</td><td class="c3">★★★</td></tr>
+    <tr><td><strong>係数見積り</strong></td><td>けいすうみつもり</td><td>作業量÷生産性で所要時間を算出。具体数値で投入資源の調整がしやすい</td><td class="c3">★★★</td></tr>
+    <tr><td><strong>ファンクションポイント法</strong></td><td>ふぁんくしょんぽいんとほう</td><td>システムの機能数（EI/EQ/EO等）に複雑さ・特性を加味して規模を見積る手法</td><td class="c3">★★★</td></tr>
+    <tr><td><strong>バッファー</strong></td><td>ばっふぁー</td><td>緩衝。予備時間。管理者のみが管理し各タスクには公開しない</td><td class="c3">★★★</td></tr>
+    <tr><td><strong>コンティンジェンシープラン</strong></td><td>こんてぃんじぇんしーぷらん</td><td>緊急時対応計画。想定外の事態が起きたときの次の手を事前に立てておく</td><td class="c2">★★☆</td></tr>
+    <tr><td><strong>ガントチャート</strong></td><td>がんとちゃーと</td><td>縦軸タスク×横軸時間のスケジュール表。米国のヘンリー・ガントが1910〜1915年頃に開発</td><td class="c3">★★★</td></tr>
+    <tr><td><strong>稲妻線</strong></td><td>いなずません</td><td>ガントチャート上のある時点での遅れ・進みを示す折れ線</td><td class="c2">★★☆</td></tr>
+    <tr><td><strong>予実績</strong></td><td>よじっせき</td><td>予定と実績の比較。ガントチャートで進捗管理に使う</td><td class="c2">★★☆</td></tr>
+    <tr><td><strong>マイルストン</strong></td><td>まいるすとん</td><td>プロジェクト中の重要な節目。大きなプロセスのレビュー・終了時に設定する</td><td class="c3">★★★</td></tr>
+    <tr><td><strong>見える化</strong></td><td>みえるか</td><td>問題の本質を考えられるようにデータを提供すること（トヨタ生産方式の用語）</td><td class="c2">★★☆</td></tr>
+    <tr><td><strong>クリティカルパス</strong></td><td>くりてぃかるぱす</td><td>ネットワーク図上のフロートゼロの最長経路。このパス上の遅延が全体遅延に直結する（詳細は次回）</td><td class="c3">★★★</td></tr>
+    <tr><td><strong>段取り八分</strong></td><td>だんどりはちぶ</td><td>成功の80%は前準備にかかっているという製造業の格言</td><td class="c2">★★☆</td></tr>
+  </table>
+</div>
+
+<!-- 補足B -->
+<div class="supp" id="sB">
+  <h2 style="color:var(--green)">📚 補足B: 知っておくべき背景知識</h2>
+  <ul style="list-style:none;padding:0">
+    <li style="padding:10px 0;border-bottom:1px solid var(--border)">
+      <strong>WBS と PMBOK（確認済み）</strong>
+      <p class="sm" style="margin-top:4px">PMBOKはPMI（Project Management Institute）が発行するプロジェクトマネジメントの国際標準。WBSは「成果物指向の階層的分解」として定義されスコープマネジメントの中核。「WBSの実践標準（Practice Standard for Work Breakdown Structures）」という専用ガイドもPMIが別途発行している。</p>
+    </li>
+    <li style="padding:10px 0;border-bottom:1px solid var(--border)">
+      <strong>ガントチャート考案者 — ヘンリー・ガント（1861–1919）（確認済み）</strong>
+      <p class="sm" style="margin-top:4px">アメリカ・メリーランド州出身。ジョンズ・ホプキンス大学卒、スティーブンス工科大学でME修士。フレデリック・テイラーの科学的管理法を共同発展させた。1910〜1915年頃にガントチャートを開発し、第一次世界大戦での米軍兵器生産管理で広く普及。ポーランドの技術者カロル・アダミエツキ（Karol Adamiecki）が1896年頃に類似の図を独自開発していたが、英語で発表しなかったため西洋での普及が遅れた。</p>
+    </li>
+    <li style="padding:10px 0;border-bottom:1px solid var(--border)">
+      <strong>三点見積り（PERT）の起源（確認済み）</strong>
+      <p class="sm" style="margin-top:4px">1950年代に米海軍のポラリス弾道ミサイル開発プロジェクトでPERT法とともに三点見積りを導入し成功。PERT (Program Evaluation and Review Technique) はベータ分布を仮定し、期待時間 E=(O+4M+P)÷6 で算出する。結果は確率的な範囲（期待時間±σ内≈68%、±2σ内≈95%）として活用できる。</p>
+    </li>
+    <li style="padding:10px 0;border-bottom:1px solid var(--border)">
+      <strong>クリティカルパス法（CPM）の起源（確認済み）</strong>
+      <p class="sm" style="margin-top:4px">1950年代にデュポン社（DuPont）が化学プラント建設の工期短縮のため開発した。同時期に米海軍がPERTを別途開発。CPMは所要時間を固定値として扱うのに対し、PERTは三点見積りで不確実性を考慮する点が主な違い。現在はMicrosoft Project・Jira・Asana等のプロジェクト管理ツールに標準搭載されている。</p>
+    </li>
+    <li style="padding:10px 0">
+      <strong>見える化とトヨタ生産方式（TPS）</strong>
+      <p class="sm" style="margin-top:4px">「見える化」はトヨタ生産方式（Toyota Production System）の概念で、ムダを目に見える形にして改善を促す手法。「可視化（データを表示する）」とは異なり、「問題が生じたときに誰でも即座に気づける仕組みを作る」ことを意味する。ガントチャートの予実績管理が「見える化」の実践となる。</p>
+    </li>
+  </ul>
+</div>
+
+<!-- 補足C -->
+<div class="supp" id="sC">
+  <h2 style="color:var(--purple)">🎯 補足C: 試験・レポートで重要な観点</h2>
+  <ul>
+    <li style="margin-bottom:8px"><strong>WBSの定義:</strong> Work / Breakdown / Structure の各語の意味を含め正確に説明できること</li>
+    <li style="margin-bottom:8px"><strong>粒度の概念と悪い例:</strong> 同じ階層は粒度を揃える意味と「造園と内装は階層が違う（NG例）」を説明できるか</li>
+    <li style="margin-bottom:8px"><strong>タスク間依存関係の3種類:</strong> 強制・任意・外部の違いと具体例（基礎工事 / 昼食↔読書 / HW納品→テスト）を使い分けられるか</li>
+    <li style="margin-bottom:8px"><strong>ブレークダウンとボトムアップの役割の違い:</strong> 分解（漏れなく出す）と検証（漏れ防止）の使い分け</li>
+    <li style="margin-bottom:8px"><strong>ネットワーク図の3チェック:</strong> ループ・宙浮き・重複の各問題点まで説明できるか</li>
+    <li style="margin-bottom:8px"><strong>5つの見積り手法の長所・短所:</strong> 専門家・係数・三点見積りの対比。三点見積りのPERT公式 E=(O+4M+P)÷6 も押さえる</li>
+    <li style="margin-bottom:8px"><strong>バッファー管理の3原則:</strong> ①公開しない ②管理者のみ管理 ③実行時用に隠す</li>
+    <li style="margin-bottom:8px"><strong>ガントチャートの5要素:</strong> 横軸・縦軸・バー・稲妻線・予実績の各意味</li>
+    <li style="margin-bottom:8px"><strong>スケジュール管理サイクル:</strong> 実績記入→状況確認→対応策検討→会議体承認→変更の4段階</li>
+    <li><strong>マイルストンの定義と設置タイミング:</strong> 「節目」であること、大きなプロセスのレビュー・終了時に設定</li>
+  </ul>
+</div>
+
+<!-- 補足D -->
+<div class="supp" id="sD">
+  <h2 style="color:var(--tsub)">🔗 補足D: 関連概念・次回への接続</h2>
+  <ul>
+    <li style="margin-bottom:10px"><strong>次回予告 — クリティカルパス法（CPM）の詳細:</strong> スケジュールネットワーク図上でフロート（余裕時間）がゼロの最長経路を特定し集中管理する手法。このパス上のタスクへの遅延対策がプロジェクト完了の可否を決定づける。Microsoft Projectではガントチャート上で赤いバーとして表示される。</li>
+    <li style="margin-bottom:10px"><span class="sm">【外部補足】</span> <strong>EVM（Earned Value Management）:</strong> WBSと連携してスケジュールとコストを統合的に管理する手法。PV（計画値）・AC（実績コスト）・EV（出来高）の3指標でプロジェクトの健全性を数値化する。PMBOKでも中核手法。</li>
+    <li style="margin-bottom:10px"><span class="sm">【外部補足】</span> <strong>アジャイル開発との比較:</strong> スクラム等のアジャイル手法では事前に詳細なWBSを作成せず、スプリントごとにバックログを管理する。ウォーターフォール型のWBS・ガントチャートとは計画粒度・更新頻度が大きく異なる。</li>
+    <li><strong>第4回との繋がり（学習の流れ）:</strong> 第4回「立ち上げ→キックオフ」の直後が今回のタイムマネジメント。WBS→順序決め→見積り→スケジュール化という4段階の後、次回クリティカルパス法でスケジュールの集中管理へと続く。</li>
+  </ul>
+</div>
+
+<!-- 未確定事項（末尾） -->
+<div class="unconf" id="unc">
+  <h2>❓ 未確定事項・要確認リスト</h2>
+  <table>
+    <tr><th>ID</th><th>内容</th><th>種別</th><th>優先度</th><th>状況</th></tr>
+    <tr>
+      <td>U04</td>
+      <td>クリティカルパスの算出方法・フロート計算の詳細手順</td>
+      <td>内容不足</td>
+      <td>low</td>
+      <td>S03:p.60 に「次回の講義で解説」と明記されており本回はクリティカルパスの概念定義のみ。概念・背景は補足D・外部補足で補強済み。次回講義後に解消予定。</td>
+    </tr>
+  </table>
+</div>
+
+<!-- footer -->
+<div style="margin-top:20px;padding:11px 15px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;font-size:10.5px;color:var(--tmut);font-family:'JetBrains Mono',monospace">
+  <div>SSP v4.2 | v1.1 — Step 6 QC実施・Web検索による外部補足強化・未確定事項末尾配置</div>
+  <div>ソース: S03（スライドPDF）+ S05-A/B（hynote.ai）+ Web検索確認済み</div>
+  <div>note_pm101_05.html</div>
+</div>
+
+</main>
+
+<script>
+const secs=document.querySelectorAll('[id]');
+const lks=document.querySelectorAll('#toc a');
+const ob=new IntersectionObserver(es=>{
+  es.forEach(e=>{
+    if(e.isIntersecting){
+      lks.forEach(l=>l.classList.remove('on'));
+      const a=document.querySelector('#toc a[href="#'+e.target.id+'"]');
+      if(a)a.classList.add('on');
+    }
+  });
+},{rootMargin:'-15% 0px -70% 0px'});
+secs.forEach(s=>ob.observe(s));
+</script>
+</body>
+</html>
