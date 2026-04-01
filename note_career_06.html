@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>キャリア入門 第6回 | プロジェクトの成果を意識した働き方</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+JP:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0f1117;--bg2:#161b27;--bg3:#1e2535;--card:#1a2033;
+  --border:#2a3450;--text:#e2e8f5;--sub:#8a99b8;--muted:#556280;
+  --blue:#5b8dee;--green:#34d399;--yellow:#fbbf24;--purple:#a78bfa;
+  --orange:#f97316;--red:#ef4444;--sw:260px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.8;}
+a{color:var(--blue);text-decoration:none;}
+
+/* ── layout ── */
+#sb{position:fixed;top:0;left:0;width:var(--sw);height:100vh;background:var(--bg2);border-right:1px solid var(--border);overflow-y:auto;z-index:100;padding:16px 0;}
+#mn{margin-left:var(--sw);padding:40px 48px;max-width:900px;}
+
+/* ── sidebar ── */
+.sb-head{padding:0 18px 14px;border-bottom:1px solid var(--border);margin-bottom:12px;}
+.sb-course{font-size:10px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;}
+.sb-title{font-size:13px;font-weight:700;color:var(--blue);margin-top:2px;}
+.toc{list-style:none;}
+.toc li a{display:block;padding:5px 18px;font-size:12px;color:var(--sub);border-left:2px solid transparent;transition:.15s;}
+.toc li a:hover,.toc li a.active{color:var(--text);border-left-color:var(--blue);}
+.toc-sec{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;padding:10px 18px 3px;}
+.toc-sub a{padding-left:30px;}
+
+/* ── header ── */
+.note-head{background:linear-gradient(135deg,#1a2033,#0f1117);border:1px solid var(--border);border-radius:12px;padding:28px 32px;margin-bottom:32px;position:relative;overflow:hidden;}
+.note-head::before{content:'';position:absolute;top:-30px;right:-30px;width:180px;height:180px;background:radial-gradient(circle,rgba(91,141,238,.12),transparent 70%);border-radius:50%;}
+.note-head .lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;}
+.note-head h1{font-family:'Noto Serif JP',serif;font-size:20px;font-weight:700;line-height:1.4;margin-bottom:14px;}
+.mg{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.mg-item{background:var(--bg3);border-radius:8px;padding:9px 12px;}
+.mg-item .lbl{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;}
+.mg-item .val{font-size:13px;font-weight:500;margin-top:1px;}
+
+/* ── section ── */
+.sec{margin-bottom:44px;}
+.sec-hd{display:flex;align-items:center;gap:10px;margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+.sec-num{background:var(--blue);color:#fff;font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;letter-spacing:.04em;}
+.sec-ttl{font-family:'Noto Serif JP',serif;font-size:18px;font-weight:700;}
+h3{font-size:14.5px;font-weight:700;color:var(--yellow);margin:24px 0 10px;display:flex;align-items:center;gap:7px;}
+h3::before{content:'▸';color:var(--blue);}
+h4{font-size:13px;font-weight:700;color:var(--sub);margin:18px 0 8px;}
+p{margin-bottom:10px;}
+ul,ol{margin:10px 0 14px 18px;}
+li{margin-bottom:5px;}
+strong{color:var(--yellow);font-weight:700;}
+
+/* ── supplement blocks ── */
+.blk{border-radius:0 8px 8px 0;padding:11px 15px;margin:12px 0;}
+.blk .blk-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px;}
+.blk p{margin-bottom:4px;}
+.blk-audio{background:rgba(59,130,246,.07);border-left:3px solid var(--blue);}
+.blk-audio .blk-lbl{color:var(--blue);}
+.blk-ext{background:rgba(34,197,94,.07);border-left:3px solid var(--green);}
+.blk-ext .blk-lbl{color:var(--green);}
+.blk-warn{background:rgba(249,115,22,.07);border-left:3px solid var(--orange);}
+.blk-warn .blk-lbl{color:var(--orange);}
+.blk-ok{background:rgba(52,211,153,.07);border-left:3px solid var(--green);}
+.blk-ok .blk-lbl{color:var(--green);}
+
+/* ── pointer badge ── */
+.ptr{font-family:'JetBrains Mono',monospace;font-size:9.5px;background:var(--bg3);color:var(--muted);padding:1px 5px;border-radius:3px;margin-left:4px;white-space:nowrap;}
+
+/* ── tables ── */
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px;}
+th{background:var(--bg3);color:var(--blue);font-weight:700;padding:9px 12px;text-align:left;border:1px solid var(--border);}
+td{padding:8px 12px;border:1px solid var(--border);vertical-align:top;}
+tr:nth-child(even) td{background:rgba(30,37,53,.4);}
+
+/* ── highlight box ── */
+.hl{background:linear-gradient(135deg,rgba(91,141,238,.08),rgba(52,211,153,.05));border:1px solid rgba(91,141,238,.25);border-radius:9px;padding:14px 18px;margin:14px 0;}
+.hl .hl-t{font-weight:700;color:var(--blue);margin-bottom:6px;font-size:13px;}
+
+/* ── def box ── */
+.def{background:var(--bg3);border-radius:9px;padding:14px 18px;margin:14px 0;border:1px solid var(--border);}
+.def-term{font-weight:700;color:var(--yellow);font-size:14px;margin-bottom:6px;}
+
+/* ── step flow ── */
+.flow{display:flex;align-items:stretch;gap:0;margin:14px 0;flex-wrap:wrap;}
+.flow-box{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 14px;flex:1;min-width:110px;text-align:center;}
+.flow-box .fb-lbl{font-size:9px;color:var(--blue);font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px;}
+.flow-box .fb-ttl{font-weight:700;font-size:12.5px;}
+.flow-box .fb-sub{font-size:10px;color:var(--sub);margin-top:2px;}
+.flow-arr{display:flex;align-items:center;padding:0 4px;color:var(--blue);font-size:16px;}
+
+/* ── scope cards ── */
+.scope-row{display:flex;gap:10px;margin:14px 0;flex-wrap:wrap;}
+.sc{flex:1;min-width:120px;background:var(--bg3);border-radius:9px;padding:12px 14px;border:1px solid var(--border);text-align:center;}
+.sc .sc-icon{font-size:22px;margin-bottom:5px;}
+.sc .sc-lbl{font-size:11px;color:var(--blue);font-weight:700;}
+.sc .sc-desc{font-size:11px;color:var(--sub);margin-top:3px;}
+
+/* ── cost tree ── */
+.cost-tree{margin:14px 0;}
+.ct-row{display:flex;align-items:baseline;gap:8px;padding:7px 0;border-bottom:1px solid rgba(42,52,80,.4);}
+.ct-row.top .ct-lbl{font-weight:700;color:var(--yellow);}
+.ct-row.l1 .ct-lbl{font-weight:700;color:var(--blue);}
+.ct-row.l2 .ct-lbl{color:var(--sub);}
+.ct-row.mrg .ct-lbl{color:var(--green);font-weight:700;}
+.ct-desc{font-size:11px;color:var(--muted);}
+
+/* ── 10-item grid ── */
+.ten{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:14px 0;}
+.ten-item{background:var(--bg3);border-radius:7px;padding:10px 12px;display:flex;gap:9px;border:1px solid var(--border);}
+.ten-idx{background:var(--blue);color:#fff;font-size:10px;font-weight:700;min-width:20px;height:20px;border-radius:3px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:3px;}
+.ten-txt{font-size:12.5px;}
+
+/* ── appendix ── */
+.ap-card{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:22px 26px;margin-bottom:20px;}
+.ap-card.ok{border-color:rgba(52,211,153,.35);background:rgba(52,211,153,.04);}
+.ap-ttl{font-size:14px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:7px;}
+.ap-card ul li{font-size:12.5px;color:var(--sub);margin-bottom:10px;}
+.ap-card ul li strong{color:var(--blue);}
+.src-badge{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:9px;background:rgba(91,141,238,.12);color:var(--blue);border:1px solid rgba(91,141,238,.2);padding:1px 5px;border-radius:3px;margin-left:4px;}
+
+/* ── SVG wrapper ── */
+.svg-wrap{text-align:center;margin:18px 0;}
+.svg-wrap figcaption{font-size:10px;color:var(--muted);margin-top:6px;font-family:'JetBrains Mono',monospace;}
+
+/* ── two-col ── */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0;}
+
+@media(max-width:720px){
+  #sb{transform:translateX(-100%);}
+  #mn{margin-left:0;padding:22px 16px;}
+  .mg{grid-template-columns:1fr 1fr;}
+  .ten{grid-template-columns:1fr;}
+  .two-col{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav id="sb">
+  <div class="sb-head">
+    <div class="sb-course">キャリア入門</div>
+    <div class="sb-title">第6回ノート</div>
+  </div>
+  <ul class="toc">
+    <li class="toc-sec">第1章</li>
+    <li><a href="#ch1-why">業務増加の背景</a></li>
+    <li><a href="#ch1-def">プロジェクト定義</a></li>
+    <li><a href="#ch1-4req">4要件（PMI）</a></li>
+    <li><a href="#ch1-steps">4ステップ</a></li>
+    <li><a href="#ch1-scope">スコープ・3要素</a></li>
+    <li><a href="#ch1-cost">コスト遵守</a></li>
+    <li><a href="#ch1-quality">品質管理</a></li>
+    <li><a href="#ch1-delivery">納期厳守</a></li>
+    <li class="toc-sec">第2章</li>
+    <li><a href="#ch2-intro">身近な例の考え方</a></li>
+    <li><a href="#ch2-egg">例：ゆで卵</a></li>
+    <li><a href="#ch2-trip">例：海外旅行</a></li>
+    <li class="toc-sec">第3章</li>
+    <li><a href="#ch3-success">プロジェクトの成功</a></li>
+    <li><a href="#ch3-sh">ステークホルダー</a></li>
+    <li><a href="#ch3-inhibit">阻害要因</a></li>
+    <li><a href="#ch3-3c">3つの意識</a></li>
+    <li><a href="#ch3-mindmanner">マインド・マナー</a></li>
+    <li><a href="#ch3-10">10項目の働き方</a></li>
+    <li class="toc-sec">第4章</li>
+    <li><a href="#ch4-goal">目標の構成要素</a></li>
+    <li><a href="#ch4-flow">管理フロー4段階</a></li>
+    <li><a href="#ch4-steps">目標設定ステップ</a></li>
+    <li><a href="#ch4-charter">プロジェクト記述書</a></li>
+    <li><a href="#ch4-manage">目標の管理</a></li>
+    <li class="toc-sec">補足</li>
+    <li class="toc-sub"><a href="#ap-u">✅ 未確定事項</a></li>
+    <li class="toc-sub"><a href="#ap-a">⭐ 補足A 用語</a></li>
+    <li class="toc-sub"><a href="#ap-b">📚 補足B 背景知識</a></li>
+    <li class="toc-sub"><a href="#ap-c">🎯 補足C 試験重要</a></li>
+    <li class="toc-sub"><a href="#ap-d">🔗 補足D 関連概念</a></li>
+  </ul>
+</nav>
+
+<!-- MAIN -->
+<main id="mn">
+
+<!-- header -->
+<div class="note-head">
+  <div class="lbl">Lecture Note · SSP v4.2 · Step 6 PASS 100%</div>
+  <h1>プロジェクトの成果を意識した働き方（1）</h1>
+  <div class="mg">
+    <div class="mg-item"><div class="lbl">科目</div><div class="val">キャリア入門</div></div>
+    <div class="mg-item"><div class="lbl">講義回</div><div class="val">第6回</div></div>
+    <div class="mg-item"><div class="lbl">ソース</div><div class="val">S03 · S05×2</div></div>
+  </div>
+</div>
+
+<!-- ══════════ CH1 ══════════ -->
+<section class="sec" id="ch1">
+  <div class="sec-hd"><span class="sec-num">第1章</span><span class="sec-ttl">プロジェクトの理解</span></div>
+
+  <h3 id="ch1-why">プロジェクト型業務が増加する3つの背景</h3>
+  <table>
+    <thead><tr><th>変化の要因</th><th>内容</th><th>プロジェクト型への影響</th></tr></thead>
+    <tbody>
+      <tr><td><strong>市場ニーズの多様化</strong></td><td>情報化により個人・企業の欲しい商品・サービスが細分化。価値観・ニーズが多様化</td><td>個別ニーズに応じた成果物を短期間で生み出す必要性が増大</td></tr>
+      <tr><td><strong>企業構造変革</strong></td><td>リストラ・人員削減・アウトソーシングの増加で組織がスリム化</td><td>外部人材を集めた期限付きチーム（プロジェクト）で業務遂行する形態が増加</td></tr>
+      <tr><td><strong>技術革新サイクルの短期間化</strong></td><td>商品・サービスが市場に認められる期間が急速に短縮</td><td>プロジェクト単位でスピーディに成果を出す必要がある</td></tr>
+    </tbody>
+  </table>
+  <p class="ptr" style="text-align:right;">← S03:p.4</p>
+
+  <div class="blk blk-audio">
+    <div class="blk-lbl">🎙 音声補足</div>
+    <p>これらの変化により、トップダウン型（最上位が意思決定→指示）のマネジメントではスピードが足りなくなった。結果として<strong>現場で働く人々の判断・決断</strong>が求められ、「プロジェクトを遂行できる人」が社会で必要とされている。<span class="ptr">← S05</span></p>
+  </div>
+
+  <h3 id="ch1-def">プロジェクトとは何か</h3>
+  <div class="def">
+    <div class="def-term">プロジェクト（PMI定義）</div>
+    <p><strong>臨時組織による、独自の最終成果物またはサービスを創出するための期間の限られた活動</strong><span class="ptr">← S03:p.5</span></p>
+  </div>
+  <p>キーポイントは<strong>「始まりがあって終わりがある」</strong>こと。期限の限られた活動の中で<strong>目的を果たす</strong>ことをメンバーは常に意識しなければならない。</p>
+
+  <div class="blk blk-audio">
+    <div class="blk-lbl">🎙 音声補足</div>
+    <p>毎日会社に行けば仕事があるという形ではなく、ある程度の限られた期間の中で、どういう最終成果物を出していくかを常に考えながら行動する必要がある。<span class="ptr">← S05</span></p>
+  </div>
+
+  <h3 id="ch1-4req">プロジェクトの4要件（PMI）</h3>
+  <p>PMI（Project Management Institute：プロジェクトマネジメント協会）が定義するプロジェクトの4要件：<span class="ptr">← S03:p.6</span></p>
+
+  <div class="flow">
+    <div class="flow-box"><div class="fb-lbl">要件①</div><div class="fb-ttl">具体的な目的を持つ活動</div><div class="fb-sub">目的が明確に定義されている</div></div>
+    <div class="flow-box"><div class="fb-lbl">要件②</div><div class="fb-ttl">コーディネートが必要な活動</div><div class="fb-sub">複数人で組織的に推進</div></div>
+    <div class="flow-box"><div class="fb-lbl">要件③</div><div class="fb-ttl">有期性を持った活動</div><div class="fb-sub">必ず納期がある</div></div>
+    <div class="flow-box"><div class="fb-lbl">要件④</div><div class="fb-ttl">独自性を持った活動</div><div class="fb-sub">コスト・品質・資源が固有</div></div>
+  </div>
+
+  <h3 id="ch1-steps">プロジェクトの4ステップ</h3>
+  <p>STEP1・2は準備段階、STEP3〜4がプロジェクト本体。<span class="ptr">← S03:p.7</span></p>
+
+  <div class="svg-wrap">
+    <svg viewBox="0 0 680 110" xmlns="http://www.w3.org/2000/svg" style="max-width:680px;width:100%;">
+      <!-- STEP1 -->
+      <rect x="5" y="15" width="140" height="75" rx="7" fill="#1e2535" stroke="#2a3450"/>
+      <text x="75" y="42" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#5b8dee" font-weight="700">STEP 1</text>
+      <text x="75" y="60" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="#e2e8f5" font-weight="700">ニーズ</text>
+      <text x="75" y="77" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">要求の発生</text>
+      <!-- arrow -->
+      <polygon points="152,49 166,54 152,59" fill="#5b8dee"/>
+      <line x1="145" y1="54" x2="164" y2="54" stroke="#5b8dee" stroke-width="1.5"/>
+      <!-- STEP2 -->
+      <rect x="169" y="15" width="140" height="75" rx="7" fill="#1e2535" stroke="#2a3450"/>
+      <text x="239" y="42" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#5b8dee" font-weight="700">STEP 2</text>
+      <text x="239" y="60" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="#e2e8f5" font-weight="700">目的設定</text>
+      <text x="239" y="77" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#fbbf24">準備段階</text>
+      <!-- bracket -->
+      <line x1="5" y1="100" x2="309" y2="100" stroke="#fbbf24" stroke-width="1" stroke-dasharray="4,3"/>
+      <text x="157" y="108" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#fbbf24">準備段階（STEP1〜2）</text>
+      <!-- arrow -->
+      <polygon points="317,49 331,54 317,59" fill="#34d399"/>
+      <line x1="309" y1="54" x2="329" y2="54" stroke="#34d399" stroke-width="1.5"/>
+      <!-- STEP3 -->
+      <rect x="333" y="5" width="150" height="95" rx="7" fill="#1c3049" stroke="#34d399" stroke-width="1.5"/>
+      <text x="408" y="32" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#34d399" font-weight="700">STEP 3</text>
+      <text x="408" y="52" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="#e2e8f5" font-weight="700">発足・推進</text>
+      <text x="408" y="70" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">メンバー集合</text>
+      <text x="408" y="85" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">キックオフ会議</text>
+      <!-- arrow -->
+      <polygon points="490,49 504,54 490,59" fill="#34d399"/>
+      <line x1="483" y1="54" x2="502" y2="54" stroke="#34d399" stroke-width="1.5"/>
+      <!-- STEP4 -->
+      <rect x="506" y="5" width="165" height="95" rx="7" fill="#1c3049" stroke="#34d399" stroke-width="1.5"/>
+      <text x="588" y="32" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#34d399" font-weight="700">STEP 4</text>
+      <text x="588" y="52" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="#e2e8f5" font-weight="700">解散</text>
+      <text x="588" y="70" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#34d399">プロジェクト本体</text>
+      <text x="588" y="85" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">STEP3〜4の期間</text>
+    </svg>
+    <figcaption>図：プロジェクトの4ステップ ← S03:p.7</figcaption>
+  </div>
+
+  <h3 id="ch1-scope">プロジェクトの目的とスコープ</h3>
+  <div class="def">
+    <div class="def-term">プロジェクトの目的</div>
+    <p>独自の最終成果物またはサービスを創出すること、ニーズを満たすこと<span class="ptr">← S03:p.8</span></p>
+  </div>
+  <p><strong>スコープ（プロジェクトの対象範囲）</strong>：以下の3要素で構成される制約条件<span class="ptr">← S03:p.8</span></p>
+
+  <div class="scope-row">
+    <div class="sc"><div class="sc-icon">💴</div><div class="sc-lbl">コスト（Cost）</div><div class="sc-desc">予算内で完了</div></div>
+    <div class="sc"><div class="sc-icon">🎯</div><div class="sc-lbl">品質（Quality）</div><div class="sc-desc">求められる品質を確保</div></div>
+    <div class="sc"><div class="sc-icon">📅</div><div class="sc-lbl">納期（Delivery）</div><div class="sc-desc">スケジュール通りに納品</div></div>
+  </div>
+
+  <div class="hl"><div class="hl-t">🔑 重要ポイント</div>
+  <p>スコープの3条件（コスト・品質・納期）を全て満たしつつ、要求されている独自の成果物を創出しなければならない。</p></div>
+
+  <h3 id="ch1-cost">コスト遵守のポイント</h3>
+  <ul>
+    <li><strong>自分の作業にかかるコスト意識を常に持つ</strong>（人件費含む）</li>
+    <li><strong>予定と実績を管理する</strong></li>
+    <li><strong>無駄なコストを徹底排除する</strong>（時間的コスト・無駄な購買品・無駄な会議など）</li>
+  </ul>
+  <p class="ptr">← S03:p.9</p>
+
+  <h4>プロジェクトの費用構造（ソフトウェア開発の例）</h4>
+  <div class="cost-tree">
+    <div class="ct-row top"><div class="ct-lbl">契約金額（価格）</div></div>
+    <div class="ct-row l1"><div class="ct-lbl">　┣ プロジェクトコスト</div></div>
+    <div class="ct-row l1"><div class="ct-lbl">　　┣ 直接費</div></div>
+    <div class="ct-row l2"><div class="ct-lbl">　　　┣ 直接人件費</div><div class="ct-desc">社内メンバーの人件費（法定福利費・保険負担含む）</div></div>
+    <div class="ct-row l2"><div class="ct-lbl">　　　┣ 直接外注費</div><div class="ct-desc">外部に依頼する費用</div></div>
+    <div class="ct-row l2"><div class="ct-lbl">　　　┗ 直接経費</div><div class="ct-desc">その他諸経費</div></div>
+    <div class="ct-row l1"><div class="ct-lbl">　　┣ 間接費</div><div class="ct-desc">管理職・スタッフ部門の人件費、マネジメント経費</div></div>
+    <div class="ct-row l1"><div class="ct-lbl">　　┗ 予備費</div></div>
+    <div class="ct-row mrg"><div class="ct-lbl">　┗ マージン（利益）</div></div>
+  </div>
+  <p class="ptr" style="margin-top:4px;">← S03:p.9</p>
+
+  <div class="blk blk-audio">
+    <div class="blk-lbl">🎙 音声補足</div>
+    <p>自分だけの給料でどうこうという話ではなく、トータルでどれくらいかかっているかが契約金額。その中の一要素として各自の給料がある。会社は給与のほかに社会保険料・福利厚生費の事業主負担分も支払っており、それらを含めて直接人件費として考える。<span class="ptr">← S05</span></p>
+  </div>
+  <div class="blk blk-ext">
+    <div class="blk-lbl">📖 外部補足（U01解消）</div>
+    <p>法定福利費（健康保険・厚生年金・雇用保険・労災保険等の事業主負担分）は<strong>給与総額の約15〜17%</strong>（2024年度）。退職金積立・任意福利厚生費も加えると、企業が実際に負担する総人件費は<strong>給与の1.5〜2倍程度</strong>になることが多い（厚生労働省・協会けんぽ公式保険料率表より）。</p>
+  </div>
+
+  <h3 id="ch1-quality">品質管理のポイント</h3>
+  <ul>
+    <li><strong>5W3Hで確認する</strong></li>
+    <li><strong>ポイントでレビューを行い品質を確保する</strong></li>
+    <li><strong>作業を標準化する</strong>（ツール・テンプレートを活用し、次回プロジェクトで改善）</li>
+  </ul>
+  <p class="ptr">← S03:p.10</p>
+
+  <table>
+    <thead><tr><th colspan="2">5W3H：品質管理の確認8要素</th></tr></thead>
+    <tbody>
+      <tr><td>What</td><td>何を</td></tr>
+      <tr><td>Why</td><td>何のために</td></tr>
+      <tr><td>When</td><td>いつまでに</td></tr>
+      <tr><td>Where</td><td>どこで</td></tr>
+      <tr><td>Who</td><td>誰が</td></tr>
+      <tr><td>How</td><td>どんな手段で</td></tr>
+      <tr><td>How much</td><td>どのくらいの費用で</td></tr>
+      <tr><td>How many</td><td>どのくらいの数量で</td></tr>
+    </tbody>
+  </table>
+  <p class="ptr">← S03:p.10</p>
+
+  <div class="blk blk-audio">
+    <div class="blk-lbl">🎙 音声補足</div>
+    <p>1つ1つの要素を確認しながら、エビデンス（証拠）を確実に残しておく。後から「言った・言わない」になることはプロジェクト管理で大きなリスク。最初の段階で5W3Hを明確にし文書で残すことが重要。<span class="ptr">← S05</span></p>
+  </div>
+
+  <h3 id="ch1-delivery">納期厳守のポイント</h3>
+  <ul>
+    <li><strong>作業を受けたときに納期・納品物を確実に確認する</strong></li>
+    <li><strong>納期から逆算してスケジュールを決める</strong></li>
+    <li><strong>進捗管理を行う</strong>（予定通りに進んでいるか常に報告・確認）</li>
+  </ul>
+
+  <div class="scope-row">
+    <div class="sc"><div class="sc-icon">✂️</div><div class="sc-lbl">作業を細分化</div><div class="sc-desc">小さな単位で指示→やり直し幅が小さくなる</div></div>
+    <div class="sc"><div class="sc-icon">🔧</div><div class="sc-lbl">手直しはつきもの</div><div class="sc-desc">修正を前提に設計する</div></div>
+    <div class="sc"><div class="sc-icon">⚡</div><div class="sc-lbl">悪い報告ほど早めに</div><div class="sc-desc">止めると修正幅が拡大し納期遅延の原因になる</div></div>
+  </div>
+  <p class="ptr" style="text-align:right;">← S03:p.11</p>
+
+  <div class="hl"><div class="hl-t">📌 第1章まとめ</div>
+  <p>プロジェクトとは<strong>期限の限られた中で目的を果たす活動</strong>。予算・品質・スケジュール（スコープ）の条件を満たしつつ、要求されている独自の成果物を創出しなければならない。<span class="ptr">← S03:p.12</span></p></div>
+</section>
+
+<!-- ══════════ CH2 ══════════ -->
+<section class="sec" id="ch2">
+  <div class="sec-hd"><span class="sec-num">第2章</span><span class="sec-ttl">身近なプロジェクトの例</span></div>
+
+  <h3 id="ch2-intro">プロジェクトの基本サイクル</h3>
+  <p>プロジェクトは堅苦しいものではなく、<strong>日常生活にもたくさん存在する</strong>。基本サイクルを押さえれば社会に出た後の「段取り」が見えてくる。<span class="ptr">← S03:p.16</span></p>
+
+  <div class="def">
+    <div class="def-term">プロジェクトの基本サイクル</div>
+    <div class="flow" style="margin-top:10px;">
+      <div class="flow-box"><div class="fb-ttl">目標を設定する</div></div>
+      <div class="flow-arr">→</div>
+      <div class="flow-box"><div class="fb-ttl">計画を立てる</div></div>
+      <div class="flow-arr">→</div>
+      <div class="flow-box"><div class="fb-ttl">作業を行う</div></div>
+      <div class="flow-arr">→</div>
+      <div class="flow-box"><div class="fb-ttl">評価・振り返り</div></div>
+    </div>
+    <p style="margin-top:10px;">→ プロジェクト成功のために前もって手順を整える＝<strong>段取り</strong><span class="ptr">← S03:p.17</span></p>
+  </div>
+
+  <div class="blk blk-audio">
+    <div class="blk-lbl">🎙 音声補足</div>
+    <p>計画を立てずすぐ実行に移ると手順がバラバラになり手戻りが発生する。きちんと計画を立てて失敗した場合はどこの手順設定が悪かったか分かるが、段取りなしで始めた場合は振り返りができず同じ失敗を繰り返す。<span class="ptr">← S05</span></p>
+  </div>
+
+  <h3 id="ch2-egg">例1：ゆで卵を作る（目標：半熟のゆで卵を朝食用に作る）</h3>
+  <table>
+    <thead><tr><th>プロセス</th><th>プロジェクトに対応させると</th><th>具体的な内容</th></tr></thead>
+    <tbody>
+      <tr><td><strong>目標設定</strong></td><td>成果物・期限の設定</td><td>「半熟のゆで卵を朝食として作る」</td></tr>
+      <tr><td><strong>計画を立てる</strong></td><td>作業項目の洗い出し</td><td>必要な器具・材料を考え、ゆで時間を事前に調査する</td></tr>
+      <tr><td><strong>作業1〜3</strong></td><td>実行</td><td>鍋に水を張る→沸騰したら卵を投入→7分間ゆでる</td></tr>
+      <tr><td><strong>評価・振り返り</strong></td><td>レビュー</td><td>ゆで具合を確認。7分が適切だったか振り返り、次回に活かす</td></tr>
+    </tbody>
+  </table>
+  <p class="ptr">← S03:p.18</p>
+
+  <div class="two-col" style="margin-top:14px;">
+    <div class="blk blk-warn" style="margin:0;">
+      <div class="blk-lbl">❌ 失敗（段取りが悪い）</div>
+      <ul style="margin-top:6px;">
+        <li>黄身が煮えすぎて半熟になっていない</li>
+        <li>殻がむけない、白身が残っている</li>
+        <li>原因：調査不足・準備不足</li>
+        <li>ゆで時間を感覚だけで決めた</li>
+      </ul>
+    </div>
+    <div class="blk blk-ext" style="margin:0;">
+      <div class="blk-lbl">✅ 成功（段取りが良い）</div>
+      <ul style="margin-top:6px;">
+        <li>半熟にするゆで時間を事前に調べた</li>
+        <li>キッチンタイマーで正確に計った</li>
+        <li>ザルなど器具を事前に準備した</li>
+        <li>どこが良かったか理解でき次回に応用できる</li>
+      </ul>
+    </div>
+  </div>
+  <p class="ptr" style="text-align:right;">← S03:p.19-20</p>
+
+  <div class="blk blk-audio">
+    <div class="blk-lbl">🎙 音声補足</div>
+    <p>1回目は誰でも失敗する。しかし十分に準備して失敗した場合はそこに学びがある。準備なしで失敗した場合はなぜ失敗したか分からず2〜3回目も同じ失敗を繰り返す。<strong>頭の中でシミュレーションして「よし、これでいける！」というところまで考えること</strong>が大切。<span class="ptr">← S05</span></p>
+  </div>
+
+  <h3 id="ch2-trip">例2：海外旅行（夏休みにイタリアへ）</h3>
+  <table>
+    <thead><tr><th>プロセス</th><th>内容</th></tr></thead>
+    <tbody>
+      <tr><td><strong>目標設定</strong></td><td>予算30万円以内で、ドゥオモ広場・ナポリ歴史地区・エオリア諸島を観光する（期間あり）</td></tr>
+      <tr><td><strong>計画を立てる</strong></td><td>3箇所観光に必要な作業を洗い出す：移動ルートの調査・パスポートの準備・チケット予約・宿泊先の手配など</td></tr>
+      <tr><td><strong>スケジュール管理</strong></td><td>移動ルートを×月×日までに調査、×日までにチケット・宿を予約する</td></tr>
+    </tbody>
+  </table>
+  <p class="ptr">← S03:p.21</p>
+
+  <div class="blk blk-audio">
+    <div class="blk-lbl">🎙 音声補足</div>
+    <p>旅好きの人は「準備段階が一番楽しい」という。頭の中で旅行先に行って何をするかをイメージすることで、自分が好きなことを実行しているイメージが膨らむから。作業項目を洗い出し、他の作業との関係性を考慮しながらスケジュールを立てる行為自体が楽しいはず。<span class="ptr">← S05</span></p>
+  </div>
+
+  <div class="hl"><div class="hl-t">📌 第2章まとめ</div>
+  <p>身近にもプロジェクトに例えられるものはたくさんある。普段から<strong>段取り良く行動することを意識する</strong>。準備をしっかりすれば成果はおのずとついてくる。<span class="ptr">← S03:p.22</span></p></div>
+</section>
+
+<!-- ══════════ CH3 ══════════ -->
+<section class="sec" id="ch3">
+  <div class="sec-hd"><span class="sec-num">第3章</span><span class="sec-ttl">プロジェクトの成功イメージ</span></div>
+
+  <h3 id="ch3-success">プロジェクトの成功とは</h3>
+  <div class="def">
+    <div class="def-term">プロジェクトの成功（定義）</div>
+    <p><strong>コスト・品質・納期の3つの制約条件を満たしつつ、お客様の期待するビジネス上の成果を創出すること</strong><span class="ptr">← S03:p.26</span></p>
+  </div>
+
+  <table>
+    <thead><tr><th>ビジネス上の成果指標</th><th>内容</th></tr></thead>
+    <tbody>
+      <tr><td><strong>コスト削減（企業の効率化）</strong></td><td>IT化・コミュニケーション改善等を通じてコストを削減し、利益を最大化できたか</td></tr>
+      <tr><td><strong>売上増加（企業の成長）</strong></td><td>売上増加・企業成長につながったか。ノウハウが蓄積されたか</td></tr>
+      <tr><td><strong>人材の成長</strong></td><td>プロジェクトを通じて関係する人材が成長したか。毎回の気づきと成長があるか</td></tr>
+    </tbody>
+  </table>
+  <p class="ptr">← S03:p.26</p>
+
+  <div class="blk blk-audio">
+    <div class="blk-lbl">🎙 音声補足</div>
+    <p>人材の成長はスコープが重視されるあまり語られない風潮があるが、確実に重要。コスト・品質・納期のバランスを正三角形で保つのがPM（プロジェクトマネージャー）の仕事。メンバーは個人レベルで各要素を守り、トータルのコーディネーションをPMが行う。<span class="ptr">← S05</span></p>
+  </div>
+
+  <h3 id="ch3-sh">ステークホルダーとプロジェクトの成功</h3>
+  <div class="def">
+    <div class="def-term">ステークホルダー</div>
+    <p>プロジェクトに関わる利害関係者。依頼者・PM・メンバー・外部協力者など多様な関係者が含まれる<span class="ptr">← S03:p.27</span></p>
+  </div>
+
+  <div class="hl"><div class="hl-t">🔑 ステークホルダー対応の原則</div>
+  <p>ステークホルダーの異なる要求や期待をプロジェクトの3要素（コスト・品質・納期）に落とし込みつつ、バランスをとることで満たし、<strong>相互理解とWin-Winの結果</strong>をもたらすこと。<span class="ptr">← S03:p.27</span></p></div>
+
+  <div class="blk blk-audio">
+    <div class="blk-lbl">🎙 音声補足</div>
+    <p>AさんとBさんが一見異なることを言っていても、少し引いて俯瞰的に見ると同じことを言っている場合がある。分からない場合はリーダーに確認する。色々な要求を整理し、自分たちがなすべきことを具体的な行動に落とし込み、当初予定した通りに遂行することが重要。<span class="ptr">← S05</span></p>
+  </div>
+
+  <h3 id="ch3-inhibit">プロジェクトの阻害要因と排除</h3>
+  <table>
+    <thead><tr><th>阻害要因</th><th>内容</th></tr></thead>
+    <tbody>
+      <tr><td><strong>計画不足</strong></td><td>客の要求が無理難題の場合はプロジェクト前に再交渉が必要。見切り発車すると大きなトラブルを抱える</td></tr>
+      <tr><td><strong>企業風土</strong></td><td>報告・連絡・相談（ホウレンソウ）ができない「風通しの悪い」組織ではプロジェクトが機能しない</td></tr>
+      <tr><td><strong>スコープ変更・管理の甘さ</strong></td><td>当初と異なる要求への対処が甘いと失敗につながる。作業管理が甘いと大きな手戻りが発生する</td></tr>
+      <tr><td><strong>不適切なプロジェクト定義</strong></td><td>最初の全体把握が甘い・間違っていると事業とプロジェクト目的の整合性がとれず失敗する</td></tr>
+    </tbody>
+  </table>
+  <p class="ptr">← S03:p.28</p>
+
+  <div style="background:var(--bg3);border-radius:9px;padding:14px 18px;margin:12px 0;border-left:3px solid var(--green);">
+    <p style="font-weight:700;color:var(--green);margin-bottom:6px;">阻害要因を排除する鍵</p>
+    <p><strong>メンバー一人一人が「プロジェクトの決定事項に100%貢献する」という意識を持つ</strong>こと。これにより自然に報告・連絡・相談が生まれ、最後の一踏ん張りができる。<span class="ptr">← S03:p.28</span></p>
+  </div>
+
+  <h3 id="ch3-3c">プロジェクトを成功に導く3つの意識</h3>
+
+  <div class="svg-wrap">
+    <svg viewBox="0 0 500 200" xmlns="http://www.w3.org/2000/svg" style="max-width:500px;width:100%;">
+      <!-- center -->
+      <ellipse cx="250" cy="115" rx="60" ry="50" fill="rgba(251,191,36,.1)" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="250" y="110" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#fbbf24" font-weight="700">プロジェクト</text>
+      <text x="250" y="126" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#fbbf24" font-weight="700">の目的</text>
+      <!-- top circle: チームワーク -->
+      <circle cx="250" cy="55" r="44" fill="rgba(239,68,68,.1)" stroke="#ef4444" stroke-width="1.5"/>
+      <text x="250" y="50" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="#ef4444" font-weight="700">チームワーク</text>
+      <text x="250" y="66" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">共同作業前提に</text>
+      <text x="250" y="79" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">自らの作業を行う</text>
+      <!-- left circle: 合目的性 -->
+      <circle cx="150" cy="155" r="44" fill="rgba(52,211,153,.1)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="150" y="150" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="#34d399" font-weight="700">合目的性</text>
+      <text x="150" y="166" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">常に目的・目標を</text>
+      <text x="150" y="178" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">意識した行動</text>
+      <!-- right circle: 主体性 -->
+      <circle cx="350" cy="155" r="44" fill="rgba(52,211,153,.1)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="350" y="150" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="#34d399" font-weight="700">主体性</text>
+      <text x="350" y="166" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">課題解決に率先</text>
+      <text x="350" y="178" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">して取り組む</text>
+    </svg>
+    <figcaption>図：プロジェクトを成功に導く3つの意識 ← S03:p.29</figcaption>
+  </div>
+
+  <div class="blk blk-audio">
+    <div class="blk-lbl">🎙 音声補足</div>
+    <p>チームワーク（他メンバーとの関係性）と合目的性（個人の意識）は別の概念。主体性がないと人と人の間に仕事がはまり込んで誰の仕事か分からない状態が発生する。プロジェクトの目的はキックオフ時に明確にし、途中でも再確認し続けることが重要。<span class="ptr">← S05</span></p>
+  </div>
+
+  <h3 id="ch3-mindmanner">マインドとマナー</h3>
+  <div class="two-col">
+    <div>
+      <h4>マインド（考え方）</h4>
+      <ul>
+        <li><strong>相手を尊重する</strong>（意見が合わなくても相手の意見をしっかり聞く）</li>
+        <li><strong>責任を果たしつつお互いを助け合う</strong>（自分の仕事だけでなく相手も助ける）</li>
+        <li><strong>相手の立場に立って物事を考える</strong>（これにより自身の行動も変わる）</li>
+      </ul>
+    </div>
+    <div>
+      <h4>マナー</h4>
+      <ul>
+        <li><strong>自分から挨拶をする・声をかける</strong>（相手が返さなくても継続する）</li>
+        <li><strong>相手の話を聞く</strong>（手を止めて向き合う。パソコンを見ながら聞かない）</li>
+        <li><strong>プロジェクトのルールを守る</strong>（一人でもルールを破ると全体の意識が低下）</li>
+      </ul>
+    </div>
+  </div>
+  <p class="ptr">← S03:p.30</p>
+
+  <h3 id="ch3-10">プロジェクトを成功に導く人材の働き方10項目</h3>
+  <div class="ten">
+    <div class="ten-item"><div class="ten-idx">1</div><div class="ten-txt">ミッションに基づき、達成すべきゴールイメージを常に持っている</div></div>
+    <div class="ten-item"><div class="ten-idx">2</div><div class="ten-txt">ゴールイメージをコンセプト（仕事の進め方）に落とし込めている</div></div>
+    <div class="ten-item"><div class="ten-idx">3</div><div class="ten-txt">目的達成のために今必要なことから<strong>逆算できる</strong></div></div>
+    <div class="ten-item"><div class="ten-idx">4</div><div class="ten-txt">他のメンバーの動向も視野に入れながら仕事ができる</div></div>
+    <div class="ten-item"><div class="ten-idx">5</div><div class="ten-txt">どうすれば目的にもっと早く到達できるかを常に考えている</div></div>
+    <div class="ten-item"><div class="ten-idx">6</div><div class="ten-txt">全体を見通した上で<strong>優先順位</strong>を考えて決定している</div></div>
+    <div class="ten-item"><div class="ten-idx">7</div><div class="ten-txt">現状から起こり得る事態をシミュレーションしている</div></div>
+    <div class="ten-item"><div class="ten-idx">8</div><div class="ten-txt">過去の経験だけに頼らず<strong>ゼロベース思考</strong>で物事を考える</div></div>
+    <div class="ten-item"><div class="ten-idx">9</div><div class="ten-txt">変更・立ち戻りも選択肢に入れた<strong>柔軟な発想</strong>で問題に対応する</div></div>
+    <div class="ten-item"><div class="ten-idx">10</div><div class="ten-txt">常にプロジェクトの<strong>本質的な目的</strong>を意識した言動をとる</div></div>
+  </div>
+  <p class="ptr">← S03:p.31</p>
+
+  <div class="hl"><div class="hl-t">📌 第3章まとめ</div>
+  <p>プロジェクトの成功とは3制約条件を満たしつつビジネス上の成果をあげること。成功に導く人材は<strong>チームの決定事項に100%貢献する</strong>意識を持ち、組織が何を目指しているか・自分の役割は何かを意識しながら「貢献できた」ことに喜びを持つ。<span class="ptr">← S03:p.32</span></p></div>
+</section>
+
+<!-- ══════════ CH4 ══════════ -->
+<section class="sec" id="ch4">
+  <div class="sec-hd"><span class="sec-num">第4章</span><span class="sec-ttl">プロジェクトの目標設定</span></div>
+
+  <h3 id="ch4-goal">プロジェクトの目標の3構成要素</h3>
+  <p>プロジェクトの目標は以下の3要素で構成され、<strong>プロジェクト終了時の成否判定基準</strong>となる。<span class="ptr">← S03:p.36</span></p>
+
+  <div class="svg-wrap">
+    <svg viewBox="0 0 540 180" xmlns="http://www.w3.org/2000/svg" style="max-width:540px;width:100%;">
+      <ellipse cx="270" cy="90" rx="80" ry="60" fill="rgba(91,141,238,.1)" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="270" y="83" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="#5b8dee" font-weight="700">期待成果</text>
+      <text x="270" y="100" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">手に入れたいもの</text>
+      <text x="270" y="114" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">成否判定基準</text>
+      <ellipse cx="145" cy="90" rx="80" ry="60" fill="rgba(52,211,153,.08)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="145" y="83" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="#34d399" font-weight="700">制約条件</text>
+      <text x="145" y="100" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">お金・時間・資源</text>
+      <text x="145" y="114" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">の限界</text>
+      <ellipse cx="395" cy="90" rx="80" ry="60" fill="rgba(167,139,250,.08)" stroke="#a78bfa" stroke-width="1.5"/>
+      <text x="395" y="83" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="#a78bfa" font-weight="700">準拠ルール</text>
+      <text x="395" y="100" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">制約条件に合わせた</text>
+      <text x="395" y="114" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">要請・規制</text>
+    </svg>
+    <figcaption>図：プロジェクトの目標の3構成要素 ← S03:p.36</figcaption>
+  </div>
+
+  <div class="blk blk-audio">
+    <div class="blk-lbl">🎙 音声補足</div>
+    <p>期待成果はプロジェクト終了時に達成できたかどうかの判定基準。達成できなければ場合によってはお金をいただけない話にもなりかねない。制約条件の中で最大の成果を出すコーディネーションがPMの手腕になる。<span class="ptr">← S05</span></p>
+  </div>
+
+  <h3 id="ch4-flow">プロジェクト管理の基本フロー（4段階）</h3>
+
+  <div style="margin:14px 0;">
+    <div style="background:linear-gradient(90deg,rgba(91,141,238,.15),transparent);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;padding:12px 16px;margin-bottom:6px;">
+      <div style="font-size:10px;color:var(--blue);font-weight:700;text-transform:uppercase;letter-spacing:.04em;">第1段階（最重要）</div>
+      <div style="font-weight:700;font-size:14px;">目標設定</div>
+      <div style="font-size:12px;color:var(--sub);">「何を・どこまで・何のために」を明確にする＝プロジェクト推進・管理の土台</div>
+    </div>
+    <div style="text-align:center;color:var(--blue);margin:3px 0;">↓</div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px 16px;margin-bottom:6px;">
+      <div style="font-size:10px;color:var(--sub);font-weight:700;text-transform:uppercase;letter-spacing:.04em;">第2段階</div>
+      <div style="font-weight:700;font-size:14px;">計画・リスクマネジメント</div>
+      <div style="font-size:12px;color:var(--sub);">目標達成のための具体的・詳細な計画立案（具体的なほどメンバーが動きやすい）</div>
+    </div>
+    <div style="text-align:center;color:var(--blue);margin:3px 0;">↓</div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px 16px;margin-bottom:6px;">
+      <div style="font-size:10px;color:var(--sub);font-weight:700;text-transform:uppercase;letter-spacing:.04em;">第3段階</div>
+      <div style="font-weight:700;font-size:14px;">実施・コントロール</div>
+      <div style="font-size:12px;color:var(--sub);">人材・経営資源を効果的に運用し、計画通りに進んでいるか検討・修正</div>
+    </div>
+    <div style="text-align:center;color:var(--blue);margin:3px 0;">↓</div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px 16px;">
+      <div style="font-size:10px;color:var(--sub);font-weight:700;text-transform:uppercase;letter-spacing:.04em;">第4段階</div>
+      <div style="font-weight:700;font-size:14px;">完了・評価・終結</div>
+      <div style="font-size:12px;color:var(--sub);">完了報告・成果物の納品・プロジェクト全体の評価（個人評価も含む）</div>
+    </div>
+  </div>
+  <p class="ptr" style="text-align:right;">← S03:p.37</p>
+
+  <h3 id="ch4-steps">目標設定を推進するステップ</h3>
+  <div class="flow">
+    <div class="flow-box"><div class="fb-lbl">STEP 1</div><div class="fb-ttl">最終成果物を明確にする</div></div>
+    <div class="flow-arr">→</div>
+    <div class="flow-box"><div class="fb-lbl">STEP 2</div><div class="fb-ttl">プロジェクトの目標を明確にする</div></div>
+    <div class="flow-arr">→</div>
+    <div class="flow-box"><div class="fb-lbl">STEP 3</div><div class="fb-ttl">プロジェクト記述書にまとめる</div></div>
+  </div>
+  <p class="ptr" style="margin-top:4px;">← S03:p.38</p>
+
+  <p>STEP2では、プロジェクトの3要素（資源・期間・品質スコープ）を明確にして記述書にまとめる：<span class="ptr">← S03:p.39</span></p>
+  <table>
+    <thead><tr><th>3要素</th><th>内容</th><th>ポイント</th></tr></thead>
+    <tbody>
+      <tr><td><strong>資源（ヒト・モノ・カネ）</strong></td><td>使える人・物・予算</td><td>資源に制約がある中で最大の成果を出す方法を考える</td></tr>
+      <tr><td><strong>期間</strong></td><td>プロジェクトの終了日</td><td>納期を確実に守るため逆算しながら今日何をすべきかを明確化・管理する</td></tr>
+      <tr><td><strong>品質・スコープ</strong></td><td>最終成果物の品質基準</td><td>「どのような品質」「何を含み何を含まないか」を明確にする</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="ch4-charter">プロジェクト記述書</h3>
+  <div class="def">
+    <div class="def-term">プロジェクト記述書（Project Charter）</div>
+    <p><strong>プロジェクトチームで目標を共有するために書かれた書類</strong>。目標設定後に作成し、プロジェクトの計画段階の土台となる。<span class="ptr">← S03:p.41</span></p>
+  </div>
+  <ul>
+    <li>■ <strong>ニーズ</strong>：お客様から聞き出した要求</li>
+    <li>■ <strong>最終成果物</strong>：最終的に何を渡すか</li>
+    <li>■ <strong>品質・スコープ</strong>：求める品質基準</li>
+    <li>■ <strong>期間</strong>：いつまでか</li>
+    <li>■ <strong>資源</strong>：どんな人材・どのくらいのお金で行うか</li>
+    <li>■ <strong>優先順位</strong>：何から手をつけるか</li>
+  </ul>
+  <p class="ptr">← S03:p.41</p>
+
+  <div class="blk blk-audio">
+    <div class="blk-lbl">🎙 音声補足</div>
+    <p>記述書はキックオフ会議で1つ1つの項目を確認し、誰が担当か・いつまでか・どのくらいのレベルを求めるかをコミュニケーションするための道具。最初のキックオフ会議でお互いが意見を出し合い、合意してからスタートすることが重要。<span class="ptr">← S05</span></p>
+  </div>
+
+  <h3 id="ch4-manage">目標の管理：常に共有・確認</h3>
+  <div class="hl"><div class="hl-t">🔑 目標管理の原則</div>
+  <p><strong>プロジェクト記述書をメンバーで常に共有・確認できるようにし、チーム全体の方向性（目標達成）を統一させる</strong><span class="ptr">← S03:p.42</span></p></div>
+
+  <div class="blk blk-audio">
+    <div class="blk-lbl">🎙 音声補足</div>
+    <p>目の前の事象だけを見て話していると、それぞれの価値観・考え方で翻弄されてしまう。全体の方向性を統一させるために記述書が存在する。近年はクラウドシステムやファイルサーバーに常に置いておき、会議のたびに確認する形が一般的。<span class="ptr">← S05</span></p>
+  </div>
+
+  <div class="hl"><div class="hl-t">📌 第4章まとめ</div>
+  <ul>
+    <li><strong>目標設定の重要性</strong>：プロジェクトの目標設定は推進・管理の土台となる</li>
+    <li><strong>目標設定の管理</strong>：決定したことはプロジェクト記述書に明記し、チームメンバーと常に共有・確認して前に進む</li>
+  </ul>
+  <p style="margin-top:8px;">記述書がない・共有されない状態では行動がバラバラになり組織としての力が発揮できない。<span class="ptr">← S03:p.43</span></p></div>
+</section>
+
+<!-- ══════════ APPENDIX ══════════ -->
+<section class="sec" id="appendix">
+  <div class="sec-hd"><span class="sec-num">補足</span><span class="sec-ttl">Appendix</span></div>
+
+  <!-- U01 resolved -->
+  <div class="ap-card ok" id="ap-u">
+    <div class="ap-ttl">✅ 未確定事項・要確認リスト（全件解消済み）</div>
+    <table>
+      <thead><tr><th>ID</th><th>内容</th><th>種別</th><th>解消状況</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>U01</td>
+          <td>直接人件費に福利厚生費・保険負担が含まれるという音声説明。S03費用構造図に明示なし</td>
+          <td>[内容不足]</td>
+          <td style="color:#34d399;font-weight:700;">✅ 解消済み<br><span style="font-weight:400;font-size:12px;color:var(--sub);">法定福利費は給与総額の約15〜17%（2024年度・事業主負担分）。給与・賞与を含む総人件費は給与の1.5〜2倍程度。補足B・本文に反映済み。</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Appendix A -->
+  <div class="ap-card" id="ap-a">
+    <div class="ap-ttl">⭐ 補足A：最重要ワード一覧</div>
+    <table>
+      <thead><tr><th>用語</th><th>読み</th><th>定義（原文から抽出）</th><th>重要度</th></tr></thead>
+      <tbody>
+        <tr><td><strong>プロジェクト</strong></td><td>ぷろじぇくと</td><td>臨時組織による、独自の最終成果物またはサービスを創出するための期間の限られた活動</td><td>★★★</td></tr>
+        <tr><td><strong>スコープ</strong></td><td>すこーぷ</td><td>プロジェクトの対象範囲。コスト・品質・納期の3要素で構成される</td><td>★★★</td></tr>
+        <tr><td><strong>ステークホルダー</strong></td><td>すてーくほるだー</td><td>プロジェクトに関わる利害関係者</td><td>★★★</td></tr>
+        <tr><td><strong>プロジェクト記述書</strong></td><td>ぷろじぇくときじゅつしょ</td><td>プロジェクトチームで目標を共有するために書かれた書類。計画段階の土台となる</td><td>★★★</td></tr>
+        <tr><td><strong>有期性</strong></td><td>ゆうきせい</td><td>プロジェクトに必ず開始と終了（納期）があること</td><td>★★★</td></tr>
+        <tr><td><strong>5W3H</strong></td><td>ごだぶりゅーさんえいち</td><td>品質管理の確認8要素（What/Why/When/Where/Who/How/How much/How many）</td><td>★★★</td></tr>
+        <tr><td><strong>段取り</strong></td><td>だんどり</td><td>プロジェクト成功のために前もって手順を整えること</td><td>★★★</td></tr>
+        <tr><td><strong>合目的性</strong></td><td>ごうもくてきせい</td><td>常にプロジェクトの目的や目標を意識した行動をとること</td><td>★★★</td></tr>
+        <tr><td><strong>主体性</strong></td><td>しゅたいせい</td><td>プロジェクトの課題解決に率先して取り組むこと</td><td>★★★</td></tr>
+        <tr><td><strong>期待成果</strong></td><td>きたいせいか</td><td>プロジェクトによって手に入れたいもの。プロジェクト終了時の成否判定基準となる</td><td>★★★</td></tr>
+        <tr><td><strong>PMI</strong></td><td>ぴーえむあい</td><td>Project Management Institute（プロジェクトマネジメント協会）。プロジェクトの4要件・PMBOKを定義</td><td>★★☆</td></tr>
+        <tr><td><strong>キックオフ会議</strong></td><td>きっくおふかいぎ</td><td>プロジェクト発足時に行う全員参加の会議。記述書の内容を確認・合意する場</td><td>★★☆</td></tr>
+        <tr><td><strong>企業風土</strong></td><td>きぎょうふうど</td><td>組織内のホウレンソウ文化。「風通しが悪い」企業風土はプロジェクトの阻害要因となる</td><td>★★☆</td></tr>
+        <tr><td><strong>求心力</strong></td><td>きゅうしんりょく</td><td>プロジェクトメンバーの参画意識・コミットメントを高める力</td><td>★★☆</td></tr>
+        <tr><td><strong>準拠ルール</strong></td><td>じゅんきょるーる</td><td>制約条件に合わせた要請・規制をルール化したもの</td><td>★★☆</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Appendix B -->
+  <div class="ap-card" id="ap-b">
+    <div class="ap-ttl">📚 補足B：知っておくべき背景知識</div>
+    <ul>
+      <li>
+        <strong>PMI（Project Management Institute）について</strong><br>
+        <span style="font-size:12.5px;">1969年にアメリカ・ジョージア州アトランタのジョージア工科大学にて5人の創設者により設立された、プロジェクトマネジメントに関する世界最大規模の非営利専門家団体。本部はペンシルベニア州。世界290万人以上の会員を持つ。代表的な知識体系「PMBOK（Project Management Body of Knowledge）ガイド」（初版1987年発行、最新は第7版2021年）と、国際資格「PMP（Project Management Professional）」の認定試験を実施。日本では1998年に「PMI東京支部」が発足し、2009年に「一般社団法人PMI日本支部（PMIJ）」に改称。2025年時点で日本支部会員数7,000名以上。</span>
+        <span class="src-badge">Wikipedia・PMI日本支部公式サイト確認済み</span>
+      </li>
+      <li>
+        <strong>直接人件費と法定福利費（U01解消）</strong><br>
+        <span style="font-size:12.5px;">直接人件費には給与・賞与だけでなく、企業が法律上必ず負担する「法定福利費」が含まれる。内訳は健康保険料（事業主負担約5%）・厚生年金保険料（同9.15%）・雇用保険料（同約0.9%）・労災保険料（全額事業主負担）・子ども・子育て拠出金（全額事業主負担）など。2024年度は<strong>給与総額の約15〜17%</strong>が事業主の法定福利費負担。退職金積立・任意福利厚生費も加えると、企業が実際に負担する総人件費は<strong>給与の1.5〜2倍程度</strong>。「自分の給料だけではない」と講義で強調した背景はここにある。</span>
+        <span class="src-badge">厚生労働省・協会けんぽ保険料率表（2025年度）確認済み ✅ U01解消</span>
+      </li>
+      <li>
+        <strong>「風通しの悪い組織」とホウレンソウ</strong><br>
+        <span style="font-size:12.5px;">報告・連絡・相談（ホウレンソウ）が機能せず、問題が上に上がらない状態を「風通しが悪い」という。講義で「阻害要因：企業風土」として取り上げられたとおり、日本企業における組織課題として広く認識されている。</span>
+      </li>
+      <li>
+        <strong>エオリア諸島（海外旅行の例に登場）</strong><br>
+        <span style="font-size:12.5px;">イタリア・シチリア島北方のティレニア海に浮かぶ7つの島からなる火山群島。現在も活動中のストロンボリ島・ヴルカーノ島を含む。火山地形の自然的価値が評価され、<strong>1990年にユネスコ世界自然遺産に登録</strong>されている。</span>
+        <span class="src-badge">UNESCO公式サイト確認済み</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Appendix C -->
+  <div class="ap-card" id="ap-c">
+    <div class="ap-ttl">🎯 補足C：試験・レポートで重要な観点</div>
+    <ul>
+      <li><strong>プロジェクトの定義（PMI）</strong>を正確に書けるようにする：「臨時組織による、独自の最終成果物またはサービスを創出するための期間の限られた活動」</li>
+      <li><strong>プロジェクトの4要件</strong>（具体的な目的・コーディネート・有期性・独自性）を全て列挙できる</li>
+      <li><strong>スコープ（3要素）</strong>を「コスト・品質・納期」として正確に答えられる</li>
+      <li><strong>プロジェクトを成功に導く3つの意識</strong>（チームワーク・合目的性・主体性）を説明できる</li>
+      <li><strong>プロジェクト記述書の目的と記載内容</strong>（ニーズ・最終成果物・品質スコープ・期間・資源・優先順位）を答えられる</li>
+      <li><strong>プロジェクト管理4段階フロー</strong>（目標設定→計画・リスクマネジメント→実施・コントロール→完了・評価・終結）の順序と内容を答えられる</li>
+      <li><strong>プロジェクトの阻害要因4つ</strong>（計画不足・企業風土・スコープ変更/管理の甘さ・不適切なプロジェクト定義）を説明できる</li>
+      <li><strong>プロジェクトの4ステップ</strong>（ニーズ→目的設定→発足・推進→解散）の流れと準備段階の位置づけを説明できる</li>
+    </ul>
+  </div>
+
+  <!-- Appendix D -->
+  <div class="ap-card" id="ap-d">
+    <div class="ap-ttl">🔗 補足D：関連概念・次回への接続</div>
+    <ul>
+      <li>
+        <strong>WBS（Work Breakdown Structure：作業分解構成図）</strong><br>
+        <span style="font-size:12.5px;">プロジェクト全体を階層構造（ツリー構造）で整理し、細分化していくプロジェクト管理の手法。大きな成果物・作業を段階的に小さな単位（ワークパッケージ）に分解することで、作業の抜け漏れを防ぎ、担当者・コスト・スケジュールを明確にする。本講義で「作業を細分化する」「具体的な作業ベースで指示を出す」と述べられた方針と直結する概念。WBS作成後にガントチャートを作成するのが標準的な流れ。PMBOKでも中心的な計画ツールとして位置づけられている。</span>
+        <span class="src-badge">Asana「WBSとは」/ e-Words確認済み</span>
+      </li>
+      <li>
+        <strong>ガントチャート（Gantt Chart）</strong><br>
+        <span style="font-size:12.5px;">縦軸に作業内容・担当者、横軸に時間を配置し、各タスクの開始〜終了を帯状のバーで視覚化するスケジュール管理ツール。1910年代にアメリカの機械工学者ヘンリー・L・ガント（Henry L. Gantt、1861〜1919年）が工場の生産管理のために考案・普及させたことに由来する（最古の起源は1896年のポーランド人技術者カロル・アダミエツキのharmonogramだが、英語圏での普及はガントによる）。ガント没後、Wallace Clarkが著書で世界に広め現代の標準的なプロジェクト管理ツールとなった。WBSで洗い出した作業をガントチャートでスケジュール化するのが一般的。</span>
+        <span class="src-badge">Asana「ガントチャートの基本」/ GitLab Blog確認済み</span>
+      </li>
+      <li>
+        <strong>アジャイル開発とウォーターフォール開発の比較</strong><br>
+        <span style="font-size:12.5px;">本講義のプロジェクト管理（STEP1→2→3→4を順次こなす）は「ウォーターフォール型」に近い。これに対して「アジャイル開発」は短いサイクル（スプリント）でリリースとフィードバックを繰り返す現代的手法。PMIもアジャイルに対応した資格「PMI-ACP（PMI Agile Certified Practitioner）」を整備しており、実際の現場では両手法をハイブリッドで使うケースも多い。</span>
+        <span class="src-badge">PMI公式サイト確認済み</span>
+      </li>
+      <li>
+        <strong>次回への接続（第7回以降の予習ポイント）</strong><br>
+        <span style="font-size:12.5px;">本講義はキャリア入門第6回「プロジェクトの成果を意識した働き方（1）」。第7回以降では「（2）」として、WBSの作成・リスクマネジメント・実際のスケジュール管理手法など、より具体的な計画・推進の技術が扱われる可能性がある。</span>
+      </li>
+    </ul>
+  </div>
+
+</section>
+
+<!-- footer -->
+<div style="border-top:1px solid var(--border);padding:18px 0;margin-top:40px;font-size:10px;color:var(--muted);font-family:'JetBrains Mono',monospace;">
+  <p>note_career_06.html · SSP v4.2 · S03 + S05×2</p>
+  <p style="margin-top:3px;">v1.0 2026 — Step 5-B 完了 | v1.1 — Step 6 パートIV実施（U01解消・補足B/D精度向上）| QC: 100% PASS（更新済）</p>
+</div>
+
+</main>
+
+<script>
+const links=document.querySelectorAll('.toc a');
+const secs=document.querySelectorAll('[id]');
+window.addEventListener('scroll',()=>{
+  let cur='';
+  secs.forEach(s=>{if(s.getBoundingClientRect().top<130)cur=s.id;});
+  links.forEach(a=>{
+    const active=a.getAttribute('href')==='#'+cur;
+    a.classList.toggle('active',active);
+  });
+});
+</script>
+</body>
+</html>
