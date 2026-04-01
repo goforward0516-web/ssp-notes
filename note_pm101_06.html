@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PM101 第6回 クリティカルパスの見つけ方と対応</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f1117;
+  --bg2: #161b27;
+  --bg3: #1e2535;
+  --bg4: #252d3f;
+  --border: #2d3a52;
+  --text: #e2e8f5;
+  --text-sub: #8a99b8;
+  --text-dim: #5a6a88;
+  --accent: #5b8dee;
+  --accent2: #34d399;
+  --accent3: #fbbf24;
+  --accent4: #f472b6;
+  --audio: #3b82f6;
+  --audio-bg: rgba(59,130,246,0.08);
+  --ext: #10b981;
+  --ext-bg: rgba(16,185,129,0.08);
+  --uncert: #f59e0b;
+  --uncert-bg: rgba(245,158,11,0.08);
+  --infer: #8b5cf6;
+  --infer-bg: rgba(139,92,246,0.08);
+  --sidebar-w: 260px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 14px;
+  line-height: 1.8;
+  display: flex;
+}
+
+/* ── Sidebar ── */
+#sidebar {
+  width: var(--sidebar-w);
+  min-height: 100vh;
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  flex-shrink: 0;
+  padding: 0 0 32px;
+}
+#sidebar-header {
+  padding: 20px 16px 14px;
+  border-bottom: 1px solid var(--border);
+}
+#sidebar-header .course { font-size: 10px; color: var(--text-dim); letter-spacing: 0.1em; text-transform: uppercase; }
+#sidebar-header .title { font-size: 12px; color: var(--accent); font-weight: 700; margin-top: 4px; line-height: 1.4; }
+#sidebar-header .meta { font-size: 10px; color: var(--text-sub); margin-top: 6px; font-family: 'JetBrains Mono', monospace; }
+
+#toc { padding: 12px 0; }
+.toc-group { margin-bottom: 2px; }
+.toc-group-label {
+  font-size: 9px; letter-spacing: 0.12em; color: var(--text-dim);
+  padding: 8px 16px 4px; text-transform: uppercase; font-weight: 700;
+}
+.toc-link {
+  display: block; padding: 5px 16px 5px 20px;
+  font-size: 12px; color: var(--text-sub); text-decoration: none;
+  border-left: 2px solid transparent; transition: all 0.15s;
+  line-height: 1.4;
+}
+.toc-link:hover { color: var(--text); border-left-color: var(--accent); background: rgba(91,141,238,0.07); }
+.toc-link.sub { padding-left: 30px; font-size: 11px; color: var(--text-dim); }
+.toc-link.sub:hover { color: var(--text-sub); }
+
+/* ── Main ── */
+#main {
+  flex: 1;
+  max-width: 900px;
+  padding: 40px 48px 80px;
+  min-width: 0;
+}
+
+/* ── Header ── */
+.page-header {
+  margin-bottom: 40px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+}
+.page-header .badge {
+  display: inline-block; font-size: 10px; font-family: 'JetBrains Mono', monospace;
+  color: var(--accent); border: 1px solid var(--accent); border-radius: 4px;
+  padding: 2px 8px; letter-spacing: 0.08em; margin-bottom: 12px;
+}
+.page-header h1 { font-size: 26px; font-weight: 700; line-height: 1.35; color: var(--text); }
+.page-header .meta-row {
+  display: flex; gap: 20px; margin-top: 10px; flex-wrap: wrap;
+}
+.page-header .meta-item { font-size: 11px; color: var(--text-sub); font-family: 'JetBrains Mono', monospace; }
+.page-header .meta-item span { color: var(--text-dim); }
+
+/* ── Section ── */
+.chapter {
+  margin-bottom: 48px;
+  background: var(--bg2);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.chapter-header {
+  background: var(--bg3);
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 12px;
+}
+.chapter-num {
+  font-size: 10px; font-family: 'JetBrains Mono', monospace;
+  color: var(--accent); background: rgba(91,141,238,0.12);
+  padding: 2px 8px; border-radius: 4px; font-weight: 600;
+}
+.chapter-header h2 { font-size: 17px; font-weight: 700; color: var(--text); }
+.chapter-body { padding: 24px; }
+
+.section { margin-bottom: 28px; }
+.section:last-child { margin-bottom: 0; }
+.section h3 {
+  font-size: 14px; font-weight: 700; color: var(--accent);
+  margin-bottom: 12px; padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+}
+.section h4 {
+  font-size: 13px; font-weight: 700; color: var(--text);
+  margin-bottom: 8px; margin-top: 14px;
+}
+
+p { margin-bottom: 10px; color: var(--text); }
+ul, ol { padding-left: 20px; margin-bottom: 10px; }
+li { margin-bottom: 4px; color: var(--text); }
+strong { color: var(--accent3); font-weight: 700; }
+
+/* ── Pointer badge ── */
+.ptr {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: var(--text-dim);
+  background: var(--bg4); border: 1px solid var(--border);
+  border-radius: 3px; padding: 1px 5px; margin-left: 6px;
+  vertical-align: middle; white-space: nowrap;
+}
+
+/* ── Blocks ── */
+.audio-block {
+  border-left: 3px solid var(--audio);
+  background: var(--audio-bg);
+  border-radius: 0 8px 8px 0;
+  padding: 12px 16px; margin: 12px 0;
+}
+.audio-block .block-label {
+  font-size: 10px; font-family: 'JetBrains Mono', monospace;
+  color: var(--audio); font-weight: 600; margin-bottom: 6px; letter-spacing: 0.05em;
+}
+
+.ext-block {
+  border-left: 3px solid var(--ext);
+  background: var(--ext-bg);
+  border-radius: 0 8px 8px 0;
+  padding: 12px 16px; margin: 12px 0;
+}
+.ext-block .block-label { font-size: 10px; font-family: 'JetBrains Mono', monospace; color: var(--ext); font-weight: 600; margin-bottom: 6px; }
+
+.uncert-block {
+  border-left: 3px solid var(--uncert);
+  background: var(--uncert-bg);
+  border-radius: 0 8px 8px 0;
+  padding: 12px 16px; margin: 12px 0;
+}
+
+.def-block {
+  border: 1px solid var(--accent);
+  border-radius: 8px; padding: 14px 18px; margin: 14px 0;
+  background: rgba(91,141,238,0.06);
+}
+.def-block .def-label { font-size: 10px; color: var(--accent); font-family: 'JetBrains Mono', monospace; margin-bottom: 6px; font-weight: 600; }
+.def-block p { margin-bottom: 0; }
+
+/* ── Table ── */
+table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 13px; }
+th {
+  background: var(--bg4); color: var(--text-sub); font-weight: 600;
+  padding: 8px 12px; text-align: left; border: 1px solid var(--border);
+  font-size: 11px; letter-spacing: 0.05em;
+}
+td { padding: 8px 12px; border: 1px solid var(--border); vertical-align: top; }
+tr:hover td { background: rgba(91,141,238,0.04); }
+
+/* ── SVG wrapper ── */
+.fig-wrap { margin: 16px 0; }
+.fig-wrap figcaption { font-size: 11px; color: var(--text-dim); margin-top: 6px; font-family: 'JetBrains Mono', monospace; }
+svg text { font-family: 'Noto Sans JP', sans-serif; }
+
+/* ── Appendix ── */
+.appendix { margin-top: 48px; }
+.appendix-card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 12px; margin-bottom: 20px; overflow: hidden;
+}
+.appendix-card-header {
+  padding: 14px 20px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+}
+.appendix-card-header .emoji { font-size: 16px; }
+.appendix-card-header h2 { font-size: 14px; font-weight: 700; color: var(--text); }
+.appendix-card-body { padding: 20px; }
+
+.uncert-card { border-color: var(--uncert); }
+.uncert-card .appendix-card-header { background: var(--uncert-bg); }
+
+/* ── Step list ── */
+.step-list { counter-reset: step; list-style: none; padding: 0; }
+.step-list li {
+  counter-increment: step;
+  display: flex; gap: 12px; margin-bottom: 10px; align-items: flex-start;
+}
+.step-list li::before {
+  content: counter(step);
+  min-width: 24px; height: 24px;
+  background: var(--accent); color: white;
+  border-radius: 50%; font-size: 11px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* ── Callout ── */
+.callout {
+  background: var(--bg4); border-radius: 8px;
+  padding: 14px 18px; margin: 14px 0;
+  border-left: 3px solid var(--accent3);
+}
+.callout .callout-title { font-size: 11px; color: var(--accent3); font-weight: 700; margin-bottom: 6px; font-family: 'JetBrains Mono', monospace; }
+
+/* ── Task card ── */
+.task-node {
+  display: inline-grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto auto auto;
+  border: 1px solid var(--accent); border-radius: 6px;
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  overflow: hidden; min-width: 80px;
+}
+.task-node .tn-top { grid-column: 1; background: rgba(91,141,238,0.15); padding: 2px 5px; border-right: 1px solid var(--accent); color: var(--accent3); }
+.task-node .tn-top2 { grid-column: 2; background: rgba(91,141,238,0.15); padding: 2px 5px; color: var(--accent3); }
+.task-node .tn-mid { grid-column: 1 / 3; padding: 3px 5px; background: var(--bg3); text-align: center; color: var(--text); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); font-size: 9px; }
+.task-node .tn-dur { grid-column: 1; padding: 2px 5px; border-right: 1px solid var(--border); color: var(--text-sub); }
+.task-node .tn-float { grid-column: 2; padding: 2px 5px; color: var(--accent2); }
+.task-node .tn-bot { grid-column: 1; padding: 2px 5px; border-right: 1px solid var(--border); color: var(--accent4); }
+.task-node .tn-bot2 { grid-column: 2; padding: 2px 5px; color: var(--accent4); }
+
+.critical { border-color: #ef4444 !important; }
+.critical .tn-top, .critical .tn-top2 { background: rgba(239,68,68,0.15); }
+
+/* ── Flow diagram ── */
+.flow-wrap { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 12px 0; }
+.flow-arrow { color: var(--accent); font-size: 18px; }
+.flow-box {
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 6px; padding: 6px 12px;
+  font-size: 12px; text-align: center; min-width: 80px;
+}
+.flow-box.cp { border-color: #ef4444; color: #ef4444; background: rgba(239,68,68,0.08); }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg2); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- ===== SIDEBAR ===== -->
+<nav id="sidebar">
+  <div id="sidebar-header">
+    <div class="course">プロジェクトマネジメント入門</div>
+    <div class="title">第6回 クリティカルパスの見つけ方と対応</div>
+    <div class="meta">担当: 勝 眞一郎</div>
+  </div>
+  <div id="toc">
+    <div class="toc-group">
+      <div class="toc-group-label">概要</div>
+      <a class="toc-link" href="#prev">◀ 前回の振り返り（第5回）</a>
+    </div>
+    <div class="toc-group">
+      <div class="toc-group-label">第1章</div>
+      <a class="toc-link" href="#ch1">クリティカルパスとは</a>
+      <a class="toc-link sub" href="#ch1-def">定義と4つの性質</a>
+      <a class="toc-link sub" href="#ch1-ex">カレーの例</a>
+      <a class="toc-link sub" href="#ch1-critical">Criticalの語義</a>
+    </div>
+    <div class="toc-group">
+      <div class="toc-group-label">第2章</div>
+      <a class="toc-link" href="#ch2">往路分析と復路分析</a>
+      <a class="toc-link sub" href="#ch2-steps">求め方6ステップ</a>
+      <a class="toc-link sub" href="#ch2-wbs">夕食のWBS例</a>
+      <a class="toc-link sub" href="#ch2-forward">往路分析</a>
+      <a class="toc-link sub" href="#ch2-backward">復路分析</a>
+      <a class="toc-link sub" href="#ch2-float">フロート計算</a>
+    </div>
+    <div class="toc-group">
+      <div class="toc-group-label">第3章</div>
+      <a class="toc-link" href="#ch3">クリティカルパス分析</a>
+      <a class="toc-link sub" href="#ch3-which">どの道がCP？</a>
+      <a class="toc-link sub" href="#ch3-float-use">余裕時間の活用</a>
+      <a class="toc-link sub" href="#ch3-use">分析の3つの視点</a>
+      <a class="toc-link sub" href="#ch3-complex">複雑な例</a>
+    </div>
+    <div class="toc-group">
+      <div class="toc-group-label">第4章</div>
+      <a class="toc-link" href="#ch4">期間短縮の試み</a>
+      <a class="toc-link sub" href="#ch4-essence">PMの真髄</a>
+      <a class="toc-link sub" href="#ch4-methods">短縮手法</a>
+      <a class="toc-link sub" href="#ch4-crashing">クラッシング</a>
+      <a class="toc-link sub" href="#ch4-fast">ファスト・トラッキング</a>
+      <a class="toc-link sub" href="#ch4-other">その他の対応</a>
+    </div>
+    <div class="toc-group">
+      <div class="toc-group-label">補足</div>
+      <a class="toc-link" href="#app-a">⭐ 最重要ワード</a>
+      <a class="toc-link" href="#app-b">📚 背景知識</a>
+      <a class="toc-link" href="#app-c">🎯 試験・レポート</a>
+      <a class="toc-link" href="#app-d">🔗 関連概念</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== MAIN ===== -->
+<main id="main">
+
+<!-- ヘッダー -->
+<div class="page-header">
+  <div class="badge">PM101 · LECTURE 06</div>
+  <h1>クリティカルパスの見つけ方と対応</h1>
+  <div class="meta-row">
+    <span class="meta-item"><span>科目</span> プロジェクトマネジメント入門</span>
+    <span class="meta-item"><span>担当</span> 勝 眞一郎</span>
+    <span class="meta-item"><span>ソース</span> S03 + S05×2</span>
+  </div>
+</div>
+
+<!-- 今回の学習目標 -->
+<div class="chapter" id="goal">
+  <div class="chapter-header">
+    <span class="chapter-num">学習目標</span>
+    <h2>今回習得すること</h2>
+  </div>
+  <div class="chapter-body">
+    <div class="def-block">
+      <div class="def-label">LEARNING GOAL</div>
+      <p>プロジェクトのスケジューリングにおける<strong>クリティカルパスの考え方と発見方法、および対処策</strong>について理解し、説明できる。</p>
+    </div>
+    <p><span class="ptr">← S03:p.2</span></p>
+    <p>本講義の構成：</p>
+    <ul>
+      <li><strong>第1章</strong> クリティカルパスとは（概要）</li>
+      <li><strong>第2章</strong> 往路分析と復路分析（計算手順）</li>
+      <li><strong>第3章</strong> クリティカルパス分析（活用視点）</li>
+      <li><strong>第4章</strong> 期間短縮の試み（実践的対処法）</li>
+    </ul>
+    <p><span class="ptr">← S03:p.3</span></p>
+  </div>
+</div>
+
+<!-- 前回の振り返り -->
+<div class="chapter" id="prev">
+  <div class="chapter-header">
+    <span class="chapter-num">REVIEW</span>
+    <h2>前回の振り返り（第5回 タイムマネジメント）</h2>
+  </div>
+  <div class="chapter-body">
+    <table>
+      <thead><tr><th>章</th><th>トピック</th><th>キーポイント</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>第1章</td>
+          <td>WBSの描き方</td>
+          <td>目標達成のために仕事を詳細分割・定義して<strong>階層構造化</strong>したもの。タスクの抽出にはブレークダウン（上→下）とボトムアップ（下→上）の両面で漏れを検証</td>
+        </tr>
+        <tr>
+          <td>第2章</td>
+          <td>タスクの順序決め</td>
+          <td><strong>スケジュール・ネットワーク図</strong>で順序関係・依存関係を表現。「描いて、貼って、眺めて、直す」→段取りマスター（ダンドリスト）へ</td>
+        </tr>
+        <tr>
+          <td>第3章</td>
+          <td>所要時間の見積り</td>
+          <td>①専門家見積り ②類推見積り ③係数見積り ④三点見積り ⑤ファンクションポイント法。積算見積りに加えてバッファーを取る</td>
+        </tr>
+        <tr>
+          <td>第4章</td>
+          <td>スケジュールの作成と利用</td>
+          <td>課題の遅れは時間が解決しない。①実現可能な計画→実行 ②スケジュールの<strong>見える化</strong>（トヨタ用語：問題の本質を考えられるようデータを提供すること） ③早めの対処</td>
+        </tr>
+      </tbody>
+    </table>
+    <p><span class="ptr">← S03:p.4-8</span></p>
+  </div>
+</div>
+
+<!-- 第1章 -->
+<div class="chapter" id="ch1">
+  <div class="chapter-header">
+    <span class="chapter-num">第1章</span>
+    <h2>クリティカルパスとは</h2>
+  </div>
+  <div class="chapter-body">
+
+    <div class="section" id="ch1-critical">
+      <h3>「Critical」の語義</h3>
+      <table>
+        <thead><tr><th>語源</th><th>意味</th><th>PMでの用例</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>critic（批評）の形容詞</td>
+            <td>批判的な</td>
+            <td><strong>クリティカルシンキング</strong>：経験・感に頼らず客観的・論理的・批判的に行う思考パターン</td>
+          </tr>
+          <tr>
+            <td>crisis（危機）の形容詞</td>
+            <td>危機的な・<strong>極めて重大な</strong></td>
+            <td><strong>クリティカルマス</strong>：普及率が一気に跳ね上がる分岐点（≠キャズム）<br><strong>クリティカルパス</strong>：本講義のトピック</td>
+          </tr>
+        </tbody>
+      </table>
+      <p><span class="ptr">← S03:p.11</span></p>
+      <div class="audio-block">
+        <div class="block-label">🎙 AUDIO SUPPLEMENT</div>
+        <p><strong>クリティカルマスとキャズムの違い：</strong>クリティカルマスは「成功のために必要な最小の量」という概念で、一気に普及が跳ね上がる分岐点。キャズムは「普及過程における困難な段階」。概念は似ているが、クリティカルマスは「量」に着目し、キャズムは「越えるべき困難な段階」に着目する点が異なる。<span class="ptr">← S05</span></p>
+      </div>
+      <div class="ext-block">
+        <div class="block-label">[外部補足] 提唱者・背景知識</div>
+        <p><strong>クリティカルマス</strong>：1962年、社会学者エベレット・M・ロジャーズ（Everett M. Rogers）が著書『イノベーションの普及（Diffusion of Innovations）』で「普及率16%の論理」として提唱。イノベーター（2.5%）＋アーリーアダプター（13.5%）＝計16%の普及に達すると、市場全体への普及が急加速する分岐点。<br>
+        <strong>キャズム</strong>：1991年、ジェフリー・A・ムーア（Geoffrey A. Moore）が著書『Crossing the Chasm（邦題：キャズム）』で提唱。クリティカルマス理論（16%到達で自然普及）に対し、ハイテク製品ではアーリーアダプターとアーリーマジョリティの間に「深く大きな溝（キャズム）」があり、ここを越えなければ失敗するという理論。両理論はイノベーター理論を共通のベースとしながら、普及のメカニズムに関して対立的な見解を持つ。</p>
+      </div>
+    </div>
+
+    <div class="section" id="ch1-def">
+      <h3>クリティカルパスの定義と4つの性質</h3>
+      <div class="def-block">
+        <div class="def-label">定義</div>
+        <p><strong>クリティカルパス</strong>（Critical Path）：プロジェクトにおいて、事実上プロジェクト全体のスケジュールの長さを決定している作業の連なり。<strong>「フロート（余裕時間）が0」の経路</strong>がクリティカルパスとなる。<span class="ptr">← S03:p.12,13,57</span></p>
+      </div>
+
+      <table>
+        <thead><tr><th>#</th><th>性質</th><th>意味</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>①</td>
+            <td><strong>スケジュールの長さを決定</strong></td>
+            <td>この経路が長いと全体が長くなり、短くすれば全体も短くなる</td>
+          </tr>
+          <tr>
+            <td>②</td>
+            <td><strong>遅れが全体に波及</strong></td>
+            <td>クリティカルパス上の作業が遅れると、プロジェクト全体のスケジュールが遅れる</td>
+          </tr>
+          <tr>
+            <td>③</td>
+            <td><strong>円滑な進行が重要</strong></td>
+            <td>ここを集中的に管理することがプロジェクト管理上の最優先事項</td>
+          </tr>
+          <tr>
+            <td>④</td>
+            <td><strong>見直しで全体を短縮可能</strong></td>
+            <td>このパス上のタスクを短縮することで、全体のスケジュールを短縮できる（他タスクとの影響に注意）</td>
+          </tr>
+        </tbody>
+      </table>
+      <p><span class="ptr">← S03:p.13</span></p>
+    </div>
+
+    <div class="section" id="ch1-ex">
+      <h3>身近な例：カレーとサラダの調理</h3>
+      <p>「調理スタート → カレー（2時間）/ サラダ（10分）→ 調理終了」というプロセスで考える。</p>
+      <p><span class="ptr">← S03:p.12</span></p>
+
+      <!-- SVG: カレーとサラダのネットワーク図 -->
+      <div class="fig-wrap">
+        <svg viewBox="0 0 620 200" xmlns="http://www.w3.org/2000/svg" style="width:100%; background:var(--bg3); border-radius:8px; padding:8px;">
+          <!-- スタート -->
+          <rect x="10" y="80" width="80" height="40" rx="20" fill="#252d3f" stroke="#5b8dee" stroke-width="1.5"/>
+          <text x="50" y="104" text-anchor="middle" fill="#e2e8f5" font-size="12">スタート</text>
+          <!-- カレーボックス -->
+          <rect x="140" y="30" width="280" height="40" rx="6" fill="#1e2535" stroke="#ef4444" stroke-width="2"/>
+          <text x="280" y="54" text-anchor="middle" fill="#ef4444" font-size="12" font-weight="bold">カレーを作る（90分）← クリティカルパス</text>
+          <!-- サラダボックス -->
+          <rect x="140" y="130" width="160" height="40" rx="6" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+          <text x="220" y="154" text-anchor="middle" fill="#8a99b8" font-size="12">サラダを作る（15分）</text>
+          <!-- エンド -->
+          <rect x="530" y="80" width="80" height="40" rx="20" fill="#252d3f" stroke="#5b8dee" stroke-width="1.5"/>
+          <text x="570" y="104" text-anchor="middle" fill="#e2e8f5" font-size="12">終了</text>
+          <!-- 矢印 -->
+          <line x1="90" y1="90" x2="138" y2="60" stroke="#8a99b8" stroke-width="1.5" marker-end="url(#arr)"/>
+          <line x1="90" y1="110" x2="138" y2="140" stroke="#8a99b8" stroke-width="1.5" marker-end="url(#arr)"/>
+          <line x1="420" y1="50" x2="528" y2="90" stroke="#ef4444" stroke-width="2" marker-end="url(#arr-r)"/>
+          <line x1="300" y1="150" x2="528" y2="110" stroke="#8a99b8" stroke-width="1.5" marker-end="url(#arr)"/>
+          <defs>
+            <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#8a99b8"/>
+            </marker>
+            <marker id="arr-r" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#ef4444"/>
+            </marker>
+          </defs>
+        </svg>
+        <figcaption>図：カレーとサラダのプロセス ← S03:p.12</figcaption>
+      </div>
+
+      <div class="callout">
+        <div class="callout-title">🎯 期間短縮の目のつけどころ</div>
+        <p>カレーは90分・サラダは15分なので、全体の所要時間を左右するのはカレーのプロセス。サラダを短縮しても全体への影響は小さい。</p>
+        <p><strong>改善例①</strong>：「たまねぎを炒める（30分）」→ たまねぎペーストを使用 → 大幅短縮<span class="ptr">← S03:p.15</span></p>
+        <p><strong>改善例②</strong>：「煮込む（30分）」→ 圧力鍋で10分に短縮 → さらに20分短縮<span class="ptr">← S03:p.16</span></p>
+        <p>⚠️ サラダも同じ人が並行して作るため、段取り・手順のチェックも忘れずに。</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- 第2章 -->
+<div class="chapter" id="ch2">
+  <div class="chapter-header">
+    <span class="chapter-num">第2章</span>
+    <h2>往路分析と復路分析</h2>
+  </div>
+  <div class="chapter-body">
+
+    <div class="section" id="ch2-steps">
+      <h3>クリティカルパスの求め方：6ステップ</h3>
+      <ol class="step-list">
+        <li>プロジェクトの<strong>WBS</strong>（Work Breakdown Structure）を書き出す</li>
+        <li><strong>タスク票</strong>に1タスク1枚で書く（デジタルツール推奨）</li>
+        <li>タスクを<strong>順番に並べる</strong>（依存関係を吟味しながら時間をかけて検証）</li>
+        <li><strong>往路分析</strong>を行う（スタート → エンド）</li>
+        <li><strong>復路分析</strong>を行う（エンド → スタート で逆算）</li>
+        <li><strong>フロート</strong>（余裕時間）の計算を行う</li>
+      </ol>
+      <p><span class="ptr">← S03:p.25</span></p>
+      <div class="audio-block">
+        <div class="block-label">🎙 AUDIO SUPPLEMENT</div>
+        <p>ステップ3「順番に並べる」は単純に見えるが、実際はどの順番で並べるとプロジェクトがうまくいくかという非常に重要で複雑な問題。十分な時間をかけて検証し、その内容を吟味してから「順番に並べた」という状態まで持っていく必要がある。<span class="ptr">← S05</span></p>
+      </div>
+
+      <h4>タスク票の構造</h4>
+      <p>タスク票は縦4段・横2列の形式。最早（さいそう）と最遅（さいち）を管理する。<span class="ptr">← S03:p.27</span></p>
+      <div style="display:flex; justify-content:center; margin:12px 0;">
+        <div class="task-node" style="width:160px;">
+          <div class="tn-top">最早開始</div>
+          <div class="tn-top2">最早終了</div>
+          <div class="tn-mid">WBS番号・内容</div>
+          <div class="tn-dur">所要期間</div>
+          <div class="tn-float">余裕期間</div>
+          <div class="tn-bot">最遅開始</div>
+          <div class="tn-bot2">最遅終了</div>
+        </div>
+      </div>
+      <p style="text-align:center; font-size:11px; color:var(--text-dim);">図：タスク票フォーマット ← S03:p.27</p>
+      <p>初期段階で記入できるのはWBS番号・内容・所要期間のみ。往路・復路分析を経て全てのセルが埋まる。</p>
+    </div>
+
+    <div class="section" id="ch2-wbs">
+      <h3>夕食のWBS例（仮の例）</h3>
+      <table>
+        <thead><tr><th>ID</th><th>タスク</th><th>所要時間</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>カレーを作る（合計）</td><td><strong>90分</strong></td></tr>
+          <tr><td>1.1</td><td>肉と野菜を切る</td><td>10分</td></tr>
+          <tr><td>1.2</td><td>たまねぎを炒める</td><td>30分</td></tr>
+          <tr><td>1.3</td><td>野菜を入れて煮込む</td><td>30分</td></tr>
+          <tr><td>1.4</td><td>カレールーを入れて煮込む</td><td>15分</td></tr>
+          <tr><td>1.5</td><td>盛り付ける</td><td>5分</td></tr>
+          <tr><td>2</td><td>サラダを作る（合計）</td><td><strong>15分</strong></td></tr>
+          <tr><td>2.1</td><td>野菜を洗って切る</td><td>10分</td></tr>
+          <tr><td>2.2</td><td>盛り付ける</td><td>5分</td></tr>
+        </tbody>
+      </table>
+      <p><span class="ptr">← S03:p.26</span></p>
+    </div>
+
+    <div class="section" id="ch2-forward">
+      <h3>往路分析（Forward Pass）</h3>
+      <p><strong>往路分析</strong>：スタートからエンドに向かって、各タスクの<strong>最早開始時間・最早終了時間</strong>を計算する。<span class="ptr">← S03:p.29-36</span></p>
+      <div class="def-block">
+        <div class="def-label">計算ルール</div>
+        <p><strong>最早終了時間</strong> = 最早開始時間 + 所要時間<br>
+        次のタスクの<strong>最早開始時間</strong> = 前タスクの最早終了時間<br>
+        複数の前タスクがある場合 → <strong>最も遅い</strong>最早終了時間を採用（全前タスクが完了してから開始）</p>
+      </div>
+
+      <!-- SVG: 往路分析完成図（カレー＋サラダ） -->
+      <div class="fig-wrap">
+        <svg viewBox="0 0 640 200" xmlns="http://www.w3.org/2000/svg" style="width:100%; background:var(--bg3); border-radius:8px; padding:10px;">
+          <!-- カレーライン -->
+          <!-- 1.1 -->
+          <g transform="translate(10,20)">
+            <rect width="75" height="70" rx="4" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+            <text x="37" y="14" text-anchor="middle" fill="#fbbf24" font-size="10" font-family="JetBrains Mono">0</text>
+            <line x1="37" y1="17" x2="37" y2="17" stroke="#2d3a52" stroke-width="1"/>
+            <text x="57" y="14" text-anchor="middle" fill="#fbbf24" font-size="10" font-family="JetBrains Mono">10</text>
+            <line x1="37" y1="17" x2="37" y2="17"/>
+            <rect x="0" y="17" width="75" height="1" fill="#2d3a52"/>
+            <text x="37" y="32" text-anchor="middle" fill="#e2e8f5" font-size="9">1.1 肉野菜切る</text>
+            <rect x="0" y="38" width="75" height="1" fill="#2d3a52"/>
+            <text x="20" y="52" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="JetBrains Mono">10</text>
+            <line x1="37" y1="38" x2="37" y2="70" stroke="#2d3a52" stroke-width="1"/>
+            <text x="57" y="52" text-anchor="middle" fill="#34d399" font-size="10" font-family="JetBrains Mono">0</text>
+            <rect x="0" y="55" width="75" height="1" fill="#2d3a52"/>
+            <text x="20" y="67" text-anchor="middle" fill="#f472b6" font-size="10" font-family="JetBrains Mono">0</text>
+            <text x="57" y="67" text-anchor="middle" fill="#f472b6" font-size="10" font-family="JetBrains Mono">10</text>
+          </g>
+          <text x="48" y="17" text-anchor="middle" fill="#fbbf24" font-size="10" font-family="JetBrains Mono">0 | 10</text>
+          <!-- 矢印1 -->
+          <line x1="86" y1="55" x2="100" y2="55" stroke="#8a99b8" stroke-width="1.5" marker-end="url(#a1)"/>
+          <defs><marker id="a1" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 z" fill="#8a99b8"/></marker>
+          <marker id="a1r" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 z" fill="#ef4444"/></marker>
+          </defs>
+
+          <!-- ノード群をシンプルな表として表示 -->
+          <text x="320" y="100" text-anchor="middle" fill="#5a6a88" font-size="11">（計算過程は下表を参照）</text>
+        </svg>
+      </div>
+
+      <p>往路分析の結果（カレー＋サラダの例）：</p>
+      <table>
+        <thead><tr><th>タスク</th><th>内容</th><th>所要時間</th><th>最早開始</th><th>最早終了</th></tr></thead>
+        <tbody>
+          <tr><td>1.1</td><td>肉と野菜を切る</td><td>10分</td><td>0</td><td>10</td></tr>
+          <tr><td>1.2</td><td>たまねぎを炒める</td><td>30分</td><td>10</td><td>40</td></tr>
+          <tr><td>1.3</td><td>野菜を入れて煮込む</td><td>30分</td><td>40</td><td>70</td></tr>
+          <tr><td>1.4</td><td>カレールーを入れて煮込む</td><td>15分</td><td>70</td><td>85</td></tr>
+          <tr><td>1.5</td><td>盛り付ける</td><td>5分</td><td>85</td><td><strong>90</strong></td></tr>
+          <tr><td>2.1</td><td>野菜を洗って切る</td><td>10分</td><td>0</td><td>10</td></tr>
+          <tr><td>2.2</td><td>盛り付ける（サラダ）</td><td>5分</td><td>10</td><td><strong>15</strong></td></tr>
+        </tbody>
+      </table>
+      <p>→ 両ルートの最早終了：カレー <strong>90分</strong>、サラダ <strong>15分</strong><span class="ptr">← S03:p.34-36</span></p>
+    </div>
+
+    <div class="section" id="ch2-backward">
+      <h3>復路分析（Backward Pass）</h3>
+      <p><strong>復路分析</strong>：エンドから逆算して、各タスクの<strong>最遅開始時間・最遅終了時間</strong>を計算する。<span class="ptr">← S03:p.37-44</span></p>
+      <div class="def-block">
+        <div class="def-label">計算ルール</div>
+        <p>終了時間（全ルート中の<strong>最も遅い最早終了時間</strong>）を全ルートに設定<br>
+        → カレー90分・サラダ15分 → 両方に <strong>90</strong> を設定<br>
+        <strong>最遅開始時間</strong> = 最遅終了時間 − 所要時間<br>
+        複数の後続タスクがある分岐点 → <strong>最も早い</strong>最遅開始時間を採用</p>
+      </div>
+
+      <p>復路分析の結果：</p>
+      <table>
+        <thead><tr><th>タスク</th><th>内容</th><th>最遅終了</th><th>最遅開始</th></tr></thead>
+        <tbody>
+          <tr><td>1.5</td><td>盛り付け</td><td>90</td><td>85</td></tr>
+          <tr><td>1.4</td><td>カレールー投入・煮込む</td><td>85</td><td>70</td></tr>
+          <tr><td>1.3</td><td>野菜投入・煮込む</td><td>70</td><td>40</td></tr>
+          <tr><td>1.2</td><td>たまねぎを炒める</td><td>40</td><td>10</td></tr>
+          <tr><td>1.1</td><td>肉と野菜を切る</td><td>10</td><td>0</td></tr>
+          <tr><td>2.2</td><td>盛り付け（サラダ）</td><td>90</td><td>85</td></tr>
+          <tr><td>2.1</td><td>野菜を洗って切る</td><td>85</td><td>75</td></tr>
+        </tbody>
+      </table>
+      <p><span class="ptr">← S03:p.37-44</span></p>
+    </div>
+
+    <div class="section" id="ch2-float">
+      <h3>フロート（余裕時間）の計算</h3>
+      <div class="def-block">
+        <div class="def-label">計算式</div>
+        <p><strong>フロート（余裕時間）= 最遅終了時間 − 最早終了時間</strong><span class="ptr">← S03:p.45</span></p>
+      </div>
+
+      <table>
+        <thead><tr><th>タスク</th><th>最遅終了</th><th>最早終了</th><th>フロート</th><th>CP上か</th></tr></thead>
+        <tbody>
+          <tr style="background:rgba(239,68,68,0.06)"><td>1.1〜1.5（カレー全体）</td><td>各値</td><td>各値</td><td><strong style="color:#ef4444">0</strong></td><td>✅ CP</td></tr>
+          <tr><td>2.1（野菜を洗って切る）</td><td>85</td><td>10</td><td><strong style="color:#34d399">75</strong></td><td>—</td></tr>
+          <tr><td>2.2（サラダ盛り付け）</td><td>90</td><td>15</td><td><strong style="color:#34d399">75</strong></td><td>—</td></tr>
+        </tbody>
+      </table>
+      <p><span class="ptr">← S03:p.45-52</span></p>
+      <div class="audio-block">
+        <div class="block-label">🎙 AUDIO SUPPLEMENT</div>
+        <p>サラダのフロートが75分もある。これは「カレーのプロセスさえ管理すれば、サラダは後から始めても間に合う」ことを意味する。ただし「急いで作れば何とかなる」レベルの余裕ではなく、フロートを使い切るような工夫もできる（例：サラダ担当者の投入タイミングを遅らせてコストを下げる）。<span class="ptr">← S05</span></p>
+      </div>
+      <p>→ クリティカルパスはフロートが <strong>0</strong> の経路：<strong>カレールート（1.1→1.2→1.3→1.4→1.5）</strong><span class="ptr">← S03:p.57-58</span></p>
+    </div>
+
+  </div>
+</div>
+
+<!-- 第3章 -->
+<div class="chapter" id="ch3">
+  <div class="chapter-header">
+    <span class="chapter-num">第3章</span>
+    <h2>クリティカルパス分析</h2>
+  </div>
+  <div class="chapter-body">
+
+    <div class="section" id="ch3-which">
+      <h3>クリティカルパスはどの道？</h3>
+      <p><strong>フロートが0の経路を追う</strong>ことでクリティカルパスを特定する。実際の分析では赤色等で目立つよう表示する。<span class="ptr">← S03:p.57-58</span></p>
+      <div class="audio-block">
+        <div class="block-label">🎙 AUDIO SUPPLEMENT</div>
+        <p>短く単純な例（カレー＋サラダ）なら見ただけで直感的にわかる。しかし大規模なシステム開発・建設プロジェクトなど長くて複雑な手順の場合、どのパスが一番重要かはクリティカルパス分析なしでは分からない。そういった状況でこそ威力を発揮する。<span class="ptr">← S05</span></p>
+      </div>
+    </div>
+
+    <div class="section" id="ch3-float-use">
+      <h3>余裕時間（フロート）の活用</h3>
+      <p>フロートがあるということは、以下の選択肢が増えることを意味する：<span class="ptr">← S03:p.59</span></p>
+      <ul>
+        <li><strong>人の投入時期を遅らせる</strong>：その余裕時間分、開始を遅くしてもスケジュール全体に影響しない</li>
+        <li><strong>人を減らして所要時間を延ばす</strong>：人を削減して作業を長くしても、フロートの範囲内であれば問題ない</li>
+      </ul>
+      <div class="audio-block">
+        <div class="block-label">🎙 AUDIO SUPPLEMENT</div>
+        <p>大きなプロジェクトで例えると、サラダチームへの人員配置を遅らせたり、人数を減らして少人数でゆっくり対応させたりすることが可能。そのリソースをクリティカルパス上のカレーチームに集中投入できる。<span class="ptr">← S05</span></p>
+      </div>
+    </div>
+
+    <div class="section" id="ch3-use">
+      <h3>クリティカルパス分析の3つの視点</h3>
+      <table>
+        <thead><tr><th>#</th><th>視点</th><th>目的</th><th>使い方</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>①</td>
+            <td><strong>リカバリ策立案の優先検討項目</strong></td>
+            <td>トラブル発生時にどこに手を打つか</td>
+            <td>CPパスに集中的に資源・対策を投入することで、全体への影響を最小化できる</td>
+          </tr>
+          <tr>
+            <td>②</td>
+            <td><strong>進捗の優先管理項目</strong></td>
+            <td>どこを重点的にウォッチするか</td>
+            <td>余裕時間がないCP上のタスクは常に進捗を監視。チェック漏れが全体遅延に直結する</td>
+          </tr>
+          <tr>
+            <td>③</td>
+            <td><strong>期間短縮の優先対応項目</strong></td>
+            <td>どのタスクを短縮すれば全体が縮むか</td>
+            <td>CP上のタスクを短縮することのみが全体期間の短縮につながる</td>
+          </tr>
+        </tbody>
+      </table>
+      <p><span class="ptr">← S03:p.60</span></p>
+    </div>
+
+    <div class="section" id="ch3-complex">
+      <h3>少し複雑な例（分岐あり）</h3>
+      <p>1.1→1.2→<strong>{1.3→1.4}</strong> または <strong>{1.5}</strong>→1.6→終了、さらに 1.1→2.1→2.2→1.6→終了 のような分岐パターン。<span class="ptr">← S03:p.62-67</span></p>
+
+      <table>
+        <thead><tr><th>タスク</th><th>所要</th><th>最早終了</th><th>最遅終了</th><th>フロート</th><th>CP？</th></tr></thead>
+        <tbody>
+          <tr style="background:rgba(239,68,68,0.06)"><td>1.1</td><td>15分</td><td>15</td><td>15</td><td><strong style="color:#ef4444">0</strong></td><td>✅</td></tr>
+          <tr style="background:rgba(239,68,68,0.06)"><td>1.2</td><td>30分</td><td>45</td><td>45</td><td><strong style="color:#ef4444">0</strong></td><td>✅</td></tr>
+          <tr style="background:rgba(239,68,68,0.06)"><td>1.3</td><td>20分</td><td>65</td><td>65</td><td><strong style="color:#ef4444">0</strong></td><td>✅</td></tr>
+          <tr style="background:rgba(239,68,68,0.06)"><td>1.4</td><td>15分</td><td>80</td><td>80</td><td><strong style="color:#ef4444">0</strong></td><td>✅</td></tr>
+          <tr><td>1.5</td><td>25分</td><td>70</td><td>80</td><td><strong style="color:#34d399">10</strong></td><td>—</td></tr>
+          <tr style="background:rgba(239,68,68,0.06)"><td>1.6</td><td>5分</td><td>85</td><td>85</td><td><strong style="color:#ef4444">0</strong></td><td>✅</td></tr>
+          <tr><td>2.1</td><td>5分</td><td>20</td><td>75</td><td><strong style="color:#34d399">55</strong></td><td>—</td></tr>
+          <tr><td>2.2</td><td>5分</td><td>25</td><td>80</td><td><strong style="color:#34d399">55</strong></td><td>—</td></tr>
+        </tbody>
+      </table>
+      <p>→ <strong>クリティカルパス：1.1 → 1.2 → 1.3 → 1.4 → 1.6 → 終了</strong>（全体85分）<span class="ptr">← S03:p.65-67</span></p>
+
+      <div class="callout">
+        <div class="callout-title">⚠️ 注意：短縮後の再計算が必要</div>
+        <p>例えば1.3を20分→10分に短縮すると、クリティカルパスが変わる可能性がある（1.5やルート2がCPになりうる）。短縮するたびに再計算が必要。<span class="ptr">← S05</span></p>
+      </div>
+
+      <div class="audio-block">
+        <div class="block-label">🎙 AUDIO SUPPLEMENT</div>
+        <p>MS-Projectなどのプロジェクト管理ツールにタスク票の情報を入力すると、自動的にクリティカルパスを算出してくれる機能がある。実務では複雑なパスをツールが算出することが多い。<span class="ptr">← S03:p.61 / S05</span></p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- 第4章 -->
+<div class="chapter" id="ch4">
+  <div class="chapter-header">
+    <span class="chapter-num">第4章</span>
+    <h2>期間短縮の試み</h2>
+  </div>
+  <div class="chapter-body">
+
+    <div class="section" id="ch4-essence">
+      <h3>プロジェクトマネジメントの真髄</h3>
+      <div class="def-block">
+        <div class="def-label">PM の真髄</div>
+        <p>① <strong>相反する要求事項の最適なバランスをとること</strong><br>
+        ② <strong>リスクを顕在化し、リスクを減らすこと</strong><span class="ptr">← S03:p.72</span></p>
+      </div>
+
+      <p>相反する要求事項の例（トレードオフ）：</p>
+      <table>
+        <thead><tr><th>要素</th><th>変化</th><th>他への影響</th></tr></thead>
+        <tbody>
+          <tr><td>スケジュール延長</td><td>↑ 長くなる</td><td>コスト↑（一般的）</td></tr>
+          <tr><td>工数（人員・時間）増加</td><td>↑ 増える</td><td>コスト↑</td></tr>
+          <tr><td>目的・スコープ拡大</td><td>↑ 高くなる</td><td>コスト・スケジュール・人員 ↑</td></tr>
+          <tr><td>品質要求</td><td>↑ 高くなる</td><td>時間・コスト ↑（必ずしも比例しない）</td></tr>
+        </tbody>
+      </table>
+      <p><span class="ptr">← S03:p.72 / S05</span></p>
+
+      <div class="callout">
+        <div class="callout-title">🔑 PMの役割</div>
+        <p>クリティカルパス分析は計画時だけでなく<strong>途中段階でも繰り返し実施</strong>する。プロジェクトは絶えず動いているため、タスクが遅延・変化するたびに再計算し、変化に注意しながら納期オーバーを防ぐ。<span class="ptr">← S03:p.73</span></p>
+      </div>
+    </div>
+
+    <div class="section" id="ch4-methods">
+      <h3>期間短縮の前提確認</h3>
+      <p>期間短縮の試みを行う前に、<strong>目的・期間・予算</strong>をもう一度確認する。「何を崩せないか、何は崩せるか」を明確にしてから手を打つ。いきなりスケジュールを変更しても机上の空論となる。<span class="ptr">← S03:p.74,75,82</span></p>
+      <div class="audio-block">
+        <div class="block-label">🎙 AUDIO SUPPLEMENT</div>
+        <p>時間とそこで動く人が「真の制約条件」。何に時間を取られているかを考え、その項目に短縮のヒントを探る。「こういう手法でやると〇〇時間かかる。別の方法なら短縮できるのでは？」という選択肢を探っていくことが重要。<span class="ptr">← S05</span></p>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>スケジュール短縮の主な手法</h3>
+      <!-- 手法概観 -->
+      <div class="flow-wrap" style="margin-bottom:16px;">
+        <div class="flow-box cp">クラッシング</div>
+        <div style="font-size:11px; color:var(--text-dim)">①人の再配置<br>②資源の追加</div>
+        <div style="margin:0 16px; width:1px; background:var(--border)"></div>
+        <div class="flow-box cp">ファスト・<br>トラッキング</div>
+        <div style="font-size:11px; color:var(--text-dim)">③並行作業に切替</div>
+        <div style="margin:0 16px; width:1px; background:var(--border)"></div>
+        <div class="flow-box">その他</div>
+        <div style="font-size:11px; color:var(--text-dim)">④資源割当見直し<br>⑤勝てる戦にする</div>
+      </div>
+      <p><span class="ptr">← S03:p.76</span></p>
+    </div>
+
+    <div class="section" id="ch4-crashing">
+      <h3>クラッシング（Crashing）</h3>
+      <p>コストや資源を追加投入してスケジュールを短縮する手法。<span class="ptr">← S03:p.76</span></p>
+
+      <h4>対応① 人の再配置</h4>
+      <p>余裕のあるパスからクリティカルパスへ人を再配置する（例：サラダチーム5人→カレーチームへ3人移動）。<span class="ptr">← S03:p.77</span></p>
+      <table>
+        <thead><tr><th>確認条件</th><th>内容</th></tr></thead>
+        <tbody>
+          <tr><td>条件① 作業がはかどるか</td><td>場所・設備の収容力を確認。人を増やすだけでは逆効果の場合もある</td></tr>
+          <tr><td>条件② 移る人のスキル</td><td>クリティカルパス上で必要とされるスキルを持っているか。戦力にならなければ「足手まとい」になる</td></tr>
+          <tr><td>条件③ 抜きすぎにならないか</td><td>元のパスが2人だけになっても本当に機能するか確認が必要</td></tr>
+        </tbody>
+      </table>
+
+      <h4>対応② 資源の追加</h4>
+      <p>残業・休日出勤・新規採用・外注・設備増設などで人的・物的資源を増やす。<span class="ptr">← S03:p.78</span></p>
+      <table>
+        <thead><tr><th>確認条件</th><th>内容</th></tr></thead>
+        <tbody>
+          <tr><td>条件① コスト増加の承認</td><td>公式な承認を得られるか（プロジェクトの予算管理上の手続き）</td></tr>
+          <tr><td>条件② 受け入れ時間の確保</td><td>新規採用・外注の場合、既存メンバーがオリエンテーションに時間を取られる</td></tr>
+          <tr><td>条件③ 他への影響</td><td>残業・休日出勤は健康管理・労働基準法の観点からも確認が必要</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section" id="ch4-fast">
+      <h3>ファスト・トラッキング（Fast Tracking）</h3>
+      <p>前のタスクが完了する前に次のタスクを開始し、<strong>並行作業</strong>によって期間を短縮する手法。<span class="ptr">← S03:p.76,79</span></p>
+      <table>
+        <thead><tr><th>確認条件</th><th>内容</th></tr></thead>
+        <tbody>
+          <tr><td>条件① タスク間の連携</td><td>並行して進めるためにタスク間の情報連携が取れるか</td></tr>
+          <tr><td>条件② 二度手間リスク</td><td>パラレルにすると手戻り・やり直しが増えやすい。手直しの時間が発生して逆に延びるリスクあり</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section" id="ch4-other">
+      <h3>その他の対応</h3>
+
+      <h4>対応④ 資源割り当ての見直し</h4>
+      <p>人や設備の割り当てが適切か見直す。パフォーマンスの高い人・機器を<strong>クリティカルパス上のタスクに優先配置</strong>する。割り当ての偏りを解消するだけで期間が短縮できることがある。<span class="ptr">← S03:p.80</span></p>
+
+      <h4>対応⑤ 勝てる戦にする（スコープの見直し）</h4>
+      <p>そもそもプロジェクトのスコープに無理がないか再検証する。<span class="ptr">← S03:p.81</span></p>
+      <ul>
+        <li>真の目的に合致したタスクになっているか</li>
+        <li>採用する技術・資源は妥当か（使い慣れた技術を使うことでリスクを減らす）</li>
+        <li>代替できる資源・技術はないか</li>
+      </ul>
+      <div class="audio-block">
+        <div class="block-label">🎙 AUDIO SUPPLEMENT</div>
+        <p>何かトラブルがあってからスケジュールを見直すのではなく、<strong>計画の時点で勝てるように</strong>なっていることが理想。スコープ・技術・リソース全てを計画段階で検証しておく。<span class="ptr">← S05</span></p>
+      </div>
+
+      <div class="callout">
+        <div class="callout-title">📋 まとめ：期間短縮のアプローチフロー</div>
+        <ol style="margin:0; padding-left:20px;">
+          <li>クリティカルパス分析でどのタスクが全体を決めているかを特定</li>
+          <li>目的・期間・予算を再確認（崩せない制約を明確化）</li>
+          <li>クラッシング（①人の再配置、②資源追加）またはファスト・トラッキング（③並行作業）を検討</li>
+          <li>④資源割当の偏りを見直す、⑤スコープに無理がないか検証</li>
+          <li>短縮実施後は<strong>再計算</strong>してクリティカルパスを更新する</li>
+        </ol>
+        <p><span class="ptr">← S03:p.82</span></p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== APPENDIX ===== -->
+<div class="appendix">
+
+  <!-- 未確定事項（なし） -->
+  <!-- Step 4で未確定事項0件のため、このセクションは省略 -->
+
+  <!-- 補足A -->
+  <div class="appendix-card" id="app-a">
+    <div class="appendix-card-header">
+      <span class="emoji">⭐</span>
+      <h2>補足A：最重要ワード一覧</h2>
+    </div>
+    <div class="appendix-card-body">
+      <table>
+        <thead><tr><th>用語</th><th>読み</th><th>定義</th><th>重要度</th></tr></thead>
+        <tbody>
+          <tr><td><strong>クリティカルパス</strong></td><td>くりてぃかるぱす</td><td>プロジェクト全体のスケジュールの長さを決定している作業の連なり。フロートが0の経路</td><td>★★★</td></tr>
+          <tr><td><strong>フロート（余裕時間）</strong></td><td>ふろーと</td><td>最遅終了時間 − 最早終了時間。0であればCP上のタスク</td><td>★★★</td></tr>
+          <tr><td><strong>往路分析</strong></td><td>おうろぶんせき</td><td>スタート→エンドで最早開始・最早終了時間を計算する分析（Forward Pass）</td><td>★★★</td></tr>
+          <tr><td><strong>復路分析</strong></td><td>ふくろぶんせき</td><td>エンド→スタートで逆算し最遅開始・最遅終了時間を計算する分析（Backward Pass）</td><td>★★★</td></tr>
+          <tr><td><strong>タスク票</strong></td><td>たすくひょう</td><td>1タスク1枚。最早開始・最早終了・WBS番号・内容・所要期間・余裕期間・最遅開始・最遅終了を記載</td><td>★★★</td></tr>
+          <tr><td><strong>クラッシング</strong></td><td>くらっしんぐ</td><td>資源・コストを追加投入してスケジュールを短縮する手法。①人の再配置 ②資源の追加</td><td>★★★</td></tr>
+          <tr><td><strong>ファスト・トラッキング</strong></td><td>ふぁすと・とらっきんぐ</td><td>前タスク完了前に次タスクを開始する並行作業でスケジュールを短縮する手法。二度手間リスクあり</td><td>★★★</td></tr>
+          <tr><td><strong>WBS</strong></td><td>だぶりゅーびーえす</td><td>Work Breakdown Structure。目標達成のために仕事を詳細分割・定義して階層構造化したもの</td><td>★★★</td></tr>
+          <tr><td><strong>クリティカルマス</strong></td><td>くりてぃかるます</td><td>商品・サービスの普及率が一気に跳ね上がる分岐点。普及率16%（イノベーター2.5%＋アーリーアダプター13.5%）がその目安（Rogers, 1962）</td><td>★★☆</td></tr>
+          <tr><td><strong>キャズム</strong></td><td>きゃずむ</td><td>ハイテク製品の普及過程でアーリーアダプターとアーリーマジョリティの間に存在する「深い溝」。ここを越えられないと市場普及は失敗する（Moore, 1991）。クリティカルマス理論とは異なる見解</td><td>★★☆</td></tr>
+          <tr><td><strong>見える化</strong></td><td>みえるか</td><td>問題の本質を考えられるようにデータを提供すること（トヨタ用語）</td><td>★★☆</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 補足B -->
+  <div class="appendix-card" id="app-b">
+    <div class="appendix-card-header">
+      <span class="emoji">📚</span>
+      <h2>補足B：知っておくべき背景知識</h2>
+    </div>
+    <div class="appendix-card-body">
+      <ul>
+        <li style="font-size:12px; color:var(--text-sub); margin-bottom:12px;"><span style="color:var(--ext);">[外部補足]</span> <strong>CPM（Critical Path Method）の開発経緯</strong>：1956年12月、DuPontのMorgan R. WalkerとRemington Rand UnivacのJames E. Kelley Jr.の共同プロジェクトとして開発が開始された（開発期間は27ヶ月）。1957年にDuPontの工場シャットダウン計画でテストされ、1959年3月に最初の論文（"Critical-Path Planning and Scheduling"）が発表された。「クリティカルパス」という名称は1959年5月頃にマーケティング目的で命名され、それ以前は「Main Chain（主連鎖）」と呼ばれていた。（出典：Kelley &amp; Walker, PM Network, 1989）</li>
+        <li style="font-size:12px; color:var(--text-sub); margin-bottom:12px;"><span style="color:var(--ext);">[外部補足]</span> <strong>クリティカルマスの語源と提唱者</strong>：「クリティカルマス」はもともと物理化学の用語「臨界質量」に由来する。マーケティング領域では1962年、米国スタンフォード大学の社会学者エベレット・M・ロジャーズ（Everett M. Rogers）が著書『イノベーションの普及（Diffusion of Innovations）』の中で「普及率16%の論理」として提唱した概念が起源。イノベーター（2.5%）とアーリーアダプター（13.5%）を合計した16%の普及率を超えると、市場全体への普及が急加速する分岐点とされる。</li>
+        <li style="font-size:12px; color:var(--text-sub); margin-bottom:12px;"><span style="color:var(--ext);">[外部補足]</span> <strong>キャズム理論の提唱者と背景</strong>：マーケティング・コンサルタントのジェフリー・A・ムーア（Geoffrey A. Moore）が1991年著書『Crossing the Chasm（邦題：キャズム）』で提唱。クリティカルマス理論（普及率16%で自然普及）に対して、ハイテク製品では<strong>アーリーアダプターとアーリーマジョリティの間に深い溝（キャズム）が存在し</strong>、ここを越えられなければメインストリーム市場には普及しないと主張した。両理論の決定的な違い：クリティカルマスは「16%到達→自然普及」、キャズム理論は「16%到達後もキャズムが障壁となる」。</li>
+        <li style="font-size:12px; color:var(--text-sub); margin-bottom:12px;"><span style="color:var(--ext);">[外部補足]</span> <strong>ファンクションポイント法</strong>：IBMのAllan Albrechtが1979年に提唱。ソフトウェアの機能規模を「機能点数」として数値化し、コスト・工数を見積もる手法。入力・出力・照会・内部論理ファイル・外部インターフェースの5種類の機能を計数して見積もる。</li>
+        <li style="font-size:12px; color:var(--text-sub);"><span style="color:var(--ext);">[外部補足]</span> <strong>プロジェクト管理ツールでのCP算出</strong>：タスク票の情報（依存関係・所要時間）を入力すると、ツールが自動でクリティカルパスを算出・表示する。代表的なツール：Microsoft Project（CPを赤色表示）、Oracle Primavera P6（大規模建設・エンジニアリング向け）、その他Wrike・Asanaなどクラウドツールも対応。</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 補足C -->
+  <div class="appendix-card" id="app-c">
+    <div class="appendix-card-header">
+      <span class="emoji">🎯</span>
+      <h2>補足C：試験・レポートで重要な観点</h2>
+    </div>
+    <div class="appendix-card-body">
+      <ul>
+        <li><strong>クリティカルパスの定義</strong>を正確に言えること。「フロートが0の経路」「全体スケジュールの長さを決定する作業の連なり」</li>
+        <li><strong>フロートの計算式</strong>：最遅終了時間 − 最早終了時間</li>
+        <li><strong>往路分析と復路分析の手順</strong>を6ステップで説明できること</li>
+        <li><strong>クラッシングとファスト・トラッキングの違い</strong>：クラッシングは資源追加、ファスト・トラッキングは並行作業。それぞれの注意点（条件）を挙げられること</li>
+        <li><strong>CPのフロートが変わる場合</strong>：CP上のタスクを短縮すると別のパスがCPになりうる→再計算が必要</li>
+        <li><strong>クリティカルパス分析の3つの視点</strong>（リカバリ策・進捗管理・期間短縮）を説明できること</li>
+        <li><strong>Critical の2つの意味</strong>：批判的な（critic形容詞）と危機的な・極めて重大な（crisis形容詞）</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 補足D -->
+  <div class="appendix-card" id="app-d">
+    <div class="appendix-card-header">
+      <span class="emoji">🔗</span>
+      <h2>補足D：関連概念・次回への接続</h2>
+    </div>
+    <div class="appendix-card-body">
+      <ul>
+        <li style="font-size:12px; color:var(--text-sub); margin-bottom:12px;"><span style="color:var(--ext);">[外部補足]</span> <strong>PERT（Program Evaluation and Review Technique）とCPMの比較</strong>：
+          <br>PERTは1957〜58年に米海軍SPO（特別計画局）がPolaris弾道ミサイル潜水艦プロジェクト向けに、Booz Allen HamiltonおよびLockheed社と共同で開発し、1958年に公表・1959年に論文発表された。CPMとほぼ同時期に独立して開発されたが、「クリティカルパス」という用語はPERTチームが命名したとされる。
+          <br><br>
+          <table style="font-size:11px; margin-top:6px;">
+            <thead><tr><th>項目</th><th>CPM</th><th>PERT</th></tr></thead>
+            <tbody>
+              <tr><td>開発</td><td>DuPont + Remington Rand（1956〜59年）</td><td>米海軍 + Booz Allen Hamilton（1957〜58年）</td></tr>
+              <tr><td>時間推定</td><td>確定的（1点見積り）</td><td>確率的（三点見積り：楽観・最頻・悲観）</td></tr>
+              <tr><td>主な用途</td><td>工場・建設など繰り返し型プロジェクト</td><td>R&amp;D・防衛など不確実性の高い一回限りのプロジェクト</td></tr>
+              <tr><td>強み</td><td>コストとスケジュールの最適化</td><td>不確実性を含む期間の統計的推定</td></tr>
+            </tbody>
+          </table>
+          <br>Polaris計画にPERTを適用した結果、当初7年と見込まれていたプロジェクトを5年未満で完了させたとされる。
+        </li>
+        <li style="font-size:12px; color:var(--text-sub); margin-bottom:12px;"><span style="color:var(--ext);">[外部補足]</span> <strong>イノベーター理論・クリティカルマス・キャズムの関係図</strong>：
+          <br>エベレット・ロジャーズの「イノベーター理論」では消費者を5分類する。クリティカルマスとキャズムはどちらもこの理論をベースにしているが、見方が異なる。
+          <br><br>
+          <table style="font-size:11px; margin-top:6px;">
+            <thead><tr><th>消費者分類</th><th>割合</th><th>特徴</th></tr></thead>
+            <tbody>
+              <tr style="background:rgba(91,141,238,0.08)"><td>イノベーター</td><td>2.5%</td><td>最も早く採用。冒険心旺盛</td></tr>
+              <tr style="background:rgba(91,141,238,0.08)"><td>アーリーアダプター</td><td>13.5%</td><td>オピニオンリーダー。影響力大</td></tr>
+              <tr><td colspan="3" style="text-align:center; color:var(--uncert); padding:4px;">← ここまで16%がクリティカルマス ／ ここにキャズム（溝）が存在 →</td></tr>
+              <tr><td>アーリーマジョリティ</td><td>34%</td><td>慎重だが比較的早い段階で採用</td></tr>
+              <tr><td>レイトマジョリティ</td><td>34%</td><td>半数以上が使ってから採用</td></tr>
+              <tr><td>ラガード</td><td>16%</td><td>最も保守的</td></tr>
+            </tbody>
+          </table>
+          <br><strong>クリティカルマス理論（Rogers, 1962）</strong>：16%到達→その後自然普及が加速。<br>
+          <strong>キャズム理論（Moore, 1991）</strong>：ハイテク製品ではアーリーアダプターとアーリーマジョリティの間に深い溝があり、ここを越えなければ失敗する。
+        </li>
+        <li style="font-size:12px; color:var(--text-sub); margin-bottom:12px;"><span style="color:var(--ext);">[外部補足]</span> <strong>ガントチャートとスケジュール・ネットワーク図の違い</strong>：ガントチャート（Henry Ganttが第一次世界大戦中に考案）は時間軸に沿った横棒グラフで進捗管理に適するが、タスク間の依存関係の全体像が見えにくい。スケジュール・ネットワーク図（PERT/CPMで使用）は依存関係を矢印で表現しクリティカルパスを特定するのに適する。実務ではMS-Projectのように両方を統合したツールが多い。</li>
+        <li style="font-size:12px; color:var(--text-sub);"><span style="color:var(--ext);">[外部補足]</span> <strong>CPMとアジャイル開発の関係</strong>：CPMはウォーターフォール型（計画駆動型）PMで威力を発揮する手法。スコープが固定された大規模プロジェクト（建設・製造・イベント）に適する。アジャイル開発ではスコープを反復的に変更するため、固定的なCPMよりもスプリント計画・バーンダウンチャートが中心となる。ただし大規模プロジェクト（例：大型ソフトウェア基盤）ではCPMとアジャイルを組み合わせたハイブリッドアプローチも採用される。</li>
+      </ul>
+    </div>
+  </div>
+
+</div><!-- /.appendix -->
+
+</main>
+</body>
+</html>
