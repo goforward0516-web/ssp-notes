@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>スタディスキル入門 第7回 卒業までの学びとキャリアデザイン</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #22263a;
+    --border: #2e3250;
+    --accent: #f5a623;
+    --accent2: #7c6af7;
+    --text: #e2e4f0;
+    --text-muted: #8b90b0;
+    --audio: #1a3a2a;
+    --audio-border: #2d7a4f;
+    --ext: #1a2a3a;
+    --ext-border: #2d5a8a;
+    --infer: #2a1a3a;
+    --infer-border: #6a3a8a;
+    --emph: #3a2a1a;
+    --emph-border: #c87a2d;
+    --tag-audio: #2d7a4f;
+    --tag-ext: #2d5a8a;
+    --tag-infer: #6a3a8a;
+    --tag-emph: #c87a2d;
+    --ch1: #e85d5d;
+    --ch2: #f5a623;
+    --ch3: #5dc8e8;
+    --ch4: #7ce85d;
+    --pass: #2d7a4f;
+    --sidebar-w: 260px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif; font-size: 15px; line-height: 1.75; }
+
+  /* Sidebar */
+  #sidebar {
+    position: fixed; top: 0; left: 0; width: var(--sidebar-w);
+    height: 100vh; background: var(--surface); border-right: 1px solid var(--border);
+    overflow-y: auto; z-index: 100; padding: 16px 0;
+  }
+  #sidebar h2 { font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: var(--text-muted); padding: 0 16px 8px; }
+  #sidebar a {
+    display: block; padding: 6px 16px; color: var(--text-muted); text-decoration: none;
+    font-size: 13px; border-left: 2px solid transparent; transition: all .15s;
+  }
+  #sidebar a:hover { color: var(--text); background: var(--surface2); }
+  #sidebar a.ch1 { border-left-color: var(--ch1); }
+  #sidebar a.ch2 { border-left-color: var(--ch2); }
+  #sidebar a.ch3 { border-left-color: var(--ch3); }
+  #sidebar a.ch4 { border-left-color: var(--ch4); }
+  #sidebar a.sub { padding-left: 28px; font-size: 12px; }
+  #sidebar .divider { height: 1px; background: var(--border); margin: 8px 16px; }
+
+  /* Main */
+  #main { margin-left: var(--sidebar-w); padding: 40px 48px; max-width: 960px; }
+
+  /* Header */
+  .doc-header { border-bottom: 2px solid var(--accent); padding-bottom: 24px; margin-bottom: 40px; }
+  .doc-header .course { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: .12em; margin-bottom: 6px; }
+  .doc-header h1 { font-size: 26px; font-weight: 700; color: var(--text); margin-bottom: 12px; }
+  .doc-meta { display: flex; gap: 24px; flex-wrap: wrap; }
+  .doc-meta span { font-size: 12px; color: var(--text-muted); }
+  .doc-meta strong { color: var(--text); }
+
+  /* Sections */
+  .chapter { margin-bottom: 56px; }
+  .chapter-header {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 28px; padding-bottom: 12px; border-bottom: 1px solid var(--border);
+  }
+  .chapter-badge {
+    width: 6px; height: 36px; border-radius: 3px; flex-shrink: 0;
+  }
+  .chapter-header h2 { font-size: 20px; font-weight: 700; }
+  .section { margin-bottom: 32px; }
+  .section h3 { font-size: 16px; font-weight: 600; color: var(--accent); margin-bottom: 12px; border-left: 3px solid var(--accent); padding-left: 10px; }
+  .section h4 { font-size: 14px; font-weight: 600; color: var(--text-muted); margin: 16px 0 8px; }
+  p { margin-bottom: 10px; }
+
+  /* Source pointer */
+  .src { font-size: 10px; color: var(--text-muted); background: var(--surface2); border: 1px solid var(--border); border-radius: 3px; padding: 1px 5px; margin-left: 4px; white-space: nowrap; font-family: monospace; }
+
+  /* Annotation blocks */
+  .block-audio { background: var(--audio); border-left: 3px solid var(--audio-border); border-radius: 0 6px 6px 0; padding: 12px 16px; margin: 12px 0; }
+  .block-ext   { background: var(--ext);   border-left: 3px solid var(--ext-border);   border-radius: 0 6px 6px 0; padding: 12px 16px; margin: 12px 0; }
+  .block-infer { background: var(--infer); border-left: 3px solid var(--infer-border); border-radius: 0 6px 6px 0; padding: 12px 16px; margin: 12px 0; }
+  .block-emph  { background: var(--emph);  border-left: 3px solid var(--emph-border);  border-radius: 0 6px 6px 0; padding: 12px 16px; margin: 12px 0; }
+  .tag {
+    display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: .06em;
+    padding: 2px 7px; border-radius: 3px; margin-bottom: 6px; text-transform: uppercase;
+  }
+  .tag-audio { background: var(--tag-audio); color: #fff; }
+  .tag-ext   { background: var(--tag-ext);   color: #fff; }
+  .tag-infer { background: var(--tag-infer); color: #fff; }
+  .tag-emph  { background: var(--tag-emph);  color: #fff; }
+
+  /* Definition box */
+  .def-box { background: var(--surface2); border: 1px solid var(--accent2); border-radius: 6px; padding: 14px 18px; margin: 14px 0; }
+  .def-box .def-label { font-size: 10px; font-weight: 700; color: var(--accent2); letter-spacing: .08em; margin-bottom: 4px; }
+  .def-box .def-term { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+  .def-box .def-body { font-size: 14px; color: var(--text); }
+
+  /* Key point */
+  .keypoint { background: #1f2035; border: 1px solid var(--accent); border-radius: 6px; padding: 14px 18px; margin: 14px 0; }
+  .keypoint .kp-label { font-size: 10px; font-weight: 700; color: var(--accent); letter-spacing: .08em; margin-bottom: 6px; }
+
+  /* Lists */
+  ul, ol { padding-left: 20px; margin-bottom: 10px; }
+  li { margin-bottom: 4px; }
+  ul li::marker { color: var(--accent); }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; }
+  th { background: var(--surface2); color: var(--text-muted); font-weight: 600; padding: 8px 12px; border: 1px solid var(--border); text-align: left; }
+  td { padding: 8px 12px; border: 1px solid var(--border); }
+  tr:nth-child(even) td { background: var(--surface); }
+
+  /* SVG diagrams */
+  .diagram { margin: 20px 0; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+  .diagram-title { font-size: 12px; color: var(--text-muted); margin-bottom: 10px; }
+  svg { display: block; overflow: visible; }
+
+  /* Appendix */
+  .appendix { margin-top: 60px; border-top: 2px solid var(--border); padding-top: 32px; }
+  .appendix-section { margin-bottom: 40px; }
+  .appendix-section h2 { font-size: 16px; font-weight: 700; color: var(--text-muted); margin-bottom: 16px; }
+
+  /* QC badge */
+  .qc-badge { display: inline-block; background: var(--pass); color: #fff; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 4px; margin-left: 8px; }
+
+  /* Unconfirmed */
+  .unconfirmed { background: #2a1a1a; border: 1px solid #7a2d2d; border-radius: 6px; padding: 14px 18px; margin: 14px 0; }
+  .unconfirmed .uc-label { font-size: 10px; font-weight: 700; color: #e85d5d; margin-bottom: 6px; }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    #sidebar { display: none; }
+    #main { margin-left: 0; padding: 20px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<nav id="sidebar">
+  <h2>目次</h2>
+  <a href="#overview">📋 講義概要</a>
+  <div class="divider"></div>
+  <a href="#ch1" class="ch1">第1章 社会環境変化とキャリア自律</a>
+  <a href="#ch1-career-def" class="sub ch1">キャリアの定義</a>
+  <a href="#ch1-society" class="sub ch1">社会環境の変化</a>
+  <a href="#ch1-work-env" class="sub ch1">働く環境の変化</a>
+  <a href="#ch1-autonomy" class="sub ch1">キャリア自律</a>
+  <a href="#ch1-value" class="sub ch1">価値観の重要性</a>
+  <div class="divider"></div>
+  <a href="#ch2" class="ch2">第2章 未来志向でキャリアを創る</a>
+  <a href="#ch2-reskilling" class="sub ch2">リスキリング</a>
+  <a href="#ch2-stage" class="sub ch2">3→マルチステージ</a>
+  <a href="#ch2-futuremind" class="sub ch2">未来志向チェンジ術</a>
+  <a href="#ch2-9strategy" class="sub ch2">9つの戦略</a>
+  <div class="divider"></div>
+  <a href="#ch3" class="ch3">第3章 越境と経験学習のすすめ</a>
+  <a href="#ch3-cases" class="sub ch3">卒業生3事例</a>
+  <a href="#ch3-action" class="sub ch3">行動→自己像修正</a>
+  <a href="#ch3-crossborder" class="sub ch3">越境学習</a>
+  <a href="#ch3-kolb" class="sub ch3">経験学習モデル</a>
+  <a href="#ch3-model8" class="sub ch3">越境学習モデル8段階</a>
+  <div class="divider"></div>
+  <a href="#ch4" class="ch4">第4章 将来像を明確化し専門性を高める</a>
+  <a href="#ch4-planned" class="sub ch4">プランド・ハップンスタンス</a>
+  <a href="#ch4-chaos" class="sub ch4">キャリア・カオス理論</a>
+  <a href="#ch4-2approach" class="sub ch4">2つのアプローチ</a>
+  <a href="#ch4-microcred" class="sub ch4">マイクロクレデンシャル</a>
+  <a href="#ch4-4points" class="sub ch4">重要4ポイント</a>
+  <div class="divider"></div>
+  <a href="#appendix-a">付録A: 重要用語集</a>
+  <a href="#appendix-b">付録B: 背景知識</a>
+  <a href="#appendix-c">付録C: 試験ポイント</a>
+  <a href="#appendix-d">付録D: 関連概念</a>
+</nav>
+
+<!-- Main -->
+<main id="main">
+
+<!-- Header -->
+<div class="doc-header">
+  <div class="course">スタディスキル入門｜教養科目</div>
+  <h1>第7回　卒業までの学びとキャリアデザイン</h1>
+  <div class="doc-meta">
+    <span><strong>担当教員</strong>: 小野 邦彦（IT総合学部教授）</span>
+    <span><strong>専門</strong>: 東南アジア宗教建築史・文化財保存・キャリアデザイン学</span>
+    <span><strong>科目</strong>: SDGs入門 / 宗教学入門</span>
+    <span class="qc-badge">QC PASS</span>
+  </div>
+</div>
+
+<!-- Overview -->
+<section id="overview" class="chapter">
+  <div class="chapter-header">
+    <div class="chapter-badge" style="background:var(--accent2)"></div>
+    <h2>講義概要・学習目標</h2>
+  </div>
+
+  <div class="section">
+    <p>本回の中心テーマは「将来像の明確化の手法や考え方」である。<span class="src">← S03:p.4</span> キャリアデザインとは就職・出世にとどまらず、<strong>仕事を含む人生全体</strong>を自らの価値観に基づき描くことである。<span class="src">← S03:p.10</span></p>
+    <p>1・2年次（3次編入生は初学期）は基礎固めと方向づけを行いながらブロンズ・シルバーバッジを目指し、<strong>3年次以降は専門性を高める</strong>フェーズに入る。そのため、3年次になる前までに自己の将来像を可能な限り明確化することが求められる。<span class="src">← S03:p.4,58</span></p>
+  </div>
+
+  <div class="keypoint">
+    <div class="kp-label">📌 第7回 学習目標（4項目）</div>
+    <ol>
+      <li>自律的なキャリアデザインにおける価値観の把握の重要性を理解して説明できる</li>
+      <li>未来志向の考え方で将来の自己像を修正・明確化するプロセスを説明できる</li>
+      <li>越境学習と経験学習のモデルの概要を説明できる</li>
+      <li>マイクロクレデンシャルを導入したカリキュラムの科目履修で専門性を高めていく流れの概略を説明できる</li>
+    </ol>
+  </div>
+
+  <div class="section">
+    <h3>授業構成</h3>
+    <table>
+      <tr><th>章</th><th>タイトル</th></tr>
+      <tr><td>第1章</td><td>社会環境変化とキャリア自律</td></tr>
+      <tr><td>第2章</td><td>未来志向でキャリアを創る</td></tr>
+      <tr><td>第3章</td><td>越境と経験学習のすすめ</td></tr>
+      <tr><td>第4章</td><td>将来像を明確化し、専門性を高める</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- Chapter 1 -->
+<section id="ch1" class="chapter">
+  <div class="chapter-header">
+    <div class="chapter-badge" style="background:var(--ch1)"></div>
+    <h2 style="color:var(--ch1)">第1章　社会環境変化とキャリア自律</h2>
+  </div>
+
+  <!-- キャリアの定義 -->
+  <div id="ch1-career-def" class="section">
+    <h3>キャリアの定義</h3>
+
+    <div class="def-box">
+      <div class="def-label">定義①（Arthur et al., 1989）</div>
+      <div class="def-body">個人が長年にわたって積み重ねた仕事経験のつながり</div>
+    </div>
+    <div class="def-box">
+      <div class="def-label">定義②（Hall, 1976）</div>
+      <div class="def-body">ある人の生涯にわたる仕事関連の諸経験や諸活動と結びついた、態度や行動における個人的に知覚された連続</div>
+    </div>
+
+    <p>本科目における定義は以下の通りである。<span class="src">← S03:p.10</span></p>
+    <div class="def-box">
+      <div class="def-label">本科目の定義：キャリアデザイン</div>
+      <div class="def-term">「自分の望む人生を自らの価値観に基づき描くこと」</div>
+      <div class="def-body">仕事を含む人生全体を意味するものとしてキャリアを位置づける。キャリアデザインを始めるにあたって、まず自分が生きていくうえで大切な価値観は何かを考えることがその第一歩である。</div>
+    </div>
+
+    <div class="section">
+      <h4>関連概念</h4>
+      <table>
+        <tr><th>概念</th><th>説明</th></tr>
+        <tr>
+          <td><strong>職業キャリア</strong></td>
+          <td>仕事や働くことに関わる職業のキャリア。価値観との関連で「働くことのWell-being」が注目される。<span class="src">← S03:p.10</span></td>
+        </tr>
+        <tr>
+          <td><strong>Well-being（ウェルビーイング）</strong></td>
+          <td>心身だけでなく社会的な面も含め満たされた状態。ウェルビーイング経営が企業側でも議論されている。<span class="src">← S03:p.10</span></td>
+        </tr>
+        <tr>
+          <td><strong>ライフキャリア</strong></td>
+          <td>個人が多様な役割を果たし、様々な人とのつながりを維持しながら築く自分らしい生き方の軌道全体。ワークキャリアを含む広い概念。<span class="src">← S03:p.10</span></td>
+        </tr>
+      </table>
+    </div>
+    <div class="block-ext">
+      <div class="tag tag-ext">外部補足</div>
+      <p>「ライフキャリア」概念については、大嶋寧子（2017）「『職業キャリアのブランク』から『ライフキャリアのリデザイン期』へ」リクルートワークス研究所が参考文献として示されている。<span class="src">← S03:p.10</span></p>
+    </div>
+  </div>
+
+  <!-- 社会環境の変化 -->
+  <div id="ch1-society" class="section">
+    <h3>社会環境の変化</h3>
+    <p>現代は変化が激しく将来の予測が困難な時代を迎えている。<span class="src">← S03:p.11</span> その背景として以下の4つが挙げられる。</p>
+    <ul>
+      <li><strong>人生100年時代の到来</strong>：職業キャリアの期間も長くなり、キャリアチェンジが求められる場面も増える</li>
+      <li><strong>情報技術（IT）の飛躍的な発達</strong>：人間生活を質的に変化させつつある</li>
+      <li><strong>労働力人口の高齢化</strong>：人口減少・国内経済の低迷・日本の国際的な存在感の低下が懸念される</li>
+      <li><strong>グローバル化の加速</strong>：働き手の補充を含め、社会に急速な多様性をもたらす</li>
+    </ul>
+  </div>
+
+  <!-- 働く環境の変化 -->
+  <div id="ch1-work-env" class="section">
+    <h3>「働く」ことを取り巻く環境の変化</h3>
+    <div class="block-audio">
+      <div class="tag tag-audio">音声補足</div>
+      <p>日本型の雇用慣行とは「長期継続雇用」「年功的処遇制度」「新卒一括採用を中心とする採用慣行」を指す。組織の論理で従業員の仕事内容や就業場所が決定され、従業員も従っていれば長期継続雇用が保証されるという双方納得の慣行として広く続いてきた。<span class="src">← S03:p.12</span></p>
+    </div>
+    <p>しかし将来予測が困難な状況下では、将来必要とされる企業内の人材育成も困難となり、<strong>組織主導から個人が自律的にキャリア開発を行う方向への段階的な変化</strong>が起きている。<span class="src">← S03:p.12</span></p>
+
+    <div class="section">
+      <h4>企業のキャリア支援実施状況（従業員規模別）<span class="src">← S03:p.13</span></h4>
+      <table>
+        <tr><th>従業員規模</th><th>キャリア支援実施率</th></tr>
+        <tr><td>1〜100人</td><td>16.2%</td></tr>
+        <tr><td>101〜500人</td><td>17.4%</td></tr>
+        <tr><td>501〜1,000人</td><td>26.0%</td></tr>
+        <tr><td>1,001〜5,000人</td><td>26.9%</td></tr>
+        <tr><td><strong>5,001人以上</strong></td><td><strong>48.6%</strong>（約半数）</td></tr>
+      </table>
+      <p style="font-size:12px; color:var(--text-muted)">出典：『日本の人事部 人事白書 2023』株式会社HRビジョン, p.99.</p>
+      <div class="block-audio">
+        <div class="tag tag-audio">音声補足</div>
+        <p>これは日本経済の先行き不安や終身雇用といった日本型雇用の枠組みの変化を受け、社会人生活の先が長い<strong>20代の若手社員</strong>の自律志向が高まっていることを反映している。会社に依存するだけではこの先乗り切れないという意識変化が背景にある。<span class="src">← S03:p.14</span></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- キャリア自律 -->
+  <div id="ch1-autonomy" class="section">
+    <h3>キャリア自律</h3>
+    <div class="def-box">
+      <div class="def-label">定義（武石恵美子, 2023）</div>
+      <div class="def-term">キャリア自律</div>
+      <div class="def-body">働く個人が自身のキャリア開発に主体的・自律的に向き合い、進むべき方向を決めること。今後ますます重要になっていくと考えられる。</div>
+    </div>
+    <div class="block-ext">
+      <div class="tag tag-ext">外部補足</div>
+      <p>出典：武石恵美子（2023）「第4章 求められるキャリア自律」『キャリア開発論 第2版―自律性と多様性に向き合う』中央経済社, pp. 52-71.<span class="src">← S03:p.14</span></p>
+    </div>
+  </div>
+
+  <!-- 価値観の重要性 -->
+  <div id="ch1-value" class="section">
+    <h3>自律的なキャリアデザインにおける「価値観」の重要性</h3>
+    <div class="keypoint">
+      <div class="kp-label">🔑 核心</div>
+      <p>「あなた」が働くうえで大切にしたい、自身の内面的要素すなわち<strong>価値観</strong>を考え抜くことがキャリア自律のための第一歩。ひいては生きていくうえで大切にしたい価値観を考えることにも繋がる。<span class="src">← S03:p.15</span></p>
+      <p>→ <strong>価値観を考えることがキャリアデザインを行うための前提条件である。</strong></p>
+      <p style="font-size:11px; color:var(--text-muted)">※価値観：軸となる物事の考え方</p>
+    </div>
+    <p>キャリアの成功の意味が個人により多様化し、やりがいやWell-beingといった内面的要素が重視されるようになることで、個人がキャリアの形成を自己決定する姿勢がこれまで以上に求められるようになる。<span class="src">← S03:p.15</span></p>
+  </div>
+</section>
+
+<!-- Chapter 2 -->
+<section id="ch2" class="chapter">
+  <div class="chapter-header">
+    <div class="chapter-badge" style="background:var(--ch2)"></div>
+    <h2 style="color:var(--ch2)">第2章　未来志向でキャリアを創る</h2>
+  </div>
+
+  <!-- リスキリング -->
+  <div id="ch2-reskilling" class="section">
+    <h3>日本企業のリスキリングの取組み状況</h3>
+    <div class="def-box">
+      <div class="def-label">定義（経済産業省, 2021）</div>
+      <div class="def-term">リスキリング</div>
+      <div class="def-body">新しい職業に就くために、あるいは今の職業で必要とされるスキルの大幅な変化に適応するために、必要なスキルを獲得する／させること</div>
+    </div>
+    <div class="block-ext">
+      <div class="tag tag-ext">外部補足</div>
+      <p>2022年10月召集の臨時国会における内閣総理大臣所信表明演説において、「構造的賃上げ」に向けて成長分野で働くための労働者のリスキリングを主要な取り組みに位置づけ、公的支援として<strong>5年間で1兆円</strong>の予算規模が表明された。<span class="src">← S03:p.21</span></p>
+    </div>
+    <p>約6,500社の企業向けアンケート調査の結果、リスキリングに取り組んでいるまたは取り組む予定の企業は<strong>過半数</strong>となっている。<span class="src">← S03:p.21</span></p>
+    <div class="block-ext">
+      <div class="tag tag-ext">外部補足</div>
+      <p>内訳（全体）：行っている 15.3% ／ 今後取り組む計画がある 14.4% ／ 現在取り組みを検討中 25.7% ／ 行っていない（今後も行わない予定） 31.0% ／ わからない 13.6%<br>→ 取り組み済み＋予定＋検討中 = <strong>55.4%</strong>で過半数。出典：『日本の人事部 人事白書 2023』株式会社HRビジョン, p.112.<span class="src">← S03:p.21</span></p>
+    </div>
+
+    <div class="section">
+      <h4>企業がリスキリングで重視するスキル <span class="src">← S03:p.22</span></h4>
+      <table>
+        <tr><th>カテゴリ</th><th>割合</th><th>具体例</th></tr>
+        <tr>
+          <td><strong>DXに必要なデジタル関連スキル</strong></td>
+          <td><strong>70.8%</strong></td>
+          <td>DX基礎知識・ITリテラシー・RPAなどの自動化スキル・AI・データサイエンス・デザイン思考・クラウドビジネス等</td>
+        </tr>
+        <tr>
+          <td>上記以外のスキル</td>
+          <td>50.5%</td>
+          <td>経営に必要なスキルや知識・コミュニケーション能力・マネジメント等</td>
+        </tr>
+      </table>
+      <div class="block-audio">
+        <div class="tag tag-audio">音声補足</div>
+        <p>サイバー大学で学ぶ内容（IT・ビジネス・DX）は、日本全体が必要としている課題と大きく重なっている。つまり皆さんが取り組もうとしていることは日本全体の課題でもある。<span class="src">← S03:p.22</span></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3→マルチステージ -->
+  <div id="ch2-stage" class="section">
+    <h3>「3ステージ」から「マルチ・ステージ」の人生へ</h3>
+    <p>職業人生の長期化に伴い、誰もが複数のキャリアを持ち、知識やスキルをアップデートしながら「人生100年時代」を生き抜いていく。<span class="src">← S03:p.24</span></p>
+
+    <div class="diagram">
+      <div class="diagram-title">図：3ステージモデル vs マルチ・ステージモデル（S03:p.24 を図解）</div>
+      <!-- SVG: viewBox="0 0 720 280", 各ボックスはx座標計算済み -->
+      <svg viewBox="0 0 720 280" width="100%" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#f5a623"/>
+          </marker>
+        </defs>
+        <!-- 3ステージ label -->
+        <text x="12" y="20" fill="#f5a623" font-size="12" font-weight="700">【3ステージモデル】ロールモデルあり・長期継続雇用</text>
+        <!-- 教育20年: x=12, w=120 -->
+        <rect x="12" y="30" width="120" height="50" rx="4" fill="#2a2030" stroke="#7c6af7"/>
+        <text x="72" y="52" fill="#e2e4f0" font-size="11" text-anchor="middle" font-weight="700">【20年】教育</text>
+        <text x="72" y="68" fill="#8b90b0" font-size="10" text-anchor="middle">0〜20歳前後</text>
+        <!-- 仕事40年: x=150, w=220 -->
+        <rect x="150" y="30" width="220" height="50" rx="4" fill="#2a3020" stroke="#5dc8e8"/>
+        <text x="260" y="52" fill="#e2e4f0" font-size="11" text-anchor="middle" font-weight="700">【40年】仕事（長期継続雇用）</text>
+        <text x="260" y="68" fill="#8b90b0" font-size="10" text-anchor="middle">20〜60歳前後</text>
+        <!-- 引退20年: x=388, w=120 -->
+        <rect x="388" y="30" width="120" height="50" rx="4" fill="#2a2020" stroke="#e85d5d"/>
+        <text x="448" y="52" fill="#e2e4f0" font-size="11" text-anchor="middle" font-weight="700">【20年】引退</text>
+        <text x="448" y="68" fill="#8b90b0" font-size="10" text-anchor="middle">60〜80歳前後</text>
+        <!-- arrows 3stage -->
+        <line x1="132" y1="55" x2="148" y2="55" stroke="#f5a623" stroke-width="2" marker-end="url(#arr)"/>
+        <line x1="370" y1="55" x2="386" y2="55" stroke="#f5a623" stroke-width="2" marker-end="url(#arr)"/>
+        <!-- LifeShift arrow -->
+        <text x="360" y="110" fill="#f5a623" font-size="12" font-weight="700">↓ ライフシフト</text>
+        <!-- マルチステージ label -->
+        <text x="12" y="140" fill="#7ce85d" font-size="12" font-weight="700">【マルチ・ステージモデル】ロールモデルなし・人生の多様化</text>
+        <!-- 教育20年 -->
+        <rect x="12" y="150" width="100" height="50" rx="4" fill="#2a2030" stroke="#7c6af7"/>
+        <text x="62" y="172" fill="#e2e4f0" font-size="11" text-anchor="middle" font-weight="700">【20年】教育</text>
+        <text x="62" y="188" fill="#8b90b0" font-size="10" text-anchor="middle">0〜20歳前後</text>
+        <!-- 60年さまざまなステージ: x=130, w=360 -->
+        <rect x="130" y="150" width="360" height="50" rx="4" fill="#1a2a3a" stroke="#5dc8e8"/>
+        <text x="310" y="168" fill="#e2e4f0" font-size="11" text-anchor="middle" font-weight="700">【60年】さまざまなステージ（20〜80歳前後）</text>
+        <!-- 内部タグ -->
+        <text x="150" y="188" fill="#8b90b0" font-size="9">会社勤め 副業 転職 学び直し 起業 ボランティア プロボノ</text>
+        <!-- 引退20年 -->
+        <rect x="508" y="150" width="100" height="50" rx="4" fill="#2a2020" stroke="#e85d5d"/>
+        <text x="558" y="172" fill="#e2e4f0" font-size="11" text-anchor="middle" font-weight="700">【20年】引退</text>
+        <text x="558" y="188" fill="#8b90b0" font-size="10" text-anchor="middle">80〜100歳前後</text>
+        <!-- arrows multi -->
+        <line x1="112" y1="175" x2="128" y2="175" stroke="#7ce85d" stroke-width="2" marker-end="url(#arr)"/>
+        <line x1="490" y1="175" x2="506" y2="175" stroke="#7ce85d" stroke-width="2" marker-end="url(#arr)"/>
+        <!-- 出典 -->
+        <text x="12" y="240" fill="#8b90b0" font-size="10">出典：リンダ・グラットン/アンドリュー・スコット著, 池村千秋訳（2016）『LIFE SHIFT 人生100年時代の人生戦略』東洋経済新報社 をもとに筆者作成</text>
+        <text x="12" y="256" fill="#8b90b0" font-size="10">← S03:p.24</text>
+      </svg>
+    </div>
+
+    <div class="block-audio">
+      <div class="tag tag-audio">音声補足</div>
+      <p>マルチ・ステージモデルでは参考となるロールモデルが存在しない。同じ組織の10年・20年先輩の生き方を見ても自分の将来を想像できない時代になった。サイバー大学卒業後も大きなキャリアチェンジの可能性を強く想定しておくべきである。<span class="src">← S03:p.24</span></p>
+    </div>
+  </div>
+
+  <!-- 未来志向チェンジ術 -->
+  <div id="ch2-futuremind" class="section">
+    <h3>未来志向のキャリア・チェンジ術</h3>
+    <div class="section">
+      <h4>過去の振り返りの意義と限界</h4>
+      <p>キャリア支援の現場では「過去の振り返りと意味づけ」が重視されてきた（自己分析・自己理解）。これは個人の価値観・適性・能力・興味などの個性の確認・吟味に不可欠なプロセスである。<span class="src">← S03:p.25</span></p>
+      <p>しかし将来予測が困難なマルチ・ステージモデルの人生を生きる私たちにとって、<strong>過去を振り返るだけでは十分ではない</strong>。過去を振り返っても将来予測は困難であり、過去に身につけた知識やスキルはすぐに陳腐化してしまう。<span class="src">← S03:p.25</span></p>
+    </div>
+
+    <div class="def-box">
+      <div class="def-label">定義（Ibarra, 2003）</div>
+      <div class="def-term">未来志向のキャリア・チェンジ術</div>
+      <div class="def-body">将来の自己像（キャリアアイデンティティ）を思い描いては試すことを繰り返し、大胆なキャリアチェンジのために将来の自己像を修正していく手法。その修正は<strong>「行動してから考える」</strong>という順で行われる。</div>
+    </div>
+    <div class="block-ext">
+      <div class="tag tag-ext">外部補足</div>
+      <p>出典：Ibarra, H.（2003）. <em>Working Identity: Unconventional strategies for reinventing your career.</em> Harvard Business Press.（ハーミニア・イバーラ著、金井壽宏監修、宮田貴子訳（2003）『ハーバード流 キャリア・チェンジ術』翔泳社）<span class="src">← S03:p.26</span></p>
+    </div>
+
+    <div class="diagram">
+      <div class="diagram-title">図：未来志向のキャリア・チェンジ術サイクル（S03:p.26 を図解）</div>
+      <!-- SVG viewBox="0 0 500 220". 3つの楕円をほぼ等間隔に配置 -->
+      <svg viewBox="0 0 500 220" width="100%" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#f5a623"/>
+          </marker>
+        </defs>
+        <!-- 将来の自己像を探る（上中央）: cx=250, cy=50, rx=110, ry=36 -->
+        <ellipse cx="250" cy="60" rx="110" ry="36" fill="#2a1a3a" stroke="#7c6af7" stroke-width="1.5"/>
+        <text x="250" y="56" fill="#e2e4f0" font-size="12" text-anchor="middle" font-weight="700">将来の自己像</text>
+        <text x="250" y="72" fill="#e2e4f0" font-size="12" text-anchor="middle" font-weight="700">を探る</text>
+        <!-- 新旧のアイデンティティの間に留まる（右）: cx=380, cy=155, rx=100, ry=36 -->
+        <ellipse cx="390" cy="160" rx="100" ry="36" fill="#2a2a1a" stroke="#f5a623" stroke-width="1.5"/>
+        <text x="390" y="152" fill="#e2e4f0" font-size="10" text-anchor="middle" font-weight="700">新旧の</text>
+        <text x="390" y="165" fill="#e2e4f0" font-size="10" text-anchor="middle" font-weight="700">アイデンティティ</text>
+        <text x="390" y="178" fill="#e2e4f0" font-size="10" text-anchor="middle" font-weight="700">の間に留まる</text>
+        <!-- 大きな変化の基盤を築く（左）: cx=110, cy=155, rx=100, ry=36 -->
+        <ellipse cx="110" cy="160" rx="100" ry="36" fill="#1a2a2a" stroke="#e85d5d" stroke-width="1.5"/>
+        <text x="110" y="152" fill="#e85d5d" font-size="10" text-anchor="middle" font-weight="700">大きな変化の</text>
+        <text x="110" y="165" fill="#e85d5d" font-size="10" text-anchor="middle" font-weight="700">基盤を築く</text>
+        <!-- arrows: 上→右 -->
+        <path d="M345,80 Q380,100 385,122" stroke="#f5a623" stroke-width="1.5" fill="none" marker-end="url(#arr2)"/>
+        <!-- 右→左 -->
+        <path d="M290,162 L212,162" stroke="#f5a623" stroke-width="1.5" fill="none" marker-end="url(#arr2)"/>
+        <!-- 左→上 -->
+        <path d="M152,130 Q160,95 200,80" stroke="#f5a623" stroke-width="1.5" fill="none" marker-end="url(#arr2)"/>
+      </svg>
+    </div>
+
+    <p>将来の自己像を思い描いては試すサイクルを繰り返すことで、働くうえで大切にしたいことも明確化されていく。過去の振り返りだけでなく、<strong>未来志向の考えや行動からも自らの価値観を見出すことができる。</strong><span class="src">← S03:p.30</span></p>
+  </div>
+
+  <!-- 9つの戦略 -->
+  <div id="ch2-9strategy" class="section">
+    <h3>【参考】新しいキャリアを見つけるための型破りな9つの戦略</h3>
+    <p class="block-ext"><span class="tag tag-ext">外部補足</span> 出典：Ibarra（2003）同上 <span class="src">← S03:p.27-29</span></p>
+    <table>
+      <tr><th>#</th><th>戦略</th></tr>
+      <tr><td>1</td><td>行動してから考える。行動することで新しい考え方が生まれ、変化できる。自分を見つめても新しい可能性は見つけられない。</td></tr>
+      <tr><td>2</td><td>本当の自分を見つけようとするのはやめる。「将来の自己像」を数多く考え出し、そのなかで試して学びたいいくつかに焦点を合わせる。</td></tr>
+      <tr><td>3</td><td>「過渡期」を受け入れる。執着したり手放したりして、一貫性がなくてもいいことにする。早まった結論を出すよりは矛盾を残しておいたほうがいい。</td></tr>
+      <tr><td>4</td><td>「小さな勝利」を積み重ねる。一気にすべてが変わるような大きな決断をしたくなる誘惑に耐える。曲がりくねった道を受け入れる。</td></tr>
+      <tr><td>5</td><td>まずは試してみる。今の仕事と並行して実行に移せば、結論を出す前に試すことができる。</td></tr>
+      <tr><td>6</td><td>人間関係を変える。仕事以外にも目を向け、あんなふうになりたいと思う人やキャリア・チェンジを手助けしてくれそうな人を見つける。ただしこれまでの人間関係からは探そうとしない。</td></tr>
+      <tr><td>7</td><td>きっかけを待っていてはいけない。毎日のできごとのなかに今経験している変化の意味を見いだすようにする。人に自分の「物語」を実際に何度も話してみる。</td></tr>
+      <tr><td>8</td><td>距離をおいて考える。だがその時間が長すぎてはいけない。</td></tr>
+      <tr><td>9</td><td>チャンスの扉をつかむ。変化は急激に始まるものだ。大きな変化を受け入れやすいときもあれば、そうでないときもある。好機をのがさない。</td></tr>
+    </table>
+    <div class="block-emph">
+      <div class="tag tag-emph">試験注意</div>
+      <p>講師から「9つの戦略はすべて小テストに出るかもしれないのでしっかり読んで理解し、説明できるようにしておいてください」と明言されている。<span class="src">← S05-A</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- Chapter 3 -->
+<section id="ch3" class="chapter">
+  <div class="chapter-header">
+    <div class="chapter-badge" style="background:var(--ch3)"></div>
+    <h2 style="color:var(--ch3)">第3章　越境と経験学習のすすめ</h2>
+  </div>
+
+  <!-- 卒業生3事例 -->
+  <div id="ch3-cases" class="section">
+    <h3>卒業生3事例：「行動→自己像修正」の具体例</h3>
+    <table>
+      <tr><th>事例</th><th>最初の自己像</th><th>行動</th><th>転機</th><th>修正された自己像</th></tr>
+      <tr>
+        <td><strong>Aさん</strong><br>専業学生</td>
+        <td>薬学部を中退し、将来性のあるIT業界を学びたいと入学</td>
+        <td>パン屋の早朝アルバイト（生活リズム整え・同僚とのコミュニケーションは就活にも活用）・志望業界を絞らず多くの企業を見た</td>
+        <td>就活通じて多数の業界・企業を知り、仕事選びの軸が明確化。学外での人との出会いや経験の大切さも実感</td>
+        <td>IT企業に就職</td>
+      </tr>
+      <tr>
+        <td><strong>Bさん</strong><br>社会人学生</td>
+        <td>自動車部品製造工場で鋳造職として約20年→IT業界へ転職したい</td>
+        <td>卒業前から転職活動を開始</td>
+        <td>転職活動でことごとく落ちる挫折の後、資格の学校でたまたま福祉関係の経営者と出会う</td>
+        <td>障害者福祉×ITの分野でキャリアの新境地を開拓</td>
+      </tr>
+      <tr>
+        <td><strong>Cさん</strong><br>社会人学生</td>
+        <td>主婦：子育て環境のアナログさを変えたい・創業したい</td>
+        <td>非営利団体主催の起業家体験イベント参加、CU起業部を立ち上げ</td>
+        <td>イベントで優秀なエンジニアと出会い、CU起業部の異業種交流が後の創業に活きる</td>
+        <td>会社設立→<strong>自治体が主催する起業家集中支援プログラムで最優秀賞受賞</strong>→スタートアップCEO</td>
+      </tr>
+    </table>
+    <div class="block-audio">
+      <div class="tag tag-audio">音声補足</div>
+      <p>クラウドキャンパスの「キャリア支援情報」から先輩たちの話を視聴できる。<strong>専業学生向け</strong>：「早期内定獲得した先輩から聞く！就職活動体験記」、<strong>社会人学生・専業学生向け</strong>：「サイバー大学で広がる私のワークライフキャリア」。各イベントのアーカイブを視聴可能。<span class="src">← S03:p.39</span></p>
+    </div>
+  </div>
+
+  <!-- 行動→自己像修正 -->
+  <div id="ch3-action" class="section">
+    <h3>「将来の自己像」の設定→「行動」→「将来の自己像」の修正</h3>
+    <p>以下の3ステップを繰り返すことで、理想とする将来の自己像が徐々に明確化される。<span class="src">← S03:p.40</span></p>
+    <ol>
+      <li><strong>現時点での最良かつ理想とする将来の自己像を大胆に思い描く</strong>：過去を振り返り自身の内面を掘り下げるだけでは見えてこない</li>
+      <li><strong>「とりあえず」行動することが極めて重要</strong>：行動することで新しい考え方が生まれ変化できる。失敗や挫折も変化に必要な糧と考える</li>
+      <li><strong>将来の自己像を修正する</strong>：必要であれば何度でも→理想とする将来の自己像が徐々に明確化</li>
+    </ol>
+    <div class="block-ext">
+      <div class="tag tag-ext">外部補足</div>
+      <p>トーマス・エジソン（発明家/アメリカ）の言葉：「それは失敗じゃなくて、その方法でうまくいかないことがわかったんだから成功なんだよ」（出典：遠越段（2022）『私たちは、失敗しながら生きている。偉人たちの名言33』総合法令出版）<span class="src">← S03:p.40</span></p>
+    </div>
+  </div>
+
+  <!-- 越境学習 -->
+  <div id="ch3-crossborder" class="section">
+    <h3>越境学習（越境学習）</h3>
+    <div class="def-box">
+      <div class="def-label">定義（中原淳, 2012）</div>
+      <div class="def-term">越境学習</div>
+      <div class="def-body">個人が所属する組織の境界を<strong>往還</strong>しつつ、自分の仕事・業務に関連する内容について学習・内省すること</div>
+    </div>
+    <div class="block-ext">
+      <div class="tag tag-ext">外部補足</div>
+      <p>出典：中原淳（2012）『経営学修論：人材育成を科学する』東京大学出版会。なお境界の概念については中西善信・江夏幾多郎（2020）「越境研究の現状と展望」『経営行動科学』第32巻第1・2号も参照。<span class="src">← S03:p.41</span></p>
+    </div>
+    <ul>
+      <li>普段置かれている状況から離れて異なる状況に接することこそが、学びや気づきを促す</li>
+      <li>境界は異なる視点が出会い、新しい可能性が生まれる場でもある</li>
+    </ul>
+    <div class="block-audio">
+      <div class="tag tag-audio">音声補足</div>
+      <p>現在所属組織を持っている社会人学生にとって、サイバー大学は越境先である。様々な業種・職種の学生同士の「異業種交流」からキャリアチェンジにつながる新たな気づきや視点を得たという話をよく聞く。一方、専業学生にとっては大学が越境元であるため、アルバイトや長期インターンシップなど大学の外へどんどん越境して様々な経験を積むことが重要である。<span class="src">← S03:p.41,44</span></p>
+    </div>
+
+    <div class="section">
+      <h4>越境の経験が個人にもたらすもの <span class="src">← S03:p.44</span></h4>
+      <ul>
+        <li>所属元組織では直接的には獲得困難な知識を獲得する貴重な機会となる</li>
+        <li>得られる知識は越境当初の目的を越えて関連するさまざまな領域に及ぶ</li>
+        <li>組織外関係者とのネットワークを通じて将来の学習機会を拡大する</li>
+        <li>普段とは異なる状況に接することは、より深いレベルでの学びを促す（新たな視点の獲得・新たな可能性への気づき）</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 経験学習モデル -->
+  <div id="ch3-kolb" class="section">
+    <h3>経験学習のモデル（Kolb, 1984）</h3>
+    <div class="def-box">
+      <div class="def-label">定義（Kolb, 1984）</div>
+      <div class="def-term">経験学習</div>
+      <div class="def-body">具体的経験が変容された結果、知識が創出されるプロセス</div>
+    </div>
+    <div class="block-ext">
+      <div class="tag tag-ext">外部補足</div>
+      <p>出典：Kolb, D.（1984）<em>Experiential Learning: Experience as the resource of Learning and Development</em>, Englewood Cliffs, NJ, Prentice Hall.<span class="src">← S03:p.42</span></p>
+    </div>
+
+    <div class="diagram">
+      <div class="diagram-title">図：経験学習の学習サイクル（S03:p.42）</div>
+      <!-- SVG viewBox="0 0 440 200" -->
+      <svg viewBox="0 0 440 200" width="100%" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arr3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#5dc8e8"/>
+          </marker>
+        </defs>
+        <!-- 上: 具体的経験 cx=220, cy=40 -->
+        <rect x="150" y="20" width="140" height="40" rx="4" fill="#1a2a3a" stroke="#5dc8e8"/>
+        <text x="220" y="44" fill="#e2e4f0" font-size="12" text-anchor="middle" font-weight="700">①具体的経験</text>
+        <!-- 右: 内省的観察 cx=360, cy=110 -->
+        <rect x="300" y="90" width="120" height="40" rx="4" fill="#1a3a2a" stroke="#5dc8e8"/>
+        <text x="360" y="114" fill="#e2e4f0" font-size="11" text-anchor="middle" font-weight="700">②内省的観察</text>
+        <!-- 下: 抽象的概念化 cx=220, cy=170 -->
+        <rect x="150" y="155" width="140" height="40" rx="4" fill="#2a1a3a" stroke="#5dc8e8"/>
+        <text x="220" y="179" fill="#e2e4f0" font-size="12" text-anchor="middle" font-weight="700">③抽象的概念化</text>
+        <!-- 左: 能動的実験 cx=80, cy=110 -->
+        <rect x="20" y="90" width="120" height="40" rx="4" fill="#3a2a1a" stroke="#5dc8e8"/>
+        <text x="80" y="114" fill="#e2e4f0" font-size="11" text-anchor="middle" font-weight="700">④能動的実験</text>
+        <!-- 矢印: ①→② -->
+        <path d="M285,42 Q370,60 362,88" stroke="#5dc8e8" stroke-width="1.5" fill="none" marker-end="url(#arr3)"/>
+        <!-- ②→③ -->
+        <path d="M355,130 Q320,165 295,172" stroke="#5dc8e8" stroke-width="1.5" fill="none" marker-end="url(#arr3)"/>
+        <!-- ③→④ -->
+        <path d="M152,172 Q90,165 82,132" stroke="#5dc8e8" stroke-width="1.5" fill="none" marker-end="url(#arr3)"/>
+        <!-- ④→① -->
+        <path d="M88,88 Q100,50 148,40" stroke="#5dc8e8" stroke-width="1.5" fill="none" marker-end="url(#arr3)"/>
+      </svg>
+    </div>
+    <p>このモデルは絶えまない学習のプロセスを表している。<span class="src">← S03:p.42</span></p>
+  </div>
+
+  <!-- 越境学習モデル8段階 -->
+  <div id="ch3-model8" class="section">
+    <h3>越境学習のモデル（8段階）</h3>
+    <div class="block-ext">
+      <div class="tag tag-ext">外部補足</div>
+      <p>出典：石山恒貴（2018）『越境的学習のメカニズム：実践共同体を往還しキャリア構築するナレッジ・ブローカーの実像』福村出版 をもとに筆者作成<span class="src">← S03:p.43</span></p>
+    </div>
+
+    <div class="diagram">
+      <div class="diagram-title">図：越境学習モデル（8段階）（S03:p.43）</div>
+      <!-- SVG viewBox="0 0 620 260" 
+           左列（能動的実験）x=20  中列（具体的経験/概念化）x=230  右列（内省）x=480
+           y: 行1=40, 行2=110, 行3=180 -->
+      <svg viewBox="0 0 620 260" width="100%" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arr4" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L7,3 z" fill="#f5a623"/>
+          </marker>
+        </defs>
+        <!-- 上段ラベル -->
+        <text x="310" y="18" fill="#5dc8e8" font-size="11" text-anchor="middle">経験の把握（具体的経験）</text>
+        <text x="80" y="18" fill="#7ce85d" font-size="11" text-anchor="middle">経験の転換（能動的実験）</text>
+        <text x="540" y="18" fill="#f5a623" font-size="11" text-anchor="middle">経験の転換（内省的観察）</text>
+
+        <!-- 中列 上段: ①越境先での経験 -->
+        <rect x="220" y="28" width="180" height="36" rx="4" fill="#1a2a3a" stroke="#5dc8e8"/>
+        <text x="310" y="50" fill="#e2e4f0" font-size="11" text-anchor="middle" font-weight="700">① 越境先での経験</text>
+
+        <!-- 中列 中段: ⑤越境元での経験 / ③概念化 ⑦概念化 -->
+        <rect x="220" y="98" width="180" height="36" rx="4" fill="#1a2a3a" stroke="#5dc8e8"/>
+        <text x="310" y="120" fill="#e2e4f0" font-size="11" text-anchor="middle" font-weight="700">⑤ 越境元での経験</text>
+
+        <!-- 下段ラベル -->
+        <text x="310" y="170" fill="#7c6af7" font-size="11" text-anchor="middle">経験の把握（抽象的概念化）</text>
+
+        <!-- 中列 下段: ③越境先概念化 ⑦越境元概念化 -->
+        <rect x="220" y="180" width="180" height="36" rx="4" fill="#2a1a3a" stroke="#7c6af7"/>
+        <text x="310" y="196" fill="#e2e4f0" font-size="10" text-anchor="middle" font-weight="700">③ 越境先経験を概念化</text>
+        <rect x="220" y="220" width="180" height="36" rx="4" fill="#2a1a3a" stroke="#7c6af7"/>
+        <text x="310" y="242" fill="#e2e4f0" font-size="10" text-anchor="middle" font-weight="700">⑦ 越境元経験を概念化</text>
+
+        <!-- 左列: ④越境元で実験 / ⑧越境先で実験 -->
+        <rect x="20" y="100" width="140" height="36" rx="4" fill="#1a3a2a" stroke="#7ce85d"/>
+        <text x="90" y="116" fill="#7ce85d" font-size="11" text-anchor="middle" font-weight="700">④ 越境元で実験</text>
+        <rect x="20" y="150" width="140" height="36" rx="4" fill="#1a3a2a" stroke="#7ce85d"/>
+        <text x="90" y="172" fill="#7ce85d" font-size="11" text-anchor="middle" font-weight="700">⑧ 越境先で実験</text>
+
+        <!-- 右列: ②内省 / ⑥内省 -->
+        <rect x="460" y="100" width="140" height="36" rx="4" fill="#2a2a1a" stroke="#f5a623"/>
+        <text x="530" y="116" fill="#e2e4f0" font-size="11" text-anchor="middle" font-weight="700">② 内省</text>
+        <rect x="460" y="150" width="140" height="36" rx="4" fill="#2a2a1a" stroke="#f5a623"/>
+        <text x="530" y="172" fill="#e2e4f0" font-size="11" text-anchor="middle" font-weight="700">⑥ 内省</text>
+
+        <!-- 矢印群 -->
+        <!-- ①→② -->
+        <path d="M400,48 Q440,70 460,108" stroke="#f5a623" stroke-width="1.5" fill="none" marker-end="url(#arr4)"/>
+        <!-- ②→③ -->
+        <path d="M490,138 Q430,165 403,185" stroke="#f5a623" stroke-width="1.5" fill="none" marker-end="url(#arr4)"/>
+        <!-- ③→④ -->
+        <path d="M220,192 Q150,170 162,138" stroke="#f5a623" stroke-width="1.5" fill="none" marker-end="url(#arr4)"/>
+        <!-- ④→⑤ -->
+        <path d="M160,118 Q200,118 218,118" stroke="#f5a623" stroke-width="1.5" fill="none" marker-end="url(#arr4)"/>
+        <!-- ⑤→⑥ -->
+        <path d="M400,118 Q440,130 460,155" stroke="#f5a623" stroke-width="1.5" fill="none" marker-end="url(#arr4)"/>
+        <!-- ⑥→⑦ -->
+        <path d="M490,188 Q430,210 403,228" stroke="#f5a623" stroke-width="1.5" fill="none" marker-end="url(#arr4)"/>
+        <!-- ⑦→⑧ -->
+        <path d="M220,232 Q150,210 162,172" stroke="#f5a623" stroke-width="1.5" fill="none" marker-end="url(#arr4)"/>
+        <!-- ⑧→① -->
+        <path d="M130,148 Q100,80 218,50" stroke="#f5a623" stroke-width="1.5" fill="none" marker-end="url(#arr4)" stroke-dasharray="4,3"/>
+
+        <!-- 往還ラベル -->
+        <text x="310" y="80" fill="#e85d5d" font-size="12" text-anchor="middle" font-weight="700">往還（ここが重要）</text>
+      </svg>
+    </div>
+
+    <div class="keypoint">
+      <div class="kp-label">🔑 重要キーワード：往還（おうかん）</div>
+      <p>越境元と越境先の間を<strong>往還（行ったり来たり）すること</strong>が越境学習の本質。外で学んだことを中に持ち帰って越境元でも生かすことを繰り返すことで、越境元・越境先双方が学びの恩恵を受け、個人の成長が促進される。<span class="src">← S03:p.43,45</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- Chapter 4 -->
+<section id="ch4" class="chapter">
+  <div class="chapter-header">
+    <div class="chapter-badge" style="background:var(--ch4)"></div>
+    <h2 style="color:var(--ch4)">第4章　将来像を明確化し、専門性を高める</h2>
+  </div>
+
+  <!-- プランド・ハップンスタンス -->
+  <div id="ch4-planned" class="section">
+    <h3>偶然の活用①：プランド・ハップンスタンス理論（計画された偶発性理論）</h3>
+    <div class="def-box">
+      <div class="def-label">定義（Mitchell, Levin, & Krumboltz, 1999）</div>
+      <div class="def-term">プランド・ハップンスタンス理論（計画された偶発性理論）</div>
+      <div class="def-body">「偶然の出来事」の影響を軽視せず、むしろ積極的に取り込み、より良いキャリア形成に活用するという考え方を基本とする理論。スタンフォード大学のJohn D. Krumboltz教授らが提唱。</div>
+    </div>
+    <div class="block-ext">
+      <div class="tag tag-ext">外部補足</div>
+      <p>出典：Mitchell, K. E., Levin, A. S., & Krumboltz, J. D.（1999）"Planned happenstance: constructing unexpected career opportunities". <em>Journal of Counseling & Development</em>, 77（2）, pp. 115-124.<span class="src">← S03:p.51</span></p>
+      <p style="margin-top:8px">【Web検証で確認された補足情報】クランボルツは、社会的成功を収めたビジネスパーソンへの調査で「現在のキャリアは予期せぬ偶然の出来事に起因する」と回答した人が<strong>約8割</strong>に上ることを根拠にこの理論を発表した。また18歳時点でなりたいと考えていた職業に実際に就き続けている人はわずか約2%に過ぎないというデータも示されている。なおKrumboltz（2009）以降は"Happenstance Learning Theory"（ハップンスタンス学習理論）への発展が見られる。<span class="tag tag-ext" style="margin-left:6px">外部補足</span></p>
+    </div>
+
+    <div class="block-audio">
+      <div class="tag tag-audio">音声補足</div>
+      <p>一定の自己実現を果たした卒業生と話していると、多くが「たまたまこの人と出会った」「たまたま予想外の出来事に遭遇した」と口癖のように言う。こうした偶発的な出会いや出来事がキャリアを決定することがしばしばある。社会環境変化が激しく先の見通しが立ちにくい時代では、従来のような予定調和的・計画的なキャリア形成は困難になってきている。<span class="src">← S03:p.51</span></p>
+    </div>
+
+    <div class="section">
+      <h4>理論の内容（3項目）<span class="src">← S03:p.52</span></h4>
+      <ol>
+        <li>個人がすでにある特性に基づいて意思決定していくよりも、自分の能力・興味を拡大していくこと</li>
+        <li>キャリアは安定したものではなく変化し続けるものであり、個人はそのなかで働き続けるための準備をすることが重要</li>
+        <li>はじめから学習内容を決めてしまわず多様な学習を行い、「偶然の出来事」を受け入れることにより可能性を切り開くチャンスを増やすということ</li>
+      </ol>
+    </div>
+    <div class="section">
+      <h4>「偶然の出来事」をキャリアに活かすための5つのスキル<span class="src">← S03:p.52</span></h4>
+      <table>
+        <tr><th>#</th><th>スキル</th><th>説明</th></tr>
+        <tr><td>1</td><td><strong>好奇心</strong></td><td>新しい学びの機会を模索する</td></tr>
+        <tr><td>2</td><td><strong>持続性</strong></td><td>たとえ失敗しても努力し続ける</td></tr>
+        <tr><td>3</td><td><strong>柔軟性</strong></td><td>姿勢や状況を変えることを進んで取り入れる</td></tr>
+        <tr><td>4</td><td><strong>楽観性</strong></td><td>新しい機会は実行でき達成できるものと考える</td></tr>
+        <tr><td>5</td><td><strong>冒険心</strong></td><td>結果がどうなるかわからない場合でも行動することを恐れない（リスクテーキング）</td></tr>
+      </table>
+      <div class="block-ext">
+        <div class="tag tag-ext">外部補足</div>
+        <p>参照文献（スライド掲載）：独立行政法人 労働政策研究・研修機構（2016）『職業相談場面におけるキャリア理論およびカウンセリング理論の活用・普及に関する文献調査』JILPT 資料シリーズ, No.165. ／渡辺三枝子 編著（2018）『新版 キャリアの心理学〔第2版〕キャリア支援への発達的アプローチ』ナカニシヤ出版.<span class="src">← S03:p.52</span></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- キャリア・カオス理論 -->
+  <div id="ch4-chaos" class="section">
+    <h3>偶然の活用②：キャリア・カオス理論</h3>
+    <div class="def-box">
+      <div class="def-label">定義</div>
+      <div class="def-term">キャリア・カオス理論</div>
+      <div class="def-body">人が不確実な世界に存在している事実を受け止め、キャリアが偶然によって不規則に変化するという視点を持って、一人ひとりがユニークなキャリアを発展させていくことを推奨する考え方</div>
+    </div>
+    <div class="block-ext">
+      <div class="tag tag-ext">外部補足</div>
+      <p>スライド掲載の参照文献：独立行政法人 労働政策研究・研修機構（2016）『職業相談場面におけるキャリア理論およびカウンセリング理論の活用・普及に関する文献調査』JILPT 資料シリーズ, No.165. ／渡辺三枝子 編著（2018）『新版 キャリアの心理学〔第2版〕キャリア支援への発達的アプローチ』ナカニシヤ出版.<span class="src">← S03:p.53</span></p>
+      <p style="margin-top:8px">【Web検証で確認された補足情報】キャリア・カオス理論はオーストラリアの心理学者ジム・ブライト（Jim Bright）とロバート・プライアー（Robert Pryor）が提唱。気象学など自然科学のカオス理論をキャリア発達に応用したもの。理論では「<strong>アトラクタ</strong>」という概念が重要で、①点アトラクタ（1つのことへの執着）、②振り子アトラクタ（二項対立的思考）、③円環アトラクタ（繰り返しパターン）、④ストレンジ・アトラクタ（開かれた系の思考）の4種類がある。偶然をチャンスとして活かせるのは④ストレンジ・アトラクタの状態にある人とされる（出典：Bright & Pryor, 2005; リクルートワークス研究所, 2021）。<span class="tag tag-ext" style="margin-left:6px">外部補足</span></p>
+    </div>
+    <ul>
+      <li>ある時点でのほんの少しの誤差が、その後の結果を大きく変えてしまうので未来を予測することは難しい</li>
+      <li>一見不規則に見える複雑な現象であっても、その背景には実は何らかのパターンがある</li>
+      <li><strong>行動の制約に気づき、制約を適切にマネジメントして、偶然をチャンスとして活用する</strong>ことが推奨される</li>
+    </ul>
+    <div class="block-audio">
+      <div class="tag tag-audio">音声補足：Bさんの事例でキャリア・カオス理論を理解する</div>
+      <p>Bさんにとって「IT業界へ転職したい」というこだわりが行動の制約であった。転職活動が悉く失敗したのはその制約の結果であったが、Bさんは自ら行動の制約を解き変化を許容する柔軟性を持つようになった。資格の学校でたまたま出会った福祉関連経営者とのつながりをチャンスとして逃さず、IT化の遅れた福祉業界に逆に自分が活躍できるチャンスがあると考えた。これこそが偶然と変化等を利用するためのスキルである。<span class="src">← S03:p.54</span></p>
+    </div>
+  </div>
+
+  <!-- 2つのアプローチ -->
+  <div id="ch4-2approach" class="section">
+    <h3>2つのアプローチによる将来像の明確化</h3>
+    <table>
+      <tr><th>アプローチ</th><th>出発点</th><th>方向</th><th>活用時期</th></tr>
+      <tr>
+        <td><strong>フォアキャスティング</strong></td>
+        <td>現在</td>
+        <td>現在→将来：経験などの積み上げから将来像を描き修正する</td>
+        <td>1・2年次（基礎固め・方向づけ期）</td>
+      </tr>
+      <tr>
+        <td><strong>バックキャスティング</strong></td>
+        <td>目標とする将来像</td>
+        <td>将来→現在：ある べき未来を大胆に想像し、今何をすべきかを考える</td>
+        <td>3年次以降（専門性強化期）</td>
+      </tr>
+    </table>
+    <div class="keypoint">
+      <div class="kp-label">🔑 重要</div>
+      <p>フォアキャストによってありうる未来の可能性を最大限導き出しながら、バックキャストによってあるべき未来を大胆に想像するという<strong>2つのアプローチをうまく取り入れながら</strong>理想とする将来の自己像を作っていくことが大事である。<span class="src">← S03:p.55</span></p>
+    </div>
+    <div class="block-audio">
+      <div class="tag tag-audio">音声補足</div>
+      <p>未来思考の将来イメージを持つことが、積極的な行動を促す原動力になるという側面もある。<span class="src">← S03:p.55</span></p>
+    </div>
+  </div>
+
+  <!-- マイクロクレデンシャル -->
+  <div id="ch4-microcred" class="section">
+    <h3>マイクロクレデンシャルを導入したカリキュラムと専門性強化</h3>
+    <p>サイバー大学のカリキュラムは一人ひとりの必要な学びを実現するオーダーメイド型であり、各自が何を学ぶかを主体的に考える必要がある。<span class="src">← S03:p.5</span></p>
+    <table>
+      <tr><th>バッジ段階</th><th>学習フェーズ</th><th>主な対象</th></tr>
+      <tr><td>ブロンズ</td><td>基礎を固める（1年次）</td><td>1次・2次編入生</td></tr>
+      <tr><td>シルバー</td><td>方向性を決める（2年次）</td><td>同上</td></tr>
+      <tr><td>ゴールド</td><td>専門性を高める（3年次）</td><td>全員</td></tr>
+      <tr><td>プラチナ</td><td>卒研科目（4年次）</td><td>全員</td></tr>
+    </table>
+    <div class="block-audio">
+      <div class="tag tag-audio">音声補足</div>
+      <p>学び方の方向性の例：①テクノロジー深掘り、②ビジネス深掘り、③AI×企業の二刀流、④バッジにこだわらないジェネラリスト志向、など。遅くとも3年次になる前までに将来像をできるだけ明確化することが望まれる。<span class="src">← S03:p.4,5,58</span></p>
+    </div>
+    <p>3次編入学（3年次スタート）の場合、初学期に基礎固めと方向づけを同時に行う（ブロンズ）。2学期目以降から専門性を高めるフェーズ（シルバー・ゴールド）に移行する。<span class="src">← S03:p.4,58</span></p>
+  </div>
+
+  <!-- 重要4ポイント -->
+  <div id="ch4-4points" class="section">
+    <h3>第7回 重要4ポイント：将来の自己像の明確化に必要なこと</h3>
+    <div class="keypoint">
+      <div class="kp-label">📌 第7回 総まとめ（試験頻出）</div>
+      <ol>
+        <li>働くうえで、さらには生きていくうえで大切にしたい<strong>価値観を言葉で明確化</strong>すること</li>
+        <li>過去に縛られ過ぎずに、<strong>自由かつ大胆に将来の自己像を設定</strong>すること</li>
+        <li>自分を変えるために重要なのは<strong>「行動してから考える」</strong>ということ</li>
+        <li>さまざまな経験や偶然のチャンスなども活用しながら、<strong>柔軟に将来の自己像を修正</strong>すること</li>
+      </ol>
+      <p style="margin-top:8px"><span class="src">← S03:p.60</span></p>
+    </div>
+    <div class="block-audio">
+      <div class="tag tag-audio">音声補足</div>
+      <p>「価値観を言語化できない」「将来やりたいことがわからない」「どんな行動をしたらよいかわからない」という方は、一人で悶々と考えるだけでなく行動に移してキャリアサポートセンターへ相談することが推奨されている。<span class="src">← S03:p.61</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- Appendices -->
+<div class="appendix">
+
+  <!-- Appendix A: 重要用語集 -->
+  <section id="appendix-a" class="appendix-section">
+    <h2>付録A：重要用語集</h2>
+    <table>
+      <tr><th>用語</th><th>定義・説明</th><th>出典</th></tr>
+      <tr><td><strong>キャリアデザイン</strong></td><td>自分の望む人生を自らの価値観に基づき描くこと</td><td>S03:p.10</td></tr>
+      <tr><td><strong>キャリア自律</strong></td><td>働く個人が自身のキャリア開発に主体的・自律的に向き合い、進むべき方向を決めること</td><td>S03:p.14</td></tr>
+      <tr><td><strong>Well-being（ウェルビーイング）</strong></td><td>心身だけでなく社会的な面も含め満たされた状態</td><td>S03:p.10</td></tr>
+      <tr><td><strong>ライフキャリア</strong></td><td>ワークキャリアを含む、自分らしい生き方の軌道全体</td><td>S03:p.10</td></tr>
+      <tr><td><strong>リスキリング</strong></td><td>新しい職業に就くため、または今の職業で必要とされるスキルの大幅な変化に適応するために必要なスキルを獲得させること</td><td>S03:p.21</td></tr>
+      <tr><td><strong>DX（デジタルトランスフォーメーション）</strong></td><td>企業がビジネス環境の変化に対応しデジタル技術を活用してビジネスモデルなどを変革し競争上の優位性を確立すること</td><td>S03:p.22</td></tr>
+      <tr><td><strong>3ステージモデル</strong></td><td>教育(0〜20歳)→仕事(20〜60歳)→引退(60〜80歳)の従来型人生モデル。ロールモデルあり・長期継続雇用を前提</td><td>S03:p.24</td></tr>
+      <tr><td><strong>マルチ・ステージモデル</strong></td><td>人生100年時代における多様な役割を行き来する新しい人生モデル。ロールモデルなし・人生の多様化</td><td>S03:p.24</td></tr>
+      <tr><td><strong>越境学習</strong></td><td>個人が所属する組織の境界を往還しつつ、自分の仕事・業務に関連する内容について学習・内省すること</td><td>S03:p.41</td></tr>
+      <tr><td><strong>往還（おうかん）</strong></td><td>越境元と越境先を行き来すること。越境学習の本質</td><td>S03:p.45</td></tr>
+      <tr><td><strong>経験学習（Kolb, 1984）</strong></td><td>具体的経験→内省的観察→抽象的概念化→能動的実験の4段階サイクル</td><td>S03:p.42</td></tr>
+      <tr><td><strong>プランド・ハップンスタンス理論</strong></td><td>偶然の出来事を積極的に取り込みキャリア形成に活用する理論（Mitchell et al., 1999）。好奇心・持続性・柔軟性・楽観性・冒険心の5スキルが重要</td><td>S03:p.51-52</td></tr>
+      <tr><td><strong>キャリア・カオス理論</strong></td><td>キャリアが偶然によって不規則に変化するという視点を持ち、行動の制約に気づき偶然をチャンスとして活用する</td><td>S03:p.53</td></tr>
+      <tr><td><strong>フォアキャスティング</strong></td><td>現在を出発点として将来像を描き修正していくアプローチ。1・2年次向け</td><td>S03:p.55</td></tr>
+      <tr><td><strong>バックキャスティング</strong></td><td>目標とする将来像を描き、そこから今何をすべきかを考えるアプローチ。3年次以降向け</td><td>S03:p.55</td></tr>
+      <tr><td><strong>マイクロクレデンシャル</strong></td><td>サイバー大学のオープンバッジ制度（ブロンズ→シルバー→ゴールド→プラチナ）。個人の学習成果を証明する</td><td>S03:p.4,5</td></tr>
+      <tr><td><strong>プロボノ</strong></td><td>社会的・公共的な目的のために、職業上のスキルや経験を生かして取り組む社会貢献活動</td><td>S03:p.24</td></tr>
+      <tr><td><strong>OJT（On the Job Training）</strong></td><td>実際の業務の中で経験豊富な上司や先輩が若手に知識やスキルを教える訓練方法</td><td>S03:p.13</td></tr>
+    </table>
+  </section>
+
+  <!-- Appendix B: 背景知識 -->
+  <section id="appendix-b" class="appendix-section">
+    <h2>付録B：背景知識・参考文献</h2>
+    <ul>
+      <li><strong>Arthur, M. B., Hall, D. T., & Lawrence, B. S.（1989）</strong>: キャリア理論の基礎となる文献。"Generating new directions in career theory"。<em>Handbook of career theory</em>. Cambridge University Press, pp. 7-25.（S03:p.9）</li>
+      <li><strong>Hall, D. T.（1976）</strong>: <em>Career in organizations</em>. Goodyear Publishing Company.（S03:p.9）</li>
+      <li><strong>リンダ・グラットン/アンドリュー・スコット（2016）</strong>: 『LIFE SHIFT 人生100年時代の人生戦略』東洋経済新報社。3ステージ→マルチステージモデルの元となる著作。（S03:p.24）</li>
+      <li><strong>Ibarra, H.（2003）</strong>: <em>Working Identity: Unconventional strategies for reinventing your career</em>. Harvard Business Press.（邦訳：『ハーバード流 キャリア・チェンジ術』翔泳社）未来志向のキャリア・チェンジ術と9つの戦略の出典。（S03:p.26）</li>
+      <li><strong>Kolb, D.（1984）</strong>: <em>Experiential Learning: Experience as the resource of Learning and Development</em>. Prentice Hall. 経験学習モデルの出典。（S03:p.42）</li>
+      <li><strong>中原淳（2012）</strong>: 『経営学修論：人材育成を科学する』東京大学出版会. 越境学習の定義の出典。（S03:p.41）</li>
+      <li><strong>石山恒貴（2018）</strong>: 『越境的学習のメカニズム：実践共同体を往還しキャリア構築するナレッジ・ブローカーの実像』福村出版. 越境学習8段階モデルの出典。（S03:p.43）</li>
+      <li><strong>中西善信・江夏幾多郎（2020）</strong>: 「越境研究の現状と展望」『経営行動科学』第32巻第1・2号. 越境の経験が個人にもたらすものの出典。（S03:p.41,44）</li>
+      <li><strong>独立行政法人 労働政策研究・研修機構（2016）</strong>：『職業相談場面におけるキャリア理論およびカウンセリング理論の活用・普及に関する文献調査』JILPT 資料シリーズ, No.165. プランド・ハップンスタンス理論・キャリア・カオス理論の参照文献。（S03:p.52,53）</li>
+      <li><strong>渡辺三枝子 編著（2018）</strong>：『新版 キャリアの心理学〔第2版〕キャリア支援への発達的アプローチ』ナカニシヤ出版. プランド・ハップンスタンス理論・キャリア・カオス理論の参照文献。（S03:p.52,53）</li>
+      <li><strong>武石恵美子（2023）</strong>: 「第4章 求められるキャリア自律」『キャリア開発論 第2版―自律性と多様性に向き合う』中央経済社, pp. 52-71.（S03:p.12,14）</li>
+      <li><strong>『日本の人事部 人事白書 2023』</strong>（株式会社HRビジョン）: 若手社員育成施策の調査データ（p.99）・リスキリング取組み状況（p.112）・重視スキル（p.118）の出典。（S03:p.13,21,22）</li>
+      <li><strong>経済産業省（2021年2月26日）</strong>: 「第2回 デジタル時代の人材政策に関する検討会」リスキリング定義の出典。（S03:p.21）</li>
+      <li><strong>大嶋寧子（2017）</strong>: 「『職業キャリアのブランク』から『ライフキャリアのリデザイン期』へ」リクルートワークス研究所. ライフキャリア概念の参考文献。（S03:p.10）</li>
+    </ul>
+  </section>
+
+  <!-- Appendix C: 試験ポイント -->
+  <section id="appendix-c" class="appendix-section">
+    <h2>付録C：試験対策ポイント</h2>
+    <div class="keypoint">
+      <div class="kp-label">⚠️ 試験注意事項</div>
+      <ul>
+        <li>「新しいキャリアを見つけるための型破りな<strong>9つの戦略</strong>（Ibarra）」は授業で「小テストに出るかもしれない」と明言されている。全9項目を説明できるよう準備すること。<span class="src">← S05-A</span></li>
+        <li>第7回の学習目標4項目はそのまま記述問題になりやすい</li>
+        <li>「将来の自己像の明確化に必要な<strong>4つのポイント</strong>」は特に強調されている（①価値観の言語化 ②大胆な自己像設定 ③行動してから考える ④柔軟な修正）<span class="src">← S03:p.60</span></li>
+      </ul>
+    </div>
+    <table>
+      <tr><th>頻出テーマ</th><th>キーワード</th></tr>
+      <tr><td>キャリアの定義・種類</td><td>職業キャリア / ライフキャリア / Well-being / 本科目の定義</td></tr>
+      <tr><td>社会環境変化（4要因）</td><td>人生100年時代 / IT発達 / 労働力高齢化 / グローバル化</td></tr>
+      <tr><td>日本型雇用の変化</td><td>長期継続雇用 / 年功的処遇 / 新卒一括採用 / キャリア自律</td></tr>
+      <tr><td>ステージモデル比較</td><td>3ステージ（教育・仕事・引退）vs マルチ・ステージ / ロールモデルの有無</td></tr>
+      <tr><td>過去振り返りの限界</td><td>陳腐化 / マルチ・ステージ / 未来志向の必要性</td></tr>
+      <tr><td>経験学習4段階</td><td>具体的経験→内省的観察→抽象的概念化→能動的実験</td></tr>
+      <tr><td>越境学習8段階</td><td>往還 / 越境元・越境先 / 石山恒貴（2018）</td></tr>
+      <tr><td>プランド・ハップンスタンス</td><td>5スキル（好奇心・持続性・柔軟性・楽観性・冒険心）</td></tr>
+      <tr><td>フォアキャスト / バックキャスト</td><td>2つのアプローチ / 1・2年次 vs 3年次以降</td></tr>
+      <tr><td>マイクロクレデンシャル</td><td>4段階（ブロンズ→シルバー→ゴールド→プラチナ）</td></tr>
+    </table>
+  </section>
+
+  <!-- Appendix D: 関連概念 -->
+  <section id="appendix-d" class="appendix-section">
+    <h2>付録D：関連概念・発展学習</h2>
+    <ul>
+      <li><strong>キャリアアンカー（Schein）</strong>：個人のキャリアにおける、絶対に犠牲にしたくない価値観・欲求・動機。本回の「価値観」概念と関連が深い。</li>
+      <li><strong>バウンダリーレス・キャリア（Arthur & Rousseau, 1996）</strong>：組織の境界を越えたキャリア形成。越境学習の概念的背景の一つ。</li>
+      <li><strong>プロティアン・キャリア（Hall, 1996）</strong>：環境変化に応じて自分自身を変容させる、価値観と自己覚知を中心としたキャリア観。キャリア自律と深く関連。</li>
+      <li><strong>SDGs（持続可能な開発目標）</strong>：小野邦彦教授が担当する科目「SDGs入門」との接点。キャリアを社会貢献の視点から捉える際の参照フレームワーク。</li>
+      <li><strong>ナレッジ・ブローカー</strong>：越境を通じて異なる知識共同体間で知識を仲介する人物。石山恒貴（2018）の越境的学習モデルにおける概念。</li>
+    </ul>
+  </section>
+
+</div><!-- /appendix -->
+
+</main>
+</body>
+</html>
