@@ -1,0 +1,1384 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ITのための基礎知識 第6回 ソフトウェア開発</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&family=Zen+Kaku+Gothic+New:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f1117;
+  --bg2: #161b27;
+  --bg3: #1e2535;
+  --bg4: #252e42;
+  --border: #2d3a54;
+  --text: #e2e8f5;
+  --text-sub: #8a99b8;
+  --text-dim: #5a6a8a;
+  --accent: #5b8dee;
+  --accent2: #34d399;
+  --accent3: #fbbf24;
+  --accent4: #a78bfa;
+  --accent5: #f87171;
+  --accent-audio: #3b82f6;
+  --accent-infer: #8b5cf6;
+  --accent-warn: #f59e0b;
+  --accent-ext: #10b981;
+  --tag-bg: #1a2540;
+  --mono: 'JetBrains Mono', monospace;
+  --sans: 'Noto Sans JP', 'Zen Kaku Gothic New', sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.8;
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ─── SIDEBAR ─── */
+#sidebar {
+  width: 260px;
+  min-width: 260px;
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  padding: 20px 0;
+  flex-shrink: 0;
+}
+#sidebar::-webkit-scrollbar { width: 4px; }
+#sidebar::-webkit-scrollbar-track { background: transparent; }
+#sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+.sidebar-header {
+  padding: 0 18px 16px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 12px;
+}
+.sidebar-header .course-tag {
+  font-size: 10px;
+  font-family: var(--mono);
+  color: var(--accent);
+  background: rgba(91,141,238,.12);
+  padding: 2px 8px;
+  border-radius: 3px;
+  letter-spacing: .06em;
+  display: inline-block;
+  margin-bottom: 6px;
+}
+.sidebar-header h2 {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.4;
+}
+.sidebar-header .lecture-num {
+  font-size: 11px;
+  color: var(--text-sub);
+  margin-top: 4px;
+}
+nav ul { list-style: none; }
+nav > ul { padding: 0 8px; }
+nav ul li a {
+  display: block;
+  padding: 5px 12px;
+  font-size: 12.5px;
+  color: var(--text-sub);
+  text-decoration: none;
+  border-radius: 6px;
+  transition: all .15s;
+  line-height: 1.5;
+}
+nav ul li a:hover { background: var(--bg3); color: var(--text); }
+nav ul li a.active { background: rgba(91,141,238,.15); color: var(--accent); }
+nav ul li.chapter > a { font-weight: 700; color: var(--text); font-size: 13px; margin-top: 8px; }
+nav ul li ul { padding-left: 12px; }
+nav ul li ul li a { font-size: 12px; padding: 3px 10px; }
+
+/* ─── MAIN ─── */
+main {
+  flex: 1;
+  max-width: 900px;
+  padding: 32px 40px 80px;
+  overflow-x: hidden;
+}
+
+/* ─── PAGE HEADER ─── */
+.page-header {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 24px;
+  margin-bottom: 32px;
+}
+.page-header .meta-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.badge {
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 2px 10px;
+  border-radius: 4px;
+  letter-spacing: .04em;
+}
+.badge-course { background: rgba(91,141,238,.15); color: var(--accent); border: 1px solid rgba(91,141,238,.3); }
+.badge-lecture { background: rgba(52,211,153,.12); color: var(--accent2); border: 1px solid rgba(52,211,153,.25); }
+.badge-date { background: var(--bg3); color: var(--text-sub); border: 1px solid var(--border); }
+.page-header h1 {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -.01em;
+  margin-bottom: 8px;
+}
+.page-header .instructor {
+  font-size: 13px;
+  color: var(--text-sub);
+}
+.page-header .instructor span { color: var(--text); font-weight: 500; }
+
+/* ─── LEARNING GOALS ─── */
+.goals-card {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px 24px;
+  margin-bottom: 32px;
+}
+.goals-card h3 {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent2);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.goals-list { list-style: none; }
+.goals-list li {
+  font-size: 13.5px;
+  color: var(--text-sub);
+  padding: 4px 0;
+  padding-left: 18px;
+  position: relative;
+}
+.goals-list li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: var(--accent2);
+  font-size: 11px;
+}
+
+/* ─── SECTION / CHAPTER ─── */
+.chapter { margin-bottom: 48px; }
+.chapter-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--border);
+}
+.chapter-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--accent);
+  background: rgba(91,141,238,.12);
+  padding: 3px 10px;
+  border-radius: 4px;
+  letter-spacing: .08em;
+}
+.chapter-title { font-size: 20px; font-weight: 700; }
+
+.section { margin-bottom: 28px; }
+.section h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 12px;
+  padding-left: 10px;
+  border-left: 3px solid var(--accent);
+}
+.section h4 {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--accent3);
+  margin: 14px 0 8px;
+}
+
+p { margin-bottom: 10px; color: var(--text); }
+ul, ol { margin-left: 20px; margin-bottom: 10px; }
+li { margin-bottom: 4px; }
+
+/* ─── BLOCK TYPES ─── */
+.audio-block {
+  border-left: 3px solid var(--accent-audio);
+  background: rgba(59,130,246,.07);
+  border-radius: 0 8px 8px 0;
+  padding: 12px 16px;
+  margin: 10px 0;
+  font-size: 13.5px;
+}
+.audio-block .block-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--accent-audio);
+  letter-spacing: .06em;
+  margin-bottom: 5px;
+  opacity: .8;
+}
+.infer-block {
+  border-left: 3px solid var(--accent-infer);
+  background: rgba(139,92,246,.07);
+  border-radius: 0 8px 8px 0;
+  padding: 12px 16px;
+  margin: 10px 0;
+  font-size: 13.5px;
+}
+.warn-block {
+  border-left: 3px solid var(--accent-warn);
+  background: rgba(245,158,11,.07);
+  border-radius: 0 8px 8px 0;
+  padding: 12px 16px;
+  margin: 10px 0;
+  font-size: 13.5px;
+}
+.warn-block .block-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--accent-warn);
+  letter-spacing: .06em;
+  margin-bottom: 5px;
+  opacity: .8;
+}
+.ext-block {
+  border-left: 3px solid var(--accent-ext);
+  background: rgba(16,185,129,.07);
+  border-radius: 0 8px 8px 0;
+  padding: 12px 16px;
+  margin: 10px 0;
+  font-size: 13.5px;
+}
+.ext-block .block-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--accent-ext);
+  letter-spacing: .06em;
+  margin-bottom: 5px;
+  opacity: .8;
+}
+.emphasis-block {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin: 12px 0;
+}
+.emphasis-block strong { color: var(--accent3); }
+
+/* ─── SOURCE POINTER ─── */
+.src {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-dim);
+  background: var(--bg3);
+  padding: 1px 6px;
+  border-radius: 3px;
+  margin-left: 6px;
+  white-space: nowrap;
+}
+
+/* ─── TABLES ─── */
+.table-wrap { overflow-x: auto; margin: 14px 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+th {
+  background: var(--bg3);
+  color: var(--accent);
+  font-weight: 700;
+  padding: 8px 12px;
+  text-align: left;
+  border-bottom: 2px solid var(--border);
+  font-size: 12px;
+}
+td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+tr:hover td { background: rgba(255,255,255,.02); }
+
+/* ─── COMPARISON TABLE ─── */
+.cmp-good { color: var(--accent2); }
+.cmp-warn { color: var(--accent-warn); }
+.cmp-bad { color: var(--accent5); }
+
+/* ─── SVG FIGURES ─── */
+.fig-wrap {
+  margin: 16px 0;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+  overflow: hidden;
+}
+.fig-wrap svg { display: block; width: 100%; height: auto; }
+figcaption {
+  font-size: 12px;
+  color: var(--text-sub);
+  text-align: center;
+  margin-top: 10px;
+  font-family: var(--mono);
+}
+
+/* ─── APPENDIX ─── */
+.appendix-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 22px 26px;
+  margin-bottom: 24px;
+}
+.appendix-card h3 {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.unconfirmed-card {
+  background: rgba(245,158,11,.06);
+  border: 1px solid rgba(245,158,11,.25);
+}
+.unconfirmed-card h3 { color: var(--accent-warn); }
+.glossary-star { color: var(--accent3); font-size: 12px; }
+.ext-note { font-size: 12px; color: var(--text-sub); }
+
+/* ─── CODE ─── */
+code {
+  font-family: var(--mono);
+  font-size: 12px;
+  background: var(--bg3);
+  padding: 1px 5px;
+  border-radius: 3px;
+  color: var(--accent2);
+}
+
+/* ─── SCROLLBAR ─── */
+main::-webkit-scrollbar { width: 6px; }
+main::-webkit-scrollbar-track { background: transparent; }
+main::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+@media (max-width: 768px) {
+  body { flex-direction: column; }
+  #sidebar { width: 100%; height: auto; position: relative; }
+  main { padding: 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════ SIDEBAR ═══════════ -->
+<aside id="sidebar">
+  <div class="sidebar-header">
+    <div class="course-tag">CS101</div>
+    <h2>ITのための基礎知識</h2>
+    <div class="lecture-num">第6回 ソフトウェア開発</div>
+  </div>
+  <nav>
+    <ul>
+      <li><a href="#goals">📋 学習目標</a></li>
+      <li class="chapter"><a href="#ch1">第1章 ソフトウェア工学とは</a></li>
+      <li><ul>
+        <li><a href="#sw-def">ソフトウェアとは</a></li>
+        <li><a href="#sw-features">ソフトウェアの特徴</a></li>
+        <li><a href="#sw-difficulty">開発の難しさ</a></li>
+        <li><a href="#sw-society">現代社会とソフトウェア</a></li>
+        <li><a href="#sw-history">開発の変遷</a></li>
+        <li><a href="#sw-engineering">ソフトウェア工学</a></li>
+        <li><a href="#sw-crisis">ソフトウェア危機</a></li>
+        <li><a href="#sw-quality">品質特性</a></li>
+        <li><a href="#sw-types">ソフトウェアの種類</a></li>
+      </ul></li>
+      <li class="chapter"><a href="#ch2">第2章 ソフトウェア開発プロセス</a></li>
+      <li><ul>
+        <li><a href="#slcp">開発プロセスとSLCP</a></li>
+        <li><a href="#waterfall">ウォーターフォール型</a></li>
+        <li><a href="#rework">手戻りとコスト</a></li>
+        <li><a href="#prototyping">プロトタイピング・モデル</a></li>
+        <li><a href="#spiral">スパイラル・モデル</a></li>
+        <li><a href="#agile">アジャイル型</a></li>
+        <li><a href="#scrum">スクラム</a></li>
+        <li><a href="#xp">XP</a></li>
+        <li><a href="#process-compare">プロセス比較</a></li>
+        <li><a href="#value-sw">価値を生み出すSW</a></li>
+      </ul></li>
+      <li class="chapter"><a href="#ch3">第3章 ソフトウェア開発フェーズ</a></li>
+      <li><ul>
+        <li><a href="#phases">各フェーズ</a></li>
+        <li><a href="#req-analysis">要求分析</a></li>
+        <li><a href="#estimation">見積り技法</a></li>
+        <li><a href="#vmodel">V字モデル</a></li>
+        <li><a href="#testing">テストの種類</a></li>
+        <li><a href="#endless-dev">終わりのない開発</a></li>
+        <li><a href="#devops">DevOps</a></li>
+        <li><a href="#reengineering">リエンジニアリング</a></li>
+        <li><a href="#cmmi">組織能力の監査</a></li>
+      </ul></li>
+      <li class="chapter"><a href="#ch4">第4章 ソフトウェア設計方法論</a></li>
+      <li><ul>
+        <li><a href="#design-method">設計方法論概要</a></li>
+        <li><a href="#structured">構造化技法</a></li>
+        <li><a href="#oo-method">OO方法論</a></li>
+        <li><a href="#oo-basics">OO基礎概念</a></li>
+        <li><a href="#design-compare">設計技法の比較</a></li>
+      </ul></li>
+      <li class="chapter"><a href="#appendix">末尾補足</a></li>
+      <li><ul>
+        <li><a href="#unconfirmed">❓ 未確定事項</a></li>
+        <li><a href="#appendix-a">⭐ 補足A: キーワード</a></li>
+        <li><a href="#appendix-b">📚 補足B: 背景知識</a></li>
+        <li><a href="#appendix-c">🎯 補足C: 試験ポイント</a></li>
+        <li><a href="#appendix-d">🔗 補足D: 関連概念</a></li>
+      </ul></li>
+    </ul>
+  </nav>
+</aside>
+
+<!-- ═══════════ MAIN ═══════════ -->
+<main>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="meta-row">
+    <span class="badge badge-course">ITのための基礎知識</span>
+    <span class="badge badge-lecture">第6回</span>
+    <span class="badge badge-date">S03: スライドPDF ／ S05: AI変換テキスト×2 ／ QC: 100% PASS（全未確定事項解決済み）</span>
+  </div>
+  <h1>ソフトウェア開発</h1>
+  <div class="instructor">担当教員：<span>除村 健俊（よけむら たけとし）</span> / IT総合学部 教授（博士）<span class="src">← S03:p.2</span></div>
+</div>
+
+<!-- LEARNING GOALS -->
+<div class="goals-card" id="goals">
+  <h3>📋 第6回 学習目標 <span class="src">← S03:p.3</span></h3>
+  <ul class="goals-list">
+    <li>現代社会におけるソフトウェアの重要性を理解し、説明できる</li>
+    <li>ソフトウェア工学とは何かについて理解し、説明できる</li>
+    <li>ソフトウェア開発プロセスについて理解し、説明できる</li>
+    <li>ソフトウェア開発設計方法論について理解し、説明できる</li>
+  </ul>
+</div>
+
+<!-- ═══════════ CHAPTER 1 ═══════════ -->
+<div class="chapter" id="ch1">
+  <div class="chapter-header">
+    <span class="chapter-num">CH.01</span>
+    <h2 class="chapter-title">ソフトウェア工学とは</h2>
+  </div>
+
+  <!-- ソフトウェアとは -->
+  <div class="section" id="sw-def">
+    <h3>ソフトウェアとは</h3>
+    <div class="emphasis-block">
+      <strong>定義 [JIS X 0001-1994]：</strong><br>
+      情報処理システムのプログラム、手続き、規則及び関連文書の全体又は一部分。<span class="src">← S03:p.7</span>
+    </div>
+    <p>ソフトウェアはプログラム（ソースコード・オブジェクトコード）・ドキュメント・手順と技法を含む。広義には放送番組や記録された音楽・映像なども含むことがある。<strong>形や重さのないものの総称</strong>。<span class="src">← S03:p.7</span></p>
+    <div class="audio-block">
+      <div class="block-label">▸ AUDIO SUPPLEMENT</div>
+      ソフトウェアは「言語による表現物」という芸術性の面と、「人工物の設計開発物」という実用性の面を併せ持つ点が他のモノと大きく異なる。<span class="src">← S05-A</span>
+    </div>
+  </div>
+
+  <!-- ソフトウェアの特徴 -->
+  <div class="section" id="sw-features">
+    <h3>ソフトウェアの特徴 <span class="src">← S03:p.8</span></h3>
+    <ul>
+      <li>目に見えない。重さがない。<strong>論理的な構造物</strong></li>
+      <li>人工言語による<strong>創作物</strong>である → 小説・音楽のように芸術性がある</li>
+      <li>人工言語による<strong>工業製品</strong>である → 実世界へ直接的に作用する実用性がある</li>
+      <li>ソフトウェアは<strong>簡単にコピーできる</strong></li>
+      <li>開発作業は頭の中で行われる → 開発進捗・仕様適合が<strong>見えづらい</strong></li>
+      <li>開発工程に作業が集中する</li>
+      <li>運用・保守期間が長い</li>
+      <li>再利用がなかなか難しい</li>
+    </ul>
+    <div class="audio-block">
+      <div class="block-label">▸ AUDIO SUPPLEMENT</div>
+      ソースコードを見ただけでは開発がどこまで進んでいるか・仕様通りのものができているかを感じることが難しい。目に見えないことがソフトウェア開発固有の難しさを生む。<span class="src">← S05-A</span>
+    </div>
+  </div>
+
+  <!-- 開発の難しさ -->
+  <div class="section" id="sw-difficulty">
+    <h3>ソフトウェア開発の難しさ <span class="src">← S03:p.9</span></h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>問題</th><th>内容</th></tr>
+        <tr><td><strong>複雑さの問題</strong></td><td>開発規模が大きい（数百万行〜数千万行のソースコード）</td></tr>
+        <tr><td><strong>要求分析の問題</strong></td><td>「何を作ったらよいか」を具体的・網羅的に定義することが難しい</td></tr>
+        <tr><td><strong>可視化の問題</strong></td><td>目に見えないため、複雑なものを適切に可視化しないと正しく作れない</td></tr>
+        <tr><td><strong>チーム開発の問題</strong></td><td>人が増えるとコミュニケーション問題が多発（言った・言わない・誤解など）</td></tr>
+        <tr><td><strong>ヒューマンエラーの問題</strong></td><td>人はよく間違える → バグとして発生</td></tr>
+        <tr><td><strong>ビジネスの問題</strong></td><td>品質・納期・コストの厳しい要求がある</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 現代社会とソフトウェア -->
+  <div class="section" id="sw-society">
+    <h3>現代社会におけるソフトウェア <span class="src">← S03:p.10</span></h3>
+    <p>社会インフラ（金融・医療・交通・通信）、インターネットビジネス、ゲーム・アプリ、家電製品（組込み）、判断・認識・制御の自動化など、<strong>社会のあらゆる分野で利用</strong>されている。</p>
+    <div class="emphasis-block">
+      <strong>社会のあらゆる分野：</strong>ソフトウェアの比重増<br>
+      <strong>付加価値創生の源泉：</strong>ソフトウェアにシフト
+    </div>
+    <h4>ソフトウェアトラブルの影響 <span class="src">← S03:p.11</span></h4>
+    <ul>
+      <li>重要インフラのITシステム障害（預金引出不可・携帯障害・証券取引停止・自動車リコール等）</li>
+      <li>サイバー攻撃・情報漏洩（生産システム停止・顧客情報流出等）</li>
+    </ul>
+    <div class="ext-block">
+      <div class="block-label">▸ EXTERNAL SUPPLEMENT</div>
+      <strong>全世界システム障害事例（2024年7月19日）：</strong>米クラウドストライク社が提供するセキュリティソフト「ファルコン」にバグがあり、自動更新された全世界のWindowsを搭載した<strong>約850万台</strong>のパソコンにトラブルが発生。影響は航空業界をはじめ全世界に大規模なシステム障害をもたらした。<span class="src">← S03:p.11（日経ビジネス 2024.08.12）</span>
+    </div>
+  </div>
+
+  <!-- ソフトウェア開発の変遷 -->
+  <div class="section" id="sw-history">
+    <h3>ソフトウェア開発の変遷 <span class="src">← S03:p.12</span></h3>
+    <p>初期のソフトウェア開発は、限られたコンピュータ上で動くシステムを手作業で作成していた。</p>
+    <div class="fig-wrap">
+      <svg viewBox="0 0 760 140" xmlns="http://www.w3.org/2000/svg" aria-label="ソフトウェア開発変遷タイムライン">
+        <!-- Timeline line -->
+        <line x1="40" y1="80" x2="720" y2="80" stroke="#5b8dee" stroke-width="2"/>
+        <!-- Arrows -->
+        <polygon points="720,75 730,80 720,85" fill="#5b8dee"/>
+        <!-- Ticks & Labels -->
+        <!-- 1965 OS/360 -->
+        <line x1="100" y1="75" x2="100" y2="85" stroke="#5b8dee" stroke-width="2"/>
+        <text x="100" y="68" text-anchor="middle" fill="#fbbf24" font-size="10" font-family="'JetBrains Mono',monospace">1965</text>
+        <text x="100" y="105" text-anchor="middle" fill="#e2e8f5" font-size="10">OS/360</text>
+        <text x="100" y="118" text-anchor="middle" fill="#8a99b8" font-size="9">業務用SW</text>
+        <!-- 1971 Intel4004 -->
+        <line x1="200" y1="75" x2="200" y2="85" stroke="#5b8dee" stroke-width="2"/>
+        <text x="200" y="68" text-anchor="middle" fill="#fbbf24" font-size="10" font-family="'JetBrains Mono',monospace">1971</text>
+        <text x="200" y="105" text-anchor="middle" fill="#e2e8f5" font-size="10">INTEL4004</text>
+        <text x="200" y="118" text-anchor="middle" fill="#8a99b8" font-size="9">PC/組込みSW</text>
+        <!-- 1970s Smalltalk -->
+        <line x1="310" y1="75" x2="310" y2="85" stroke="#5b8dee" stroke-width="2"/>
+        <text x="310" y="68" text-anchor="middle" fill="#fbbf24" font-size="10" font-family="'JetBrains Mono',monospace">1970s</text>
+        <text x="310" y="105" text-anchor="middle" fill="#e2e8f5" font-size="10">Smalltalk</text>
+        <text x="310" y="118" text-anchor="middle" fill="#8a99b8" font-size="9">OO言語</text>
+        <!-- 2001 Agile -->
+        <line x1="430" y1="75" x2="430" y2="85" stroke="#34d399" stroke-width="2"/>
+        <text x="430" y="68" text-anchor="middle" fill="#fbbf24" font-size="10" font-family="'JetBrains Mono',monospace">2001</text>
+        <text x="430" y="105" text-anchor="middle" fill="#34d399" font-size="10">アジャイル宣言</text>
+        <text x="430" y="118" text-anchor="middle" fill="#8a99b8" font-size="9">アジャイル開発</text>
+        <!-- 2006/2007 AWS/iPhone -->
+        <line x1="540" y1="75" x2="540" y2="85" stroke="#5b8dee" stroke-width="2"/>
+        <text x="540" y="68" text-anchor="middle" fill="#fbbf24" font-size="10" font-family="'JetBrains Mono',monospace">2006/07</text>
+        <text x="540" y="105" text-anchor="middle" fill="#e2e8f5" font-size="10">AWS/iPhone</text>
+        <text x="540" y="118" text-anchor="middle" fill="#8a99b8" font-size="9">クラウド/スマホ</text>
+        <!-- DX/AI -->
+        <line x1="650" y1="75" x2="650" y2="85" stroke="#a78bfa" stroke-width="2"/>
+        <text x="650" y="68" text-anchor="middle" fill="#fbbf24" font-size="10" font-family="'JetBrains Mono',monospace">現在</text>
+        <text x="650" y="105" text-anchor="middle" fill="#a78bfa" font-size="10">AI・DX</text>
+        <text x="650" y="118" text-anchor="middle" fill="#8a99b8" font-size="9">生成AI</text>
+        <!-- 上部テキスト -->
+        <text x="380" y="30" text-anchor="middle" fill="#5b8dee" font-size="11" font-weight="bold">→ ソフトウェアの大規模化・複雑化</text>
+        <text x="380" y="45" text-anchor="middle" fill="#8a99b8" font-size="10">Digital Transformation</text>
+      </svg>
+      <figcaption>図：ソフトウェア開発の変遷 ← S03:p.12</figcaption>
+    </div>
+    <div class="audio-block">
+      <div class="block-label">▸ AUDIO SUPPLEMENT</div>
+      「DX（デジタルトランスフォーメーション）」という言葉は実は日本だけで使われており、世界ではあまり使われていない。世界はすでにデジタル化が進んでいるが、日本が遅れているため特にDXが叫ばれている面がある。<span class="src">← S05-A/B</span>
+    </div>
+  </div>
+
+  <!-- ソフトウェア工学 -->
+  <div class="section" id="sw-engineering">
+    <h3>ソフトウェア工学とは <span class="src">← S03:p.13</span></h3>
+    <div class="emphasis-block">
+      <strong>定義：</strong>1960〜70年代のソフトウェア危機を背景に生まれた、ソフトウェア開発を工学的手法で管理・改善するための学問。特に大規模なソフトウェアを対象に、信頼性が高く効率的で保守しやすいソフトウェアを設計・開発・運用・保守するための方法・技術・知識を組織・チームで扱う学問分野。
+    </div>
+    <p>ソフトウェア工学は<strong>1968年、ドイツのGarmisch（ガーミッシュ）で開かれたNATO主催の国際会議</strong>で提唱された。<span class="src">← S03:p.13</span></p>
+    <div class="audio-block">
+      <div class="block-label">▸ AUDIO SUPPLEMENT</div>
+      ソフトウェア工学の基礎はプログラミングであり、その上にソフトウェア全体の構造を設計する学問がソフトウェア工学。専門科目として「ソフトウェア工学」という科目があるので興味ある人はぜひ。<span class="src">← S05-A</span>
+    </div>
+    <h4>SWEBOK（SoftWare Engineering Body Of Knowledge）</h4>
+    <p>IEEEが発行するソフトウェア工学に関する知識体系。ソフトウェアエンジニアが習得すべき主要な概念や手法を網羅。<strong>V4は2024年に発行</strong>。要求・アーキテクチャ・設計・構築・テスト・運用・保守・品質・セキュリティ・アジャイル・DevOps・AIとソフトウェアエンジニアリングなど幅広い領域をカバー。<strong>無料ダウンロード可</strong>。<span class="src">← S03:p.13</span></p>
+  </div>
+
+  <!-- ソフトウェア危機 -->
+  <div class="section" id="sw-crisis">
+    <h3>ソフトウェア危機（1960年代後半） <span class="src">← S03:p.14</span></h3>
+    <p>ソフトウェアの需要が急増し、システムの規模や複雑さが飛躍的に増大したことで以下の問題が頻発した。</p>
+    <ul>
+      <li><strong>納期遅延</strong>：開発が期限通りに完了しない</li>
+      <li><strong>予算超過</strong>：開発コストが予想を大きく上回る</li>
+      <li><strong>品質問題</strong>：バグ・エラーが多発し、信頼性が低いシステムが納品される</li>
+      <li><strong>メンテナンスの難しさ</strong>：開発後の修正や機能追加が困難でコスト・時間がかかる</li>
+    </ul>
+    <div class="audio-block">
+      <div class="block-label">▸ AUDIO SUPPLEMENT</div>
+      当時のソフトウェアは1人1人が手作業で作り、方法論もなく個人の裁量でプログラムを作っていた。これが上記の問題を多発させた。この状態が「ソフトウェア危機」として認識され、解決策（＝ソフトウェア工学の誕生）が求められた。<span class="src">← S05-A/B</span>
+    </div>
+  </div>
+
+  <!-- 製品として良いソフトウェア -->
+  <div class="section" id="sw-quality">
+    <h3>製品として良いソフトウェア — ISO/IEC 25010の品質特性 <span class="src">← S03:p.15</span></h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>品質特性</th><th>概要</th></tr>
+        <tr><td><strong>機能適合性</strong></td><td>要求仕様を満たす機能を提供している（＝機能要件）</td></tr>
+        <tr><td><strong>性能効率性</strong></td><td>無駄な時間・資源を使わない</td></tr>
+        <tr><td><strong>互換性</strong></td><td>他のシステムと適切に情報交換できる</td></tr>
+        <tr><td><strong>使用性</strong></td><td>使いやすい</td></tr>
+        <tr><td><strong>信頼性</strong></td><td>品質が保証されている</td></tr>
+        <tr><td><strong>セキュリティ</strong></td><td>アクセス権限管理・データ改ざん防止ができている</td></tr>
+        <tr><td><strong>保守性</strong></td><td>プログラム・ドキュメントが理解しやすい</td></tr>
+        <tr><td><strong>移植性</strong></td><td>新しい環境に移行しやすい</td></tr>
+      </table>
+    </div>
+    <div class="audio-block">
+      <div class="block-label">▸ AUDIO SUPPLEMENT</div>
+      機能要件（機能適合性）だけでなく、性能・互換性・使いやすさなどの非機能要件も品質特性として求められる。非機能要件は定義が非常に難しいが、実際に開発して実現することが求められる。組込みソフトウェアやリアルタイムソフトウェアでは特に<strong>時間応答性</strong>（ある時間内に応答が終わらないと機械が止まる）が厳しく求められる。<span class="src">← S05-A</span>
+    </div>
+  </div>
+
+  <!-- ソフトウェアの種類 -->
+  <div class="section" id="sw-types">
+    <h3>ソフトウェアの種類 <span class="src">← S03:p.16</span></h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>種類</th><th>説明</th></tr>
+        <tr><td>アプリケーションSW</td><td>ユーザーが特定タスクを実行するためのソフトウェア（ワープロ・表計算等）</td></tr>
+        <tr><td>システムSW</td><td>コンピュータの基本機能管理・HWとアプリの橋渡し（OS等）</td></tr>
+        <tr><td>組込みSW</td><td>家電・自動車等の非PCデバイスに組込まれ特定機能を実行</td></tr>
+        <tr><td>ネットワークSW</td><td>ネットワーク設定・運用・管理（通信プロトコル・ルータ管理等）</td></tr>
+        <tr><td>リアルタイムSW</td><td>厳密な時間制約のもとでタスクを処理（制御・通信システム等）</td></tr>
+        <tr><td>エンタープライズSW</td><td>企業全体で利用される複雑なソフトウェア（CRM・ERP等）</td></tr>
+        <tr><td>データベースSW</td><td>データの格納・管理・検索・更新（SQLサーバー・Oracle等）</td></tr>
+        <tr><td>セキュリティSW</td><td>データ保護・ウイルス防御・侵入検知（アンチウイルス・FW等）</td></tr>
+      </table>
+    </div>
+  </div>
+</div><!-- /ch1 -->
+
+<!-- ═══════════ CHAPTER 2 ═══════════ -->
+<div class="chapter" id="ch2">
+  <div class="chapter-header">
+    <span class="chapter-num">CH.02</span>
+    <h2 class="chapter-title">ソフトウェア開発プロセス</h2>
+  </div>
+
+  <!-- 開発プロセスとSLCP -->
+  <div class="section" id="slcp">
+    <h3>ソフトウェア開発プロセスとは <span class="src">← S03:p.21</span></h3>
+    <ul>
+      <li>ソフトウェア開発開始から完成までの開発手順を<strong>ソフトウェア開発プロセス</strong>と呼ぶ</li>
+      <li>品質を段階的に作り込む活動であり、複数の工程から構成される</li>
+      <li>良い製品（ソフトウェア）を開発するためにはプロセスの改善が必要</li>
+      <li><strong>SLCP（Software Life Cycle Process）</strong>：ソフトウェアの開発計画から破棄に至るライフ全体</li>
+    </ul>
+    <div class="audio-block">
+      <div class="block-label">▸ AUDIO SUPPLEMENT</div>
+      各工程で「どんな品質が必要か」「どう作り込むか」「本当に品質は大丈夫か」を確認しながら開発を進めることが求められる。<span class="src">← S05-A/B</span>
+    </div>
+  </div>
+
+  <!-- ウォーターフォール型 -->
+  <div class="section" id="waterfall">
+    <h3>ウォーターフォール型開発プロセス <span class="src">← S03:p.22</span></h3>
+    <p>システム開発を「要件定義」→「外部設計」→「内部設計」→「コーディング」→「統合テスト」→「システムテスト」という工程に分けて順番に進める手法。<strong>上流から下流に流れる滝</strong>に例えた名称。</p>
+    <div class="fig-wrap">
+      <!-- Waterfall diagram -->
+      <svg viewBox="0 0 680 220" xmlns="http://www.w3.org/2000/svg">
+        <!-- Steps -->
+        <g font-family="'Noto Sans JP',sans-serif" font-size="12">
+          <!-- 要件定義 -->
+          <rect x="20" y="20" width="130" height="36" rx="6" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+          <text x="85" y="43" text-anchor="middle" fill="#e2e8f5" font-weight="bold">要件定義</text>
+          <!-- 外部設計 -->
+          <rect x="80" y="66" width="130" height="36" rx="6" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+          <text x="145" y="89" text-anchor="middle" fill="#e2e8f5" font-weight="bold">外部設計</text>
+          <!-- 内部設計 -->
+          <rect x="140" y="112" width="130" height="36" rx="6" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+          <text x="205" y="135" text-anchor="middle" fill="#e2e8f5" font-weight="bold">内部設計</text>
+          <!-- コーディング -->
+          <rect x="200" y="158" width="130" height="36" rx="6" fill="#1e2535" stroke="#34d399" stroke-width="1.5"/>
+          <text x="265" y="181" text-anchor="middle" fill="#e2e8f5" font-weight="bold">コーディング</text>
+          <!-- 統合テスト -->
+          <rect x="340" y="112" width="130" height="36" rx="6" fill="#252e42" stroke="#fbbf24" stroke-width="1.5"/>
+          <text x="405" y="135" text-anchor="middle" fill="#e2e8f5" font-weight="bold">統合テスト</text>
+          <!-- システムテスト -->
+          <rect x="400" y="66" width="140" height="36" rx="6" fill="#252e42" stroke="#fbbf24" stroke-width="1.5"/>
+          <text x="470" y="89" text-anchor="middle" fill="#e2e8f5" font-weight="bold">システムテスト</text>
+          <!-- 矢印 -->
+          <path d="M150 38 L80 66" stroke="#5b8dee" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+          <path d="M210 84 L140 112" stroke="#5b8dee" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+          <path d="M270 130 L200 158" stroke="#5b8dee" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+          <path d="M330 176 L340 148" stroke="#fbbf24" stroke-width="1.5" fill="none" stroke-dasharray="4,3" marker-end="url(#arr2)"/>
+          <path d="M470 112 L470 102" stroke="#fbbf24" stroke-width="1.5" fill="none" marker-end="url(#arr2)"/>
+          <!-- Labels -->
+          <text x="20" y="210" fill="#8a99b8" font-size="11">← 上流（要求定義・設計）</text>
+          <text x="430" y="210" fill="#8a99b8" font-size="11">下流（テスト）→</text>
+        </g>
+        <defs>
+          <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M0,0 L10,5 L0,10 z" fill="#5b8dee"/>
+          </marker>
+          <marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/>
+          </marker>
+        </defs>
+      </svg>
+      <figcaption>図：ウォーターフォール型開発プロセス ← S03:p.22</figcaption>
+    </div>
+  </div>
+
+  <!-- 手戻りとコスト -->
+  <div class="section" id="rework">
+    <h3>手戻りの発生とコスト <span class="src">← S03:p.23</span></h3>
+    <div class="emphasis-block">
+      <strong>手戻り：</strong>工程を戻ってバグ（欠陥）を修正すること。早く見つけるほど少ない作業量で処置できる。逆に後工程でバグが見つかるほど・手戻りが大きいほど修正コストは高く、修正期間も長くなる。
+    </div>
+    <div class="table-wrap">
+      <table>
+        <tr><th>発見フェーズ</th><th>修正コスト比（コーディング=1）</th></tr>
+        <tr><td>要求</td><td class="cmp-good"><strong>0.1</strong></td></tr>
+        <tr><td>設計</td><td class="cmp-good"><strong>0.5</strong></td></tr>
+        <tr><td>コーディング</td><td>1</td></tr>
+        <tr><td>テスト</td><td class="cmp-warn"><strong>2</strong></td></tr>
+        <tr><td>出荷後</td><td class="cmp-bad"><strong>20</strong></td></tr>
+      </table>
+    </div>
+    <p>手戻り発生を抑制するために、各種<strong>レビュー</strong>（設計仕様書をベテランに見てもらう等）や<strong>品質管理活動</strong>が実施される。<span class="src">← S03:p.23</span></p>
+  </div>
+
+  <!-- プロトタイピング・モデル -->
+  <div class="section" id="prototyping">
+    <h3>使い捨てプロトタイピング・モデル <span class="src">← S03:p.24</span></h3>
+    <p>ウォーターフォール型のデメリット（手戻り）を抑えるための開発プロセス・モデル。</p>
+    <ul>
+      <li>要求分析フェーズでプロトタイプを開発し、顧客に見せて要求を確定</li>
+      <li>その後、プロトタイプを<strong>捨てて</strong>仕様に基づきウォーターフォール型で実システムを最初から開発</li>
+    </ul>
+    <div class="audio-block">
+      <div class="block-label">▸ AUDIO SUPPLEMENT</div>
+      プロトタイプはあくまでプロトタイプ。きちんとアーキテクチャ設計をしてシステムとして作り直す。プロトタイプ開発の繰り返し部分はアジャイル型と同等と考えられる。<span class="src">← S05-A</span>
+    </div>
+  </div>
+
+  <!-- スパイラル・モデル -->
+  <div class="section" id="spiral">
+    <h3>スパイラル・モデル <span class="src">← S03:p.25</span></h3>
+    <p>各開発フェーズでリスクを分析し、机上評価・シミュレーション・プロトタイプなどを実施することでリスクを軽減し、ソフトウェアの完成度を高めていく手法。<strong>高信頼性ソフトウェアに適用</strong>される。</p>
+    <p>各フェーズで：①目的・代替案・制約の決定 → ②代替案の評価・リスクの識別・解決 → ③プロダクトの開発・評価 → ④次のフェーズの計画 を繰り返す。<span class="src">← S03:p.25</span></p>
+  </div>
+
+  <!-- アジャイル型 -->
+  <div class="section" id="agile">
+    <h3>アジャイル型開発プロセス <span class="src">← S03:p.26</span></h3>
+    <div class="emphasis-block">
+      <strong>定義：</strong>動くソフトウェアをできるだけ短い時間間隔で作成し、繰り返し顧客に見せ、そのフィードバックを次の開発サイクルで実装したり、間違いをすぐ修正できる俊敏さにより、ソフトウェアの完成度を上げていく開発プロセス。
+    </div>
+    <ul>
+      <li><strong>アジャイル宣言（2001年）</strong>：ウォーターフォール型へのアンチテーゼとして発表。開発への取り組み姿勢・考え方を述べたもの（方法論ではない）</li>
+      <li>開発サイクル：1週間〜1ヶ月を繰り返す</li>
+      <li>顧客と開発者のコミュニケーションを重視し、プロダクトの顧客価値を高めることを重視</li>
+    </ul>
+  </div>
+
+  <!-- スクラム -->
+  <div class="section" id="scrum">
+    <h3>スクラム（Scrum）<span class="src">← S03:p.27-30</span></h3>
+    <p>アジャイル型開発プロセスの一種。<strong>経験主義</strong>を基本とし、チームが力を合わせ互いに助け合いながら開発を進める手法。</p>
+    <div class="ext-block">
+      <div class="block-label">▸ EXTERNAL SUPPLEMENT</div>
+      <strong>スクラムの起源（照合済み）：</strong><br>
+      <strong>野中郁次郎（のなか いくじろう）・竹内弘高（たけうち ひろたか）</strong>による1986年論文「The New New Product Development Game」（<em>Harvard Business Review</em> 64(1), pp.137-146）。ホンダ・富士ゼロックス・3M・HP等の日本の製造業チーム型開発手法を分析し、その手法を「スクラム」（ラグビー用語）と命名した。論文はウォーターフォール型（NASAの段階的プログラム開発）には根本的な欠けがあることも指摘した。<br>
+      → この論文に触発されたJeff Sutherlandが<strong>1993年</strong>にEasel CorporationでJohn Scumniotales・Jeff McKennaとともにソフトウェア開発に初適用。<strong>1995年</strong>にKen SchwabertとOOPSLA'95で論文「The SCRUM Development Process」を共同発表。<span class="src">← S03:p.27 [外部照合: Scrum Inc., Wikipedia, Biz/Zine]</span>
+    </div>
+    <h4>スクラムの2つの改善ループ</h4>
+    <div class="fig-wrap">
+      <svg viewBox="0 0 680 170" xmlns="http://www.w3.org/2000/svg">
+        <!-- Sprint boxes -->
+        <g font-family="'Noto Sans JP',sans-serif">
+          <!-- Sprint 1 -->
+          <rect x="30" y="50" width="140" height="80" rx="8" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+          <text x="100" y="75" text-anchor="middle" fill="#5b8dee" font-size="12" font-weight="bold">スプリント1</text>
+          <text x="100" y="95" text-anchor="middle" fill="#8a99b8" font-size="11">設計→コーディング</text>
+          <text x="100" y="112" text-anchor="middle" fill="#8a99b8" font-size="11">→テスト</text>
+          <!-- Sprint 2 -->
+          <rect x="270" y="50" width="140" height="80" rx="8" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+          <text x="340" y="75" text-anchor="middle" fill="#5b8dee" font-size="12" font-weight="bold">スプリント2</text>
+          <text x="340" y="95" text-anchor="middle" fill="#8a99b8" font-size="11">設計→コーディング</text>
+          <text x="340" y="112" text-anchor="middle" fill="#8a99b8" font-size="11">→テスト</text>
+          <!-- Sprint N -->
+          <rect x="510" y="50" width="140" height="80" rx="8" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+          <text x="580" y="75" text-anchor="middle" fill="#5b8dee" font-size="12" font-weight="bold">スプリントN</text>
+          <text x="580" y="95" text-anchor="middle" fill="#8a99b8" font-size="11">設計→コーディング</text>
+          <text x="580" y="112" text-anchor="middle" fill="#8a99b8" font-size="11">→テスト</text>
+          <!-- 矢印 -->
+          <line x1="170" y1="90" x2="270" y2="90" stroke="#34d399" stroke-width="1.5" marker-end="url(#arr3)"/>
+          <line x1="410" y1="90" x2="510" y2="90" stroke="#34d399" stroke-width="1.5" marker-end="url(#arr3)"/>
+          <text x="220" y="83" text-anchor="middle" fill="#34d399" font-size="11">フィードバック</text>
+          <text x="460" y="83" text-anchor="middle" fill="#34d399" font-size="11">フィードバック</text>
+          <!-- ループラベル -->
+          <rect x="30" y="10" width="290" height="22" rx="4" fill="rgba(91,141,238,.1)" stroke="#5b8dee" stroke-width="1"/>
+          <text x="175" y="25" text-anchor="middle" fill="#5b8dee" font-size="11" font-weight="bold">📦 製品開発改善ループ</text>
+          <rect x="30" y="148" width="620" height="18" rx="4" fill="rgba(52,211,153,.08)" stroke="#34d399" stroke-width="1"/>
+          <text x="340" y="161" text-anchor="middle" fill="#34d399" font-size="11" font-weight="bold">🗣 チーム活動改善ループ（デイリースクラム）</text>
+        </g>
+        <defs>
+          <marker id="arr3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M0,0 L10,5 L0,10 z" fill="#34d399"/>
+          </marker>
+        </defs>
+      </svg>
+      <figcaption>図：スクラムの2ループ ← S03:p.28</figcaption>
+    </div>
+    <h4>スクラムチームの役割 <span class="src">← S03:p.29</span></h4>
+    <div class="table-wrap">
+      <table>
+        <tr><th>役割</th><th>仕事</th></tr>
+        <tr><td><strong>プロダクトオーナー（PO）</strong></td><td>プロダクトの価値を最大化する責任を持つ。開発チームが何を開発するかを決める人。ユーザーストーリーに優先順位をつける。ステークホルダーと対話する。</td></tr>
+        <tr><td><strong>開発チーム（DT）</strong></td><td>何をどう作るかを決め、ソフトウェア開発の責任を持つ</td></tr>
+        <tr><td><strong>スクラムマスター（SM）</strong></td><td>アジャイルチームの仕事が円滑に進むようにチーム全体を支援・マネジメントし、生産性向上に責任を持つ人。障害の解決を図る。</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- XP -->
+  <div class="section" id="xp">
+    <h3>eXtreme Programming（XP）<span class="src">← S03:p.31</span></h3>
+    <p><strong>Kent Beck（ケント・ベック）</strong>が開発したアジャイル型開発の一種。「要求はどんどん変わる」「顧客は動くシステムをできるだけ早くほしがる」ことを前提とする。</p>
+    <ul>
+      <li>短期間（1〜2週間）ごとに実行可能なコードを作成して顧客に見せる</li>
+      <li>設計を可能な限り単純化する</li>
+      <li><strong>テスト駆動開発</strong>：最初にテストを作成し、それにパスするように実装を進める</li>
+      <li>テストの自動化・継続的インテグレーション → <strong>DevOpsにつながる</strong></li>
+      <li><strong>ペアプログラミング</strong>：2人1組でのプログラミング</li>
+    </ul>
+    <div class="audio-block">
+      <div class="block-label">▸ AUDIO SUPPLEMENT</div>
+      <strong>ペアプログラミングの役割：</strong>ドライバー（コードを書く人）とナビゲーター（横でコードをチェックし誤りを指摘する人）に分かれ、役割を交互に交代することが多い。お互いの知識を共有して技術を高める効果がある。新人の場合はもう一人が指導する形で能力向上に活用できる。<span class="src">← S03:p.31, S05-A</span>
+    </div>
+  </div>
+
+  <!-- プロセス比較 -->
+  <div class="section" id="process-compare">
+    <h3>ウォーターフォール型 vs アジャイル型 <span class="src">← S03:p.33</span></h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>観点</th><th>ウォーターフォール型</th><th>アジャイル型</th></tr>
+        <tr><td>重視すること</td><td>規律と計画</td><td>適応性・軽快性</td></tr>
+        <tr><td>チーム規模</td><td>大規模（平均的な能力の人が多数）</td><td>少数精鋭（有能な人材を集める傾向）</td></tr>
+        <tr><td>目標の扱い</td><td>最初に設定した目標に向かって戻す</td><td>各サイクルで軌道修正し目標が変わることも</td></tr>
+        <tr><td>適用場面</td><td>基幹業務の効率化・大規模プロジェクト</td><td>アプリ開発・価値創出・世の中の変化への追随</td></tr>
+        <tr><td>リスク</td><td>手戻りコストが大きくなる可能性</td><td>迷走するリスクも存在</td></tr>
+      </table>
+    </div>
+    <div class="emphasis-block">
+      ウォーターフォール型とアジャイル型は<strong>対立するものではなく相補的</strong>なもの。今後アジャイル型が普及してもウォーターフォール型の価値は低下しない。<span class="src">← S03:p.33</span>
+    </div>
+  </div>
+
+  <!-- 価値を生み出すソフトウェアへ -->
+  <div class="section" id="value-sw">
+    <h3>機能を実現するSWから価値を生み出すSWへ <span class="src">← S03:p.34</span></h3>
+    <p>プロダクト（製品＋サービス）におけるソフトウェアの重要性が増している。</p>
+    <ul>
+      <li><strong>プロダクト価値の継続的改善・拡張</strong>：高頻度の機能追加・バグ修正・価値検証が可能</li>
+      <li><strong>更新が容易</strong>：オンラインでアップデートできる</li>
+      <li><strong>使いやすさの提供</strong>：使い続けてもらうためのUI/UX提供</li>
+      <li><strong>使用状況情報収集・分析が可能</strong>：アクセスログ・IoT・AI活用</li>
+    </ul>
+  </div>
+</div><!-- /ch2 -->
+
+<!-- ═══════════ CHAPTER 3 ═══════════ -->
+<div class="chapter" id="ch3">
+  <div class="chapter-header">
+    <span class="chapter-num">CH.03</span>
+    <h2 class="chapter-title">ソフトウェア開発フェーズ</h2>
+  </div>
+
+  <!-- 各フェーズ -->
+  <div class="section" id="phases">
+    <h3>ソフトウェア開発プロセスの各フェーズ <span class="src">← S03:p.39</span></h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>フェーズ</th><th>内容</th></tr>
+        <tr><td><strong>開発計画</strong></td><td>開発目的・目標・時期・コスト・事業計画・開発体制を記述して承認を得るフェーズ</td></tr>
+        <tr><td><strong>要求分析（要求定義）</strong></td><td>顧客の要求を明確化し、要求仕様を明確化するフェーズ</td></tr>
+        <tr><td><strong>設計（外部設計・内部設計）</strong></td><td>要求仕様に基づきソフトウェアの構造を設計するフェーズ</td></tr>
+        <tr><td><strong>コーディング（実装）</strong></td><td>設計に基づき実際にコーディングするフェーズ</td></tr>
+        <tr><td><strong>テスト</strong></td><td>できたプログラムをテストしてバグを見つけ修正するフェーズ</td></tr>
+        <tr><td><strong>運用・保守</strong></td><td>完成したソフトウェアを安定して運用し継続して改善するフェーズ</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 要求分析 -->
+  <div class="section" id="req-analysis">
+    <h3>要求分析とは <span class="src">← S03:p.40</span></h3>
+    <p>顧客や利用者の要求を仕様化する作業。</p>
+    <ul>
+      <li><strong>要求</strong>：利用者側から見てソフトウェアが実現すべき目標</li>
+      <li><strong>仕様</strong>：開発で要求を実現するために必要な機能や性能と、それらを提供する際の条件や制約</li>
+    </ul>
+    <p><strong>機能要件</strong>：システムやソフトウェアが提供する具体的な機能やサービス<br>
+    <strong>非機能要件</strong>：品質・制約条件などの性能・運用・環境に関する要件（ソフトウェア品質特性に関わる）<span class="src">← S03:p.40</span></p>
+    <div class="audio-block">
+      <div class="block-label">▸ AUDIO SUPPLEMENT</div>
+      要求分析者は顧客と開発者の間に立ち、品質・コスト・納期をバランスさせなければならない。顧客と開発者は言葉が違ったり同じ言葉でも異なる理解をしていることがあるため、要求分析者が橋渡しをして潜在的な要求を引き出し、要求仕様書を作成する。<span class="src">← S05-A</span>
+    </div>
+  </div>
+
+  <!-- 見積り技法 -->
+  <div class="section" id="estimation">
+    <h3>トップダウン & ボトムアップ見積り <span class="src">← S03:p.41</span></h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>技法</th><th>方法</th><th>精度</th><th>用途</th></tr>
+        <tr><td><strong>トップダウン見積り</strong></td><td>過去の経験から類推（類推見積り）、または比例計算（パラメトリック見積り）</td><td>低い</td><td>初期のざっくり見積り</td></tr>
+        <tr><td><strong>ボトムアップ見積り</strong></td><td>仕様書・WBSに基づき各作業の費用を積み上げる</td><td>比較的高い</td><td>確定ベースラインの計画</td></tr>
+      </table>
+    </div>
+    <p><strong>ファンクションポイント法</strong>：ソフトウェアに含まれる機能の数（ファンクションポイント）により規模を算出する方法。開発規模を表すが工数は直接表さない。ファンクションポイントから工数への換算は企業・プロジェクト別に経験・実績に基づいて決定する。<span class="src">← S03:p.42</span></p>
+  </div>
+
+  <!-- V字モデル -->
+  <div class="section" id="vmodel">
+    <h3>テスト：V字モデル <span class="src">← S03:p.46</span></h3>
+    <p>開発の順番に対応した狭い範囲から広い範囲へ組み立てながらテストするテスト方法のモデル化。<strong>より小さな範囲で欠陥を見つけた方が得</strong>。</p>
+    <div class="fig-wrap">
+      <svg viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg">
+        <g font-family="'Noto Sans JP',sans-serif" font-size="12">
+          <!-- 左側（開発フェーズ） -->
+          <text x="40" y="55" fill="#5b8dee" font-weight="bold" font-size="11">【開発フェーズ】</text>
+          <!-- 要求分析 -->
+          <rect x="20" y="65" width="120" height="32" rx="5" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+          <text x="80" y="85" text-anchor="middle" fill="#e2e8f5" font-weight="bold">要求分析</text>
+          <!-- 外部設計 -->
+          <rect x="50" y="115" width="120" height="32" rx="5" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+          <text x="110" y="135" text-anchor="middle" fill="#e2e8f5" font-weight="bold">外部設計</text>
+          <!-- 内部設計 -->
+          <rect x="80" y="165" width="120" height="32" rx="5" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+          <text x="140" y="185" text-anchor="middle" fill="#e2e8f5" font-weight="bold">内部設計</text>
+          <!-- コーディング -->
+          <rect x="250" y="215" width="200" height="32" rx="5" fill="#252e42" stroke="#34d399" stroke-width="1.5"/>
+          <text x="350" y="235" text-anchor="middle" fill="#34d399" font-weight="bold">コーディング / コードレビュー</text>
+          <!-- 右側（テスト） -->
+          <text x="530" y="55" fill="#fbbf24" font-weight="bold" font-size="11">【テスト】</text>
+          <!-- 単体テスト -->
+          <rect x="480" y="165" width="120" height="32" rx="5" fill="#252e42" stroke="#fbbf24" stroke-width="1.5"/>
+          <text x="540" y="185" text-anchor="middle" fill="#e2e8f5" font-weight="bold">単体テスト</text>
+          <!-- 結合テスト -->
+          <rect x="510" y="115" width="120" height="32" rx="5" fill="#252e42" stroke="#fbbf24" stroke-width="1.5"/>
+          <text x="570" y="135" text-anchor="middle" fill="#e2e8f5" font-weight="bold">結合テスト</text>
+          <!-- 統合テスト -->
+          <rect x="460" y="65" width="120" height="32" rx="5" fill="#252e42" stroke="#a78bfa" stroke-width="1.5"/>
+          <text x="520" y="85" text-anchor="middle" fill="#e2e8f5" font-weight="bold">統合テスト</text>
+          <!-- 受入テスト -->
+          <rect x="560" y="65" width="110" height="32" rx="5" fill="#252e42" stroke="#a78bfa" stroke-width="1.5"/>
+          <text x="615" y="85" text-anchor="middle" fill="#e2e8f5" font-weight="bold">受入テスト</text>
+          <!-- V字矢印 -->
+          <path d="M140 97 L200 215" stroke="#5b8dee" stroke-width="1.5" fill="none" stroke-dasharray="4,3"/>
+          <path d="M170 147 L200 215" stroke="#5b8dee" stroke-width="1.5" fill="none" stroke-dasharray="4,3"/>
+          <path d="M200 147 L200 215" stroke="#5b8dee" stroke-width="1.5" fill="none" stroke-dasharray="4,3"/>
+          <path d="M200 215 L540 197" stroke="#fbbf24" stroke-width="1.5" fill="none" stroke-dasharray="4,3" marker-end="url(#arr4)"/>
+          <path d="M200 215 L570 147" stroke="#fbbf24" stroke-width="1.5" fill="none" stroke-dasharray="4,3" marker-end="url(#arr4)"/>
+          <path d="M200 215 L480 81" stroke="#a78bfa" stroke-width="1.5" fill="none" stroke-dasharray="4,3" marker-end="url(#arr4)"/>
+          <!-- ラベル -->
+          <rect x="20" y="255" width="160" height="18" rx="3" fill="rgba(59,130,246,.1)" stroke="#3b82f6" stroke-width="1"/>
+          <text x="100" y="268" text-anchor="middle" fill="#3b82f6" font-size="10" font-weight="bold">検証 (Verification)</text>
+          <rect x="420" y="255" width="260" height="18" rx="3" fill="rgba(167,139,250,.1)" stroke="#a78bfa" stroke-width="1"/>
+          <text x="550" y="268" text-anchor="middle" fill="#a78bfa" font-size="10" font-weight="bold">妥当性確認 (Validation)</text>
+        </g>
+        <defs>
+          <marker id="arr4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/>
+          </marker>
+        </defs>
+      </svg>
+      <figcaption>図：V字モデル（テスト方法のモデル化）← S03:p.46</figcaption>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <tr><th>区分</th><th>目的</th><th>テスト種類</th></tr>
+        <tr><td><strong>検証（Verification）</strong></td><td>ソフトウェアが正しく作られたものかを確認</td><td>単体テスト・結合テスト</td></tr>
+        <tr><td><strong>妥当性確認（Validation）</strong></td><td>顧客の利用環境において目的を果たすために妥当な品質かを確認</td><td>統合テスト・受入テスト</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- テストの種類 -->
+  <div class="section" id="testing">
+    <h3>テストの種類 <span class="src">← S03:p.47-50</span></h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>テスト</th><th>説明</th></tr>
+        <tr><td><strong>単体テスト（モジュールテスト）</strong></td><td>モジュール（Cでは関数、C++/Javaではクラス）単位でテストケースを用いて入出力を検証</td></tr>
+        <tr><td><strong>結合テスト</strong></td><td>コンポーネント間を結合して行うテスト。外部/内部インターフェース整合性・機能・品質要求達成を確認</td></tr>
+        <tr><td><strong>統合テスト</strong></td><td>ソフトウェアが要求仕様通りか、実際の運用環境に近い状態で使用目的・環境に適合するかを確認</td></tr>
+        <tr><td><strong>システムテスト</strong></td><td>ハードウェアと組み合わせた製品等でのテスト。HWと組合せてインターフェースをチェック</td></tr>
+        <tr><td><strong>受入テスト</strong></td><td>発注元の顧客が要求分析通りの動作を実運用環境で検証するテスト</td></tr>
+      </table>
+    </div>
+    <h4>テストケース設計技法 <span class="src">← S03:p.50</span></h4>
+    <div class="table-wrap">
+      <table>
+        <tr><th>技法</th><th>説明</th></tr>
+        <tr><td><strong>ブラックボックステスト</strong></td><td>内部詳細を見ずに、要求仕様・外部仕様の機能記述に基づいて実施</td></tr>
+        <tr><td><strong>ホワイトボックステスト</strong></td><td>プログラムの内部処理に注目し、プログラム構造を網羅するようにテストケースを見出す方法</td></tr>
+        <tr><td><strong>ランダムテスト</strong></td><td>入力空間から入力データをランダムに抽出してテストケースを作る</td></tr>
+        <tr><td><strong>妥当性確認テスト</strong></td><td>ユーザー要求の機能的な側面を満足していることを確認するテスト</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 終わりのない開発 -->
+  <div class="section" id="endless-dev">
+    <h3>終わりのある開発から終わりのない開発へ <span class="src">← S03:p.51</span></h3>
+    <p><strong>従来</strong>：開発終了後、運用・保守担当者に引き渡し。開発は完了。</p>
+    <ul>
+      <li><strong>運用</strong>：システムが正常に稼動し続けられるような状態を維持・管理すること</li>
+      <li><strong>保守</strong>：運用開始後の不具合を修正する活動</li>
+    </ul>
+    <p><strong>現在</strong>：ソフトウェアが事業の収益源となり、開発と保守の区別がなくなり、開発は終了することなく続く。ソフトウェアが拡張し続けられること＝事業が拡大していること。<span class="src">← S03:p.51</span></p>
+    <div class="emphasis-block">
+      終わりのない開発が<strong>良いソフトウェアの証</strong>とも考えられる。
+    </div>
+  </div>
+
+  <!-- DevOps -->
+  <div class="section" id="devops">
+    <h3>DevOps <span class="src">← S03:p.52</span></h3>
+    <div class="emphasis-block">
+      <strong>定義：</strong>「Development（開発）」と「Operations（運用）」を組み合わせた用語。開発と運用を一体化し、ソフトウェアの迅速なリリースと安定した運用を実現するための文化やプラクティス。
+    </div>
+    <div class="audio-block">
+      <div class="block-label">▸ AUDIO SUPPLEMENT</div>
+      開発側は「新しい機能を追加したい」、運用側は「システムの安定稼働のために変更を加えたくない」と対立していた。しかし両者の<strong>共通目標</strong>は「システムによってビジネスの価値をより高め、迅速にエンドユーザーに届け続けること」。これに気づき、開発と運用が一緒に手を組むようになった。<span class="src">← S05-A</span>
+    </div>
+    <p>メリット：開発スピードの向上 + 安定した運用の実現（障害時の影響範囲の最小化）<span class="src">← S03:p.52</span></p>
+  </div>
+
+  <!-- リエンジニアリング -->
+  <div class="section" id="reengineering">
+    <h3>リエンジニアリング <span class="src">← S03:p.53</span></h3>
+    <p>不完全なドキュメントしかないソフトウェアを再生する作業。開発者退職等で内部がわからなくなった際に実施。</p>
+    <ul>
+      <li><strong>リバースエンジニアリング</strong>：コードを分析して仕様書をアップデートする（下流→上流）</li>
+      <li><strong>フォワードエンジニアリング</strong>：リバース後に仕様書を元にコードを再生する（上流→下流）</li>
+      <li><strong>リストラクチャリング</strong>：ソフトウェアの挙動を変えずに内部構造を再構成し、わかりやすく保守しやすい構造に変える</li>
+      <li><strong>リファクタリング</strong>：リストラクチャリングの一種。保守作業の繰り返しで継ぎはぎだらけになった構造を、挙動を変えないことを確認しながら小さな変換を繰り返して綺麗な構造に書き換える</li>
+    </ul>
+  </div>
+
+  <!-- 組織能力の監査 -->
+  <div class="section" id="cmmi">
+    <h3>ソフトウェア開発組織の能力の査定と改善 <span class="src">← S03:p.54</span></h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>仕組み</th><th>説明</th></tr>
+        <tr><td><strong>CMMI</strong><br><small>Capability Maturity Model Integration</small></td><td>開発組織の能力を<strong>5段階</strong>で判定し、問題部分を段階的に改善していく品質マネジメントシステム</td></tr>
+        <tr><td><strong>ISOの品質マネジメントシステム</strong></td><td>組織内の役割と手順が文書で明確に規定され、確実に実施されていることを監査するシステム</td></tr>
+      </table>
+    </div>
+    <p>これらの仕組みにより：①ソフトウェア発注先の選択基準になる ②自組織の改善点を客観的に把握できる<span class="src">← S03:p.54</span></p>
+  </div>
+</div><!-- /ch3 -->
+
+<!-- ═══════════ CHAPTER 4 ═══════════ -->
+<div class="chapter" id="ch4">
+  <div class="chapter-header">
+    <span class="chapter-num">CH.04</span>
+    <h2 class="chapter-title">ソフトウェア設計方法論</h2>
+  </div>
+
+  <!-- 設計方法論概要 -->
+  <div class="section" id="design-method">
+    <h3>ソフトウェア設計方法論とは <span class="src">← S03:p.59</span></h3>
+    <p>ソフトウェア開発の過程で、要件を満たすためにシステムの構造や機能を効果的に設計するための一連の手法やガイドライン。<strong>複雑さを管理しやすくし、保守性・拡張性・再利用性を高める</strong>ことを目指す。</p>
+    <p>2つの設計方法論：<strong>構造化技法（Structured Design）</strong>と<strong>オブジェクト指向方法論（Object-Oriented Design）</strong><span class="src">← S03:p.60</span></p>
+  </div>
+
+  <!-- 構造化技法 -->
+  <div class="section" id="structured">
+    <h3>構造化技法 <span class="src">← S03:p.61</span></h3>
+    <p>1970年代初期に<strong>Edsger W. Dijkstra（エドガー・ダイクストラ）</strong>によって提案。構造化プログラミングに端を発するソフトウェア開発技法の総称。<span class="src">← S03:p.61</span><span class="src">[外部補足: e-words.jp]</span></p>
+    <div class="emphasis-block">
+      <strong>基本的考え方（構造化）：</strong>対象物の機能（モノのはたらき）に着目し、ある機能はそれよりも小さな機能の集まりで作られるという考え方。システム全体を大きな機能単位に分解し、さらに細かく分割して設計する。<strong>トップダウン</strong>的な設計方法論。
+    </div>
+    <p>ウォーターフォール型開発プロセスと相性が良い。3つのステップ：<strong>構造化分析 → 構造化設計 → 構造化プログラミング</strong>（開発プロセスの要求分析・設計・プログラミングに対応）<span class="src">← S03:p.61</span></p>
+    <div class="audio-block">
+      <div class="block-label">▸ AUDIO SUPPLEMENT</div>
+      <strong>構造化プログラミングの3つの基本構造</strong>：<br>
+      ① <strong>連接（順次）</strong>：親の処理を小さい処理に分解して順番に実行<br>
+      ② <strong>選択</strong>：if-elseの形で分解（条件分岐）<br>
+      ③ <strong>反復</strong>：forやwhileの形に分解（ループ）<br>
+      代表言語：C言語・Pascal<span class="src">← S05-A, S03:p.43</span>
+    </div>
+  </div>
+
+  <!-- OO方法論 -->
+  <div class="section" id="oo-method">
+    <h3>オブジェクト指向方法論 <span class="src">← S03:p.62</span></h3>
+    <p>1980年代に提案。オブジェクト指向に端を発するソフトウェア開発技法の総称。SimulaやSmalltalkが基盤。<span class="src">← S03:p.60,62</span></p>
+    <div class="emphasis-block">
+      <strong>基本的考え方：</strong>オブジェクト同士がメッセージを交換して処理を進めるという、一貫した考え方でソフトウェアを開発する。必要な部品を先に考えて開発する、どちらかというと<strong>ボトムアップ</strong>的な方法論。
+    </div>
+    <ul>
+      <li><strong>自然なモデル化能力</strong>：「モノ（オブジェクト）」に着目して考える</li>
+      <li><strong>高い再利用性</strong>：オブジェクトは再利用のための部品として優れている</li>
+      <li><strong>継ぎ目のない（Seamless）開発プロセス</strong>：一貫してオブジェクトを中心に考えられるため要求分析・設計・プログラミングの成果物が継ぎ目なく移行可能 → <strong>アジャイル型と相性が良い</strong></li>
+      <li>UMLが表記法として標準化されており、開発者間のコミュニケーションが容易</li>
+    </ul>
+  </div>
+
+  <!-- OO基礎概念 -->
+  <div class="section" id="oo-basics">
+    <h3>オブジェクト指向の基礎概念 <span class="src">← S03:p.63-65</span></h3>
+    <div class="emphasis-block">
+      <strong>オブジェクト：</strong>実世界の個物や観念世界の概念に対応する1つの「もの」。ソフトウェアの世界では<strong>データ（属性）とそれに対する処理（操作）をまとめたもの</strong>。<br>
+      例：猫（データ：状態・記憶 / 操作：刺激に対して反応）、自動販売機（データ：在庫・価格 / 操作：お金投入→商品排出）<span class="src">← S03:p.63, S05-A</span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <tr><th>概念</th><th>説明</th></tr>
+        <tr><td><strong>クラス</strong></td><td>オブジェクトの設計図。クラスからインスタンス化によって具体的なオブジェクトが生成される</td></tr>
+        <tr><td><strong>インスタンス</strong></td><td>クラスから生成された具体的なオブジェクト。同じクラスから複数のインスタンスを生成できる</td></tr>
+        <tr><td><strong>カプセル化</strong></td><td>オブジェクトのデータを外部から直接アクセスできないようにし、メソッドを通じてのみアクセスする原則。堅牢性・保守性を向上</td></tr>
+        <tr><td><strong>ポリモーフィズム（多態性）</strong></td><td>同じ操作でありながら異なるクラスのオブジェクトがそれぞれ異なる動作をする能力。<br>例：犬に「鳴く」メソッド→「ワン」、猫に「鳴く」→「ニャー」</td></tr>
+        <tr><td><strong>メッセージング</strong></td><td>オブジェクト間の相互作用はメッセージ（メソッドを呼び出す）を介して行われる</td></tr>
+      </table>
+    </div>
+    <h4>UML（Unified Modeling Language）<span class="src">← S03:p.45</span></h4>
+    <p>オブジェクト指向におけるモデル化のための統一的表記法。図・グラフ記法の集まりとして定義（ユースケース図・クラス図・シーケンス図等）。OMGによって標準化。<strong>開発方法論や開発プロセスとは独立</strong>しており、必要な図のみ使えばよい。</p>
+  </div>
+
+  <!-- 設計技法の比較 -->
+  <div class="section" id="design-compare">
+    <h3>構造化技法 vs オブジェクト指向方法論 <span class="src">← S03:p.67-68</span></h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>項目</th><th>構造化技法</th><th>オブジェクト指向方法論</th></tr>
+        <tr><td><strong>設計手法</strong></td><td>トップダウンで機能を分割</td><td>オブジェクトに基づいてシステムを設計</td></tr>
+        <tr><td><strong>基本単位</strong></td><td>機能・プロセス（関数・手続き）</td><td>オブジェクト（クラス）</td></tr>
+        <tr><td><strong>データと処理</strong></td><td>別々に管理</td><td>オブジェクトに統合</td></tr>
+        <tr><td><strong>再利用性</strong></td><td class="cmp-warn">限定的</td><td class="cmp-good">高い</td></tr>
+        <tr><td><strong>柔軟性</strong></td><td class="cmp-warn">要件変更にあまり強くない</td><td class="cmp-good">要件変更に対して柔軟性が高い</td></tr>
+        <tr><td><strong>保守性</strong></td><td class="cmp-warn">保守が比較的難しい</td><td class="cmp-good">保守性が高い</td></tr>
+        <tr><td><strong>学習コスト</strong></td><td class="cmp-good">比較的簡単</td><td class="cmp-warn">難しい（立ち上がりに時間がかかる）</td></tr>
+        <tr><td><strong>適用プロセス</strong></td><td>ウォーターフォール型と相性◎</td><td>アジャイル型と相性◎</td></tr>
+      </table>
+    </div>
+    <h4>どちらを選ぶか？ <span class="src">← S03:p.68</span></h4>
+    <div class="table-wrap">
+      <table>
+        <tr><th>構造化技法を選ぶ場合</th><th>オブジェクト指向方法論を選ぶ場合</th></tr>
+        <tr><td>シンプルで明確な要件があるプロジェクト<br>機能ごとに分割可能なシステム<br>中〜大規模プロジェクト<br>リアルタイムシステム・制御システム</td><td>複雑な要件があり変更が多いプロジェクト<br>オブジェクトの再利用が重要<br>拡張性が必要なシステム<br>長期間にわたる開発・保守が必要なプロジェクト</td></tr>
+      </table>
+    </div>
+    <div class="audio-block">
+      <div class="block-label">▸ AUDIO SUPPLEMENT</div>
+      オブジェクト指向方法論は一方的に良さそうに見えるが、あまり慣れていない人が集まるとオブジェクト指向方法論は立ち上がりに時間がかかるというデメリットもある。構造化技法の方が学ぶのは簡単。<span class="src">← S05-A</span>
+    </div>
+  </div>
+</div><!-- /ch4 -->
+
+<!-- ═══════════ APPENDIX ═══════════ -->
+<div id="appendix">
+
+  <!-- 未確定事項 -->
+  <div class="appendix-card" id="unconfirmed" style="background:rgba(52,211,153,.05);border:1px solid rgba(52,211,153,.25);">
+    <h3 style="color:var(--accent2);">✅ 未確定事項・要確認リスト（全件解決済み）</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>ID</th><th>内容</th><th>解決方法</th><th>ステータス</th></tr>
+        <tr>
+          <td>U01</td>
+          <td>構造化技法・構造化プログラミングの提唱者名</td>
+          <td><strong>Edsger W. Dijkstra（エドガー・ダイクストラ）</strong>、オランダのCS。1969年論文「Structured Programming」で提唱。S05の「ダイクストア」「エクストラ」は誤変換。<span class="src">[外部照合: e-words.jp, Wikipedia]</span></td>
+          <td style="color:var(--accent2);">✅ 解決</td>
+        </tr>
+        <tr>
+          <td>U02</td>
+          <td>野中・竹内論文の著者フルネーム</td>
+          <td><strong>野中郁次郎（のなか いくじろう）</strong>・<strong>竹内弘高（たけうち ひろたか）</strong>。論文「The New New Product Development Game」は Harvard Business Review 1986年1-2月号掲載。分析対象企業：ホンダ・富士ゼロックス・3M・HPなど。※野中氏は2025年1月25日逝去（享年89歳）。<span class="src">[外部照合: Wikipedia, Scrum Inc.Japan]</span></td>
+          <td style="color:var(--accent2);">✅ 解決</td>
+        </tr>
+        <tr>
+          <td>U03</td>
+          <td>スクラム初適用年（S05では1994年と誤変換）</td>
+          <td>正確な経緯：<strong>1993年</strong>にJeff SutherlandがEasel CorporationでJohn Scumniotales・Jeff McKennaとともにソフトウェア開発に初適用 → <strong>1995年</strong>にKen SchwabertとOOPSLA'95で論文「The SCRUM Development Process」を共同発表。S03:p.27の記述が正確。S05の「1994年」は誤変換。<span class="src">[外部照合: Scrum Inc., agile42.com, OOPSLA原論文]</span></td>
+          <td style="color:var(--accent2);">✅ 解決</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 補足A -->
+  <div class="appendix-card" id="appendix-a">
+    <h3>⭐ 補足A: 最重要ワード一覧</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>用語</th><th>読み</th><th>定義（原文から抽出）</th><th>重要度</th></tr>
+        <tr><td><strong>ソフトウェア</strong></td><td>—</td><td>情報処理システムのプログラム、手続き、規則及び関連文書の全体又は一部分（JIS X 0001-1994）</td><td class="glossary-star">★★★</td></tr>
+        <tr><td><strong>ソフトウェア工学</strong></td><td>—</td><td>大規模ソフトウェアを対象に、信頼性が高く効率的で保守しやすいソフトウェアを設計・開発・運用・保守するための方法・技術・知識を組織・チームで扱う学問分野</td><td class="glossary-star">★★★</td></tr>
+        <tr><td><strong>ソフトウェア危機</strong></td><td>—</td><td>1960年代後半、需要急増とシステム大規模化により納期遅延・予算超過・品質問題・メンテナンス困難が頻発した状態</td><td class="glossary-star">★★★</td></tr>
+        <tr><td><strong>ISO/IEC 25010</strong></td><td>—</td><td>ソフトウェア品質特性として8つを定める国際規格（機能適合性・性能効率性・互換性・使用性・信頼性・セキュリティ・保守性・移植性）</td><td class="glossary-star">★★★</td></tr>
+        <tr><td><strong>ウォーターフォール型開発</strong></td><td>—</td><td>要件定義→外部設計→内部設計→コーディング→テストという工程を順番に経て進める開発手法</td><td class="glossary-star">★★★</td></tr>
+        <tr><td><strong>手戻り</strong></td><td>てもどり</td><td>工程を戻ってバグ（欠陥）を修正すること。下流ほど修正コストが高い</td><td class="glossary-star">★★★</td></tr>
+        <tr><td><strong>アジャイル型開発</strong></td><td>—</td><td>動くソフトウェアを短い時間間隔で繰り返し作成・顧客に見せフィードバックを実装する、俊敏さによる完成度向上型の開発プロセス</td><td class="glossary-star">★★★</td></tr>
+        <tr><td><strong>スクラム</strong></td><td>—</td><td>経験主義を基本とし、スプリントを繰り返す製品開発改善ループとデイリースクラムによるチーム改善ループを継続するアジャイル手法</td><td class="glossary-star">★★★</td></tr>
+        <tr><td><strong>V字モデル</strong></td><td>—</td><td>開発フェーズに対応したテスト（検証・妥当性確認）を配置したテスト方法のモデル化</td><td class="glossary-star">★★★</td></tr>
+        <tr><td><strong>DevOps</strong></td><td>デブオプス</td><td>開発と運用を一体化しソフトウェアの迅速なリリースと安定した運用を実現するための文化やプラクティス</td><td class="glossary-star">★★★</td></tr>
+        <tr><td><strong>構造化技法</strong></td><td>—</td><td>機能に着目してシステムをトップダウンで分解する1970年代の設計手法。ウォーターフォール型と相性良</td><td class="glossary-star">★★★</td></tr>
+        <tr><td><strong>オブジェクト指向方法論</strong></td><td>—</td><td>オブジェクト同士のメッセージ交換という一貫した考え方でソフトウェアを開発する1980年代の設計方法論</td><td class="glossary-star">★★★</td></tr>
+        <tr><td><strong>カプセル化</strong></td><td>—</td><td>オブジェクトのデータを外部から直接アクセスできないようにし、メソッドを通じてのみアクセスする原則</td><td class="glossary-star">★★★</td></tr>
+        <tr><td><strong>ポリモーフィズム（多態性）</strong></td><td>たたいせい</td><td>同じ操作でありながら異なるクラスのオブジェクトがそれぞれ異なる動作をする能力</td><td class="glossary-star">★★★</td></tr>
+        <tr><td><strong>要求分析</strong></td><td>—</td><td>顧客や利用者の要求を仕様化する作業。機能要件と非機能要件を明確化する</td><td class="glossary-star">★★★</td></tr>
+        <tr><td><strong>継承（Inheritance）</strong></td><td>けいしょう</td><td>既存クラス（スーパークラス）の属性・メソッドを新しいクラス（サブクラス）が引き継ぐ仕組み。OOの基本概念のひとつ</td><td class="glossary-star">★★☆</td></tr>
+        <tr><td><strong>SLCP</strong></td><td>エスエルシーピー</td><td>Software Life Cycle Process。ソフトウェアの開発計画から破棄に至るライフ全体のプロセス</td><td class="glossary-star">★★☆</td></tr>
+        <tr><td><strong>Dijkstra（ダイクストラ）</strong></td><td>—</td><td>Edsger W. Dijkstra（1930-2002）。オランダのCS。構造化プログラミング提唱者。1972年チューリング賞受賞</td><td class="glossary-star">★★☆</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 補足B -->
+  <div class="appendix-card" id="appendix-b">
+    <h3>📚 補足B: 知っておくべき背景知識</h3>
+    <div class="ext-note">
+
+      <p><strong>▶ SWEBOK（SoftWare Engineering Body of Knowledge）</strong>：IEEEが発行するソフトウェア工学の知識体系。V4は2024年発行。要求・アーキテクチャ・設計・テスト・セキュリティ・DevOps・AIとSEなど幅広い領域をカバー。<strong>無料ダウンロード可</strong>（https://www.computer.org/education/bodies-of-knowledge/software-engineering）。<span class="src">← S03:p.13</span></p>
+
+      <hr style="border-color:var(--border);margin:12px 0;">
+
+      <p><strong>▶ CrowdStrike障害（2024年7月19日）</strong>：米クラウドストライク社のセキュリティソフト「ファルコン（Falcon）」に含まれたバグが自動更新で配布され、全世界のWindowsを搭載した<strong>約850万台</strong>のPCにトラブルが発生。航空・金融・医療・放送等に大規模障害。信頼されているはずのセキュリティソフト自体がバグを持つことで甚大な影響が生まれることを示した近年最大級の事例。<span class="src">← S03:p.11（日経ビジネス 2024.08.12）</span></p>
+
+      <hr style="border-color:var(--border);margin:12px 0;">
+
+      <p><strong>▶ アジャイル宣言（Agile Manifesto, 2001年）</strong>：Kent Beck・Jeff Sutherland・Ken Schwaber・Martin Fowlerら<strong>17名</strong>のソフトウェア開発者が米国ユタ州スノーバードに集まり署名。4つの価値観と12の原則を宣言。<br>
+      4つの価値観：①プロセスやツールよりも<strong>個人と対話</strong>を ②包括的なドキュメントよりも<strong>動くソフトウェア</strong>を ③契約交渉よりも<strong>顧客との協調</strong>を ④計画に従うことよりも<strong>変化への対応</strong>を<span class="src">[外部照合: agilemanifesto.org]</span></p>
+
+      <hr style="border-color:var(--border);margin:12px 0;">
+
+      <p><strong>▶ 野中郁次郎・竹内弘高論文「The New New Product Development Game」（1986年）</strong><br>
+      掲載誌：<em>Harvard Business Review</em> 64(1), pp.137-146（1986年1-2月号）<br>
+      著者：<strong>野中郁次郎（のなか いくじろう、1935-2025）</strong>・<strong>竹内弘高（たけうち ひろたか）</strong>（現ハーバード・ビジネス・スクール教授）<br>
+      内容：ホンダ・富士ゼロックス・3M・HP等の日本企業とNASA式ウォーターフォール開発を比較分析。一体型・重複型の新製品開発チーム手法を「<strong>スクラム</strong>」と命名。<br>
+      ※野中郁次郎氏は2025年1月25日に逝去（享年89歳）。一橋大学名誉教授・知識創造理論の権威。<span class="src">[外部照合: Wikipedia, Scrum Inc.Japan, Biz/Zine]</span></p>
+
+      <hr style="border-color:var(--border);margin:12px 0;">
+
+      <p><strong>▶ スクラム誕生の経緯（年表）</strong></p>
+      <div class="table-wrap">
+        <table>
+          <tr><th>年</th><th>出来事</th></tr>
+          <tr><td>1986</td><td>野中・竹内論文「The New New Product Development Game」でスクラムアプローチを提唱（Harvard Business Review）</td></tr>
+          <tr><td>1993</td><td>Jeff Sutherland、John Scumniotales、Jeff McKennaがEasel Corporationでソフトウェア開発に<strong>初適用</strong></td></tr>
+          <tr><td>1995</td><td>Jeff SutherlandとKen SchwabertがOOPSLA'95（テキサス州オースティン）で論文「The SCRUM Development Process」を<strong>正式発表</strong></td></tr>
+          <tr><td>2001</td><td>スクラムの開発者らが参加してアジャイル宣言署名（ユタ州スノーバード）</td></tr>
+          <tr><td>2010</td><td>初版スクラムガイド発行（Schwaber & Sutherland共著）</td></tr>
+          <tr><td>2020</td><td>スクラムガイド最新版（ソフトウェア以外への適用を明示）</td></tr>
+        </table>
+      </div>
+      <span class="src">[外部照合: Scrum Inc., agile42.com, OOPSLA原論文]</span>
+
+      <hr style="border-color:var(--border);margin:12px 0;">
+
+      <p><strong>▶ Edsger W. Dijkstra（エドガー・ダイクストラ、1930-2002）</strong>：オランダのコンピュータ科学者。1969年の論文「Structured Programming」で構造化プログラミングを提唱。1968年のCACM投書「Go To Statement Considered Harmful」でGOTO文の問題を指摘。<strong>1972年チューリング賞受賞</strong>。最短経路アルゴリズム（ダイクストラ法）も同氏の業績。<span class="src">[外部照合: e-words.jp, Wikipedia, 電気通信大学]</span></p>
+
+      <hr style="border-color:var(--border);margin:12px 0;">
+
+      <p><strong>▶ Kent Beck（ケント・ベック）とXP</strong>：アメリカのソフトウェアエンジニア。eXtreme Programming（XP）の開発者。アジャイル宣言17名の署名者の一人。テスト駆動開発（TDD）の普及に貢献。著書『テスト駆動開発』は日本語翻訳版も広く読まれている。<span class="src">[外部照合]</span></p>
+
+    </div>
+  </div>
+
+  <!-- 補足C -->
+  <div class="appendix-card" id="appendix-c">
+    <h3>🎯 補足C: 試験・レポートで重要な観点</h3>
+    <ul>
+      <li><strong>ソフトウェア危機の4問題</strong>：納期遅延・予算超過・品質問題・メンテナンスの難しさ → 全て暗記推奨</li>
+      <li><strong>ISO/IEC 25010の8品質特性</strong>：機能適合性・性能効率性・互換性・使用性・信頼性・セキュリティ・保守性・移植性</li>
+      <li><strong>手戻りコスト比</strong>：要求0.1 / 設計0.5 / コーディング1 / テスト2 / 出荷後20。「上流で見つけるほど得」（コーディングの20倍の差に注目）</li>
+      <li><strong>ウォーターフォール vs アジャイルは対立ではなく相補的</strong>という論点は頻出</li>
+      <li><strong>スクラムの2ループ</strong>：製品開発改善ループ（スプリント）+ チーム活動改善ループ（デイリースクラム）</li>
+      <li><strong>スクラムの3役割</strong>：プロダクトオーナー（何を作るか）・開発チーム（どう作るか）・スクラムマスター（円滑化）</li>
+      <li><strong>V字モデルの検証（Verification）vs 妥当性確認（Validation）</strong>の区別：「正しく作った？」vs「正しいものを作った？」</li>
+      <li><strong>構造化技法=トップダウン・機能分割・ウォーターフォール向き、OO方法論=ボトムアップ・シームレス・アジャイル向き</strong></li>
+      <li><strong>DevOpsの開発・運用の共通目標</strong>：ビジネス価値を確実かつ迅速にエンドユーザーへ届け続けること</li>
+      <li><strong>ソフトウェア工学の提唱年・場所</strong>：1968年、ドイツのGarmisch、NATO主催国際会議</li>
+      <li><strong>スクラムの起源</strong>：1986年野中・竹内論文 → 1993年Sutherland初適用 → 1995年OOPSLA'95で正式発表</li>
+      <li><strong>構造化プログラミングの3基本構造</strong>：連接（順次）・選択・反復（Dijkstraが提唱）</li>
+    </ul>
+  </div>
+
+  <!-- 補足D -->
+  <div class="appendix-card" id="appendix-d">
+    <h3>🔗 補足D: 関連概念・次回への接続</h3>
+    <p class="ext-note">
+      <strong>継承（Inheritance）</strong>：オブジェクト指向の重要概念のひとつ。既存クラス（スーパークラス）の属性・メソッドを新しいクラス（サブクラス）が引き継ぐ仕組み。本講義では言及されなかったが、S03:p.60にはオブジェクト・クラス・継承・ポリモーフィズムが基本概念として列挙されている。詳細は各プログラミング言語の授業で学ぶ。<span class="src">← S03:p.60</span>
+    </p>
+    <p class="ext-note">
+      <strong>Simula・Smalltalk</strong>：オブジェクト指向プログラミング言語の祖先。<strong>Simula</strong>（1967年、ノルウェー計算センター）がクラスとオブジェクトの概念を導入。<strong>Smalltalk</strong>（1970年代、Xerox PARC）でオブジェクト指向の多くの概念（メッセージング・継承・ポリモーフィズム等）が確立された。<span class="src">← S03:p.60 [外部補足]</span>
+    </p>
+    <p class="ext-note">
+      <strong>CI/CD（継続的インテグレーション / 継続的デリバリー）</strong>：XPのテスト自動化・継続的インテグレーションの考え方がDevOpsへと発展した実践的な開発手法。コード変更のたびに自動でテスト・ビルド・デプロイを行う。GitHub Actions・Jenkins・CircleCI等のツールが使われる。<span class="src">[外部補足]</span>
+    </p>
+    <p class="ext-note">
+      <strong>UML（Unified Modeling Language）とOMG</strong>：OMG（Object Management Group）は米国のオブジェクト技術標準化団体。UMLはOMGによって標準化されており、現在のバージョンはUML 2.5.1（2017年）。ユースケース図・クラス図・シーケンス図・アクティビティ図・状態機械図など13種類の図が定義されているが、すべて使う必要はなく必要な図のみ取り入れる。<span class="src">← S03:p.45 [外部補足]</span>
+    </p>
+    <p class="ext-note">
+      <strong>プロジェクトマネジメント</strong>：開発計画フェーズの詳細はプロジェクトマネジメント入門の授業でカバーされている。<span class="src">← S05-A</span>
+    </p>
+    <p class="ext-note">
+      <strong>ソフトウェア工学（専門科目）</strong>：本回で紹介したUML・設計方法論・品質管理の詳細は専門科目「ソフトウェア工学」でさらに深く学べる。<span class="src">← S05-A</span>
+    </p>
+  </div>
+
+</div><!-- /appendix -->
+
+</main>
+
+<script>
+// Active nav highlighting on scroll
+const sections = document.querySelectorAll('[id]');
+const navLinks = document.querySelectorAll('nav a');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(link => {
+        link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
+      });
+    }
+  });
+}, { threshold: 0.3, rootMargin: '-60px 0px -60% 0px' });
+sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
