@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>インターネット入門 第6回 ── メールサービスの仕組みと活用</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:          #0f1117;
+    --bg-card:     #161b27;
+    --bg-card2:    #1e2535;
+    --border:      #2a3347;
+    --text:        #e2e8f5;
+    --text-sub:    #8a99b8;
+    --text-dim:    #556070;
+    --accent-blue: #5b8dee;
+    --accent-teal: #34d399;
+    --accent-gold: #fbbf24;
+    --accent-red:  #f87171;
+    --accent-purp: #a78bfa;
+    --accent-grn:  #4ade80;
+    --audio-bg:    #0d1c35;
+    --audio-brd:   #3b82f6;
+    --infer-bg:    #160d28;
+    --infer-brd:   #a78bfa;
+    --warn-bg:     #1c1408;
+    --warn-brd:    #fbbf24;
+    --ext-bg:      #0a1f15;
+    --ext-brd:     #34d399;
+    --sidebar-w:   260px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 15px;
+    line-height: 1.8;
+    display: flex;
+  }
+
+  /* ── SIDEBAR ── */
+  #sidebar {
+    width: var(--sidebar-w);
+    min-height: 100vh;
+    background: var(--bg-card);
+    border-right: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    flex-shrink: 0;
+    padding: 24px 0 40px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+  #sidebar .sb-title {
+    padding: 0 20px 16px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    color: var(--accent-blue);
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 12px;
+  }
+  #sidebar a {
+    display: block;
+    padding: 5px 20px;
+    color: var(--text-sub);
+    text-decoration: none;
+    font-size: 12.5px;
+    line-height: 1.5;
+    transition: color .15s, background .15s;
+    border-left: 2px solid transparent;
+  }
+  #sidebar a:hover { color: var(--text); background: var(--bg-card2); }
+  #sidebar a.h2 { font-weight: 600; color: var(--text); font-size: 13px; margin-top: 8px; }
+  #sidebar a.h3 { padding-left: 32px; font-size: 12px; }
+
+  /* ── MAIN ── */
+  #main {
+    flex: 1;
+    min-width: 0;
+    padding: 48px 48px 80px;
+    max-width: 900px;
+  }
+
+  /* ── HEADER ── */
+  .doc-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 28px;
+    margin-bottom: 40px;
+  }
+  .doc-header .badge-row {
+    display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px;
+  }
+  .badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    padding: 3px 9px;
+    border-radius: 4px;
+    border: 1px solid;
+    font-weight: 600;
+    letter-spacing: .04em;
+  }
+  .badge-blue  { color: var(--accent-blue); border-color: var(--accent-blue); background: #0d1c35; }
+  .badge-teal  { color: var(--accent-teal); border-color: var(--accent-teal); background: #0a1f15; }
+  .badge-gold  { color: var(--accent-gold); border-color: var(--accent-gold); background: #1c1408; }
+  .doc-header h1 { font-size: 26px; font-weight: 700; line-height: 1.3; color: var(--text); }
+  .doc-header h1 span { color: var(--accent-blue); }
+  .meta-row {
+    display: flex; gap: 20px; flex-wrap: wrap; margin-top: 14px;
+  }
+  .meta-item { font-size: 12.5px; color: var(--text-sub); }
+  .meta-item strong { color: var(--text); }
+
+  /* ── SECTION CARD ── */
+  .section {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 28px 32px;
+    margin-bottom: 24px;
+  }
+  .section h2 {
+    font-size: 18px; font-weight: 700; color: var(--accent-blue);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 12px; margin-bottom: 20px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section h2 .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: var(--text-dim);
+    background: var(--bg-card2);
+    padding: 2px 8px; border-radius: 4px;
+  }
+  .section h3 {
+    font-size: 15px; font-weight: 600; color: var(--accent-gold);
+    margin: 22px 0 10px;
+  }
+  .section h4 {
+    font-size: 13.5px; font-weight: 600; color: var(--accent-teal);
+    margin: 16px 0 8px;
+  }
+
+  p { margin-bottom: 10px; }
+  ul, ol { padding-left: 22px; margin-bottom: 10px; }
+  li { margin-bottom: 4px; }
+
+  /* ── BLOCKS ── */
+  .audio-block {
+    background: var(--audio-bg);
+    border-left: 3px solid var(--audio-brd);
+    border-radius: 0 6px 6px 0;
+    padding: 12px 16px;
+    margin: 12px 0;
+  }
+  .audio-block .block-label {
+    font-size: 10px; font-weight: 700; letter-spacing: .1em;
+    color: var(--audio-brd); text-transform: uppercase; margin-bottom: 5px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .infer-block {
+    background: var(--infer-bg);
+    border-left: 3px solid var(--infer-brd);
+    border-radius: 0 6px 6px 0;
+    padding: 12px 16px; margin: 12px 0;
+  }
+  .infer-block .block-label { color: var(--infer-brd); font-size: 10px; font-weight: 700;
+    letter-spacing: .1em; text-transform: uppercase; margin-bottom: 5px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .warn-block {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn-brd);
+    border-radius: 0 6px 6px 0;
+    padding: 12px 16px; margin: 12px 0;
+  }
+  .warn-block .block-label { color: var(--warn-brd); font-size: 10px; font-weight: 700;
+    letter-spacing: .1em; text-transform: uppercase; margin-bottom: 5px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .ext-block {
+    background: var(--ext-bg);
+    border-left: 3px solid var(--ext-brd);
+    border-radius: 0 6px 6px 0;
+    padding: 12px 16px; margin: 12px 0;
+  }
+  .ext-block .block-label { color: var(--ext-brd); font-size: 10px; font-weight: 700;
+    letter-spacing: .1em; text-transform: uppercase; margin-bottom: 5px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ── POINTER ── */
+  .ptr {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    color: var(--text-dim);
+    background: var(--bg-card2);
+    padding: 1px 6px; border-radius: 3px;
+    display: inline-block; margin-left: 4px;
+  }
+
+  /* ── TABLE ── */
+  .tbl-wrap { overflow-x: auto; margin: 12px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  th {
+    background: var(--bg-card2); color: var(--accent-blue);
+    padding: 9px 14px; text-align: left; font-weight: 600;
+    border-bottom: 2px solid var(--border); white-space: nowrap;
+  }
+  td {
+    padding: 8px 14px; border-bottom: 1px solid var(--border);
+    vertical-align: top; color: var(--text);
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: rgba(255,255,255,.018); }
+
+  /* ── DEFINITION ── */
+  .def-box {
+    background: var(--bg-card2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin: 10px 0;
+  }
+  .def-box .def-term {
+    font-weight: 700; color: var(--accent-teal); font-size: 14px; margin-bottom: 4px;
+  }
+
+  /* ── CODE / MONO ── */
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    background: var(--bg-card2);
+    padding: 1px 6px; border-radius: 3px;
+    color: var(--accent-teal);
+  }
+
+  /* ── APPENDIX ── */
+  .appendix {
+    border-radius: 10px;
+    padding: 24px 28px;
+    margin-bottom: 20px;
+    border: 1px solid;
+  }
+  .appendix.app-warn { background: var(--warn-bg); border-color: var(--warn-brd); }
+  .appendix.app-blue { background: var(--audio-bg); border-color: var(--audio-brd); }
+  .appendix.app-teal { background: var(--ext-bg);   border-color: var(--ext-brd); }
+  .appendix.app-purp { background: var(--infer-bg); border-color: var(--infer-brd); }
+  .appendix.app-gold { background: #1a150a; border-color: var(--accent-gold); }
+  .appendix h2 {
+    font-size: 16px; font-weight: 700; margin-bottom: 16px;
+    border-bottom: 1px solid var(--border); padding-bottom: 10px;
+  }
+  .appendix.app-warn h2 { color: var(--accent-gold); }
+  .appendix.app-blue h2 { color: var(--audio-brd); }
+  .appendix.app-teal h2 { color: var(--accent-teal); }
+  .appendix.app-purp h2 { color: var(--accent-purp); }
+  .appendix.app-gold h2 { color: var(--accent-gold); }
+  .app-sub { font-size: 11.5px; color: var(--text-sub); font-style: italic; margin-bottom: 12px; }
+
+  /* ── SVG containers ── */
+  .svg-wrap {
+    background: var(--bg-card2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    margin: 16px 0;
+    overflow-x: auto;
+  }
+  figcaption {
+    font-size: 11.5px; color: var(--text-dim);
+    text-align: center; margin-top: 8px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ── TIMELINE ── */
+  .timeline { margin: 12px 0; }
+  .tl-item { display: flex; gap: 16px; margin-bottom: 10px; }
+  .tl-year {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px; color: var(--accent-gold);
+    background: var(--bg-card2);
+    padding: 2px 8px; border-radius: 4px;
+    white-space: nowrap; align-self: flex-start; margin-top: 2px;
+    min-width: 80px; text-align: center;
+  }
+  .tl-text { font-size: 13.5px; color: var(--text-sub); }
+
+  /* ── COMPARE TABLE: POP vs IMAP ── */
+  .cmp-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 12px 0;
+  }
+  .cmp-card {
+    background: var(--bg-card2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+  .cmp-card h4 { color: var(--accent-gold); font-size: 14px; margin-bottom: 8px; }
+  .cmp-card ul { font-size: 13px; }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- ==================== SIDEBAR ==================== -->
+<nav id="sidebar">
+  <div class="sb-title">目次</div>
+  <a href="#header" class="h2">🔖 概要</a>
+  <a href="#ch1" class="h2">第1章 電子メールの仕組み</a>
+  <a href="#history" class="h3">歴史</a>
+  <a href="#postal" class="h3">郵便との対比</a>
+  <a href="#system" class="h3">システム構成</a>
+  <a href="#address" class="h3">メールアドレス</a>
+  <a href="#smtp" class="h3">SMTP</a>
+  <a href="#pop" class="h3">POP</a>
+  <a href="#imap" class="h3">IMAP</a>
+  <a href="#webmail" class="h3">Webメール</a>
+  <a href="#ch2" class="h2">第2章 電子メールの活用</a>
+  <a href="#format" class="h3">書式</a>
+  <a href="#writing" class="h3">書き方</a>
+  <a href="#send" class="h3">送り方</a>
+  <a href="#ch3" class="h2">第3章 注意点</a>
+  <a href="#netiquette" class="h3">ネチケット</a>
+  <a href="#security" class="h3">セキュリティ・脅威</a>
+  <a href="#password" class="h3">パスワード管理</a>
+  <a href="#spam" class="h3">迷惑メール</a>
+  <a href="#phishing" class="h3">フィッシング詐欺</a>
+  <a href="#emotet" class="h3">Emotet</a>
+  <a href="#bec" class="h3">BEC</a>
+  <a href="#summary" class="h2">📋 第6回まとめ（講師総括）</a>
+  <a href="#app0" class="h2">❓ 未確定事項</a>
+  <a href="#appA" class="h2">⭐ 補足A: 最重要ワード</a>
+  <a href="#appB" class="h2">📚 補足B: 背景知識</a>
+  <a href="#appC" class="h2">🎯 補足C: 試験観点</a>
+  <a href="#appD" class="h2">🔗 補足D: 関連概念</a>
+</nav>
+
+<!-- ==================== MAIN ==================== -->
+<main id="main">
+
+<!-- HEADER -->
+<div class="doc-header" id="header">
+  <div class="badge-row">
+    <span class="badge badge-blue">インターネット入門</span>
+    <span class="badge badge-gold">第6回</span>
+    <span class="badge badge-teal">専門基礎科目</span>
+  </div>
+  <h1>メールサービスの<span>仕組みと活用</span></h1>
+  <div class="meta-row">
+    <span class="meta-item"><strong>担当</strong> 橋本 匡史</span>
+    <span class="meta-item"><strong>ソース</strong> S03（スライドPDF）・S05-A〜D（hynote.ai ×4）</span>
+    <span class="meta-item"><strong>QC</strong> Step 6実施済み・追加S05（第6回まとめ）取り込み済み</span>
+  </div>
+  <div style="margin-top:14px; font-size:13px; color:var(--text-sub);">
+    <strong style="color:var(--text)">学習目標：</strong>電子メールサービスの基本的な仕組み及び活用方法について理解し、説明できる。
+  </div>
+</div>
+
+<!-- ===================== CH1 ===================== -->
+<div class="section" id="ch1">
+  <h2><span class="num">CH.1</span> 電子メールの仕組み</h2>
+
+  <p><strong>学習目標：</strong>電子メールシステムの構成・メールアドレスとドメイン・SMTP/POP/IMAPプロトコルを理解し説明できる。<span class="ptr">← S03:p.5</span></p>
+
+  <div class="def-box">
+    <div class="def-term">電子メール (e-mail / Electronic Mail)</div>
+    インターネットを利用して、コンピュータ同士で文章や画像などの情報をやり取りできるコミュニケーションツールのひとつ。日常生活やビジネスにおいて重要なツール。<span class="ptr">← S03:p.6</span>
+  </div>
+
+  <div class="audio-block">
+    <div class="block-label">🎤 音声補足</div>
+    "e-mail" は "Electronic Mail" の略。日本語では単に「メール」と呼ぶことが多い。2000年代中盤以降はInstagram・X（旧Twitter）・LINEなどSNSのメッセージ機能が普及し、電子メールの重要度はやや低下したが、現在もインターネットを利用した情報伝達手段として重要な位置を占めている。<span class="ptr">← S05</span>
+  </div>
+
+  <!-- 歴史 -->
+  <h3 id="history">電子メールの歴史</h3>
+  <div class="timeline">
+    <div class="tl-item"><span class="tl-year">1960年代</span><span class="tl-text">電子メールの原型が実験的に利用される（他ユーザへのメッセージ残し）<span class="ptr">← S03:p.6</span></span></div>
+    <div class="tl-item"><span class="tl-year">1971年</span><span class="tl-text">Ray Tomlinson（レイ・トムリンソン）により、ARPANET上で初めてのネットワーク電子メールが送られる<span class="ptr">← S03:p.6</span></span></div>
+    <div class="tl-item"><span class="tl-year">1982年</span><span class="tl-text">SMTPが公開<span class="ptr">← S03:p.6</span></span></div>
+    <div class="tl-item"><span class="tl-year">1984年</span><span class="tl-text">POPが公開<span class="ptr">← S03:p.6</span></span></div>
+    <div class="tl-item"><span class="tl-year">1986年</span><span class="tl-text">IMAPが公開<span class="ptr">← S03:p.6</span></span></div>
+    <div class="tl-item"><span class="tl-year">1988年</span><span class="tl-text">POP3が公開<span class="ptr">← S03:p.6</span></span></div>
+    <div class="tl-item"><span class="tl-year">1994年</span><span class="tl-text">IMAP4が公開<span class="ptr">← S03:p.6</span></span></div>
+    <div class="tl-item"><span class="tl-year">1996年</span><span class="tl-text">IMAP4rev1が公開<span class="ptr">← S03:p.6</span></span></div>
+    <div class="tl-item"><span class="tl-year">2005年頃〜</span><span class="tl-text">SNSを利用したコミュニケーションの増加<span class="ptr">← S03:p.6</span></span></div>
+    <div class="tl-item"><span class="tl-year">ISP普及期</span><span class="tl-text">ISPがメールアカウントを提供する商用サービスが広がり、多くの人が電子メールを利用するようになった<span class="ptr">← S05</span></span></div>
+  </div>
+
+  <!-- 郵便との対比 -->
+  <h3 id="postal">郵便サービスとの対比</h3>
+  <p>電子メールは「郵便を電子化したサービス」であり、仕組みが郵便と対応している。<span class="ptr">← S03:p.7</span></p>
+
+  <div class="svg-wrap">
+    <figure>
+    <svg viewBox="0 0 760 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:760px;">
+      <!-- ── 郵便 side ── -->
+      <rect x="10" y="10" width="340" height="260" rx="8" fill="#1e2535" stroke="#2a3347" stroke-width="1"/>
+      <text x="180" y="38" text-anchor="middle" fill="#fbbf24" font-size="13" font-weight="700" font-family="Noto Sans JP,sans-serif">📮 郵便サービス</text>
+      <!-- nodes -->
+      <rect x="40" y="56" width="120" height="30" rx="5" fill="#0d1c35" stroke="#3b82f6" stroke-width="1"/>
+      <text x="100" y="76" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="Noto Sans JP,sans-serif">差出人（投函）</text>
+      <rect x="40" y="110" width="120" height="30" rx="5" fill="#0d1c35" stroke="#3b82f6" stroke-width="1"/>
+      <text x="100" y="130" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="Noto Sans JP,sans-serif">最寄りの郵便局</text>
+      <rect x="40" y="164" width="120" height="30" rx="5" fill="#0d1c35" stroke="#3b82f6" stroke-width="1"/>
+      <text x="100" y="184" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="Noto Sans JP,sans-serif">受取人郵便局</text>
+      <rect x="40" y="218" width="120" height="30" rx="5" fill="#0d1c35" stroke="#3b82f6" stroke-width="1"/>
+      <text x="100" y="238" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="Noto Sans JP,sans-serif">受取人（ポスト）</text>
+      <!-- arrows -->
+      <line x1="100" y1="86" x2="100" y2="110" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#arr)"/>
+      <line x1="100" y1="140" x2="100" y2="164" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#arr)"/>
+      <line x1="100" y1="194" x2="100" y2="218" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#arr)"/>
+      <!-- labels -->
+      <text x="175" y="76" fill="#8a99b8" font-size="10" font-family="Noto Sans JP,sans-serif">はがきを書く→投函</text>
+      <text x="175" y="130" fill="#8a99b8" font-size="10" font-family="Noto Sans JP,sans-serif">集荷・仕分け</text>
+      <text x="175" y="184" fill="#8a99b8" font-size="10" font-family="Noto Sans JP,sans-serif">配達（郵送）</text>
+      <text x="175" y="238" fill="#8a99b8" font-size="10" font-family="Noto Sans JP,sans-serif">ポストに投函→取得</text>
+
+      <!-- ── 電子メール side ── -->
+      <rect x="410" y="10" width="340" height="260" rx="8" fill="#1e2535" stroke="#2a3347" stroke-width="1"/>
+      <text x="580" y="38" text-anchor="middle" fill="#34d399" font-size="13" font-weight="700" font-family="Noto Sans JP,sans-serif">✉ 電子メール</text>
+      <rect x="440" y="56" width="130" height="30" rx="5" fill="#0a1f15" stroke="#34d399" stroke-width="1"/>
+      <text x="505" y="76" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="Noto Sans JP,sans-serif">送信者（MUA）</text>
+      <rect x="440" y="110" width="130" height="30" rx="5" fill="#0a1f15" stroke="#34d399" stroke-width="1"/>
+      <text x="505" y="130" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="Noto Sans JP,sans-serif">送信者のメールサーバ</text>
+      <rect x="440" y="164" width="130" height="30" rx="5" fill="#0a1f15" stroke="#34d399" stroke-width="1"/>
+      <text x="505" y="184" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="Noto Sans JP,sans-serif">受信者のメールサーバ</text>
+      <rect x="440" y="218" width="130" height="30" rx="5" fill="#0a1f15" stroke="#34d399" stroke-width="1"/>
+      <text x="505" y="238" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="Noto Sans JP,sans-serif">受信者（MUA）</text>
+      <line x1="505" y1="86" x2="505" y2="110" stroke="#34d399" stroke-width="1.5" marker-end="url(#arr2)"/>
+      <line x1="505" y1="140" x2="505" y2="164" stroke="#34d399" stroke-width="1.5" marker-end="url(#arr2)"/>
+      <line x1="505" y1="194" x2="505" y2="218" stroke="#34d399" stroke-width="1.5" marker-end="url(#arr2)"/>
+      <text x="585" y="100" fill="#8a99b8" font-size="10" font-family="Noto Sans JP,sans-serif">SMTP</text>
+      <text x="585" y="154" fill="#8a99b8" font-size="10" font-family="Noto Sans JP,sans-serif">SMTP（転送）</text>
+      <text x="585" y="208" fill="#8a99b8" font-size="10" font-family="Noto Sans JP,sans-serif">POP / IMAP</text>
+
+      <!-- 対応ラベル（中央） -->
+      <text x="380" y="76" text-anchor="middle" fill="#556070" font-size="12" font-family="Noto Sans JP,sans-serif">≅</text>
+      <text x="380" y="130" text-anchor="middle" fill="#556070" font-size="12" font-family="Noto Sans JP,sans-serif">≅</text>
+      <text x="380" y="184" text-anchor="middle" fill="#556070" font-size="12" font-family="Noto Sans JP,sans-serif">≅</text>
+      <text x="380" y="238" text-anchor="middle" fill="#556070" font-size="12" font-family="Noto Sans JP,sans-serif">≅</text>
+
+      <defs>
+        <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#5b8dee"/>
+        </marker>
+        <marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#34d399"/>
+        </marker>
+      </defs>
+    </svg>
+    <figcaption>図1: 郵便サービスと電子メールの対比 ← S03:p.7</figcaption>
+    </figure>
+  </div>
+
+  <!-- システム構成 -->
+  <h3 id="system">電子メールシステムの構成（エージェント）</h3>
+  <p>電子メールシステムでは、ユーザ側またはメールサーバ上で動くプログラムを<strong>エージェント</strong>と呼ぶ。主に3種類のエージェントが動作する。<span class="ptr">← S03:p.8</span></p>
+
+  <div class="tbl-wrap">
+  <table>
+    <tr><th>エージェント</th><th>正式名称</th><th>役割</th><th>動作場所</th></tr>
+    <tr><td><code>MUA</code></td><td>Mail User Agent</td><td>メールを<strong>送受信・管理</strong>するためのプログラム（メールソフトウェア）</td><td>ユーザのPC</td></tr>
+    <tr><td><code>MTA</code></td><td>Mail Transfer Agent</td><td>メールを<strong>転送</strong>するプログラム</td><td>メールサーバ上</td></tr>
+    <tr><td><code>MDA</code></td><td>Mail Delivery Agent</td><td>受信者の<strong>メールボックスに配送</strong>するプログラム</td><td>メールサーバ上</td></tr>
+  </table>
+  </div>
+
+  <div class="svg-wrap">
+    <figure>
+    <svg viewBox="0 0 740 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:740px;">
+      <!-- 送信者 -->
+      <rect x="10" y="60" width="80" height="60" rx="6" fill="#0d1c35" stroke="#3b82f6" stroke-width="1.5"/>
+      <text x="50" y="86" text-anchor="middle" fill="#5b8dee" font-size="11" font-weight="700" font-family="Noto Sans JP,sans-serif">MUA</text>
+      <text x="50" y="102" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP,sans-serif">送信者PC</text>
+
+      <!-- 矢印 -->
+      <line x1="90" y1="90" x2="130" y2="90" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#arr3)"/>
+      <text x="110" y="82" text-anchor="middle" fill="#fbbf24" font-size="9" font-family="Noto Sans JP,sans-serif">SMTP</text>
+
+      <!-- 送信者メールサーバ -->
+      <rect x="130" y="30" width="140" height="120" rx="6" fill="#1e2535" stroke="#2a3347" stroke-width="1"/>
+      <text x="200" y="50" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP,sans-serif">送信者のメールサーバ</text>
+      <rect x="148" y="60" width="60" height="36" rx="4" fill="#0d1c35" stroke="#3b82f6" stroke-width="1"/>
+      <text x="178" y="82" text-anchor="middle" fill="#5b8dee" font-size="11" font-weight="700" font-family="Noto Sans JP,sans-serif">MTA</text>
+
+      <!-- 矢印 インターネット -->
+      <line x1="270" y1="90" x2="340" y2="90" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr3)"/>
+      <text x="305" y="82" text-anchor="middle" fill="#fbbf24" font-size="9" font-family="Noto Sans JP,sans-serif">SMTP</text>
+      <text x="305" y="108" text-anchor="middle" fill="#556070" font-size="9" font-family="Noto Sans JP,sans-serif">インターネット</text>
+
+      <!-- 受信者メールサーバ -->
+      <rect x="340" y="30" width="220" height="120" rx="6" fill="#1e2535" stroke="#2a3347" stroke-width="1"/>
+      <text x="450" y="50" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP,sans-serif">受信者のメールサーバ</text>
+      <rect x="358" y="60" width="60" height="36" rx="4" fill="#0d1c35" stroke="#3b82f6" stroke-width="1"/>
+      <text x="388" y="82" text-anchor="middle" fill="#5b8dee" font-size="11" font-weight="700" font-family="Noto Sans JP,sans-serif">MTA</text>
+
+      <!-- MTA → MDA 矢印 -->
+      <line x1="418" y1="78" x2="450" y2="78" stroke="#34d399" stroke-width="1.2" marker-end="url(#arr4)"/>
+
+      <rect x="450" y="60" width="60" height="36" rx="4" fill="#0a1f15" stroke="#34d399" stroke-width="1"/>
+      <text x="480" y="78" text-anchor="middle" fill="#34d399" font-size="11" font-weight="700" font-family="Noto Sans JP,sans-serif">MDA</text>
+      <text x="480" y="92" text-anchor="middle" fill="#556070" font-size="8" font-family="Noto Sans JP,sans-serif">Mailbox</text>
+
+      <!-- 矢印 受信者PC -->
+      <line x1="560" y1="90" x2="600" y2="90" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#arr5)"/>
+      <text x="580" y="82" text-anchor="middle" fill="#a78bfa" font-size="9" font-family="Noto Sans JP,sans-serif">POP/IMAP</text>
+
+      <!-- 受信者 -->
+      <rect x="600" y="60" width="80" height="60" rx="6" fill="#160d28" stroke="#a78bfa" stroke-width="1.5"/>
+      <text x="640" y="86" text-anchor="middle" fill="#a78bfa" font-size="11" font-weight="700" font-family="Noto Sans JP,sans-serif">MUA</text>
+      <text x="640" y="102" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP,sans-serif">受信者PC</text>
+
+      <defs>
+        <marker id="arr3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#fbbf24"/>
+        </marker>
+        <marker id="arr4" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#34d399"/>
+        </marker>
+        <marker id="arr5" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#a78bfa"/>
+        </marker>
+      </defs>
+    </svg>
+    <figcaption>図2: 電子メールシステムの構成とプロトコル ← S03:p.8,p.10</figcaption>
+    </figure>
+  </div>
+
+  <div class="audio-block">
+    <div class="block-label">🎤 音声補足</div>
+    メールを送る場合の流れ：送信者の MUA → 送信者メールサーバの MTA → インターネット → 受信者メールサーバの MTA → MDA によってメールボックスへ配送 → 受信者の MUA が POP または IMAP でメールを受け取る。<span class="ptr">← S05</span>
+  </div>
+
+  <!-- メールアドレス -->
+  <h3 id="address">メールアドレス</h3>
+  <p>メールを送るには受信者を特定する情報が必要。これが<strong>メールアドレス</strong>。<span class="ptr">← S03:p.9</span></p>
+
+  <div class="svg-wrap">
+    <figure>
+    <svg viewBox="0 0 600 120" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:600px;">
+      <!-- address display -->
+      <rect x="80" y="30" width="440" height="60" rx="8" fill="#1e2535" stroke="#2a3347"/>
+      <!-- local part -->
+      <rect x="100" y="42" width="140" height="36" rx="5" fill="#0d1c35" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="170" y="65" text-anchor="middle" fill="#5b8dee" font-size="16" font-weight="700" font-family="JetBrains Mono,monospace">user</text>
+      <!-- @ -->
+      <text x="260" y="65" text-anchor="middle" fill="#fbbf24" font-size="18" font-weight="700" font-family="JetBrains Mono,monospace">@</text>
+      <!-- domain part -->
+      <rect x="280" y="42" width="220" height="36" rx="5" fill="#0a1f15" stroke="#34d399" stroke-width="1.5"/>
+      <text x="390" y="65" text-anchor="middle" fill="#34d399" font-size="16" font-weight="700" font-family="JetBrains Mono,monospace">example.com</text>
+      <!-- labels -->
+      <text x="170" y="18" text-anchor="middle" fill="#5b8dee" font-size="11" font-family="Noto Sans JP,sans-serif">ローカル部</text>
+      <text x="170" y="100" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP,sans-serif">ユーザを識別</text>
+      <text x="390" y="18" text-anchor="middle" fill="#34d399" font-size="11" font-family="Noto Sans JP,sans-serif">ドメイン部</text>
+      <text x="390" y="100" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP,sans-serif">メールサーバの位置</text>
+    </svg>
+    <figcaption>図3: メールアドレスの構造 ← S03:p.9</figcaption>
+    </figure>
+  </div>
+
+  <ul>
+    <li><strong>ローカル部（Local part）</strong>：@より左側。ユーザを識別する部分。ユーザ名だけでなく<strong>エイリアス</strong>（グループや役割の別名。例：メーリングリスト・admin）の場合もある。<span class="ptr">← S03:p.9</span></li>
+    <li><strong>ドメイン部（Domain part）</strong>：@より右側。インターネット上のメールサーバの位置を示す。WWWのURIと同じ仕組み。<span class="ptr">← S03:p.9</span></li>
+    <li>郵便に例えると：宛名＝ローカル部、宛先住所＝ドメイン部。<span class="ptr">← S05</span></li>
+  </ul>
+
+  <div class="audio-block">
+    <div class="block-label">🎤 音声補足（@マークの由来）</div>
+    @マーク（アットマーク）は電子メールの父と呼ばれる<strong>Ray Tomlinson（レイ・トムリンソン）</strong>が導入した。理由は①コンピュータへの入力としてあまり使われていない文字だったこと、②他の文字と区別しやすかったことの2点とされている。<span class="ptr">← S05</span>
+  </div>
+
+  <!-- SMTP -->
+  <h3 id="smtp">SMTP（Simple Mail Transfer Protocol）</h3>
+  <div class="def-box">
+    <div class="def-term">SMTP</div>
+    メール<strong>転送</strong>を行うためのプロトコル。「送信者（MUA）とメールサーバ間」および「メールサーバ間」のメール転送で利用される。<span class="ptr">← S03:p.11</span>
+  </div>
+  <ul>
+    <li>クライアントサーバ型：メールを送りたい側がクライアント、転送する側がSMTPサーバ。<span class="ptr">← S03:p.11</span></li>
+    <li>テキストベースのSMTPメッセージ（コマンド↔リプライ）でやり取りする。<span class="ptr">← S03:p.11</span></li>
+  </ul>
+  <div class="tbl-wrap">
+  <table>
+    <tr><th>要素</th><th>内容</th></tr>
+    <tr><td><strong>SMTPコマンド</strong></td><td>差出人・宛先の指定、認証、メール本文送信等のコマンド（特定の文字列）</td></tr>
+    <tr><td><strong>SMTPリプライ</strong></td><td>コマンド結果を表す<strong>3桁のリプライコード</strong>（220・221・500等）</td></tr>
+  </table>
+  </div>
+  <p>← S03:p.11</p>
+
+  <!-- POP -->
+  <h3 id="pop">POP（Post Office Protocol）</h3>
+  <div class="def-box">
+    <div class="def-term">POP（POP3）</div>
+    メール<strong>受信</strong>のために利用されるプロトコル。メールサーバ上のメールボックスからメールを<strong>手元のコンピュータに取り込んで管理</strong>することが特徴。現在はPOP version 3（POP3）が使われている。<span class="ptr">← S03:p.12</span>
+  </div>
+  <div class="tbl-wrap">
+  <table>
+    <tr><th>要素</th><th>内容</th></tr>
+    <tr><td><strong>POPコマンド</strong></td><td>ユーザ認証・メールボックス状況確認・メール転送・削除等のコマンド</td></tr>
+    <tr><td><strong>POPリプライ</strong></td><td>コマンド結果を表す文字列（<code>+OK</code> や <code>-ERR</code>）</td></tr>
+  </table>
+  </div>
+  <p>← S03:p.12</p>
+
+  <!-- IMAP -->
+  <h3 id="imap">IMAP（Internet Message Access Protocol）</h3>
+  <div class="def-box">
+    <div class="def-term">IMAP（IMAP4）</div>
+    メール<strong>受信</strong>のために利用されるプロトコル。POPと違い、<strong>メールサーバ上でメールを管理</strong>することが特徴。現在はIMAP version 4（IMAP4）が主流。<span class="ptr">← S03:p.13</span>
+  </div>
+  <ul>
+    <li>メールの未読・既読・削除などの状態がサーバ上で保存される。<span class="ptr">← S03:p.13</span></li>
+    <li>スマートフォン・ノートPCなど<strong>複数デバイスで同一内容を共有</strong>できる。<span class="ptr">← S03:p.13</span></li>
+    <li>POPより機能が多く、プロトコルとして複雑な仕組みを持つ。<span class="ptr">← S05</span></li>
+  </ul>
+
+  <div class="cmp-grid">
+    <div class="cmp-card">
+      <h4>📤 POP3 の特徴</h4>
+      <ul>
+        <li>メールをサーバから<strong>手元へダウンロード</strong>して管理</li>
+        <li>シンプルな構成</li>
+        <li>複数デバイス間の同期が難しい</li>
+        <li>リプライ形式: <code>+OK</code> / <code>-ERR</code></li>
+      </ul>
+    </div>
+    <div class="cmp-card">
+      <h4>📥 IMAP4 の特徴</h4>
+      <ul>
+        <li>メールは<strong>サーバ上で管理</strong></li>
+        <li>未読・既読・仕分けもサーバ側で保存</li>
+        <li><strong>複数デバイスで常に同じ状態</strong>を共有</li>
+        <li>リプライ形式: タグ・ステータス・レスポンスコード</li>
+      </ul>
+    </div>
+  </div>
+  <p>← S03:p.12,13</p>
+
+  <!-- Webメール -->
+  <h3 id="webmail">Webメール</h3>
+  <div class="def-box">
+    <div class="def-term">Webメール</div>
+    <strong>Webブラウザ上で電子メールを利用するアプリケーション</strong>。WebブラウザをMUAとして使用する。<span class="ptr">← S03:p.14</span>
+  </div>
+  <ul>
+    <li>事前のSMTP/IMAPユーザ側設定が不要。専用メールソフトウェアのインストールも不要。<span class="ptr">← S03:p.14</span></li>
+    <li>WebブラウザからHTTPでWebサーバにアクセス → WebサーバがSMTP/IMAPでメールサーバと通信する構成。<span class="ptr">← S03:p.14</span></li>
+    <li>MUAもサーバが提供するため、メール受信プロトコルはサーバ上管理のIMAPが自然。<span class="ptr">← S05</span></li>
+  </ul>
+
+  <div class="svg-wrap">
+    <figure>
+    <svg viewBox="0 0 600 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:600px;">
+      <!-- ユーザ -->
+      <rect x="20" y="40" width="110" height="50" rx="6" fill="#0d1c35" stroke="#3b82f6" stroke-width="1.5"/>
+      <text x="75" y="62" text-anchor="middle" fill="#5b8dee" font-size="11" font-weight="600" font-family="Noto Sans JP,sans-serif">ユーザ</text>
+      <text x="75" y="78" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP,sans-serif">Webブラウザ</text>
+      <!-- HTTP -->
+      <line x1="130" y1="65" x2="190" y2="65" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#arr6)"/>
+      <line x1="190" y1="70" x2="130" y2="70" stroke="#fbbf24" stroke-width="1.2" marker-end="url(#arr7)"/>
+      <text x="160" y="56" text-anchor="middle" fill="#fbbf24" font-size="9" font-family="Noto Sans JP,sans-serif">HTTP</text>
+      <!-- Webサーバ -->
+      <rect x="190" y="20" width="140" height="90" rx="6" fill="#1e2535" stroke="#2a3347"/>
+      <text x="260" y="42" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP,sans-serif">Webサーバ</text>
+      <rect x="205" y="50" width="55" height="24" rx="4" fill="#0a1f15" stroke="#34d399"/>
+      <text x="233" y="66" text-anchor="middle" fill="#34d399" font-size="9" font-family="Noto Sans JP,sans-serif">送信機能</text>
+      <rect x="265" y="50" width="55" height="24" rx="4" fill="#0a1f15" stroke="#34d399"/>
+      <text x="293" y="66" text-anchor="middle" fill="#34d399" font-size="9" font-family="Noto Sans JP,sans-serif">受信機能</text>
+      <!-- SMTP/IMAP -->
+      <line x1="330" y1="55" x2="390" y2="55" stroke="#fbbf24" stroke-width="1.2" marker-end="url(#arr6)"/>
+      <text x="360" y="48" text-anchor="middle" fill="#fbbf24" font-size="9" font-family="Noto Sans JP,sans-serif">SMTP</text>
+      <line x1="330" y1="70" x2="390" y2="70" stroke="#a78bfa" stroke-width="1.2" marker-end="url(#arr8)"/>
+      <text x="360" y="84" text-anchor="middle" fill="#a78bfa" font-size="9" font-family="Noto Sans JP,sans-serif">IMAP</text>
+      <!-- メールサーバ -->
+      <rect x="390" y="20" width="140" height="90" rx="6" fill="#1e2535" stroke="#2a3347"/>
+      <text x="460" y="42" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP,sans-serif">メールサーバ</text>
+      <rect x="415" y="52" width="90" height="40" rx="4" fill="#160d28" stroke="#a78bfa"/>
+      <text x="460" y="68" text-anchor="middle" fill="#a78bfa" font-size="10" font-weight="600" font-family="Noto Sans JP,sans-serif">Mailbox</text>
+      <defs>
+        <marker id="arr6" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#fbbf24"/>
+        </marker>
+        <marker id="arr7" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#fbbf24"/>
+        </marker>
+        <marker id="arr8" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#a78bfa"/>
+        </marker>
+      </defs>
+    </svg>
+    <figcaption>図4: Webメールの構成 ← S03:p.14</figcaption>
+    </figure>
+  </div>
+</div>
+
+<!-- ===================== CH2 ===================== -->
+<div class="section" id="ch2">
+  <h2><span class="num">CH.2</span> 電子メールの活用</h2>
+  <p><strong>学習目標：</strong>電子メールの書式・基本的な書き方と送り方を理解し説明できる。<span class="ptr">← S03:p.18</span></p>
+
+  <!-- 書式 -->
+  <h3 id="format">電子メールの書式</h3>
+  <div class="tbl-wrap">
+  <table>
+    <tr><th>要素</th><th>説明</th><th>必須</th></tr>
+    <tr><td><strong>宛先（To）</strong></td><td>受信者のメールアドレス。複数記入可（カンマ区切り）</td><td>✅</td></tr>
+    <tr><td><strong>件名（Subject）</strong></td><td>メールの内容・意図を簡潔に表すタイトル</td><td>✅</td></tr>
+    <tr><td><strong>本文</strong></td><td>メールの本文内容</td><td>✅</td></tr>
+    <tr><td><strong>CC（Carbon Copy）</strong></td><td>直接の宛先ではないが参考のためにコピーを送る相手。受信者にCC先のアドレスが見える</td><td>任意</td></tr>
+    <tr><td><strong>BCC（Blind Carbon Copy）</strong></td><td>CCと同用途だが、<strong>受信者にメールアドレスが表示されない</strong></td><td>任意</td></tr>
+  </table>
+  </div>
+  <p>← S03:p.19</p>
+
+  <div class="audio-block">
+    <div class="block-label">🎤 音声補足（CCの語源）</div>
+    CCは「Carbon Copy（カーボンコピー）」の略。元々は2枚の紙の間にカーボン紙を挟んで上の紙の文字を下の紙に複写することを意味する言葉。そこから派生してメールでは「参考のためにコピーを送る」意味で使われている。<span class="ptr">← S05</span>
+  </div>
+
+  <!-- 書き方 -->
+  <h3 id="writing">電子メールの書き方のポイント</h3>
+  <div class="warn-block">
+    <div class="block-label">💡 心得</div>
+    <strong>メールの受信者の気持ちや立場になって考えること。</strong> 友人・教員・ビジネス取引先では書き方が大きく変わる。これから説明する内容はひとつのやり方であり、唯一の正解ではない。<span class="ptr">← S03:p.20</span>
+  </div>
+
+  <h4>件名のポイント</h4>
+  <p>件名はそのメールを読むかどうかを決める指標となる。特に1日に何百通もメールを受け取る相手には件名が重要。<span class="ptr">← S03:p.21</span></p>
+  <p><strong>ポイント：メールの意図や内容を簡潔に表す件名にする。<span class="ptr">← S03:p.21</span></strong></p>
+
+  <div class="tbl-wrap">
+  <table>
+    <tr><th>状況</th><th>良い例</th><th>良くない例</th><th>理由</th></tr>
+    <tr><td>第6回小テストについて質問</td><td>インターネット入門第6回小テストに関する質問</td><td>質問 / （件名なし）</td><td>科目・内容が即座に判断できる</td></tr>
+    <tr><td>会議の日程調整（返信が必要）</td><td>【要返信: 締切X/Y】〇△会議の日程調整</td><td>会議について</td><td>アクションと期限が件名で明確</td></tr>
+  </table>
+  </div>
+  <p>← S03:p.22,23</p>
+
+  <div class="audio-block">
+    <div class="block-label">🎤 音声補足</div>
+    「要返信」などの強調を件名に入れるのは効果的だが、やりすぎると効果が薄れるため使いどころを見極めること。<span class="ptr">← S05</span>
+  </div>
+
+  <h4>本文の構成</h4>
+  <p>本文の基本構成：<strong>受信者の明示 → 送信者の明示 → 本文（要件→詳細） → 署名</strong><span class="ptr">← S03:p.24,25</span></p>
+
+  <div class="tbl-wrap">
+  <table>
+    <tr><th>要素</th><th>内容</th></tr>
+    <tr><td><strong>受信者の明示</strong></td><td>誰に宛てたメールかを明示（教員・上司・取引先等）。複数宛先の場合も記載</td></tr>
+    <tr><td><strong>送信者の明示</strong></td><td>送信者が誰か（氏名・立場）を名乗る</td></tr>
+    <tr><td><strong>本文（要件→詳細）</strong></td><td>まず目的・要件・相手にやってほしいことを簡潔に述べ、続いて詳細情報を記述</td></tr>
+    <tr><td><strong>署名</strong></td><td>氏名・所属・連絡先等の送信者詳細情報。メールソフトウェアで自動挿入できる</td></tr>
+  </table>
+  </div>
+  <p>← S03:p.24,25</p>
+
+  <div class="tbl-wrap">
+  <table>
+    <tr><th>種別</th><th>件名</th><th>本文のポイント</th></tr>
+    <tr>
+      <td style="color:var(--accent-red)">❌ 良くない例</td>
+      <td>質問</td>
+      <td>「第6回の小テストの問5がわかりません。教えてください」<br>→ 科目名なし・学籍番号・氏名なし・自分の考えなし</td>
+    </tr>
+    <tr>
+      <td style="color:var(--accent-teal)">✅ 良い例</td>
+      <td>インターネット入門第6回小テストに関する質問</td>
+      <td>〇〇先生 / 学籍番号〇〇の☓☓です。/ インターネット入門第6回小テスト問5について解説を読んでも答えが△△となる理由が理解できません。私は〇〇という解釈をしたところ☓☓となり正解は□□と考えましたが、どこが誤っているでしょうか。</td>
+    </tr>
+  </table>
+  </div>
+  <p>← S03:p.26,27</p>
+
+  <!-- 送り方 -->
+  <h3 id="send">電子メールの送り方</h3>
+  <ul>
+    <li><strong>基本：</strong>受信者のメールアドレスを宛先（To）に指定して送信。複数はカンマ区切り。<span class="ptr">← S03:p.28</span></li>
+    <li><strong>誤送信に注意：</strong>宛先を再度確認する癖をつける。<span class="ptr">← S03:p.28</span></li>
+    <li><strong>一部の人に参考送信したい場合：</strong>主たる宛先をTo、参考送信先をCCに指定。<span class="ptr">← S03:p.28</span></li>
+    <li><strong>メールアドレスを他者に見せたくない場合：</strong>BCCを使用。<span class="ptr">← S05</span></li>
+    <li><strong>転送（Forward）：</strong>受信したメールを他の人にそのまま送る機能。担当者振り分けやイベント情報共有に使用。<span class="ptr">← S03:p.29</span></li>
+  </ul>
+</div>
+
+<!-- ===================== CH3 ===================== -->
+<div class="section" id="ch3">
+  <h2><span class="num">CH.3</span> 電子メールの注意点</h2>
+  <p><strong>学習目標：</strong>電子メールの一般的なマナーと基本的なセキュリティ・プライバシーを理解し説明できる。<span class="ptr">← S03:p.33</span></p>
+
+  <!-- ネチケット -->
+  <h3 id="netiquette">ネチケット（電子メールのマナー）</h3>
+  <div class="def-box">
+    <div class="def-term">ネチケット（Netiquette）</div>
+    インターネット上のコミュニケーションに関するエチケット。<span class="ptr">← S03:p.34</span>
+  </div>
+  <ul>
+    <li>対面のコミュニケーションと同じように<strong>相手に敬意を払う</strong>。過剰に畏まる必要はないが、受信者は人であることを意識する。<span class="ptr">← S03:p.34</span></li>
+    <li>依頼メールへの返信が届いたら、一言お礼を返す。<span class="ptr">← S05</span></li>
+    <li><strong>個人情報・プライバシーの取り扱いに注意</strong>：メールは必ずしも全経路で暗号化されているとは限らない。誤送信のリスクもある。複数人に送る場合は受信者のアドレスを共有して良いか確認（問題がある場合はBCCを活用）。<span class="ptr">← S03:p.34</span></li>
+    <li><strong>メールサイズ（特に添付ファイル）に注意</strong>：大きいファイルはサーバから送信拒否される場合あり・受信者のメールボックスを圧迫する。大きいファイルはオンラインストレージで共有する。<span class="ptr">← S03:p.35</span></li>
+    <li><strong>チェーンメール・迷惑メールは送信・転送しない</strong>：チェーンメールはメールサーバへの無駄な負荷の原因となる。<span class="ptr">← S03:p.35</span></li>
+  </ul>
+
+  <!-- セキュリティ・脅威 -->
+  <h3 id="security">電子メールのセキュリティとプライバシー</h3>
+  <div class="tbl-wrap">
+  <table>
+    <tr><th>概念</th><th>定義</th></tr>
+    <tr><td><strong>セキュリティ</strong></td><td>メールの内容・メールアカウント等の情報やシステムが、権限のない他者からの不正な攻撃・アクセスから守られていること</td></tr>
+    <tr><td><strong>プライバシー</strong></td><td>自分が他者に対して知られたくない情報（個人のメール内容・送信頻度等）。多少個人の主観が入る</td></tr>
+  </table>
+  </div>
+  <p>← S03:p.36</p>
+
+  <div class="svg-wrap">
+    <figure>
+    <svg viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:720px;">
+      <!-- 3つの脅威エリア -->
+      <!-- 1: メールアカウント -->
+      <rect x="10" y="10" width="200" height="180" rx="8" fill="#1c1408" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="110" y="36" text-anchor="middle" fill="#fbbf24" font-size="12" font-weight="700" font-family="Noto Sans JP,sans-serif">メールアカウント</text>
+      <text x="110" y="60" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP,sans-serif">IDとパスワードで認証</text>
+      <rect x="25" y="72" width="170" height="40" rx="5" fill="#0f0a00" stroke="#fbbf24" stroke-width="1"/>
+      <text x="110" y="89" text-anchor="middle" fill="#fbbf24" font-size="10" font-family="Noto Sans JP,sans-serif">問題: パスワード漏洩・推測</text>
+      <text x="110" y="104" text-anchor="middle" fill="#f87171" font-size="10" font-family="Noto Sans JP,sans-serif">脅威: 不正アクセス・なりすまし</text>
+      <text x="110" y="135" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP,sans-serif">対策: 長く・複雑・使い回さない</text>
+      <text x="110" y="150" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP,sans-serif">パスフレーズ・管理ツール・</text>
+      <text x="110" y="165" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP,sans-serif">コアパスワード法</text>
+
+      <!-- 2: 通信経路 -->
+      <rect x="260" y="10" width="200" height="180" rx="8" fill="#0a1f15" stroke="#34d399" stroke-width="1.5"/>
+      <text x="360" y="36" text-anchor="middle" fill="#34d399" font-size="12" font-weight="700" font-family="Noto Sans JP,sans-serif">通信経路</text>
+      <text x="360" y="60" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP,sans-serif">メール転送の経路</text>
+      <rect x="275" y="72" width="170" height="40" rx="5" fill="#040f08" stroke="#34d399" stroke-width="1"/>
+      <text x="360" y="89" text-anchor="middle" fill="#34d399" font-size="10" font-family="Noto Sans JP,sans-serif">問題: メールはテキスト（平文）</text>
+      <text x="360" y="104" text-anchor="middle" fill="#f87171" font-size="10" font-family="Noto Sans JP,sans-serif">脅威: 盗聴・改ざん</text>
+      <text x="360" y="135" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP,sans-serif">対策: 暗号化プロトコルを使用</text>
+      <text x="360" y="150" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP,sans-serif">STARTTLS / SMTPS / POPS /</text>
+      <text x="360" y="165" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP,sans-serif">IMAPS / S/MIME</text>
+
+      <!-- 3: 迷惑メール -->
+      <rect x="510" y="10" width="200" height="180" rx="8" fill="#160d28" stroke="#a78bfa" stroke-width="1.5"/>
+      <text x="610" y="36" text-anchor="middle" fill="#a78bfa" font-size="12" font-weight="700" font-family="Noto Sans JP,sans-serif">受信メール（迷惑）</text>
+      <text x="610" y="60" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP,sans-serif">悪意のあるメール</text>
+      <rect x="525" y="72" width="170" height="40" rx="5" fill="#0d0520" stroke="#a78bfa" stroke-width="1"/>
+      <text x="610" y="89" text-anchor="middle" fill="#a78bfa" font-size="10" font-family="Noto Sans JP,sans-serif">問題: 受信メールが悪意ある可能性</text>
+      <text x="610" y="104" text-anchor="middle" fill="#f87171" font-size="10" font-family="Noto Sans JP,sans-serif">脅威: マルウェア・詐欺・搾取</text>
+      <text x="610" y="135" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP,sans-serif">対策: 無視・フィルタ機能活用</text>
+      <text x="610" y="150" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP,sans-serif">リンクは正規サイトで確認</text>
+      <text x="610" y="165" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP,sans-serif">添付ファイルは慎重に</text>
+    </svg>
+    <figcaption>図5: 電子メールを利用する上での脅威3分類 ← S03:p.37</figcaption>
+    </figure>
+  </div>
+
+  <!-- パスワード -->
+  <h3 id="password">パスワードとその管理</h3>
+  <div class="warn-block">
+    <div class="block-label">🔐 推奨パスワード原則</div>
+    <strong>できる限り長く（8文字以上）・複雑で（辞書語・誕生日等の類推しやすいものを避ける）・使い回さない</strong><br>
+    ※ 16文字の英数記号ランダムPWは安全に見えるが、実際に覚えるのが難しく紙に書くリスクが生じる（実用性▲）。<span class="ptr">← S03:p.38</span>
+  </div>
+
+  <h4>パスフレーズ</h4>
+  <p>複数の単語を組み合わせた長い文章。自分にとって覚えやすいが長く複雑なパスワードとして機能する。<span class="ptr">← S03:p.39</span></p>
+  <p>例：<code>heavy-metal-is-the-best-music-for-me</code>（36文字）</p>
+
+  <h4>パスワード管理ツール</h4>
+  <p>サービスごとに異なるランダムなパスワードを生成・保存し、マスターパスワードで暗号化して管理。ユーザはマスターパスワードのみ覚えれば良い。<span class="ptr">← S03:p.39</span></p>
+
+  <h4>コアパスワード法（IPA推奨）</h4>
+  <ol>
+    <li>覚えやすい秘密のフレーズを決める</li>
+    <li>自分で決めた変換ルールに従ってフレーズを変換し、<strong>長く複雑なコアパスワード</strong>を作成</li>
+    <li>サービスごとに固有の識別子を決め、コアパスワードに付け加える → サービスごとに異なるパスワードが生成される</li>
+    <li>コアパスワードは暗記必須。固有識別子は紙やファイルに保存してよい</li>
+  </ol>
+  <div class="audio-block">
+    <div class="block-label">🎤 音声補足（IPA参照）</div>
+    コアパスワード法の詳細はIPAのページで確認できる（URL: https://www.ipa.go.jp/security/anshin/attention/2016/mgdayori20160803.html）。<span class="ptr">← S05</span>
+  </div>
+  <p>← S03:p.40</p>
+
+  <!-- 通信経路 -->
+  <h4>通信経路上の脅威への対策</h4>
+  <ul>
+    <li>SMTP・POP・IMAPの暗号化オプション（<strong>STARTTLS</strong>）を利用する<span class="ptr">← S03:p.41</span></li>
+    <li>または暗号化前提のプロトコル（<code>SMTPS</code>・<code>POPS</code>・<code>IMAPS</code>）を利用する<span class="ptr">← S03:p.41</span></li>
+    <li><strong>注意：</strong>送信者とそのメールサーバ間を暗号化しても、それ以降の経路まで暗号化が保証されるとは限らない。<span class="ptr">← S03:p.41</span></li>
+    <li>送信者から受信者までエンドツーエンドで暗号化する方法として <strong>S/MIME</strong> があるが、利用ハードルがやや高い。<span class="ptr">← S03:p.41</span></li>
+    <li>→ 機密性の高い情報のやり取りには別の手段を検討する必要がある。<span class="ptr">← S05</span></li>
+  </ul>
+
+  <!-- 迷惑メール -->
+  <h3 id="spam">迷惑メール（スパムメール）</h3>
+  <div class="def-box">
+    <div class="def-term">迷惑メール（スパムメール）</div>
+    受信者が望んでいないにもかかわらず一方的に送られてくるメール。商品・サービスの宣伝、詐欺、マルウェア拡散が目的。<strong>特定電子メール法*1</strong>によって規制されており犯罪。<span class="ptr">← S03:p.42</span>
+  </div>
+  <p style="font-size:12px; color:var(--text-dim);">*1: 正式名「特定電子メールの送信の適正化等に関する法律」</p>
+  <div class="tbl-wrap">
+  <table>
+    <tr><th>方式</th><th>説明</th></tr>
+    <tr><td><strong>オプトイン</strong></td><td>事前に受信者から承諾を得ない限りメールを送れない方式。日本の特定電子メール法の原則。<strong>広告宣伝メールはオプトイン方式が義務</strong></td></tr>
+    <tr><td><strong>オプトアウト</strong></td><td>受信拒否をした人にはメールを送れない方式</td></tr>
+  </table>
+  </div>
+  <p>← S03:p.42</p>
+  <p><strong>基本的な対策：</strong>迷惑メールは無視する。メールソフトウェアの迷惑メールフォルダ機能を活用する。<span class="ptr">← S03:p.42</span></p>
+
+  <!-- フィッシング -->
+  <h3 id="phishing">フィッシング詐欺（Phishing）</h3>
+  <div class="def-box">
+    <div class="def-term">フィッシング（Phishing）</div>
+    人を騙して個人情報を盗み、金銭などの利益を得ようとする不正行為。名称は「釣り（fishing）」に由来する造語。<span class="ptr">← S03:p.43</span>
+  </div>
+  <p><strong>典型的な手口：</strong>ショッピングサイトを騙り、偽のフィッシングサイトに誘導し、ID・パスワード・クレジットカード情報を搾取しようとする。<span class="ptr">← S03:p.43</span></p>
+  <div class="audio-block">
+    <div class="block-label">🎤 音声補足（見分け方・対策）</div>
+    フィッシングメールは日本語が不自然な場合がある。怪しいメールは無視するのが一番。心配な場合はメール内のリンクを使わず、それとは別の正規のリンクからアクセスして確かめること。<span class="ptr">← S05</span>
+  </div>
+
+  <!-- Emotet -->
+  <h3 id="emotet">マルウェアを含む電子メール（Emotet）</h3>
+  <div class="def-box">
+    <div class="def-term">Emotet（エモテット）</div>
+    他人になりすましてマルウェアを添付ファイルとして送ってくるマルウェアの一種。<span class="ptr">← S03:p.44</span>
+  </div>
+  <p><strong>特徴：</strong>過去に送信したメールを流用し、あたかも以前送ったメールへの返信のように見せかける。Word・Excel・ZIPファイル等に偽装したマルウェアを添付ファイルとして送ってくる。<span class="ptr">← S03:p.44</span></p>
+  <p><strong>感染時の被害：</strong>メールアカウント・パスワードを含む様々な情報が搾取される。さらに搾取されたメールアカウント・本文がEmotetの感染拡大に悪用される。<span class="ptr">← S03:p.44</span></p>
+  <div class="warn-block">
+    <div class="block-label">⚠️ 対策</div>
+    添付ファイルが送られてきた際は、その添付ファイルが送られてくる必然性があるかを考える。少しでも不審な点があれば添付ファイルを開かずに先方（送信者）に確認する。<span class="ptr">← S03:p.44</span>
+  </div>
+
+  <!-- BEC -->
+  <h3 id="bec">ビジネスメール詐欺（BEC: Business Email Compromise）</h3>
+  <div class="def-box">
+    <div class="def-term">BEC（Business Email Compromise / ビジネスメール詐欺）</div>
+    特定の企業・組織を対象とし、事前に取引先に関する情報を取得して巧妙になりすまし、金銭を騙し取る詐欺メール。<span class="ptr">← S03:p.45</span>
+  </div>
+  <p><strong>典型的な手口：</strong>マルウェアに感染させて取引先に関するメール情報を盗み出し、正規の請求書メールの後に「訂正版」として攻撃者のメールを送り、攻撃者の銀行口座に振込させる。<span class="ptr">← S03:p.45</span></p>
+  <div class="warn-block">
+    <div class="block-label">⚠️ 対策</div>
+    取引の手続きや支払い手順は<strong>電子メール以外の手段も併用した確認手続きを制度化</strong>する。通常と異なる対処を求められたら入念に確認する。<span class="ptr">← S03:p.45</span>
+  </div>
+</div>
+
+<!-- ===================== SUMMARY ===================== -->
+<div class="section" id="summary">
+  <h2><span class="num">まとめ</span> 第6回 総括</h2>
+  <p>S03スライドp.49および講師による音声総括（S05-C・S05-D）をもとに整理。<span class="ptr">← S03:p.49</span></p>
+
+  <div class="tbl-wrap">
+  <table>
+    <tr><th>テーマ</th><th>要点</th></tr>
+    <tr>
+      <td><strong>電子メールの仕組みとプロトコル</strong></td>
+      <td>送信者 → 送信者のメールサーバ → 受信者のメールサーバ → 受信者 という流れ。プロトコルはSMTP（転送）・POP/IMAP（受信）。<span class="ptr">← S03:p.49</span></td>
+    </tr>
+    <tr>
+      <td><strong>電子メールの書き方と送り方</strong></td>
+      <td>受信者に敬意を払い、相手の気持ちになってメールを書く。受信者との関係性を踏まえて、件名や本文は簡潔に要点を書く。<span class="ptr">← S03:p.49</span></td>
+    </tr>
+    <tr>
+      <td><strong>電子メールのセキュリティとプライバシー</strong></td>
+      <td>巧妙な迷惑メール（フィッシング・マルウェア・BECなど）が増加。少しでも不審な点があれば、その電子メール以外の手段で確認する。<span class="ptr">← S03:p.49</span></td>
+    </tr>
+  </table>
+  </div>
+
+  <div class="audio-block">
+    <div class="block-label">🎤 音声補足（講師による第6回まとめコメント）</div>
+    <p>電子メールは送信者のメールサーバを経由して受信者のメールサーバに転送される。その際SMTP・POP・IMAPといったプロトコルが利用される。<span class="ptr">← S05-C</span></p>
+    <p>電子メールを送る際には相手に敬意を払い、相手の気持ちになって書くことが大切。相手との関係性を踏まえて件名や本文は簡潔に要点を書くと良い。<span class="ptr">← S05-C</span></p>
+    <p>セキュリティ・プライバシーの観点では、特に迷惑メールに関して、一見して見分けがつきにくいなりすまし詐欺メールが送られてくるようになってきている。<strong>少しでも不審な点があれば、その電子メール以外の手段で確認すること</strong>が大事。<span class="ptr">← S05-C・S05-D</span></p>
+  </div>
+</div>
+
+<!-- ===================== APPENDIX ===================== -->
+<!-- 未確定事項 -->
+<div class="appendix app-warn" id="app0">
+  <h2>❓ 未確定事項・要確認リスト</h2>
+  <div class="tbl-wrap">
+  <table>
+    <tr><th>ID</th><th>内容</th><th>種別</th><th>優先度</th><th>状態</th></tr>
+    <tr>
+      <td>U01</td>
+      <td>"Electrotonic Mail" というスライド上の表記（正しくは "Electronic Mail"）。スライドp.6に同表記あり</td>
+      <td>AI変換要確認</td>
+      <td>low</td>
+      <td style="color:var(--accent-teal);">✅ <strong>解決済み</strong>：Web調査（Wikipedia）により "Electronic Mail" が正式名称と確認。スライドp.6の表記はtypo。補足Bに注記済み</td>
+    </tr>
+  </table>
+  </div>
+  <p style="font-size:12.5px; color:var(--accent-teal); margin-top:8px;">✅ 全未確定事項 解決済み（0件残存）</p>
+</div>
+
+<!-- 補足A -->
+<div class="appendix app-blue" id="appA">
+  <h2>⭐ 補足A: 最重要ワード一覧</h2>
+  <div class="tbl-wrap">
+  <table>
+    <tr><th>用語</th><th>読み</th><th>定義（原文から抽出）</th><th>重要度</th></tr>
+    <tr><td>MUA</td><td>エムユーエー</td><td>Mail User Agent。メールを送受信し管理するためのプログラム（ユーザ側）</td><td>★★★</td></tr>
+    <tr><td>MTA</td><td>エムティーエー</td><td>Mail Transfer Agent。メールを転送するプログラム（メールサーバ上）</td><td>★★★</td></tr>
+    <tr><td>MDA</td><td>エムディーエー</td><td>Mail Delivery Agent。受信者のメールボックスにメールを配送するプログラム</td><td>★★★</td></tr>
+    <tr><td>SMTP</td><td>エスエムティーピー</td><td>Simple Mail Transfer Protocol。メール転送プロトコル。MUA↔MTA間・MTA間で使用</td><td>★★★</td></tr>
+    <tr><td>POP / POP3</td><td>ポップ</td><td>Post Office Protocol。メールをサーバから手元に取り込んで管理するプロトコル</td><td>★★★</td></tr>
+    <tr><td>IMAP / IMAP4</td><td>アイマップ</td><td>Internet Message Access Protocol。メールをサーバ上で管理するプロトコル</td><td>★★★</td></tr>
+    <tr><td>フィッシング詐欺</td><td>フィッシングさぎ</td><td>人を騙して個人情報を盗み金銭的利益を得ようとする不正行為</td><td>★★★</td></tr>
+    <tr><td>Emotet（エモテット）</td><td>エモテット</td><td>過去メールを流用した返信に見せかけてマルウェアを送付する手口・マルウェア</td><td>★★★</td></tr>
+    <tr><td>BEC</td><td>ビーイーシー</td><td>Business Email Compromise。特定組織を標的に取引先情報を悪用して金銭を騙し取る詐欺</td><td>★★★</td></tr>
+    <tr><td>迷惑メール / スパム</td><td>めいわくメール</td><td>受信者が望まないにもかかわらず一方的に送られてくるメール。犯罪（特定電子メール法）</td><td>★★★</td></tr>
+    <tr><td>CC</td><td>シーシー</td><td>Carbon Copy。参考のためにメールのコピーを送る宛先指定</td><td>★★☆</td></tr>
+    <tr><td>BCC</td><td>ビーシーシー</td><td>Blind Carbon Copy。CCと同様だが受信者にアドレスが表示されない</td><td>★★☆</td></tr>
+    <tr><td>オプトイン</td><td>オプトイン</td><td>事前承諾がない限りメールを送れない方式。特定電子メール法の原則</td><td>★★☆</td></tr>
+    <tr><td>コアパスワード法</td><td>コアパスワードほう</td><td>IPAが推奨するパスワード生成・管理手法。秘密フレーズを変換してコアPWを作成し識別子を付加</td><td>★★☆</td></tr>
+    <tr><td>ネチケット</td><td>ネチケット</td><td>インターネット上のコミュニケーションに関するエチケット</td><td>★★☆</td></tr>
+    <tr><td>エイリアス (Alias)</td><td>エイリアス</td><td>別名。メールアドレスのローカル部で使われ、グループや役割（メーリングリスト等）を表す</td><td>★☆☆</td></tr>
+    <tr><td>ARPANET</td><td>アーパネット</td><td>1970年代に電子メールが最初に使われたネットワーク</td><td>★☆☆</td></tr>
+    <tr><td>Ray Tomlinson</td><td>レイ・トムリンソン</td><td>電子メールの父。ARPANETで最初のネットワークメールを送り、@マークを電子メールに導入</td><td>★☆☆</td></tr>
+  </table>
+  </div>
+</div>
+
+<!-- 補足B -->
+<div class="appendix app-teal" id="appB">
+  <h2>📚 補足B: 知っておくべき背景知識</h2>
+  <div class="app-sub">[外部補足] タグ付きの情報。数値・年等はWeb確認済み。</div>
+  <ul>
+    <li style="font-size:13px; color:var(--text-sub);">[外部補足] <strong>ARPANET（アーパネット）</strong> は米国国防総省が1969年に開発した分散型ネットワーク。インターネットの前身。最初のネットワーク電子メールは1971年にRay Tomlinsonが送ったとされる。なお電子メールは "Electronic Mail" の略（e-mail）。スライドp.6の "Electrotonic Mail" という表記はtypoであることをWeb調査（Wikipedia等）で確認済み。</li>
+    <li style="font-size:13px; color:var(--text-sub);">[外部補足] <strong>Ray Tomlinson（1941–2016）</strong>。Bolt Beranek and Newman（BBN）社のエンジニア。ARPANET上で初めてネットワークを跨いだ電子メールを送ったことで知られる。@マーク採用の理由として「@はユーザー名とホスト名を分ける区切り文字として意味的に正しかった」ことも挙げられている。</li>
+    <li style="font-size:13px; color:var(--text-sub);">[外部補足] <strong>特定電子メール法（特定電子メールの送信の適正化等に関する法律）</strong> は2002年施行。2008年改正でオプトイン規制（事前承諾を必要とする制度）に強化された。違反した場合は業務改善命令や罰則（法人には最大3000万円の罰金）の対象となる。</li>
+    <li style="font-size:13px; color:var(--text-sub);">[外部補足] <strong>Emotet</strong> は2014年頃に初めて確認されたマルウェア（バンキングトロジャンとして発生、後にモジュール型の脅威に進化）。2021年1月に国際的な法執行機関の連携でテイクダウンされたが、2021年11月に活動再開が確認された。JPCERT/CCが国内企業・組織に対して注意喚起を続けている。</li>
+    <li style="font-size:13px; color:var(--text-sub);">[外部補足] <strong>IPA（情報処理推進機構）</strong> は経済産業省所管の独立行政法人。コアパスワード法・不正ログイン対策等のセキュリティ情報を公開している（https://www.ipa.go.jp/security/anshin/）。</li>
+  </ul>
+</div>
+
+<!-- 補足C -->
+<div class="appendix app-gold" id="appC">
+  <h2>🎯 補足C: 試験・レポートで重要な観点</h2>
+  <ul>
+    <li><strong>3エージェント（MUA・MTA・MDA）の役割と動作場所</strong>を正確に説明できるか</li>
+    <li><strong>SMTP・POP・IMAPの使い分け</strong>：どの区間でどのプロトコルが使われるか（SMTP=転送、POP/IMAP=受信）</li>
+    <li><strong>POPとIMAPの違い</strong>：手元管理（POP）vs サーバ管理・複数デバイス同期（IMAP）</li>
+    <li><strong>良いメールの書き方</strong>：件名の役割・本文の4要素（受信者・送信者・要件→詳細・署名）</li>
+    <li><strong>迷惑メールの法的規制</strong>：特定電子メール法・オプトイン方式</li>
+    <li><strong>3種類のメールセキュリティ脅威</strong>：メールアカウント・通信経路・受信メール</li>
+    <li><strong>フィッシング・Emotet・BECの特徴と対策</strong>の違いを区別して説明できるか</li>
+    <li><strong>良いパスワードの3原則</strong>：長く・複雑・使い回さない</li>
+    <li><strong>CC vs BCC の違い</strong>：アドレスの可視性</li>
+  </ul>
+</div>
+
+<!-- 補足D -->
+<div class="appendix app-purp" id="appD">
+  <h2>🔗 補足D: 関連概念・次回への接続</h2>
+  <div class="app-sub">授業で直接触れていない関連知識。</div>
+  <ul>
+    <li style="font-size:13px; color:var(--text-sub);">[外部補足] <strong>MIME（Multipurpose Internet Mail Extensions）</strong>：テキスト以外のデータ（画像・添付ファイル等）をメールで送るための規格。S/MIMEの基盤技術。</li>
+    <li style="font-size:13px; color:var(--text-sub);">[外部補足] <strong>SPF（Sender Policy Framework）・DKIM・DMARC</strong>：メールの送信ドメイン認証技術。なりすまし対策として広く使われている。</li>
+    <li style="font-size:13px; color:var(--text-sub);">[外部補足] <strong>多要素認証（MFA）</strong>：パスワードに加えてSMSコードや認証アプリを使う認証方法。メールアカウントへの不正アクセス対策として有効。</li>
+    <li style="font-size:13px; color:var(--text-sub);">[外部補足] <strong>オンラインストレージ</strong>（Google Drive・Dropbox・OneDrive等）：大きなファイルをメールに添付する代わりに使用する代替手段。授業でも大容量ファイル共有の方法として言及されている。</li>
+    <li style="font-size:13px; color:var(--text-sub);">[外部補足] 次回以降でインターネットセキュリティを詳しく学ぶ「<strong>情報セキュリティ入門</strong>」への接続。電子メールのセキュリティは同科目でより包括的に扱われる。</li>
+  </ul>
+</div>
+
+</main>
+</body>
+</html>
