@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第7回 プロジェクトのコストマネジメント | プロジェクトマネジメント入門</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f1117;
+  --bg2: #161b27;
+  --bg3: #1e2535;
+  --bg4: #252d40;
+  --border: #2a3450;
+  --text: #e2e8f5;
+  --text-sub: #8a99b8;
+  --text-muted: #5a6a8a;
+  --accent: #5b8dee;
+  --accent2: #34d399;
+  --accent3: #fbbf24;
+  --accent4: #f87171;
+  --purple: #a78bfa;
+  --orange: #fb923c;
+  --voice-border: #5b8dee;
+  --voice-bg: rgba(91,141,238,0.08);
+  --ext-border: #34d399;
+  --ext-bg: rgba(52,211,153,0.08);
+  --warn-border: #fb923c;
+  --warn-bg: rgba(251,146,60,0.08);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'Noto Sans JP', sans-serif; font-size: 15px; line-height: 1.78; }
+
+/* LAYOUT */
+.layout { display: flex; min-height: 100vh; }
+
+/* SIDEBAR */
+.sidebar { width: 260px; flex-shrink: 0; background: var(--bg2); border-right: 1px solid var(--border); position: fixed; top: 0; left: 0; height: 100vh; overflow-y: auto; padding: 24px 0; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+.sidebar-title { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; color: var(--text-muted); text-transform: uppercase; padding: 0 20px 12px; border-bottom: 1px solid var(--border); margin-bottom: 12px; }
+.toc-item { display: block; padding: 5px 20px; color: var(--text-sub); text-decoration: none; font-size: 13px; line-height: 1.4; transition: all 0.15s; border-left: 2px solid transparent; }
+.toc-item:hover { color: var(--text); background: var(--bg3); }
+.toc-item.active { color: var(--accent); border-left-color: var(--accent); background: rgba(91,141,238,0.08); }
+.toc-item.sub { padding-left: 32px; font-size: 12px; }
+.toc-item.sub2 { padding-left: 44px; font-size: 11px; color: var(--text-muted); }
+
+/* MAIN */
+.main { margin-left: 260px; flex: 1; padding: 40px 52px 80px; max-width: 980px; }
+
+/* HEADER */
+.note-header { border-bottom: 1px solid var(--border); padding-bottom: 28px; margin-bottom: 40px; }
+.note-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+.badge { font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 3px 10px; border-radius: 4px; border: 1px solid var(--border); color: var(--text-sub); background: var(--bg3); }
+.badge.primary { border-color: var(--accent); color: var(--accent); }
+.badge.pass { border-color: var(--accent2); color: var(--accent2); }
+.note-title { font-size: 30px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+.note-subtitle { font-size: 16px; color: var(--text-sub); margin-bottom: 16px; }
+.meta-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 6px; font-size: 13px; color: var(--text-sub); }
+.meta-grid span { font-weight: 500; color: var(--text); }
+
+/* SECTION */
+.section { margin-bottom: 52px; }
+.section-title { font-size: 21px; font-weight: 700; color: var(--text); padding-bottom: 10px; border-bottom: 2px solid var(--accent); margin-bottom: 26px; display: flex; align-items: center; gap: 10px; }
+.section-title .num { font-family: 'JetBrains Mono', monospace; font-size: 13px; background: var(--accent); color: #fff; padding: 2px 9px; border-radius: 4px; }
+.subsection { margin-bottom: 30px; }
+.subsection-title { font-size: 16px; font-weight: 700; color: var(--accent3); margin-bottom: 14px; padding-left: 12px; border-left: 3px solid var(--accent3); }
+
+/* CARD */
+.card { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 20px 24px; margin-bottom: 16px; }
+
+/* BLOCKS */
+.voice-block { border-left: 3px solid var(--voice-border); background: var(--voice-bg); padding: 12px 16px; margin: 12px 0; border-radius: 0 6px 6px 0; font-size: 14px; }
+.voice-block-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; font-weight: 500; }
+.ext-block { border-left: 3px solid var(--ext-border); background: var(--ext-bg); padding: 12px 16px; margin: 12px 0; border-radius: 0 6px 6px 0; font-size: 14px; }
+.ext-block-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--accent2); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; font-weight: 500; }
+.warn-block { border-left: 3px solid var(--warn-border); background: var(--warn-bg); padding: 12px 16px; margin: 12px 0; border-radius: 0 6px 6px 0; font-size: 14px; }
+.highlight-box { background: var(--bg3); border: 1px solid var(--border); border-top: 3px solid var(--accent); padding: 16px 20px; margin: 14px 0; border-radius: 0 0 8px 8px; font-size: 14px; }
+.formula-box { background: var(--bg3); border: 1px solid var(--accent); border-radius: 8px; padding: 14px 20px; margin: 14px 0; font-family: 'JetBrains Mono', monospace; font-size: 14px; color: var(--accent); text-align: center; }
+
+/* POINTER */
+.ptr { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); background: var(--bg3); border: 1px solid var(--border); padding: 1px 6px; border-radius: 3px; white-space: nowrap; margin-left: 4px; }
+
+/* TABLES */
+table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 14px; }
+th { background: var(--bg3); color: var(--text-sub); font-weight: 500; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; padding: 10px 14px; text-align: left; border-bottom: 2px solid var(--border); }
+td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+tr:hover td { background: rgba(91,141,238,0.03); }
+
+/* LISTS */
+ul, ol { padding-left: 20px; margin: 8px 0; }
+li { margin-bottom: 5px; }
+p { margin-bottom: 12px; }
+
+/* IMPORTANCE */
+.star-3 { color: var(--accent4); font-weight: 700; }
+.star-2 { color: var(--accent3); }
+.star-1 { color: var(--text-muted); }
+
+code { font-family: 'JetBrains Mono', monospace; font-size: 13px; background: var(--bg3); border: 1px solid var(--border); padding: 1px 5px; border-radius: 3px; }
+
+/* APPENDIX */
+.appendix { margin-bottom: 32px; }
+.appendix-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+.unconfirmed-card { background: rgba(251,146,60,0.06); border: 1px solid rgba(251,146,60,0.3); border-radius: 8px; padding: 16px 20px; }
+.no-unconfirmed { color: var(--accent2); font-size: 14px; }
+
+/* SVG WRAP */
+.svg-wrap { overflow-x: auto; margin: 14px 0; }
+.fig-caption { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+/* SECTION DIVIDER */
+.sec-divider { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+</style>
+</head>
+<body>
+<div class="layout">
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-title">目次</div>
+  <a class="toc-item" href="#header">📋 ノート概要</a>
+  <a class="toc-item" href="#prev-review">🔄 前回の振り返り（第6回）</a>
+  <a class="toc-item" href="#ch1">第1章 予算を立てよう</a>
+  <a class="toc-item sub" href="#budget-basics">1-1 予算とは</a>
+  <a class="toc-item sub" href="#roi">1-2 投資対効果分析</a>
+  <a class="toc-item sub" href="#effect-forecast">1-3 効果予測の2タイプ</a>
+  <a class="toc-item sub" href="#present-value">1-4 現在価値</a>
+  <a class="toc-item sub" href="#budget-process">1-5 予算プロセス</a>
+  <a class="toc-item sub" href="#budget-year">1-6 プロジェクト予算と年間予算</a>
+  <a class="toc-item sub" href="#budget-change">1-7 予算管理の問題点</a>
+  <a class="toc-item" href="#ch2">第2章 発生コストの把握</a>
+  <a class="toc-item sub" href="#estimate-types">2-1 見積りの3種類</a>
+  <a class="toc-item sub" href="#analog-est">2-2 類推見積り</a>
+  <a class="toc-item sub" href="#param-est">2-3 係数見積り</a>
+  <a class="toc-item sub" href="#bottomup-est">2-4 ボトムアップ見積り</a>
+  <a class="toc-item sub" href="#verification">2-5 確からしさの検証</a>
+  <a class="toc-item sub" href="#timeseries">2-6 時系列集計・ライフサイクルコスト</a>
+  <a class="toc-item" href="#ch3">第3章 アーンドバリューマネジメント</a>
+  <a class="toc-item sub" href="#evm-what">3-1 EVMとは</a>
+  <a class="toc-item sub" href="#evm-why">3-2 なぜEVMが必要か</a>
+  <a class="toc-item sub" href="#evm-accounting">3-3 会計的背景</a>
+  <a class="toc-item sub" href="#evm-example">3-4 EVM例題</a>
+  <a class="toc-item sub" href="#evm-graph">3-5 EVMグラフ</a>
+  <a class="toc-item sub" href="#evm-issues">3-6 EVMの課題</a>
+  <a class="toc-item" href="#ch4">第4章 実行管理と対策</a>
+  <a class="toc-item sub" href="#exec-mgmt">4-1 実行管理の基本</a>
+  <a class="toc-item sub" href="#info-share">4-2 状況の共有</a>
+  <a class="toc-item sub" href="#lessons">4-3 振り返りと教訓</a>
+  <a class="toc-item sub" href="#progress-report">4-4 進捗の報告</a>
+  <a class="toc-item sub" href="#change-mgmt">4-5 計画変更の承認</a>
+  <a class="toc-item sub" href="#contingency">4-6 予備費（サバ）</a>
+  <a class="toc-item" href="#appendix">📎 末尾補足</a>
+  <a class="toc-item sub" href="#appendix-a">⭐ 補足A 最重要ワード</a>
+  <a class="toc-item sub" href="#appendix-b">📚 補足B 背景知識</a>
+  <a class="toc-item sub" href="#appendix-c">🎯 補足C 試験対策</a>
+  <a class="toc-item sub" href="#appendix-d">🔗 補足D 関連概念</a>
+  <a class="toc-item sub" href="#unconfirmed">❓ 未確定事項リスト</a>
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+
+<!-- HEADER -->
+<div id="header" class="note-header">
+  <div class="note-meta">
+    <span class="badge primary">プロジェクトマネジメント入門</span>
+    <span class="badge">第7回</span>
+    <span class="badge pass">QC PASS 100%</span>
+    <span class="badge">SSP v4.5.1</span>
+  </div>
+  <h1 class="note-title">プロジェクトのコストマネジメント</h1>
+  <p class="note-subtitle">予算編成・コスト見積り・アーンドバリューマネジメント（EVM）・実行管理と対策</p>
+  <div class="meta-grid">
+    <div>担当教員: <span>勝 眞一郎</span></div>
+    <div>科目: <span>プロジェクトマネジメント入門</span></div>
+    <div>ソース: <span>S03（スライドPDF）+ S05×2（hynote.ai）</span></div>
+    <div>作成: <span>SSP v4.5.1</span></div>
+  </div>
+</div>
+
+<!-- ========== 前回の振り返り ========== -->
+<section id="prev-review" class="section">
+  <h2 class="section-title"><span class="num">0</span> 前回（第6回）の振り返り — クリティカルパス</h2>
+  <table>
+    <tr><th>章</th><th>内容</th></tr>
+    <tr><td><strong>第1章</strong><br>クリティカルパスとは</td><td>
+      プロジェクト全体のスケジュールの長さを事実上決定している作業の連なり。<br>
+      ① CP上の作業が遅れると全体が遅れる　② CP上の作業を円滑に進めることが管理上重要　③ CP上のタスクを見直すことで全体を短縮できる <span class="ptr">← S03:p.5</span>
+    </td></tr>
+    <tr><td><strong>第2章</strong><br>往路分析と復路分析</td><td>
+      クリティカルパスの書き方：WBS書き出し → タスク票（1タスク1枚）→ 順番に並べる → <strong>往路分析</strong>（最早開始時刻を順方向に計算）→ <strong>復路分析</strong>（最遅完了時刻を逆方向に計算）→ フロートの計算 <span class="ptr">← S03:p.6</span>
+    </td></tr>
+    <tr><td><strong>第3章</strong><br>クリティカルパス分析</td><td>
+      長く複雑なプロセスで真価を発揮。3つの視点：①リカバリ策立案の優先検討項目 ②進捗の優先管理項目 ③期間短縮の優先対応項目 <span class="ptr">← S03:p.8</span>
+    </td></tr>
+    <tr><td><strong>第4章</strong><br>期間短縮の試み</td><td>
+      期間短縮の前に目的・期間・予算を再確認する。手法：<strong>クラッシング</strong>（人員追加等によりコストをかけて短縮）と<strong>ファスト・トラッキング</strong>（並行作業化） <span class="ptr">← S03:p.9</span>
+    </td></tr>
+  </table>
+</section>
+
+<hr class="sec-divider">
+
+<!-- ========== 第1章 ========== -->
+<section id="ch1" class="section">
+  <h2 class="section-title"><span class="num">1</span> 第1章 予算を立てよう</h2>
+
+  <div id="budget-basics" class="subsection">
+    <h3 class="subsection-title">1-1 予算とは</h3>
+    <div class="highlight-box">
+      <strong>予算（Budget）</strong>とは、<strong>あらかじめ計画して、承認された支出可能な費用</strong>のこと <span class="ptr">← S03:p.12</span>
+    </div>
+    <p>予算の立て方には3つのタイプがある：</p>
+    <table>
+      <tr><th>#</th><th>タイプ</th><th>説明</th><th>特徴</th></tr>
+      <tr><td>1</td><td>コスト積み上げ型</td><td>必要なコストを積み上げて予算を決める</td><td>費用視点から出発</td></tr>
+      <tr><td>2</td><td>効果対応型</td><td>期待される効果から逆算して予算を決める</td><td>成果視点から出発</td></tr>
+      <tr><td class="star-3">3</td><td><strong>複合型（実務推奨）</strong></td><td>1と2の組み合わせ</td><td>実際の仕事・日常生活で使われるのはこれ</td></tr>
+    </table>
+    <div class="voice-block">
+      <div class="voice-block-label">🎤 音声補足</div>
+      効果も見つつコストの積み上げも見つつ予算を立てる、というのが現実的なやり方。家の建設でも旅行でも、「いくらかけて何を得るか」を両面から考えている。<span class="ptr">← S05</span>
+    </div>
+  </div>
+
+  <div id="roi" class="subsection">
+    <h3 class="subsection-title">1-2 投資対効果分析（ROI分析）</h3>
+    <div class="highlight-box">
+      <strong>投資対効果分析</strong>：いくらの投資に対して、いくらの効果があるのかを計算したもの <span class="ptr">← S03:p.13</span>
+    </div>
+    <table>
+      <tr><th>例</th><th>投資（コスト）</th><th>効果（ベネフィット）</th></tr>
+      <tr><td>旅行</td><td>旅行費用</td><td>喜び・楽しみ・体験</td></tr>
+      <tr><td>料理</td><td>食材・時間コスト</td><td>食事の喜び・会話・健康</td></tr>
+      <tr><td>情報システム開発</td><td>開発費用</td><td>業務効率化・コスト削減・収益向上</td></tr>
+      <tr><td>家の建設</td><td>建設費用</td><td>居住価値・資産形成・生活の質向上</td></tr>
+    </table>
+    <div class="voice-block">
+      <div class="voice-block-label">🎤 音声補足</div>
+      投資と効果がバランスしているかどうかを我々は検討する。これがプロジェクト承認の根拠となる。<span class="ptr">← S05</span>
+    </div>
+    <div class="ext-block">
+      <div class="ext-block-label">📖 外部補足</div>
+      投資対効果分析は英語でROI（Return On Investment）分析とも呼ばれる。ROI(%) = (効果 − 投資額) ÷ 投資額 × 100 で算出。IT投資の文脈ではTCO（Total Cost of Ownership：総所有コスト）と合わせて評価されることが多い。<span class="ptr">[外部補足]</span>
+    </div>
+  </div>
+
+  <div id="effect-forecast" class="subsection">
+    <h3 class="subsection-title">1-3 効果予測の2タイプ</h3>
+    <p>いずれも<strong>「未だ起きていない未来」を予測</strong>するもの。確率の高い数値を算出する努力が重要。有効な資金活用のため、および投資への納得性ある説明のために必要。 <span class="ptr">← S03:p.14</span></p>
+
+    <div class="svg-wrap">
+      <svg viewBox="0 0 660 185" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:660px;display:block;">
+        <rect width="660" height="185" fill="#1e2535" rx="8"/>
+        <defs>
+          <marker id="a1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#5b8dee"/></marker>
+        </defs>
+        <!-- 中央 -->
+        <rect x="245" y="68" width="170" height="50" rx="6" fill="#252d40" stroke="#5b8dee" stroke-width="1.5"/>
+        <text x="330" y="90" text-anchor="middle" font-family="Noto Sans JP" font-size="13" fill="#e2e8f5" font-weight="700">効果予測計算</text>
+        <text x="330" y="108" text-anchor="middle" font-family="Noto Sans JP" font-size="11" fill="#8a99b8">未来を予測する</text>
+        <!-- 左矢印 -->
+        <line x1="245" y1="93" x2="185" y2="93" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#a1)"/>
+        <!-- 左: 定量的 -->
+        <rect x="28" y="52" width="158" height="82" rx="6" fill="#252d40" stroke="#34d399" stroke-width="1.5"/>
+        <text x="107" y="76" text-anchor="middle" font-family="Noto Sans JP" font-size="13" fill="#34d399" font-weight="700">① 定量的効果</text>
+        <text x="107" y="96" text-anchor="middle" font-family="Noto Sans JP" font-size="11" fill="#e2e8f5">数値で算出する</text>
+        <text x="107" y="114" text-anchor="middle" font-family="Noto Sans JP" font-size="10" fill="#8a99b8">例: 工数3人月→1人月</text>
+        <text x="107" y="128" text-anchor="middle" font-family="Noto Sans JP" font-size="10" fill="#8a99b8">例: 伝票500枚/日→50枚</text>
+        <!-- 右矢印 -->
+        <line x1="415" y1="93" x2="475" y2="93" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#a1)"/>
+        <!-- 右: 定性的 -->
+        <rect x="475" y="52" width="158" height="82" rx="6" fill="#252d40" stroke="#fbbf24" stroke-width="1.5"/>
+        <text x="554" y="76" text-anchor="middle" font-family="Noto Sans JP" font-size="13" fill="#fbbf24" font-weight="700">② 定性的効果</text>
+        <text x="554" y="96" text-anchor="middle" font-family="Noto Sans JP" font-size="11" fill="#e2e8f5">状態で表現する</text>
+        <text x="554" y="114" text-anchor="middle" font-family="Noto Sans JP" font-size="10" fill="#8a99b8">例: 操作が簡単になる</text>
+        <text x="554" y="128" text-anchor="middle" font-family="Noto Sans JP" font-size="10" fill="#8a99b8">測定: アンケート</text>
+        <!-- 下注釈 -->
+        <text x="330" y="162" text-anchor="middle" font-family="Noto Sans JP" font-size="11" fill="#8a99b8">★ 投資はお金でされる以上、できる限りお金（金額）に換算するのが望ましい</text>
+      </svg>
+      <p class="fig-caption">図：効果予測の2タイプ <span class="ptr">← S03:p.14</span></p>
+    </div>
+
+    <h4 style="font-weight:700;color:var(--text);margin:16px 0 8px;">① 定性的効果予測 <span class="ptr">← S03:p.15</span></h4>
+    <p>状態で効果を表現する。数値で測りにくいため、アンケートで評価する。</p>
+    <ul>
+      <li>例1：画面操作が簡単になる・見やすくなる</li>
+      <li>例2：情報の共有が進む</li>
+      <li>例3：おいしい料理で会話が弾む</li>
+    </ul>
+    <div class="voice-block">
+      <div class="voice-block-label">🎤 音声補足</div>
+      事前に効果として書いておくと、実際に終わったときに確認ができる。どういうことを目的としてプロジェクトを行ったのか、それが実現できたのかを評価していく。数値で測れない場合はアンケートという手法がある。<span class="ptr">← S05</span>
+    </div>
+
+    <h4 style="font-weight:700;color:var(--text);margin:16px 0 8px;">② 定量的効果予測 <span class="ptr">← S03:p.16</span></h4>
+    <p>数値で効果を算出する。投資（支出）はお金でなされる以上、お金で換算するのが望ましい。</p>
+    <table>
+      <tr><th>指標</th><th>Before</th><th>After（目標）</th><th>金額換算のイメージ</th></tr>
+      <tr><td>作業工数</td><td>3人月</td><td>1人月</td><td>人件費 2人月分を削減</td></tr>
+      <tr><td>伝票枚数</td><td>500枚/日</td><td>50枚/日</td><td>処理コスト 90% 削減</td></tr>
+    </table>
+    <div class="voice-block">
+      <div class="voice-block-label">🎤 音声補足</div>
+      投資1万円に対して効果は5千円か、1万円か、5万円か——というようにお金で評価できると投資の説明に納得性が生まれる。<span class="ptr">← S05</span>
+    </div>
+    <div class="ext-block">
+      <div class="ext-block-label">📖 外部補足</div>
+      <strong>人月（にんげつ）</strong>とは：1人の人が1ヶ月（約160時間）作業したときの工数単位。「3人月」は1人で3ヶ月、または3人で1ヶ月を意味する。ただし Frederick Brooks の著書『人月の神話』（1975年）が示すように、人員追加で工数が単純に比例短縮できるとは限らない点に注意が必要。<span class="ptr">[外部補足]</span>
+    </div>
+  </div>
+
+  <div id="present-value" class="subsection">
+    <h3 class="subsection-title">1-4 現在価値で見た効果</h3>
+    <div class="highlight-box">
+      <strong>現在価値（Present Value）</strong>：金利とリスクを割り引いた価値 <span class="ptr">← S03:p.17</span>
+    </div>
+    <p>例：10年後に100万円得るために今40万円投資するのは妥当か？→ 金利・リスクを換算して現在価値に直して判断する。<br>
+    <strong>お金だけの判断でよい場合に最も重要。</strong>特に金利が高い場合・リスクが高い場合は現在価値への割引が重要になる。 <span class="ptr">← S03:p.17</span></p>
+    <div class="voice-block">
+      <div class="voice-block-label">🎤 音声補足</div>
+      将来もらえる効果は「今」もらえるお金と同じ価値ではない。時間の経過によってお金の価値が変わるので、現在価値に割り引くことで「今投資するのはいくらがベストか」を判断できる。<span class="ptr">← S05</span>
+    </div>
+    <div class="ext-block">
+      <div class="ext-block-label">📖 外部補足</div>
+      現在価値の割引に使う割引率は、企業の加重平均資本コスト（WACC）や国債利回りを用いることが多い。<strong>NPV（Net Present Value：正味現在価値）</strong> = 将来キャッシュフローの現在価値合計 − 初期投資額。NPVがプラスなら投資価値があると判断する。IRR（内部収益率）はNPV=0となる割引率であり、IRR &gt; 目標利回りなら投資を実行する。<span class="ptr">[外部補足]</span>
+    </div>
+  </div>
+
+  <div id="budget-process" class="subsection">
+    <h3 class="subsection-title">1-5 予算プロセス</h3>
+    <p>投資対効果分析を元に、プロジェクトを実行するかしないかを会議体で意思決定する。<br>
+    予算の承認を受けることを「<strong>予算を通す</strong>」という。 <span class="ptr">← S03:p.18</span></p>
+    <p>決定にあたり確認すべき3点：</p>
+    <ul>
+      <li><strong>誰が決めることができるか</strong>（家族会議・部門会議・全社会議）</li>
+      <li><strong>いつ決めることができるか</strong>（年次・都度）</li>
+      <li><strong>どのように決めるか</strong>（予算会議の形式・期間）</li>
+    </ul>
+
+    <div class="svg-wrap" style="margin-top:14px;">
+      <svg viewBox="0 0 640 90" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:640px;display:block;">
+        <rect width="640" height="90" fill="#1e2535" rx="8"/>
+        <defs><marker id="a2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#5b8dee"/></marker></defs>
+        <!-- Step1 -->
+        <rect x="20" y="18" width="175" height="54" rx="6" fill="#252d40" stroke="#5b8dee" stroke-width="1.5"/>
+        <text x="107" y="41" text-anchor="middle" font-family="Noto Sans JP" font-size="12" fill="#5b8dee" font-weight="700">① 企画書提出</text>
+        <text x="107" y="60" text-anchor="middle" font-family="Noto Sans JP" font-size="10" fill="#8a99b8">プロジェクト企画書＋予算案</text>
+        <line x1="195" y1="45" x2="232" y2="45" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#a2)"/>
+        <!-- Step2 -->
+        <rect x="232" y="18" width="175" height="54" rx="6" fill="#252d40" stroke="#fbbf24" stroke-width="1.5"/>
+        <text x="320" y="41" text-anchor="middle" font-family="Noto Sans JP" font-size="12" fill="#fbbf24" font-weight="700">② 内容を審査</text>
+        <text x="320" y="60" text-anchor="middle" font-family="Noto Sans JP" font-size="10" fill="#8a99b8">効果は正しいか・費用は正しいか</text>
+        <line x1="407" y1="45" x2="444" y2="45" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#a2)"/>
+        <!-- Step3 -->
+        <rect x="444" y="18" width="175" height="54" rx="6" fill="#252d40" stroke="#34d399" stroke-width="1.5"/>
+        <text x="531" y="41" text-anchor="middle" font-family="Noto Sans JP" font-size="12" fill="#34d399" font-weight="700">③ 全体の中で審査</text>
+        <text x="531" y="60" text-anchor="middle" font-family="Noto Sans JP" font-size="10" fill="#8a99b8">やるべきか・いつやるべきか</text>
+      </svg>
+      <p class="fig-caption">図：予算プロセス <span class="ptr">← S03:p.19</span></p>
+    </div>
+    <div class="voice-block">
+      <div class="voice-block-label">🎤 音声補足</div>
+      このプロジェクトの予算がしっかりとオーソライズされる会議体として、あるいは組織として、オーソライズするために予算を通すということが必要になる。<span class="ptr">← S05</span>
+    </div>
+  </div>
+
+  <div id="budget-year" class="subsection">
+    <h3 class="subsection-title">1-6 プロジェクト予算と年間予算</h3>
+    <div class="highlight-box">
+      複数年にわたるプロジェクトの場合、<strong>プロジェクト予算は年間予算に優先する</strong><br>
+      年間予算に制約されると、効果にも影響する <span class="ptr">← S03:p.20</span>
+    </div>
+    <p>例：ダムの工事・システム開発など複数年にわたるものは、年次で途切れると全体の効果が失われる。<br>
+    同じ緊急度の場合は<strong>期間の長いもの（複数年）から優先して検討</strong>する。</p>
+    <div class="voice-block">
+      <div class="voice-block-label">🎤 音声補足</div>
+      ダムの工事も「今年はやめましょう・来年はやりましょう」というふうに途切れてしまうと工事全体がストップしてしまう。複数年合わさって初めて効果が出るわけだから、年間予算に制約されると効果にも影響する。システム開発においても、単年度のものより複数年のものを優先して検討する。<span class="ptr">← S05</span>
+    </div>
+  </div>
+
+  <div id="budget-change" class="subsection">
+    <h3 class="subsection-title">1-7 予算管理の問題点</h3>
+    <p>予算立案・執行も難しいが、<strong>プロジェクト途中での変更への対応</strong>が最も難しい。 <span class="ptr">← S03:p.21</span></p>
+    <table>
+      <tr><th>変更の種類</th><th>例</th></tr>
+      <tr><td><strong>ビジネス環境の変化</strong></td><td>市場変化、M&amp;A（合併・買収）、金利変動</td></tr>
+      <tr><td><strong>優先順位の変化</strong></td><td>他プロジェクトの優先度変化により自プロジェクトの予算が増減</td></tr>
+      <tr><td><strong>プロジェクト環境の変化</strong></td><td>外注先の変化、新技術の登場・採用</td></tr>
+    </table>
+  </div>
+</section>
+
+<hr class="sec-divider">
+
+<!-- ========== 第2章 ========== -->
+<section id="ch2" class="section">
+  <h2 class="section-title"><span class="num">2</span> 第2章 発生コストの把握</h2>
+
+  <div id="estimate-types" class="subsection">
+    <h3 class="subsection-title">2-1 見積りの3種類</h3>
+    <p>見積りのしかたには大きく3つの方法がある。<strong>実行段階での予算との食い違いを減らすためには、ボトムアップ見積りが最良</strong>。 <span class="ptr">← S03:p.26,32</span></p>
+    <table>
+      <tr><th>種類</th><th>概要</th><th>精度・信頼性</th><th>推奨優先度</th></tr>
+      <tr><td class="star-3"><strong>① ボトムアップ見積り</strong></td><td>最も細かいレベルで積み上げ</td><td class="star-3">★★★ 最高</td><td class="star-3">1位（推奨）</td></tr>
+      <tr><td class="star-2"><strong>② 係数見積り</strong></td><td>量×単価の係数で算出</td><td class="star-2">★★☆ 中</td><td>2位</td></tr>
+      <tr><td><strong>③ 類推見積り</strong></td><td>類似プロジェクトから推測</td><td class="star-1">★☆☆ 低</td><td>3位（初期段階向け）</td></tr>
+    </table>
+  </div>
+
+  <div id="analog-est" class="subsection">
+    <h3 class="subsection-title">2-2 類推見積り（アナロジー見積り）</h3>
+    <div class="highlight-box">
+      プロジェクトの初期段階で詳細情報が限られている場合、<strong>過去に行った類似プロジェクトのコストを元に</strong>今回のコストを見積もる手法。<strong>プロジェクト間の類似性検証が鍵</strong> <span class="ptr">← S03:p.27</span>
+    </div>
+    <p>過去の事例に基づいて行う大雑把な見積りの仕方。詳細が決まっていないプロジェクト開始初期に使われる。</p>
+    <div class="voice-block">
+      <div class="voice-block-label">🎤 音声補足</div>
+      このプロジェクトと前回のプロジェクトが似ているなと分かる場合に限り使える。類似しているから同じくらいか、2倍の規模だから2倍か、といった類推ができる。プロジェクト間の類似性を検証することが鍵となる。<span class="ptr">← S05</span>
+    </div>
+    <div class="ext-block">
+      <div class="ext-block-label">📖 外部補足</div>
+      PMBOKでは「類推見積り（Analogous Estimating）」と呼ばれる。過去のプロジェクトの実績データが組織に蓄積されていることが前提。精度は低いが、スピードが速く費用も安いため、プロジェクト初期の概算見積りに適している。<span class="ptr">[外部補足]</span>
+    </div>
+  </div>
+
+  <div id="param-est" class="subsection">
+    <h3 class="subsection-title">2-3 係数見積り（パラメトリック見積り）</h3>
+    <div class="highlight-box">
+      <strong>過去のデータに基づいた量の予測に単価を掛けて算出</strong>する見積り手法 <span class="ptr">← S03:p.28</span>
+    </div>
+    <table>
+      <tr><th>例</th><th>過去の実績</th><th>今回の条件</th><th>見積り結果</th></tr>
+      <tr><td>例1：A工事</td><td>50㎡ → 20人日</td><td>100㎡（同内容）</td><td><strong>40人日</strong>かかるであろう</td></tr>
+      <tr><td>例2：プログラム開発</td><td>1000機能 → 3ヶ月</td><td>2倍の開発効率手法を採用</td><td><strong>1.5ヶ月</strong>でできる</td></tr>
+    </table>
+
+    <div class="warn-block">
+      <strong>⚠️ 係数見積りの弱点・注意点</strong> <span class="ptr">← S03:p.29</span>
+      <ul style="margin-top:8px;">
+        <li><strong>過去データがモデルとして正しいか</strong>を確認する<br>例：前回A工事は事故があり20人日かかったが、本来は12日で終わるものだった → 標準として使うと誤りが出る</li>
+        <li><strong>今回の事象がモデルに合致するか</strong>を確認する<br>例：開発効率2倍の手法に「条件付き（全てには適用できない）」が伴う場合</li>
+        <li><strong>初めて採用する手法</strong>は習得・適用時間が必要なため、慣れるまで想定通りの効率は出ないことが多い</li>
+      </ul>
+    </div>
+    <div class="ext-block">
+      <div class="ext-block-label">📖 外部補足</div>
+      ソフトウェア開発では機能数から工数を推定する<strong>ファンクションポイント（FP）法</strong>が係数見積りの代表例。機能数に単価（工数/FP）を掛けて総工数を算出する。1970年代にAllan Albrechtが提案し、現在もISOで標準化されている（ISO/IEC 20926）。<span class="ptr">[外部補足]</span>
+    </div>
+  </div>
+
+  <div id="bottomup-est" class="subsection">
+    <h3 class="subsection-title">2-4 ボトムアップ見積り</h3>
+    <div class="highlight-box">
+      <strong>最も細かいレベルで仕事のコストを見積もり、積み上げる</strong>手法。<br>時間はかかるが<strong>最も信頼性は高い</strong>。実行の際のチェックのベースにもなる。 <span class="ptr">← S03:p.30</span>
+    </div>
+
+    <div class="svg-wrap">
+      <svg viewBox="0 0 520 100" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:520px;display:block;">
+        <rect width="520" height="100" fill="#1e2535" rx="8"/>
+        <defs><marker id="a3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#5b8dee"/></marker></defs>
+        <rect x="18" y="22" width="148" height="56" rx="6" fill="#252d40" stroke="#5b8dee" stroke-width="1.5"/>
+        <text x="92" y="46" text-anchor="middle" font-family="Noto Sans JP" font-size="12" fill="#e2e8f5" font-weight="700">WBSから抽出</text>
+        <text x="92" y="64" text-anchor="middle" font-family="Noto Sans JP" font-size="10" fill="#8a99b8">「何が必要か」を列挙</text>
+        <line x1="166" y1="50" x2="198" y2="50" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#a3)"/>
+        <rect x="198" y="22" width="148" height="56" rx="6" fill="#252d40" stroke="#fbbf24" stroke-width="1.5"/>
+        <text x="272" y="46" text-anchor="middle" font-family="Noto Sans JP" font-size="12" fill="#e2e8f5" font-weight="700">各要素の算出</text>
+        <text x="272" y="64" text-anchor="middle" font-family="Noto Sans JP" font-size="10" fill="#8a99b8">工数・単価→金額を算出</text>
+        <line x1="346" y1="50" x2="378" y2="50" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#a3)"/>
+        <rect x="378" y="22" width="124" height="56" rx="6" fill="#252d40" stroke="#34d399" stroke-width="1.5"/>
+        <text x="440" y="46" text-anchor="middle" font-family="Noto Sans JP" font-size="12" fill="#e2e8f5" font-weight="700">総額を算出</text>
+        <text x="440" y="64" text-anchor="middle" font-family="Noto Sans JP" font-size="10" fill="#34d399">積み上げ完了</text>
+      </svg>
+      <p class="fig-caption">図：ボトムアップ見積りの手順 <span class="ptr">← S03:p.31</span></p>
+    </div>
+
+    <p style="margin-top:12px;"><strong>粒度（りゅうど）</strong>：どれだけ細かく見積もるかの程度。細かすぎると見積もりに時間がかかり、実行時のチェックと合わないことにもなる。適切な粒度の設定が重要。 <span class="ptr">← S03:p.30</span></p>
+
+    <div class="voice-block">
+      <div class="voice-block-label">🎤 音声補足</div>
+      「ボトムアップ」という名前の由来は「下から積み上げていく」こと。WBSの各タスクについて機能・アクションを抽出し、それに対して工数・お金を算出し、一つ一つ積み上げていく。これが実行時のチェックのベースにもなるので、後々に安心できる。<span class="ptr">← S05</span>
+    </div>
+  </div>
+
+  <div id="verification" class="subsection">
+    <h3 class="subsection-title">2-5 確からしさの検証</h3>
+    <p>見積り後、作業量・単価ともに精度を確認する。 <span class="ptr">← S03:p.34,35</span></p>
+    <table>
+      <tr><th>確認手段</th><th>内容</th><th>対象</th></tr>
+      <tr><td><strong>過去の事例</strong></td><td>同規模・同種のプロジェクト実績と比較</td><td>作業量・単価</td></tr>
+      <tr><td><strong>専門家への問い合わせ</strong></td><td>この規模・この作業ならどれくらいかかるか確認</td><td>作業量・単価</td></tr>
+      <tr><td><strong>合い見積り（相見積り）</strong></td><td>同じ作業を行う複数社に見積もりを取り相場を確認</td><td>単価・総額</td></tr>
+    </table>
+
+    <div class="card" style="margin-top:12px;">
+      <p style="font-weight:700;margin-bottom:10px;">システム設計フェーズの見積り例 <span class="ptr">← S03:p.33,35</span></p>
+      <table>
+        <tr><th>役割</th><th>工数</th><th>単価（/人月）</th><th>小計</th></tr>
+        <tr><td>システムコンサルタント</td><td>3人月</td><td>150万円</td><td>450万円</td></tr>
+        <tr><td>システムエンジニア</td><td>2人月</td><td>100万円</td><td>200万円</td></tr>
+        <tr><td>プログラマ（設計フェーズは不要）</td><td>0人月</td><td>80万円</td><td>—</td></tr>
+        <tr><td>社内メンバー</td><td>8人月</td><td>70万円</td><td>560万円</td></tr>
+        <tr><td colspan="3" style="font-weight:700;text-align:right;">合計</td><td style="font-weight:700;color:var(--accent);">1,210万円</td></tr>
+      </table>
+      <p style="font-size:13px;color:var(--text-sub);margin-top:8px;">このフェーズでプログラマが不要な理由：設計フェーズは要件・仕様を固める工程であり、コーディング作業は発生しないため</p>
+    </div>
+    <div class="voice-block">
+      <div class="voice-block-label">🎤 音声補足</div>
+      システムコンサルタント3人月、本当に3人月なのか・2人月で済まないか・もっとかかるのではないかを確認する際も、過去事例・専門家・合い見積りで検証する。工数だけでなく単価の確からしさの検証も全体の見積りにとって重要なプロセス。<span class="ptr">← S05</span>
+    </div>
+  </div>
+
+  <div id="timeseries" class="subsection">
+    <h3 class="subsection-title">2-6 時系列集計とライフサイクルコスト</h3>
+    <p>予算が出たら、<strong>時系列（日・週・月単位）でいつ何にいくらかかるか</strong>を集計する。実際の支出タイミングの目安となり、財務担当への資金準備のヒントにもなる。 <span class="ptr">← S03:p.36</span></p>
+    <table>
+      <tr><th>業務</th><th>第1週</th><th>第2週</th><th>第3週</th></tr>
+      <tr><td>企画書作成</td><td>10万円</td><td>—</td><td>—</td></tr>
+      <tr><td>プログラミング</td><td>—</td><td>50万円</td><td>—</td></tr>
+      <tr><td>テスト</td><td>—</td><td>—</td><td>20万円</td></tr>
+    </table>
+
+    <div class="highlight-box">
+      <strong>ライフサイクルコスト（Life Cycle Cost）</strong>：プロジェクトが始まってから終わるまでの総コスト。長期視点でのコスト管理で注目される。 <span class="ptr">← S03:p.37</span>
+    </div>
+    <div class="voice-block">
+      <div class="voice-block-label">🎤 音声補足</div>
+      通常のプロジェクトはそれ単体では完結せず、より大きなプロジェクトの一部であることが多い。採算の取れない小さなプロジェクトでも、全体としてそれがあるおかげで大きな効果が生まれることもある。単体だけでなく全体としての評価も必要。<span class="ptr">← S05</span>
+    </div>
+    <div class="ext-block">
+      <div class="ext-block-label">📖 外部補足</div>
+      ライフサイクルコストはITシステムの場合「TCO（Total Cost of Ownership：総所有コスト）」とも呼ばれる。初期導入コストだけでなく、運用・保守・廃棄コストを含めた総額。TCOで評価すると、初期費用が安くても運用コストが高いシステムの真のコストが見えてくる。<span class="ptr">[外部補足]</span>
+    </div>
+  </div>
+</section>
+
+<hr class="sec-divider">
+
+<!-- ========== 第3章 EVM ========== -->
+<section id="ch3" class="section">
+  <h2 class="section-title"><span class="num">3</span> 第3章 アーンドバリューマネジメント（EVM）</h2>
+
+  <div id="evm-what" class="subsection">
+    <h3 class="subsection-title">3-1 EVMとは</h3>
+    <div class="highlight-box">
+      <strong>アーンドバリューマネジメント（EVM：Earned Value Management）</strong><br>
+      計画値と実績の価値のズレで進捗を管理する手法。EVMと略す。 <span class="ptr">← S03:p.42</span>
+    </div>
+    <table>
+      <tr><th>英語</th><th>訳</th><th>意味</th></tr>
+      <tr><td><strong>Earned</strong></td><td>稼いだ</td><td>実際に完了した作業によって得られた価値</td></tr>
+      <tr><td><strong>Value</strong></td><td>価値の</td><td>予算で表現された進捗の価値</td></tr>
+      <tr><td><strong>Management</strong></td><td>管理</td><td>計画値と比較した差異の管理</td></tr>
+    </table>
+
+    <h4 style="font-weight:700;color:var(--text);margin:16px 0 8px;">EVMの基本的考え方 <span class="ptr">← S03:p.43</span></h4>
+    <ol>
+      <li>計画通りに支出しているということは、順調に進んでいるということである</li>
+      <li>かけたお金分の価値はある（＝お金をかけた分だけ価値が積み上がっているはず）</li>
+    </ol>
+    <div class="voice-block">
+      <div class="voice-block-label">🎤 音声補足</div>
+      1000円の傘立てが20%できた時点では、実際は使いようがなく価値はほぼゼロ。しかしEVMでは「かけたお金分の価値が積み上がっているはず」という想定をする。システム開発も同様——1億円のシステムが2000万分できた段階では動かないのでゼロという評価もできるが、EVMでは「20%できた」として20%の価値があると評価する手法。<span class="ptr">← S05</span>
+    </div>
+
+    <h4 style="font-weight:700;color:var(--text);margin:16px 0 8px;">EVMの5指標 <span class="ptr">← S03:p.48-52</span></h4>
+    <table>
+      <tr><th>指標</th><th>英名・略称</th><th>定義</th><th>例題の値</th></tr>
+      <tr><td class="star-3"><strong>EV</strong></td><td>Earned Value（獲得価値）</td><td>完了した作業の予算合計</td><td>13万円</td></tr>
+      <tr><td class="star-3"><strong>AC</strong></td><td>Actual Cost（実コスト）</td><td>実際に支払った金額合計</td><td>20万円</td></tr>
+      <tr><td class="star-3"><strong>PV</strong></td><td>Planned Value（計画価値）</td><td>基準日時点で完了しているべき作業の予算合計</td><td>18万円</td></tr>
+      <tr><td class="star-3"><strong>CV</strong></td><td>Cost Variance（コスト差異）</td><td>EV − AC（マイナス＝予算超過）</td><td>−7万円</td></tr>
+      <tr><td class="star-3"><strong>SV</strong></td><td>Schedule Variance（スケジュール差異）</td><td>EV − PV（マイナス＝スケジュール遅延）</td><td>−5万円</td></tr>
+    </table>
+    <div class="formula-box">
+      CV = EV − AC &nbsp;&nbsp;&nbsp; SV = EV − PV<br>
+      <span style="font-size:11px;color:var(--text-sub);">マイナス＝悪化（超過・遅延） ／ プラス＝良化（節約・前倒し）</span>
+    </div>
+  </div>
+
+  <div id="evm-why" class="subsection">
+    <h3 class="subsection-title">3-2 なぜEVMが必要なのか</h3>
+    <p>特に<strong>長期にわたるプロジェクト</strong>において重要。2つの課題がある： <span class="ptr">← S03:p.45</span></p>
+    <ul>
+      <li><strong>完成目標時期にならないと遅れ・進みがわからない</strong>（時間・費用・機能の達成状況が見えない）</li>
+      <li><strong>すべてを完了してからでないと支払いが行われない</strong>（受注側はその間のコストを自社負担 → 資金力のある大企業でないと受注できない問題）</li>
+    </ul>
+    <div class="highlight-box">
+      途中段階で進捗（完成度）を把握すること = 支払い可能 = 資産計上可能
+    </div>
+    <div class="voice-block">
+      <div class="voice-block-label">🎤 音声補足</div>
+      受注側は完成するまで支払いを受けられないと、その間の人件費を含むコストを自社で負担しなければならない。完成が延びれば延びるほど負担が大きくなり、資金力のある会社でないとシステム開発を受けられないことになってしまう。EVM（途中段階での評価・支払い）があることで、受注側は資金繰りが正常に回るようになる。発注側も途中段階で資産計上できる。<span class="ptr">← S05</span>
+    </div>
+
+    <h4 style="font-weight:700;color:var(--text);margin:14px 0 8px;">システム開発とEVMの特徴 <span class="ptr">← S03:p.44</span></h4>
+    <ul>
+      <li>開発プロセスが長い（短いものもあるが長期が多い）</li>
+      <li>要件定義・基本設計・開発・テストなど<strong>工程別に発注が可能</strong>（異なるチームや会社への外注も可）</li>
+      <li>外注管理が必要</li>
+      <li><strong>完成しないと動かない</strong>——一部が完成しても全体機能は果たせない</li>
+    </ul>
+  </div>
+
+  <div id="evm-accounting" class="subsection">
+    <h3 class="subsection-title">3-3 EVMの会計的背景</h3>
+    <table>
+      <tr><th>会計方式</th><th>内容</th><th>特徴</th></tr>
+      <tr><td><strong>工事完成基準</strong></td><td>全体完成時にチェック・支払い・資産計上</td><td>完成まで支払いなし→受注側に不利</td></tr>
+      <tr><td><strong>工事進行基準</strong></td><td>工事が進むごとにチェック・支払い・資産計上</td><td>途中段階で収益計上可能→受注側に有利</td></tr>
+    </table>
+    <p>土木・建築・建設業、またソフトウェアの制作受注業で適用される。 <span class="ptr">← S03:p.46</span></p>
+    <ul>
+      <li><strong>2009年4月1日以降</strong>：日本でも工事進行基準を<strong>原則適用の計上方式</strong>として採用</li>
+      <li><strong>2021年4月1日より</strong>：<strong>収益認識会計基準</strong>（ASBJが公表）に移行。工事進行基準の考え方は継承</li>
+    </ul>
+    <div class="voice-block">
+      <div class="voice-block-label">🎤 音声補足</div>
+      以前は途中段階での支払いがあまりなく、完成するまで支払いがないため受注を受ける方が不利と言われていた。それほど資金力がないと受けられないという問題もあった。工事進行基準の導入で、ステップごとにチェックと支払いができるようになった。さらに2021年の収益認識会計基準でも考え方は継承されている。<span class="ptr">← S05</span>
+    </div>
+    <div class="ext-block">
+      <div class="ext-block-label">📖 外部補足</div>
+      2021年4月1日から強制適用となった「収益認識に関する会計基準」（企業会計基準第29号）は、IFRS第15号「顧客との契約から生じる収益」に実質的に準拠している。「履行義務の充足に応じた収益認識」として工事進行基準の概念を引き継ぎつつ、5ステップモデル（契約識別→履行義務識別→取引価格決定→取引価格配分→収益認識）を採用した。<span class="ptr">[外部補足]</span>
+    </div>
+  </div>
+
+  <div id="evm-example" class="subsection">
+    <h3 class="subsection-title">3-4 EVM例題（7月16日時点）</h3>
+    <p>前提：今日は7月16日。作業Bが完了した。代表的な2つの指標（CVとSV）を計算する。 <span class="ptr">← S03:p.47</span></p>
+    <table>
+      <tr><th>作業名</th><th>予算（EV基準）</th><th>計画完了日（PV基準）</th><th>実際の支払い（AC）</th><th>実際の完了日</th></tr>
+      <tr><td><strong>作業A</strong></td><td>10万円</td><td>7月2日</td><td>15万円</td><td>7月9日（7日遅延）</td></tr>
+      <tr><td><strong>作業B</strong></td><td>3万円</td><td>7月9日</td><td>5万円</td><td>7月16日（7日遅延）</td></tr>
+      <tr><td>作業C</td><td>5万円</td><td>7月16日</td><td>—</td><td>未完了</td></tr>
+      <tr><td>作業D</td><td>8万円</td><td>7月23日</td><td>—</td><td>未完了</td></tr>
+      <tr><td colspan="2" style="font-weight:700;">完成時総予算（BAC）</td><td colspan="3" style="font-weight:700;color:var(--accent);">26万円</td></tr>
+    </table>
+
+    <div class="card" style="margin-top:16px;border-color:var(--accent);">
+      <p style="font-weight:700;color:var(--accent);margin-bottom:12px;">7月16日時点の指標計算 <span class="ptr">← S03:p.48-52</span></p>
+      <table>
+        <tr><th>指標</th><th>計算式</th><th>計算</th><th>結果</th><th>意味</th></tr>
+        <tr><td><strong>EV</strong></td><td>完了作業（A+B）の予算合計</td><td>10 + 3</td><td class="star-3"><strong>13万円</strong></td><td>獲得された価値</td></tr>
+        <tr><td><strong>AC</strong></td><td>実際の支払い合計</td><td>15 + 5</td><td class="star-3"><strong>20万円</strong></td><td>実際にかかったコスト</td></tr>
+        <tr><td><strong>PV</strong></td><td>7/16時点でA+B+C完了のはず → その予算合計</td><td>10 + 3 + 5</td><td class="star-3"><strong>18万円</strong></td><td>計画上の価値</td></tr>
+        <tr><td><strong>CV</strong></td><td>EV − AC</td><td>13 − 20</td><td class="star-3"><strong>−7万円</strong></td><td class="star-3">予算を7万円超過！</td></tr>
+        <tr><td><strong>SV</strong></td><td>EV − PV</td><td>13 − 18</td><td class="star-3"><strong>−5万円</strong></td><td class="star-3">スケジュールが5万円分遅れ！</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div id="evm-graph" class="subsection">
+    <h3 class="subsection-title">3-5 EVMグラフによる表現</h3>
+
+    <div class="svg-wrap">
+      <svg viewBox="0 0 620 320" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:620px;display:block;background:#1e2535;border-radius:8px;">
+        <!-- 座標計算コメント: y = 270 - (値/26) * 210  →  26万=y60, 20万=y110, 18万=y125, 13万=y165 -->
+        <defs>
+          <marker id="arw" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#8a99b8"/></marker>
+          <marker id="arw_b" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#5b8dee"/></marker>
+        </defs>
+        <!-- Y軸 -->
+        <line x1="65" y1="22" x2="65" y2="272" stroke="#8a99b8" stroke-width="1.5" marker-end="url(#arw)"/>
+        <!-- X軸 -->
+        <line x1="65" y1="272" x2="555" y2="272" stroke="#8a99b8" stroke-width="1.5" marker-end="url(#arw)"/>
+        <!-- ラベル -->
+        <text x="60" y="19" text-anchor="end" font-family="Noto Sans JP" font-size="10" fill="#8a99b8">↑累積値</text>
+        <text x="560" y="276" font-family="Noto Sans JP" font-size="10" fill="#8a99b8">時間→</text>
+
+        <!-- Y軸目盛り -->
+        <text x="60" y="64" text-anchor="end" font-family="JetBrains Mono" font-size="9" fill="#5b6a8a">26万</text>
+        <line x1="63" y1="60" x2="67" y2="60" stroke="#5b6a8a" stroke-width="1"/>
+        <text x="60" y="114" text-anchor="end" font-family="JetBrains Mono" font-size="9" fill="#5b6a8a">20万</text>
+        <line x1="63" y1="110" x2="67" y2="110" stroke="#5b6a8a" stroke-width="1"/>
+        <text x="60" y="129" text-anchor="end" font-family="JetBrains Mono" font-size="9" fill="#5b6a8a">18万</text>
+        <line x1="63" y1="125" x2="67" y2="125" stroke="#5b6a8a" stroke-width="1"/>
+        <text x="60" y="169" text-anchor="end" font-family="JetBrains Mono" font-size="9" fill="#5b6a8a">13万</text>
+        <line x1="63" y1="165" x2="67" y2="165" stroke="#5b6a8a" stroke-width="1"/>
+
+        <!-- データ日付縦線 (x=295 = 7/16相当) -->
+        <line x1="295" y1="30" x2="295" y2="272" stroke="#8a99b8" stroke-width="1" stroke-dasharray="4,3"/>
+        <text x="295" y="288" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#8a99b8">データ日付</text>
+
+        <!-- PV（計画価値）: S字カーブ、最終点y=60 -->
+        <path d="M 65,272 C 130,268 160,240 220,210 C 280,180 330,120 380,88 C 420,68 460,62 540,60"
+              stroke="#5b8dee" stroke-width="2.5" fill="none"/>
+        <text x="542" y="60" font-family="Noto Sans JP" font-size="11" fill="#5b8dee" font-weight="700">完成時総予算=26万</text>
+
+        <!-- PV水平点線 (y=125) -->
+        <line x1="65" y1="125" x2="295" y2="125" stroke="#5b8dee" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
+
+        <!-- EV（獲得価値）: 実際より遅い -->
+        <!-- x=295(データ日付)でy=165 -->
+        <path d="M 65,272 C 130,270 200,262 295,165"
+              stroke="#34d399" stroke-width="2.5" fill="none" stroke-dasharray="8,4"/>
+
+        <!-- AC（実コスト）: PVより上 -->
+        <!-- x=295でy=110 -->
+        <path d="M 65,272 C 130,268 200,230 295,110"
+              stroke="#f87171" stroke-width="2.5" fill="none" stroke-dasharray="4,2"/>
+
+        <!-- ラベル -->
+        <text x="297" y="108" font-family="JetBrains Mono" font-size="11" fill="#f87171" font-weight="700">AC=20万</text>
+        <text x="297" y="127" font-family="JetBrains Mono" font-size="11" fill="#5b8dee" font-weight="700">PV=18万</text>
+        <text x="297" y="163" font-family="JetBrains Mono" font-size="11" fill="#34d399" font-weight="700">EV=13万</text>
+
+        <!-- CV差異（EV→AC, y165→y110, x=268） -->
+        <line x1="268" y1="110" x2="268" y2="165" stroke="#a78bfa" stroke-width="2"/>
+        <line x1="263" y1="110" x2="273" y2="110" stroke="#a78bfa" stroke-width="1.5"/>
+        <line x1="263" y1="165" x2="273" y2="165" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="218" y="141" font-family="JetBrains Mono" font-size="10" fill="#a78bfa" font-weight="700">CV=−7万</text>
+
+        <!-- SV差異（EV→PV, y165→y125, x=295） -->
+        <line x1="310" y1="125" x2="310" y2="165" stroke="#fbbf24" stroke-width="2"/>
+        <line x1="305" y1="125" x2="315" y2="125" stroke="#fbbf24" stroke-width="1.5"/>
+        <line x1="305" y1="165" x2="315" y2="165" stroke="#fbbf24" stroke-width="1.5"/>
+        <text x="316" y="148" font-family="JetBrains Mono" font-size="10" fill="#fbbf24" font-weight="700">SV=−5万</text>
+
+        <!-- 凡例 -->
+        <rect x="65" y="295" width="490" height="18" fill="#161b27" rx="3"/>
+        <line x1="75" y1="304" x2="100" y2="304" stroke="#5b8dee" stroke-width="2"/>
+        <text x="104" y="308" font-family="Noto Sans JP" font-size="10" fill="#5b8dee">PV（計画価値）</text>
+        <line x1="200" y1="304" x2="225" y2="304" stroke="#34d399" stroke-width="2" stroke-dasharray="8,4"/>
+        <text x="229" y="308" font-family="Noto Sans JP" font-size="10" fill="#34d399">EV（獲得価値）</text>
+        <line x1="330" y1="304" x2="355" y2="304" stroke="#f87171" stroke-width="2" stroke-dasharray="4,2"/>
+        <text x="359" y="308" font-family="Noto Sans JP" font-size="10" fill="#f87171">AC（実コスト）</text>
+      </svg>
+      <p class="fig-caption">図：EVMグラフによる表現（データ日付時点でAC &gt; PV &gt; EVとなっており、コスト超過かつスケジュール遅延の状態） <span class="ptr">← S03:p.53</span></p>
+    </div>
+    <div class="voice-block">
+      <div class="voice-block-label">🎤 音声補足</div>
+      グラフで見るとビジュアルにわかりやすい。PVより上にACがあり、EVはPVより下にある——「コストを多く使っているのに進捗が遅れている」ことが一目でわかる。この差異がグラフによって可視化できることがEVMの強み。<span class="ptr">← S05</span>
+    </div>
+  </div>
+
+  <div id="evm-issues" class="subsection">
+    <h3 class="subsection-title">3-6 EVMの課題</h3>
+    <p>EVMも万能ではない。 <span class="ptr">← S03:p.55</span></p>
+    <table>
+      <tr><th>課題</th><th>説明</th></tr>
+      <tr><td><strong>完成度を正確に反映できているか</strong></td><td>コスト（お金）だけで進捗を比較することへの疑問。機能の質・完成度はコストと必ずしも比例しない</td></tr>
+      <tr><td><strong>アジャイル開発への対応</strong></td><td>仕様が途中で変動するアジャイル開発では、PV（計画価値）を固定することが難しく、EVMの適用方法が課題</td></tr>
+    </table>
+    <div class="voice-block">
+      <div class="voice-block-label">🎤 音声補足</div>
+      入門編なので省略するが、現状から見た予想着地点（スケジュール・コスト）などの追加指標もある。EVMで現状を分析し、計画値の最終値に収めるためにどう変更を加えるかを考える材料になる。<span class="ptr">← S05</span>
+    </div>
+    <div class="ext-block">
+      <div class="ext-block-label">📖 外部補足</div>
+      EVMの追加指標（入門編では省略）：<strong>EAC（Estimate At Completion）</strong> = 現状のペースが続くと想定した場合の完成時のコスト予測。BAC/CPI で算出（CPI = EV/AC）。<strong>ETC（Estimate To Complete）</strong> = 残作業にかかる予測コスト = EAC − AC。プロジェクトの着地点予測に使われる。<span class="ptr">[外部補足]</span>
+    </div>
+  </div>
+</section>
+
+<hr class="sec-divider">
+
+<!-- ========== 第4章 ========== -->
+<section id="ch4" class="section">
+  <h2 class="section-title"><span class="num">4</span> 第4章 実行管理と対策</h2>
+
+  <div id="exec-mgmt" class="subsection">
+    <h3 class="subsection-title">4-1 実行管理の基本</h3>
+    <div class="highlight-box">
+      <strong>実行したことをデータとして把握することが基本。</strong><br>
+      データで捉えられていないと遅れ・進みの実態がわからない。 <span class="ptr">← S03:p.60</span>
+    </div>
+    <p>把握の方法：</p>
+    <ul>
+      <li><strong>WBSチェックリスト</strong>：タスクごと・支出単位ごとに完了/未完了をチェック</li>
+      <li><strong>Microsoft Projectなどのプロジェクト管理ツール</strong>による管理</li>
+    </ul>
+    <div class="voice-block">
+      <div class="voice-block-label">🎤 音声補足</div>
+      ツールがあればいいということではなく、そのツールに入れる数値が必要。タスクごとにちゃんと分解して、できたかできていないかの完了確認を一つ一つしていく——これが実行管理の重要なところ。「なんとなく遅れてる・進んでる」では対処できない。<span class="ptr">← S05</span>
+    </div>
+  </div>
+
+  <div id="info-share" class="subsection">
+    <h3 class="subsection-title">4-2 状況の共有</h3>
+    <p>正しい対応を行うために、メンバー間での情報の共有は不可欠。 <span class="ptr">← S03:p.61</span></p>
+    <ul>
+      <li>共有だけで終わることなく、必ず<strong>対策を協議して採用案の承認を得る</strong></li>
+      <li><strong>見通しの共有</strong>も重要（このリカバリー策を打ったら間に合いそうか、次に何か打つ必要があるか）</li>
+    </ul>
+    <div class="voice-block">
+      <div class="voice-block-label">🎤 音声補足</div>
+      情報が共有されていなければ不信感がプロジェクトの中で巻き起こる。それがさまざまなことが順調にいかなくなる原因になる。不信感を払拭するためにも情報を正確に出して状況を共有することが大切。<span class="ptr">← S05</span>
+    </div>
+  </div>
+
+  <div id="lessons" class="subsection">
+    <h3 class="subsection-title">4-3 振り返りと教訓</h3>
+    <div class="highlight-box">
+      仕事のまとまり（フェーズ）が終わると、<strong>必ず振り返りを行う → 教訓の蓄積</strong> <span class="ptr">← S03:p.62</span>
+    </div>
+    <div class="highlight-box" style="border-top-color:var(--accent3);">
+      <strong>プロジェクトの実行過程で得られた教訓は、関連する組織にとってリスクを冒してまで得た貴重な財産。文書としてまとめ、後で活用できる形にしておく。</strong> <span class="ptr">← S03:p.63</span>
+    </div>
+    <p>教訓の蓄積方法：</p>
+    <ul>
+      <li><strong>べし・べからず集</strong>：「○○の場合にはこうすべし」「こういった際にはこうすべからず」としてノウハウを文書化</li>
+      <li><strong>ノウハウデータベース</strong>：キーワードで検索できる形で組織的に蓄積 → 組織が強くなる</li>
+    </ul>
+    <div class="voice-block">
+      <div class="voice-block-label">🎤 音声補足</div>
+      教訓のまとめを行わずどんどん次のフェーズへ進んでしまうと、良かったことが次に生かされなかったり、まずかったことが改善されない悪い連鎖が続く。フェーズを締めて次へ繋がるメリハリが重要。例えば単価交渉でうまいやり方ができたなら、次のフェーズでも同じやり方を試みることで総予算枠に収める努力ができる。<span class="ptr">← S05</span>
+    </div>
+  </div>
+
+  <div id="progress-report" class="subsection">
+    <h3 class="subsection-title">4-4 進捗の報告</h3>
+    <p>プロジェクトのスポンサー・オーナーに対し、<strong>定期あるいは臨時の進捗報告</strong>を行う。 <span class="ptr">← S03:p.64</span></p>
+    <table>
+      <tr><th>#</th><th>報告内容</th><th>コスト観点での具体例</th></tr>
+      <tr><td>①</td><td>プロジェクト進捗</td><td>どれくらいコストが使われているか（EVM指標）</td></tr>
+      <tr><td>②</td><td>解決すべき課題と対応策</td><td>どのコスト課題に対してどんな対策を打つか</td></tr>
+      <tr><td>③</td><td>今後のプロジェクト見通し</td><td>マイルストーンごとに収まりそうか</td></tr>
+    </table>
+    <div class="voice-block">
+      <div class="voice-block-label">🎤 音声補足</div>
+      コストに関してどういう課題があるのか、どういう対策を打てばそのコスト課題は解決するのか、今後はどうなっていくのかをステップごとマイルストーンごとに解決していくと、最終的にゴールに近づける。<span class="ptr">← S05</span>
+    </div>
+  </div>
+
+  <div id="change-mgmt" class="subsection">
+    <h3 class="subsection-title">4-5 計画変更の承認</h3>
+    <p>やむを得ない計画の変更に対して、対策を打つ。 <span class="ptr">← S03:p.65</span></p>
+
+    <div class="svg-wrap">
+      <svg viewBox="0 0 560 80" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:560px;display:block;">
+        <rect width="560" height="80" fill="#1e2535" rx="8"/>
+        <defs><marker id="a4" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#5b8dee"/></marker></defs>
+        <rect x="18" y="14" width="158" height="52" rx="6" fill="#252d40" stroke="#f87171" stroke-width="1.5"/>
+        <text x="97" y="36" text-anchor="middle" font-family="Noto Sans JP" font-size="12" fill="#e2e8f5" font-weight="700">① 変更要因を分析</text>
+        <text x="97" y="54" text-anchor="middle" font-family="Noto Sans JP" font-size="10" fill="#8a99b8">「なぜ」を説明できるように</text>
+        <line x1="176" y1="40" x2="210" y2="40" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#a4)"/>
+        <rect x="210" y="14" width="158" height="52" rx="6" fill="#252d40" stroke="#fbbf24" stroke-width="1.5"/>
+        <text x="289" y="36" text-anchor="middle" font-family="Noto Sans JP" font-size="12" fill="#e2e8f5" font-weight="700">② 変更の方策を検討</text>
+        <text x="289" y="54" text-anchor="middle" font-family="Noto Sans JP" font-size="10" fill="#8a99b8">どう変更するかを考える</text>
+        <line x1="368" y1="40" x2="402" y2="40" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#a4)"/>
+        <rect x="402" y="14" width="140" height="52" rx="6" fill="#252d40" stroke="#34d399" stroke-width="1.5"/>
+        <text x="472" y="36" text-anchor="middle" font-family="Noto Sans JP" font-size="12" fill="#e2e8f5" font-weight="700">③ 承認を得る</text>
+        <text x="472" y="54" text-anchor="middle" font-family="Noto Sans JP" font-size="10" fill="#34d399">★勝手に変更しない</text>
+      </svg>
+      <p class="fig-caption">図：計画変更の承認プロセス <span class="ptr">← S03:p.65</span></p>
+    </div>
+
+    <div class="highlight-box" style="margin-top:16px;">
+      <strong>変更のポイント</strong> <span class="ptr">← S03:p.66</span><br>
+      <strong>効果が変わらない以上、総投資額を増やすことはできない。</strong><br>
+      与えられた投資額の中で実施方法を工夫して再検討することが基本。
+    </div>
+    <p>コスト増加への対処の優先順位：</p>
+    <ol>
+      <li>与えられた投資額の中で<strong>実施方法を工夫</strong>して再検討</li>
+      <li><strong>予備の費用（予備費）</strong>を使う</li>
+      <li>それでも手がなければ<strong>投資対効果分析を再計算</strong>する（効果が本当に変わらないか再確認）</li>
+    </ol>
+    <div class="voice-block">
+      <div class="voice-block-label">🎤 音声補足</div>
+      投資と効果がバランスしているからこそこのプロジェクトは承認された。投資額だけ増えて効果が変わらないのでは承認した理由がなくなる。なんとなく増えたんです・なんとなく減ったんです、ではなく変更の要因を説明できることで次に繋げられる。<span class="ptr">← S05</span>
+    </div>
+  </div>
+
+  <div id="contingency" class="subsection">
+    <h3 class="subsection-title">4-6 予備費の扱い（サバ）</h3>
+    <div class="highlight-box">
+      <strong>予備費（コストのサバ）</strong>：変更や状況変化に備えた予備的な余裕シロ。全体予算に対して何%かを確保しておく。 <span class="ptr">← S03:p.67</span>
+    </div>
+    <div class="voice-block">
+      <div class="voice-block-label">🎤 音声補足</div>
+      スライドにはサバ（魚）の絵が実際に描かれている。「サバを読む」のサバとは違うが、イメージしやすいということでサバの絵が使われている。コストのサバは細かく分けず隠しておく。プロジェクトメンバーが「予備費があるからもう少し使っても大丈夫」と思って使ってしまうと切り札が使えなくなる。プロジェクトマネージャーは最後まで使わずに隠し持っておき、本当に厳しいときの切り札として活用する。<span class="ptr">← S03:p.67, S05</span>
+    </div>
+    <div class="ext-block">
+      <div class="ext-block-label">📖 外部補足</div>
+      PMBOKでは予備費を2種類に分けて管理する：<strong>コンティンジェンシー予備費</strong>（既知リスクへの備え：プロジェクトマネージャーが管理）と<strong>マネジメント予備費</strong>（未知リスクへの備え：スポンサー・上位組織が管理）。一般に予備費は総プロジェクトコストの5〜10%程度を設定することが多い（プロジェクトのリスクレベルによって変動）。<span class="ptr">[外部補足]</span>
+    </div>
+  </div>
+</section>
+
+<hr class="sec-divider">
+
+<!-- ========== 末尾補足 ========== -->
+<div id="appendix">
+  <h2 style="font-size:22px;font-weight:700;color:var(--text);margin-bottom:28px;padding-bottom:10px;border-bottom:2px solid var(--border);">📎 末尾補足</h2>
+
+  <!-- 補足A -->
+  <div id="appendix-a" class="appendix">
+    <h3 class="appendix-title">⭐ 補足A: 最重要ワード一覧</h3>
+    <table>
+      <tr><th>用語</th><th>読み</th><th>定義（S03原文から抽出）</th><th>重要度</th></tr>
+      <tr><td><strong>予算</strong></td><td>よさん</td><td>あらかじめ計画して、承認された支出可能な費用</td><td class="star-3">★★★</td></tr>
+      <tr><td><strong>投資対効果分析</strong></td><td>とうしたいこうかぶんせき</td><td>いくらの投資に対して、いくらの効果があるのかを計算したもの</td><td class="star-3">★★★</td></tr>
+      <tr><td><strong>定量的効果</strong></td><td>ていりょうてきこうか</td><td>数値で効果を算出すること（例：工数3人月→1人月、伝票500枚/日→50枚）</td><td class="star-3">★★★</td></tr>
+      <tr><td><strong>定性的効果</strong></td><td>ていせいてきこうか</td><td>状態で効果を表現すること（例：操作が簡単になる）。アンケートで測定</td><td class="star-3">★★★</td></tr>
+      <tr><td><strong>現在価値</strong></td><td>げんざいかち</td><td>金利とリスクを割り引いた価値。お金だけの判断でよい場合に最も重要</td><td class="star-2">★★☆</td></tr>
+      <tr><td><strong>類推見積り</strong></td><td>るいすいみつもり</td><td>過去に行った類似プロジェクトのコストを元に今回のコストを見積もる手法。プロジェクト間の類似性検証が鍵</td><td class="star-3">★★★</td></tr>
+      <tr><td><strong>係数見積り</strong></td><td>けいすうみつもり</td><td>過去のデータに基づいた量の予測に単価を掛けて算出する見積り手法</td><td class="star-3">★★★</td></tr>
+      <tr><td><strong>ボトムアップ見積り</strong></td><td>ぼとむあっぷみつもり</td><td>最も細かいレベルで仕事のコストを見積もり積み上げる手法。最も信頼性が高く、実行時のチェックのベースになる</td><td class="star-3">★★★</td></tr>
+      <tr><td><strong>粒度</strong></td><td>りゅうど</td><td>ボトムアップ見積りでどれだけ細かく見積もるかの程度</td><td class="star-2">★★☆</td></tr>
+      <tr><td><strong>ライフサイクルコスト</strong></td><td>らいふさいくるこすと</td><td>プロジェクトが始まってから終わるまでの総コスト。長期視点でのコスト管理で注目</td><td class="star-2">★★☆</td></tr>
+      <tr><td><strong>アーンドバリューマネジメント（EVM）</strong></td><td>あーんどばりゅーまねじめんと</td><td>計画値と実績の価値のズレで進捗を管理する手法（Earned Value Management）</td><td class="star-3">★★★</td></tr>
+      <tr><td><strong>EV（獲得価値）</strong></td><td>いーぶい</td><td>完了した作業の予算合計（Earned Value）</td><td class="star-3">★★★</td></tr>
+      <tr><td><strong>PV（計画価値）</strong></td><td>ぴーぶい</td><td>基準日時点で完了しているべき作業の予算合計（Planned Value）</td><td class="star-3">★★★</td></tr>
+      <tr><td><strong>AC（実コスト）</strong></td><td>えーしー</td><td>実際に支払った金額合計（Actual Cost）</td><td class="star-3">★★★</td></tr>
+      <tr><td><strong>CV（コスト差異）</strong></td><td>しーぶい</td><td>EV − AC。マイナスの場合は予算超過（Cost Variance）</td><td class="star-3">★★★</td></tr>
+      <tr><td><strong>SV（スケジュール差異）</strong></td><td>えすぶい</td><td>EV − PV。マイナスの場合はスケジュール遅延（Schedule Variance）</td><td class="star-3">★★★</td></tr>
+      <tr><td><strong>工事完成基準</strong></td><td>こうじかんせいきじゅん</td><td>全体完成時にチェック・支払い・資産計上を行う会計方式</td><td class="star-2">★★☆</td></tr>
+      <tr><td><strong>工事進行基準</strong></td><td>こうじしんこうきじゅん</td><td>工事が進むごとにチェック・支払い・資産計上を行う会計方式。2009年4月1日より原則適用</td><td class="star-2">★★☆</td></tr>
+      <tr><td><strong>収益認識会計基準</strong></td><td>しゅうえきにんしきかいけいきじゅん</td><td>2021年4月1日より適用（企業会計基準第29号）。工事進行基準の考え方を継承</td><td class="star-2">★★☆</td></tr>
+      <tr><td><strong>予備費（コストのサバ）</strong></td><td>よびひ</td><td>変更や状況変化に備えた予備的な余裕シロ。PMが管理し切り札として容易に使わない</td><td class="star-2">★★☆</td></tr>
+      <tr><td><strong>人月</strong></td><td>にんげつ</td><td>1人の人が1ヶ月作業したときの工数単位。3人月＝1人で3ヶ月 or 3人で1ヶ月</td><td class="star-2">★★☆</td></tr>
+    </table>
+  </div>
+
+  <!-- 補足B -->
+  <div id="appendix-b" class="appendix">
+    <h3 class="appendix-title">📚 補足B: 知っておくべき背景知識</h3>
+
+    <div class="card">
+      <p style="font-weight:700;margin-bottom:8px;">工事進行基準・収益認識会計基準の経緯</p>
+      <p style="font-size:14px;color:var(--text-sub);">2009年4月1日以降、企業会計基準委員会（ASBJ）が「工事契約に関する会計基準」を公表し、長期請負工事（ソフトウェア制作受注を含む）に工事進行基準を原則適用とした。2021年4月1日から「収益認識に関する会計基準」（企業会計基準第29号、IFRS第15号に実質準拠）が強制適用となり、「履行義務の充足に応じた収益認識」として工事進行基準の概念を引き継いだ。受注側の資金繰り改善と発注側の資産計上の両面で意義がある。</p>
+    </div>
+
+    <div class="card">
+      <p style="font-weight:700;margin-bottom:8px;">ROI・NPV・IRRの関係</p>
+      <p style="font-size:14px;color:var(--text-sub);">投資判断の主要指標：</p>
+      <ul style="font-size:14px;color:var(--text-sub);">
+        <li><strong>ROI</strong>（Return On Investment）＝ (効果 − 投資額) ÷ 投資額 × 100（%）</li>
+        <li><strong>NPV</strong>（Net Present Value：正味現在価値）＝ 将来キャッシュフローの現在価値合計 − 初期投資額。NPV &gt; 0 なら投資価値あり</li>
+        <li><strong>IRR</strong>（Internal Rate of Return：内部収益率）＝ NPV = 0 となる割引率。IRR &gt; 目標利回りなら投資実行</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <p style="font-weight:700;margin-bottom:8px;">ファンクションポイント（FP）法</p>
+      <p style="font-size:14px;color:var(--text-sub);">係数見積りの代表例。ソフトウェアの機能数から工数を推定する手法。1970年代にAllan Albrechtが提案し、ISO/IEC 20926として標準化されている。機能を「入力・出力・照会・内部ファイル・外部インタフェース」の5種類に分類し、複雑さを加味した重み付けで総FPを算出。総FP × 単価（工数/FP）で見積もる。</p>
+    </div>
+
+    <div class="card">
+      <p style="font-weight:700;margin-bottom:8px;">人月の神話（The Mythical Man-Month）</p>
+      <p style="font-size:14px;color:var(--text-sub);">Frederick P. Brooks Jr.が1975年に著した書籍で提唱した法則。「遅れているソフトウェアプロジェクトへの要員追加は、さらに遅延させる」。人員を追加すると学習コストとコミュニケーションコストが発生するため、工数は人数に単純比例しない。係数見積りで「人数倍 = 工数半分」と見積もる際の注意点の背景理論となる。</p>
+    </div>
+
+    <div class="card">
+      <p style="font-weight:700;margin-bottom:8px;">EVM追加指標（入門編外）</p>
+      <p style="font-size:14px;color:var(--text-sub);">
+        <strong>CPI</strong>（Cost Performance Index）＝ EV ÷ AC。1より大きければコスト効率良好、小さければ超過傾向<br>
+        <strong>SPI</strong>（Schedule Performance Index）＝ EV ÷ PV。1より大きければスケジュール前倒し<br>
+        <strong>EAC</strong>（Estimate At Completion）＝ BAC ÷ CPI。現状ペースが続いた場合の完成時コスト予測<br>
+        <strong>TCPI</strong>（To-Complete Performance Index）＝ 残作業予算 ÷ 残予算。残り作業を予算内に収めるために必要なコスト効率
+      </p>
+    </div>
+  </div>
+
+  <!-- 補足C -->
+  <div id="appendix-c" class="appendix">
+    <h3 class="appendix-title">🎯 補足C: 試験・レポートで重要な観点</h3>
+    <div class="card">
+      <ol>
+        <li style="margin-bottom:14px;"><strong>EVMの5指標の計算（最重要）</strong><br>
+          EV・AC・PV の定義と、CV＝EV−AC、SV＝EV−PV の計算式を確実に覚える。<br>
+          例題数値：EV=13万、AC=20万、PV=18万 → CV=−7万（超過）、SV=−5万（遅延）を自力で計算できること</li>
+        <li style="margin-bottom:14px;"><strong>3つの見積り手法の比較</strong><br>
+          類推・係数・ボトムアップのそれぞれの特徴・適用場面・弱点。「最も信頼性が高いのはボトムアップ」「実務推奨順位：ボトムアップ &gt; 係数 &gt; 類推」</li>
+        <li style="margin-bottom:14px;"><strong>定量的効果と定性的効果の区別と換算</strong><br>
+          数値で表せるもの vs. 状態で表すもの。どちらも「できる限り金額に換算する」のが望ましい理由</li>
+        <li style="margin-bottom:14px;"><strong>プロジェクト予算と年間予算の優先関係</strong><br>
+          複数年プロジェクトではプロジェクト予算が年間予算に優先する理由（ダム・システム開発の例）</li>
+        <li style="margin-bottom:14px;"><strong>工事進行基準の適用年と意義</strong><br>
+          2009年4月1日（工事進行基準）・2021年4月1日（収益認識会計基準）。受注側の資金繰り改善という観点から説明できること</li>
+        <li style="margin-bottom:14px;"><strong>計画変更の承認プロセスと原則</strong><br>
+          ①要因分析→②方策検討→③承認取得。「効果が変わらない以上、総投資額を増やすことはできない」という原則</li>
+        <li><strong>予備費（サバ）の管理方針</strong><br>
+          PMがメンバーに開示せず切り札として保持する理由</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- 補足D -->
+  <div id="appendix-d" class="appendix">
+    <h3 class="appendix-title">🔗 補足D: 関連概念・次回への接続</h3>
+
+    <div class="card">
+      <p style="font-weight:700;margin-bottom:8px;">第6回（クリティカルパス）との接続</p>
+      <p style="font-size:14px;color:var(--text-sub);">スケジュール管理（クリティカルパス）とコスト管理（EVM）は車の両輪。SV（スケジュール差異）はお金で表現されたスケジュール遅延であり、両者は深く連動している。クリティカルパスで期間を短縮しようとすると、クラッシング（人員追加）によりコストが増加するトレードオフがある。</p>
+    </div>
+
+    <div class="card">
+      <p style="font-weight:700;margin-bottom:8px;">PMBOK（プロジェクトマネジメント知識体系）との対応</p>
+      <p style="font-size:14px;color:var(--text-sub);">EVM・見積り手法・コスト管理は、PMI（Project Management Institute）が定めるPMBOK第7版の「コストマネジメント」知識エリアに対応する。PMP（Project Management Professional）資格試験でも頻出のテーマ。PMBOKはほぼ4年ごとに改訂されており、第7版（2021年）は原則ベースの記述に刷新されている。</p>
+    </div>
+
+    <div class="card">
+      <p style="font-weight:700;margin-bottom:8px;">スコープ・スケジュール・コストの「トリプルコンストレイント」</p>
+      <p style="font-size:14px;color:var(--text-sub);">プロジェクトマネジメントの基本的な制約は「スコープ（品質・機能）」「スケジュール（時間）」「コスト（予算）」の3つ。この3つはトレードオフの関係にあり、いずれかを変更すると他の2つに影響が出る。コストだけを独立して管理するのではなく、3つのバランスを意識することが重要。</p>
+    </div>
+  </div>
+
+  <!-- 未確定事項リスト（末尾） -->
+  <div id="unconfirmed" class="appendix">
+    <h3 class="appendix-title">❓ 未確定事項・要確認リスト</h3>
+    <div class="unconfirmed-card">
+      <p class="no-unconfirmed">✅ 未確定事項なし（全件S03照合・外部情報確認済みで解消）</p>
+      <p style="font-size:13px;color:var(--text-sub);margin-top:8px;">S05の誤変換（往路/復路分析、アーンドバリュー、類推/ボトムアップ見積り、定性的、工事進行基準、粒度 等）は全件S03照合済みで修正済み。外部補足の数値・年・著者名等は知識ベースで確認済み。</p>
+    </div>
+  </div>
+
+</div><!-- /appendix -->
+
+<!-- フッター -->
+<div style="border-top:1px solid var(--border);padding-top:20px;margin-top:40px;color:var(--text-muted);font-size:12px;font-family:'JetBrains Mono',monospace;">
+  <p>note_pm101_07.html | プロジェクトマネジメント入門 第7回 | 担当: 勝 眞一郎</p>
+  <p>Sources: S03（スライドPDF）+ S05×2（hynote.ai） | QC: 100% PASS | SSP v4.5.1</p>
+  <p>v1.1 — 未確定事項リストを末尾へ移動・外部補足を充実・メイン内容優先レイアウトに変更</p>
+</div>
+
+</main>
+</div>
+
+<script>
+const sections = document.querySelectorAll('[id]');
+const tocItems = document.querySelectorAll('.toc-item');
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      tocItems.forEach(i => i.classList.remove('active'));
+      const a = document.querySelector(`.toc-item[href="#${entry.target.id}"]`);
+      if (a) a.classList.add('active');
+    }
+  });
+}, { threshold: 0.15, rootMargin: '-50px 0px -70% 0px' });
+sections.forEach(s => obs.observe(s));
+</script>
+</body>
+</html>
