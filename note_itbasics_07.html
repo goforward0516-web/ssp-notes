@@ -1,0 +1,1789 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ITのための基礎知識 第7回 — プロジェクトマネジメントとサービスマネジメント</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&family=Zen+Kaku+Gothic+New:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-base: #0f1117;
+  --bg-card: #161b27;
+  --bg-card2: #1a2030;
+  --bg-hover: #1e2538;
+  --border: #2a3548;
+  --border-active: #4a7aff;
+  --text-main: #e2e8f5;
+  --text-sub: #8a99b8;
+  --text-muted: #5a6880;
+  --accent-blue: #4a7aff;
+  --accent-cyan: #34d399;
+  --accent-orange: #fbbf24;
+  --accent-purple: #a78bfa;
+  --accent-red: #f87171;
+  --accent-pink: #f472b6;
+  --sidebar-w: 260px;
+  --voice-border: #4a7aff;
+  --voice-bg: rgba(74,122,255,0.07);
+  --infer-border: #a78bfa;
+  --infer-bg: rgba(167,139,250,0.07);
+  --warn-border: #fbbf24;
+  --warn-bg: rgba(251,191,36,0.07);
+  --ext-border: #34d399;
+  --ext-bg: rgba(52,211,153,0.07);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg-base);
+  color: var(--text-main);
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 15px;
+  line-height: 1.8;
+  display: flex;
+}
+
+/* ========== SIDEBAR ========== */
+#sidebar {
+  width: var(--sidebar-w);
+  min-height: 100vh;
+  background: var(--bg-card);
+  border-right: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  flex-shrink: 0;
+  padding: 20px 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+#sidebar::-webkit-scrollbar { width: 4px; }
+#sidebar::-webkit-scrollbar-track { background: transparent; }
+#sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+.sidebar-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0 18px 12px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 12px;
+}
+
+#sidebar nav a {
+  display: block;
+  padding: 6px 18px;
+  color: var(--text-sub);
+  text-decoration: none;
+  font-size: 12.5px;
+  line-height: 1.5;
+  transition: all 0.15s;
+  border-left: 2px solid transparent;
+}
+
+#sidebar nav a:hover,
+#sidebar nav a.active {
+  color: var(--text-main);
+  background: var(--bg-hover);
+  border-left-color: var(--accent-blue);
+}
+
+#sidebar nav a.nav-h2 { font-weight: 500; color: var(--text-main); padding-top: 10px; }
+#sidebar nav a.nav-h3 { padding-left: 28px; font-size: 12px; }
+#sidebar nav a.nav-h4 { padding-left: 38px; font-size: 11.5px; color: var(--text-muted); }
+
+/* ========== MAIN ========== */
+#main {
+  flex: 1;
+  max-width: 900px;
+  padding: 40px 48px 80px;
+  min-width: 0;
+}
+
+/* ========== HEADER ========== */
+.doc-header {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 24px;
+  margin-bottom: 36px;
+}
+
+.doc-meta {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 4px;
+  border: 1px solid;
+}
+
+.badge-course { background: rgba(74,122,255,0.15); border-color: #2a4aa0; color: #90b4ff; }
+.badge-session { background: rgba(52,211,153,0.12); border-color: #1a7a55; color: #5ee3b2; }
+.badge-date { background: rgba(139,139,139,0.1); border-color: #3a4458; color: var(--text-sub); }
+.badge-instructor { background: rgba(251,191,36,0.12); border-color: #7a6020; color: #fcd34d; }
+
+.doc-title {
+  font-family: 'Zen Kaku Gothic New', sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1.4;
+  margin-bottom: 10px;
+}
+
+.doc-sources {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 8px;
+}
+
+/* ========== SECTIONS ========== */
+section {
+  margin-bottom: 48px;
+  scroll-margin-top: 20px;
+}
+
+h2 {
+  font-family: 'Zen Kaku Gothic New', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #90b4ff;
+  border-left: 3px solid var(--accent-blue);
+  padding-left: 14px;
+  margin-bottom: 20px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+h3 {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-main);
+  margin: 22px 0 10px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--border);
+}
+
+h4 {
+  font-size: 14.5px;
+  font-weight: 500;
+  color: var(--accent-cyan);
+  margin: 16px 0 8px;
+}
+
+p { margin-bottom: 10px; }
+
+ul, ol { margin: 8px 0 10px 20px; }
+li { margin-bottom: 4px; }
+
+strong { color: var(--text-main); font-weight: 500; }
+em { color: var(--accent-orange); font-style: normal; }
+
+/* ========== BLOCKS ========== */
+.voice-block {
+  border-left: 3px solid var(--voice-border);
+  background: var(--voice-bg);
+  padding: 10px 14px;
+  margin: 10px 0;
+  border-radius: 0 6px 6px 0;
+  font-size: 14px;
+}
+
+.infer-block {
+  border-left: 3px solid var(--infer-border);
+  background: var(--infer-bg);
+  padding: 10px 14px;
+  margin: 10px 0;
+  border-radius: 0 6px 6px 0;
+  font-size: 14px;
+}
+
+.ext-block {
+  border-left: 3px solid var(--ext-border);
+  background: var(--ext-bg);
+  padding: 10px 14px;
+  margin: 10px 0;
+  border-radius: 0 6px 6px 0;
+  font-size: 14px;
+}
+
+.warn-block {
+  border-left: 3px solid var(--warn-border);
+  background: var(--warn-bg);
+  padding: 10px 14px;
+  margin: 10px 0;
+  border-radius: 0 6px 6px 0;
+  font-size: 14px;
+}
+
+.block-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+  opacity: 0.8;
+}
+
+.voice-block .block-label { color: #90b4ff; }
+.ext-block .block-label { color: #5ee3b2; }
+.warn-block .block-label { color: #fcd34d; }
+.infer-block .block-label { color: #c4b5fd; }
+
+/* pointer badge */
+.ptr {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  color: var(--text-muted);
+  background: var(--bg-card2);
+  border: 1px solid var(--border);
+  padding: 1px 6px;
+  border-radius: 3px;
+  margin-left: 6px;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+/* ========== TABLES ========== */
+.tbl-wrap { overflow-x: auto; margin: 12px 0; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+
+th {
+  background: var(--bg-card2);
+  color: var(--text-sub);
+  font-weight: 500;
+  padding: 8px 12px;
+  text-align: left;
+  border: 1px solid var(--border);
+  font-size: 12.5px;
+}
+
+td {
+  padding: 7px 12px;
+  border: 1px solid var(--border);
+  vertical-align: top;
+  line-height: 1.6;
+}
+
+tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+
+/* highlight rows */
+.row-red td:first-child { border-left: 3px solid var(--accent-red); }
+.row-yellow td:first-child { border-left: 3px solid var(--accent-orange); }
+.row-green td:first-child { border-left: 3px solid var(--accent-cyan); }
+
+/* ========== DEFINITION BOX ========== */
+.def-box {
+  background: var(--bg-card2);
+  border: 1px solid var(--border);
+  border-top: 2px solid var(--accent-blue);
+  border-radius: 6px;
+  padding: 14px 18px;
+  margin: 12px 0;
+}
+
+.def-box .def-term {
+  font-weight: 500;
+  color: #90b4ff;
+  font-size: 15px;
+  margin-bottom: 4px;
+}
+
+/* ========== APPENDIX CARDS ========== */
+.appendix-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px 24px;
+  margin-bottom: 20px;
+}
+
+.appendix-card h2 {
+  border-left: none;
+  padding-left: 0;
+  font-size: 17px;
+  margin-bottom: 16px;
+}
+
+.card-uncert { border-top: 2px solid var(--accent-orange); }
+.card-uncert h2 { color: var(--accent-orange); }
+.card-a { border-top: 2px solid var(--accent-blue); }
+.card-a h2 { color: #90b4ff; }
+.card-b { border-top: 2px solid var(--accent-cyan); }
+.card-b h2 { color: var(--accent-cyan); }
+.card-c { border-top: 2px solid var(--accent-orange); }
+.card-c h2 { color: var(--accent-orange); }
+.card-d { border-top: 2px solid var(--accent-purple); }
+.card-d h2 { color: var(--accent-purple); }
+
+/* ========== FORMULA BOX ========== */
+.formula-box {
+  background: var(--bg-card2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 14px 18px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  color: var(--accent-cyan);
+  margin: 12px 0;
+  text-align: center;
+}
+
+/* ========== STAR IMPORTANCE ========== */
+.star-3 { color: var(--accent-orange); }
+.star-2 { color: #90b4ff; }
+.star-1 { color: var(--text-muted); }
+
+/* ========== COMPARE TABLE HEADER ========== */
+.compare-header-pm { background: rgba(74,122,255,0.15) !important; color: #90b4ff !important; }
+.compare-header-sm { background: rgba(52,211,153,0.15) !important; color: #5ee3b2 !important; }
+
+/* ========== VERSION TAG ========== */
+.version-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-top: 40px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+</style>
+</head>
+<body>
+
+<!-- ========== SIDEBAR ========== -->
+<aside id="sidebar">
+  <div class="sidebar-title">目次 / Contents</div>
+  <nav>
+    <a href="#header" class="nav-h2">📄 講義概要</a>
+    <a href="#ch1" class="nav-h2">第1章 PM前編</a>
+    <a href="#ch1-what" class="nav-h3">プロジェクトとは</a>
+    <a href="#ch1-lifecycle" class="nav-h3">ライフサイクル</a>
+    <a href="#ch1-pmbok" class="nav-h3">PMBOK</a>
+    <a href="#ch1-10areas" class="nav-h3">10の知識エリア</a>
+    <a href="#ch1-wbs" class="nav-h3">WBS</a>
+    <a href="#ch1-scope" class="nav-h3">スコープマネジメント</a>
+    <a href="#ch1-schedule" class="nav-h3">スケジュールマネジメント</a>
+    <a href="#ch1-gantt" class="nav-h4">ガントチャート</a>
+    <a href="#ch1-arrow" class="nav-h4">アローダイアグラム</a>
+    <a href="#ch1-cp" class="nav-h4">クリティカルパス</a>
+    <a href="#ch2" class="nav-h2">第2章 PM後編</a>
+    <a href="#ch2-cost" class="nav-h3">コストマネジメント</a>
+    <a href="#ch2-quality" class="nav-h3">品質マネジメント</a>
+    <a href="#ch2-resource" class="nav-h3">資源マネジメント</a>
+    <a href="#ch2-comm" class="nav-h3">コミュニケーションMG</a>
+    <a href="#ch2-risk" class="nav-h3">リスクマネジメント</a>
+    <a href="#ch2-procure" class="nav-h3">調達マネジメント</a>
+    <a href="#ch2-stakeholder" class="nav-h3">ステークホルダーMG</a>
+    <a href="#ch2-integration" class="nav-h3">統合マネジメント</a>
+    <a href="#ch3" class="nav-h2">第3章 サービスMG</a>
+    <a href="#ch3-sla" class="nav-h3">SLA・SLI・SLO</a>
+    <a href="#ch3-compare" class="nav-h3">PM vs サービスMG</a>
+    <a href="#ch3-itil" class="nav-h3">ITIL</a>
+    <a href="#ch3-sms" class="nav-h3">サービスMGシステム</a>
+    <a href="#ch3-support" class="nav-h3">サービスサポート</a>
+    <a href="#ch3-facility" class="nav-h3">ファシリティMG</a>
+    <a href="#ch4" class="nav-h2">第4章 システム監査</a>
+    <a href="#ch4-audit" class="nav-h3">システム監査</a>
+    <a href="#ch4-flow" class="nav-h3">監査の流れ</a>
+    <a href="#ch4-sec" class="nav-h3">情報セキュリティ監査</a>
+    <a href="#ch4-fraud" class="nav-h3">不正のトライアングル</a>
+    <a href="#ch4-gov" class="nav-h3">コーポレートガバナンス</a>
+    <a href="#ch4-cases1" class="nav-h3">内部統制・事例</a>
+    <a href="#ch4-itgov" class="nav-h3">ITガバナンス</a>
+    <a href="#ch4-cases2" class="nav-h3">ITガバナンス・事例</a>
+    <a href="#appendix" class="nav-h2">📎 補足セクション</a>
+    <a href="#app-uncert" class="nav-h3">❓ 未確定事項</a>
+    <a href="#app-a" class="nav-h3">⭐ 補足A 最重要ワード</a>
+    <a href="#app-b" class="nav-h3">📚 補足B 背景知識</a>
+    <a href="#app-c" class="nav-h3">🎯 補足C 試験・レポート</a>
+    <a href="#app-d" class="nav-h3">🔗 補足D 関連概念</a>
+  </nav>
+</aside>
+
+<!-- ========== MAIN ========== -->
+<main id="main">
+
+<!-- HEADER -->
+<div class="doc-header" id="header">
+  <div class="doc-meta">
+    <span class="badge badge-course">ITのための基礎知識</span>
+    <span class="badge badge-session">第7回</span>
+    <span class="badge badge-instructor">講師: 勝 眞一郎（かつ しんいちろう）</span>
+    <span class="badge badge-date">サイバー大学 IT総合学部 専門基礎科目</span>
+  </div>
+  <h1 class="doc-title">プロジェクトマネジメントとサービスマネジメント</h1>
+  <div class="doc-sources">ソース: S03（スライドPDF 71枚）/ S05（AI変換テキスト × 2バリアント） | SSP v4.5.1 | note_itbasics_07.html v1.1（パートIV外部補完済み）</div>
+</div>
+
+<!-- ============================
+     第1章 プロジェクトマネジメント前編
+============================= -->
+<section id="ch1">
+<h2>第1章　プロジェクトマネジメント前編</h2>
+
+<div class="def-box" id="ch1-what">
+  <div class="def-term">学習目標（第1章）</div>
+  <ol>
+    <li>プロジェクトマネジメントの目的・考え方およびプロセスの基本的な流れを説明できる</li>
+    <li>知識体系 PMBOK について知識エリアの構成を説明できる</li>
+    <li>スコープマネジメントとスケジュールマネジメントの管理ポイントを説明できる</li>
+  </ol>
+</div>
+
+<h3 id="ch1-what">1.1 プロジェクトマネジメントとは</h3>
+
+<p><strong>プロジェクト</strong>とは、限られた「期間」の中で、限られた「資源」を使って、特定の「目的」を達成することである。<span class="ptr">← S03:p.7</span></p>
+<p><strong>マネジメント</strong>とは「全体をうまくやること」。すなわち<strong>プロジェクトマネジメント</strong>とは、ある目的を決められた期限までに与えられた資源で実現するプロジェクトをマネジメントすることである。<span class="ptr">← S03:p.7</span></p>
+
+<!-- SVG: 目的・資源・期限の三角形 -->
+<figure style="margin: 16px 0;">
+<svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:400px;display:block;background:#1a2030;border-radius:8px;">
+  <!-- 三角形の頂点座標:
+       top(200,30), bottomLeft(60,170), bottomRight(340,170)
+       各辺の中点: top-left=(130,100), top-right=(270,100), bottom=(200,170)
+  -->
+  <polygon points="200,35 60,170 340,170" fill="none" stroke="#4a7aff" stroke-width="1.5"/>
+  <!-- 頂点ラベル -->
+  <circle cx="200" cy="35" r="28" fill="#1e2b45" stroke="#4a7aff" stroke-width="1.5"/>
+  <text x="200" y="39" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="#90b4ff" font-weight="700">目的</text>
+  <circle cx="60" cy="170" r="28" fill="#1e2b45" stroke="#34d399" stroke-width="1.5"/>
+  <text x="60" y="174" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#5ee3b2" font-weight="700">資源</text>
+  <circle cx="340" cy="170" r="28" fill="#1e2b45" stroke="#fbbf24" stroke-width="1.5"/>
+  <text x="340" y="174" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#fcd34d" font-weight="700">期限</text>
+  <!-- 中央ラベル -->
+  <text x="200" y="112" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#8a99b8">プロジェクト</text>
+  <text x="200" y="128" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#8a99b8">マネジメント</text>
+</svg>
+<figcaption style="font-size:12px;color:var(--text-muted);margin-top:4px;">図：プロジェクトの3要素　<span class="ptr">S03:p.7</span></figcaption>
+</figure>
+
+<h3 id="ch1-lifecycle">1.2 プロジェクトのライフサイクル</h3>
+
+<ul>
+  <li>プロジェクトは<strong>有期</strong>である（期間・期限が決まっている）<span class="ptr">← S03:p.8</span></li>
+  <li>プロジェクトには<strong>起承転結</strong>がある（「転」が無いこともある）</li>
+</ul>
+
+<div class="tbl-wrap">
+<table>
+  <thead>
+    <tr><th>フェーズ</th><th>別称</th><th>特徴</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>起（初期フェーズ）</td><td>立ち上がり</td><td>工数・コストが低い状態から徐々に上昇</td></tr>
+    <tr><td>承（中間フェーズⅠ）</td><td>盛り上がり</td><td>工数・コストが最大に近い</td></tr>
+    <tr><td>転（中間フェーズⅡ）</td><td>追い込み</td><td>一時的に低下→再上昇。トラブルが発生しやすい</td></tr>
+    <tr><td>結（最終フェーズ）</td><td>終結</td><td>工数・コストが急減して終了</td></tr>
+  </tbody>
+</table>
+</div>
+<span class="ptr">← S03:p.8</span>
+
+<div class="voice-block">
+  <div class="block-label">🔊 音声補足</div>
+  プロジェクトを経験する中で「今はどのフェーズにいるか」を常に意識しながら進めることが重要。特に「転」はトラブルから立て直す段階であり、リカバリーして「結」に持ち込む流れを理解しておく。<span class="ptr">← S05</span>
+</div>
+
+<h3 id="ch1-pmbok">1.3 PMBOK（ピムボック）</h3>
+
+<div class="def-box">
+  <div class="def-term">PMBOK = Project Management Body of Knowledge</div>
+  プロジェクトマネジメントの<strong>知識を体系化</strong>したもの。PMI（Project Management Institute：世界最大のプロジェクトマネジメント国際組織）が発行している。<span class="ptr">← S03:p.9</span>
+</div>
+
+<div class="ext-block">
+  <div class="block-label">🌐 外部補足</div>
+  PMIは1969年にアメリカ・ペンシルベニア州で設立された非営利組織。PMP（Project Management Professional）資格も発行しており、世界的に権威ある資格として認知されている。[外部補足]
+</div>
+
+<h3 id="ch1-10areas">1.4 PMBOKの10の知識エリア</h3>
+
+<!-- SVG: 10知識エリアのツリー -->
+<figure style="margin: 16px 0;">
+<svg viewBox="0 0 760 340" xmlns="http://www.w3.org/2000/svg" style="width:100%;background:#1a2030;border-radius:8px;">
+  <!-- ルートノード -->
+  <!-- rootX=60, rootY=170 -->
+  <!-- 10個の葉: y = 30 + i*30, i=0..9, x=350 -->
+  <!-- 各線: from (120,170) to (310, 30+i*30) -->
+  <rect x="10" y="145" width="110" height="50" rx="6" fill="#1e2b45" stroke="#4a7aff" stroke-width="1.5"/>
+  <text x="65" y="167" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#90b4ff" font-weight="700">PMBOK</text>
+  <text x="65" y="183" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">10の知識エリア</text>
+
+  <!-- lines from root right edge(120,170) to each node left(305, y) -->
+  <!-- y values: 25,57,89,121,153,185,217,249,281,313 -->
+  <line x1="120" y1="170" x2="195" y2="170" stroke="#2a3548" stroke-width="1"/>
+  <line x1="195" y1="170" x2="195" y2="25" stroke="#2a3548" stroke-width="1"/>
+  <line x1="195" y1="170" x2="195" y2="57" stroke="#2a3548" stroke-width="1"/>
+  <line x1="195" y1="170" x2="195" y2="89" stroke="#2a3548" stroke-width="1"/>
+  <line x1="195" y1="170" x2="195" y2="121" stroke="#2a3548" stroke-width="1"/>
+  <line x1="195" y1="153" x2="195" y2="153" stroke="#2a3548" stroke-width="1"/>
+  <line x1="195" y1="170" x2="195" y2="185" stroke="#2a3548" stroke-width="1"/>
+  <line x1="195" y1="170" x2="195" y2="217" stroke="#2a3548" stroke-width="1"/>
+  <line x1="195" y1="170" x2="195" y2="249" stroke="#2a3548" stroke-width="1"/>
+  <line x1="195" y1="170" x2="195" y2="281" stroke="#2a3548" stroke-width="1"/>
+  <line x1="195" y1="170" x2="195" y2="313" stroke="#2a3548" stroke-width="1"/>
+  <!-- horizontal connectors -->
+  <line x1="195" y1="25" x2="305" y2="25" stroke="#2a3548" stroke-width="1"/>
+  <line x1="195" y1="57" x2="305" y2="57" stroke="#2a3548" stroke-width="1"/>
+  <line x1="195" y1="89" x2="305" y2="89" stroke="#2a3548" stroke-width="1"/>
+  <line x1="195" y1="121" x2="305" y2="121" stroke="#2a3548" stroke-width="1"/>
+  <line x1="195" y1="153" x2="305" y2="153" stroke="#2a3548" stroke-width="1"/>
+  <line x1="195" y1="185" x2="305" y2="185" stroke="#2a3548" stroke-width="1"/>
+  <line x1="195" y1="217" x2="305" y2="217" stroke="#2a3548" stroke-width="1"/>
+  <line x1="195" y1="249" x2="305" y2="249" stroke="#2a3548" stroke-width="1"/>
+  <line x1="195" y1="281" x2="305" y2="281" stroke="#2a3548" stroke-width="1"/>
+  <line x1="195" y1="313" x2="305" y2="313" stroke="#2a3548" stroke-width="1"/>
+
+  <!-- 10 nodes -->
+  <!-- 1. 統合 -->
+  <rect x="305" y="10" width="200" height="28" rx="4" fill="#1e2b45" stroke="#4a7aff" stroke-width="1.5"/>
+  <text x="315" y="28" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">① 統合マネジメント</text>
+  <text x="508" y="28" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">全体を統合・調整</text>
+
+  <!-- 2. スコープ -->
+  <rect x="305" y="42" width="200" height="28" rx="4" fill="#1e2535" stroke="#3a4a60" stroke-width="1"/>
+  <text x="315" y="60" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">② スコープ</text>
+  <text x="390" y="60" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">作業範囲の定義・管理</text>
+
+  <!-- 3. スケジュール -->
+  <rect x="305" y="74" width="200" height="28" rx="4" fill="#1e2535" stroke="#3a4a60" stroke-width="1"/>
+  <text x="315" y="92" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">③ スケジュール</text>
+  <text x="398" y="92" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">期間計画・管理</text>
+
+  <!-- 4. コスト -->
+  <rect x="305" y="106" width="200" height="28" rx="4" fill="#1e2535" stroke="#3a4a60" stroke-width="1"/>
+  <text x="315" y="124" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">④ コスト</text>
+  <text x="358" y="124" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">予算策定・コスト監視</text>
+
+  <!-- 5. 品質 -->
+  <rect x="305" y="138" width="200" height="28" rx="4" fill="#1e2535" stroke="#3a4a60" stroke-width="1"/>
+  <text x="315" y="156" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">⑤ 品質</text>
+  <text x="350" y="156" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">要求仕様の充足保証</text>
+
+  <!-- 6. 資源 -->
+  <rect x="305" y="170" width="200" height="28" rx="4" fill="#1e2535" stroke="#3a4a60" stroke-width="1"/>
+  <text x="315" y="188" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">⑥ 資源</text>
+  <text x="350" y="188" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">人材・設備・材料</text>
+
+  <!-- 7. コミュニケーション -->
+  <rect x="305" y="202" width="200" height="28" rx="4" fill="#1e2535" stroke="#3a4a60" stroke-width="1"/>
+  <text x="315" y="220" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">⑦ コミュニケーション</text>
+  <text x="435" y="220" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">情報共有・報告</text>
+
+  <!-- 8. リスク -->
+  <rect x="305" y="234" width="200" height="28" rx="4" fill="#1e2535" stroke="#3a4a60" stroke-width="1"/>
+  <text x="315" y="252" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">⑧ リスク</text>
+  <text x="355" y="252" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">特定・分析・評価・対応</text>
+
+  <!-- 9. 調達 -->
+  <rect x="305" y="266" width="200" height="28" rx="4" fill="#1e2535" stroke="#3a4a60" stroke-width="1"/>
+  <text x="315" y="284" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">⑨ 調達</text>
+  <text x="352" y="284" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">外部資源の調達</text>
+
+  <!-- 10. ステークホルダー -->
+  <rect x="305" y="298" width="200" height="28" rx="4" fill="#1e2535" stroke="#3a4a60" stroke-width="1"/>
+  <text x="315" y="316" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">⑩ ステークホルダー</text>
+  <text x="428" y="316" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">関係者の期待管理</text>
+
+  <!-- 右側の解説テキスト領域 (x=515) -->
+  <text x="520" y="25" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#5a6880">（第1章: ②③）</text>
+  <text x="520" y="92" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#5a6880"></text>
+  <text x="520" y="156" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#5a6880">（第2章: ④〜⑩）</text>
+</svg>
+<figcaption style="font-size:12px;color:var(--text-muted);margin-top:4px;">図：PMBOKの10の知識エリア　<span class="ptr">S03:p.10-12</span></figcaption>
+</figure>
+
+<div class="voice-block">
+  <div class="block-label">🔊 音声補足</div>
+  10の知識エリアはそれぞれ独立して動くのではなく、<strong>すべてを関連させて進める</strong>ことでプロジェクトゴールの達成を目指す。どれか一つだけ突出して優れていても不十分。<span class="ptr">← S05</span>
+</div>
+
+<h3 id="ch1-wbs">1.5 WBS（Work Breakdown Structure）</h3>
+
+<p>WBSは<strong>仕事・タスクを分解して構造化</strong>したもの。実行確認になるくらいの最も小さな作業単位を<strong>ワークパッケージ</strong>という。<span class="ptr">← S03:p.13</span></p>
+<p>時間の流れに着目する<em>フローチャート</em>とは異なり、「何をするために何をすればよいか」という<em>分解の視点</em>で構造化する。<span class="ptr">← S03:p.13</span></p>
+
+<div class="tbl-wrap">
+<table>
+  <thead>
+    <tr><th>方向</th><th>説明</th><th>目的</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>正展開</strong></td><td>上位から下位へ分解（カレー定食→カレーを作る→材料を切る…）</td><td>タスクの漏れなく洗い出す</td></tr>
+    <tr><td><strong>逆展開</strong></td><td>下位から上位を構成（材料を切る・炒める・煮込む→カレーができるか？）</td><td>分解が完全かを検証する</td></tr>
+  </tbody>
+</table>
+</div>
+<span class="ptr">← S03:p.13</span>
+
+<div class="voice-block">
+  <div class="block-label">🔊 音声補足</div>
+  例：カレー定食を作るには「ナンを作る」「カレーを作る」「サラダを作る」の3つが必要。さらにカレーを作るには「材料を切る・炒める・煮込む」に分解できる。逆展開で確認すると「盛り付けする」というワークパッケージが漏れていることに気づける場合もある。WBSはスケジュールだけでなく品質・コスト管理の基本にもなる。<span class="ptr">← S05</span>
+</div>
+
+<h3 id="ch1-scope">1.6 スコープマネジメント</h3>
+
+<div class="def-box">
+  <div class="def-term">スコープマネジメント</div>
+  プロジェクトが目的とする<strong>スコープ（作業範囲）を定義</strong>すること。プロジェクトの成果物を定義し、実現するために必要な作業を抽出する。<span class="ptr">← S03:p.14</span>
+</div>
+
+<div class="voice-block">
+  <div class="block-label">🔊 音声補足</div>
+  目的が定まらないとプロジェクトは<strong>「行き先のない旅」</strong>になる。「これができれば成功、できなければ失敗」という定義を最初に行うことが最重要。スコープ定義に失敗したプロジェクトは後から何をしても挽回が困難。<span class="ptr">← S05</span>
+</div>
+
+<h3 id="ch1-schedule">1.7 スケジュールマネジメント</h3>
+
+<p>プロジェクトや業務において、<strong>いつまでに何を終わらせるかを計画し</strong>、その計画に基づいて進捗を管理すること。<span class="ptr">← S03:p.15</span></p>
+
+<h4>管理ポイント</h4>
+<ul>
+  <li><strong>明確な目標設定とタスク分解</strong>：達成すべきことは何か。どのようにタスクを組み立てるか</li>
+  <li><strong>リソースの適切な配分</strong>：遅延しないような資源（人・モノ・金）と時間の配分</li>
+  <li><strong>進捗管理と対応</strong>：スケジュールの遅れ進みの定量的・定性的確認と対応</li>
+</ul>
+<span class="ptr">← S03:p.15</span>
+
+<h4 id="ch1-gantt">ガントチャート</h4>
+
+<p>1910年代に米国の<strong>ヘンリー・ガント</strong>によって考案された、視覚的にスケジュールを管理する仕組み。<span class="ptr">← S03:p.16</span></p>
+
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>構成要素</th><th>説明</th></tr></thead>
+  <tbody>
+    <tr><td>縦軸</td><td>タスク一覧</td></tr>
+    <tr><td>横軸</td><td>時間（日付）</td></tr>
+    <tr><td>タスクバー</td><td>バーの長さで所要時間を表す</td></tr>
+    <tr><td>依存関係</td><td>タスク間の順序・前後関係を矢印で記述</td></tr>
+    <tr><td>予定・実績</td><td>計画値と実績値を両方記入することで差異を可視化</td></tr>
+    <tr><td><strong>イナズマ線</strong></td><td>当日時点でのタスク進捗状況を縦線で表示（遅れ・進みを一目で把握）</td></tr>
+  </tbody>
+</table>
+</div>
+<span class="ptr">← S03:p.16</span>
+
+<div class="voice-block">
+  <div class="block-label">🔊 音声補足</div>
+  イナズマ線（赤い縦線）を当日に引くことで、どのタスクが遅れているか・進捗通りか・先行しているかが一目でわかる。予定と実績を記入することで、後から振り返りや反省もできる。<span class="ptr">← S05</span>
+</div>
+
+<h4 id="ch1-arrow">アローダイアグラム（PERT）</h4>
+
+<div class="def-box">
+  <div class="def-term">アローダイアグラム</div>
+  作業の流れを矢印で表した図。アローダイアグラムを使ったプロジェクトの分析手法を <strong>PERT（Program Evaluation and Review Technique）</strong>という。<span class="ptr">← S03:p.17</span>
+</div>
+
+<!-- SVG: アローダイアグラム -->
+<figure style="margin: 16px 0;">
+<svg viewBox="0 0 580 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;background:#1a2030;border-radius:8px;">
+  <!-- ノード座標:
+    N1=Start: (60,100)
+    N2=(200,50)  ← A後
+    N3=(200,150) ← C経由
+    N4=(360,50)  ← B後・D前
+    N5=(360,150) ← E前（ダミー先）
+    N6=End: (500,100)
+  -->
+  <!-- 作業A: N1→N2, 2日 -->
+  <line x1="88" y1="90" x2="172" y2="60" stroke="#4a7aff" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+  <text x="115" y="68" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#90b4ff">A（2日）</text>
+
+  <!-- 作業C: N1→N3, 2日 -->
+  <line x1="88" y1="110" x2="172" y2="140" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+  <text x="100" y="140" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#5ee3b2">C（2日）</text>
+
+  <!-- 作業B: N2→N4, 3日 -->
+  <line x1="228" y1="50" x2="332" y2="50" stroke="#4a7aff" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+  <text x="262" y="42" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#90b4ff">B（3日）</text>
+
+  <!-- ダミー: N3→N5 （点線） -->
+  <line x1="200" y1="150" x2="332" y2="150" stroke="#5a6880" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#arrowGray)"/>
+  <text x="240" y="168" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#5a6880">ダミー作業</text>
+
+  <!-- 作業D: N4→End, 3日 -->
+  <line x1="388" y1="60" x2="472" y2="90" stroke="#4a7aff" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+  <text x="415" y="65" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#90b4ff">D（3日）</text>
+
+  <!-- 作業E: N5→End, 5日 -->
+  <line x1="388" y1="140" x2="472" y2="110" stroke="#f87171" stroke-width="2" marker-end="url(#arrowRed)"/>
+  <text x="415" y="140" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#f87171">E（5日）</text>
+
+  <!-- クリティカルパス A→B→E を赤く -->
+  <line x1="88" y1="90" x2="172" y2="60" stroke="#f87171" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#arrowRed)" opacity="0.5"/>
+  <line x1="228" y1="50" x2="332" y2="50" stroke="#f87171" stroke-width="2.5" stroke-dasharray="none" marker-end="url(#arrowRed)" opacity="0.5"/>
+
+  <!-- ノード描画 -->
+  <circle cx="60" cy="100" r="24" fill="#1e2b45" stroke="#4a7aff" stroke-width="1.5"/>
+  <text x="60" y="104" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#90b4ff">S</text>
+
+  <circle cx="200" cy="50" r="24" fill="#1e2535" stroke="#3a4a60" stroke-width="1"/>
+  <text x="200" y="54" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#8a99b8">②</text>
+
+  <circle cx="200" cy="150" r="24" fill="#1e2535" stroke="#3a4a60" stroke-width="1"/>
+  <text x="200" y="154" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#8a99b8">③</text>
+
+  <circle cx="360" cy="50" r="24" fill="#1e2535" stroke="#3a4a60" stroke-width="1"/>
+  <text x="360" y="54" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#8a99b8">④</text>
+
+  <circle cx="360" cy="150" r="24" fill="#1e2535" stroke="#3a4a60" stroke-width="1"/>
+  <text x="360" y="154" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#8a99b8">⑤</text>
+
+  <circle cx="500" cy="100" r="24" fill="#1e2b45" stroke="#4a7aff" stroke-width="1.5"/>
+  <text x="500" y="104" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#90b4ff">E</text>
+
+  <!-- arrowhead markers -->
+  <defs>
+    <marker id="arrowBlue" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#4a7aff"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#34d399"/>
+    </marker>
+    <marker id="arrowRed" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#f87171"/>
+    </marker>
+    <marker id="arrowGray" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#5a6880"/>
+    </marker>
+  </defs>
+</svg>
+<figcaption style="font-size:12px;color:var(--text-muted);margin-top:4px;">図：アローダイアグラムの例（作業Eは作業Bと作業Cが両方終わってから開始）　<span class="ptr">S03:p.17-18</span></figcaption>
+</figure>
+
+<h4 id="ch1-cp">クリティカルパス</h4>
+
+<div class="def-box">
+  <div class="def-term">クリティカルパス</div>
+  プロジェクトの進行において<strong>最も時間がかかる活動の組み合わせ</strong>＝管理対象。クリティカルパス上の作業が遅れると、プロジェクト全体のスケジュールが遅れる。<span class="ptr">← S03:p.18</span>
+</div>
+
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>経路</th><th>所要日数</th><th>判定</th></tr></thead>
+  <tbody>
+    <tr><td>A → B → D</td><td>2+3+3 = 8日</td><td>—</td></tr>
+    <tr class="row-red"><td><strong>A → B → E（クリティカルパス）</strong></td><td><strong>2+3+5 = 10日</strong></td><td>⚠ 管理対象</td></tr>
+    <tr><td>A → C → E（ダミー経由）</td><td>2+2+5 = 9日</td><td>—</td></tr>
+  </tbody>
+</table>
+</div>
+<span class="ptr">← S03:p.18</span>
+
+<div class="voice-block">
+  <div class="block-label">🔊 音声補足</div>
+  <strong>クリティカルパスを短くする＝プロジェクト全体を短縮する</strong>ことになる。最も長い経路を集中管理することが、スケジュール短縮の王道。練習問題でこの計算を繰り返し練習することが推奨されている。<span class="ptr">← S05</span>
+</div>
+
+</section>
+
+<!-- ============================
+     第2章 プロジェクトマネジメント後編
+============================= -->
+<section id="ch2">
+<h2>第2章　プロジェクトマネジメント後編</h2>
+
+<h3 id="ch2-cost">2.1 コストマネジメント</h3>
+
+<div class="def-box">
+  <div class="def-term">コストマネジメント</div>
+  プロジェクトの成功のためには<strong>工程ごとのコスト管理</strong>をしっかりと行うことが重要。予算を立てることから予算内で終了するまでのマネジメントを行う。<span class="ptr">← S03:p.23</span>
+</div>
+
+<h4>管理ポイント</h4>
+<ul>
+  <li><strong>正確なコスト見積り</strong>：各プロセスで何にいくらかかるかを詳細に記述</li>
+  <li><strong>予算の策定と管理</strong>：組織全体で合意した予算を策定し、プロセスごとに確認</li>
+  <li><strong>コスト問題の発見とリカバリー</strong>：問題発見→原因究明→リカバリー実施→<em>予備費</em>の活用</li>
+</ul>
+<span class="ptr">← S03:p.23</span>
+
+<div class="voice-block">
+  <div class="block-label">🔊 音声補足</div>
+  「最終的にコストが間に合えばよい」ではなく、<strong>各工程でいくら使うかを事前に決めて管理すること</strong>が重要。予備費（リザーブ）は万が一のための資金であり、計画に組み込んでおく。組織の合意なき予算は「勝手な予算」になり機能しない。<span class="ptr">← S05</span>
+</div>
+
+<h3 id="ch2-quality">2.2 品質マネジメント</h3>
+
+<p>プロジェクトの成功のためには工程ごとの品質管理をしっかりと行うことが重要。要求仕様を達成するために<strong>QCDのバランス</strong>を考えてマネジメントを行う。<span class="ptr">← S03:p.24</span></p>
+
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>要素</th><th>英語</th><th>意味</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Q（品質）</strong></td><td>Quality</td><td>成果物の品質・要求仕様の充足度</td></tr>
+    <tr><td><strong>C（コスト）</strong></td><td>Cost</td><td>投入費用</td></tr>
+    <tr><td><strong>D（納期）</strong></td><td>Delivery</td><td>期限・スケジュール通りの納品</td></tr>
+  </tbody>
+</table>
+</div>
+<span class="ptr">← S03:p.24</span>
+
+<h4>管理ポイント</h4>
+<ul>
+  <li><strong>品質基準の明確化</strong>：達成すべき品質は何か・どのレベルか</li>
+  <li><strong>品質確認の実施</strong>：プロセスごとに品質確認</li>
+  <li><strong>品質問題の発見とリカバリー</strong>：問題発見→原因究明→リカバリー実施</li>
+</ul>
+
+<h3 id="ch2-resource">2.3 資源マネジメント</h3>
+
+<p>プロジェクトの成功には、適切な資源の配分と管理が重要。<span class="ptr">← S03:p.25</span></p>
+
+<h4>管理ポイント</h4>
+<ul>
+  <li><strong>必要な資源の計画化と計画的な調達</strong>：どのプロセスでどのような資源がどれくらい必要か</li>
+  <li><strong>資源の適切な活用</strong>：利用進捗を管理し随時調整</li>
+  <li><strong>資源の有効な管理</strong>：利用状況のプロジェクト内共有→評価・改善→次への教訓まとめ</li>
+</ul>
+<span class="ptr">← S03:p.25</span>
+
+<h3 id="ch2-comm">2.4 コミュニケーションマネジメント</h3>
+
+<p>プロジェクトを成功に導くため、プロジェクト内および関係するステークホルダーとの効果的なコミュニケーションが重要。<span class="ptr">← S03:p.26</span></p>
+
+<div class="def-box">
+  <div class="def-term">営業の極意（コミュニケーション計画の基本原則）</div>
+  「<em>話すべき時に、話すべきことを、話すべき人に話す</em>」<br>
+  ← これが計画なしでは「話したい時に、話したい内容を、話したい人に話す」になってしまう。<span class="ptr">← S03:p.26</span>
+</div>
+
+<h4>コミュニケーションの経路数</h4>
+
+<div class="formula-box">
+  コミュニケーションのライン数 = n × (n−1) ÷ 2<br>
+  <span style="font-size:12px;color:var(--text-sub)">例）6人の場合：6 × 5 ÷ 2 = <strong style="color:var(--accent-orange)">15通り</strong></span>
+</div>
+<span class="ptr">← S03:p.27</span>
+
+<div class="voice-block">
+  <div class="block-label">🔊 音声補足</div>
+  6人という比較的少人数でも15通りのコミュニケーション経路が生じる＝15通りの<strong>「理解」または「誤解」</strong>が生まれる可能性がある。コミュニケーションを漏れなく質よく行うことの重要性を数値で理解すること。この計算式は試験に出るので覚えておくこと。<span class="ptr">← S05</span>
+</div>
+
+<h3 id="ch2-risk">2.5 リスクマネジメント</h3>
+
+<div class="def-box">
+  <div class="def-term">リスク（本講義での定義）</div>
+  「それが起きれば、当初に決めたプロジェクトの目的・期限・予算の達成に影響を与える可能性のある事象」<strong>＝負のリスク</strong>を管理する。<span class="ptr">← S03:p.28</span>
+</div>
+
+<h4>管理ポイント</h4>
+<ul>
+  <li><strong>リスクの予測と認知・特定</strong>：いかに事前に特定するか</li>
+  <li><strong>対応の事前準備</strong>：回避・転嫁・軽減・受容のいずれかを事前に決める</li>
+  <li><strong>リスクの検知</strong>：発生したかどうかをいかに検知するか（仕組みを作る）</li>
+</ul>
+<span class="ptr">← S03:p.28</span>
+
+<h4>発生頻度影響度マトリックス</h4>
+
+<p>発生確率と影響度をマトリックスで表現し、<strong>対応の優先度</strong>を管理する。<span class="ptr">← S03:p.29</span></p>
+
+<!-- SVG: 発生頻度影響度マトリックス -->
+<figure style="margin: 16px 0;">
+<svg viewBox="0 0 520 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:520px;background:#1a2030;border-radius:8px;">
+  <!--
+    軸ラベル領域: 左40px（発生確率軸）、下30px（影響度軸）
+    表領域: x=60..500, y=20..230
+    列幅: (500-60)/5 = 88px, 行高: (230-20)/5 = 42px
+    列x: 60,148,236,324,412 (各列左端)
+    行y: 20,62,104,146,188 (各行上端)
+    スコア: 確率×影響度
+    確率(縦 top→bottom): 0.9,0.7,0.5,0.3,0.1
+    影響度(横 left→right): 0.05,0.10,0.20,0.40,0.80
+  -->
+  <!-- ヘッダー行 -->
+  <rect x="60" y="0" width="440" height="20" fill="#1e2535"/>
+  <text x="148" y="14" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#8a99b8">非常に低い 0.05</text>
+  <text x="236" y="14" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#8a99b8">低い 0.10</text>
+  <text x="324" y="14" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#8a99b8">普通 0.20</text>
+  <text x="412" y="14" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#8a99b8">高い 0.40</text>
+  <text x="500" y="14" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="#8a99b8">非常に高い 0.80</text>
+
+  <!-- 左軸ラベル (確率) top→bottom: 0.9,0.7,0.5,0.3,0.1 -->
+  <!-- row centers: 20+21=41, 62+21=83, 104+21=125, 146+21=167, 188+21=209 -->
+  <text x="50" y="44" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="10" fill="#8a99b8">0.9</text>
+  <text x="50" y="86" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="10" fill="#8a99b8">0.7</text>
+  <text x="50" y="128" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="10" fill="#8a99b8">0.5</text>
+  <text x="50" y="170" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="10" fill="#8a99b8">0.3</text>
+  <text x="50" y="212" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="10" fill="#8a99b8">0.1</text>
+
+  <!-- 軸ラベル表示 -->
+  <text x="10" y="130" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#5a6880" transform="rotate(-90,10,130)">発生確率 ↑</text>
+  <text x="280" y="268" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#5a6880">影響度 →</text>
+
+  <!--
+    各セルの色:
+    score < 0.06 → green (#34d399, 低重要度)
+    0.06≤score≤0.15 → yellow (#fbbf24, 普通)
+    score > 0.15 → pink/red (#f87171, 高重要度)
+
+    Row 0 (p=0.9): 0.9×0.05=0.045(G), 0.9×0.10=0.09(Y), 0.9×0.20=0.18(R), 0.9×0.40=0.36(R), 0.9×0.80=0.72(R)
+    Row 1 (p=0.7): 0.035(G), 0.07(Y), 0.14(Y), 0.28(R), 0.56(R)
+    Row 2 (p=0.5): 0.025(G), 0.05(G), 0.10(Y), 0.20(R), 0.40(R)
+    Row 3 (p=0.3): 0.015(G), 0.03(G), 0.06(Y), 0.12(Y), 0.24(R)
+    Row 4 (p=0.1): 0.005(G), 0.01(G), 0.02(G), 0.04(G), 0.08(Y)
+
+    cell positions: col=0..4, row=0..4
+    x_start[col] = 60+col*88, y_start[row] = 20+row*42
+    w=88, h=42
+  -->
+  <!-- row0 -->
+  <rect x="60" y="20" width="88" height="42" fill="rgba(52,211,153,0.20)" stroke="#2a3548" stroke-width="0.5"/>
+  <rect x="148" y="20" width="88" height="42" fill="rgba(251,191,36,0.20)" stroke="#2a3548" stroke-width="0.5"/>
+  <rect x="236" y="20" width="88" height="42" fill="rgba(248,113,113,0.30)" stroke="#2a3548" stroke-width="0.5"/>
+  <rect x="324" y="20" width="88" height="42" fill="rgba(248,113,113,0.30)" stroke="#2a3548" stroke-width="0.5"/>
+  <rect x="412" y="20" width="88" height="42" fill="rgba(248,113,113,0.45)" stroke="#2a3548" stroke-width="0.5"/>
+  <!-- row1 -->
+  <rect x="60" y="62" width="88" height="42" fill="rgba(52,211,153,0.20)" stroke="#2a3548" stroke-width="0.5"/>
+  <rect x="148" y="62" width="88" height="42" fill="rgba(251,191,36,0.20)" stroke="#2a3548" stroke-width="0.5"/>
+  <rect x="236" y="62" width="88" height="42" fill="rgba(251,191,36,0.20)" stroke="#2a3548" stroke-width="0.5"/>
+  <rect x="324" y="62" width="88" height="42" fill="rgba(248,113,113,0.30)" stroke="#2a3548" stroke-width="0.5"/>
+  <rect x="412" y="62" width="88" height="42" fill="rgba(248,113,113,0.30)" stroke="#2a3548" stroke-width="0.5"/>
+  <!-- row2 -->
+  <rect x="60" y="104" width="88" height="42" fill="rgba(52,211,153,0.20)" stroke="#2a3548" stroke-width="0.5"/>
+  <rect x="148" y="104" width="88" height="42" fill="rgba(52,211,153,0.20)" stroke="#2a3548" stroke-width="0.5"/>
+  <rect x="236" y="104" width="88" height="42" fill="rgba(251,191,36,0.20)" stroke="#2a3548" stroke-width="0.5"/>
+  <rect x="324" y="104" width="88" height="42" fill="rgba(248,113,113,0.30)" stroke="#2a3548" stroke-width="0.5"/>
+  <rect x="412" y="104" width="88" height="42" fill="rgba(248,113,113,0.30)" stroke="#2a3548" stroke-width="0.5"/>
+  <!-- row3 -->
+  <rect x="60" y="146" width="88" height="42" fill="rgba(52,211,153,0.20)" stroke="#2a3548" stroke-width="0.5"/>
+  <rect x="148" y="146" width="88" height="42" fill="rgba(52,211,153,0.20)" stroke="#2a3548" stroke-width="0.5"/>
+  <rect x="236" y="146" width="88" height="42" fill="rgba(251,191,36,0.20)" stroke="#2a3548" stroke-width="0.5"/>
+  <rect x="324" y="146" width="88" height="42" fill="rgba(251,191,36,0.20)" stroke="#2a3548" stroke-width="0.5"/>
+  <rect x="412" y="146" width="88" height="42" fill="rgba(248,113,113,0.30)" stroke="#2a3548" stroke-width="0.5"/>
+  <!-- row4 -->
+  <rect x="60" y="188" width="88" height="42" fill="rgba(52,211,153,0.20)" stroke="#2a3548" stroke-width="0.5"/>
+  <rect x="148" y="188" width="88" height="42" fill="rgba(52,211,153,0.20)" stroke="#2a3548" stroke-width="0.5"/>
+  <rect x="236" y="188" width="88" height="42" fill="rgba(52,211,153,0.20)" stroke="#2a3548" stroke-width="0.5"/>
+  <rect x="324" y="188" width="88" height="42" fill="rgba(52,211,153,0.20)" stroke="#2a3548" stroke-width="0.5"/>
+  <rect x="412" y="188" width="88" height="42" fill="rgba(251,191,36,0.20)" stroke="#2a3548" stroke-width="0.5"/>
+
+  <!-- スコアテキスト -->
+  <!-- row0 -->
+  <text x="104" y="44" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#5ee3b2">0.045</text>
+  <text x="192" y="44" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#fcd34d">0.09</text>
+  <text x="280" y="44" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#f87171">0.18</text>
+  <text x="368" y="44" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#f87171">0.36</text>
+  <text x="456" y="44" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="12" fill="#f87171" font-weight="700">0.72</text>
+  <!-- row1 -->
+  <text x="104" y="86" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#5ee3b2">0.035</text>
+  <text x="192" y="86" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#fcd34d">0.07</text>
+  <text x="280" y="86" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#fcd34d">0.14</text>
+  <text x="368" y="86" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#f87171">0.28</text>
+  <text x="456" y="86" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#f87171">0.56</text>
+  <!-- row2 -->
+  <text x="104" y="128" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#5ee3b2">0.025</text>
+  <text x="192" y="128" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#5ee3b2">0.05</text>
+  <text x="280" y="128" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#fcd34d">0.10</text>
+  <text x="368" y="128" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#f87171">0.20</text>
+  <text x="456" y="128" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#f87171">0.40</text>
+  <!-- row3 -->
+  <text x="104" y="170" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#5ee3b2">0.015</text>
+  <text x="192" y="170" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#5ee3b2">0.03</text>
+  <text x="280" y="170" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#fcd34d">0.06</text>
+  <text x="368" y="170" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#fcd34d">0.12</text>
+  <text x="456" y="170" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#f87171">0.24</text>
+  <!-- row4 -->
+  <text x="104" y="212" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#5ee3b2">0.005</text>
+  <text x="192" y="212" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#5ee3b2">0.01</text>
+  <text x="280" y="212" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#5ee3b2">0.02</text>
+  <text x="368" y="212" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#5ee3b2">0.04</text>
+  <text x="456" y="212" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#fcd34d">0.08</text>
+
+  <!-- 凡例 -->
+  <rect x="62" y="238" width="12" height="12" fill="rgba(248,113,113,0.40)" stroke="#f87171" stroke-width="1"/>
+  <text x="80" y="249" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#f87171">0.16〜：重要度 高（対応策を事前検討）</text>
+  <rect x="240" y="238" width="12" height="12" fill="rgba(251,191,36,0.25)" stroke="#fbbf24" stroke-width="1"/>
+  <text x="258" y="249" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#fcd34d">0.06〜0.15：普通</text>
+  <rect x="380" y="238" width="12" height="12" fill="rgba(52,211,153,0.25)" stroke="#34d399" stroke-width="1"/>
+  <text x="398" y="249" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#5ee3b2">〜0.05：低い</text>
+</svg>
+<figcaption style="font-size:12px;color:var(--text-muted);margin-top:4px;">図：発生頻度影響度マトリックス（スコア = 発生確率 × 影響度）　<span class="ptr">S03:p.29</span></figcaption>
+</figure>
+
+<h3 id="ch2-procure">2.6 調達マネジメント</h3>
+
+<p>プロジェクトの成功のためには、必要な資源を適切なタイミングで調達することが重要。<span class="ptr">← S03:p.30</span></p>
+<ul>
+  <li><strong>明確な調達計画の策定</strong>：何を・いつまでに・どれくらい調達するか、複数社から見積り取得</li>
+  <li><strong>契約の締結と管理</strong>：契約管理・履行状況の確認</li>
+  <li><strong>契約の終結</strong>：監査および教訓のまとめ</li>
+</ul>
+<span class="ptr">← S03:p.30</span>
+
+<h3 id="ch2-stakeholder">2.7 ステークホルダーマネジメント</h3>
+
+<div class="def-box">
+  <div class="def-term">ステークホルダー</div>
+  プロジェクトから利益や損害を受ける可能性のある幅広い全ての人（利害関係者）。経営者・スポンサー・株主・PMマネージャー・プロジェクトメンバー・開発外注先・取引先・社内関連部門・地域社会など。<span class="ptr">← S03:p.31</span>
+</div>
+
+<div class="def-box">
+  <div class="def-term">ステアリング・コミッティ</div>
+  プロジェクトの<strong>方向性を決定する会議体</strong>。ステアリングとは「舵」や「ハンドル」のこと＝プロジェクトがどちらに進むかを決める機関。<span class="ptr">← S03:p.31</span>
+</div>
+
+<h3 id="ch2-integration">2.8 統合マネジメント</h3>
+
+<div class="def-box">
+  <div class="def-term">統合マネジメント</div>
+  これまで説明してきた知識体系全部を合わせて、<strong>プロジェクト全体の成功を導くための核となる概念</strong>。各知識エリアを統合し、一貫性のあるプロジェクトマネジメントを実現する。<span class="ptr">← S03:p.32</span>
+</div>
+
+<h4>管理ポイント</h4>
+<ul>
+  <li><strong>プロジェクト計画の整合性と一貫性</strong>：各知識エリアの計画をゴール達成に向けて整合させ、変更管理を徹底する</li>
+  <li><strong>プロジェクト全体の状況把握と調整</strong>：計画に対する状況把握と遅れ進みへの対応</li>
+  <li><strong>統合的管理</strong>：活動のバランスと最適化を全体的に管理</li>
+</ul>
+<span class="ptr">← S03:p.32</span>
+
+<div class="voice-block">
+  <div class="block-label">🔊 音声補足</div>
+  統合マネジメントは他の9つの知識エリアを統合する「中核」的な役割。個別エリアが機能していても、全体のバランスが崩れると失敗する。<span class="ptr">← S05</span>
+</div>
+
+</section>
+
+<!-- ============================
+     第3章 サービスマネジメント
+============================= -->
+<section id="ch3">
+<h2>第3章　サービスマネジメント</h2>
+
+<div class="def-box">
+  <div class="def-term">サービスマネジメントとは</div>
+  価値を提供するため、サービスの<strong>計画立案・設計・移行・提供および改善</strong>のための組織の活動および資源を指揮し管理する一連の能力およびプロセス。<br>
+  ポイント：期間限定ではなく<strong>定期的（毎月・毎年）な活動</strong>。ITサービスについては特に<em>ITサービスマネジメント</em>という。<span class="ptr">← S03:p.37</span>
+</div>
+
+<h3 id="ch3-sla">3.1 サービスレベルと SLA</h3>
+
+<div class="tbl-wrap">
+<table>
+  <thead>
+    <tr><th>略語</th><th>正式名称</th><th>説明</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>SLI</strong></td>
+      <td>Service Level Indicators（サービスレベル指標）</td>
+      <td>サービスレベルを特定するための<strong>数値指標</strong></td>
+    </tr>
+    <tr>
+      <td><strong>SLO</strong></td>
+      <td>Service Level Objectives（サービスレベル目標）</td>
+      <td>サービスレベルに関する<strong>目標・評価基準</strong>を定めたもの</td>
+    </tr>
+    <tr>
+      <td><strong>SLA</strong></td>
+      <td>Service Level Agreements（サービスレベル合意）</td>
+      <td>サービスのパフォーマンスを事業者と顧客が<strong>合意</strong>したもの</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<span class="ptr">← S03:p.37</span>
+
+<div class="voice-block">
+  <div class="block-label">🔊 音声補足</div>
+  SLAという言葉は実際のITビジネスの場で非常によく使われる。「SLAを守る」「SLAを設定する」という形で使われることを覚えておく。<span class="ptr">← S05</span>
+</div>
+
+<h4>SLIの代表的な指標</h4>
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>指標</th><th>単位</th><th>内容</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>可用性</strong></td><td>%</td>
+      <td>システムが稼働可能な時間の比率。全稼働時間から障害・メンテナンス等でアクセスできない時間を差し引いた比率。100%に近いほど優秀。</td>
+    </tr>
+    <tr>
+      <td><strong>エラー率</strong></td><td>%</td>
+      <td>ユーザーからのリクエスト全体に対するエラーの比率</td>
+    </tr>
+    <tr>
+      <td><strong>システムスループット</strong></td><td>Mbps / Gbps</td>
+      <td>単位時間あたりに処理可能なデータ量（1秒あたりのビット数で表示）</td>
+    </tr>
+    <tr>
+      <td><strong>リクエスト応答時間</strong></td><td>s（秒）</td>
+      <td>ユーザーのリクエストに対してレスポンスを返すまでにかかった所要時間</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<span class="ptr">← S03:p.38</span>
+
+<h3 id="ch3-compare">3.2 プロジェクトマネジメントとサービスマネジメントの違い</h3>
+
+<div class="tbl-wrap">
+<table>
+  <thead>
+    <tr>
+      <th></th>
+      <th class="compare-header-pm">プロジェクトマネジメント</th>
+      <th class="compare-header-sm">サービスマネジメント</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>マネジメント対象</td><td>プロジェクト</td><td>サービス</td></tr>
+    <tr><td>対象プロセス</td><td>開発プロセス</td><td>運用・保守プロセス</td></tr>
+    <tr><td>期間</td><td>1回限り</td><td>定期的（毎月/毎年）</td></tr>
+    <tr><td>成果物</td><td>プロダクト（製品）</td><td>事業目標の達成</td></tr>
+    <tr><td>基本のテキスト</td><td>PMBOK</td><td>ITIL</td></tr>
+  </tbody>
+</table>
+</div>
+<span class="ptr">← S03:p.39</span>
+
+<div class="voice-block">
+  <div class="block-label">🔊 音声補足</div>
+  PMとサービスMGは対象プロセスが違うが、扱うシステムは同じもの。あるシステムを開発（PM）し、完成後に運用保守フェーズ（サービスMG）に入るという一連の流れになっている。<span class="ptr">← S05</span>
+</div>
+
+<h3 id="ch3-itil">3.3 ITIL（アイティル）</h3>
+
+<div class="def-box">
+  <div class="def-term">ITIL = Information Technology Infrastructure Library</div>
+  ITサービスマネジメントの<strong>ベストプラクティス（最良の事例）を体系化したフレームワーク</strong>。アジャイル・クラウド・DevOpsなどの要素も取り入れたDX時代のITを活用したサービスの包括的なガイダンス。<span class="ptr">← S03:p.40</span>
+</div>
+
+<h4>ITILの特徴</h4>
+<ul>
+  <li><strong>プロセス中心 ＜ 価値中心</strong>：サービスバリューチェーンでの評価を行う</li>
+  <li><strong>カスタマー・ジャーニーからの視点</strong>：顧客がどのような経路で経験するかを重視</li>
+  <li><strong>個別最適化（サイロ化）を防ぐ</strong>：全体的なサービスレベル向上を目指す</li>
+</ul>
+<span class="ptr">← S03:p.41</span>
+
+<h4>サービスバリューチェーンの流れ</h4>
+
+<!-- SVG: サービスバリューチェーン -->
+<figure style="margin: 16px 0;">
+<svg viewBox="0 0 620 80" xmlns="http://www.w3.org/2000/svg" style="width:100%;background:#1a2030;border-radius:8px;">
+  <!-- 6ブロック: 需要→取得/構築→設計/移行→提供/サポート→計画→改善 -->
+  <!-- width of each block: ~88px, gap:10px -->
+  <!-- x positions: 10, 108, 206, 304, 402, 500 -->
+  <rect x="10" y="20" width="88" height="40" rx="4" fill="#1e2b45" stroke="#4a7aff" stroke-width="1"/>
+  <text x="54" y="37" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#90b4ff">需要との合意</text>
+  <text x="54" y="51" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#8a99b8">(Engage)</text>
+
+  <text x="103" y="43" font-family="JetBrains Mono,monospace" font-size="14" fill="#4a7aff">→</text>
+
+  <rect x="112" y="20" width="88" height="40" rx="4" fill="#1e2535" stroke="#3a4a60" stroke-width="1"/>
+  <text x="156" y="37" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#e2e8f5">取得/構築</text>
+  <text x="156" y="51" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#8a99b8">(Obtain/Build)</text>
+
+  <text x="205" y="43" font-family="JetBrains Mono,monospace" font-size="14" fill="#4a7aff">→</text>
+
+  <rect x="214" y="20" width="88" height="40" rx="4" fill="#1e2535" stroke="#3a4a60" stroke-width="1"/>
+  <text x="258" y="37" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#e2e8f5">設計・移行</text>
+  <text x="258" y="51" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#8a99b8">(D&amp;T)</text>
+
+  <text x="307" y="43" font-family="JetBrains Mono,monospace" font-size="14" fill="#4a7aff">→</text>
+
+  <rect x="316" y="20" width="88" height="40" rx="4" fill="#1e2535" stroke="#3a4a60" stroke-width="1"/>
+  <text x="360" y="37" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#e2e8f5">提供・サポート</text>
+  <text x="360" y="51" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#8a99b8">(D&amp;S)</text>
+
+  <text x="409" y="43" font-family="JetBrains Mono,monospace" font-size="14" fill="#4a7aff">→</text>
+
+  <rect x="418" y="20" width="88" height="40" rx="4" fill="#1e2535" stroke="#3a4a60" stroke-width="1"/>
+  <text x="462" y="43" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#e2e8f5">計画 (Plan)</text>
+
+  <text x="511" y="43" font-family="JetBrains Mono,monospace" font-size="14" fill="#34d399">→</text>
+
+  <rect x="520" y="20" width="88" height="40" rx="4" fill="#1e2b45" stroke="#34d399" stroke-width="1"/>
+  <text x="564" y="43" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#5ee3b2">改善 (Improve)</text>
+</svg>
+<figcaption style="font-size:12px;color:var(--text-muted);margin-top:4px;">図：ITILのサービスバリューチェーン　<span class="ptr">S03:p.41</span></figcaption>
+</figure>
+
+<div class="ext-block">
+  <div class="block-label">🌐 外部補足</div>
+  関連用語：<strong>アジャイル</strong>＝短い期間（スプリント）で開発とテストを繰り返しながら柔軟に製品を開発していく手法。<strong>クラウド</strong>＝インターネットを通じてコンピュータ資源をサービスとして提供・利用する形態。<strong>DevOps</strong>＝開発（Development）と運用（Operations）を組み合わせた言葉で、両チームが協力して迅速・高品質なソフトウェアを提供する考え方。<span class="ptr">← S03:p.40</span>
+</div>
+
+<h3 id="ch3-sms">3.4 サービスマネジメントシステムと PDCA</h3>
+
+<div class="def-box">
+  <div class="def-term">サービスマネジメントシステム</div>
+  ITサービスの提供・運用・改善を効果的かつ効率的に行うための<strong>仕組み全体</strong>。ITサービスの品質を維持し顧客満足度を高めることを目的として、様々なプロセス・ツール・組織構造などを統合したもの。<br>
+  <strong>SLM（Service Level Management：サービスレベル管理）</strong>＝サービスの提供者と利用者が合意したサービスレベルを維持・継続的改善する活動。<span class="ptr">← S03:p.42</span>
+</div>
+
+<h4>サービスマネジメントシステムにおける PDCA</h4>
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>フェーズ</th><th>英語</th><th>サービスMGでの具体的活動</th></tr></thead>
+  <tbody>
+    <tr><td><strong>P（計画）</strong></td><td>Plan</td><td>サービスレベルの計画</td></tr>
+    <tr><td><strong>D（実行）</strong></td><td>Do</td><td>サービスの運用</td></tr>
+    <tr><td><strong>C（評価）</strong></td><td>Check</td><td>サービスの監視と評価</td></tr>
+    <tr><td><strong>A（改善）</strong></td><td>Act</td><td>サービスの改善→次のPlanへ</td></tr>
+  </tbody>
+</table>
+</div>
+<span class="ptr">← S03:p.43</span>
+
+<h3 id="ch3-support">3.5 サービスサポート</h3>
+
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>#</th><th>活動名</th><th>内容</th></tr></thead>
+  <tbody>
+    <tr><td>①</td><td><strong>インシデント管理</strong></td><td>インシデント（正常に業務を遂行できない状況）から迅速にサービスを復旧させる活動</td></tr>
+    <tr><td>②</td><td><strong>問題管理</strong></td><td>インシデントの奥にある本質的問題を突き止め、対処し、再発防止する活動</td></tr>
+    <tr><td>③</td><td><strong>構成管理</strong></td><td>IT資産（ハード・ソフト）を正確に把握し、不正使用を防止する活動</td></tr>
+    <tr><td>④</td><td><strong>変更管理</strong></td><td>システムの変更を組織として承認し、実施計画を立てる活動</td></tr>
+    <tr><td>⑤</td><td><strong>リリース管理</strong></td><td>承認された変更を本番環境に実装する活動（セキュリティパッチを含む）</td></tr>
+  </tbody>
+</table>
+</div>
+<span class="ptr">← S03:p.44</span>
+
+<h4>サービスデスク（ヘルプデスク）の活動</h4>
+<ul>
+  <li>利用者からの問合せに<strong>SPOC（Single Point of Contact：単一窓口）</strong>で対応</li>
+  <li>一次対応できない案件は<strong>エスカレーション</strong>（上位者・専門部署への引継ぎ）</li>
+  <li>FAQ（Frequently Asked Questions）の運用</li>
+  <li><strong>チャットボット</strong>の活用、<strong>AIOps（AI for IT Operations）</strong>の活用</li>
+</ul>
+<span class="ptr">← S03:p.45</span>
+
+<h3 id="ch3-facility">3.6 ファシリティマネジメント</h3>
+
+<div class="def-box">
+  <div class="def-term">ファシリティマネジメント</div>
+  企業などがシステム環境を最善の状態に保つため、コンピュータやネットワークなどのシステム環境・施設・設備を維持保全する<strong>システム環境整備</strong>。地球環境への負荷も考慮する（<em>グリーンIT</em>）。<span class="ptr">← S03:p.46</span>
+</div>
+
+<h4>停電時の対応</h4>
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>設備</th><th>正式名称</th><th>役割</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>UPS</strong></td>
+      <td>Uninterruptible Power Supply（無停電電源装置）</td>
+      <td>停電時に一時的に電力を供給。この間にコンピュータを正常にシャットダウンする</td>
+    </tr>
+    <tr>
+      <td><strong>自家発電装置</strong></td>
+      <td>—</td>
+      <td>通常の商用電源が復旧するまでの間、自社装置で発電</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<span class="ptr">← S03:p.46</span>
+
+<div class="voice-block">
+  <div class="block-label">🔊 音声補足</div>
+  停電時の手順：①UPSが作動→②コンピュータを正常にシャットダウン→③自家発電機が起動→④商用電源が復旧するまでUPS+自家発電でカバー。この段取りを事前に計画しておくことがBCPの一部になる。<span class="ptr">← S05</span>
+</div>
+
+<h4>PC保全</h4>
+<ul>
+  <li><strong>盗難防止</strong>：セキュリティワイヤーを使用</li>
+  <li><strong>過電圧対策</strong>：雷などによる瞬間的な過電圧に対してサージ防護機器を設置</li>
+</ul>
+<span class="ptr">← S03:p.46</span>
+
+<h4>BCM と BCP</h4>
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>略語</th><th>正式名称</th><th>内容</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>BCM</strong></td>
+      <td>Business Continuity Management（事業継続管理）</td>
+      <td>災害が起きても事業・組織を継続するための経営手法。事前に計画・準備する。</td>
+    </tr>
+    <tr>
+      <td><strong>BCP</strong></td>
+      <td>Business Continuity Plan（事業継続計画）</td>
+      <td>事業・組織をいかに災害後も継続するかをまとめた計画書</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<span class="ptr">← S03:p.47</span>
+
+</section>
+
+<!-- ============================
+     第4章 システム監査と内部統制
+============================= -->
+<section id="ch4">
+<h2>第4章　システム監査と内部統制</h2>
+
+<h3 id="ch4-audit">4.1 企業における監査とシステム監査</h3>
+
+<p><strong>監査（Audit）</strong>とは、企業活動が正しく行われているかを調査すること。<span class="ptr">← S03:p.52</span></p>
+
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>監査の種類</th><th>対象</th></tr></thead>
+  <tbody>
+    <tr><td>業務監査</td><td>業務全般</td></tr>
+    <tr><td>会計監査</td><td>会計・財務</td></tr>
+    <tr><td>システム監査</td><td>情報システム</td></tr>
+    <tr><td>情報セキュリティ監査</td><td>情報セキュリティ</td></tr>
+  </tbody>
+</table>
+</div>
+<span class="ptr">← S03:p.52</span>
+
+<div class="def-box">
+  <div class="def-term">システム監査の目的</div>
+  情報システムにまつわる<strong>リスクに対するコントロールが適切であるかどうかを評価</strong>すること。<span class="ptr">← S03:p.53</span>
+</div>
+
+<h4>システム監査の体制</h4>
+<ul>
+  <li>高い倫理観をもった<strong>独立かつ客観的な立場（第三者）</strong>のシステム監査人が検証・評価する</li>
+  <li>システム監査人は<em>システム監査基準</em>に沿って検証・評価する</li>
+  <li>システム監査人は<strong>主体的には改善しない</strong>（報告を受けた側が改善する）</li>
+</ul>
+<span class="ptr">← S03:p.53</span>
+
+<h4>2つの基準</h4>
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>基準名</th><th>誰が従うか</th><th>内容</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>システム管理基準</strong></td>
+      <td>企業</td>
+      <td>情報システムに関するリスクをコントロールするために企業が従うべき実践規範</td>
+    </tr>
+    <tr>
+      <td><strong>システム監査基準</strong></td>
+      <td>監査人</td>
+      <td>客観的なシステム監査を行うために監査人が従うべき行為規範（監査ルール）</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<span class="ptr">← S03:p.54</span>
+
+<h4>システム監査の3つのポイント</h4>
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>ポイント</th><th>内容</th><th>確認例</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>①信頼性</strong></td>
+      <td>情報システムの品質、ならびに障害の発生・影響範囲・回復の度合い</td>
+      <td>ログ分析、障害発生頻度・対処時間・対象内容の評価</td>
+    </tr>
+    <tr>
+      <td><strong>②安全性</strong></td>
+      <td>自然災害・不正アクセス・破壊行為からの保護の度合い</td>
+      <td>アクセス権限確認、バックアップ・リカバリ手順確認、障害時対応履歴評価</td>
+    </tr>
+    <tr>
+      <td><strong>③効率性</strong></td>
+      <td>情報システムの資源の活用および費用対効果の度合い</td>
+      <td>可用性（稼働時間中の停止時間の割合）の評価</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<span class="ptr">← S03:p.55</span>
+
+<h3 id="ch4-flow">4.2 システム監査の流れ</h3>
+
+<!-- SVG: 監査の流れ（フロー） -->
+<figure style="margin: 16px 0;">
+<svg viewBox="0 0 560 80" xmlns="http://www.w3.org/2000/svg" style="width:100%;background:#1a2030;border-radius:8px;">
+  <!-- 5ステップ: x = 10,118,226,334,442 -->
+  <!-- 各ブロック幅 98, 高さ 44 -->
+  <rect x="10" y="18" width="98" height="44" rx="4" fill="#1e2b45" stroke="#4a7aff" stroke-width="1"/>
+  <text x="59" y="36" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#90b4ff" font-weight="700">①監査の依頼</text>
+  <text x="59" y="52" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#8a99b8">経営者→監査人</text>
+
+  <text x="112" y="42" font-family="JetBrains Mono,monospace" font-size="14" fill="#4a7aff">→</text>
+
+  <rect x="118" y="18" width="98" height="44" rx="4" fill="#1e2535" stroke="#3a4a60" stroke-width="1"/>
+  <text x="167" y="36" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#e2e8f5" font-weight="700">②計画の策定</text>
+  <text x="167" y="52" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#8a99b8">監査人が立案</text>
+
+  <text x="220" y="42" font-family="JetBrains Mono,monospace" font-size="14" fill="#4a7aff">→</text>
+
+  <rect x="226" y="18" width="98" height="44" rx="4" fill="#1e2535" stroke="#3a4a60" stroke-width="1"/>
+  <text x="275" y="36" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#e2e8f5" font-weight="700">③監査の実施</text>
+  <text x="275" y="52" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#8a99b8">予備調査→本調査</text>
+
+  <text x="328" y="42" font-family="JetBrains Mono,monospace" font-size="14" fill="#4a7aff">→</text>
+
+  <rect x="334" y="18" width="98" height="44" rx="4" fill="#1e2535" stroke="#3a4a60" stroke-width="1"/>
+  <text x="383" y="36" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#e2e8f5" font-weight="700">④監査報告</text>
+  <text x="383" y="52" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#8a99b8">報告書を提出</text>
+
+  <text x="436" y="42" font-family="JetBrains Mono,monospace" font-size="14" fill="#34d399">→</text>
+
+  <rect x="442" y="18" width="108" height="44" rx="4" fill="#1e2b45" stroke="#34d399" stroke-width="1"/>
+  <text x="496" y="36" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#5ee3b2" font-weight="700">⑤フォローアップ</text>
+  <text x="496" y="52" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#8a99b8">改善の確認</text>
+</svg>
+<figcaption style="font-size:12px;color:var(--text-muted);margin-top:4px;">図：システム監査の5ステップ　<span class="ptr">S03:p.56</span></figcaption>
+</figure>
+
+<div class="voice-block">
+  <div class="block-label">🔊 音声補足</div>
+  依頼先の選択肢：<strong>内部監査</strong>＝社内の監査部門・社内監査人。<strong>外部監査</strong>＝公認会計士・コンサルタント会社・IPA（独立行政法人情報処理推進機構）など社外の監査人。監査調書は証拠として保全する重要書類。<span class="ptr">← S05, S03:p.56</span>
+</div>
+
+<h3 id="ch4-sec">4.3 情報セキュリティ監査</h3>
+
+<p>情報セキュリティに特化した監査。対象は<strong>情報資産</strong>（媒体・コンピュータに保存された価値のある情報）が守られているかどうか。<span class="ptr">← S03:p.57</span></p>
+
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>ポイント</th><th>内容</th><th>確認例</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>①機密性</strong></td>
+      <td>認められた人だけが情報にアクセスできること</td>
+      <td>不正侵入の有無、USBメモリなど外部記憶装置の管理確認</td>
+    </tr>
+    <tr>
+      <td><strong>②完全性</strong></td>
+      <td>情報が正確であり改ざんや破壊が行われていないこと</td>
+      <td>データ改ざんの有無チェック</td>
+    </tr>
+    <tr>
+      <td><strong>③可用性</strong></td>
+      <td>必要なときに情報にアクセスできること</td>
+      <td>セキュリティ事案によるシステム停止がどれくらいあるか</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<span class="ptr">← S03:p.58</span>
+
+<h3 id="ch4-fraud">4.4 不正のトライアングル</h3>
+
+<div class="def-box">
+  <div class="def-term">不正のトライアングル</div>
+  1950年代にアメリカの犯罪学者<strong>ドナルド・R・クレッシー</strong>が提唱。<em>動機・機会・正当化</em>の3要素が揃ったときに不正が発生するという理論。<span class="ptr">← S03:p.59</span>
+</div>
+
+<!-- SVG: 不正のトライアングル -->
+<figure style="margin: 16px 0;">
+<svg viewBox="0 0 480 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:480px;background:#1a2030;border-radius:8px;">
+  <!-- 三角形 vertices: top=(240,20), bottomLeft=(60,180), bottomRight=(420,180) -->
+  <polygon points="240,20 60,180 420,180" fill="rgba(248,113,113,0.06)" stroke="#f87171" stroke-width="1.5"/>
+  <!-- 中央ラベル -->
+  <text x="240" y="110" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#f87171">不正発生</text>
+
+  <!-- 頂点ラベル -->
+  <circle cx="240" cy="20" r="30" fill="#2a1520" stroke="#f87171" stroke-width="1.5"/>
+  <text x="240" y="16" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#f87171" font-weight="700">動機</text>
+  <text x="240" y="30" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#8a99b8">経済的圧力・欲求</text>
+
+  <circle cx="60" cy="180" r="30" fill="#2a1520" stroke="#f87171" stroke-width="1.5"/>
+  <text x="60" y="176" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#f87171" font-weight="700">機会</text>
+  <text x="60" y="190" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#8a99b8">実行できる環境</text>
+
+  <circle cx="420" cy="180" r="30" fill="#2a1520" stroke="#f87171" stroke-width="1.5"/>
+  <text x="420" y="176" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#f87171" font-weight="700">正当化</text>
+  <text x="420" y="190" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#8a99b8">自己正当化の理由</text>
+</svg>
+<figcaption style="font-size:12px;color:var(--text-muted);margin-top:4px;">図：不正のトライアングル（クレッシー, 1950年代）　<span class="ptr">S03:p.59</span></figcaption>
+</figure>
+
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>要素</th><th>内容</th><th>具体例</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>動機</strong></td>
+      <td>不正を行おうとする理由</td>
+      <td>経済的圧力、個人的な欲求（地位・名誉）、組織に対する不満</td>
+    </tr>
+    <tr>
+      <td><strong>機会</strong></td>
+      <td>不正行為を実行できる環境・状況</td>
+      <td>パスワードの使いまわし、担当者の固定化など</td>
+    </tr>
+    <tr>
+      <td><strong>正当化</strong></td>
+      <td>不正行為を自分自身で正当化する理由</td>
+      <td>「誰も損をしていない」「会社が悪い」「みんなやっている」「前任者もやっていた」</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<span class="ptr">← S03:p.59</span>
+
+<h3 id="ch4-gov">4.5 コーポレートガバナンスと内部統制</h3>
+
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>概念</th><th>定義</th><th>特徴</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>コーポレートガバナンス</strong></td>
+      <td>企業の経営を適切に運営し、その価値を高めるための仕組み</td>
+      <td>企業の透明性向上・不正防止・企業価値向上・社会貢献を通じて健全な企業活動を統治する</td>
+    </tr>
+    <tr>
+      <td><strong>内部統制</strong>（Internal Control）</td>
+      <td>コーポレートガバナンスを実現するための手段の一つ。健全かつ効率的な組織運営のための体制を<em>企業が自ら構築し運用する</em>仕組み</td>
+      <td>社内の全ての人が参画。経営者が整備・運用に責任を持つ。職務分掌・業務プロセス明確化・モニタリング</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<span class="ptr">← S03:p.60</span>
+
+<h3 id="ch4-cases1">4.6 内部統制が取れていなかった事案</h3>
+
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>事案</th><th>時期</th><th>概要</th><th>内部統制の欠如</th><th>影響</th></tr></thead>
+  <tbody>
+    <tr class="row-red">
+      <td><strong>Meta（旧Facebook）情報不正流出</strong></td>
+      <td>2018年</td>
+      <td>ケンブリッジ・アナリティカがFacebookユーザーの個人情報を無断収集し政治キャンペーンに利用</td>
+      <td>データ保護のための内部規制・監視体制が不十分</td>
+      <td>FTCへ制裁金50億ドル、SECに1億ドル、利用者信頼低下、規制強化</td>
+    </tr>
+    <tr class="row-yellow">
+      <td><strong>東芝の不適切会計問題</strong></td>
+      <td>2015年</td>
+      <td>約7年間で約1500億円に及ぶ利益の過大計上</td>
+      <td>経営陣によるプレッシャーと不正な会計処理が常態化。内部・外部監査が機能せず</td>
+      <td>経営陣の総退陣、株価急落、企業イメージの損傷</td>
+    </tr>
+    <tr class="row-yellow">
+      <td><strong>トヨタ自動車の認証不正問題</strong></td>
+      <td>2024年</td>
+      <td>型式指定の申請に伴う試験について7車種で不正を実施</td>
+      <td>社内ルールが不明確、認証業務の重要性への認識不足、経営・幹部の関与不十分</td>
+      <td>ブランドへの信頼低下、一時的な生産停止</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<span class="ptr">← S03:p.61-63</span>
+
+<h3 id="ch4-itgov">4.7 ITガバナンスと ITマネジメント</h3>
+
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>概念</th><th>内容</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>ITガバナンス</strong></td>
+      <td>コーポレートガバナンスのうち<strong>IT領域の統治</strong>。企業の透明性向上・不正防止・企業価値向上・社会貢献などを通してIT活動を健全に統治する。IT戦略→実施計画→実施→評価→教訓まとめまでを含む。</td>
+    </tr>
+    <tr>
+      <td><strong>ITマネジメント</strong></td>
+      <td>経営方針およびITガバナンス方針に基づいたIT戦略の各目標を達成するために、ITシステムの利活用に関するコントロールを実行し、その結果を経営者に報告するための体制を整備・運用する活動</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<span class="ptr">← S03:p.64</span>
+
+<h3 id="ch4-cases2">4.8 ITガバナンスが効いていなかった事案</h3>
+
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>事案</th><th>時期</th><th>概要</th><th>ITガバナンスの欠如</th><th>影響</th></tr></thead>
+  <tbody>
+    <tr class="row-red">
+      <td><strong>LINEヤフーの利用者情報漏洩問題</strong></td>
+      <td>2024年</td>
+      <td>韓国IT企業へのサイバー攻撃を起点に2023年11月以降LINEの利用者情報約52万件が漏洩</td>
+      <td>韓国企業との間で個人情報にアクセスするシステムを共有していたにもかかわらず情報保護措置が不十分</td>
+      <td>政府の個人情報保護委員会から改善指導、利用者の信頼低下</td>
+    </tr>
+    <tr class="row-yellow">
+      <td><strong>みずほ銀行のシステム障害</strong></td>
+      <td>2021年</td>
+      <td>ATM4318台が一時停止、通帳・キャッシュカードの取り込みトラブル、国内他行向け送金263件が期限未達など</td>
+      <td>システムのリソース設計・機器故障へのバックアップ不全・プログラム設計ミスなどリスク管理が不十分</td>
+      <td>金融庁から行政処分、利用者の信頼低下</td>
+    </tr>
+    <tr class="row-yellow">
+      <td><strong>江崎グリコのシステム移行障害</strong></td>
+      <td>2024年</td>
+      <td>2024年4月3日に基幹システム切替え時に障害が発生。物流センターの出荷停止が続き、人気商品のプッチンプリンが店頭から消える事態に</td>
+      <td>システム移行設計およびベンダーを交えたプロジェクトマネジメントが不十分</td>
+      <td>売上の低下</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<span class="ptr">← S03:p.65-67</span>
+
+<div class="voice-block">
+  <div class="block-label">🔊 音声補足</div>
+  江崎グリコの事例では「ITガバナンスが効かなかった」の具体例として「ベンダーを交えたプロジェクトマネジメントが不十分」という点が指摘されており、本講義の第1・2章で学んだプロジェクトマネジメントの知識が実際のシステム導入にも直結することを示している。<span class="ptr">← S05, S03:p.67</span>
+</div>
+
+</section>
+
+<!-- ============================
+     補足セクション
+============================= -->
+<section id="appendix">
+<h2>📎 補足セクション</h2>
+
+<!-- 未確定事項 -->
+<div class="appendix-card card-uncert" id="app-uncert">
+<h2>❓ 未確定事項・要確認リスト</h2>
+<table>
+  <thead>
+    <tr><th>ID</th><th>内容</th><th>種別</th><th>優先度</th><th>解消できない理由</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>—</td>
+      <td colspan="4" style="color:var(--accent-cyan);">未確定事項なし（全項目S03・S05照合で解消済み）</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<!-- 補足A -->
+<div class="appendix-card card-a" id="app-a">
+<h2>⭐ 補足A　最重要ワード一覧</h2>
+<div class="tbl-wrap">
+<table>
+  <thead>
+    <tr><th>用語</th><th>読み</th><th>定義（原文から抽出）</th><th>重要度</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>PMBOK</td><td>ピムボック</td><td>Project Management Body of Knowledgeの略。PMIが発行するプロジェクトマネジメントの知識体系。</td><td class="star-3">★★★</td></tr>
+    <tr><td>WBS</td><td>ダブリュービーエス</td><td>Work Breakdown Structure。仕事・タスクを分解して構造化したもの。最小単位をワークパッケージという。</td><td class="star-3">★★★</td></tr>
+    <tr><td>クリティカルパス</td><td>くりてぃかるぱす</td><td>プロジェクト進行において最も時間がかかる活動の組み合わせ＝管理対象。</td><td class="star-3">★★★</td></tr>
+    <tr><td>PERT</td><td>パート</td><td>Program Evaluation and Review Technique。アローダイアグラムを使ったプロジェクト分析手法。</td><td class="star-3">★★★</td></tr>
+    <tr><td>ガントチャート</td><td>がんとちゃーと</td><td>縦軸タスク・横軸時間でスケジュールを視覚管理する仕組み。1910年代にヘンリー・ガントが考案。</td><td class="star-3">★★★</td></tr>
+    <tr><td>スコープマネジメント</td><td>すこーぷまねじめんと</td><td>プロジェクトが目的とする作業範囲を定義すること。</td><td class="star-3">★★★</td></tr>
+    <tr><td>QCD</td><td>きゅーしーでぃー</td><td>品質（Quality）・コスト（Cost）・納期（Delivery）のバランス。要求仕様達成に向けて管理する。</td><td class="star-3">★★★</td></tr>
+    <tr><td>SLA</td><td>エスエルエー</td><td>Service Level Agreements。サービスのパフォーマンスを事業者と顧客が合意したもの。</td><td class="star-3">★★★</td></tr>
+    <tr><td>ITIL</td><td>アイティル</td><td>IT Infrastructure Library。ITサービスマネジメントのベストプラクティスを体系化したフレームワーク。</td><td class="star-3">★★★</td></tr>
+    <tr><td>インシデント管理</td><td>いんしでんとかんり</td><td>正常に業務を遂行できない状況から迅速にサービスを復旧させる活動。</td><td class="star-3">★★★</td></tr>
+    <tr><td>BCM / BCP</td><td>ビーシーエム/ビーシーピー</td><td>BCM＝事業継続管理（Business Continuity Management）。BCP＝事業継続計画（Business Continuity Plan）。</td><td class="star-3">★★★</td></tr>
+    <tr><td>UPS</td><td>ユーピーエス</td><td>Uninterruptible Power Supply（無停電電源装置）。停電時に一時的に電力を供給する装置。</td><td class="star-3">★★★</td></tr>
+    <tr><td>コーポレートガバナンス</td><td>こーぽれーとがばなんす</td><td>企業の経営を適切に運営し、その価値を高めるための仕組み。</td><td class="star-3">★★★</td></tr>
+    <tr><td>内部統制</td><td>ないぶとうせい</td><td>Internal Control。健全かつ効率的な組織運営のための体制を企業が自ら構築し運用する仕組み。</td><td class="star-3">★★★</td></tr>
+    <tr><td>ITガバナンス</td><td>あいてぃがばなんす</td><td>コーポレートガバナンスのうちIT領域の統治。</td><td class="star-3">★★★</td></tr>
+    <tr><td>不正のトライアングル</td><td>ふせいのとらいあんぐる</td><td>動機・機会・正当化の3要素が揃ったときに不正が発生するという理論。クレッシーが提唱。</td><td class="star-3">★★★</td></tr>
+    <tr><td>可用性</td><td>かようせい</td><td>システムが稼働可能な時間の比率（%表示）。SLIの一種。</td><td class="star-3">★★★</td></tr>
+    <tr><td>コミュニケーション経路数</td><td>—</td><td>n×(n−1)÷2 で計算する。6人で15通り。</td><td class="star-3">★★★</td></tr>
+    <tr><td>ステアリング・コミッティ</td><td>すてありんぐこみってぃ</td><td>プロジェクトの方向性を決定する会議体。</td><td class="star-2">★★☆</td></tr>
+    <tr><td>SPOC</td><td>スポック</td><td>Single Point of Contact。サービスデスクの単一窓口機能。</td><td class="star-2">★★☆</td></tr>
+    <tr><td>AIOps</td><td>えーあいおーぷす</td><td>AI for IT Operations。AIを活用したIT運用。</td><td class="star-2">★★☆</td></tr>
+    <tr><td>SLI / SLO / SLM</td><td>—</td><td>SLI＝サービスレベル指標。SLO＝サービスレベル目標。SLM＝サービスレベル管理。</td><td class="star-2">★★☆</td></tr>
+    <tr><td>イナズマ線</td><td>いなずません</td><td>ガントチャートで当日時点でのタスク進捗状況を示す縦線。</td><td class="star-2">★★☆</td></tr>
+    <tr><td>グリーンIT</td><td>ぐりーんあいてぃ</td><td>地球環境への負荷も考慮したIT機器・施設の運用の考え方。</td><td class="star-2">★★☆</td></tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+<!-- 補足B -->
+<div class="appendix-card card-b" id="app-b">
+<h2>📚 補足B　知っておくべき背景知識</h2>
+<ul>
+  <li><strong>PMI（Project Management Institute）</strong>：1969年設立の米国ペンシルベニア州に本部を置く非営利団体。世界290万人以上の会員を擁する最大規模のPM専門組織。PMP（Project Management Professional）資格を認定している。PMBOKは約4年ごとに改訂され、2021年に第7版（プロセスベース→原則ベースへ大転換）、2025年11月に英語版第8版をリリース（日本語版は2026年中に公開予定）。[外部補足]</li>
+  <li><strong>PERT法の発祥</strong>：1958年にブーズ・アレン・ハミルトンが米海軍Special Projects OfficeからのUGM-27ポラリスSLBM開発プロジェクト委託の一環として発明した手法。冷戦下でスプートニク・ショック後の急速な開発に対応するため採用された。同時期にデュポン社が独立してCPM（Critical Path Method：クリティカルパス法）を開発。PERTは時間管理・不確実性重視、CPMはコスト最適化重視という違いがある。[外部補足]</li>
+  <li><strong>不正のトライアングルの詳細</strong>：ドナルド・R・クレッシー（Donald Ray Cressey、1919〜1987）はアメリカの犯罪学者・社会学者。1940〜50年代に横領犯罪者を対象とした実証研究を行い、その成果を『Other People's Money: A Study in the Social Psychology of Embezzlement』として発表。「動機」「機会」「正当化」という3要素を抽出した。その後、会計学者のW・スティーブ・アルブレヒトが1991年に現在の「不正のトライアングル」という図式として体系化した。現在は米国公認会計士協会（AICPA）の監査基準やCOSOモデルにも取り入れられている。[外部補足]</li>
+  <li><strong>ITILのバージョン変遷</strong>：1989年に英国政府CCTA（中央コンピューター電気通信局）が初版（v1）を公開（40冊超の書籍群）。1999〜2004年にITIL v2（7冊に整理）、2007年にITIL v3（5段階ライフサイクルアプローチ）、2011年マイナーアップデート、そして2019年2月に最新版の<strong>ITIL 4</strong>が正式リリース。ITIL 4の最大の変化は「ライフサイクル」→「サービスバリューチェーン」への移行と「価値共創」概念の導入。プラクティスも従来の「プロセスと機能」から34のプラクティスに再編。2022年にv3は廃止となりITIL 4に完全移行。[外部補足]</li>
+  <li><strong>ケンブリッジ・アナリティカ事件（2018年）</strong>：FTCへの制裁金50億ドルは当時の規制当局による制裁金として史上最大規模。加えてSECへの1億ドルも支払い。この事件をきっかけにEUのGDPR（一般データ保護規則）の重要性が広く認識されることになった。[外部補足]</li>
+  <li><strong>東芝の不適切会計</strong>：2015年の不正発覚後、東芝は経営再建の過程で半導体メモリ部門（現：キオクシア株式会社）の売却なども行った。この事件はコーポレートガバナンス改革議論の契機ともなり、日本における企業統治コードの強化につながった。[外部補足]</li>
+</ul>
+</div>
+
+<!-- 補足C -->
+<div class="appendix-card card-c" id="app-c">
+<h2>🎯 補足C　試験・レポートで重要な観点</h2>
+<ol>
+  <li><strong>PMBOKの10の知識エリアの名称と概要</strong>を暗記する（特に統合・スコープ・スケジュール・コスト・品質・リスク）</li>
+  <li><strong>クリティカルパスの計算</strong>：アローダイアグラムを与えられ、最長経路を求める問題が頻出</li>
+  <li><strong>コミュニケーション経路数の計算式</strong>：n×(n−1)÷2 を覚え、人数が変わっても計算できるようにする</li>
+  <li><strong>SLA/SLI/SLOの違い</strong>：SLI（指標）→SLO（目標）→SLA（合意）という階層を整理する</li>
+  <li><strong>PMとサービスMGの違い</strong>：比較表（対象・プロセス・期間・成果物・テキスト）を整理する</li>
+  <li><strong>不正のトライアングル3要素</strong>（動機・機会・正当化）を説明できるようにする</li>
+  <li><strong>システム監査の5ステップ</strong>（依頼→計画→実施→報告→フォローアップ）の順序と各内容</li>
+  <li><strong>コーポレートガバナンスと内部統制の関係</strong>：内部統制はコーポレートガバナンスを実現する「手段の一つ」</li>
+  <li><strong>ITガバナンスの位置づけ</strong>：コーポレートガバナンスのIT特化版</li>
+  <li><strong>BCMとBCPの違い</strong>：BCM＝経営手法（管理）、BCP＝計画書（文書）</li>
+</ol>
+</div>
+
+<!-- 補足D -->
+<div class="appendix-card card-d" id="app-d">
+<h2>🔗 補足D　関連概念・次回への接続</h2>
+<ul>
+  <li><strong>アジャイル開発とPMBOK v7の関係</strong>：従来のウォーターフォール型（計画→設計→実装→テスト→リリースを順次進行）と対比される開発手法。PMBOK第7版（2021年）ではアジャイル・ハイブリッドを含む「あらゆる開発アプローチ」を反映する方向に転換し、スクラム・スプリントの考え方も包含するようになった。[外部補足]</li>
+  <li><strong>COSO（内部統制）フレームワーク</strong>：1992年にCOSO（トレッドウェイ委員会支援組織委員会）が公表した内部統制の統合的フレームワーク。不正のトライアングルとも密接に関連し、内部統制の目的・要素を定義する世界標準モデル。日本の金融庁が策定した内部統制基準にも取り入れられている。[外部補足]</li>
+  <li><strong>ISO 20000</strong>：ITサービスマネジメントの国際標準規格（ISO/IEC 20000）。ITILのベストプラクティスをベースに策定されており、ITILに準拠した運用の第三者認証として機能する。[外部補足]</li>
+  <li><strong>ISO 27001</strong>：情報セキュリティマネジメントシステム（ISMS）の国際標準。本章の情報セキュリティ監査の「機密性・完全性・可用性」の3要素も同規格で定義されている。[外部補足]</li>
+  <li><strong>J-SOX（金融商品取引法）</strong>：2002年に米国で制定されたSOX法（サーベンス・オクスリー法）を参考に、日本では2008年から上場企業に内部統制報告書の提出が義務付けられた。「財務報告に係る内部統制の評価及び監査の基準」として機能している。[外部補足]</li>
+  <li><strong>次回への接続</strong>：本回で扱ったIT統治（ガバナンス・監査・内部統制）の概念は、次回以降の「情報セキュリティ」「ITストラテジ」の単元と深く関連する。</li>
+</ul>
+</div>
+
+</section>
+
+<div class="version-tag">
+  v1.0 作成: SSP v4.5.1 | ソース: S03（スライドPDF 71枚）/ S05（AI変換テキスト×2バリアント）<br>
+  v1.1 パートIV外部補完: 補足B（PMBOKバージョン歴史・PERT発祥詳細・不正トライアングル図式化経緯・ITIL全バージョン変遷）/補足D（COSO追加・ISO詳細化・J-SOX詳細化）を調査確定情報で更新
+</div>
+
+</main>
+
+<script>
+// スクロール時のサイドバーアクティブ表示
+const sections = document.querySelectorAll('section, .doc-header, .appendix-card');
+const navLinks = document.querySelectorAll('#sidebar nav a');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.id;
+      navLinks.forEach(link => {
+        link.classList.toggle('active', link.getAttribute('href') === '#' + id);
+      });
+    }
+  });
+}, { rootMargin: '-20% 0px -75% 0px' });
+
+document.querySelectorAll('[id]').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
