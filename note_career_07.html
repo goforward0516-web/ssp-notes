@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>キャリア入門 第7回 — プロジェクトの成果を意識した働き方（２）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg-primary:#0f1117;--bg-secondary:#161b27;--bg-card:#1a2035;--border:#2a3555;--border-light:#3a4570;--text-main:#e2e8f5;--text-sub:#8a99b8;--text-muted:#5a6888;--accent-blue:#5b8dee;--accent-green:#34d399;--accent-amber:#fbbf24;--accent-purple:#a78bfa;--accent-orange:#fb923c;--sidebar-w:260px;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg-primary);color:var(--text-main);font-family:'Noto Sans JP',sans-serif;font-size:15px;line-height:1.8;display:flex;}
+#sidebar{position:fixed;top:0;left:0;bottom:0;width:var(--sidebar-w);background:var(--bg-secondary);border-right:1px solid var(--border);overflow-y:auto;z-index:100;padding:0 0 40px;}
+#sidebar-header{padding:20px 18px 14px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg-secondary);z-index:1;}
+#sidebar-header .subject{font-size:11px;color:var(--accent-amber);font-weight:700;letter-spacing:.08em;text-transform:uppercase;}
+#sidebar-header .lecture{font-size:13px;color:var(--text-sub);margin-top:4px;}
+#toc{padding:10px 0;}
+.toc-section a{display:block;padding:7px 18px;font-size:12.5px;color:var(--text-sub);text-decoration:none;transition:all .15s;border-left:2px solid transparent;line-height:1.4;}
+.toc-section a:hover,.toc-section a.active{color:var(--accent-blue);background:rgba(91,141,238,.08);border-left-color:var(--accent-blue);}
+.toc-section a.chapter{font-weight:700;font-size:12px;color:var(--text-main);padding-top:10px;}
+.toc-section a.chapter:hover,.toc-section a.chapter.active{color:var(--accent-amber);border-left-color:var(--accent-amber);background:rgba(251,191,36,.06);}
+.toc-sub a{padding-left:32px;font-size:12px;}
+#main{margin-left:var(--sidebar-w);flex:1;padding:40px 48px 80px;max-width:900px;}
+.page-header{margin-bottom:40px;padding-bottom:28px;border-bottom:1px solid var(--border);}
+.tag-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+.tag{font-size:11px;font-weight:700;letter-spacing:.07em;padding:3px 10px;border-radius:100px;font-family:'JetBrains Mono',monospace;}
+.tag-subject{background:rgba(251,191,36,.15);color:var(--accent-amber);border:1px solid rgba(251,191,36,.3);}
+.tag-lecture{background:rgba(91,141,238,.15);color:var(--accent-blue);border:1px solid rgba(91,141,238,.3);}
+.tag-source{background:rgba(52,211,153,.12);color:var(--accent-green);border:1px solid rgba(52,211,153,.3);}
+h1.lecture-title{font-size:26px;font-weight:700;line-height:1.4;margin-bottom:10px;}
+.meta-row{display:flex;gap:20px;flex-wrap:wrap;margin-top:10px;}
+.meta-item{font-size:12.5px;color:var(--text-sub);}
+.meta-item span{color:var(--text-muted);margin-right:4px;}
+.section-card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:28px 32px;margin-bottom:20px;transition:border-color .2s;}
+.section-card:hover{border-color:var(--border-light);}
+h2.chapter-title{font-size:19px;font-weight:700;color:var(--accent-amber);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid rgba(251,191,36,.2);display:flex;align-items:center;gap:10px;}
+h2.chapter-title .ch-num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:6px;background:rgba(251,191,36,.15);font-size:13px;font-weight:700;color:var(--accent-amber);font-family:'JetBrains Mono',monospace;flex-shrink:0;}
+h3.section-title{font-size:15.5px;font-weight:700;color:var(--accent-blue);margin:22px 0 10px;display:flex;align-items:center;gap:8px;}
+h3.section-title::before{content:'▸';font-size:12px;color:var(--accent-blue);opacity:.7;}
+p{margin-bottom:10px;}
+ul,ol{padding-left:22px;margin-bottom:10px;}
+li{margin-bottom:5px;}
+strong{color:var(--text-main);font-weight:600;}
+.block{border-left:3px solid;border-radius:0 6px 6px 0;padding:12px 16px;margin:14px 0;font-size:14px;}
+.block-audio{background:rgba(91,141,238,.08);border-color:var(--accent-blue);}
+.block-ext{background:rgba(52,211,153,.08);border-color:var(--accent-green);}
+.block-label{font-size:10.5px;font-weight:700;letter-spacing:.08em;font-family:'JetBrains Mono',monospace;margin-bottom:6px;display:flex;align-items:center;gap:6px;}
+.block-audio .block-label{color:var(--accent-blue);}
+.block-ext .block-label{color:var(--accent-green);}
+.src{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--text-muted);background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:4px;padding:1px 6px;margin-left:6px;vertical-align:middle;white-space:nowrap;}
+.note-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13.5px;}
+.note-table th{background:rgba(91,141,238,.12);color:var(--accent-blue);font-weight:600;font-size:12px;padding:9px 12px;text-align:left;border:1px solid var(--border);}
+.note-table td{padding:9px 12px;border:1px solid var(--border);color:var(--text-main);vertical-align:top;line-height:1.6;}
+.note-table tr:nth-child(even) td{background:rgba(255,255,255,.015);}
+.highlight-box{border:1px solid rgba(251,191,36,.3);background:rgba(251,191,36,.05);border-radius:8px;padding:16px 20px;margin:16px 0;}
+.highlight-box .hl-title{font-size:12px;font-weight:700;color:var(--accent-amber);letter-spacing:.07em;margin-bottom:8px;font-family:'JetBrains Mono',monospace;}
+.svg-wrap{margin:18px 0;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:8px;padding:16px;overflow:visible;}
+.svg-wrap figcaption{font-size:11.5px;color:var(--text-muted);margin-top:10px;text-align:center;font-family:'JetBrains Mono',monospace;}
+svg{max-width:100%;display:block;margin:0 auto;}
+.appendix-card{border-radius:10px;padding:24px 28px;margin-bottom:16px;border:1px solid;}
+.appendix-unconfirmed{background:rgba(251,146,60,.06);border-color:rgba(251,146,60,.3);}
+.appendix-a{background:rgba(91,141,238,.06);border-color:rgba(91,141,238,.3);}
+.appendix-b{background:rgba(52,211,153,.06);border-color:rgba(52,211,153,.3);}
+.appendix-c{background:rgba(251,191,36,.06);border-color:rgba(251,191,36,.3);}
+.appendix-d{background:rgba(167,139,250,.06);border-color:rgba(167,139,250,.3);}
+.appendix-title{font-size:16px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.appendix-unconfirmed .appendix-title{color:var(--accent-orange);}
+.appendix-a .appendix-title{color:var(--accent-blue);}
+.appendix-b .appendix-title{color:var(--accent-green);}
+.appendix-c .appendix-title{color:var(--accent-amber);}
+.appendix-d .appendix-title{color:var(--accent-purple);}
+.ext-note{font-size:12px;color:var(--text-sub);}
+@media(max-width:768px){#sidebar{display:none;}#main{margin-left:0;padding:24px 20px 60px;}}
+</style>
+</head>
+<body>
+<nav id="sidebar">
+  <div id="sidebar-header">
+    <div class="subject">キャリア入門</div>
+    <div class="lecture">第7回 ／ プロジェクトの成果を意識した働き方（２）</div>
+  </div>
+  <div id="toc">
+    <div class="toc-section"><a href="#ch1" class="chapter">第1章　計画策定</a></div>
+    <div class="toc-section toc-sub"><a href="#ch1-breakdown">目標と作業分解</a></div>
+    <div class="toc-section toc-sub"><a href="#ch1-wbs">WBS</a></div>
+    <div class="toc-section toc-sub"><a href="#ch1-how">Howツリー</a></div>
+    <div class="toc-section toc-sub"><a href="#ch1-summary">まとめ</a></div>
+    <div class="toc-section"><a href="#ch2" class="chapter">第2章　実行</a></div>
+    <div class="toc-section toc-sub"><a href="#ch2-sim">シミュレーション</a></div>
+    <div class="toc-section toc-sub"><a href="#ch2-risk">問題予測</a></div>
+    <div class="toc-section toc-sub"><a href="#ch2-seq">前後関係</a></div>
+    <div class="toc-section toc-sub"><a href="#ch2-summary">まとめ</a></div>
+    <div class="toc-section"><a href="#ch3" class="chapter">第3章　管理</a></div>
+    <div class="toc-section toc-sub"><a href="#ch3-progress">進捗管理</a></div>
+    <div class="toc-section toc-sub"><a href="#ch3-correct">是正策</a></div>
+    <div class="toc-section toc-sub"><a href="#ch3-comm">報告・連絡・相談</a></div>
+    <div class="toc-section toc-sub"><a href="#ch3-summary">まとめ</a></div>
+    <div class="toc-section"><a href="#ch4" class="chapter">第4章　評価・振り返り</a></div>
+    <div class="toc-section toc-sub"><a href="#ch4-purpose">目的</a></div>
+    <div class="toc-section toc-sub"><a href="#ch4-eval">目標評価</a></div>
+    <div class="toc-section toc-sub"><a href="#ch4-close">終わり方</a></div>
+    <div class="toc-section toc-sub"><a href="#ch4-knowledge">ナレッジベース</a></div>
+    <div class="toc-section toc-sub"><a href="#ch4-next">学んだことを次へ</a></div>
+    <div class="toc-section toc-sub"><a href="#ch4-summary">まとめ</a></div>
+    <div class="toc-section"><a href="#appendix-a">⭐ 補足A: 用語</a></div>
+    <div class="toc-section"><a href="#appendix-b">📚 補足B: 背景知識</a></div>
+    <div class="toc-section"><a href="#appendix-c">🎯 補足C: 試験観点</a></div>
+    <div class="toc-section"><a href="#appendix-d">🔗 補足D: 関連概念</a></div>
+    <div class="toc-section"><a href="#unconfirmed">❓ 未確定事項</a></div>
+  </div>
+</nav>
+<main id="main">
+  <header class="page-header">
+    <div class="tag-row">
+      <span class="tag tag-subject">キャリア入門</span>
+      <span class="tag tag-lecture">第7回</span>
+      <span class="tag tag-source">S03 · S05×2</span>
+    </div>
+    <h1 class="lecture-title">プロジェクトの成果を意識した働き方（２）</h1>
+    <div class="meta-row">
+      <div class="meta-item"><span>科目：</span>キャリア入門（学部共通教養科目）</div>
+      <div class="meta-item"><span>機関：</span>サイバー大学</div>
+      <div class="meta-item"><span>ソース：</span>S03 スライドPDF ／ S05 AI変換テキスト ×2</div>
+    </div>
+  </header>
+
+  <!-- 第1章 -->
+  <section id="ch1">
+    <div class="section-card">
+      <h2 class="chapter-title"><span class="ch-num">1</span>プロジェクトの計画策定</h2>
+
+      <h3 class="section-title" id="ch1-breakdown">目標を行動に移すための準備</h3>
+      <p>目標を決めただけでは達成に近づけない。目標達成のためには「<strong>何をしなければいけないのか</strong>」が明確でなければならない。行動に移すには<strong>具体的な作業への分解</strong>が必要である。<span class="src">← S03:p.4</span></p>
+      <div class="block block-audio">
+        <div class="block-label">🔊 AUDIO SUPPLEMENT</div>
+        受験勉強では先生や参考書というアドバイスの源があった。社会人になると自分で探す必要があるが、<strong>「何をするか」の部分を細かく分解しておけば、一つひとつを実行するだけで目標に近づいている実感が持てる</strong>、と講師は強調する。<span class="src">← S05</span>
+      </div>
+
+      <h3 class="section-title" id="ch1-wbs">WBS（Work Breakdown Structure）</h3>
+      <div class="highlight-box">
+        <div class="hl-title">DEFINITION — WBS</div>
+        <p>プロジェクトにおける<strong>すべての作業を小さく分解し、階層状に体系化・整理したもの</strong>。一般的に「作業計画」と呼ばれる。<span class="src">← S03:p.6</span></p>
+        <p style="margin-top:8px;font-size:13px;color:var(--text-sub);">[外部補足] PMBOKガイド第6版の定義：「プロジェクト目標を達成し必要な成果物を生成するために、プロジェクトチームが実施する作業の全範囲を<strong>階層的に要素分解</strong>したもの」（PMI, 2017）。各レベルで<strong>漏れなくダブりなく（MECE）</strong>分解されていることが重要。</p>
+      </div>
+
+      <h3 class="section-title">作業を分解する3つの意義</h3>
+      <span class="src">← S03:p.5</span>
+      <table class="note-table">
+        <thead><tr><th>意義</th><th>説明</th></tr></thead>
+        <tbody>
+          <tr><td>① 同時並行的推進</td><td>最初から具体的に定義しておかないと並行実施も順序入替も難しい。小さく定義することで<strong>修正がきく</strong></td></tr>
+          <tr><td>② 努力配分の最適化</td><td>複数人での分業が可能になり、自分の役割と流れを最適化できる</td></tr>
+          <tr><td>③ プロジェクト進行管理の基礎</td><td>作業の開始〜終了が小さな単位で把握できるため、<strong>今どこまで進んでいるかの管理</strong>が容易になる</td></tr>
+        </tbody>
+      </table>
+      <div class="block block-ext">
+        <div class="block-label">💡 KEY CONCEPT — MECE（ミーシー）</div>
+        WBSで「<strong>項目の重複に気をつける</strong>」（S03:p.7）、Howツリーで「<strong>モレやダブりがないよう分解</strong>」（S03:p.9）というのは、いずれも <strong>MECE（Mutually Exclusive, Collectively Exhaustive）= 漏れなく・ダブりなく</strong> という考え方が根底にある。1960年代後半にマッキンゼーのバーバラ・ミント（Barbara Minto）が考案したロジカルシンキングの基本原則。重複がある分解では同じ作業を二重に行う無駄が、漏れがある分解では重要な作業を見落とすリスクがそれぞれ生じる。
+      </div>
+      <div class="block block-audio">
+        <div class="block-label">🔊 AUDIO SUPPLEMENT</div>
+        この3つを事前に理解しておくことで「自分もやれそうな気がする」という感覚が生まれる、と講師は述べている。<span class="src">← S05</span>
+      </div>
+
+      <h3 class="section-title">WBSの構造とワークパッケージ</h3>
+      <!-- SVG: WBS階層図 viewBox=0,0,700,250 -->
+      <!-- L1(x=20,y=100,w=140,h=50) → L2(x=225,y=50/100/150,w=140,h=44) → WP(x=430,y=50/94/138,w=118,h=36) -->
+      <div class="svg-wrap">
+        <svg viewBox="0 0 680 230" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="a1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#5b8dee" opacity=".7"/></marker>
+            <marker id="a2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#34d399" opacity=".7"/></marker>
+          </defs>
+          <!-- L1 box -->
+          <rect x="20" y="90" width="142" height="50" rx="7" fill="#1e2a48" stroke="#5b8dee" stroke-width="1.5"/>
+          <text x="91" y="110" text-anchor="middle" fill="#e2e8f5" font-size="13" font-family="Noto Sans JP">レベル1の作業</text>
+          <text x="91" y="128" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">（大きなまとまり）</text>
+          <!-- Branch line from L1 -->
+          <line x1="162" y1="115" x2="192" y2="115" stroke="#5b8dee" stroke-width="1.3" opacity=".6"/>
+          <line x1="192" y1="72" x2="192" y2="172" stroke="#5b8dee" stroke-width="1.3" opacity=".6"/>
+          <!-- L2 boxes and horizontal branches -->
+          <line x1="192" y1="72" x2="222" y2="72" stroke="#5b8dee" stroke-width="1.3" opacity=".6"/>
+          <rect x="224" y="48" width="140" height="44" rx="6" fill="#1e2a48" stroke="#5b8dee" stroke-width="1.3"/>
+          <text x="294" y="74" text-anchor="middle" fill="#e2e8f5" font-size="12.5" font-family="Noto Sans JP">会場手配</text>
+          <line x1="192" y1="115" x2="222" y2="115" stroke="#5b8dee" stroke-width="1.3" opacity=".6"/>
+          <rect x="224" y="93" width="140" height="44" rx="6" fill="#1e2a48" stroke="#5b8dee" stroke-width="1.3"/>
+          <text x="294" y="119" text-anchor="middle" fill="#e2e8f5" font-size="12.5" font-family="Noto Sans JP">開催案内</text>
+          <line x1="192" y1="172" x2="222" y2="172" stroke="#5b8dee" stroke-width="1.3" opacity=".6"/>
+          <rect x="224" y="148" width="140" height="44" rx="6" fill="#1e2a48" stroke="#5b8dee" stroke-width="1.3"/>
+          <text x="294" y="174" text-anchor="middle" fill="#e2e8f5" font-size="12.5" font-family="Noto Sans JP">プレゼント準備</text>
+          <!-- Arrow L2→WP from 会場手配 -->
+          <line x1="364" y1="70" x2="412" y2="70" stroke="#34d399" stroke-width="1.5" marker-end="url(#a2)"/>
+          <!-- WP boxes -->
+          <rect x="414" y="46" width="120" height="36" rx="6" fill="#0f2219" stroke="#34d399" stroke-width="1.4"/>
+          <text x="474" y="68" text-anchor="middle" fill="#34d399" font-size="12.5" font-family="Noto Sans JP">店の調査</text>
+          <rect x="414" y="90" width="120" height="36" rx="6" fill="#0f2219" stroke="#34d399" stroke-width="1.4"/>
+          <text x="474" y="112" text-anchor="middle" fill="#34d399" font-size="12.5" font-family="Noto Sans JP">店の下見</text>
+          <rect x="414" y="134" width="120" height="36" rx="6" fill="#0f2219" stroke="#34d399" stroke-width="1.4"/>
+          <text x="474" y="156" text-anchor="middle" fill="#34d399" font-size="12.5" font-family="Noto Sans JP">予約</text>
+          <!-- WP label -->
+          <text x="474" y="192" text-anchor="middle" fill="#34d399" font-size="11" font-family="Noto Sans JP">ワークパッケージ</text>
+          <text x="474" y="207" text-anchor="middle" fill="#8a99b8" font-size="10.5" font-family="Noto Sans JP">（実行できるレベル）</text>
+          <!-- footnote -->
+          <text x="20" y="222" fill="#5a6888" font-size="10.5" font-family="Noto Sans JP">★ レベルは3段階とは限らない　★ 項目の重複に注意する</text>
+        </svg>
+        <figcaption>図：WBS作業分解の例（友人の誕生日パーティー） <span class="src">S03:p.7</span></figcaption>
+      </div>
+      <div class="block block-audio">
+        <div class="block-label">🔊 AUDIO SUPPLEMENT</div>
+        「これ以上落とさなくてもよい」レベルまで分解して自分の動きが見えた時点でワークパッケージと定義される。レベル4・5が必要な場合もある。<strong>各レベルで項目の重複がないかを必ずチェック</strong>することで無駄な作業の発生を防ぐ。<span class="src">← S05</span>
+      </div>
+
+      <h3 class="section-title" id="ch1-how">Howツリー</h3>
+      <div class="highlight-box">
+        <div class="hl-title">DEFINITION — Howツリー</div>
+        <p>問題解決においてよく使われる、<strong>具体的な解決策を導き出すためのツール</strong>。「どうやって？」を繰り返し問いかけることで目標を具体化・細分化する。<span class="src">← S03:p.8</span></p>
+        <p style="margin-top:8px;font-size:13px;color:var(--text-sub);">[外部補足] HowツリーはロジックツリーのうちHowツリー（問題解決ツリー）に該当。他に「Whatツリー（要素分解）」「Whyツリー（原因追究）」「KPIツリー」がある。いずれもMECEな分解が前提。</p>
+      </div>
+      <!-- SVG: Howツリー viewBox=0,0,660,190 -->
+      <!-- 学力アップ(x=20,y=72,w=130,h=44) → 知識吸収/脳/やる気(x=200,y=50/78/106,w=130,h=36) → 本/人の話/関心(x=394,y=30/68/106,w=120,h=34) -->
+      <div class="svg-wrap">
+        <svg viewBox="0 0 640 185" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="a3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#fbbf24" opacity=".8"/></marker>
+          </defs>
+          <rect x="20" y="72" width="130" height="44" rx="6" fill="#2a2010" stroke="#fbbf24" stroke-width="1.5"/>
+          <text x="85" y="96" text-anchor="middle" fill="#fbbf24" font-size="13" font-family="Noto Sans JP">学力をアップする</text>
+          <text x="162" y="78" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">どうやって？</text>
+          <!-- branches from root -->
+          <line x1="150" y1="94" x2="185" y2="68" stroke="#fbbf24" stroke-width="1.2" opacity=".6" marker-end="url(#a3)"/>
+          <line x1="150" y1="94" x2="185" y2="96" stroke="#fbbf24" stroke-width="1.2" opacity=".6" marker-end="url(#a3)"/>
+          <line x1="150" y1="94" x2="185" y2="124" stroke="#fbbf24" stroke-width="1.2" opacity=".6" marker-end="url(#a3)"/>
+          <!-- L2 -->
+          <rect x="188" y="48" width="132" height="36" rx="5" fill="#1a2035" stroke="#5b8dee" stroke-width="1.2"/>
+          <text x="254" y="70" text-anchor="middle" fill="#e2e8f5" font-size="12.5" font-family="Noto Sans JP">知識を吸収する</text>
+          <rect x="188" y="78" width="132" height="36" rx="5" fill="#1a2035" stroke="#5b8dee" stroke-width="1.2"/>
+          <text x="254" y="100" text-anchor="middle" fill="#e2e8f5" font-size="12" font-family="Noto Sans JP">脳の働きを良くする</text>
+          <rect x="188" y="108" width="132" height="36" rx="5" fill="#1a2035" stroke="#5b8dee" stroke-width="1.2"/>
+          <text x="254" y="130" text-anchor="middle" fill="#e2e8f5" font-size="12.5" font-family="Noto Sans JP">やる気を向上させる</text>
+          <!-- branches from 知識を吸収する -->
+          <line x1="320" y1="66" x2="356" y2="47" stroke="#5b8dee" stroke-width="1.1" opacity=".5" marker-end="url(#a3)"/>
+          <line x1="320" y1="66" x2="356" y2="82" stroke="#5b8dee" stroke-width="1.1" opacity=".5" marker-end="url(#a3)"/>
+          <line x1="320" y1="66" x2="356" y2="117" stroke="#5b8dee" stroke-width="1.1" opacity=".4" marker-end="url(#a3)"/>
+          <!-- L3 -->
+          <rect x="358" y="28" width="118" height="34" rx="5" fill="#1a2035" stroke="#34d399" stroke-width="1.2"/>
+          <text x="417" y="49" text-anchor="middle" fill="#34d399" font-size="12" font-family="Noto Sans JP">本を読む</text>
+          <rect x="358" y="66" width="118" height="34" rx="5" fill="#1a2035" stroke="#34d399" stroke-width="1.2"/>
+          <text x="417" y="87" text-anchor="middle" fill="#34d399" font-size="12" font-family="Noto Sans JP">人の話を聞く</text>
+          <rect x="358" y="104" width="118" height="34" rx="5" fill="#1a2035" stroke="#34d399" stroke-width="1.2"/>
+          <text x="417" y="125" text-anchor="middle" fill="#34d399" font-size="11.5" font-family="Noto Sans JP">全てに関心を持つ</text>
+          <text x="417" y="158" text-anchor="middle" fill="#5a6888" font-size="18">···</text>
+          <text x="20" y="178" fill="#5a6888" font-size="10.5" font-family="Noto Sans JP">「どうやって？」を繰り返すことで目標の本質（行動レベル）が見えてくる</text>
+        </svg>
+        <figcaption>図：Howツリーの例（学力アップ） <span class="src">S03:p.8</span></figcaption>
+      </div>
+      <div class="block block-audio">
+        <div class="block-label">🔊 AUDIO SUPPLEMENT</div>
+        一見面倒に見えるが、この準備をしっかりやっておけば<strong>自分がどういう行動をすべきかが全て見えてくる</strong>。目標を「漏れやダブりがないよう分解」していくことで具体性が高まる。<span class="src">← S05</span>
+      </div>
+
+      <h3 class="section-title" id="ch1-summary">第1章 まとめ</h3>
+      <div class="highlight-box">
+        <div class="hl-title">SUMMARY</div>
+        <ul>
+          <li>目標は<strong>行動できる具体的な作業になるまでブレークダウン</strong>する <span class="src">← S03:p.10</span></li>
+          <li>目標を作業に分解したものは「<strong>WBSシート</strong>」に記入する</li>
+          <li>業種・組織が変わっても大元のワークパッケージは表現を変えるだけで使い回せる</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 第2章 -->
+  <section id="ch2">
+    <div class="section-card">
+      <h2 class="chapter-title"><span class="ch-num">2</span>プロジェクトの実行</h2>
+      <div class="block block-ext">
+        <div class="block-label">📌 この章について <span class="src">← S03:p.13</span></div>
+        <strong>インターンシップを例</strong>にとり、就業経験のない学生を対象に周囲への気配りの仕方を説明する。就業経験がある方は基本的な考え方を振り返ること。
+      </div>
+
+      <h3 class="section-title" id="ch2-sim">プロジェクト実行のシミュレーション</h3>
+      <p>プロジェクトの作業項目を<strong>実際に行うことを頭の中でイメージする</strong>。実行する上で問題はないかを検証し、<strong>効率の良いスケジュール</strong>を考える。<span class="src">← S03:p.16</span></p>
+      <div class="block block-audio">
+        <div class="block-label">🔊 AUDIO SUPPLEMENT</div>
+        「人間はやったことのないことはできない」が、<strong>やったことをシミュレーションすることで、初めてやる場合でもその効果を最大限にできる</strong>。自分の能力・経験を考えながら無理のないスケジュールを組むことが重要。<span class="src">← S05</span>
+      </div>
+
+      <h3 class="section-title" id="ch2-risk">発生し得る問題を予測する</h3>
+      <p>準備段階で<strong>思いつく限りの問題を想定し、対策を練っておく</strong>ことが大切。<span class="src">← S03:p.17</span></p>
+      <div class="block block-audio">
+        <div class="block-label">🔊 AUDIO SUPPLEMENT</div>
+        <p>講師の経験則として「<strong>8割は思う通りにはならない</strong>」という。<span class="src">← S05</span> 仕事経験がない人の想定は難しいからこそ事前にサポートし、できる限り問題を想定してもらう。</p>
+        <p>例）「全部門の人と話をさせてもらう」という目標に対して「担当部門以外は時間が取れない」と言われた場合を想定しておけば、「部門を絞る交渉」という代替案を準備できる。<strong>想定済みの問題はほとんど対応できる。想定外の問題への対処は難しい。</strong><span class="src">← S05</span></p>
+      </div>
+      <div class="block block-ext">
+        <div class="block-label">💡 補足 — リスク管理との関係</div>
+        「問題を事前に想定して対策を準備する」という考え方は、PMBOKにおける<strong>リスク管理（Risk Management）</strong>の基本と一致する。リスク管理では「特定 → 分析 → 対応計画 → 監視・コントロール」のプロセスを踏む。この講義の「思いつく限りの問題を想定して対策を練る」はリスク対応計画の入門的実践と言える。
+      </div>
+
+      <h3 class="section-title" id="ch2-seq">作業の「前後関係」</h3>
+      <div class="highlight-box">
+        <div class="hl-title">DEFINITION — 前後関係</div>
+        プロジェクトにおいて<strong>前の作業が終わらないと次の作業が始められない</strong>場合などを「前後関係」と呼ぶ。<span class="src">← S03:p.18</span>
+      </div>
+      <table class="note-table">
+        <thead><tr><th>確認事項</th><th>内容</th></tr></thead>
+        <tbody>
+          <tr><td>先行作業は何か</td><td>この作業の前に完了していなければならない作業がないか</td></tr>
+          <tr><td>並行して行える作業は何か</td><td>同時に進められる作業がないか</td></tr>
+          <tr><td>後続作業は何か</td><td>この作業が終わらないと開始できない作業がないか</td></tr>
+        </tbody>
+      </table>
+      <span class="src">← S03:p.18</span>
+
+      <!-- SVG: 前後関係 viewBox=0,0,680,130 -->
+      <!-- ①(x=20,y=38) → ②(x=250,y=38) → ③(x=480,y=38) -->
+      <div class="svg-wrap">
+        <svg viewBox="0 0 680 130" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="a4" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto"><path d="M0,0 L0,7 L9,3.5 z" fill="#fbbf24" opacity=".8"/></marker>
+          </defs>
+          <rect x="20" y="36" width="180" height="52" rx="7" fill="#1e2535" stroke="#34d399" stroke-width="1.5"/>
+          <text x="110" y="58" text-anchor="middle" fill="#34d399" font-size="12" font-family="Noto Sans JP">① 各部門で働く人への</text>
+          <text x="110" y="75" text-anchor="middle" fill="#34d399" font-size="12" font-family="Noto Sans JP">質問内容を考える</text>
+          <line x1="200" y1="62" x2="248" y2="62" stroke="#fbbf24" stroke-width="1.8" marker-end="url(#a4)"/>
+          <rect x="250" y="36" width="178" height="52" rx="7" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+          <text x="339" y="58" text-anchor="middle" fill="#e2e8f5" font-size="12" font-family="Noto Sans JP">② 全部門の人と</text>
+          <text x="339" y="75" text-anchor="middle" fill="#e2e8f5" font-size="12" font-family="Noto Sans JP">話をさせてもらう</text>
+          <line x1="428" y1="62" x2="476" y2="62" stroke="#fbbf24" stroke-width="1.8" marker-end="url(#a4)"/>
+          <rect x="478" y="36" width="182" height="52" rx="7" fill="#1e2535" stroke="#34d399" stroke-width="1.5"/>
+          <text x="569" y="58" text-anchor="middle" fill="#34d399" font-size="12" font-family="Noto Sans JP">③ 各部門インタビュー</text>
+          <text x="569" y="75" text-anchor="middle" fill="#34d399" font-size="12" font-family="Noto Sans JP">結果をまとめる</text>
+          <text x="110" y="106" text-anchor="middle" fill="#8a99b8" font-size="10.5" font-family="Noto Sans JP">先に考えておかないと</text>
+          <text x="110" y="119" text-anchor="middle" fill="#8a99b8" font-size="10.5" font-family="Noto Sans JP">スムーズに話ができない</text>
+          <text x="569" y="106" text-anchor="middle" fill="#8a99b8" font-size="10.5" font-family="Noto Sans JP">話をした後でなければ</text>
+          <text x="569" y="119" text-anchor="middle" fill="#8a99b8" font-size="10.5" font-family="Noto Sans JP">まとめることができない</text>
+        </svg>
+        <figcaption>図：作業の前後関係の例（インターンシップ） <span class="src">S03:p.19</span></figcaption>
+      </div>
+      <div class="block block-audio">
+        <div class="block-label">🔊 AUDIO SUPPLEMENT</div>
+        前後関係を一つひとつ洗い出すことが<strong>シミュレーションにつながる</strong>。また、「なぜ話をしようとしているのか」を説明できる状態にしておくと相手からの問いに答えられる。所要期間も各作業ごとに設定し、全体期間の根拠として説明できるようにしておく。<span class="src">← S05, S03:p.20</span>
+      </div>
+
+      <h3 class="section-title" id="ch2-summary">第2章 まとめ</h3>
+      <div class="highlight-box">
+        <div class="hl-title">SUMMARY</div>
+        <ul>
+          <li>一つひとつの作業に<strong>作業期間を設定し、決めたことを確実に実行</strong>する <span class="src">← S03:p.21</span></li>
+          <li>作業の順番や時期などは<strong>効率良く進められるよう</strong>しっかりと考える</li>
+          <li>頭の中で徹底的にシミュレーションすることで「どういう動きをしなければならないか」のイメージ作りに近づく</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 第3章 -->
+  <section id="ch3">
+    <div class="section-card">
+      <h2 class="chapter-title"><span class="ch-num">3</span>プロジェクトの管理</h2>
+      <div class="block block-ext">
+        <div class="block-label">📌 この章の視点 <span class="src">← S05</span></div>
+        皆さんはプロジェクトメンバーとして働くことが多いため、<strong>管理者（PM）がどのようにプロジェクト全体を見ているか</strong>という視点で学ぶ。
+      </div>
+
+      <h3 class="section-title" id="ch3-progress">進捗管理</h3>
+      <div class="highlight-box">
+        <div class="hl-title">DEFINITION — 進捗管理の目的</div>
+        <strong>計画通りにプロジェクトの工程を維持する</strong>こと。PMの主要業務。<span class="src">← S03:p.25</span>
+      </div>
+      <p>「プロジェクト記述書」に書いた目標と、WBSシートをもとに作成した「スケジュール表」をチームで常に共有し、<strong>進捗を報告・管理</strong>していく。<span class="src">← S03:p.25</span></p>
+      <div class="block block-audio">
+        <div class="block-label">🔊 AUDIO SUPPLEMENT</div>
+        メンバー自身が「なぜ進捗管理が必要か」を理解していると、PMの仕事が進みやすくなる。<strong>報告はPMが判断するための材料</strong>になる。報告のタイミングはPMから最初に指示されるので、それに従って確実に行うこと。報告が正確でなければPMの修正・判断もずれてしまう。<span class="src">← S05</span>
+      </div>
+
+      <h3 class="section-title" id="ch3-correct">進捗が計画通りでなかった場合 — 是正策</h3>
+      <p>報告内容が当初予定と差異がある場合は<strong>是正策を検討</strong>する。<span class="src">← S03:p.26</span></p>
+      <table class="note-table">
+        <thead><tr><th>ステップ</th><th>内容</th></tr></thead>
+        <tbody>
+          <tr><td>問題の特定</td><td>なぜ差異が発生したのか。その差異の問題点は何か</td></tr>
+          <tr><td>影響の評価</td><td>スケジュール・予算・人員計画・品質・スコープなどにどのような影響を与えるか</td></tr>
+        </tbody>
+      </table>
+      <div class="block block-audio">
+        <div class="block-label">🔊 AUDIO SUPPLEMENT — 会場探しの例 <span class="src">← S05, S03:p.27</span></div>
+        「会場探し」タスクが締切を1週間過ぎている場合の原因：
+        <ul style="margin-top:8px;">
+          <li>会場がどこも空いていない</li>
+          <li>会場リストが少なかった</li>
+          <li>一人でタスクを抱えすぎた</li>
+        </ul>
+        <strong>「現場で分かっていても報告に書き忘れる」ことが問題。</strong>PMは情報がなければ是正策を打てない。最悪イベントが開催できなくなるリスクを常に意識する。
+      </div>
+      <p>是正策として：① 是正策決定（人員増加・条件変更）、② WBSの追加・修正、③ 役割分担の見直し・関係者への指示・報告<span class="src">← S03:p.27</span></p>
+      <div class="block block-audio">
+        <div class="block-label">🔊 AUDIO SUPPLEMENT</div>
+        途中で是正策が必要になっても<strong>その場処理で終わらせず、WBSを追加修正する習慣</strong>をつける。プロジェクトを重ねるごとにミスが少なくなる。<span class="src">← S05</span>
+      </div>
+
+      <h3 class="section-title" id="ch3-comm">報告・連絡・相談（ほうれんそう）</h3>
+      <div class="highlight-box">
+        <div class="hl-title">KEY POINT</div>
+        PM型業務を成功に導くには<strong>PMの正確な判断と的確な指示</strong>が必要。そのためにはメンバーからの状況が正確に伝わらなければならない。<strong>状況を正確に伝える役割はメンバー側にある。</strong><span class="src">← S03:p.29</span>
+      </div>
+      <div class="block block-ext">
+        <div class="block-label">💡 補足 — 「ほうれんそう」の背景</div>
+        報告・連絡・相談を意味する「ほうれんそう」は、1982年に山種証券（現SMBC日興証券の前身）社長だった山崎富治氏が社内の標語として提唱したとされる概念。日本のビジネス文化に深く根付いており、新入社員教育の基本として今も広く使われる。この講義では単なる作法論ではなく、「PMが正確な判断をするための情報提供手段」という実務的観点から位置づけている点が重要。
+      </div>
+      <table class="note-table">
+        <thead><tr><th>種類</th><th>タイミング・指標</th><th>ポイント</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>報告</strong></td>
+            <td>最初からタイミングが決まっており、内容も決まっている</td>
+            <td>作業が終わっていなくても<strong>経過を必ず報告</strong>する。タイミングを自分の作業より優先する。<span class="src">← S03:p.30</span></td>
+          </tr>
+          <tr>
+            <td><strong>連絡</strong></td>
+            <td>指標（トリガー）が決まっている。何か変化があったとき・相手に動いてほしいとき</td>
+            <td><strong>早めに行う</strong>。連絡遅れで可能なことが不可能になることもある。<span class="src">← S03:p.31</span></td>
+          </tr>
+          <tr>
+            <td><strong>相談</strong></td>
+            <td>特に指示はない。困ったことがあれば随時</td>
+            <td>情報を整理して（何が→なぜ→どうなっているか）<strong>自分なりの対策を添えて伝える</strong>。<span class="src">← S03:p.32</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 class="section-title">報告の6要素</h3>
+      <span class="src">← S03:p.30</span>
+      <table class="note-table">
+        <thead><tr><th>#</th><th>仕事が…</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td><strong>どうなったか</strong></td></tr>
+          <tr><td>2</td><td><strong>どのように進めたか</strong></td></tr>
+          <tr><td>3</td><td><strong>どこまでできているか</strong></td></tr>
+          <tr><td>4</td><td><strong>どのように変わってきているか</strong></td></tr>
+          <tr><td>5</td><td><strong>どのような問題点があったか</strong></td></tr>
+          <tr><td>6</td><td><strong>今後どのようにしようと思っているか</strong>（自分の意見）</td></tr>
+        </tbody>
+      </table>
+      <div class="block block-audio">
+        <div class="block-label">🔊 AUDIO SUPPLEMENT</div>
+        5時に報告を求められているのに作業が遅れている場合、残業が終わってから出すのではなく、<strong>「まだ終わっていないがここまでは進んでいる。残業してこのように進めてよいか？」</strong>と5時の時点で相談する。残業は許可制であり、上司の判断を仰ぐ意味でも報告+相談が必要。<span class="src">← S05</span>
+      </div>
+
+      <h3 class="section-title">情報共有の目的</h3>
+      <table class="note-table">
+        <thead><tr><th>目的</th><th>説明</th></tr></thead>
+        <tbody>
+          <tr><td>作業の円滑化</td><td>同じ情報を共有することで、意味のない作業や繰り返しを防ぎ<strong>足並みを揃えて前に進める</strong>。陸上のリレーのバトンタッチのように、タイミングよく引き継ぐには情報共有が不可欠。<span class="src">← S03:p.28, S05</span></td></tr>
+          <tr><td>作業の効率化</td><td>類似文書作成時に<strong>テンプレート（ひな形）を用意・共有</strong>することで流用でき、大幅な効率アップが期待できる。<span class="src">← S03:p.28</span></td></tr>
+        </tbody>
+      </table>
+
+      <h3 class="section-title" id="ch3-summary">第3章 まとめ</h3>
+      <div class="highlight-box">
+        <div class="hl-title">SUMMARY</div>
+        <ul>
+          <li>プロジェクトの管理には<strong>進捗管理</strong>と<strong>情報共有</strong>が重要 <span class="src">← S03:p.33</span></li>
+          <li>PM型業務の進め方・リーダーの役割を理解し、<strong>メンバーとしてどのように動けばよいか</strong>を考える</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 第4章 -->
+  <section id="ch4">
+    <div class="section-card">
+      <h2 class="chapter-title"><span class="ch-num">4</span>プロジェクトの評価・振り返り</h2>
+      <div class="block block-audio">
+        <div class="block-label">🔊 AUDIO SUPPLEMENT — 冒頭</div>
+        プロジェクトは最終的に成果物が出るだけでなく、<strong>計画通りに進んだかどうかを振り返ることで気づきが生まれ、人は成長する</strong>。キャリア入門でプロジェクト管理を扱う理由はここにある。<span class="src">← S05</span>
+      </div>
+
+      <h3 class="section-title" id="ch4-purpose">評価・振り返りの目的</h3>
+      <table class="note-table">
+        <thead><tr><th>フェーズ</th><th>内容</th></tr></thead>
+        <tbody>
+          <tr><td>プロジェクトの評価</td><td>成果物だけでなく<strong>得た知識・経験などをその後に活かすため</strong>、プロジェクト全体の評価を行う。ノウハウを組織内に蓄積し個人にも還元する。<span class="src">← S03:p.37</span></td></tr>
+          <tr><td>プロジェクトの終結</td><td>期限が来たから終わりではなく、<strong>次回につながる形で結果を残して初めて終結</strong>となる。<span class="src">← S03:p.37</span></td></tr>
+        </tbody>
+      </table>
+      <div class="block block-audio">
+        <div class="block-label">🔊 AUDIO SUPPLEMENT</div>
+        報告・連絡・相談のようなコミュニケーションは業種が変わっても変わらない。得た教訓を<strong>文書化することで自分だけのノウハウから組織のノウハウ</strong>に変えられる。<span class="src">← S05</span>
+      </div>
+
+      <h3 class="section-title" id="ch4-eval">目標に対する評価</h3>
+      <div class="highlight-box">
+        <div class="hl-title">KEY POINT</div>
+        評価するところは<strong>目標に対する結果だけではない</strong>。プロジェクトを任された意図や次のプロジェクトへの繋ぎも評価対象となる。<span class="src">← S03:p.38</span>
+      </div>
+      <div class="block block-audio">
+        <div class="block-label">🔊 AUDIO SUPPLEMENT — 具体例</div>
+        「イベントを開催して100名の連絡先を得る」が目標で「イベントは高評価だったが80名しか得られなかった」場合。<br>
+        ・<strong>新規顧客開拓</strong>が目的なら → 80名は目標未達<br>
+        ・<strong>既存顧客満足度向上</strong>が目的なら → 高評価は成功とも言える<br>
+        <strong>プロジェクトの意図・目的を正しく理解した上で評価することが重要。</strong><span class="src">← S05, S03:p.38</span>
+      </div>
+
+      <p>評価のポイント：<strong>その結果が出た要因を考え、そこから教訓を得る</strong><span class="src">← S03:p.39</span></p>
+      <ul>
+        <li>要因例：募集開始が遅かった、開催時期が悪かった</li>
+        <li>教訓例：告知は<strong>少なくとも1ヶ月前</strong>に開始する</li>
+        <li>教訓例：<strong>月末・月初・月曜日など皆が忙しい時期を避けて</strong>開催日を決定する</li>
+      </ul>
+
+      <h3 class="section-title" id="ch4-close">プロジェクトの終わり方</h3>
+      <p>終わってすぐに打ち上げではなく<strong>プロジェクト終結会議</strong>を開く。<span class="src">← S03:p.40</span></p>
+      <table class="note-table">
+        <thead><tr><th>終結会議の3ポイント</th><th>説明</th></tr></thead>
+        <tbody>
+          <tr><td>苦労した点・改善点を率直に議論する時間を設ける</td><td>途中で強い叱責は精神的ダメージになりやすい。終結会議の場で率直に話し合う</td></tr>
+          <tr><td>失敗が責められない風土をつくる</td><td>個人攻撃ではなく<strong>ノウハウを各人が得られる形</strong>にすることがメイン</td></tr>
+          <tr><td>会社組織にノウハウを保有する仕組みを持つ</td><td>新しいメンバー・マネージャーが入っても<strong>ノウハウが伝承できる仕組み</strong>を整える</td></tr>
+        </tbody>
+      </table>
+      <div class="block block-audio">
+        <div class="block-label">🔊 AUDIO SUPPLEMENT</div>
+        PMはメンバーの教訓・グッドプラクティスを収集・分析して「プロジェクト終結会議報告書」に追加・共有する義務がある。<strong>「メンバーが成長するために吸い上げることがPMの義務」</strong>というのが講師の考え方。<span class="src">← S05</span>
+      </div>
+
+      <h3 class="section-title" id="ch4-knowledge">成果のナレッジベース化</h3>
+      <div class="highlight-box">
+        <div class="hl-title">DEFINITION — ナレッジベース</div>
+        成果物・教訓・グッドプラクティスを収集→データベース化→共有する仕組み。プロジェクトでの成果物は企業・組織にとって<strong>「知識の資産」</strong>となる。<span class="src">← S03:p.41</span>
+      </div>
+      <!-- SVG: ナレッジベース viewBox=0,0,520,175 -->
+      <div class="svg-wrap">
+        <svg viewBox="0 0 520 175" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="a5" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#a78bfa" opacity=".8"/></marker>
+          </defs>
+          <!-- DB cylinder -->
+          <ellipse cx="280" cy="44" rx="58" ry="15" fill="#1a1530" stroke="#a78bfa" stroke-width="1.5"/>
+          <rect x="222" y="44" width="116" height="86" fill="#1a1530"/>
+          <line x1="222" y1="44" x2="222" y2="130" stroke="#a78bfa" stroke-width="1.5"/>
+          <line x1="338" y1="44" x2="338" y2="130" stroke="#a78bfa" stroke-width="1.5"/>
+          <ellipse cx="280" cy="130" rx="58" ry="15" fill="#1a1530" stroke="#a78bfa" stroke-width="1.5"/>
+          <text x="280" y="75" text-anchor="middle" fill="#e2e8f5" font-size="12" font-family="Noto Sans JP">成果物</text>
+          <text x="280" y="97" text-anchor="middle" fill="#fbbf24" font-size="12" font-family="Noto Sans JP">教　訓</text>
+          <text x="280" y="119" text-anchor="middle" fill="#34d399" font-size="11.5" font-family="Noto Sans JP">グッドプラクティス</text>
+          <!-- input arrow -->
+          <line x1="148" y1="87" x2="220" y2="87" stroke="#a78bfa" stroke-width="1.8" marker-end="url(#a5)"/>
+          <text x="74" y="78" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">プロジェクトに</text>
+          <text x="74" y="93" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="Noto Sans JP">関する全記録</text>
+          <!-- output arrow -->
+          <line x1="338" y1="87" x2="388" y2="87" stroke="#a78bfa" stroke-width="1.8" marker-end="url(#a5)"/>
+          <rect x="390" y="60" width="100" height="54" rx="6" fill="rgba(167,139,250,.1)" stroke="#a78bfa" stroke-width="1.2"/>
+          <text x="440" y="84" text-anchor="middle" fill="#a78bfa" font-size="13" font-family="Noto Sans JP" font-weight="bold">共　有</text>
+          <!-- bottom note -->
+          <text x="260" y="162" text-anchor="middle" fill="#5a6888" font-size="10.5" font-family="Noto Sans JP">プロジェクトを繰り返すほど実績・ノウハウが蓄積される</text>
+        </svg>
+        <figcaption>図：成果のナレッジベース化 <span class="src">S03:p.41</span></figcaption>
+      </div>
+      <div class="block block-audio">
+        <div class="block-label">🔊 AUDIO SUPPLEMENT</div>
+        技術革新や顧客ニーズ多様化により成果物はすぐ陳腐化することもある。しかし<strong>教訓・グッドプラクティスは時代の変化で風化しにくい</strong>。実際に経験して気づいたことは本質的な価値を持ち続ける。社歴が長い会社・プロジェクト経験の多い個人の方がノウハウを多く持つ。<span class="src">← S05</span>
+      </div>
+
+      <h3 class="section-title" id="ch4-next">学んだことを次に活かす</h3>
+      <p>学生のうちから「プロジェクト」を意識した活動を行い、<strong>たくさんの教訓を集め、今後に活かす</strong>。<span class="src">← S03:p.42</span></p>
+      <div class="block block-ext">
+        <div class="block-label">💡 具体的な方法の提案 <span class="src">← S03:p.42</span></div>
+        <strong>教訓ノートの作成</strong>：日々の活動で学んだことをその場で終わらせず、一つひとつきちんと整理してまとめておく。社会人になった後に大きな宝になる。<br><br>
+        ブログ・SNSなどに残すことも有効。<strong>ギブアンドテイク</strong>で自分が先に提供することで他者のノウハウを得て、自己成長のスピードを上げることもできる。
+      </div>
+      <div class="block block-audio">
+        <div class="block-label">🔊 AUDIO SUPPLEMENT</div>
+        個人のナレッジベースをどのような形で作るかも考えていく必要がある。会社が変わっても仕事が変わっても、それぞれの職場での経験は<strong>積み重なる</strong>。キャリアは経験の積み重ねの上に乗っかっていくもの。<span class="src">← S05</span>
+      </div>
+
+      <h3 class="section-title" id="ch4-summary">第4章 まとめ</h3>
+      <div class="highlight-box">
+        <div class="hl-title">SUMMARY</div>
+        <ul>
+          <li>結果の良い悪いに関わらず、<strong>きちんと振り返ることで必ず得られるものがある</strong> <span class="src">← S03:p.43</span></li>
+          <li>得た知識や学んだことは<strong>行動に反映し、他者にも共有する</strong>ことで自分のものになる</li>
+          <li>経験を自分だけで囲い込もうとすると自分のものになりにくい傾向がある</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- APPENDICES -->
+  <div class="appendix-card appendix-a" id="appendix-a">
+    <div class="appendix-title">⭐ 補足A：最重要ワード一覧</div>
+    <table class="note-table">
+      <thead><tr><th>用語</th><th>読み</th><th>定義</th><th>重要度</th></tr></thead>
+      <tbody>
+        <tr><td>WBS（Work Breakdown Structure）</td><td>ダブリュービーエス</td><td>プロジェクト全作業を小さく分解し階層状に体系化した作業計画。PMBOKでは「プロジェクトチームが実施する作業の全範囲を階層的に要素分解したもの」と定義</td><td>★★★</td></tr>
+        <tr><td>ワークパッケージ</td><td>わーくぱっけーじ</td><td>WBSで「これ以上落とさなくてもよい」最下層まで分解された実行可能な作業単位。コスト・スケジュール管理の基本単位</td><td>★★★</td></tr>
+        <tr><td>MECE（ミーシー）</td><td>みーしー</td><td>Mutually Exclusive, Collectively Exhaustive の略。「漏れなく・ダブりなく」分解するロジカルシンキングの基本原則。WBS作成・Howツリーの根底にある考え方</td><td>★★★</td></tr>
+        <tr><td>Howツリー</td><td>はうつりー</td><td>「どうやって？」を繰り返し問いかけることで目標を具体的な行動レベルまで落とし込むロジックツリーの一種</td><td>★★★</td></tr>
+        <tr><td>前後関係</td><td>ぜんごかんけい</td><td>作業間の依存関係（先行作業・並行作業・後続作業）。前後関係の誤りはトラブルの元になる</td><td>★★★</td></tr>
+        <tr><td>進捗管理</td><td>しんちょくかんり</td><td>当初予定通りに仕事が進んでいるかを管理すること。PMの主要業務</td><td>★★★</td></tr>
+        <tr><td>是正策</td><td>ぜせいさく</td><td>計画と実績に差異が発生した際に問題を特定し修正・調整するための対策</td><td>★★☆</td></tr>
+        <tr><td>プロジェクト記述書</td><td>ぷろじぇくときじゅつしょ</td><td>プロジェクトの目標・計画を記載した文書。進捗管理・WBSスケジュール表の共有基盤となる</td><td>★★☆</td></tr>
+        <tr><td>ナレッジベース</td><td>なれっじべーす</td><td>成果物・教訓・グッドプラクティスをDB化し組織で共有する仕組み。プロジェクトの「知識の資産」</td><td>★★★</td></tr>
+        <tr><td>グッドプラクティス</td><td>ぐっどぷらくてぃす</td><td>プロジェクト終結時に収集・共有すべき優れた実践事例。教訓とセットでナレッジベースに蓄積する</td><td>★★☆</td></tr>
+        <tr><td>報告・連絡・相談（ほうれんそう）</td><td>ほうれんそう</td><td>プロジェクト管理における基本コミュニケーション3形式。PMの正確な判断を支える情報提供手段</td><td>★★★</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="appendix-card appendix-b" id="appendix-b">
+    <div class="appendix-title">📚 補足B：知っておくべき背景知識</div>
+
+    <p><strong>PMBOK と WBS の正式定義</strong></p>
+    <p class="ext-note">[外部補足] PMBOK（Project Management Body of Knowledge）ガイドはPMI（Project Management Institute, 米国）が発行するプロジェクトマネジメントの国際標準。WBSはPMBOKガイド第6版で「プロジェクト目標を達成し必要な成果物を生成するために、プロジェクトチームが実施する作業の全範囲を<em>階層的に要素分解</em>したもの」と定義されている（PMI, 2017）。最新の第7版（2021年）では成果物ベースの原則的アプローチへ移行。ワークパッケージはWBSの最下層要素であり、コスト・スケジュール・リソース管理のコントロール単位となる。PMBOKではWBS作成の際、各レベルで「100%ルール（上位レベル＝下位レベルの総和）」の遵守が求められる。</p>
+
+    <p style="margin-top:14px;"><strong>MECE（ミーシー）— 「漏れなく・ダブりなく」の原則</strong></p>
+    <p class="ext-note">[外部補足] MECE（Mutually Exclusive, Collectively Exhaustive）は「相互に重複せず、全体として漏れがない」ことを意味するロジカルシンキングの基本概念。1960年代後半にマッキンゼー・アンド・カンパニーのバーバラ・ミント（Barbara Minto）が考案し、同社の社内用語として発展。現在はビジネス全般に広く普及している。WBSで「項目の重複に気をつける」（S03:p.7）というのはまさにMECEの考え方に対応する。Howツリーで「目標をモレやダブりがないように分解する」（S03:p.9）も同じ原則。</p>
+
+    <p style="margin-top:14px;"><strong>ロジックツリーの4種類</strong></p>
+    <p class="ext-note">[外部補足] この講義で紹介されたHowツリーは「ロジックツリー」の一種。ロジックツリーには目的に応じて4種類ある：</p>
+    <table class="note-table" style="margin-top:8px;font-size:13px;">
+      <thead><tr><th>種類</th><th>問い</th><th>用途</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Whatツリー（要素分解ツリー）</strong></td><td>何で構成されているか？</td><td>問題の所在を特定する・構成要素を洗い出す</td></tr>
+        <tr><td><strong>Whyツリー（原因追究ツリー）</strong></td><td>なぜそうなったか？</td><td>問題の根本原因を特定する</td></tr>
+        <tr><td><strong>Howツリー（問題解決ツリー）</strong></td><td>どうすれば解決できるか？</td><td>解決策を具体的な行動レベルまで落とし込む ←この講義で紹介</td></tr>
+        <tr><td><strong>KPIツリー</strong></td><td>目標達成に何が必要か？</td><td>KGIとKPIの関係を可視化して行動計画に落とす</td></tr>
+      </tbody>
+    </table>
+    <p class="ext-note" style="margin-top:6px;">全種類に共通する原則：<strong>MECE（漏れなく・ダブりなく）</strong>に分解すること。</p>
+  </div>
+
+  <div class="appendix-card appendix-c" id="appendix-c">
+    <div class="appendix-title">🎯 補足C：試験・レポートで重要な観点</div>
+    <ul>
+      <li><strong>WBSの3つの意義</strong>（同時並行・努力配分最適化・進行管理の基礎）を説明できること</li>
+      <li><strong>ワークパッケージの定義</strong>（「これ以上落とさなくてもよいレベル」）を正確に理解する</li>
+      <li><strong>作業の前後関係の3観点</strong>（先行・並行・後続）を区別して説明できること</li>
+      <li><strong>報告・連絡・相談の違い</strong>（タイミング決定の仕方・トリガーの有無・情報整理の必要性）</li>
+      <li><strong>プロジェクト評価は成果物だけでなく知識・経験も含む</strong>という視点</li>
+      <li><strong>終結会議の3ポイント</strong>（率直な議論・失敗を責めない文化・ノウハウ保有の仕組み）</li>
+      <li>目標に対する評価は「意図・目的を正しく理解した上で行う」という考え方</li>
+      <li>報告の6要素（どうなったか・どのようにしたか・どこまでできたか・どのように変わったか・問題点・今後の方針）</li>
+    </ul>
+  </div>
+
+  <div class="appendix-card appendix-d" id="appendix-d">
+    <div class="appendix-title">🔗 補足D：関連概念・次回への接続</div>
+
+    <p><strong>ガントチャート</strong></p>
+    <p class="ext-note">[外部補足] WBSで定義した作業を横棒グラフで時間軸上に配置したスケジュール管理ツール。縦軸にタスク、横軸に日付を配置し、進捗の可視化に使う。WBSで「作業を洗い出す」→ガントチャートで「いつやるか（スケジュール）を管理する」という流れが標準的な使い方（WBSとガントチャートはセットで機能する）。Microsoft Project・Asana・Notionなど多くのPMツールで標準機能として提供されている。</p>
+
+    <p style="margin-top:12px;"><strong>クリティカルパス法（CPM: Critical Path Method）</strong></p>
+    <p class="ext-note">[外部補足] 作業の前後関係（依存関係）と各作業の所要時間から、プロジェクト完了までの最長経路（クリティカルパス）を特定する手法。クリティカルパス上の作業が1つでも遅延するとプロジェクト全体が遅延する。1950年代後半に米国デュポン社が開発。この講義の「前後関係」概念を数値化・定量化に発展させたもの。WBSを作成してからクリティカルパスを求めるのが基本フロー。</p>
+
+    <p style="margin-top:12px;"><strong>KPT（Keep / Problem / Try）— 振り返りフレームワーク</strong></p>
+    <p class="ext-note">[外部補足] Keep（継続すること）・Problem（課題）・Try（次回試すこと）の3軸でプロジェクトを振り返るフレームワーク。もともと米国の情報工学者Alistair Cockburn（アリスター・コーバーン）が提唱した「The Keep/Try Reflection」が起源で、日本のアジャイル開発コミュニティが現在の形に発展させた。現在は業種を問わず広く活用されている。この講義の「プロジェクト終結会議」「教訓ノート」の考え方と高い親和性を持つ。</p>
+
+    <p style="margin-top:12px;"><strong>次回以降への接続</strong>：WBS・進捗管理・ほうれんそうはキャリア形成の実践スキルとして、以降の講義・インターンシップ・就職活動においても活用できる。</p>
+  </div>
+
+  <!-- 未確定事項リスト（末尾） -->
+  <section id="unconfirmed">
+    <div class="appendix-card appendix-unconfirmed">
+      <div class="appendix-title">❓ 未確定事項・要確認リスト</div>
+      <p style="font-size:13px;color:var(--accent-green);margin-bottom:12px;">✅ Web調査完了 — 残存未解消事項：0件（全件解消済み）</p>
+      <table class="note-table">
+        <thead><tr><th>ID</th><th>内容</th><th>種別</th><th>解消状況</th></tr></thead>
+        <tbody>
+          <tr>
+            <td style="white-space:nowrap;">U01</td>
+            <td>「8割は思う通りにならない」の根拠</td>
+            <td>[内容不足]</td>
+            <td style="color:var(--accent-green);font-size:13px;">
+              <strong>✅ 解決済み（講師の経験則と確定）</strong><br>
+              Web調査により、この「8割」は特定の研究・統計に基づく数値ではなく実務者が経験的に語る格言的表現であることを確認。講師自身も「私どもはこう言います」と個人の経験則であることを明示。主旨（初めての仕事では想定外が多い＝事前の問題予測が重要）は一般的なリスク管理の考え方として正しい。
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer style="margin-top:40px;padding-top:20px;border-top:1px solid var(--border);font-size:11.5px;color:var(--text-muted);font-family:'JetBrains Mono',monospace;">
+    SSP v4.5.1 | キャリア入門 第7回 | Sources: S03 + S05×2 | v1.0: 2026-04-06 初版 | v1.2: 2026-04-06 未確定事項を末尾に移動・MECE/ほうれんそう/リスク管理の外部補足を本文に追加・補足A拡充・補足B/D精緻化（全Web確認済み）
+  </footer>
+</main>
+
+<script>
+const sections = document.querySelectorAll('section[id], h3[id]');
+const tocLinks = document.querySelectorAll('#toc a');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      tocLinks.forEach(l => l.classList.remove('active'));
+      const a = document.querySelector(`#toc a[href="#${e.target.id}"]`);
+      if (a) a.classList.add('active');
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+sections.forEach(s => obs.observe(s));
+</script>
+</body>
+</html>
