@@ -1,0 +1,1422 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>インターネット入門 第7回｜サーバシステム（v1.1）</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --bg-card: #1a1f2e;
+    --bg-sidebar: #141824;
+    --bg-hover: #212840;
+    --border: #2a3050;
+    --border-light: #1e2535;
+    --text: #e2e8f5;
+    --text-sub: #8a99b8;
+    --text-muted: #4a5578;
+    --accent: #5b8dee;
+    --accent-soft: #1e2d4d;
+    --green: #34d399;
+    --green-soft: #0d2a1f;
+    --yellow: #fbbf24;
+    --yellow-soft: #2a1e08;
+    --purple: #a78bfa;
+    --purple-soft: #1e1535;
+    --orange: #fb923c;
+    --orange-soft: #2a1508;
+    --red: #f87171;
+    --red-soft: #2a0f0f;
+    --sidebar-w: 260px;
+    --mono: 'JetBrains Mono', monospace;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;font-size:15px}
+  body{
+    font-family:'Noto Sans JP',sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.8;
+    display:flex;
+    min-height:100vh;
+  }
+
+  /* ===== SIDEBAR ===== */
+  #sidebar{
+    position:fixed;
+    top:0;left:0;
+    width:var(--sidebar-w);
+    height:100vh;
+    background:var(--bg-sidebar);
+    border-right:1px solid var(--border);
+    overflow-y:auto;
+    padding:20px 0 40px;
+    z-index:100;
+  }
+  #sidebar::-webkit-scrollbar{width:4px}
+  #sidebar::-webkit-scrollbar-track{background:transparent}
+  #sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+  .sidebar-header{
+    padding:16px 20px 20px;
+    border-bottom:1px solid var(--border);
+    margin-bottom:12px;
+  }
+  .sidebar-header .course-tag{
+    font-size:10px;
+    font-family:var(--mono);
+    color:var(--accent);
+    background:var(--accent-soft);
+    padding:2px 8px;
+    border-radius:4px;
+    display:inline-block;
+    margin-bottom:8px;
+    letter-spacing:0.05em;
+  }
+  .sidebar-header h2{
+    font-size:12px;
+    color:var(--text);
+    font-weight:500;
+    line-height:1.5;
+  }
+  .sidebar-header .meta{
+    font-size:11px;
+    color:var(--text-muted);
+    margin-top:4px;
+    font-family:var(--mono);
+  }
+  .nav-section{
+    padding:6px 0;
+    border-bottom:1px solid var(--border-light);
+    margin-bottom:4px;
+  }
+  .nav-section-title{
+    font-size:10px;
+    font-weight:700;
+    color:var(--text-muted);
+    text-transform:uppercase;
+    letter-spacing:0.12em;
+    padding:4px 20px 8px;
+  }
+  .nav-link{
+    display:block;
+    padding:7px 20px 7px 24px;
+    font-size:12px;
+    color:var(--text-sub);
+    text-decoration:none;
+    transition:all 0.15s;
+    border-left:2px solid transparent;
+    line-height:1.4;
+  }
+  .nav-link:hover{color:var(--text);background:var(--bg-hover);border-left-color:var(--border)}
+  .nav-link.active{color:var(--accent);background:var(--accent-soft);border-left-color:var(--accent)}
+  .nav-sub{padding-left:14px;font-size:11px;color:var(--text-muted)}
+
+  /* ===== MAIN ===== */
+  #main{
+    margin-left:var(--sidebar-w);
+    flex:1;
+    max-width:900px;
+    padding:40px 48px 80px;
+  }
+
+  /* ===== PAGE HEADER ===== */
+  .page-header{
+    border-bottom:1px solid var(--border);
+    padding-bottom:28px;
+    margin-bottom:40px;
+  }
+  .page-header .kv{
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--accent);
+    letter-spacing:0.1em;
+    margin-bottom:10px;
+  }
+  .page-header h1{
+    font-size:28px;
+    font-weight:700;
+    color:var(--text);
+    line-height:1.3;
+    margin-bottom:14px;
+  }
+  .page-header .meta-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+  }
+  .meta-badge{
+    font-family:var(--mono);
+    font-size:11px;
+    padding:3px 10px;
+    border-radius:4px;
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    color:var(--text-sub);
+  }
+  .source-badges{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap}
+  .src-badge{
+    font-family:var(--mono);
+    font-size:10px;
+    padding:2px 8px;
+    border-radius:3px;
+    border:1px solid;
+  }
+  .src-s03{background:rgba(91,141,238,.1);border-color:rgba(91,141,238,.4);color:var(--accent)}
+  .src-s05{background:rgba(167,139,250,.1);border-color:rgba(167,139,250,.4);color:var(--purple)}
+
+  /* ===== CHAPTER / SECTION ===== */
+  .chapter{
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    margin-bottom:32px;
+    overflow:hidden;
+  }
+  .chapter-header{
+    background:linear-gradient(135deg,#1a2040 0%,#1e2535 100%);
+    border-bottom:1px solid var(--border);
+    padding:18px 24px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+  }
+  .chapter-num{
+    font-family:var(--mono);
+    font-size:10px;
+    color:var(--accent);
+    background:var(--accent-soft);
+    border:1px solid var(--accent);
+    padding:2px 8px;
+    border-radius:4px;
+    letter-spacing:0.1em;
+    white-space:nowrap;
+  }
+  .chapter-header h2{
+    font-size:18px;
+    font-weight:700;
+    color:var(--text);
+  }
+  .chapter-body{padding:0 24px 24px}
+
+  .section{margin-top:24px}
+  .section h3{
+    font-size:14px;
+    font-weight:700;
+    color:var(--accent);
+    border-bottom:1px solid var(--border-light);
+    padding-bottom:8px;
+    margin-bottom:14px;
+    letter-spacing:0.02em;
+  }
+  .section h4{
+    font-size:13px;
+    font-weight:700;
+    color:var(--yellow);
+    margin:16px 0 8px;
+  }
+
+  p{font-size:14px;color:var(--text);line-height:1.85;margin-bottom:12px}
+  p:last-child{margin-bottom:0}
+
+  /* ===== SOURCE POINTER ===== */
+  .ptr{
+    font-family:var(--mono);
+    font-size:10px;
+    color:var(--text-muted);
+    background:var(--bg);
+    border:1px solid var(--border);
+    padding:1px 6px;
+    border-radius:3px;
+    margin-left:6px;
+    white-space:nowrap;
+  }
+
+  /* ===== CALLOUT BLOCKS ===== */
+  .block{
+    border-radius:6px;
+    padding:14px 18px;
+    margin:14px 0;
+    font-size:13.5px;
+    line-height:1.8;
+  }
+  .block-audio{
+    border-left:3px solid var(--accent);
+    background:rgba(91,141,238,.07);
+  }
+  .block-audio .block-label{
+    font-size:11px;
+    font-family:var(--mono);
+    color:var(--accent);
+    font-weight:600;
+    margin-bottom:6px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .block-inference{
+    border-left:3px solid var(--purple);
+    background:var(--purple-soft);
+  }
+  .block-external{
+    border-left:3px solid var(--green);
+    background:var(--green-soft);
+  }
+  .block-external .block-label{
+    font-size:11px;
+    font-family:var(--mono);
+    color:var(--green);
+    margin-bottom:6px;
+  }
+  .block-warn{
+    border-left:3px solid var(--orange);
+    background:var(--orange-soft);
+  }
+  .block-important{
+    border-left:3px solid var(--yellow);
+    background:var(--yellow-soft);
+    border-radius:6px;
+    padding:12px 18px;
+    margin:14px 0;
+  }
+  .block-important strong{color:var(--yellow)}
+
+  /* ===== TABLES ===== */
+  .tbl-wrap{overflow-x:auto;margin:14px 0;border-radius:6px;border:1px solid var(--border)}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  thead{background:#1e2535}
+  thead th{
+    padding:10px 14px;
+    color:var(--text-sub);
+    font-weight:600;
+    font-size:12px;
+    text-align:left;
+    border-bottom:1px solid var(--border);
+    white-space:nowrap;
+  }
+  tbody tr{border-bottom:1px solid var(--border-light)}
+  tbody tr:last-child{border-bottom:none}
+  tbody tr:hover{background:rgba(91,141,238,.04)}
+  tbody td{padding:9px 14px;font-size:13px;color:var(--text);vertical-align:top}
+  td strong{color:var(--yellow);font-weight:600}
+  td code{font-family:var(--mono);font-size:12px;background:var(--bg);padding:1px 6px;border-radius:3px;color:var(--accent)}
+
+  /* ===== CODE BLOCKS ===== */
+  .code-block{
+    background:var(--bg);
+    border:1px solid var(--border);
+    border-radius:6px;
+    padding:14px 18px;
+    margin:14px 0;
+    font-family:var(--mono);
+    font-size:12.5px;
+    color:var(--text-sub);
+    line-height:1.7;
+    overflow-x:auto;
+    white-space:pre;
+  }
+
+  /* ===== SVG CONTAINERS ===== */
+  .svg-wrap{
+    margin:18px 0;
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    border-radius:8px;
+    overflow:hidden;
+  }
+  .svg-wrap figcaption{
+    font-size:11px;
+    font-family:var(--mono);
+    color:var(--text-muted);
+    padding:6px 16px 10px;
+    border-top:1px solid var(--border-light);
+    background:var(--bg);
+  }
+  .svg-wrap svg{display:block;width:100%;height:auto}
+
+  /* ===== APPENDIX ===== */
+  .appendix-card{
+    border-radius:10px;
+    padding:20px 24px;
+    margin-bottom:20px;
+    border:1px solid;
+  }
+  .appendix-card h3{
+    font-size:15px;
+    font-weight:700;
+    margin-bottom:14px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .app-uncertain{background:rgba(251,146,60,.07);border-color:rgba(251,146,60,.3)}
+  .app-uncertain h3{color:var(--orange)}
+  .app-a{background:var(--accent-soft);border-color:rgba(91,141,238,.3)}
+  .app-a h3{color:var(--accent)}
+  .app-b{background:var(--green-soft);border-color:rgba(52,211,153,.3)}
+  .app-b h3{color:var(--green)}
+  .app-c{background:var(--yellow-soft);border-color:rgba(251,191,36,.3)}
+  .app-c h3{color:var(--yellow)}
+  .app-d{background:var(--purple-soft);border-color:rgba(167,139,250,.3)}
+  .app-d h3{color:var(--purple)}
+  .app-item{font-size:13px;color:var(--text-sub);margin-bottom:8px;padding-left:16px;position:relative}
+  .app-item::before{content:'—';position:absolute;left:0;color:var(--text-muted)}
+  .ext-note{font-size:12px;color:var(--text-muted)}
+
+  /* ===== MISC ===== */
+  ol,ul{padding-left:20px;font-size:14px;margin-bottom:12px}
+  li{margin-bottom:4px;color:var(--text)}
+  li strong{color:var(--yellow)}
+  strong{color:var(--text);font-weight:600}
+  blockquote{
+    border-left:3px solid var(--border);
+    padding:10px 18px;
+    margin:12px 0;
+    color:var(--text-sub);
+    font-size:13.5px;
+  }
+
+  /* ===== LEARNING GOALS ===== */
+  .goal-box{
+    background:var(--bg);
+    border:1px solid var(--border);
+    border-radius:6px;
+    padding:12px 18px;
+    margin-bottom:20px;
+  }
+  .goal-box .goal-title{
+    font-size:11px;
+    font-family:var(--mono);
+    color:var(--text-muted);
+    text-transform:uppercase;
+    letter-spacing:0.1em;
+    margin-bottom:8px;
+  }
+  .goal-box li{font-size:13.5px;color:var(--text-sub);margin-bottom:4px}
+
+  /* ===== SUMMARY BOX ===== */
+  .summary-box{
+    background:linear-gradient(135deg,#151a28 0%,#1a2035 100%);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:18px 22px;
+    margin-top:20px;
+  }
+  .summary-box h4{font-size:12px;color:var(--text-muted);font-family:var(--mono);letter-spacing:0.08em;margin-bottom:12px;text-transform:uppercase}
+  .summary-box li{font-size:13.5px;color:var(--text-sub);margin-bottom:6px}
+
+  @media(max-width:1000px){
+    #sidebar{transform:translateX(-100%)}
+    #main{margin-left:0;padding:24px 20px 60px}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== SIDEBAR ===== -->
+<nav id="sidebar">
+  <div class="sidebar-header">
+    <div class="course-tag">CS102 · 第7回</div>
+    <h2>インターネット入門<br>サーバシステム</h2>
+    <div class="meta">池田 大樹 ｜ サイバー大学</div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">講義内容</div>
+    <a class="nav-link" href="#ch1">第1章 サーバシステムの基礎</a>
+    <a class="nav-link nav-sub" href="#s1-1">サーバとクライアント</a>
+    <a class="nav-link nav-sub" href="#s1-3">クライアント・サーバシステム</a>
+    <a class="nav-link nav-sub" href="#s1-4">Firewall と DMZ</a>
+    <a class="nav-link nav-sub" href="#s1-5">サーバ構築の検討事項</a>
+    <a class="nav-link" href="#ch2">第2章 Webサーバの仕組み</a>
+    <a class="nav-link nav-sub" href="#s2-2">3秒ルール・高レスポンス</a>
+    <a class="nav-link nav-sub" href="#s2-3">3層アーキテクチャ</a>
+    <a class="nav-link nav-sub" href="#s2-5">LAMP構成</a>
+    <a class="nav-link" href="#ch3">第3章 サーバOS vs クライアントOS</a>
+    <a class="nav-link nav-sub" href="#s3-3">Windows系 vs UNIX系</a>
+    <a class="nav-link nav-sub" href="#s3-5">Linuxがサーバに向く理由</a>
+    <a class="nav-link nav-sub" href="#s3-6">RHEL（商用Linux）</a>
+    <a class="nav-link" href="#ch4">第4章 オープンソースのシステム</a>
+    <a class="nav-link nav-sub" href="#s4-2">OSSとフリーソフトの違い</a>
+    <a class="nav-link nav-sub" href="#s4-4">メリット・デメリット</a>
+    <a class="nav-link nav-sub" href="#s4-6">LAMP + WordPress</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">補足</div>
+    <a class="nav-link" href="#uncertain">❓ 未確定事項</a>
+    <a class="nav-link" href="#appendixA">⭐ 補足A: 最重要ワード</a>
+    <a class="nav-link" href="#appendixB">📚 補足B: 背景知識</a>
+    <a class="nav-link" href="#appendixC">🎯 補足C: 試験観点</a>
+    <a class="nav-link" href="#appendixD">🔗 補足D: 関連概念</a>
+  </div>
+</nav>
+
+<!-- ===== MAIN ===== -->
+<main id="main">
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div class="kv">INTERNET INTRO · LECTURE 07</div>
+    <h1>サーバシステム</h1>
+    <div class="meta-row">
+      <span class="meta-badge">インターネット入門</span>
+      <span class="meta-badge">池田 大樹</span>
+      <span class="meta-badge">サイバー大学 IT総合学部</span>
+    </div>
+    <div class="source-badges">
+      <span class="src-badge src-s03">S03: スライドPDF</span>
+      <span class="src-badge src-s05">S05-A: hynote.ai</span>
+      <span class="src-badge src-s05">S05-B: hynote.ai</span>
+    </div>
+    <div style="margin-top:10px;font-family:var(--mono);font-size:10px;color:var(--text-muted)">
+      v1.0 初版（Step 5-B完了）<br>
+      v1.1 2026-04-06 　U01解消（W3Techs統計最新化）・補足B/D拡充（Nginx逆転・LEMP・CentOS後継・Linuxサーバ市場規模）
+    </div>
+  </div>
+
+  <!-- ==================== CH1 ==================== -->
+  <div class="chapter" id="ch1">
+    <div class="chapter-header">
+      <span class="chapter-num">CH 01</span>
+      <h2>サーバシステムの基礎</h2>
+    </div>
+    <div class="chapter-body">
+
+      <div class="goal-box">
+        <div class="goal-title">学習目標</div>
+        <ul>
+          <li>クライアント・サーバシステムの基本的な概念について理解し説明できる</li>
+          <li>サーバシステムとネットワークの関係について理解し説明できる</li>
+        </ul>
+      </div>
+
+      <!-- 1-1 -->
+      <div class="section" id="s1-1">
+        <h3>1-1 サーバとクライアント</h3>
+        <p>
+          <strong>サーバ（Server）</strong> とは、ネットワーク上で他のコンピュータに
+          サービスを提供するコンピュータのこと。<span class="ptr">← S03:p.6</span>
+        </p>
+        <p>
+          サーバにはサービスを受ける相手先 — <strong>クライアント</strong> — が存在する。
+          スマートフォンやパソコンでWebサイトを閲覧したり、メールを受け取る端末は
+          すべてクライアント側にあたる。
+        </p>
+
+        <!-- SVG: サーバ→クライアント図 -->
+        <figure class="svg-wrap">
+          <svg viewBox="0 0 640 180" xmlns="http://www.w3.org/2000/svg">
+            <!-- サーバ -->
+            <rect x="40" y="40" width="160" height="100" rx="8" fill="#1e2d4d" stroke="#5b8dee" stroke-width="1.5"/>
+            <text x="120" y="72" text-anchor="middle" font-family="'Noto Sans JP',sans-serif" font-size="13" fill="#5b8dee" font-weight="700">サーバ</text>
+            <text x="120" y="92" text-anchor="middle" font-family="'Noto Sans JP',sans-serif" font-size="11" fill="#8a99b8">サービスを</text>
+            <text x="120" y="110" text-anchor="middle" font-family="'Noto Sans JP',sans-serif" font-size="11" fill="#8a99b8">提供する側</text>
+            <!-- 矢印 -->
+            <defs>
+              <marker id="arrowA" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+                <polygon points="0 0,8 3,0 6" fill="#34d399"/>
+              </marker>
+              <marker id="arrowB" markerWidth="8" markerHeight="6" refX="0" refY="3" orient="auto">
+                <polygon points="8 0,0 3,8 6" fill="#fbbf24"/>
+              </marker>
+            </defs>
+            <line x1="202" y1="82" x2="330" y2="82" stroke="#34d399" stroke-width="1.8" marker-end="url(#arrowA)"/>
+            <text x="266" y="72" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#34d399">サービス提供</text>
+            <line x1="330" y1="102" x2="202" y2="102" stroke="#fbbf24" stroke-width="1.8" marker-end="url(#arrowB)"/>
+            <text x="266" y="120" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#fbbf24">リクエスト</text>
+            <!-- クライアント群 -->
+            <!-- PC -->
+            <rect x="340" y="20" width="130" height="48" rx="6" fill="#1a1f2e" stroke="#2a3050" stroke-width="1"/>
+            <text x="405" y="42" text-anchor="middle" font-family="'Noto Sans JP',sans-serif" font-size="11" fill="#8a99b8">💻 PC / スマートフォン</text>
+            <text x="405" y="60" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#4a5578">クライアント</text>
+            <!-- browser -->
+            <rect x="340" y="76" width="130" height="48" rx="6" fill="#1a1f2e" stroke="#2a3050" stroke-width="1"/>
+            <text x="405" y="98" text-anchor="middle" font-family="'Noto Sans JP',sans-serif" font-size="11" fill="#8a99b8">🌐 ブラウザ</text>
+            <text x="405" y="116" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#4a5578">クライアント</text>
+            <!-- mobile -->
+            <rect x="340" y="132" width="130" height="38" rx="6" fill="#1a1f2e" stroke="#2a3050" stroke-width="1"/>
+            <text x="405" y="152" text-anchor="middle" font-family="'Noto Sans JP',sans-serif" font-size="11" fill="#8a99b8">📱 モバイルアプリ</text>
+          </svg>
+          <figcaption>図：サーバとクライアントの関係 <span class="ptr">S03:p.6</span></figcaption>
+        </figure>
+
+        <div class="block block-audio">
+          <div class="block-label">🔊 音声補足（池田先生）</div>
+          サイバー大学のCloud Campusを閲覧している画面もWebサーバからサービスを受けている。
+          日常的に使っているスマートフォンはクライアントの典型例。会社や学校内にも、
+          プリンタサーバ（印刷を管理するサーバ）やファイルサーバ（社内ファイル共有）など、
+          多数のサーバが稼働している。<span class="ptr">← S05-A/B</span>
+        </div>
+
+        <h4>サーバの役割はサービスの種別で決まる</h4>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>カテゴリ</th><th>代表的なサーバ</th><th>説明</th></tr></thead>
+            <tbody>
+              <tr><td>インターネット公開</td><td><strong>Webサーバ</strong></td><td>Webサイトの情報をクライアントに提供</td></tr>
+              <tr><td>インターネット公開</td><td><strong>メールサーバ</strong></td><td>メールの送受信を管理</td></tr>
+              <tr><td>組織内使用</td><td><strong>プリンタサーバ</strong></td><td>社内・学校内の印刷管理</td></tr>
+              <tr><td>組織内使用</td><td><strong>ファイルサーバ</strong></td><td>組織内でのファイル共有</td></tr>
+              <tr><td>インターネット接続</td><td><strong>DNSサーバ</strong></td><td>ドメイン名とIPアドレスの対応付け</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p><span class="ptr">← S03:p.7, p.10</span></p>
+        <div class="block-important">
+          <strong>ポイント:</strong> ネットワーク上でサービスを提供するために多くのサーバが存在する。
+          1つの組織内に複数のサーバが稼働しているのが一般的。
+        </div>
+      </div>
+
+      <!-- 1-3 -->
+      <div class="section" id="s1-3">
+        <h3>1-3 クライアント・サーバシステム</h3>
+        <p>
+          <strong>クライアント・サーバシステム</strong> とは、クライアントとサーバで構成された、
+          現在の一般的なコンピュータシステムの方式。<span class="ptr">← S03:p.8,9</span>
+        </p>
+        <div class="block-important">
+          <strong>最重要ポイント:</strong> サーバはクライアントからの
+          <strong>リクエスト（要求）を受けてから</strong>処理を開始し、
+          サービスを提供する。<strong>サーバが一方的・自発的に動作するわけではない。</strong>
+        </div>
+
+        <div class="code-block">[クライアント] ──(1) 要求（Request）──→ [サーバ]
+[クライアント] ←──(2) 返答（Response）── [サーバ]</div>
+
+        <div class="block block-audio">
+          <div class="block-label">🔊 音声補足（池田先生）</div>
+          Cloud Campusへのアクセスを例にすると: ブラウザ（クライアント）が
+          Cloud Campusの情報を要求 → サーバが処理 → 返答としてページが表示される、
+          という流れ。このやり取りのプロトコルとしてHTTP・HTTPSが使われる
+          （第2回第3章参照）。<span class="ptr">← S05-A/B</span>
+        </div>
+      </div>
+
+      <!-- 1-4 -->
+      <div class="section" id="s1-4">
+        <h3>1-4 ファイアウォールとDMZ</h3>
+
+        <h4>ファイアウォール（Firewall）</h4>
+        <p>
+          <strong>ファイアウォール</strong>（「防火壁」の意）は、
+          必要な範囲だけインターネットとの通信を許可する機器・ソフトウェア。
+          <span class="ptr">← S03:p.12</span>
+        </p>
+        <div class="block block-audio">
+          <div class="block-label">🔊 音声補足（池田先生）</div>
+          社内ネットワークをインターネットにそのまま接続することは基本的にしない。
+          ファイアウォールを通して、プロトコル（通信の規約）に基づいて
+          許可・遮断の設定をする。ハードウェアの場合もあれば
+          ソフトウェアで実現する場合もある。<span class="ptr">← S05-A/B</span>
+        </div>
+
+        <h4>DMZ（De-Militarized Zone）「非武装地帯」</h4>
+        <p>
+          <strong>DMZ</strong> は、インターネット上に「公開するサーバ」と
+          「公開しないサーバ」を分離したネットワーク構成。
+          <span class="ptr">← S03:p.13</span>
+        </p>
+
+        <!-- SVG: DMZ構成図 -->
+        <figure class="svg-wrap">
+          <!-- 座標メモ:
+            全体 viewBox 0 0 640 280
+            Internet: (280,20) w=80 h=50
+            Firewall: (265,100) w=110 h=40
+            DMZ box: (400,90) w=180 h=130
+            社内ネットワーク: (40,90) w=190 h=170
+          -->
+          <svg viewBox="0 0 640 300" xmlns="http://www.w3.org/2000/svg">
+            <!-- インターネット -->
+            <rect x="265" y="10" width="110" height="46" rx="22" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+            <text x="320" y="30" text-anchor="middle" font-family="'Noto Sans JP',sans-serif" font-size="12" fill="#5b8dee" font-weight="700">インターネット</text>
+            <text x="320" y="47" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4a5578">( WAN )</text>
+
+            <!-- Firewall -->
+            <rect x="258" y="82" width="124" height="38" rx="6" fill="#2a1e08" stroke="#fbbf24" stroke-width="1.5"/>
+            <text x="320" y="97" text-anchor="middle" font-family="'Noto Sans JP',sans-serif" font-size="11" fill="#fbbf24" font-weight="700">🔥 ファイアウォール</text>
+            <text x="320" y="112" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8a6020">Firewall</text>
+
+            <!-- 縦線: インターネット ↔ FW -->
+            <line x1="320" y1="56" x2="320" y2="82" stroke="#5b8dee" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+            <!-- 社内ネットワーク box -->
+            <rect x="30" y="146" width="200" height="128" rx="8" fill="#0d2a1f" stroke="#34d399" stroke-width="1.2"/>
+            <text x="130" y="168" text-anchor="middle" font-family="'Noto Sans JP',sans-serif" font-size="11" fill="#34d399" font-weight="700">社内ネットワーク</text>
+            <rect x="46" y="178" width="164" height="28" rx="4" fill="#1a1f2e" stroke="#2a3050"/>
+            <text x="128" y="197" text-anchor="middle" font-family="'Noto Sans JP',sans-serif" font-size="11" fill="#8a99b8">ファイル共有・PC管理</text>
+            <rect x="46" y="212" width="164" height="28" rx="4" fill="#1a1f2e" stroke="#2a3050"/>
+            <text x="128" y="231" text-anchor="middle" font-family="'Noto Sans JP',sans-serif" font-size="11" fill="#8a99b8">プリンタ共有</text>
+            <rect x="46" y="246" width="164" height="20" rx="4" fill="#1a1f2e" stroke="#2a3050"/>
+            <text x="128" y="261" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4a5578">社内PC ×N</text>
+
+            <!-- 社内スイッチ -->
+            <rect x="230" y="172" width="50" height="26" rx="4" fill="#1a2035" stroke="#2a3050"/>
+            <text x="255" y="189" text-anchor="middle" font-family="'Noto Sans JP',sans-serif" font-size="9" fill="#4a5578">社内SW</text>
+
+            <!-- DMZ box -->
+            <rect x="395" y="146" width="210" height="128" rx="8" fill="#2a1508" stroke="#fb923c" stroke-width="1.2"/>
+            <text x="500" y="168" text-anchor="middle" font-family="'Noto Sans JP',sans-serif" font-size="11" fill="#fb923c" font-weight="700">DMZ（非武装地帯）</text>
+            <!-- DMZスイッチ -->
+            <rect x="457" y="178" width="86" height="26" rx="4" fill="#1a1f2e" stroke="#2a3050"/>
+            <text x="500" y="196" text-anchor="middle" font-family="'Noto Sans JP',sans-serif" font-size="9" fill="#4a5578">DMZスイッチ</text>
+            <!-- 公開サーバ -->
+            <rect x="416" y="212" width="168" height="52" rx="4" fill="#1a1f2e" stroke="#2a3050"/>
+            <text x="500" y="232" text-anchor="middle" font-family="'Noto Sans JP',sans-serif" font-size="11" fill="#8a99b8">公開サーバ</text>
+            <text x="500" y="250" text-anchor="middle" font-family="'Noto Sans JP',sans-serif" font-size="10" fill="#4a5578">DNS・メール・Webサイト</text>
+
+            <!-- FW → 社内SW 線 -->
+            <line x1="258" y1="105" x2="255" y2="172" stroke="#34d399" stroke-width="1.5"/>
+            <!-- FW → DMZ 線 -->
+            <line x1="382" y1="105" x2="500" y2="178" stroke="#fb923c" stroke-width="1.5"/>
+            <!-- 社内SW → 社内ネットワーク -->
+            <line x1="230" y1="185" x2="130" y2="185" stroke="#34d399" stroke-width="1.2"/>
+
+            <!-- ラベル -->
+            <text x="40" y="142" font-family="'JetBrains Mono',monospace" font-size="9" fill="#34d399">✓ 外部から遮断</text>
+            <text x="400" y="142" font-family="'JetBrains Mono',monospace" font-size="9" fill="#fb923c">⚠ インターネットに公開</text>
+          </svg>
+          <figcaption>図：DMZを利用したネットワーク構成 <span class="ptr">S03:p.14</span></figcaption>
+        </figure>
+
+        <div class="block block-audio">
+          <div class="block-label">🔊 音声補足（池田先生）</div>
+          DMZを設けることで、万が一公開サーバへの攻撃があってもDMZ内の影響にとどまり、
+          社内ネットワークは別のネットワークに分離されているため守れる構成になっている。
+          公開サーバの代表例はWebサーバ・DNSサーバ・メールサーバ。
+          <span class="ptr">← S05-A/B</span>
+        </div>
+      </div>
+
+      <!-- 1-5 -->
+      <div class="section" id="s1-5">
+        <h3>1-5 サーバ構築の検討事項</h3>
+
+        <h4>設置場所の選択</h4>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>形態</th><th>内容</th></tr></thead>
+            <tbody>
+              <tr><td><strong>オンプレミス</strong></td><td>サーバ本体・ネットワーク機器を自社で保有・運用</td></tr>
+              <tr><td><strong>レンタルサーバ（共用）</strong></td><td>複数企業でサーバを共有</td></tr>
+              <tr><td><strong>レンタルサーバ（専用）</strong></td><td>1社がサーバを丸ごと借用</td></tr>
+              <tr><td><strong>VPS</strong></td><td>Virtual Private Server。仮想的に専用サーバ相当を構築（仮想化技術は第8回）</td></tr>
+              <tr><td><strong>クラウド</strong></td><td>AWS（Amazon Web Service）・GCP（Google Cloud）・Azure（Microsoft Azure）等</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p><span class="ptr">← S03:p.15</span></p>
+
+        <div class="block block-audio">
+          <div class="block-label">🔊 音声補足（池田先生）</div>
+          特に重要なのは初期設計。初期に導入した構成によってランニングコストや
+          更新費用が大きく変わる。機械は古くなり、ソフトウェアも更新が必要なため、
+          最初の設計が後々まで影響する。<span class="ptr">← S05-A/B</span>
+        </div>
+      </div>
+
+      <div class="summary-box">
+        <h4>第1章 まとめ</h4>
+        <ul>
+          <li><strong>サーバ</strong>＝「提供する側」。クライアントの要求を受けて動く（自発的ではない）</li>
+          <li><strong>クライアント・サーバシステム</strong>が一般的なコンピュータシステムの基本方式</li>
+          <li><strong>ファイアウォール</strong>で必要な通信のみを許可し、<strong>DMZ</strong>で公開・非公開サーバを分離</li>
+          <li>設置場所・仕様の選択はランニングコスト等に大きく影響する</li>
+          <li>LAN・WAN・DNS・IPアドレス・プロトコルなどネットワーク知識が重要</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== CH2 ==================== -->
+  <div class="chapter" id="ch2">
+    <div class="chapter-header">
+      <span class="chapter-num">CH 02</span>
+      <h2>Webサーバの仕組み</h2>
+    </div>
+    <div class="chapter-body">
+
+      <div class="goal-box">
+        <div class="goal-title">学習目標</div>
+        <ul>
+          <li>Webサーバの仕組みについて理解し説明できる</li>
+          <li>Webサーバの構成について理解し説明できる</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h3>2-1 WebサーバはサーバシステムのCSS代表例</h3>
+        <p>日常的に利用するサービスのほとんどでWebサーバが使われている。<span class="ptr">← S03:p.22</span></p>
+        <ul>
+          <li>メール・検索サービス・SNS</li>
+          <li>ネットショッピング・オンラインバンキング</li>
+        </ul>
+
+        <h4>Web上でサービスを展開するメリット</h4>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>メリット</th><th>内容</th></tr></thead>
+            <tbody>
+              <tr><td>いつでも・どこでも</td><td>インターネット環境があれば利用できる</td></tr>
+              <tr><td>クライアント端末の制約が少ない</td><td>ブラウザベースであればOSの差異が少ない（Chrome: Windows/Mac/Linux対応）</td></tr>
+              <tr><td>高速化・大規模化が容易</td><td>サーバ側のCPU・メモリ増強で対応でき、クライアント性能に依存しない</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="block block-audio">
+          <div class="block-label">🔊 音声補足（池田先生）</div>
+          Google ChromeはWindowsでもMacでも使える。クライアント側OSに依存しないのがWeb展開の利点。
+          高速化もサーバ側を増強すれば対応できるため、
+          クライアント側スペックに依存しない点が重要。<span class="ptr">← S05-A/B</span>
+        </div>
+      </div>
+
+      <!-- 2-2 -->
+      <div class="section" id="s2-2">
+        <h3>2-2 Webサーバに求められる性能</h3>
+
+        <div class="block-important">
+          <strong>3秒ルール:</strong> 3秒以内にページを表示できなければユーザーを取り逃す、という経験則。
+          <span class="ptr">← S03:p.23</span>
+        </div>
+
+        <ul>
+          <li>表示が遅いとクライアント側から<strong>再読み込みリクエスト</strong>が来て、サーバ負荷がさらに増す悪循環が生じる</li>
+          <li>内容が即座に得られないと判断されてもユーザーは離脱する</li>
+        </ul>
+
+        <div class="block block-audio">
+          <div class="block-label">🔊 音声補足（池田先生）</div>
+          今のインターネットが高速化している時代では3秒は非常に長く感じる。
+          表示が遅いと再読み込みを連打されてサーバ負荷が急増するという別の問題も生じる。
+          WebサービスはクライアントのアクセスによってサーバのLoad（負荷）が流動的なため、
+          突発的な大量アクセスへの考慮も必要。<span class="ptr">← S05-A/B</span>
+        </div>
+      </div>
+
+      <!-- 2-3 -->
+      <div class="section" id="s2-3">
+        <h3>2-3 Webアプリケーションと3層アーキテクチャ</h3>
+        <p>
+          現在の多くのWebサイトは<strong>Webアプリケーション</strong>でもある。
+          ショッピングサイトで住所を入力して商品を発注するように、
+          双方向のやり取りが発生し、裏側では様々なプログラムが稼働している。
+          <span class="ptr">← S03:p.24</span>
+        </p>
+
+        <h4>3層アーキテクチャ（3-Tier Architecture）</h4>
+        <p>処理の種類ごとにサーバを分割し、<strong>負荷分散・システム変更の容易化</strong>を実現する設計。</p>
+
+        <!-- SVG: 3層アーキテクチャ -->
+        <figure class="svg-wrap">
+          <!-- 座標メモ:
+            5ブロック横並び: クライアント(30,60) Web(170,60) AP(310,60) DB(450,60)
+            幅各100, 高さ80
+          -->
+          <svg viewBox="0 0 620 180" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="arr2" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto">
+                <polygon points="0 0,7 2.5,0 5" fill="#5b8dee"/>
+              </marker>
+              <marker id="arr2b" markerWidth="7" markerHeight="5" refX="0" refY="2.5" orient="auto">
+                <polygon points="7 0,0 2.5,7 5" fill="#5b8dee"/>
+              </marker>
+            </defs>
+
+            <!-- クライアント -->
+            <rect x="20" y="50" width="110" height="80" rx="8" fill="#1a1f2e" stroke="#2a3050" stroke-width="1.5"/>
+            <text x="75" y="82" text-anchor="middle" font-family="'Noto Sans JP',sans-serif" font-size="12" fill="#e2e8f5" font-weight="700">クライアント</text>
+            <text x="75" y="100" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4a5578">PC / SP / etc.</text>
+
+            <!-- 双方向矢印1 -->
+            <line x1="132" y1="82" x2="156" y2="82" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#arr2)"/>
+            <line x1="156" y1="98" x2="132" y2="98" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#arr2b)"/>
+
+            <!-- Webサーバ -->
+            <rect x="158" y="50" width="110" height="80" rx="8" fill="#1e2d4d" stroke="#5b8dee" stroke-width="1.5"/>
+            <text x="213" y="78" text-anchor="middle" font-family="'Noto Sans JP',sans-serif" font-size="12" fill="#5b8dee" font-weight="700">Webサーバ</text>
+            <text x="213" y="96" text-anchor="middle" font-family="'Noto Sans JP',sans-serif" font-size="10" fill="#8a99b8">入力受付</text>
+            <text x="213" y="112" text-anchor="middle" font-family="'Noto Sans JP',sans-serif" font-size="10" fill="#8a99b8">結果表示</text>
+
+            <!-- 双方向矢印2 -->
+            <line x1="270" y1="82" x2="294" y2="82" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#arr2)"/>
+            <line x1="294" y1="98" x2="270" y2="98" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#arr2b)"/>
+
+            <!-- APサーバ -->
+            <rect x="296" y="50" width="110" height="80" rx="8" fill="#1e1535" stroke="#a78bfa" stroke-width="1.5"/>
+            <text x="351" y="78" text-anchor="middle" font-family="'Noto Sans JP',sans-serif" font-size="12" fill="#a78bfa" font-weight="700">APサーバ</text>
+            <text x="351" y="96" text-anchor="middle" font-family="'Noto Sans JP',sans-serif" font-size="10" fill="#8a99b8">処理の中枢</text>
+            <text x="351" y="112" text-anchor="middle" font-family="'Noto Sans JP',sans-serif" font-size="10" fill="#8a99b8">プログラム本体</text>
+
+            <!-- 双方向矢印3 -->
+            <line x1="408" y1="82" x2="432" y2="82" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#arr2)"/>
+            <line x1="432" y1="98" x2="408" y2="98" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#arr2b)"/>
+
+            <!-- DBサーバ -->
+            <rect x="434" y="50" width="110" height="80" rx="8" fill="#0d2a1f" stroke="#34d399" stroke-width="1.5"/>
+            <text x="489" y="78" text-anchor="middle" font-family="'Noto Sans JP',sans-serif" font-size="12" fill="#34d399" font-weight="700">DBサーバ</text>
+            <text x="489" y="96" text-anchor="middle" font-family="'Noto Sans JP',sans-serif" font-size="10" fill="#8a99b8">データ格納</text>
+            <text x="489" y="112" text-anchor="middle" font-family="'Noto Sans JP',sans-serif" font-size="10" fill="#8a99b8">データ管理</text>
+
+            <!-- ラベル -->
+            <text x="213" y="148" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4a5578">窓口</text>
+            <text x="351" y="148" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4a5578">中核処理</text>
+            <text x="489" y="148" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4a5578">永続化</text>
+          </svg>
+          <figcaption>図：3層アーキテクチャ（Web · AP · DB） <span class="ptr">S03:p.25</span></figcaption>
+        </figure>
+
+        <div class="block block-audio">
+          <div class="block-label">🔊 音声補足（池田先生）</div>
+          WebサーバとAPサーバを一緒にするケースもある。AP＝アプリケーションサーバの略、
+          DB＝データベースサーバの略。私たちの目には直接見えないが、
+          裏側でこれらが連動している。<span class="ptr">← S05-A/B</span>
+        </div>
+      </div>
+
+      <!-- 2-4 -->
+      <div class="section">
+        <h3>2-4 Webサーバ関連ソフトウェア</h3>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>役割</th><th>ソフトウェア名</th><th>備考</th></tr></thead>
+            <tbody>
+              <tr><td>Webサーバ</td><td><code>Apache</code>, <code>Nginx</code></td><td>オープンソース（無償）</td></tr>
+              <tr><td>Webサーバ</td><td><code>IIS</code></td><td>Windows Server付属（非OSSの商用製品）</td></tr>
+              <tr><td>APサーバ</td><td><code>Tomcat</code></td><td>オープンソース（無償）</td></tr>
+              <tr><td>DBサーバ</td><td><code>MySQL</code>, <code>PostgreSQL</code></td><td>オープンソース（無償）</td></tr>
+              <tr><td>DBサーバ</td><td><code>Oracle</code></td><td>商用製品</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p><span class="ptr">← S03:p.26</span></p>
+        <div class="block-important">
+          <strong>多くのソフトウェアはオープンソースとして無償で利用できる。</strong>
+        </div>
+      </div>
+
+      <!-- 2-5 -->
+      <div class="section" id="s2-5">
+        <h3>2-5 LAMP構成</h3>
+        <p>
+          <strong>LAMP構成</strong>とはオープンソースのソフトウェア名を組み合わせた略称で、
+          Webサイト・Webアプリケーション構築によく使われる。
+          <span class="ptr">← S03:p.27</span>
+        </p>
+
+        <!-- SVG: LAMP -->
+        <figure class="svg-wrap">
+          <svg viewBox="0 0 580 100" xmlns="http://www.w3.org/2000/svg">
+            <!-- L -->
+            <rect x="30" y="15" width="110" height="70" rx="8" fill="#1e2d4d" stroke="#5b8dee" stroke-width="1.5"/>
+            <text x="85" y="40" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="24" fill="#5b8dee" font-weight="700">L</text>
+            <text x="85" y="60" text-anchor="middle" font-family="'Noto Sans JP',sans-serif" font-size="11" fill="#8a99b8">Linux</text>
+            <text x="85" y="76" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4a5578">稼働OS</text>
+            <!-- A -->
+            <rect x="155" y="15" width="110" height="70" rx="8" fill="#1e1535" stroke="#a78bfa" stroke-width="1.5"/>
+            <text x="210" y="40" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="24" fill="#a78bfa" font-weight="700">A</text>
+            <text x="210" y="60" text-anchor="middle" font-family="'Noto Sans JP',sans-serif" font-size="11" fill="#8a99b8">Apache</text>
+            <text x="210" y="76" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4a5578">Webサーバ</text>
+            <!-- M -->
+            <rect x="280" y="15" width="110" height="70" rx="8" fill="#0d2a1f" stroke="#34d399" stroke-width="1.5"/>
+            <text x="335" y="40" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="24" fill="#34d399" font-weight="700">M</text>
+            <text x="335" y="60" text-anchor="middle" font-family="'Noto Sans JP',sans-serif" font-size="11" fill="#8a99b8">MySQL</text>
+            <text x="335" y="76" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4a5578">データベース</text>
+            <!-- P -->
+            <rect x="405" y="15" width="145" height="70" rx="8" fill="#2a1e08" stroke="#fbbf24" stroke-width="1.5"/>
+            <text x="477" y="40" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="24" fill="#fbbf24" font-weight="700">P</text>
+            <text x="477" y="60" text-anchor="middle" font-family="'Noto Sans JP',sans-serif" font-size="11" fill="#8a99b8">PHP / Perl / Python</text>
+            <text x="477" y="76" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4a5578">プログラム言語</text>
+          </svg>
+          <figcaption>図：LAMP構成の各コンポーネント <span class="ptr">S03:p.27</span></figcaption>
+        </figure>
+
+        <div class="block-important">
+          <strong>すべてオープンソース → すべて無料で利用可能</strong><br>
+          インターネット上に構築に関する情報も豊富にあり、学習にも最適。
+          ※PostgreSQLを使う場合はLAPPと呼ぶこともある。
+        </div>
+
+        <div class="block block-audio">
+          <div class="block-label">🔊 音声補足（池田先生）</div>
+          サーバ関連の勉強をしてみたいなら、このLAMP構成から始めてみるのがおすすめ。
+          情報も豊富にある。<span class="ptr">← S05-A/B</span>
+        </div>
+      </div>
+
+      <div class="summary-box">
+        <h4>第2章 まとめ</h4>
+        <ul>
+          <li>Webサーバはクライアント・サーバシステムの<strong>代表例</strong></li>
+          <li>多くのWebサービスはWebアプリケーションとして動作</li>
+          <li><strong>高レスポンス必須</strong>（3秒ルール）。サーバ負荷は流動的</li>
+          <li>安定稼働・保守性向上のために<strong>3層アーキテクチャ</strong>（Web・AP・DB）という設計</li>
+          <li><strong>LAMP構成</strong>（L・A・M・P）はすべてOSSで構成される代表的な構成</li>
+          <li>Web関連エンジニアはフロントエンド・バックエンド・インフラなど広い範囲に関連</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== CH3 ==================== -->
+  <div class="chapter" id="ch3">
+    <div class="chapter-header">
+      <span class="chapter-num">CH 03</span>
+      <h2>サーバOSとクライアントOSの違い</h2>
+    </div>
+    <div class="chapter-body">
+
+      <div class="goal-box">
+        <div class="goal-title">学習目標</div>
+        <ul>
+          <li>サーバOSとクライアントOSの違いについて理解し説明できる</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h3>3-1 よく利用されるサーバOS / クライアントOS</h3>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>区分</th><th>主なOS</th></tr></thead>
+            <tbody>
+              <tr><td><strong>サーバOS</strong></td><td>Linux（RedHat系・Debian系）、Windows Server</td></tr>
+              <tr><td><strong>クライアントOS</strong></td><td>Windows、macOS、iOS、Android</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p><span class="ptr">← S03:p.32</span></p>
+        <blockquote>補足: Linuxにはクライアント向けのOSも存在するが、一般的にはサーバ用途で多く使われる。</blockquote>
+
+        <h4>用途の違い</h4>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>項目</th><th>サーバOS</th><th>クライアントOS</th></tr></thead>
+            <tbody>
+              <tr><td>対象</td><td>企業・学校・データセンター等</td><td>一般ユーザー</td></tr>
+              <tr><td>重視点</td><td>構築効率・安定稼働・セキュリティ設定</td><td>多機能性・操作性（マウス等）</td></tr>
+              <tr><td>メモリ上限</td><td>大容量対応（Windows Server: Max <strong>48TB</strong>）</td><td>少ない（Windows 11 Pro: Max 6TB）</td></tr>
+              <tr><td>リモート管理</td><td>充実（リモートアクセス対応）</td><td>限定的</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p><span class="ptr">← S03:p.33, p.35</span></p>
+        <div class="block-important">
+          <strong>重要:</strong> 必ずサーバOSを使わなければならないという決まりはない。
+          ただし、使用するソフトウェアや機器の違いから、<strong>用途に合わせたOSを利用することが望ましい。</strong>
+        </div>
+
+        <div class="block block-audio">
+          <div class="block-label">🔊 音声補足（池田先生）</div>
+          クライアント向けOSはゲームや文書作成など多機能さが重視される。
+          対してサーバ向けOSはセットアップ直後に必要最低限のソフトウェアしか入っていない。
+          これにより不要なプログラムの起動を抑え、サーバ本来の処理にリソースを集中できる。
+          <span class="ptr">← S05-A/B</span>
+        </div>
+      </div>
+
+      <!-- 3-3 -->
+      <div class="section" id="s3-3">
+        <h3>3-3 サーバOSの種別：Windows系 vs UNIX系</h3>
+
+        <!-- SVG: Windows vs UNIX 比較 -->
+        <figure class="svg-wrap">
+          <!-- 座標: 左カラム x=30, 右カラム x=320, 高さ=180 -->
+          <svg viewBox="0 0 620 200" xmlns="http://www.w3.org/2000/svg">
+            <!-- Windows -->
+            <rect x="20" y="15" width="270" height="170" rx="8" fill="#1a1f2e" stroke="#5b8dee" stroke-width="1.5"/>
+            <text x="155" y="40" text-anchor="middle" font-family="'Noto Sans JP',sans-serif" font-size="13" fill="#5b8dee" font-weight="700">Windows系</text>
+            <text x="155" y="60" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#4a5578">Windows Server</text>
+            <line x1="40" y1="70" x2="270" y2="70" stroke="#2a3050" stroke-width="1"/>
+            <text x="40" y="92" font-family="'Noto Sans JP',sans-serif" font-size="11" fill="#8a99b8">・通常のWindowsと見た目が似ている</text>
+            <text x="40" y="112" font-family="'Noto Sans JP',sans-serif" font-size="11" fill="#8a99b8">・マウス・キーボードで操作</text>
+            <text x="40" y="132" font-family="'JetBrains Mono',monospace" font-size="10" fill="#fbbf24">  UI: GUI 中心</text>
+            <text x="40" y="152" font-family="'Noto Sans JP',sans-serif" font-size="11" fill="#8a99b8">・2016 → 2019 → 2022 と更新</text>
+
+            <!-- UNIX -->
+            <rect x="310" y="15" width="290" height="170" rx="8" fill="#1a1f2e" stroke="#34d399" stroke-width="1.5"/>
+            <text x="455" y="40" text-anchor="middle" font-family="'Noto Sans JP',sans-serif" font-size="13" fill="#34d399" font-weight="700">UNIX系</text>
+            <text x="455" y="60" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#4a5578">特にLinuxがメジャー</text>
+            <line x1="330" y1="70" x2="580" y2="70" stroke="#2a3050" stroke-width="1"/>
+            <text x="330" y="92" font-family="'Noto Sans JP',sans-serif" font-size="11" fill="#8a99b8">・UNIXとは現存する最古のOS</text>
+            <text x="330" y="112" font-family="'Noto Sans JP',sans-serif" font-size="11" fill="#8a99b8">・キーボードコマンドで操作</text>
+            <text x="330" y="132" font-family="'JetBrains Mono',monospace" font-size="10" fill="#34d399">  UI: CUI / CLI 中心</text>
+            <text x="330" y="152" font-family="'Noto Sans JP',sans-serif" font-size="11" fill="#8a99b8">・macOS・AndroidもUNIX系</text>
+          </svg>
+          <figcaption>図：サーバOSの種別（Windows系 vs UNIX系） <span class="ptr">S03:p.34</span></figcaption>
+        </figure>
+
+        <div class="block block-audio">
+          <div class="block-label">🔊 音声補足（池田先生）</div>
+          LinuxはいろいろなディストリビューションがあるためCLIが中心だが、
+          GUIがあるものも存在する。macOSやAndroidもUNIX系に属するというのは
+          意外に思う人もいるかもしれない。<span class="ptr">← S05-A/B</span>
+        </div>
+
+        <h4>サーバ向けOSの特徴</h4>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>特徴</th><th>内容</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><strong>① 構築作業の効率化</strong></td>
+                <td>セットアップ直後は最低限のソフトウェアのみ。<br>→ セキュリティリスク低減・不要プログラムの起動抑制 → サーバ性能向上</td>
+              </tr>
+              <tr>
+                <td><strong>② 稼働の安定性</strong></td>
+                <td>多数クライアントからの接続要求に対応できるよう設計。<br><strong>チーミング:</strong> 複数NICを組み合わせた冗長構成。片方断絶でも機能維持</td>
+              </tr>
+              <tr>
+                <td><strong>③ パフォーマンスとリソース</strong></td>
+                <td>Windows Server: メモリ最大<strong>48TB</strong>（Windows 11 Pro は 6TB）</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p><span class="ptr">← S03:p.35</span></p>
+      </div>
+
+      <!-- 3-5 -->
+      <div class="section" id="s3-5">
+        <h3>3-5 UNIX系OSがサーバ用途に向いている</h3>
+
+        <p>Webサーバの利用統計（W3Techs調べ）: <span class="ptr">← S03:p.36</span></p>
+
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>OS系統</th><th>スライド記載（2023年8月時点）</th><th>最新（2025年12月時点）</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><strong>Unix / Linux系</strong></td>
+                <td style="color:var(--accent);font-weight:700">81.8%</td>
+                <td style="color:var(--green);font-weight:700">約59%（Linuxのみ集計）</td>
+              </tr>
+              <tr>
+                <td>Windows</td>
+                <td>18.5%</td>
+                <td>—</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="block block-external">
+          <div class="block-label">[外部補足] 統計の注意点（解決済）</div>
+          スライド記載の81.8%は「Unix系OS全体（Linux + BSD + macOS等）」を集計したカテゴリで、現在のW3Techsの集計方法（Linuxのみ）とは集計対象が異なる。2025年12月時点でLinuxは全Webサイト中約59%（OS特定分）を占めており、スライド公開当時から傾向は同様。いずれにせよUNIX/Linux系が圧倒的多数を占めるという講義の主旨は変わらない。<br>
+          出典: commandlinux.com（W3Techs集計ベース、2025年12月）<span class="ptr">← 外部補足・U01解消</span>
+        </div>
+
+        <h4>LinuxがサーバOSとして選ばれる理由</h4>
+        <ol>
+          <li>長時間の連続稼働に強い</li>
+          <li>低スペックでも動作する → <strong>サーバ処理に多くのリソースを割ける</strong></li>
+          <li>アクセス管理の権限設定が厳密で安全性が高い</li>
+        </ol>
+        <p><span class="ptr">← S03:p.37</span></p>
+
+        <h4>Linuxの成り立ち</h4>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>項目</th><th>内容</th></tr></thead>
+            <tbody>
+              <tr><td>開発者</td><td><strong>リーナス・トーバルズ</strong>（Linus Torvalds）</td></tr>
+              <tr><td>開発年</td><td><strong>1991年</strong>（当時フィンランドの大学生）</td></tr>
+              <tr><td>ベース</td><td>UNIXを参考にゼロから開発（UNIXは当初研究用として無料公開、後に有償化）</td></tr>
+              <tr><td>特徴</td><td>オープンソース。改変・再頒布が認められる</td></tr>
+              <tr><td>派生</td><td>様々なディストリビューション（Ubuntu・Rocky Linux・RHEL等）</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p><span class="ptr">← S03:p.37</span></p>
+
+        <div class="block block-audio">
+          <div class="block-label">🔊 音声補足（池田先生）</div>
+          LinuxはUNIXを参考にゼロから作られた。UNIXは当初研究用として無料公開されていたが後に有償化。
+          それをベースに独自開発したのがLinux。オープンソース型なので改変も自由にできる。
+          様々なディストリビューション（派生版）があり、用途に合わせてカスタマイズされたものが
+          インターネット上で公開されている。<span class="ptr">← S05-A/B</span>
+        </div>
+      </div>
+
+      <!-- 3-6 -->
+      <div class="section" id="s3-6">
+        <h3>3-6 商用向けのLinux（RHEL）</h3>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>項目</th><th>無償ディストリビューション</th><th>RHEL</th></tr></thead>
+            <tbody>
+              <tr><td>費用</td><td>無料（Ubuntu・Rocky Linux等）</td><td>有償</td></tr>
+              <tr><td>サポート</td><td>コミュニティフォーラム</td><td><strong>専用サポートあり</strong></td></tr>
+              <tr><td>セキュリティアップデート</td><td>通常タイミング</td><td><strong>無償版より先行して受けられる</strong></td></tr>
+              <tr><td>商用向け専用機能</td><td>なし</td><td><strong>あり</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p><span class="ptr">← S03:p.38</span></p>
+        <div class="block-important">
+          <strong>ポイント:</strong> 開発環境やセキュリティリスクの低いサービスであれば、
+          無償ディストリビューションで問題ない。
+        </div>
+      </div>
+
+      <div class="summary-box">
+        <h4>第3章 まとめ</h4>
+        <ul>
+          <li>サーバには必ずサーバOSを使わなければならないという決まりはないが、<strong>専用OSの方が向いている点が多い</strong></li>
+          <li>Linuxがサーバで好まれる理由: 稼働安定性・リソース効率（低スペック動作）・権限管理の厳密さ</li>
+          <li>Linuxは基本的に無料。商用向けには<strong>RHEL（有償）</strong>がある</li>
+          <li>Windows ServerはメモリMax 48TBまで対応（一般向けの6TBより大幅に多い）</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== CH4 ==================== -->
+  <div class="chapter" id="ch4">
+    <div class="chapter-header">
+      <span class="chapter-num">CH 04</span>
+      <h2>オープンソースのシステム</h2>
+    </div>
+    <div class="chapter-body">
+
+      <div class="goal-box">
+        <div class="goal-title">学習目標</div>
+        <ul>
+          <li>オープンソースのソフトウェアについて理解し説明できる</li>
+          <li>オープンソースのソフトウェアを利用したシステムについて理解し説明できる</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h3>4-1 なぜサーバシステムでOSSを取り上げるか</h3>
+        <p>
+          Webサーバで使用するソフトウェアには無償のものが多く、
+          サーバ向けOSとしてLinuxが多く用いられるが、これもOSS。
+          <strong>サーバシステムに利用するソフトウェアはオープンソース化されているものが多い。</strong>
+          <span class="ptr">← S03:p.43</span>
+        </p>
+      </div>
+
+      <!-- 4-2 -->
+      <div class="section" id="s4-2">
+        <h3>4-2 オープンソースとフリーソフトの違い</h3>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>項目</th><th>オープンソース（OSS）</th><th>フリーソフト</th></tr></thead>
+            <tbody>
+              <tr><td>無料利用</td><td>○</td><td>○</td></tr>
+              <tr><td>ソースコード公開</td><td><strong style="color:var(--green)">○（公開）</strong></td><td>✕（非公開が多い）</td></tr>
+              <tr><td>改変・再頒布</td><td><strong style="color:var(--green)">○（条件付きで可）</strong></td><td>✕（不可が多い）</td></tr>
+              <tr><td>ライセンス種類</td><td>GPL・MIT・Apache等</td><td>独自条件が多い</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p><span class="ptr">← S03:p.44</span></p>
+
+        <div class="block block-audio">
+          <div class="block-label">🔊 音声補足（池田先生）</div>
+          よく混同されるが、OSSはプログラムのコード構造まで全部公開されている点が
+          フリーソフトとの大きな違い。ライセンス形態も複数あり、条件が異なる。
+          <span class="ptr">← S05-A/B</span>
+        </div>
+
+        <h4>オープンソースの定義（10項目）<span class="ptr">← S03:p.45</span></h4>
+        <ol>
+          <li>再配布を自由に認めること</li>
+          <li>ソースコードを無償で配布すること</li>
+          <li>派生物のソフトウェアには配布を許可すること（同ライセンス適用）</li>
+          <li>ソースコードが作者オリジナルかわかるようにすること（コードの完全性）</li>
+          <li>個人やグループに対する差別をしないこと</li>
+          <li>使用分野に対する差別をしないこと</li>
+          <li>プログラムに付随する権利は全再頒布者に平等に与えられること</li>
+          <li>特定の製品に限定したライセンスにしないこと</li>
+          <li>他のソフトウェアを制限するライセンスにしないこと</li>
+          <li>技術的に中立であること</li>
+        </ol>
+        <p style="font-size:11px;color:var(--text-muted)">出典: Open Source Initiative「The Open Source Definition」https://opensource.org/osd/</p>
+      </div>
+
+      <!-- 4-4 -->
+      <div class="section" id="s4-4">
+        <h3>4-4 OSSのメリット・デメリット</h3>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>種別</th><th>内容</th></tr></thead>
+            <tbody>
+              <tr><td><strong style="color:var(--green)">✓ メリット</strong><br>頻繁な更新</td><td>ソースコード公開でバグ発見が早く開発スピードが速い</td></tr>
+              <tr><td><strong style="color:var(--green)">✓ メリット</strong><br>自由に改変</td><td>条件付きでソフトウェアの改変が可能</td></tr>
+              <tr><td><strong style="color:var(--green)">✓ メリット</strong><br>低コスト</td><td>自前のコーディング・テスト時間を削減</td></tr>
+              <tr><td><strong style="color:var(--green)">✓ メリット</strong><br>透明性・安全性</td><td>ソースコード公開で怪しいものが流通しにくい</td></tr>
+              <tr><td><strong style="color:var(--green)">✓ メリット</strong><br>ベンダーロックイン対策</td><td>汎用製品の組み合わせで特定企業への依存を防げる</td></tr>
+              <tr><td><strong style="color:var(--red)">✗ デメリット</strong><br>保証なし</td><td>不具合・脆弱性に対する保証がない</td></tr>
+              <tr><td><strong style="color:var(--red)">✗ デメリット</strong><br>開発継続の不確実性</td><td>コミュニティの状態に依存。人気が落ちると更新されなくなる可能性</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p><span class="ptr">← S03:p.46</span></p>
+
+        <div class="block block-audio">
+          <div class="block-label">🔊 音声補足（池田先生）</div>
+          ただし「保証がない・開発が続くか不明」はOSSに限った話ではない。
+          業者にシステムを作ってもらっても、その業者が永続的にメンテナンスできるとは限らない。
+          ベンダーロックインの問題を考えると、OSSを使う方がむしろ健全な場合もある。
+          <span class="ptr">← S05-A/B</span>
+        </div>
+
+        <h4>代表的なOSSの例<span class="ptr">← S03:p.47</span></h4>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>カテゴリ</th><th>代表的なOSS</th></tr></thead>
+            <tbody>
+              <tr><td>OS</td><td>Ubuntu、Rocky Linux 等</td></tr>
+              <tr><td>プログラム言語</td><td>PHP、Ruby、Python 等</td></tr>
+              <tr><td>アプリケーション</td><td>Firefox（ブラウザ）、Thunderbird（メール）、LibreOffice（オフィス系）等</td></tr>
+              <tr><td>Webサーバ関連</td><td>Apache、Nginx、MySQL、PostgreSQL 等</td></tr>
+              <tr><td>CMS</td><td>WordPress、Joruri 等</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 4-6 -->
+      <div class="section" id="s4-6">
+        <h3>4-6 OSSを利用したシステムの例：LAMP + WordPress</h3>
+
+        <div class="code-block">Webサーバ構成（LAMP + WordPress）:
+  OS: Linux（Ubuntu）
+  ├ Apache  ← Webサーバ
+  ├ PHP     ← プログラム言語（PHPを使う場合APサーバ不要）
+  └ MySQL   ← データベース
+  ↓
+  CMS: WordPress をインストール・設定</div>
+        <p><span class="ptr">← S03:p.50</span></p>
+
+        <p><strong>活用場面:</strong></p>
+        <ul>
+          <li>HTML・CSS・PHPの技術を学ぶ環境としても利用できる</li>
+          <li>※XAMPPなど、より簡単にインストールできる環境もある</li>
+        </ul>
+
+        <div class="block block-audio">
+          <div class="block-label">🔊 音声補足（池田先生）</div>
+          LAMP構成まで作れるようになったら、CMSと組み合わせてちょっとしたWebサーバを
+          自分で作れる。WordPressはHTML・CSSのデザイン変更の学習にも使える。
+          フロントエンドエンジニア関連技術の学習環境構築にも有用。
+          <span class="ptr">← S05-A/B</span>
+        </div>
+      </div>
+
+      <div class="summary-box">
+        <h4>第4章・第7回 まとめ</h4>
+        <ul>
+          <li>OSSとフリーソフトはいずれも無償だが、<strong>OSSはソースコードも公開・改変可能</strong></li>
+          <li>OSSのメリット: 頻繁な更新・低コスト。デメリット: 保証なし・開発継続不確実</li>
+          <li>Web関連システムではOSSの組み合わせで構築することが珍しくない</li>
+          <li><strong>サーバシステムの基礎:</strong> クライアント・サーバシステムが基本。ネットワーク知識も重要</li>
+          <li><strong>Webサーバ:</strong> 高レスポンス（3秒ルール）・3層アーキテクチャ・LAMP構成</li>
+          <li><strong>サーバOS:</strong> Linuxが好まれる（安定性・リソース効率）。RHEL（商用有償）もある</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== APPENDIX ==================== -->
+
+  <!-- 未確定事項 -->
+  <div id="uncertain" class="appendix-card app-uncertain">
+    <h3>❓ 未確定事項・要確認リスト</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>ID</th><th>内容</th><th>種別</th><th>優先度</th><th>状態</th></tr></thead>
+        <tbody>
+          <tr style="opacity:0.5">
+            <td>U01</td>
+            <td>W3Techs統計（Unix:81.8% / Windows:18.5%）の参照日が「2023年8月29日時点」</td>
+            <td>[時点注意]</td>
+            <td>低</td>
+            <td style="color:var(--green)">✅ 解決済：最新統計（2025/12）と比較・注記追加。スライド記載の数値は当時の正確な情報であり、傾向は現在も同様（3-5節に詳細追記）</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:12px;color:var(--green)">✅ 全件解決済み（未確定事項 0件）</p>
+  </div>
+
+  <!-- 補足A -->
+  <div id="appendixA" class="appendix-card app-a">
+    <h3>⭐ 補足A: 最重要ワード一覧</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>用語</th><th>読み</th><th>定義</th><th>重要度</th></tr></thead>
+        <tbody>
+          <tr><td><strong>サーバ</strong></td><td>さーば</td><td>ネットワーク上で他のコンピュータにサービスを提供するコンピュータ</td><td>★★★</td></tr>
+          <tr><td><strong>クライアント</strong></td><td>くらいあんと</td><td>サーバからサービスを受けるコンピュータ</td><td>★★★</td></tr>
+          <tr><td><strong>クライアント・サーバシステム</strong></td><td>くらいあんと・さーばしすてむ</td><td>クライアントからの要求を受けてサーバが処理・サービス提供する方式</td><td>★★★</td></tr>
+          <tr><td><strong>ファイアウォール</strong></td><td>ふぁいあうぉーる</td><td>防火壁。必要な範囲だけインターネットとの通信を許可する</td><td>★★★</td></tr>
+          <tr><td><strong>DMZ</strong></td><td>でぃーえむぜっと</td><td>De-Militarized Zone（非武装地帯）。公開サーバと社内サーバを分離したネットワーク構成</td><td>★★★</td></tr>
+          <tr><td><strong>LAMP構成</strong></td><td>らんぷこうせい</td><td>Linux・Apache・MySQL・PHP等で構成されるWebサーバの代表的OSSスタック</td><td>★★★</td></tr>
+          <tr><td><strong>3層アーキテクチャ</strong></td><td>さんそうあーきてくちゃ</td><td>Webサーバ・APサーバ・DBサーバの3階層でシステムを分割する設計</td><td>★★★</td></tr>
+          <tr><td><strong>Linux</strong></td><td>りなっくす</td><td>UNIX系オープンソースOS。サーバ用途で最も広く使われる。1991年にリーナス・トーバルズが開発</td><td>★★★</td></tr>
+          <tr><td><strong>オープンソースソフトウェア（OSS）</strong></td><td>おーぷんそーすそふとうぇあ</td><td>ソースコードが公開され、無料利用・改変・再頒布が可能なソフトウェア</td><td>★★★</td></tr>
+          <tr><td><strong>HTTP / HTTPS</strong></td><td>えいちてぃーてぃーぴー</td><td>WebサイトのデータをやりとりするプロトコルHyperText Transfer Protocol（S: Secure）</td><td>★★★</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 補足B -->
+  <div id="appendixB" class="appendix-card app-b">
+    <h3>📚 補足B: 知っておくべき背景知識</h3>
+    <div class="app-item">LAMPのPはPHPだけでなくPerlやPythonも含まれる。PostgreSQLを使う場合はLAPPと呼ぶこともある。<span class="ptr">← S03:p.27</span></div>
+    <div class="app-item">VPSとクラウドの関係: VPSは仮想化技術で専用サーバを仮想的に再現するもの。クラウド（AWS・GCP・Azure）はより大規模な仮想化・マネージドサービスを提供。仮想化技術は第8回で詳しく扱う。<span class="ptr">← S03:p.15</span></div>
+    <div class="app-item">OSSライセンスの代表例: GPL（改変版も同ライセンスで公開義務）・MIT（商用利用・改変・再配布が自由）・Apache License（特許権の明示的許諾）。<span class="ptr">← S03:p.44</span></div>
+    <div class="app-item"><span class="ext-note">[外部補足]</span> <strong>Windows Server メモリ上限 48TB は確認済み:</strong> TechTarget、Microsoft Learn 両方で「Standard/Datacenterとも最大48TB RAM対応」と記載されている。Windows 11 Proは最大6TB。スライド記載の数値は正確。出典: TechTarget「Compare the features in the Windows Server 2022 editions」</div>
+    <div class="app-item"><span class="ext-note">[外部補足]</span> <strong>Linuxのサーバ市場規模（2025年最新）:</strong> Linuxはサーバ用OSの約44.8%のシェアを持ち（2024年）、クラウドワークロードの約49.2%（2025年Q2）を占める。AWS・GCP・Azure上のVMの約92%がLinuxで動作。TOP500スーパーコンピューターは100%Linuxで稼働（2024年11月時点）。出典: commandlinux.com（2025年）</div>
+    <div class="app-item"><span class="ext-note">[外部補足]</span> <strong>WebサーバはNginxがApacheを逆転:</strong> かつてApacheがWebサーバの王者だったが、2023年頃にNginxが市場シェアで逆転。2025年12月時点でNginxは約33%のWebサーバシェアを持ち、Apache（約25%）を上回る（W3Techs集計）。NginxはイベントドリブンなノンブロッキングI/Oアーキテクチャで大量同時接続に強い。ApacheはモジュールによるカスタマイズやPHPとの連携が容易。多くの本番環境では「Nginxがリバースプロキシとして前段に立ち、動的コンテンツはApacheやPHPに渡す」というハイブリッド構成も普及している。出典: commandlinux.com（W3Techs集計ベース、2025年12月）</div>
+  </div>
+
+  <!-- 補足C -->
+  <div id="appendixC" class="appendix-card app-c">
+    <h3>🎯 補足C: 試験・レポートで重要な観点</h3>
+    <div class="app-item"><strong>クライアント・サーバシステムの定義と動作原理</strong>（サーバが自発的に動かない点）</div>
+    <div class="app-item"><strong>DMZの目的と構成</strong>（公開サーバと社内サーバの分離によって社内ネットワークを守る）</div>
+    <div class="app-item"><strong>3層アーキテクチャの3つの層と各役割</strong>（Web=窓口・AP=処理中枢・DB=データ格納管理）</div>
+    <div class="app-item"><strong>LAMP構成の各文字が何を指すか</strong>（Linux・Apache・MySQL・PHP/Perl/Python）</div>
+    <div class="app-item"><strong>OSSとフリーソフトの違い</strong>（ソースコード公開・改変可否）</div>
+    <div class="app-item"><strong>OSSのメリット5点・デメリット2点</strong>がきちんと答えられること</div>
+    <div class="app-item"><strong>LinuxがサーバOSとして好まれる理由3点</strong>（連続稼働・低スペック動作・権限管理の厳密さ）</div>
+    <div class="app-item"><strong>RHELと無償Linuxの違い</strong>（サポート・先行セキュリティアップデート・商用機能）</div>
+  </div>
+
+  <!-- 補足D -->
+  <div id="appendixD" class="appendix-card app-d">
+    <h3>🔗 補足D: 関連概念・次回への接続</h3>
+    <div class="app-item"><strong>第8回予告:</strong> 仮想化技術（VPSや仮想サーバで触れた「仮想化」の詳細）・クラウドの仕組みが登場予定。<span class="ptr">← S03:p.15</span></div>
+    <div class="app-item"><strong>第9回予告:</strong> OSに関連する話題が引き続き登場予定。<span class="ptr">← S03:p.35</span></div>
+    <div class="app-item"><strong>チーミング（Teaming）:</strong> 複数ネットワークインターフェースを束ねる冗長化技術。<span class="ext-note">[外部補足]</span> NICチーミング/ボンディングとも呼ばれ、Linuxではbonding/teamカーネルモジュールで実現する。<span class="ptr">← S03:p.35</span></div>
+    <div class="app-item"><strong>Webエンジニアの分野:</strong> フロントエンド（HTML/CSS/JS）・バックエンド（APサーバ側のプログラム）・インフラ（サーバ構築・ネットワーク）と広い範囲に関連。<span class="ptr">← S03:p.28</span></div>
+    <div class="app-item"><strong>セキュリティとプロトコル:</strong> ファイアウォールの設定にはプロトコルの知識（HTTP・HTTPS・DNS・SMTP等）が必要。IPアドレス・ドメイン・LAN・WANなど本科目で登場した知識がすべて関連。<span class="ptr">← S03:p.16</span></div>
+    <div class="app-item"><span class="ext-note">[外部補足]</span> <strong>LEMPスタック:</strong> LAMP構成のA（Apache）をN（Nginx）に置き換えたLEMP（Linux・Nginx・MySQL/MariaDB・PHP）構成も普及している。Nginxが市場シェアでApacheを逆転した現在、新規構築ではLEMPを選ぶケースも増えている。</div>
+    <div class="app-item"><span class="ext-note">[外部補足]</span> <strong>RHELとCentOSの変化（2024年）:</strong> CentOSは2024年にサポート終了。これを受けてRHELと完全互換を保つAlmaLinux・Rocky Linuxが急速に普及している。Rocky LinuxはスライドでもS03:p.38に記載あり。</div>
+  </div>
+
+</main>
+
+<script>
+// Sidebar active link on scroll
+const sections = document.querySelectorAll('[id]');
+const navLinks = document.querySelectorAll('.nav-link');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      navLinks.forEach(l => l.classList.remove('active'));
+      const link = document.querySelector('.nav-link[href="#'+entry.target.id+'"]');
+      if(link) link.classList.add('active');
+    }
+  });
+},{rootMargin:'-20% 0px -70% 0px'});
+sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
