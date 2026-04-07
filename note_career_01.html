@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>キャリア入門 第1回 オリエンテーション｜SSPノート</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --bg-card: #1a1f2e;
+    --bg-card2: #1e2535;
+    --border: #2d3550;
+    --accent-blue: #5b8dee;
+    --accent-green: #34d399;
+    --accent-yellow: #fbbf24;
+    --accent-purple: #a78bfa;
+    --accent-orange: #fb923c;
+    --accent-red: #f87171;
+    --text-main: #e2e8f5;
+    --text-sub: #8a99b8;
+    --text-dim: #5a6680;
+    --sidebar-w: 260px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text-main);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 15px;
+    line-height: 1.8;
+    display: flex;
+  }
+  /* サイドバー */
+  #sidebar {
+    width: var(--sidebar-w);
+    min-height: 100vh;
+    background: var(--bg-card);
+    border-right: 1px solid var(--border);
+    position: fixed;
+    top: 0; left: 0;
+    overflow-y: auto;
+    padding: 20px 0 40px;
+    z-index: 100;
+  }
+  #sidebar .logo {
+    padding: 0 18px 16px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 12px;
+  }
+  #sidebar .logo .course { font-size: 11px; color: var(--text-sub); font-family: 'JetBrains Mono', monospace; }
+  #sidebar .logo .title { font-size: 13px; font-weight: 700; color: var(--accent-yellow); margin-top: 4px; }
+  #sidebar nav a {
+    display: block;
+    padding: 6px 18px;
+    font-size: 12.5px;
+    color: var(--text-sub);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    transition: all .15s;
+    line-height: 1.5;
+  }
+  #sidebar nav a:hover, #sidebar nav a.active {
+    color: var(--text-main);
+    border-left-color: var(--accent-blue);
+    background: rgba(91,141,238,.07);
+  }
+  #sidebar nav .nav-section {
+    padding: 10px 18px 4px;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: .08em;
+  }
+  /* メインコンテンツ */
+  #main {
+    margin-left: var(--sidebar-w);
+    flex: 1;
+    padding: 32px 36px 80px;
+    max-width: 960px;
+  }
+  /* ヘッダーメタ情報 */
+  .meta-header {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 28px;
+  }
+  .meta-header h1 { font-size: 22px; font-weight: 700; color: var(--text-main); margin-bottom: 10px; }
+  .meta-grid { display: flex; flex-wrap: wrap; gap: 8px 24px; }
+  .meta-item { font-size: 12.5px; color: var(--text-sub); }
+  .meta-item span { color: var(--text-main); font-weight: 500; }
+  .badge {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    padding: 1px 7px;
+    border-radius: 4px;
+    background: rgba(91,141,238,.15);
+    color: var(--accent-blue);
+    border: 1px solid rgba(91,141,238,.3);
+    margin-left: 4px;
+  }
+  .badge.s03 { background: rgba(52,211,153,.12); color: var(--accent-green); border-color: rgba(52,211,153,.3); }
+  .badge.s05 { background: rgba(251,191,36,.12); color: var(--accent-yellow); border-color: rgba(251,191,36,.3); }
+  /* セクションカード */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px 28px;
+    margin-bottom: 20px;
+  }
+  .card-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--accent-blue);
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-title .chap-num {
+    background: var(--accent-blue);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .section-title {
+    font-size: 14.5px;
+    font-weight: 700;
+    color: var(--text-main);
+    margin: 18px 0 10px;
+    padding-left: 10px;
+    border-left: 3px solid var(--accent-blue);
+  }
+  p { margin-bottom: 10px; color: var(--text-main); }
+  ul, ol { padding-left: 20px; margin-bottom: 10px; }
+  li { margin-bottom: 5px; }
+  /* ブロック */
+  .voice-block {
+    border-left: 3px solid var(--accent-blue);
+    background: rgba(91,141,238,.06);
+    padding: 10px 14px;
+    border-radius: 0 6px 6px 0;
+    margin: 10px 0;
+    font-size: 14px;
+  }
+  .voice-block .block-label {
+    font-size: 10.5px;
+    font-weight: 700;
+    color: var(--accent-blue);
+    font-family: 'JetBrains Mono', monospace;
+    margin-bottom: 4px;
+  }
+  .ext-block {
+    border-left: 3px solid var(--accent-green);
+    background: rgba(52,211,153,.06);
+    padding: 10px 14px;
+    border-radius: 0 6px 6px 0;
+    margin: 10px 0;
+    font-size: 14px;
+  }
+  .ext-block .block-label {
+    font-size: 10.5px;
+    font-weight: 700;
+    color: var(--accent-green);
+    font-family: 'JetBrains Mono', monospace;
+    margin-bottom: 4px;
+  }
+  /* ソースポインター */
+  .src {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    color: var(--text-dim);
+    background: rgba(255,255,255,.04);
+    padding: 1px 5px;
+    border-radius: 3px;
+    margin-left: 4px;
+  }
+  /* テーブル */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    margin: 14px 0;
+  }
+  th {
+    background: var(--bg-card2);
+    color: var(--text-sub);
+    font-weight: 600;
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+  }
+  td {
+    padding: 8px 12px;
+    border-bottom: 1px solid rgba(45,53,80,.6);
+    vertical-align: top;
+    color: var(--text-main);
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255,255,255,.02); }
+  /* 強調ボックス */
+  .highlight-box {
+    background: rgba(91,141,238,.1);
+    border: 1px solid rgba(91,141,238,.3);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 14px 0;
+    font-size: 14.5px;
+    font-weight: 500;
+  }
+  .highlight-box.green {
+    background: rgba(52,211,153,.08);
+    border-color: rgba(52,211,153,.25);
+  }
+  .highlight-box.yellow {
+    background: rgba(251,191,36,.08);
+    border-color: rgba(251,191,36,.25);
+  }
+  /* 末尾補足カード */
+  .appendix-card {
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+  }
+  .appendix-card.star { background: rgba(251,191,36,.07); border: 1px solid rgba(251,191,36,.25); }
+  .appendix-card.book { background: rgba(91,141,238,.06); border: 1px solid rgba(91,141,238,.2); }
+  .appendix-card.target { background: rgba(52,211,153,.06); border: 1px solid rgba(52,211,153,.2); }
+  .appendix-card.link { background: rgba(167,139,250,.06); border: 1px solid rgba(167,139,250,.2); }
+  .appendix-card.unconfirmed { background: rgba(251,146,60,.08); border: 1px solid rgba(251,146,60,.25); }
+  .appendix-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+  }
+  .appendix-card.star .appendix-title { color: var(--accent-yellow); }
+  .appendix-card.book .appendix-title { color: var(--accent-blue); }
+  .appendix-card.target .appendix-title { color: var(--accent-green); }
+  .appendix-card.link .appendix-title { color: var(--accent-purple); }
+  .appendix-card.unconfirmed .appendix-title { color: var(--accent-orange); }
+  .ext-small { font-size: 12px; color: var(--text-sub); }
+  /* SVG figcaption */
+  figcaption {
+    text-align: center;
+    font-size: 11.5px;
+    color: var(--text-dim);
+    margin-top: 6px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  figure { margin: 14px 0; }
+  /* フロー図（CSS） */
+  .flow-wrap { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 12px 0; }
+  .flow-box {
+    background: var(--bg-card2);
+    border: 1px solid var(--accent-blue);
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-size: 13px;
+    text-align: center;
+  }
+  .flow-arrow { color: var(--accent-blue); font-size: 18px; }
+  /* 授業構成図 */
+  .course-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 12px 0; }
+  .course-item {
+    background: var(--bg-card2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+  .course-item .num { color: var(--accent-yellow); font-weight: 700; font-size: 11px; font-family: 'JetBrains Mono', monospace; }
+  .course-item.highlight { border-color: var(--accent-blue); background: rgba(91,141,238,.07); }
+</style>
+</head>
+<body>
+
+<!-- サイドバー -->
+<nav id="sidebar">
+  <div class="logo">
+    <div class="course">キャリア入門 / 第1回</div>
+    <div class="title">オリエンテーション</div>
+  </div>
+  <nav>
+    <div class="nav-section">概要</div>
+    <a href="#meta">授業情報・ソース</a>
+    <div class="nav-section">第1章</div>
+    <a href="#chap1">はじめに</a>
+    <a href="#instructor">講師経歴・専門分野</a>
+    <a href="#course-structure">授業構成</a>
+    <a href="#career-basics">キャリアについて考える</a>
+    <div class="nav-section">第2章</div>
+    <a href="#chap2">授業のスコープ</a>
+    <a href="#goal1">学習目標①人材像の理解</a>
+    <a href="#goal2">学習目標②必要な能力</a>
+    <a href="#goal3">学習目標③ビジネスプロデュース</a>
+    <div class="nav-section">第3章</div>
+    <a href="#chap3">次世代人材に求められるスキル</a>
+    <a href="#japan-future">これからの日本</a>
+    <a href="#info-chaos">情報が溢れる社会</a>
+    <a href="#consumer-market">消費者主導の市場</a>
+    <a href="#social-media">ソーシャルメディア</a>
+    <a href="#next-talent">次世代人材の条件</a>
+    <div class="nav-section">第4章</div>
+    <a href="#chap4">ビジネスプロデュース力</a>
+    <a href="#bp-def">ビジネスプロデュースとは</a>
+    <a href="#bp-thinking">ビジネスプロデュース思考</a>
+    <a href="#bp-reason">プロデュースが必要な理由</a>
+    <a href="#bp-skills">必要な能力</a>
+    <div class="nav-section">末尾補足</div>
+    <a href="#appendix-a">⭐ 補足A: 最重要ワード</a>
+    <a href="#appendix-b">📚 補足B: 背景知識</a>
+    <a href="#appendix-c">🎯 補足C: 試験の観点</a>
+    <a href="#appendix-d">🔗 補足D: 関連概念</a>
+    <a href="#unconfirmed">❓ 未確定事項</a>
+  </nav>
+</nav>
+
+<!-- メイン -->
+<main id="main">
+
+  <!-- ヘッダーメタ -->
+  <div class="meta-header" id="meta">
+    <h1>キャリア入門 第1回 ― オリエンテーション</h1>
+    <div class="meta-grid">
+      <div class="meta-item">科目: <span>キャリア入門（学部共通教養科目）</span></div>
+      <div class="meta-item">担当教員: <span>森戸裕一</span></div>
+      <div class="meta-item">所属: <span>サイバー大学</span></div>
+      <div class="meta-item">単位: <span>1単位</span></div>
+      <div class="meta-item">利用ソース:
+        <span class="badge s03">S03: スライドPDF</span>
+        <span class="badge s05">S05: AI変換テキスト×2</span>
+      </div>
+      <div class="meta-item" style="font-size:11px;color:var(--text-dim);">v1.1 2026-04-07 — パートIV外部補完完了（U04/U05解消、最新統計追記）| SSP v4.6.1 生成</div>
+    </div>
+  </div>
+
+  <!-- ========== 第1章: はじめに ========== -->
+  <div class="card" id="chap1">
+    <div class="card-title"><span class="chap-num">第1章</span>はじめに</div>
+
+    <div id="instructor" class="section-title">講師経歴</div>
+    <table>
+      <tr><th>項目</th><th>内容</th></tr>
+      <tr><td>氏名</td><td><strong>森戸裕一</strong> <span class="src">← S03:p.4</span></td></tr>
+      <tr><td>前職</td><td>システムエンジニアリング会社勤務（12年）<span class="src">← S03:p.4</span></td></tr>
+      <tr><td>現職①</td><td>ナレッジネットワーク株式会社 代表取締役（設立後10年）<span class="src">← S03:p.4</span></td></tr>
+      <tr><td>現職②</td><td>NPO法人 学生ネットワークWAN 理事<span class="src">← S03:p.4</span></td></tr>
+      <tr><td>現職③</td><td>一般社団法人 日本中小企業情報化支援協議会（JASISA）事務局長<span class="src">← S03:p.4</span></td></tr>
+    </table>
+
+    <div class="voice-block">
+      <div class="block-label">🎙 AUDIO SUPPLEMENT</div>
+      システムエンジニアとして12年間、企業の情報化人材育成コンサルティングに携わった後、独立してナレッジネットワーク株式会社を設立。同時期にNPO（学生ネットワークWAN）も設立し、次世代学生の育成を進めている。これらの経験がキャリア入門の講師を担当する背景となっている。<span class="src">← S05</span>
+    </div>
+
+    <div id="instructor-specialty" class="section-title">専門分野</div>
+    <ul>
+      <li>企業内人材育成支援（人材採用・人材育成コンサルティング）<span class="src">← S03:p.5</span></li>
+      <li>企業内情報化戦略（ERP・SFA・CRM・KM）<span class="src">← S03:p.5</span></li>
+      <li>インターンシップコーディネイト（社会人基礎力養成）<span class="src">← S03:p.5</span></li>
+      <li>NPO法人向け経営支援<span class="src">← S03:p.5</span></li>
+      <li>地域活性化（コミュニティづくり・情報化支援）<span class="src">← S03:p.5</span></li>
+      <li>プロジェクトマネジメント<span class="src">← S03:p.5</span></li>
+      <li>Web構築・マーケティング・セキュリティ<span class="src">← S03:p.5</span></li>
+    </ul>
+    <div class="ext-block">
+      <div class="block-label">🔗 外部補足</div>
+      ERP = Enterprise Resource Planning（基幹業務統合システム）、SFA = Sales Force Automation（営業支援システム）、CRM = Customer Relationship Management（顧客関係管理）、KM = Knowledge Management（知識管理）。<span class="src">← S03:p.5</span>
+    </div>
+    <p>講師の講演・研修実績は <code>https://www.tisiki.net/</code> で確認可能。<span class="src">← S03:p.5</span></p>
+
+    <div id="course-structure" class="section-title">授業の構成</div>
+    <p>キャリア入門は<strong>1単位取得科目</strong>。全7回の授業を受講し、第8回に振り返り・まとめを行う。単位認定は期末試験受験と担当教員評価による。<span class="src">← S03:p.6</span></p>
+
+    <div class="course-grid">
+      <div class="course-item highlight"><span class="num">第1回</span><br>オリエンテーション（本回）</div>
+      <div class="course-item"><span class="num">第2回</span><br>企業が求める人材像</div>
+      <div class="course-item"><span class="num">第3回</span><br>社会人基礎力について</div>
+      <div class="course-item"><span class="num">第4回</span><br>組織で働くための基礎知識</div>
+      <div class="course-item"><span class="num">第5回</span><br>ビジネスプロデュース能力について</div>
+      <div class="course-item"><span class="num">第6回</span><br>プロジェクトの成果を意識した働き方（1）</div>
+      <div class="course-item"><span class="num">第7回</span><br>プロジェクトの成果を意識した働き方（2）</div>
+      <div class="course-item"><span class="num">第8回</span><br>振り返り・まとめ</div>
+    </div>
+    <p style="font-size:12.5px;color:var(--text-sub);">← S03:p.7 | 第2〜4回は「社会人として求められること」、第5〜7回は「次世代人材に必要な能力」に対応</p>
+
+    <div class="voice-block">
+      <div class="block-label">🎙 AUDIO SUPPLEMENT</div>
+      授業の進め方：質問はディスカッションボードまたはダイレクトメールで送付。「第○回、第○章について」と明記すること。複数の質問は①②に分けて記載する。締め切りは順守すること（プロジェクトマネジメントの観点からも）。<span class="src">← S03:p.8, S05</span>
+    </div>
+
+    <div id="career-basics" class="section-title">キャリアについて考える — Scheinの3つの問い</div>
+    <p>キャリアを考える基本軸として、E.H.Schein（エドガー・H・シャイン）の3つの問いを用いる。<span class="src">← S03:p.10</span></p>
+
+    <!-- ベン図 SVG -->
+    <!-- 座標計算: 3円のベン図。中心間距離を円半径と同程度に設定して重なりを作る
+         円1(能力・才能): cx=280, cy=140, r=95
+         円2(意味・価値): cx=205, cy=270, r=95
+         円3(動機・欲求): cx=355, cy=270, r=95
+         viewBox: 0 0 560 380 -->
+    <figure>
+    <svg viewBox="0 0 560 380" width="100%" style="max-width:560px;display:block;margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <rect width="560" height="380" fill="#1e2535" rx="8"/>
+      <!-- 円1: 能力・才能（上） -->
+      <!-- cx=280, cy=140, r=95 -->
+      <circle cx="280" cy="140" r="95" fill="rgba(91,141,238,0.18)" stroke="#5b8dee" stroke-width="1.5"/>
+      <!-- 円2: 意味・価値（左下） -->
+      <!-- cx=205, cy=270, r=95 -->
+      <circle cx="205" cy="270" r="95" fill="rgba(52,211,153,0.14)" stroke="#34d399" stroke-width="1.5"/>
+      <!-- 円3: 動機・欲求（右下） -->
+      <!-- cx=355, cy=270, r=95 -->
+      <circle cx="355" cy="270" r="95" fill="rgba(251,191,36,0.14)" stroke="#fbbf24" stroke-width="1.5"/>
+
+      <!-- ラベル: 能力・才能（上） -->
+      <text x="280" y="95" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="15" font-weight="700" fill="#e2e8f5">能力・才能</text>
+      <!-- ラベル: 意味・価値（左下） -->
+      <text x="148" y="310" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="15" font-weight="700" fill="#e2e8f5">意味・価値</text>
+      <!-- ラベル: 動機・欲求（右下） -->
+      <text x="410" y="310" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="15" font-weight="700" fill="#e2e8f5">動機・欲求</text>
+
+      <!-- 問い上: 自分にできることは何か？ -->
+      <text x="280" y="54" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12.5" fill="#8a99b8">自分にできることは何か？</text>
+      <!-- 問い左下: 自分は何をやることに価値を感じるか？ -->
+      <text x="80" y="355" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8">何をやることに</text>
+      <text x="80" y="370" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8">価値を感じるか？</text>
+      <!-- 問い右下: 自分は何をやりたいのか？ -->
+      <text x="480" y="355" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8">何をやりたいのか？</text>
+    </svg>
+    <figcaption>図: E.H.Scheinの3つの問い ← S03:p.10</figcaption>
+    </figure>
+
+    <table>
+      <tr><th>軸</th><th>問い</th><th>説明</th></tr>
+      <tr>
+        <td><strong>能力・才能</strong></td>
+        <td>自分にできることは何か？</td>
+        <td>今まで経験で何ができるようになったか、これから何ができるようになりたいか<span class="src">← S05</span></td>
+      </tr>
+      <tr>
+        <td><strong>動機・欲求</strong></td>
+        <td>自分は何をやりたいのか？</td>
+        <td>次世代では今まで存在しなかった仕事が生まれる。やりたいことを作り出す力も必要<span class="src">← S05</span></td>
+      </tr>
+      <tr>
+        <td><strong>意味・価値</strong></td>
+        <td>自分は何をやることに価値を感じるか？</td>
+        <td>仕事を通じた達成感に繋がる。自分の人生観・仕事観を形成する基盤<span class="src">← S03:p.10, S05</span></td>
+      </tr>
+    </table>
+
+    <div class="section-title">社会人基礎力と3つの問いの関係</div>
+    <p>「能力・才能」は社会人基礎力と専門力に分解され、「態度」は意味・価値と動機・欲求に対応する。<span class="src">← S03:p.11</span></p>
+
+    <!-- 社会人基礎力構造図 SVG -->
+    <!-- 座標計算:
+         左ブロック「能力・才能」: x=20, y=80, w=100, h=180
+         左ブロック「態度」: x=20, y=280, w=100, h=80
+         中央ブロック「社会人基礎力」: x=180, y=60, w=120, h=110
+         中央ブロック「専門力」: x=180, y=190, w=120, h=110
+         中央ブロック「意味・価値」: x=180, y=315, w=110, h=35
+         中央ブロック「動機・欲求」: x=180, y=358, w=110, h=35
+         右ブロック各項目: x=380, y=55〜400
+         viewBox: 0 0 640 420 -->
+    <figure>
+    <svg viewBox="0 0 640 420" width="100%" style="max-width:640px;display:block;margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <rect width="640" height="420" fill="#1e2535" rx="8"/>
+
+      <!-- 能力・才能 ブロック -->
+      <rect x="20" y="70" width="110" height="170" rx="6" fill="rgba(91,141,238,0.15)" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="75" y="100" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" font-weight="700" fill="#e2e8f5">能力</text>
+      <text x="75" y="118" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" font-weight="700" fill="#e2e8f5">才能</text>
+
+      <!-- 態度 ブロック -->
+      <rect x="20" y="260" width="110" height="80" rx="6" fill="rgba(251,191,36,0.12)" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="75" y="305" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" font-weight="700" fill="#e2e8f5">態度</text>
+
+      <!-- 矢印（能力・才能 → 社会人基礎力） -->
+      <!-- (130,120) → (185,115) -->
+      <line x1="130" y1="120" x2="183" y2="115" stroke="#5b8dee" stroke-width="1.2"/>
+      <polygon points="183,110 193,115 183,120" fill="#5b8dee"/>
+
+      <!-- 矢印（能力・才能 → 専門力） -->
+      <!-- (130,190) → (183,235) -->
+      <line x1="130" y1="190" x2="183" y2="230" stroke="#5b8dee" stroke-width="1.2"/>
+      <polygon points="178,228 188,233 180,238" fill="#5b8dee"/>
+
+      <!-- 矢印（態度 → 意味・価値） -->
+      <line x1="130" y1="285" x2="183" y2="310" stroke="#fbbf24" stroke-width="1.2"/>
+      <polygon points="178,307 188,313 180,318" fill="#fbbf24"/>
+
+      <!-- 矢印（態度 → 動機・欲求） -->
+      <line x1="130" y1="305" x2="183" y2="345" stroke="#fbbf24" stroke-width="1.2"/>
+      <polygon points="178,342 188,348 180,353" fill="#fbbf24"/>
+
+      <!-- 社会人基礎力 ブロック -->
+      <rect x="185" y="70" width="130" height="95" rx="6" fill="rgba(91,141,238,0.15)" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="250" y="95" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" font-weight="700" fill="#e2e8f5">社会人基礎力</text>
+      <text x="250" y="112" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">（経済産業省定義）</text>
+
+      <!-- 専門力 ブロック -->
+      <rect x="185" y="185" width="130" height="85" rx="6" fill="rgba(52,211,153,0.12)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="250" y="212" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" font-weight="700" fill="#e2e8f5">専門力</text>
+      <text x="250" y="228" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">（大学で学ぶこと）</text>
+
+      <!-- 意味・価値 ブロック -->
+      <rect x="185" y="290" width="130" height="34" rx="6" fill="rgba(251,191,36,0.12)" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="250" y="312" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" font-weight="700" fill="#e2e8f5">意味・価値</text>
+
+      <!-- 動機・欲求 ブロック -->
+      <rect x="185" y="334" width="130" height="34" rx="6" fill="rgba(251,191,36,0.12)" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="250" y="356" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" font-weight="700" fill="#e2e8f5">動機・欲求</text>
+
+      <!-- 矢印（社会人基礎力 → 右3項目） -->
+      <!-- 前に踏み出す力: (315,90) → (365,100) -->
+      <line x1="315" y1="90" x2="363" y2="100" stroke="#5b8dee" stroke-width="1.2"/>
+      <polygon points="358,96 368,101 358,106" fill="#5b8dee"/>
+      <!-- 考え抜く力: (315,110) → (363,135) -->
+      <line x1="315" y1="110" x2="363" y2="140" stroke="#5b8dee" stroke-width="1.2"/>
+      <polygon points="358,137 368,142 358,147" fill="#5b8dee"/>
+      <!-- チームで働く力: (315,128) → (363,170) -->
+      <line x1="315" y1="128" x2="363" y2="175" stroke="#5b8dee" stroke-width="1.2"/>
+      <polygon points="358,172 368,177 358,182" fill="#5b8dee"/>
+
+      <!-- 矢印（専門力 → 右3項目） -->
+      <line x1="315" y1="210" x2="363" y2="218" stroke="#34d399" stroke-width="1.2"/>
+      <polygon points="358,214 368,219 358,224" fill="#34d399"/>
+      <line x1="315" y1="225" x2="363" y2="250" stroke="#34d399" stroke-width="1.2"/>
+      <polygon points="358,247 368,252 358,257" fill="#34d399"/>
+      <line x1="315" y1="240" x2="363" y2="280" stroke="#34d399" stroke-width="1.2"/>
+      <polygon points="358,277 368,282 358,287" fill="#34d399"/>
+
+      <!-- 右側: 各項目ボックス -->
+      <!-- 前に踏み出す力 -->
+      <rect x="365" y="78" width="135" height="30" rx="5" fill="rgba(91,141,238,0.12)" stroke="#5b8dee" stroke-width="1"/>
+      <text x="432" y="98" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12.5" fill="#e2e8f5">前に踏み出す力</text>
+      <!-- 考え抜く力 -->
+      <rect x="365" y="118" width="135" height="30" rx="5" fill="rgba(91,141,238,0.12)" stroke="#5b8dee" stroke-width="1"/>
+      <text x="432" y="138" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12.5" fill="#e2e8f5">考え抜く力</text>
+      <!-- チームで働く力 -->
+      <rect x="365" y="158" width="135" height="30" rx="5" fill="rgba(91,141,238,0.12)" stroke="#5b8dee" stroke-width="1"/>
+      <text x="432" y="178" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12.5" fill="#e2e8f5">チームで働く力</text>
+      <!-- 情報収集・分析 -->
+      <rect x="365" y="198" width="135" height="30" rx="5" fill="rgba(52,211,153,0.10)" stroke="#34d399" stroke-width="1"/>
+      <text x="432" y="218" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12.5" fill="#e2e8f5">情報収集・分析</text>
+      <!-- 情報編集 -->
+      <rect x="365" y="238" width="135" height="30" rx="5" fill="rgba(52,211,153,0.10)" stroke="#34d399" stroke-width="1"/>
+      <text x="432" y="258" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12.5" fill="#e2e8f5">情報編集</text>
+      <!-- 情報発信 -->
+      <rect x="365" y="278" width="135" height="30" rx="5" fill="rgba(52,211,153,0.10)" stroke="#34d399" stroke-width="1"/>
+      <text x="432" y="298" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12.5" fill="#e2e8f5">情報発信</text>
+
+      <!-- 凡例 -->
+      <text x="20" y="400" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#5a6680">←前頁の3つの問い</text>
+      <text x="400" y="400" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#5a6680">←本講義で補足</text>
+    </svg>
+    <figcaption>図: 社会人基礎力と3つの問いの関係 ← S03:p.11</figcaption>
+    </figure>
+
+    <div class="voice-block">
+      <div class="block-label">🎙 AUDIO SUPPLEMENT</div>
+      専門力（情報収集・分析・編集・発信）は大学の専門科目で培われる。社会人基礎力はそれを活かすための土台。大学でバランスよく能力を身につけ、社会で発揮することが期待されている。<span class="src">← S05</span>
+    </div>
+
+    <div class="section-title">参考図書</div>
+    <table>
+      <tr><th>書名</th><th>著者</th><th>備考</th></tr>
+      <tr><td>キャリアデザイン入門（Ⅰ）基礎力編</td><td>大久保幸夫</td><td>講義のベーステキスト<span class="src">← S03:p.13</span></td></tr>
+      <tr><td>プロデュース能力 ビジョンを形にする問題解決の思考と行動</td><td>佐々木直彦</td><td>ビジネスプロデュース力の参考<span class="src">← S03:p.13</span></td></tr>
+      <tr><td>アイデアをカタチにする仕事術</td><td>吉田就彦</td><td>メディア・テレビ業界でのプロデュース経験を一般ビジネスに応用<span class="src">← S03:p.13</span></td></tr>
+    </table>
+
+    <div class="voice-block">
+      <div class="block-label">🎙 AUDIO SUPPLEMENT</div>
+      吉田就彦氏はもともとテレビ業界でのプロデューサー。その経験から「プロデュース力」の概念を一般ビジネスに展開している。佐々木先生の著書と合わせて、プロデュース能力の考え方を深く学べる。<span class="src">← S05</span>
+    </div>
+  </div>
+
+  <!-- ========== 第2章: 授業のスコープ ========== -->
+  <div class="card" id="chap2">
+    <div class="card-title"><span class="chap-num">第2章</span>授業のスコープ</div>
+
+    <div class="section-title">学習目標の全体像</div>
+    <p>本講義の学習目標は3つ設定されている。<span class="src">← S03:p.17</span></p>
+
+    <div class="highlight-box">
+      🎯 学習目標①: 次世代における企業や組織が求める<strong>人材像</strong>を理解する<span class="src">← S03:p.17</span>
+    </div>
+    <div class="highlight-box">
+      🎯 学習目標②: 次世代における企業や組織で働くために必要な<strong>能力</strong>を理解する<span class="src">← S03:p.17</span>
+    </div>
+    <div class="highlight-box green">
+      🎯 学習目標③: ビジネスを<strong>プロデュース</strong>する上で必要な能力を理解する<span class="src">← S03:p.17</span>
+    </div>
+
+    <div id="goal1" class="section-title">学習目標①のスコープ — 次世代人材像の理解</div>
+    <p>3つのサブゴールが設定されている。<span class="src">← S03:p.18</span></p>
+    <ol>
+      <li>企業や組織が求める次世代の人材像について、<strong>社会背景を踏まえて説明できる</strong></li>
+      <li>①を踏まえ、職業人としての<strong>自身のあるべき姿</strong>について考えを述べることができる</li>
+      <li>①②を踏まえて、<strong>自分自身が取り組むべきこと</strong>について考えを述べることができる</li>
+    </ol>
+
+    <p><strong>3ステップで達成する:</strong><span class="src">← S03:p.19</span></p>
+
+    <!-- フロー図（CSS版） -->
+    <div class="flow-wrap">
+      <div class="flow-box">STEP 1<br><small>求められる次世代<br>人材像の理解</small><br><small style="color:var(--text-sub)">企業・組織の現状考察</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">STEP 2<br><small>職業人としての<br>あり方を考える</small><br><small style="color:var(--text-sub)">意識をどう変えるか</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">STEP 3<br><small>自身の社会的役割<br>価値の創出</small><br><small style="color:var(--text-sub)">何ができるかを考える</small></div>
+    </div>
+
+    <div class="voice-block">
+      <div class="block-label">🎙 AUDIO SUPPLEMENT</div>
+      日本企業はグローバル化・ボーダレス化の中で大きな課題を抱えている。旧来の考え方・働き方では次世代に対応できないため、人材マネジメントと人材教育の面で課題が顕在化している。今まで常識と思っていたことが非常識になる可能性もある。逆に、非常識と思っていたことが常識になることもある。自分の視点をどう変えるかが重要。<span class="src">← S05</span>
+    </div>
+
+    <div id="goal2" class="section-title">学習目標②のスコープ — 必要な能力の理解</div>
+    <p>本コースの軸となる能力：<strong>プロデュース力とプロジェクトマネジメント力</strong>。加えてコミュニケーション力・構想力・課題設定力なども重要。<span class="src">← S03:p.20</span></p>
+
+    <p><strong>3ステップで達成する:</strong><span class="src">← S03:p.21</span></p>
+    <div class="flow-wrap">
+      <div class="flow-box">STEP 1<br><small>これからの社会に<br>求められる能力の理解</small><br><small style="color:var(--text-sub)">自身の能力を考える</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">STEP 2<br><small>勉強の必要性を理解</small><br><small style="color:var(--text-sub)">自身の適性について考える</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">STEP 3<br><small>今後の方向性<br>キャリアが見える</small><br><small style="color:var(--text-sub)">やるべきことに取り組む</small></div>
+    </div>
+
+    <div class="voice-block">
+      <div class="block-label">🎙 AUDIO SUPPLEMENT</div>
+      キャリアが明確になると今日・明日やることも見えてくる。逆に先々が見えなければ今日何をすればよいかも見えない。自分のやるべきことを明確にして一歩ずつ目標達成に向かって進むことが重要。現在就業中の方も将来的には全く新しい仕事に就く可能性が高い。<span class="src">← S05</span>
+    </div>
+
+    <div id="goal3" class="section-title">学習目標③のスコープ — ビジネスプロデュース能力の理解</div>
+
+    <p><strong>3ステップで達成する:</strong><span class="src">← S03:p.23</span></p>
+    <div class="flow-wrap">
+      <div class="flow-box">STEP 1<br><small>ビジネス環境の<br>現状と課題</small><br><small style="color:var(--text-sub)">「ビジネスプロデュース」とは何か</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">STEP 2<br><small>ビジネスを創造する<br>視点を理解</small><br><small style="color:var(--text-sub)">自身のキャリアと照らし合わせる</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">STEP 3<br><small>次世代に必要とされる<br>人材への成長</small><br><small style="color:var(--text-sub)">学ぶべきことは何か</small></div>
+    </div>
+
+    <div class="voice-block">
+      <div class="block-label">🎙 AUDIO SUPPLEMENT</div>
+      人生において無駄なことは一つもない。ただ無駄をなくすためには一つ一つのことをきちんと考えて行動する必要がある。失敗を次の成功の糧にできる人と、失敗でくよくよしてしまう人は大きく異なる。ビジネスをプロデュースする能力が身につけば、どんな状況でも新しい道を切り拓くことができる。学習の動機は「次の時代のイメージがあって初めて生まれる」。<span class="src">← S05</span>
+    </div>
+
+    <div class="voice-block">
+      <div class="block-label">🎙 AUDIO SUPPLEMENT</div>
+      サイバー大学のオンライン学習環境は、繰り返し講座を聞いたり即座に講師に質問できる環境を提供している。これ自体が次世代に必要とされる「ネット上での信頼関係の構築」を実践する場になっている。<span class="src">← S05</span>
+    </div>
+  </div>
+
+  <!-- ========== 第3章: 次世代人材に求められるスキル ========== -->
+  <div class="card" id="chap3">
+    <div class="card-title"><span class="chap-num">第3章</span>次世代人材に求められるスキル</div>
+
+    <div id="japan-future" class="section-title">これからの日本 — 少子高齢化と労働市場</div>
+
+    <p>日本は超高齢化社会へ突入する。少子高齢化に伴い労働人口は減少し、国内市場は縮小する。<span class="src">← S03:p.27</span></p>
+    <p>[画像省略: 我が国の人口ピラミッドの推移グラフ ← S03:p.27参照]</p>
+    <p style="font-size:12.5px;color:var(--text-sub);">出典: 令和5年 統計データ（総務省統計局）https://www.stat.go.jp/data/jinsui/2023np/index.html [2024.9.19閲覧]</p>
+
+    <p>この状況への企業の対応として「<strong>外国人の採用</strong>」と「<strong>海外市場の開拓</strong>」が増加する。<span class="src">← S03:p.27</span></p>
+
+    <div class="voice-block">
+      <div class="block-label">🎙 AUDIO SUPPLEMENT</div>
+      外国人労働者との協働が増える中で言語習得も重要だが、それ以上に<strong>自分の考え方を柔軟にすること</strong>が求められる。様々な環境で育った人々と共同で仕事をして成果を出せる人材になる必要がある。海外進出では日本の常識が通用しないが、海外の常識に全て合わせる必要もない。「次世代の常識」は海外の常識と日本の常識をミックスして作り上げるものでもある。<span class="src">← S05</span>
+    </div>
+
+    <div id="info-chaos" class="section-title">情報が溢れ、混沌としてきた現代社会</div>
+
+    <p>急速なデジタル化の進展とともに、インターネットトラフィックは拡大を続けている。今後さらに増加が予想される。<span class="src">← S03:p.28</span></p>
+    <p style="font-size:12.5px;color:var(--text-sub);">スライド掲載値: 固定系ブロードバンド契約者ダウンロードトラフィック <strong>約36.0Tbps</strong>（前年同月比18.1%増）— 総務省「我が国のインターネットにおけるトラヒックの集計結果（2024年5月分）」← S03:p.28</p>
+    <div class="ext-block">
+      <div class="block-label">🔗 外部補足・確認済: 総務省公式（令和7年版情報通信白書）</div>
+      <strong>最新値（2024年11月時点）:</strong> 前年同月比 <strong>12.7%増</strong>へ鈍化。コロナ禍直後の急増期を経て安定的な増加トレンドへ移行中。増加傾向自体は継続しており「今後さらに拡大が予想」というスライドの主張は依然有効。<br>
+      <a href="https://www.soumu.go.jp/johotsusintokei/whitepaper/ja/r07/html/nd212240.html" style="color:var(--accent-blue);font-size:11px;" target="_blank">令和7年版 情報通信白書 第Ⅱ部 第2節「トラヒックの状況」</a>
+    </div>
+
+    <div class="voice-block">
+      <div class="block-label">🎙 AUDIO SUPPLEMENT</div>
+      かつての情報収集は雑誌・新聞・ラジオ・テレビが中心だったが、現在はインターネットを通じてインタラクティブに情報発信できるようになった。知人のブログ、著名人のSNS投稿など情報ソースが多様化している。<br><br>
+      一方で、ネットの情報は従来のメディアのような編集部によるチェック機能がない。皆さん自身が情報を取捨選択する能力（<strong>メディアリテラシー</strong>）を身につける必要がある。<span class="src">← S05</span>
+    </div>
+
+    <div id="consumer-market" class="section-title">情報が溢れ、消費者主導の市場に</div>
+
+    <figure>
+    <!-- 消費者主導市場への転換図 -->
+    <!-- 左: 供給者主導 → 右: 消費者主導 -->
+    <!-- viewBox: 0 0 620 220 -->
+    <svg viewBox="0 0 620 220" width="100%" style="max-width:620px;display:block;margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <rect width="620" height="220" fill="#1e2535" rx="8"/>
+
+      <!-- 顧客(消費者)の状況ボックス -->
+      <rect x="20" y="20" width="200" height="140" rx="6" fill="rgba(91,141,238,0.12)" stroke="#5b8dee" stroke-width="1.2"/>
+      <text x="120" y="42" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12.5" font-weight="700" fill="#5b8dee">顧客（消費者）の状況</text>
+      <text x="35" y="62" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">・商品に関する知識の増大</text>
+      <text x="35" y="80" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">・価値あるモノしか買わない</text>
+      <text x="35" y="98" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">・ニーズの多様化・個別化</text>
+      <text x="35" y="116" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">・自分だけのモノが欲しい</text>
+      <text x="35" y="134" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">・モノ余り・モノあふれ</text>
+
+      <!-- 矢印 -->
+      <line x1="220" y1="110" x2="275" y2="110" stroke="#fbbf24" stroke-width="2"/>
+      <polygon points="272,105 282,110 272,115" fill="#fbbf24"/>
+
+      <!-- 中央: 消費者主導の市場 -->
+      <rect x="283" y="85" width="120" height="50" rx="6" fill="rgba(251,191,36,0.15)" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="343" y="108" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" font-weight="700" fill="#fbbf24">消費者主導</text>
+      <text x="343" y="126" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" font-weight="700" fill="#fbbf24">の市場</text>
+
+      <!-- 矢印 -->
+      <line x1="403" y1="110" x2="435" y2="110" stroke="#fbbf24" stroke-width="2"/>
+      <polygon points="432,105 442,110 432,115" fill="#fbbf24"/>
+
+      <!-- 右: 課題・対応 -->
+      <rect x="443" y="40" width="155" height="50" rx="6" fill="rgba(52,211,153,0.12)" stroke="#34d399" stroke-width="1"/>
+      <text x="520" y="60" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11.5" fill="#34d399">市場適応・業務再構築</text>
+      <text x="520" y="76" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8">どう生き残っていくか</text>
+
+      <rect x="443" y="105" width="155" height="50" rx="6" fill="rgba(52,211,153,0.12)" stroke="#34d399" stroke-width="1"/>
+      <text x="520" y="127" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11.5" fill="#34d399">資源集中・新規ビジネス</text>
+      <text x="520" y="143" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8">どう変化していくか</text>
+
+      <!-- 新しい収益源 -->
+      <rect x="443" y="168" width="155" height="34" rx="6" fill="rgba(251,191,36,0.12)" stroke="#fbbf24" stroke-width="1.2"/>
+      <text x="520" y="190" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12.5" font-weight="700" fill="#fbbf24">新しい収益源を提案</text>
+    </svg>
+    <figcaption>図: 消費者主導の市場への転換と課題 ← S03:p.29</figcaption>
+    </figure>
+
+    <div class="voice-block">
+      <div class="block-label">🎙 AUDIO SUPPLEMENT</div>
+      消費者メディアの台頭でメーカーや販売店が言っていることの裏が暴かれることも増えた。口コミが重視される。供給者主導から消費者主導への転換は企業に「課題の明確化」と「新しい収益源の提案」を迫っている。今保有している資源をどの分野・プロジェクトに集中させるかを考えることが重要。<span class="src">← S05</span>
+    </div>
+
+    <div id="social-media" class="section-title">ソーシャルメディアが社会インフラに</div>
+
+    <p>ソーシャルメディアは全年齢層で利用率が上昇している。<span class="src">← S03:p.30</span></p>
+    <p style="font-size:12.5px;color:var(--text-sub);">スライド掲載値: 全年齢層でSNS利用率が上昇（令和5年版 通信利用動向調査、全体77.2%）← S03:p.30</p>
+    <div class="ext-block">
+      <div class="block-label">🔗 外部補足・確認済: 総務省公式（令和6年 通信利用動向調査）</div>
+      <strong>最新値（令和6年8月末調査、2025年5月30日公表）:</strong> インターネット利用目的として「SNS（無料通話機能を含む）の利用」の割合が <strong>81.9%</strong> で最も高い（全体）。スライドの「全年齢層で利用率が上昇」という傾向は令和6年調査でも継続確認済み。<br>
+      さらに<strong>主要サービス別</strong>（令和6年度 情報通信メディア調査）: LINE 91.1%、YouTube 80.8%、Instagram 52.6%、X（旧Twitter）43.3%、TikTok 33.2%、Facebook 26.8%。<br>
+      <a href="https://www.soumu.go.jp/menu_news/s-news/01tsushin02_02000178.html" style="color:var(--accent-blue);font-size:11px;" target="_blank">令和6年 通信利用動向調査の結果（総務省、2025/5/30）</a>
+    </div>
+
+    <p>ソーシャルメディアが持つ機能と特性：<span class="src">← S03:p.31</span></p>
+    <table>
+      <tr><th>要素</th><th>内容</th></tr>
+      <tr><td>テキスト・映像・写真</td><td>多様な形式でのコミュニケーション</td></tr>
+      <tr><td>ソーシャルグラフ</td><td>人と人のつながりの可視化。信頼関係の指標にもなる</td></tr>
+      <tr><td>主な機能</td><td>投稿・シェア、いいね！（賛同・共感）、プレゼンスの確認、チャット、イベント企画、アンケート（フィードバック収集）</td></tr>
+    </table>
+
+    <div class="voice-block">
+      <div class="block-label">🎙 AUDIO SUPPLEMENT</div>
+      ソーシャルメディアを通じて人と人がつながることで新たな市場が生まれる。メーカーが市場にメッセージを出す一方向から、消費者がメーカーに情報を発信・メッセージを出す形に変わりつつある。メーカー自身も消費者の中に入って一緒に考えていく時代に変化している。<br><br>
+      今までの地域コミュニティや同業種コミュニティが再定義される時代。ネット上での信頼関係の構築が今求められるスキル。所在地を気にせずコミュニケーションできるサイバー大学の環境は次世代型の学習環境と言える。<span class="src">← S05</span>
+    </div>
+
+    <div id="next-talent" class="section-title">企業が抱える課題と次世代に必要とされる人材</div>
+
+    <p>企業の課題：<span class="src">← S03:p.32</span></p>
+    <ul>
+      <li>多様な人材が協働できる組織への変革</li>
+      <li>海外市場開拓に必要なリソースの確保</li>
+      <li>社外パートナー・顧客を巻き込んだ新しいビジネスの創造</li>
+      <li>ソーシャルメディアを活用した顧客との新たな関係構築</li>
+    </ul>
+
+    <div class="highlight-box yellow">
+      💡 これらの課題の本質: <strong>「効率」ではなく「変革」が重視される時代への転換</strong><span class="src">← S03:p.32</span>
+    </div>
+
+    <p>次世代に必要とされる人材の3条件：<span class="src">← S03:p.33</span></p>
+    <ol>
+      <li>様々なコミュニティでのコミュニケーションをヒントに、<strong>変革のためにやるべきことを発想し、速いサイクルでトライ&エラーでの経験と実績をつむ</strong>ことができる</li>
+      <li>諸外国・業界外の動きにも興味関心を持ち、<strong>社会の変化を読みとりながら、広い視野と将来視点で物事を考える</strong>習慣がある</li>
+      <li>何事にも<strong>当事者意識をもち、成果達成のために自分の考えを周囲に伝え（提案し）導く</strong>ことができる</li>
+    </ol>
+
+    <div class="voice-block">
+      <div class="block-label">🎙 AUDIO SUPPLEMENT</div>
+      ネット上でビジネスを作っていく場合、リアルの世界と違ってチャレンジするコストは非常に小さくなり、スピードも格段に上がる。トライ&エラーを繰り返すことで経験と実績を積めるため、年齢や実務経験の長さがあまり関係なくなってくる可能性がある。自分のことを考える習慣をつけること、当事者意識を持つことが特に重要。<span class="src">← S05</span>
+    </div>
+  </div>
+
+  <!-- ========== 第4章: ビジネスプロデュース力 ========== -->
+  <div class="card" id="chap4">
+    <div class="card-title"><span class="chap-num">第4章</span>ビジネスプロデュース力とは</div>
+
+    <div id="bp-def" class="section-title">ビジネスプロデュースの定義</div>
+
+    <div class="highlight-box">
+      📌 定義: <strong>既存の枠にとらわれず、様々な人や組織と連携し、新しいビジネスを創造することで現状を変える</strong><span class="src">← S03:p.37</span>
+    </div>
+
+    <div class="voice-block">
+      <div class="block-label">🎙 AUDIO SUPPLEMENT</div>
+      「0から1を作り出す」ようなイノベーティブなビジネスは研究開発を重ねて非常に時間がかかる。しかしここで言うビジネスプロデュースは<strong>既存のものを組み合わせること</strong>でも構わない。異業種を組み合わせて連携する、古いものと新しいものを組み合わせる、今まで連携できなかった遠い地域を結んで新しい価値を生み出す、などの形でも実現できる。<span class="src">← S05</span>
+    </div>
+
+    <p>ビジネスプロデュースの9つの領域：<span class="src">← S03:p.37</span></p>
+
+    <!-- ビジネスプロデュース9領域 SVG -->
+    <!-- 3×3グリッド。viewBox: 0 0 540 240 -->
+    <figure>
+    <svg viewBox="0 0 540 230" width="100%" style="max-width:540px;display:block;margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <rect width="540" height="230" fill="#1e2535" rx="8"/>
+      <!-- タイトル -->
+      <text x="270" y="26" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" font-weight="700" fill="#5b8dee">ビジネスプロデュースの領域</text>
+      <!-- 3×3グリッド: 各セル w=155, h=52, gap=8 -->
+      <!-- 行1 -->
+      <!-- 新規事業: x=20, y=38 -->
+      <rect x="20" y="38" width="155" height="48" rx="5" fill="rgba(91,141,238,0.12)" stroke="#5b8dee" stroke-width="1"/>
+      <text x="97" y="68" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13.5" font-weight="700" fill="#e2e8f5">新規事業</text>
+      <!-- 新商品・サービス: x=185, y=38 -->
+      <rect x="185" y="38" width="155" height="48" rx="5" fill="rgba(91,141,238,0.12)" stroke="#5b8dee" stroke-width="1"/>
+      <text x="262" y="68" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13.5" font-weight="700" fill="#e2e8f5">新商品・サービス</text>
+      <!-- 新しい仕事: x=350, y=38 -->
+      <rect x="350" y="38" width="170" height="48" rx="5" fill="rgba(91,141,238,0.12)" stroke="#5b8dee" stroke-width="1"/>
+      <text x="435" y="68" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13.5" font-weight="700" fill="#e2e8f5">新しい仕事</text>
+      <!-- 行2 -->
+      <!-- 職場のムード: x=20, y=98 -->
+      <rect x="20" y="98" width="155" height="48" rx="5" fill="rgba(52,211,153,0.10)" stroke="#34d399" stroke-width="1"/>
+      <text x="97" y="128" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13.5" font-weight="700" fill="#e2e8f5">職場のムード</text>
+      <!-- モチベーション: x=185, y=98 -->
+      <rect x="185" y="98" width="155" height="48" rx="5" fill="rgba(52,211,153,0.10)" stroke="#34d399" stroke-width="1"/>
+      <text x="262" y="128" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13.5" font-weight="700" fill="#e2e8f5">モチベーション</text>
+      <!-- リレーション: x=350, y=98 -->
+      <rect x="350" y="98" width="170" height="48" rx="5" fill="rgba(52,211,153,0.10)" stroke="#34d399" stroke-width="1"/>
+      <text x="435" y="128" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13.5" font-weight="700" fill="#e2e8f5">リレーション</text>
+      <!-- 行3 -->
+      <!-- 人間関係: x=20, y=158 -->
+      <rect x="20" y="158" width="155" height="48" rx="5" fill="rgba(251,191,36,0.10)" stroke="#fbbf24" stroke-width="1"/>
+      <text x="97" y="188" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13.5" font-weight="700" fill="#e2e8f5">人間関係</text>
+      <!-- 場: x=185, y=158 -->
+      <rect x="185" y="158" width="155" height="48" rx="5" fill="rgba(251,191,36,0.10)" stroke="#fbbf24" stroke-width="1"/>
+      <text x="262" y="188" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13.5" font-weight="700" fill="#e2e8f5">場</text>
+      <!-- キャリア: x=350, y=158 -->
+      <rect x="350" y="158" width="170" height="48" rx="5" fill="rgba(251,191,36,0.10)" stroke="#fbbf24" stroke-width="1"/>
+      <text x="435" y="188" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13.5" font-weight="700" fill="#e2e8f5">キャリア</text>
+    </svg>
+    <figcaption>図: ビジネスプロデュースの9つの領域 ← S03:p.37</figcaption>
+    </figure>
+
+    <div class="voice-block">
+      <div class="block-label">🎙 AUDIO SUPPLEMENT</div>
+      「職場のムード」もビジネスプロデュースの対象になる。例えば黙ってシーンとした職場から、アイデアを出し合うざわざわした職場への転換、社員間のパーテーション撤去なども含まれる。「場」の設定（オフィス/ノマドワーク/テレワーク）も新たなビジネスプロデュースの考え方。キャリア自体を今まで想定しなかった形でプロデュースすることもできる。<span class="src">← S05</span>
+    </div>
+
+    <div id="bp-thinking" class="section-title">ビジネスプロデュース思考 — 変革と創造を実現する思考</div>
+
+    <!-- ビジョン→戦略→価値 フロー図 SVG -->
+    <!-- 座標:
+         ビジョンブロック: x=20, y=40, w=160, h=180
+         戦略ブロック: x=220, y=20, w=180, h=210
+         価値ブロック: x=450, y=40, w=150, h=180
+         矢印1: (180,130)→(218,130)
+         矢印2: (400,130)→(448,130)
+         viewBox: 0 0 620 260 -->
+    <figure>
+    <svg viewBox="0 0 620 260" width="100%" style="max-width:620px;display:block;margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <rect width="620" height="260" fill="#1e2535" rx="8"/>
+
+      <!-- タイトル -->
+      <text x="310" y="20" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12.5" font-weight="700" fill="#8a99b8">「変革」と「創造」を実現する思考</text>
+
+      <!-- ビジョンブロック -->
+      <rect x="20" y="34" width="165" height="200" rx="7" fill="rgba(248,113,113,0.12)" stroke="#f87171" stroke-width="1.5"/>
+      <text x="102" y="56" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="14" font-weight="700" fill="#f87171">ビジョン</text>
+      <rect x="32" y="68" width="141" height="36" rx="4" fill="rgba(248,113,113,0.1)" stroke="rgba(248,113,113,0.3)" stroke-width="1"/>
+      <text x="102" y="91" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#e2e8f5">①ビジョンは何か</text>
+      <rect x="32" y="112" width="141" height="36" rx="4" fill="rgba(248,113,113,0.1)" stroke="rgba(248,113,113,0.3)" stroke-width="1"/>
+      <text x="102" y="126" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">②なぜそのビジョン</text>
+      <text x="102" y="140" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">なのか</text>
+
+      <!-- 矢印1: (185,134)→(218,134) -->
+      <line x1="185" y1="134" x2="216" y2="134" stroke="#e2e8f5" stroke-width="2"/>
+      <polygon points="213,129 223,134 213,139" fill="#e2e8f5"/>
+
+      <!-- 戦略ブロック -->
+      <rect x="222" y="24" width="175" height="215" rx="7" fill="rgba(91,141,238,0.12)" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="309" y="46" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="14" font-weight="700" fill="#5b8dee">戦略</text>
+      <rect x="232" y="56" width="155" height="34" rx="4" fill="rgba(91,141,238,0.1)" stroke="rgba(91,141,238,0.3)" stroke-width="1"/>
+      <text x="309" y="78" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#e2e8f5">③コアテーマは何か</text>
+      <rect x="232" y="98" width="155" height="34" rx="4" fill="rgba(91,141,238,0.1)" stroke="rgba(91,141,238,0.3)" stroke-width="1"/>
+      <text x="309" y="120" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#e2e8f5">④自分に何ができるか</text>
+      <rect x="232" y="140" width="155" height="34" rx="4" fill="rgba(91,141,238,0.1)" stroke="rgba(91,141,238,0.3)" stroke-width="1"/>
+      <text x="309" y="155" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11.5" fill="#e2e8f5">⑤誰に何をやって</text>
+      <text x="309" y="170" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11.5" fill="#e2e8f5">もらうか</text>
+
+      <!-- 矢印2: (397,134)→(446,134) -->
+      <line x1="397" y1="134" x2="444" y2="134" stroke="#e2e8f5" stroke-width="2"/>
+      <polygon points="441,129 451,134 441,139" fill="#e2e8f5"/>
+
+      <!-- 価値ブロック -->
+      <rect x="450" y="34" width="155" height="200" rx="7" fill="rgba(52,211,153,0.10)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="527" y="56" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="14" font-weight="700" fill="#34d399">価値</text>
+      <rect x="462" y="68" width="131" height="48" rx="4" fill="rgba(52,211,153,0.08)" stroke="rgba(52,211,153,0.3)" stroke-width="1"/>
+      <text x="527" y="88" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#e2e8f5">⑥大義名分は何か</text>
+      <text x="527" y="104" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8">なぜそれを/自分が/今やるか</text>
+      <rect x="462" y="124" width="131" height="48" rx="4" fill="rgba(52,211,153,0.08)" stroke="rgba(52,211,153,0.3)" stroke-width="1"/>
+      <text x="527" y="144" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#e2e8f5">⑦付加価値は何か</text>
+      <text x="527" y="160" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8">仕事から得られるもの</text>
+    </svg>
+    <figcaption>図: ビジネスプロデュース思考の7要素 ← S03:p.38</figcaption>
+    </figure>
+
+    <div class="voice-block">
+      <div class="block-label">🎙 AUDIO SUPPLEMENT</div>
+      ビジョンを深掘りして「本質的なところ」を見つけること、その上でコアテーマを設定し自分をどう位置付けるかを考える。一人では大きなことは成し遂げられないため、誰に何をやってもらうかの関係性を整理することが重要。「なぜそれをやるのか・なぜ自分なのか・なぜ今やるのか」が人に説明できるようになると、キャリアがどんどん可視化されていく。<span class="src">← S05</span>
+    </div>
+
+    <div id="bp-reason" class="section-title">「プロデュース」が必要とされる理由</div>
+
+    <p><strong>理由①: 消費者主導市場への転換</strong><span class="src">← S03:p.39</span></p>
+    <p>一つの組織・一人が持つネットワークと、これまでの仕事の進め方では市場が求める価値を提供できなくなった。仕事の進め方が多様化し、ニーズが個別化した現代では、従来型の進め方はうまくいかない。これは<strong>大きなビジネスチャンス</strong>でもある。<span class="src">← S03:p.39, S05</span></p>
+
+    <p><strong>理由②: 3つのパラダイムシフト</strong><span class="src">← S03:p.40</span></p>
+
+    <!-- 3つのパラダイムシフト + プロデュース図 -->
+    <!-- 中央: グローバル化 cx=310, cy=110, r=70
+         左: フラット化 cx=140, cy=190, r=65
+         右: デジタル化 cx=480, cy=190, r=65
+         プロデュース(上弓形矢印): 中央上部
+         viewBox: 0 0 620 310 -->
+    <figure>
+    <svg viewBox="0 0 620 310" width="100%" style="max-width:620px;display:block;margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <rect width="620" height="310" fill="#1e2535" rx="8"/>
+
+      <!-- プロデュース大弓矢印（上） -->
+      <!-- 左端(80,60) → 右端(540,60), 頂点y=20 -->
+      <path d="M80,60 Q310,10 540,60" fill="none" stroke="#f87171" stroke-width="2.2" stroke-dasharray="none"/>
+      <polygon points="536,55 546,62 534,67" fill="#f87171"/>
+      <polygon points="84,67 72,62 82,55" fill="#f87171"/>
+      <text x="310" y="22" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="14" font-weight="700" fill="#f87171">プロデュース</text>
+
+      <!-- グローバル化（中央） -->
+      <circle cx="310" cy="120" r="58" fill="#0f1117" stroke="#e2e8f5" stroke-width="2"/>
+      <text x="310" y="115" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13.5" font-weight="700" fill="#e2e8f5">グローバル</text>
+      <text x="310" y="133" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13.5" font-weight="700" fill="#e2e8f5">化</text>
+      <!-- 中央説明テキスト -->
+      <text x="310" y="204" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#8a99b8">様々な情報がインターネットによって</text>
+      <text x="310" y="218" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#8a99b8">世界中にシェアされている</text>
+
+      <!-- フラット化（左） -->
+      <circle cx="140" cy="220" r="55" fill="#0f1117" stroke="#5b8dee" stroke-width="2"/>
+      <text x="140" y="215" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13.5" font-weight="700" fill="#5b8dee">フラット</text>
+      <text x="140" y="233" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13.5" font-weight="700" fill="#5b8dee">化</text>
+      <!-- 左説明 -->
+      <text x="60" y="288" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">ピラミッド型組織では</text>
+      <text x="60" y="300" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">スピードが遅い</text>
+
+      <!-- デジタル化（右） -->
+      <circle cx="480" cy="220" r="55" fill="#0f1117" stroke="#34d399" stroke-width="2"/>
+      <text x="480" y="215" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13.5" font-weight="700" fill="#34d399">デジタル</text>
+      <text x="480" y="233" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13.5" font-weight="700" fill="#34d399">化</text>
+      <!-- 右説明 -->
+      <text x="555" y="288" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">デジタルコミュニケー</text>
+      <text x="555" y="300" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">ションでサービス変化</text>
+
+      <!-- 中心への矢印3本 -->
+      <line x1="190" y1="195" x2="258" y2="160" stroke="#8a99b8" stroke-width="1.2"/>
+      <polygon points="253,156 263,161 255,168" fill="#8a99b8"/>
+      <line x1="430" y1="195" x2="362" y2="160" stroke="#8a99b8" stroke-width="1.2"/>
+      <polygon points="365,154 355,161 363,168" fill="#8a99b8"/>
+      <line x1="310" y1="178" x2="310" y2="162" stroke="#8a99b8" stroke-width="1.2"/>
+      <polygon points="305,163 310,153 315,163" fill="#8a99b8"/>
+    </svg>
+    <figcaption>図: 「プロデュース」が必要とされる3つのパラダイムシフト ← S03:p.40</figcaption>
+    </figure>
+
+    <table>
+      <tr><th>パラダイムシフト</th><th>内容</th><th>プロデュースとの関係</th></tr>
+      <tr>
+        <td><strong>フラット化</strong></td>
+        <td>ピラミッド型組織から意思決定を早める構造へ。従来の階層型では市場が求めるスピードに対応できない</td>
+        <td>自分がどこにマッピングされどんな能力が必要かを意識する必要がある<span class="src">← S03:p.40</span></td>
+      </tr>
+      <tr>
+        <td><strong>グローバル化</strong></td>
+        <td>インターネットにより国内外の情報が世界中でシェア。企業活動も国境を超えることが当然になった</td>
+        <td>異なる文化・言語の人々にビジョンを伝え、コンテンツと伝達手段を同時に管理する<span class="src">← S03:p.40</span></td>
+      </tr>
+      <tr>
+        <td><strong>デジタル化</strong></td>
+        <td>デジタルコミュニケーションにより情報伝達の形式が多様化（テキスト・映像・写真など）</td>
+        <td>ITが「可能にしたもの」に対して人間がマネジメント・プロデュースする役割が求められる<span class="src">← S03:p.40</span></td>
+      </tr>
+    </table>
+
+    <div class="voice-block">
+      <div class="block-label">🎙 AUDIO SUPPLEMENT</div>
+      グローバル化・フラット化・デジタル化という3つのパラダイムシフトの中で、自分自身がどのような形で社会に適応していくかをイメージすることが大きな目標になる。ITが「可能にしたもの」が増える一方で、それを人間がプロデュース（統率・創造）する力の重要性が高まっている。<span class="src">← S05</span>
+    </div>
+
+    <div id="bp-skills" class="section-title">ビジネスプロデュースに必要な能力</div>
+
+    <div class="highlight-box green">
+      💡 社会人基礎力を土台にして、ビジネスプロデュースに必要な能力を高めることができる<span class="src">← S03:p.41</span>
+    </div>
+
+    <!-- ビジネスプロデュース能力ピラミッド SVG -->
+    <!-- 座標計算（台形積み上げ）:
+         土台（社会人基礎力）: 台形 (60,330)-(600,330)-(580,270)-(80,270), 幅540→500
+         中段左(素早く行動する力): 台形左半分 (80,268)-(300,268)-(280,210)-(100,210)
+         中段右(チームを創造する力): 台形右半分 (300,268)-(580,268)-(560,210)-(320,210)
+         中段左上(行動を積み重ねる力): (100,208)-(280,208)-(260,150)-(120,150)
+         中段右上(チームを導く力): (320,208)-(560,208)-(540,150)-(340,150)
+         発想力: (120,148)-(540,148)-(520,90)-(140,90)
+         ビジョンを描く力: (140,88)-(520,88)-(500,35)-(160,35)
+         viewBox: 0 0 660 370 -->
+    <figure>
+    <svg viewBox="0 0 660 370" width="100%" style="max-width:660px;display:block;margin:0 auto;" xmlns="http://www.w3.org/2000/svg">
+      <rect width="660" height="370" fill="#1e2535" rx="8"/>
+
+      <!-- タイトル -->
+      <text x="330" y="20" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12.5" font-weight="700" fill="#f87171">ビジネスプロデュースに必要な能力</text>
+
+      <!-- ビジョンを描く力（頂点）-->
+      <!-- (155,38)-(505,38)-(490,88)-(170,88) -->
+      <polygon points="155,38 505,38 490,88 170,88" fill="rgba(251,191,36,0.25)" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="330" y="68" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" font-weight="700" fill="#fbbf24">ビジョンを描く力</text>
+
+      <!-- 発想力 -->
+      <!-- (170,90)-(490,90)-(475,140)-(185,140) -->
+      <polygon points="170,90 490,90 475,140 185,140" fill="rgba(251,191,36,0.15)" stroke="#fbbf24" stroke-width="1.2"/>
+      <text x="330" y="120" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" font-weight="700" fill="#fbbf24">発想力</text>
+
+      <!-- 行動を積み重ねる力（左）: (185,142)-(330,142)-(315,190)-(200,190) -->
+      <polygon points="185,142 330,142 315,190 200,190" fill="rgba(91,141,238,0.18)" stroke="#5b8dee" stroke-width="1.2"/>
+      <text x="258" y="171" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11.5" font-weight="700" fill="#e2e8f5">行動を積み重ねる力</text>
+
+      <!-- チームを導く力（右）: (330,142)-(475,142)-(460,190)-(345,190) -->
+      <polygon points="330,142 475,142 460,190 345,190" fill="rgba(91,141,238,0.18)" stroke="#5b8dee" stroke-width="1.2"/>
+      <text x="402" y="171" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11.5" font-weight="700" fill="#e2e8f5">チームを導く力</text>
+
+      <!-- 素早く行動する力（左）: (200,192)-(315,192)-(300,242)-(215,242) -->
+      <polygon points="200,192 315,192 300,242 215,242" fill="rgba(91,141,238,0.22)" stroke="#5b8dee" stroke-width="1.2"/>
+      <text x="258" y="222" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11.5" font-weight="700" fill="#e2e8f5">素早く行動する力</text>
+
+      <!-- チームを創造する力（右）: (345,192)-(460,192)-(445,242)-(360,242) -->
+      <polygon points="345,192 460,192 445,242 360,242" fill="rgba(91,141,238,0.22)" stroke="#5b8dee" stroke-width="1.2"/>
+      <text x="402" y="222" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11.5" font-weight="700" fill="#e2e8f5">チームを創造する力</text>
+
+      <!-- 社会人基礎力（土台）: (215,244)-(445,244)-(500,300)-(160,300) 拡大 -->
+      <polygon points="215,244 445,244 520,300 140,300" fill="rgba(52,211,153,0.15)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="330" y="278" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="15" font-weight="700" fill="#34d399">社会人基礎力</text>
+
+      <!-- 社会人基礎力の内訳（下段）: 台形 (140,302)-(520,302)-(580,355)-(80,355) -->
+      <polygon points="140,302 520,302 580,355 80,355" fill="rgba(52,211,153,0.08)" stroke="#34d399" stroke-width="1.2"/>
+      <text x="220" y="336" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11.5" fill="#e2e8f5">前に踏み出す力</text>
+      <text x="330" y="336" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11.5" fill="#e2e8f5">考え抜く力</text>
+      <text x="440" y="336" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11.5" fill="#e2e8f5">チームで働く力</text>
+      <text x="220" y="353" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">情報収集・分析</text>
+      <text x="330" y="353" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">情報編集</text>
+      <text x="440" y="353" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">情報発信</text>
+
+      <!-- 矢印3本（上向き） -->
+      <!-- 左矢印: 土台左から上へ -->
+      <line x1="220" y1="244" x2="220" y2="200" stroke="#fbbf24" stroke-width="1.8"/>
+      <polygon points="215,202 220,192 225,202" fill="#fbbf24"/>
+      <!-- 中矢印 -->
+      <line x1="330" y1="244" x2="330" y2="148" stroke="#fbbf24" stroke-width="1.8"/>
+      <polygon points="325,150 330,140 335,150" fill="#fbbf24"/>
+      <!-- 右矢印 -->
+      <line x1="440" y1="244" x2="440" y2="200" stroke="#fbbf24" stroke-width="1.8"/>
+      <polygon points="435,202 440,192 445,202" fill="#fbbf24"/>
+    </svg>
+    <figcaption>図: ビジネスプロデュースに必要な能力（ピラミッド） ← S03:p.41</figcaption>
+    </figure>
+
+    <div class="voice-block">
+      <div class="block-label">🎙 AUDIO SUPPLEMENT</div>
+      就業中の方も未就業の方も、社会人基礎力をもう一度見直してもらい、その上にビジネスプロデュースに必要な能力を積み上げていく。日々の能力アップを意識することが今回のキャリア入門への取り組み姿勢として期待される。これらの能力を身につければキャリアの可視化が進む。<span class="src">← S05</span>
+    </div>
+  </div>
+
+  <!-- ===== 末尾補足 ===== -->
+
+  <!-- 補足A: 最重要ワード一覧 -->
+  <div class="appendix-card star" id="appendix-a">
+    <div class="appendix-title">⭐ 補足A: 最重要ワード一覧</div>
+    <table>
+      <tr><th>用語</th><th>読み</th><th>定義（原文から抽出）</th><th>重要度</th></tr>
+      <tr><td><strong>ビジネスプロデュース</strong></td><td>びじねすぷろでゅーす</td><td>既存の枠にとらわれず、様々な人や組織と連携し、新しいビジネスを創造することで現状を変えること</td><td>★★★</td></tr>
+      <tr><td><strong>社会人基礎力</strong></td><td>しゃかいじんきそりょく</td><td>経済産業省が定義した職業人に必要な基礎能力。「前に踏み出す力・考え抜く力・チームで働く力」の3要素</td><td>★★★</td></tr>
+      <tr><td><strong>E.H.Schein（シャイン）の3つの問い</strong></td><td>しゃいんのみっつのとい</td><td>キャリアを考える軸: ①能力・才能（何ができるか）②動機・欲求（何をやりたいか）③意味・価値（何に価値を感じるか）</td><td>★★★</td></tr>
+      <tr><td><strong>パラダイムシフト</strong></td><td>ぱらだいむしふと</td><td>今まで常識と思っていたことが非常識になるほど、社会の常識・価値観が大きく変わること</td><td>★★★</td></tr>
+      <tr><td><strong>消費者主導の市場</strong></td><td>しょうひしゃしゅどうのしじょう</td><td>購買者の持つ情報量が供給者を上回り、消費者側が市場を動かす状態。消費者メディアの台頭によって生まれた</td><td>★★★</td></tr>
+      <tr><td><strong>ソーシャルグラフ</strong></td><td>そーしゃるぐらふ</td><td>人と人のつながりを可視化したネットワーク構造。個人の信頼性の指標にもなる</td><td>★★☆</td></tr>
+      <tr><td><strong>フラット化</strong></td><td>ふらっとか</td><td>ピラミッド型組織から、意思決定を早める扁平な組織構造への変化。3つのパラダイムシフトの一つ</td><td>★★☆</td></tr>
+      <tr><td><strong>グローバル化</strong></td><td>ぐろーばるか</td><td>インターネットにより国内外の情報が国境を超えて共有・伝達される状態。企業活動も国境を超えることが標準化</td><td>★★☆</td></tr>
+      <tr><td><strong>デジタル化</strong></td><td>でじたるか</td><td>デジタルコミュニケーションによって情報伝達の形式が多様化し、人々のつながり方・サービスのあり方が変化すること</td><td>★★☆</td></tr>
+    </table>
+  </div>
+
+  <!-- 補足B: 背景知識 -->
+  <div class="appendix-card book" id="appendix-b">
+    <div class="appendix-title">📚 補足B: 知っておくべき背景知識</div>
+    <ul>
+      <li><strong>E.H.Schein（エドガー・H・シャイン）</strong>とは: スイス生まれの米国人組織心理学者。MIT（マサチューセッツ工科大学）スローン経営大学院名誉教授。キャリアアンカー研究は1960年代にMITスローン校卒業生44名のインタビューから始まり、1970年代に発展。「キャリア・アンカー」（個人が絶対に犠牲にしたくない価値観・能力・動機の核心）理論でも著名。主著: <em>Career Dynamics: Matching Individual and Organizational Needs</em>（Addison-Wesley, 1978）。<span class="ext-small">[外部補足・確認済: MIT CDO公式資料、ResearchGate掲載論文 "Career Anchors, Edgar Schein, and Me" (2023)]</span></li>
+      <li><strong>経済産業省「社会人基礎力」の正確な経緯:</strong><br>
+        <ul style="margin:6px 0 0 0;">
+          <li><strong>2006年1月:</strong> 経済産業省主催の産学有識者委員会（座長: 諏訪康雄法政大学大学院教授）が「職場や地域社会で多様な人々と仕事をしていくために必要な基礎的な力」として「社会人基礎力（3つの能力・12の能力要素）」を定義。背景: 企業と学生の「必要な能力」認識のズレを解消するため。</li>
+          <li><strong>2018年（平成29年度研究会→公表）:</strong> IoT・ビッグデータ・AI等の「第四次産業革命」と「人生100年時代」を踏まえ、「人生100年時代の社会人基礎力」として再定義。3つの能力・12要素は維持しつつ、自己を認識して<strong>リフレクション（振り返り）</strong>しながら「目的（どう活躍するか）・学び（何を学ぶか）・統合（どのように学ぶか）」の3視点のバランスを図ることが追加された。対象が若年層から全年代へ拡大。</li>
+        </ul>
+        <span class="ext-small">[外部補足・確認済: 経済産業省公式サイト https://www.meti.go.jp/policy/kisoryoku/index.html]</span>
+      </li>
+      <li><strong>JASISA</strong>（ジャシサ）: 一般社団法人日本中小企業情報化支援協議会（Japan Association for SME Information Systems Advancement）。全国の中小・中堅企業のIT活用・情報化を支援する一般社団法人。森戸裕一氏が事務局長を務める。<span class="ext-small">[外部補足・確認済: S03:p.4]</span></li>
+      <li><strong>ナレッジネットワーク株式会社</strong>: 森戸裕一氏が代表取締役を務める企業。企業内人材育成・情報化戦略コンサルティングなどを手がける。ウェブサイト: <a href="https://www.tisiki.net/" style="color:var(--accent-blue);font-size:11px;" target="_blank">https://www.tisiki.net/</a><span class="ext-small">[外部補足・確認済: S03:p.5]</span></li>
+      <li><strong>インターネットトラフィックの推移（最新）:</strong> スライド掲載値（36.0Tbps、18.1%増）は2024年5月時点。最新の2024年11月時点では前年同月比12.7%増（令和7年版 情報通信白書）。増加傾向は継続中。<span class="ext-small">[外部補足・確認済: 総務省（2025）令和7年版情報通信白書]</span></li>
+      <li><strong>SNS利用率の最新値:</strong> スライド掲載値（77.2%）は令和5年版。最新の令和6年調査（2025年5月公表）では、インターネット利用目的としてのSNS利用が<strong>81.9%</strong>で最高（全体）。主要サービスはLINE 91.1%、YouTube 80.8%、Instagram 52.6%、X 43.3%。<span class="ext-small">[外部補足・確認済: 総務省 令和6年 通信利用動向調査（2025年5月30日公表）]</span></li>
+    </ul>
+  </div>
+
+  <!-- 補足C: 試験・レポートの観点 -->
+  <div class="appendix-card target" id="appendix-c">
+    <div class="appendix-title">🎯 補足C: 試験・レポートで重要な観点</div>
+    <ul>
+      <li><strong>E.H.Scheinの3つの問い</strong>を自分自身のキャリアに当てはめて説明できるようにしておく（「自分にできること」「やりたいこと」「価値を感じること」の3軸）</li>
+      <li><strong>社会人基礎力の3要素</strong>（前に踏み出す力・考え抜く力・チームで働く力）は正確に暗記。経済産業省が定義したことも覚えておく</li>
+      <li><strong>消費者主導市場</strong>への転換が「なぜ生まれたか」を説明できるようにする（情報量の逆転・メディアリテラシー・消費者メディアの台頭）</li>
+      <li><strong>3つのパラダイムシフト</strong>（フラット化・グローバル化・デジタル化）それぞれの内容とビジネスプロデュースとの関係を説明できるようにする</li>
+      <li><strong>ビジネスプロデュース思考の7要素</strong>（ビジョン①②→戦略③④⑤→価値⑥⑦）の流れを説明できるようにする</li>
+      <li><strong>ビジネスプロデュースに必要な6つの能力</strong>（素早く行動する力・行動を積み重ねる力・発想力・ビジョンを描く力・チームを創造する力・チームを導く力）を列挙できるようにする</li>
+    </ul>
+  </div>
+
+  <!-- 補足D: 関連概念・次回への接続 -->
+  <div class="appendix-card link" id="appendix-d">
+    <div class="appendix-title">🔗 補足D: 関連概念・次回への接続</div>
+    <ul>
+      <li><strong>次回（第2回）予告</strong>: 「企業が求める人材像」。今回のオリエンテーションで学んだ社会背景（少子高齢化・消費者主導市場・パラダイムシフト）を踏まえて、より具体的に企業がどんな人材を求めているかを学ぶ</li>
+      <li><strong>メディアリテラシー</strong>（メディア・リテラシー）: 第3章で言及されたメディアから情報を主体的に読み解く力。デジタル化社会において不可欠なスキルとされる。<span class="ext-small">[外部補足]</span></li>
+      <li><strong>プロジェクトマネジメント</strong>: 第6・7回の主要テーマ。今回のビジネスプロデュース力と連動する能力として位置付けられている<span class="src">← S03:p.7</span></li>
+      <li><strong>キャリア・アンカー（Schein）</strong>: 個人がキャリアを選択する際に「絶対に犠牲にしたくない」核心的価値観・才能・動機の組み合わせ。今回の3つの問いと密接に関連する理論。<span class="ext-small">[外部補足・確認済: Schein (1978)]</span></li>
+      <li><strong>DX（デジタルトランスフォーメーション）</strong>: デジタル化（第3のパラダイムシフト）の進展と密接に関わる概念。単なるIT化ではなく、デジタル技術を使ったビジネスモデル変革を指す。<span class="ext-small">[外部補足]</span></li>
+    </ul>
+  </div>
+
+  <!-- 未確定事項リスト -->
+  <div class="appendix-card unconfirmed" id="unconfirmed">
+    <div class="appendix-title">❓ 未確定事項・要確認リスト</div>
+    <table>
+      <tr><th>ID</th><th>タグ種別</th><th>場所</th><th>内容の概要</th><th>解消状況</th><th>優先度</th><th>対処方法</th></tr>
+      <tr style="opacity:0.6;">
+        <td>U04</td>
+        <td><del>[時点注意]</del> <strong style="color:var(--accent-green);font-size:11px;">✅ 解決済み</strong></td>
+        <td>第3章: 情報が溢れる社会</td>
+        <td>ブロードバンドトラフィックデータ（36.0Tbps、18.1%増）の時点確認</td>
+        <td><strong style="color:var(--accent-green);">2024年5月時点の総務省公式値として確定。最新値（2024年11月、12.7%増）を補足Bおよび本文に追記済み。</strong><br>出典: 総務省 令和7年版情報通信白書</td>
+        <td>低</td>
+        <td>解消済み</td>
+      </tr>
+      <tr style="opacity:0.6;">
+        <td>U05</td>
+        <td><del>[時点注意]</del> <strong style="color:var(--accent-green);font-size:11px;">✅ 解決済み</strong></td>
+        <td>第3章: ソーシャルメディア</td>
+        <td>SNS利用率データ（全体77.2%、令和5年版）の時点確認</td>
+        <td><strong style="color:var(--accent-green);">令和5年版調査値として確定。最新値（令和6年調査, SNS利用 81.9%）を補足Bおよび本文に追記済み。</strong><br>出典: 総務省 令和6年 通信利用動向調査（2025年5月30日公表）</td>
+        <td>低</td>
+        <td>解消済み</td>
+      </tr>
+    </table>
+    <p style="font-size:12px;color:var(--accent-green);margin-top:10px;">✅ 全未確定事項 解消済み（パートIV外部補完による、2026年4月7日更新）</p>
+  </div>
+
+</main>
+
+<script>
+// スクロールに応じてサイドバーのアクティブリンクを更新
+const sections = document.querySelectorAll('[id]');
+const navLinks = document.querySelectorAll('#sidebar nav a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 80) current = s.id;
+  });
+  navLinks.forEach(a => {
+    a.classList.remove('active');
+    if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
