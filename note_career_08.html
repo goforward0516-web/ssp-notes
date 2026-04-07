@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>キャリア入門 第8回：振り返り、まとめ</title>
+<style>
+:root{--bg:#1a1a2e;--surface:#16213e;--surface2:#0f3460;--accent:#e94560;--accent2:#f5a623;--text:#e0e0e0;--text-muted:#9e9e9e;--border:#2a2a4a;--sidebar-w:260px;--s03:#1a3a5c;--s03b:#2a7fff;--s05:#1a3a2a;--s05b:#2aaa6a;--infer:#2a2040;--inferb:#7a5af8;--warn:#3a1a1a;--warnb:#ff4a4a}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;display:flex}
+#sidebar{width:var(--sidebar-w);min-height:100vh;background:var(--surface);border-right:1px solid var(--border);position:fixed;top:0;left:0;overflow-y:auto;padding:20px 0;z-index:100}
+#sidebar .logo{padding:0 16px 16px;border-bottom:1px solid var(--border);margin-bottom:12px}
+#sidebar .logo .course{font-size:11px;color:var(--text-muted)}
+#sidebar .logo .title{font-size:13px;font-weight:bold;color:var(--accent2)}
+#sidebar nav a{display:block;padding:6px 16px;font-size:12px;color:var(--text-muted);text-decoration:none;border-left:3px solid transparent;transition:all .2s}
+#sidebar nav a:hover,#sidebar nav a.active{color:var(--text);border-left-color:var(--accent);background:rgba(233,69,96,.08)}
+#sidebar nav .sh{padding:10px 16px 4px;font-size:10px;color:var(--accent2);font-weight:bold;text-transform:uppercase;letter-spacing:.05em}
+#main{margin-left:var(--sidebar-w);flex:1;padding:40px 48px;max-width:900px}
+.page-header{border-bottom:2px solid var(--accent);padding-bottom:20px;margin-bottom:32px}
+.page-header .meta{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+.badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:bold}
+.bc{background:var(--surface2);color:var(--accent2)}
+.bl{background:var(--accent);color:#fff}
+.bs3{background:var(--s03);color:#6ab0ff;border:1px solid var(--s03b)}
+.bs5{background:var(--s05);color:#6adba0;border:1px solid var(--s05b)}
+.page-header h1{font-size:26px;color:#fff}
+.chapter{margin-bottom:48px;scroll-margin-top:20px}
+.ct{display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,var(--surface2),var(--surface));padding:14px 20px;border-radius:8px;margin-bottom:20px;border-left:4px solid var(--accent)}
+.ct .cn{background:var(--accent);color:#fff;font-size:11px;font-weight:bold;padding:2px 8px;border-radius:4px;white-space:nowrap}
+.ct h2{font-size:18px;color:#fff}
+.section{margin-bottom:28px;scroll-margin-top:20px}
+.section h3{font-size:15px;color:var(--accent2);margin-bottom:10px;padding-bottom:4px;border-bottom:1px solid var(--border)}
+.section h4{font-size:13px;color:#b0c4de;margin:14px 0 6px}
+p{margin-bottom:10px;font-size:14px}
+.src{display:inline-block;font-size:10px;padding:1px 6px;border-radius:3px;margin-left:4px;vertical-align:middle}
+.ss3{background:var(--s03);color:#6ab0ff;border:1px solid var(--s03b)}
+.ss5{background:var(--s05);color:#6adba0;border:1px solid var(--s05b)}
+.callout{padding:14px 18px;border-radius:6px;margin:12px 0;font-size:13.5px}
+.ck{background:rgba(245,166,35,.1);border-left:4px solid var(--accent2)}
+.cs5{background:var(--s05);border-left:4px solid var(--s05b)}
+.cs5::before{content:"🎙 講義音声補足 ";font-size:11px;color:#6adba0;font-weight:bold}
+.ci{background:var(--infer);border-left:4px solid var(--inferb)}
+.ci::before{content:"💡 推論・補足 ";font-size:11px;color:#b09aff;font-weight:bold}
+.cw{background:var(--warn);border-left:4px solid var(--warnb)}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px}
+th{background:var(--surface2);color:var(--accent2);padding:8px 12px;text-align:left;font-weight:bold}
+td{padding:8px 12px;border-bottom:1px solid var(--border)}
+tr:nth-child(even) td{background:rgba(255,255,255,.02)}
+.diagram{margin:16px 0;text-align:center}
+.diagram svg{max-width:100%}
+ul,ol{padding-left:20px;margin:8px 0;font-size:14px}
+li{margin-bottom:4px}
+.unc{background:var(--warn);border:1px solid var(--warnb);border-radius:6px;padding:16px 20px;margin:24px 0}
+.unc h3{color:#ff8080;margin-bottom:10px;font-size:14px}
+.appendix{border-top:1px solid var(--border);padding-top:20px}
+.at{font-size:13px;color:var(--text-muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px}
+.formula{display:inline-block;background:var(--surface2);border:1px solid var(--accent2);border-radius:4px;padding:6px 16px;font-size:16px;font-weight:bold;color:var(--accent2);margin:8px 0}
+footer{margin-top:60px;padding-top:20px;border-top:1px solid var(--border);font-size:11px;color:var(--text-muted)}
+</style>
+</head>
+<body>
+<nav id="sidebar">
+  <div class="logo">
+    <div class="course">キャリア入門</div>
+    <div class="title">第8回：振り返り、まとめ</div>
+  </div>
+  <nav>
+    <div class="sh">目次</div>
+    <a href="#ch1">第1章：本科目の振り返り</a>
+    <a href="#s1-1">　学習目標の確認</a>
+    <a href="#s1-2">　次世代人材の背景</a>
+    <a href="#s1-3">　必要な能力3層構造</a>
+    <a href="#s1-4">　7つの能力</a>
+    <a href="#s1-5">　既存の枠を超える</a>
+    <a href="#s1-6">　意欲×能力</a>
+    <a href="#ch2">第2章：キャリアを考える</a>
+    <a href="#s2-1">　モチベーション vs キャリア</a>
+    <a href="#s2-2">　変化の時代のデザイン</a>
+    <a href="#s2-3">　不確実性</a>
+    <a href="#s2-4">　柔軟性</a>
+    <a href="#s2-5">　キャリア開発</a>
+    <a href="#s2-6">　成長の3軸</a>
+    <a href="#ch3">第3章：まとめ</a>
+    <a href="#s3-1">　社会人の学習習慣</a>
+    <a href="#s3-2">　スキルの積み上げ</a>
+    <a href="#s3-3">　3層で知る</a>
+    <a href="#s3-4">　PEST分析</a>
+    <a href="#s3-5">　3C分析</a>
+    <a href="#s3-6">　自分を知る</a>
+    <a href="#ch4">第4章：次世代人材へ</a>
+    <a href="#s4-1">　次世代人材の定義</a>
+    <a href="#s4-2">　能力の変化</a>
+    <a href="#s4-3">　企業の生き残り</a>
+    <a href="#s4-4">　学ぶ力</a>
+    <a href="#s4-5">　時代の変化を楽しむ</a>
+    <div class="sh">付録</div>
+    <a href="#unc">■ 未確認事項</a>
+    <a href="#app-a">付録A：重要用語</a>
+    <a href="#app-b">付録B：背景知識</a>
+    <a href="#app-c">付録C：試験対策</a>
+    <a href="#app-d">付録D：関連概念</a>
+  </nav>
+</nav>
+
+<main id="main">
+<header class="page-header">
+  <div class="meta">
+    <span class="badge bc">キャリア入門</span>
+    <span class="badge bl">第8回</span>
+    <span class="badge bs3">← S03</span>
+    <span class="badge bs5">← S05×2</span>
+  </div>
+  <h1>振り返り、まとめ</h1>
+  <p style="color:var(--text-muted);font-size:13px;margin-top:8px;">サイバー大学 学部共通教養科目 ／ 全8回の最終回</p>
+</header>
+
+<!-- CH1 -->
+<section class="chapter" id="ch1">
+  <div class="ct"><span class="cn">第1章</span><h2>本科目の振り返り</h2></div>
+
+  <div class="section" id="s1-1">
+    <h3>1-1. 学習目標の確認 <span class="src ss3">← S03:p.4</span></h3>
+    <table>
+      <thead><tr><th>#</th><th>学習目標</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>次世代における企業や組織が求める<strong>人材像</strong>を理解する</td></tr>
+        <tr><td>2</td><td>次世代における企業や組織で働くために必要な<strong>能力</strong>を理解する</td></tr>
+        <tr><td>3</td><td>ビジネスをプロデュースする上で必要な<strong>能力</strong>を理解する</td></tr>
+      </tbody>
+    </table>
+    <div class="callout cs5">超情報化時代においては「知識・情報を持つ」こと自体は当たり前になっている。そこから何を<strong>創造</strong>し、何を<strong>考えられるか</strong>が問われる。</div>
+  </div>
+
+  <div class="section" id="s1-2">
+    <h3>1-2. 企業が求める次世代人材の背景 <span class="src ss3">← S03:p.5</span></h3>
+    <h4>① 少子高齢化の影響</h4>
+    <ul><li>働き手の減少</li><li>マーケット自体の少子高齢化 → 従来の商品・売り方が通用しなくなる</li></ul>
+    <h4>② 消費者メディアの台頭による市場変化</h4>
+    <ul><li>人と人がつながり口コミが生まれる → 価値の多様化・ニーズの多様化</li><li>消費者の意思決定プロセス・行動の変化</li></ul>
+    <h4>③ 3つのパラダイムシフト → これからの企業の課題</h4>
+    <ul>
+      <li>多様な人材が<strong>協働</strong>できる組織への変革</li>
+      <li>海外市場開拓に必要な<strong>リソースの確保</strong></li>
+      <li>社外パートナー・顧客を巻き込んだ<strong>新しいビジネスの創造</strong></li>
+      <li>ソーシャルメディアを活用した顧客との<strong>新たな関係構築</strong></li>
+    </ul>
+    <div class="callout ck"><strong>結論：</strong>ITによる「効率化」から、ITを活用した<strong>「変革（transformation）」</strong>へ。変革とは「今までの価値観を捨て、新しい価値観を作ること」。<br>→ <strong>「効率」ではなく「変革」を重視したビジネスプロデュース力が求められる。</strong> <span class="src ss3">← S03:p.5</span></div>
+  </div>
+
+  <div class="section" id="s1-3">
+    <h3>1-3. 企業や組織で働くために必要な能力（3層構造） <span class="src ss3">← S03:p.6</span></h3>
+    <div class="diagram">
+      <svg viewBox="0 0 500 230" xmlns="http://www.w3.org/2000/svg" style="max-width:480px">
+        <!-- 社会人基礎力 -->
+        <circle cx="310" cy="158" r="68" fill="#0f3460" stroke="#2a7fff" stroke-width="1.5"/>
+        <text x="310" y="150" text-anchor="middle" fill="#e0e0e0" font-size="14" font-weight="bold">社会人</text>
+        <text x="310" y="168" text-anchor="middle" fill="#e0e0e0" font-size="14" font-weight="bold">基礎力</text>
+        <!-- プロジェクト遂行力 -->
+        <circle cx="195" cy="147" r="50" fill="#0a2040" stroke="#2a7fff" stroke-width="1.5"/>
+        <text x="195" y="140" text-anchor="middle" fill="#e0e0e0" font-size="12" font-weight="bold">プロジェクト</text>
+        <text x="195" y="156" text-anchor="middle" fill="#e0e0e0" font-size="12" font-weight="bold">遂行力</text>
+        <!-- ビジネスプロデュース力 -->
+        <circle cx="252" cy="70" r="52" fill="#1a1060" stroke="#e94560" stroke-width="2"/>
+        <text x="252" y="62" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">ビジネス</text>
+        <text x="252" y="78" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">プロデュース力</text>
+        <defs><marker id="a1" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#e94560"/></marker></defs>
+        <path d="M250,118 L252,90" stroke="#e94560" stroke-width="2" fill="none" marker-end="url(#a1)"/>
+        <text x="395" y="40" fill="#f5a623" font-size="11" font-weight="bold">← 最上位</text>
+        <text x="395" y="56" fill="#9e9e9e" font-size="10">新しい価値の創造</text>
+      </svg>
+    </div>
+    <table>
+      <thead><tr><th>層</th><th>能力</th><th>内容</th></tr></thead>
+      <tbody>
+        <tr><td>基盤</td><td><strong>社会人基礎力</strong></td><td>一歩踏み出す・深く考える・仲間と協働</td></tr>
+        <tr><td>中間</td><td><strong>プロジェクト遂行力</strong></td><td>プロジェクトを前に進める力・メンバーとしての考え方</td></tr>
+        <tr><td>上位</td><td><strong>ビジネスプロデュース力</strong></td><td>既存価値を再編集・リニューアルして蘇らせるリノベーション的発想</td></tr>
+      </tbody>
+    </table>
+    <div class="callout cs5">「ビジネスプロデュース力」とは0から1で作ることではない。既存の価値観を合わせ、リニューアルして、場を変えて蘇らせる——<strong>リノベーションに近いもの</strong>が求められている。</div>
+  </div>
+
+  <div class="section" id="s1-4">
+    <h3>1-4. ビジネスプロデューサーに必要な7つの能力 <span class="src ss3">← S03:p.7</span></h3>
+    <p style="font-size:12px;color:var(--text-muted)">出典：吉田就彦著『アイデアをカタチにする仕事術』東洋経済新報社 p.57</p>
+    <table>
+      <thead><tr><th>能力</th><th>定義</th></tr></thead>
+      <tbody>
+        <tr><td><strong>発見力</strong></td><td>チャンスやヒットの芽や新しい人財などを発見する力</td></tr>
+        <tr><td><strong>理解力</strong></td><td>世の中の動きや物事の本質を理解する力</td></tr>
+        <tr><td><strong>目標力</strong></td><td>ビジョンを描きゴールをイメージできる力</td></tr>
+        <tr><td><strong>組織力</strong></td><td>さまざまなビジネス資源を組織して有効活用する力</td></tr>
+        <tr><td><strong>働きかけ力</strong></td><td>「人」や組織を励まし、力を吹き込み、目標に向かって育てる力</td></tr>
+        <tr><td><strong>柔軟力</strong></td><td>トラブルや環境変化に対応するなど、柔軟に物事を調整する力</td></tr>
+        <tr><td><strong>完結力</strong></td><td>さまざまなことを乗り越えて実行し、達成して、次への蓄積とする力</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section" id="s1-5">
+    <h3>1-5. 既存の枠にとらわれず、自由に発想する <span class="src ss3">← S03:p.8</span></h3>
+    <h4>① 思考のクセ</h4>
+    <ul>
+      <li>過去の経験・知識に影響され、連鎖的思考が幅広い視点での発想を阻害する</li>
+      <li>新しい時代においては過去の経験・知識が全て「昔の話」になる可能性がある</li>
+    </ul>
+    <h4>② 常識のカベ</h4>
+    <ul>
+      <li>社会的・組織的・個人が持つ常識や規範が斬新な発想を阻害し否定させる</li>
+      <li>常識によって「現状に対する疑問」が失われる</li>
+      <li>「最近おかしいな」という直感は正常な反応——常識のカベが強いと自分がおかしいと感じてしまう</li>
+    </ul>
+    <div class="callout ck"><strong>克服法：</strong>視点の偏りを認識して、<strong>意識的に視点を広げる・ずらす</strong> <span class="src ss3">← S03:p.8</span></div>
+  </div>
+
+  <div class="section" id="s1-6">
+    <h3>1-6. 第1章まとめ：今、何に取り組むか <span class="src ss3">← S03:p.9–10</span></h3>
+    <div style="text-align:center;margin:16px 0"><span class="formula">行動・成果 = 意欲 × 能力</span></div>
+    <ul>
+      <li>能力の差：「ある人」と「ない人」は一般的に<strong>2倍</strong>程度</li>
+      <li><strong>意欲の差：1,000倍〜10,000倍</strong>（掛け算なので意欲が最大の変数）</li>
+      <li>能力に偏りすぎると逆に意欲を下げてしまうことがある</li>
+    </ul>
+    <div class="callout cs5">結果よりも<strong>行動にフォーカス</strong>する。インターネット・ソーシャルメディアを駆使し他者の能力を借りることも有効。どれだけの行動量を確保できるかを意識して進めることが重要。</div>
+    <div class="callout ck"><strong>第1章の結論：</strong>次世代に必要とされる人材像を明確にし、今の自分に足りないスキルを把握する。そのギャップを埋めるために今から何に取り組み、どのような行動をとるか、計画を立てる。 <span class="src ss3">← S03:p.10</span></div>
+  </div>
+</section>
+
+<!-- CH2 -->
+<section class="chapter" id="ch2">
+  <div class="ct"><span class="cn">第2章</span><h2>「キャリア」を考える上で大切なこと</h2></div>
+
+  <div class="section" id="s2-1">
+    <h3>2-1. モチベーションとキャリアの違い <span class="src ss3">← S03:p.14</span></h3>
+    <table>
+      <thead><tr><th>概念</th><th>時間軸</th><th>内容</th></tr></thead>
+      <tbody>
+        <tr><td><strong>モチベーション</strong></td><td>短期</td><td>半年のプロジェクト、3ヶ月の資格取得など</td></tr>
+        <tr><td><strong>キャリア</strong></td><td>長期（定年まで）</td><td>自分にとって意味のあることを成し遂げていく積み重ね</td></tr>
+      </tbody>
+    </table>
+    <div class="callout ck">キャリアを考えることは、<strong>組織でいう"戦略"を立てるようなもの。</strong>自分の人生をいかにより良いものにしていくか——その設計がキャリア設計。 <span class="src ss3">← S03:p.14</span></div>
+  </div>
+
+  <div class="section" id="s2-2">
+    <h3>2-2. 変化が激しい時代のキャリアデザイン <span class="src ss3">← S03:p.15</span></h3>
+    <ul>
+      <li>市場予測が非常に難しい時代（顧客が何を欲しているか自体が予測困難）</li>
+      <li>戦後高度経済成長期の価値観・戦略では通用しない</li>
+      <li>会社は方向性を示しながら各人の成長をサポートする使命を持つ</li>
+      <li>20代→40代→60代と、自分を取り巻く時代環境も変化していく</li>
+    </ul>
+    <div class="callout ck"><strong>環境が激しく変化する現代では、各人が主体的にキャリアをデザインする必要がある。</strong><br>プロセス：予測する → イメージする → 自分をマッピングする → 今日の行動を逆算で作る <span class="src ss3">← S03:p.15</span></div>
+  </div>
+
+  <div class="section" id="s2-3">
+    <h3>2-3. キャリアデザインの不確実性 <span class="src ss3">← S03:p.16</span></h3>
+    <p>キャリアの将来像が<strong>「予期せず崩れてしまう」</strong>3つの要因：</p>
+    <ol><li><strong>ビジネス環境の変化</strong></li><li><strong>生活環境の変化</strong></li><li><strong>会社に起こり得る変化</strong>（方針変更など）</li></ol>
+    <div class="callout cw">「安定した会社」「安定した職業」は<strong>現時点では安定しているように見える</strong>に過ぎない。潰れない会社はあり得ない。安定した職業もない。過去の流れでそう見えた会社・職業が、予期せず崩れたとき、そこにいる人たちは全員影響を受ける。</div>
+  </div>
+
+  <div class="section" id="s2-4">
+    <h3>2-4. 変化に順応する柔軟性 <span class="src ss3">← S03:p.17</span></h3>
+    <p>自己イメージの実現を目指しながら、職業人生の中で起こる変化に<strong>柔軟に対処できるよう準備</strong>しておくことが必要。</p>
+    <table>
+      <thead><tr><th>変化の例</th><th>対応</th></tr></thead>
+      <tbody>
+        <tr><td>配置転換（望む部署でない配属）</td><td rowspan="3" style="vertical-align:middle">調整・修正・自身の解釈を加えながら、自身が描く将来像に近づける</td></tr>
+        <tr><td>出産・育児（家族構成の変化）</td></tr>
+        <tr><td>親族の介護（超高齢化社会への対応）</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section" id="s2-5">
+    <h3>2-5. キャリア開発とは <span class="src ss3">← S03:p.18</span></h3>
+    <div class="callout ck">会社・職場で必要とされる人材であり続けるために、<strong>不足している知識やスキルを自ら身につけ、仕事を通じて成長していく。</strong></div>
+    <ul>
+      <li>「安定した職場・職業」ではなく<strong>「安定した能力」</strong>を身につけることが本質</li>
+      <li>自己防衛の手段として：常に会社から必要とされる知識・スキルを身につけておく</li>
+      <li>仕事を通じた継続的な成長 → 雇用の継続につながる</li>
+    </ul>
+  </div>
+
+  <div class="section" id="s2-6">
+    <h3>2-6. 「成長」は3つの軸で考える <span class="src ss3">← S03:p.19</span></h3>
+    <div class="diagram">
+      <svg viewBox="0 0 500 220" xmlns="http://www.w3.org/2000/svg" style="max-width:480px">
+        <circle cx="250" cy="110" r="40" fill="#0f3460" stroke="#2a7fff" stroke-width="2"/>
+        <text x="250" y="114" text-anchor="middle" fill="#f5a623" font-size="15" font-weight="bold">成長</text>
+        <defs>
+          <marker id="a2" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#e94560"/></marker>
+          <marker id="a3" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#2a7fff"/></marker>
+          <marker id="a4" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#2aaa6a"/></marker>
+        </defs>
+        <line x1="250" y1="70" x2="250" y2="24" stroke="#e94560" stroke-width="2" marker-end="url(#a2)"/>
+        <rect x="175" y="4" width="150" height="32" rx="6" fill="#1a0a20" stroke="#e94560" stroke-width="1.5"/>
+        <text x="250" y="18" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">③ 職位が上がる</text>
+        <text x="250" y="32" text-anchor="middle" fill="#9e9e9e" font-size="9">部下を持ち、マネジメントする</text>
+        <line x1="218" y1="144" x2="140" y2="182" stroke="#2a7fff" stroke-width="2" marker-end="url(#a3)"/>
+        <rect x="28" y="170" width="162" height="40" rx="6" fill="#0a1a30" stroke="#2a7fff" stroke-width="1.5"/>
+        <text x="109" y="184" text-anchor="middle" fill="#fff" font-size="10" font-weight="bold">① できることの幅を広げる</text>
+        <text x="109" y="198" text-anchor="middle" fill="#9e9e9e" font-size="9">様々な業務・職種にチャレンジ</text>
+        <line x1="282" y1="144" x2="360" y2="182" stroke="#2aaa6a" stroke-width="2" marker-end="url(#a4)"/>
+        <rect x="309" y="170" width="162" height="40" rx="6" fill="#0a2018" stroke="#2aaa6a" stroke-width="1.5"/>
+        <text x="390" y="184" text-anchor="middle" fill="#fff" font-size="10" font-weight="bold">② より重要な役割を担う</text>
+        <text x="390" y="198" text-anchor="middle" fill="#9e9e9e" font-size="9">組織の中心的ポジションへ</text>
+      </svg>
+    </div>
+    <div class="callout cs5">③ 職位が上がるとは、<strong>自分の能力を上げることからメンバーの能力を上げること</strong>に仕事がシフトすること。部下の支援に必死になればなるほどマネジメント能力が上がる——子供を持つと親が成長するのと同じ構造。</div>
+  </div>
+
+  <div class="section">
+    <h3>2-7. 第2章まとめ <span class="src ss3">← S03:p.20</span></h3>
+    <div class="callout ck">
+      <strong>キャリア = 能力を高めること。</strong><br><br>
+      「自分が何をやりたいか」だけでなく、<br>
+      ・<strong>どのような人が必要とされているか</strong><br>
+      ・<strong>自分の強みを活かして何ができるか</strong><br>
+      を考えながら、自分はどういうことをまずすべきかを理解することが重要。<br><br>
+      そのため、不確定な未来にも<strong>柔軟に対応できる力</strong>が必要。
+    </div>
+  </div>
+</section>
+
+<!-- CH3 -->
+<section class="chapter" id="ch3">
+  <div class="ct"><span class="cn">第3章</span><h2>まとめ</h2></div>
+
+  <div class="section" id="s3-1">
+    <h3>3-1. 社会人の学習習慣 <span class="src ss3">← S03:p.24</span></h3>
+    <p><strong>エンプロイアビリティ（雇用され続ける能力）</strong>を維持するために、学習習慣を持ち続けることが重要。</p>
+    <ul>
+      <li>年齢が上がるほど学習者率は右肩下がりだが、60〜65歳でも継続的に学習している人は多い</li>
+      <li><strong>「学んでいるつもり」の落とし穴</strong>：情報を大量に見ているだけで、本当の学びになっていないことがある</li>
+    </ul>
+    <p style="font-size:12px;color:var(--text-muted)">出典：総務省「令和3年社会生活基本調査」 https://www.stat.go.jp/data/shakai/2021/pdf/gaiyoua.pdf [2024.9.19閲覧]</p>
+  </div>
+
+  <div class="section" id="s3-2">
+    <h3>3-2. 能力を高める努力は自分で続ける <span class="src ss3">← S03:p.25</span></h3>
+    <div class="diagram">
+      <svg viewBox="0 0 440 205" xmlns="http://www.w3.org/2000/svg" style="max-width:420px">
+        <rect x="60" y="158" width="280" height="36" rx="4" fill="#1a4a1a" stroke="#2aaa6a" stroke-width="1.5"/>
+        <text x="200" y="180" text-anchor="middle" fill="#6adba0" font-size="13" font-weight="bold">基礎的スキル（社会人基礎力）</text>
+        <rect x="60" y="109" width="82" height="44" rx="4" fill="#0a2a40" stroke="#2a7fff" stroke-width="1"/>
+        <text x="101" y="126" text-anchor="middle" fill="#9ec8ff" font-size="10">業務ごとに</text>
+        <text x="101" y="141" text-anchor="middle" fill="#9ec8ff" font-size="10">必要なスキル</text>
+        <rect x="152" y="109" width="72" height="44" rx="4" fill="#0a2a40" stroke="#2a7fff" stroke-width="1"/>
+        <text x="188" y="134" text-anchor="middle" fill="#9ec8ff" font-size="10">経験知</text>
+        <rect x="234" y="109" width="106" height="44" rx="4" fill="#0a2a40" stroke="#2a7fff" stroke-width="1"/>
+        <text x="287" y="126" text-anchor="middle" fill="#9ec8ff" font-size="10">仕事の幅を</text>
+        <text x="287" y="141" text-anchor="middle" fill="#9ec8ff" font-size="10">広げるスキル</text>
+        <rect x="100" y="63" width="200" height="38" rx="4" fill="#1a0a30" stroke="#e94560" stroke-width="1.5"/>
+        <text x="200" y="86" text-anchor="middle" fill="#ff8080" font-size="12" font-weight="bold">ビジネスを創造するスキル</text>
+        <text x="380" y="96" fill="#f5a623" font-size="10" font-weight="bold">↑ 求められる</text>
+        <text x="380" y="110" fill="#f5a623" font-size="10" font-weight="bold">人材へ</text>
+        <line x1="370" y1="64" x2="370" y2="195" stroke="#f5a623" stroke-width="1.5" stroke-dasharray="4,3"/>
+      </svg>
+    </div>
+    <p>スキルは「自分で学び積み重ねていく」もの。既にあるスキルの棚卸しと、陳腐化していないか検証することも重要。</p>
+  </div>
+
+  <div class="section" id="s3-3">
+    <h3>3-3. 求められる人材であり続けるためには <span class="src ss3">← S03:p.26</span></h3>
+    <div class="diagram">
+      <svg viewBox="0 0 360 200" xmlns="http://www.w3.org/2000/svg" style="max-width:360px">
+        <ellipse cx="180" cy="96" rx="160" ry="88" fill="#0a1a40" stroke="#2a7fff" stroke-width="1.5"/>
+        <text x="180" y="22" text-anchor="middle" fill="#6ab0ff" font-size="13" font-weight="bold">世の中を知る</text>
+        <ellipse cx="180" cy="100" rx="108" ry="60" fill="#0a2a50" stroke="#f5a623" stroke-width="1.5"/>
+        <text x="180" y="60" text-anchor="middle" fill="#f5a623" font-size="11" font-weight="bold">会社の置かれている状況を知る</text>
+        <ellipse cx="180" cy="106" rx="58" ry="34" fill="#0f3460" stroke="#2aaa6a" stroke-width="1.5"/>
+        <text x="180" y="110" text-anchor="middle" fill="#6adba0" font-size="12" font-weight="bold">自分を知る</text>
+        <defs><marker id="a5" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#e94560"/></marker></defs>
+        <line x1="180" y1="185" x2="180" y2="197" stroke="#e94560" stroke-width="2" marker-end="url(#a5)"/>
+        <text x="180" y="182" text-anchor="middle" fill="#e94560" font-size="11" font-weight="bold">これからどうなるか？を予測する</text>
+      </svg>
+    </div>
+  </div>
+
+  <div class="section" id="s3-4">
+    <h3>3-4. PEST分析で「世の中を知る」 <span class="src ss3">← S03:p.27</span></h3>
+    <table>
+      <thead><tr><th>観点</th><th>内容</th></tr></thead>
+      <tbody>
+        <tr><td><strong>P</strong>olitical（政治的）</td><td>新しい法律の施行、規制強化・緩和、税制、政府の施策・動き など</td></tr>
+        <tr><td><strong>E</strong>conomical（経済的）</td><td>景気の変動、物価の変動、経済指標の変動、株価・金利・為替の変動 など</td></tr>
+        <tr><td><strong>S</strong>ocial（社会的）</td><td>人口動態、世論、流行・社会現象、教育水準、自然環境の変化 など</td></tr>
+        <tr><td><strong>T</strong>echnological（技術的）</td><td>技術革新、新しい発明・発見、特許 など</td></tr>
+      </tbody>
+    </table>
+    <div class="callout ci">PEST分析は自分のキャリアに影響するマクロ環境を把握するためのフレームワーク。例えばS（社会）の人口動態（少子高齢化）を読めば、どの業界のビジネスが伸び縮みするかを予測できる。そこからP（政治）の規制変化とT（技術）のAI活用を組み合わせて、自分が身につけるべきスキルを逆算することができる。</div>
+  </div>
+
+  <div class="section" id="s3-5">
+    <h3>3-5. 3C分析で「会社の状況を知る」 <span class="src ss3">← S03:p.28</span></h3>
+    <table>
+      <thead><tr><th>C</th><th>視点</th><th>内容</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Customer</strong></td><td>市場・顧客</td><td>顧客のニーズや市場の動向</td></tr>
+        <tr><td><strong>Competitor</strong></td><td>競合</td><td>競合他社の動き・強み・弱み</td></tr>
+        <tr><td><strong>Company</strong></td><td>自社</td><td>自社の強み・弱み・資源</td></tr>
+      </tbody>
+    </table>
+    <p>3C分析を通じて、自社が将来も有望か・現状維持か・衰退傾向かを予測しながら自分の行動を決める。</p>
+  </div>
+
+  <div class="section" id="s3-6">
+    <h3>3-6. 「自分を知る」 <span class="src ss3">← S03:p.29–30</span></h3>
+    <table>
+      <thead><tr><th>側面</th><th>把握すべき内容</th></tr></thead>
+      <tbody>
+        <tr><td><strong>強み</strong></td><td>性格・身体・対人面・知識量・生活態度・社会性</td></tr>
+        <tr><td><strong>弱み</strong></td><td>同上の各側面における課題・改善余地</td></tr>
+      </tbody>
+    </table>
+    <p><strong>問い：「伸ばしたいものは何か？」「克服したいものは何か？」</strong></p>
+    <div class="callout ck">自身の強み・弱みを踏まえた職業選択・働く場の選択が重要。仕事（プロジェクト）の中で自分の役割を確実に、<strong>最高品質でこなすことが成長の最短経路。</strong> <span class="src ss3">← S03:p.30</span></div>
+  </div>
+</section>
+
+<!-- CH4 -->
+<section class="chapter" id="ch4">
+  <div class="ct"><span class="cn">第4章</span><h2>次世代人材として活躍するあなたへ</h2></div>
+
+  <div class="section" id="s4-1">
+    <h3>4-1. 次世代人材の定義 <span class="src ss3">← S03:p.34</span></h3>
+    <ul>
+      <li>これまでの世代の<strong>延長線上にない</strong></li>
+      <li>単純に過去の能力を伸ばすだけでなく、<strong>新しい時代で必要とされる能力を自ら身につける</strong></li>
+      <li>求められる能力は<strong>常に変化し続けている</strong></li>
+    </ul>
+    <div class="callout cs5">企業サイドも「どういう人材にどの能力を持ってもらって」というところが伝えにくくなってきている。それほど時代が大きく変化している。だからこそ、<strong>「今までになかった力・今までになかった価値を作り出す力」</strong>が安定した能力になる。</div>
+  </div>
+
+  <div class="section" id="s4-2">
+    <h3>4-2. 求められる能力の変化（1999年→現在） <span class="src ss3">← S03:p.34</span></h3>
+    <p>1999年に企業が重視した能力（行動力・実行力・熱意・意欲・論理的思考力・創造力・専門知識・研究内容）は「意欲を持って行動する人間」が中心だった。現在のキャリア入門が加えるもの：</p>
+    <ul>
+      <li><strong>ビジネスプロデュース力</strong>（既存の枠を超えた新ビジネス創造）</li>
+      <li><strong>プロジェクト推進能力</strong>（プロジェクト型の仕事の増加に対応）</li>
+      <li><strong>社会人基礎力</strong>（1999年以降に提唱）</li>
+    </ul>
+    <p style="font-size:12px;color:var(--text-muted)">出典：経済同友会 教育委員会「企業の採用と教育に関するアンケート調査」結果（2016年調査） https://www.doyukai.or.jp/policyproposals/articles/2016/pdf/161221b.pdf [2024.3.18閲覧]</p>
+  </div>
+
+  <div class="section" id="s4-3">
+    <h3>4-3. 企業の生き残りが難しい時代 <span class="src ss3">← S03:p.35</span></h3>
+    <ul>
+      <li>大企業の大規模リストラ・相次ぐ大型買収・事業撤退</li>
+      <li>リアル経済圏に加え、EC・ソーシャルメディアによる<strong>ネット経済圏の台頭</strong></li>
+      <li>企業が生き残りをかけて最初に確保しようとするもの：<strong>「新しい発想ができる人材」</strong></li>
+    </ul>
+    <div class="callout ck">新しいマーケットを創造したり新しいビジネスを作れる人材は全体の<strong>1〜2割</strong>。その1〜2割は<strong>学力では測れない</strong>。常に時代とともに変化し、自分自身も変化させる習慣を持ち、常に学習する人材。 <span class="src ss3">← S03:p.35</span></div>
+  </div>
+
+  <div class="section" id="s4-4">
+    <h3>4-4. キャリア = 能力を高めること（最終まとめ） <span class="src ss3">← S03:p.36</span></h3>
+    <p><strong>「学ぶ力」がある人の4つの習慣：</strong></p>
+    <table>
+      <thead><tr><th>習慣</th><th>内容</th></tr></thead>
+      <tbody>
+        <tr><td>自分で学ぶ</td><td>主体的な学習</td></tr>
+        <tr><td>他人から学ぶ</td><td>他者の経験・知識から吸収する</td></tr>
+        <tr><td>環境から学ぶ</td><td>身の回りの事象から学ぶ</td></tr>
+        <tr><td><strong>学ぶ環境をつくり出す</strong></td><td>ビジネスプロデュースに近い発想。自分だけでなく周りを動かす</td></tr>
+      </tbody>
+    </table>
+    <p><strong>「学ぶ力」に必要な条件：</strong>知力・集中力・精神力・繊細さ</p>
+    <p style="font-size:12px;color:var(--text-muted)">参考：苗木邦王著『負け癖社員はクビにしろ！』幻冬舎（P104〜107）</p>
+    <div class="callout ck">人と<strong>相対評価</strong>で考える必要はない。<strong>昨日の自分より今日の自分が成長したか</strong>という指標で十分。 <span class="src ss3">← S03:p.36</span></div>
+  </div>
+
+  <div class="section" id="s4-5">
+    <h3>4-5. 時代の変化を楽しむ <span class="src ss3">← S03:p.37</span></h3>
+    <ul>
+      <li>スマートデバイス・クラウドサービス・ソーシャルメディアの普及</li>
+      <li><strong>「4年前の自分と今」はそれほど変わっていない</strong></li>
+      <li><strong>「今から4年後」は想像もつかないほど変化している</strong>（変化速度は加速）</li>
+    </ul>
+    <div class="callout ck">「従来はできなかったことが実現できるようになっている」。「無理だよ」という常識と戦うと、その"ものさし"を冷静に見ると実はできることに気づく。そのためのツールが次々と新しく出てきているのが現代社会。 <span class="src ss3">← S03:p.37</span></div>
+  </div>
+
+  <div class="section">
+    <h3>4-6. 講師からのメッセージ（最後に） <span class="src ss5">← S05</span></h3>
+    <div class="callout cs5">講師自身のキャリア軌跡：あるメーカーに就職→11年勤務→独立・会社設立。約10年スパンでいろいろなことにチャレンジし続けた。現在は客員教授・会社2社・NPO3団体・一般社団法人1団体・複数大学での教鞭を並行。<br><br>「その時その時に決断できたのは、<strong>熱意を持って自分自身が必死にやっていた</strong>から。常に高い目標を置きながら日々生活する中で自分のキャリアは積み上げられる。」</div>
+    <div class="callout ck"><strong>次世代は難しい時代でもあるが、「予想以上のキャリア」を作ることができる時代でもある。</strong><br>自分のキャリアについて深く考え、高い目標を設定し、<strong>熱意を持ってチャレンジ</strong>すること。</div>
+  </div>
+</section>
+
+<!-- UNCONFIRMED: 全件解消済み（パートIV外部補完 2026-04-07実施） -->
+
+<!-- APPENDIX A -->
+<section class="appendix" id="app-a">
+  <div class="at">付録A：重要用語</div>
+  <table>
+    <thead><tr><th>用語</th><th>定義</th></tr></thead>
+    <tbody>
+      <tr><td><strong>ビジネスプロデュース力</strong></td><td>既存の価値観を再編集・リニューアルし、場を変えて蘇らせる力。0→1のイノベーションではなく、リノベーション的発想</td></tr>
+      <tr><td><strong>社会人基礎力</strong></td><td>「前に踏み出す力（アクション）」「考え抜く力（シンキング）」「チームで働く力（チームワーク）」の3能力・12要素。経済産業省が2006年に提唱。2018年に「人生100年時代の社会人基礎力」として改訂。[外部補足・確認済: 経産省公式サイト meti.go.jp/policy/kisoryoku/]</td></tr>
+      <tr><td><strong>エンプロイアビリティ</strong></td><td>雇用され続ける能力（Employability）。社会人の学習習慣維持によって支えられる</td></tr>
+      <tr><td><strong>PEST分析</strong></td><td>政治（P）・経済（E）・社会（S）・技術（T）の4視点で世の中を分析するフレームワーク</td></tr>
+      <tr><td><strong>3C分析</strong></td><td>顧客（Customer）・競合（Competitor）・自社（Company）の3視点で事業環境を分析するフレームワーク</td></tr>
+      <tr><td><strong>キャリアデザイン</strong></td><td>環境変化を踏まえ、各人が主体的に職業人生を設計・再設計すること</td></tr>
+      <tr><td><strong>思考のクセ</strong></td><td>過去の経験・知識に影響され、連鎖的思考が幅広い視点での発想を阻害する傾向</td></tr>
+      <tr><td><strong>常識のカベ</strong></td><td>社会的・組織的・個人の持つ常識や規範が斬新な発想を阻害し否定させる障壁</td></tr>
+      <tr><td><strong>パラダイムシフト</strong></td><td>従来の価値観・思考の枠組みが根本的に変化すること。改善ではなく前提の置き換え</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- APPENDIX B -->
+<section class="appendix" id="app-b" style="margin-top:24px">
+  <div class="at">付録B：背景知識 <span style="font-size:11px;font-weight:400;color:var(--text-muted)">（✅=一次ソース確認済）</span></div>
+
+  <h4>B-1. 吉田就彦著書について ✅</h4>
+  <p><strong>『アイデアをカタチにする仕事術――ビジネス・プロデューサーの7つの能力』</strong><br>
+  著者：吉田就彦（デジタルハリウッド大学大学院専任教授・ヒットコンテンツ研究所代表）<br>
+  出版：東洋経済新報社、2010年2月26日刊行、238頁、ISBN：9784492043677<br>
+  7つの能力（発見力・理解力・目標力・組織力・働きかけ力・柔軟力・完結力）を「能力サイクル」として体系化。「おくりびと」「モンスターハンター」などのヒット事例を分析。<br>
+  <span style="font-size:11px;color:var(--text-muted)">確認ソース：東洋経済STORE str.toyokeizai.net/books/9784492043677/ ・ デジタルハリウッド大学大学院公式発表 gs.dhw.ac.jp/news/100303-3.html</span></p>
+
+  <h4>B-2. 社会人基礎力について ✅</h4>
+  <p>経済産業省が<strong>2006年</strong>に提唱した「職場や地域社会で多様な人々と仕事をしていくために必要な基礎的な力」。「前に踏み出す力（アクション）」「考え抜く力（シンキング）」「チームで働く力（チームワーク）」の<strong>3能力・12要素</strong>から構成される。<br>
+  <strong>2018年</strong>には「人生100年時代の社会人基礎力」として改訂され、「目的」「学び」「統合」の3つの視点が追加された。自らキャリアを切り開いていく上でのリフレクション（振り返り）が重視されている。<br>
+  <span style="font-size:11px;color:var(--text-muted)">確認ソース：経済産業省公式 meti.go.jp/policy/kisoryoku/index.html</span></p>
+
+  <h4>B-3. PEST分析の起源 ✅</h4>
+  <p>ハーバード・ビジネス・スクール教授の<strong>Francis J. Aguilar</strong>（1932–2013）が<strong>1967年</strong>の著書 <em>Scanning the Business Environment</em> で提唱。元の名称はETPS（Economic, Technical, Political, Social）で、その後PEST・PESTLEなどへ変化した。現在は世界中でマクロ環境分析の基礎フレームワークとして使われている。<br>
+  <span style="font-size:11px;color:var(--text-muted)">確認ソース：Wikipedia英語版 en.wikipedia.org/wiki/Francis_J._Aguilar ・ Wikipedia PEST分析</span></p>
+
+  <h4>B-4. 3C分析の起源 ✅</h4>
+  <p>経営コンサルタント（元マッキンゼー日本支社長）の<strong>大前研一</strong>が<strong>1982年</strong>の著書 <em>The Mind of the Strategist: The Art of Japanese Business</em>（邦訳：『ストラテジック・マインド』）で提唱。市場・顧客（Customer）・競合（Competitor）・自社（Company/Corporation）の3者の関係を「戦略的三角関係（Strategic Triangle）」と呼ぶ。<br>
+  PEST分析が「自社でコントロールできないマクロ環境」を分析するのに対し、3C分析は「ある程度影響力を行使できるミクロ環境」の分析に用いる点で補完的な関係にある。<br>
+  <span style="font-size:11px;color:var(--text-muted)">確認ソース：ITメディア情報システム用語事典 itmedia.co.jp/im/articles/0705/30/news141.html ・ 複数のマーケティングサイトで一致</span></p>
+
+  <h4>B-5. エンプロイアビリティとは</h4>
+  <p>終身雇用が崩壊しつつある現代において、特定の会社・職業の「安定性」に依存するのではなく、「どこでも雇用され続けられる能力・市場価値」を維持し続けるという概念。変化への継続的な学習・適応能力が核心となる。本講義では社会人の学習習慣の維持に直結する概念として取り上げられている。</p>
+
+  <h4>B-6. パラダイムシフトとは</h4>
+  <p>科学哲学者Thomas Kuhn（1962年『科学革命の構造』）が提唱した概念。単なる「改善」ではなく、前提となる考え方自体が置き換わるほどの変化を指す。本講義では情報化社会・グローバル化・少子高齢化による社会・経済の構造的変化という文脈で使われている。</p>
+</section>
+
+<!-- APPENDIX C -->
+<section class="appendix" id="app-c" style="margin-top:24px">
+  <div class="at">付録C：試験対策ポイント</div>
+  <ol>
+    <li><strong>行動・成果 = 意欲 × 能力</strong>の式の意味——能力差は2倍程度、意欲差は1,000〜10,000倍</li>
+    <li><strong>ビジネスプロデューサーに必要な7つの能力</strong>の名称と定義（発見力・理解力・目標力・組織力・働きかけ力・柔軟力・完結力）。出典：吉田就彦著（東洋経済新報社, 2010）</li>
+    <li><strong>PEST分析の4視点</strong>と各視点で見るべき内容（Political・Economical・Social・Technological）</li>
+    <li><strong>3C分析の3要素</strong>（Customer・Competitor・Company）</li>
+    <li><strong>キャリア ≠ モチベーション</strong>の違い：時間軸（長期 vs 短期）・目的の違い</li>
+    <li><strong>「安定した職場・職業」ではなく「安定した能力」</strong>という考え方</li>
+    <li><strong>成長の3つの軸</strong>：①できることの幅を広げる、②より重要な役割を担う、③職位が上がる</li>
+    <li><strong>新しいビジネスを創れる人材は全体の1〜2割</strong>で、学力では測れない</li>
+    <li><strong>社会人基礎力</strong>：経済産業省2006年提唱、3能力12要素、2018年「人生100年時代の社会人基礎力」に改訂</li>
+    <li><strong>学ぶ力の4つの習慣</strong>：自分で・他人から・環境から・学ぶ環境をつくり出す</li>
+  </ol>
+</section>
+
+<!-- APPENDIX D -->
+<section class="appendix" id="app-d" style="margin-top:24px">
+  <div class="at">付録D：関連概念・接続 <span style="font-size:11px;font-weight:400;color:var(--text-muted)">（✅=一次ソース確認済）</span></div>
+  <ul>
+    <li><strong>ビジネスプロデュース力 × プロジェクト遂行力 × 社会人基礎力</strong>：3つの歯車が噛み合って初めて次世代人材として機能する</li>
+    <li><strong>PEST分析と3C分析の連携</strong>：PEST（マクロ環境）で世の中全体を把握し、3C（ミクロ環境）で自社の立ち位置を把握。両者を組み合わせることで「自分が今なすべきこと」が見えてくる</li>
+    <li><strong>計画的偶発性理論（プランド・ハプンスタンス）</strong> ✅<br>
+    スタンフォード大学のJohn D. Krumboltz教授が<strong>1999年</strong>に提唱（Mitchell, Levin, &amp; Krumboltz, 1999, <em>Journal of Counseling &amp; Development</em>, 77(2), 115–124）。「キャリアの8割は予期しない偶発的な出来事によって決まる」とし、偶然をチャンスに変えるために5つの行動特性を推奨：<strong>好奇心・持続性・柔軟性・楽観性・冒険心</strong>（リスク・テイキング）。本講義の「不確定な未来への柔軟な対応」「主体的なキャリアデザイン」と強く共鳴する。<br>
+    <span style="font-size:11px;color:var(--text-muted)">確認ソース：Wikipedia日本語版「計画的偶発性理論」・Mitchell et al.(1999)原典DOI確認</span></li>
+    <li><strong>プロティアン・キャリア（Protean Career）</strong><br>
+    ハーバード大学のDouglas T. Hall教授が1976年に提唱したキャリア論。組織ではなく個人がキャリアの主体となり、自分の価値観に従って柔軟に変化し続けるキャリア観。本講義の「主体的なキャリアデザイン」「安定した能力の維持」と一致する現代的なキャリア観。[外部補足]</li>
+    <li><strong>ジョブ・クラフティング（Job Crafting）</strong><br>
+    Yale大学のAmy Wrzesniewskiらが2001年に発表した概念。自分の仕事の境界・目的・関係を自ら再構成しやりがいを創出すること。本講義の「学ぶ環境をつくり出す」「ビジネスプロデュース力」という能動的姿勢と親和性が高い。[外部補足]</li>
+    <li><strong>思考のクセ・常識のカベ</strong> vs <strong>ビジネスプロデュース力</strong>：既存の枠を意識的に外すことが、新しいビジネスを生み出す第一歩</li>
+  </ul>
+</section>
+
+<footer>
+  <p>SSP v4.6.1 | キャリア入門 第8回 | ソース: S03（スライドPDF 39pp）+ S05（AI変換テキスト×2, hynote.ai）</p>
+  <p>生成日: 2026-04-07 | v1.1 2026-04-07 パートIV外部補完実施（補足B・D強化、未確認事項全件解消）</p>
+</footer>
+</main>
+
+<script>
+const secs = document.querySelectorAll('[id]');
+const links = document.querySelectorAll('#sidebar nav a');
+function upd() {
+  let cur = '';
+  secs.forEach(s => { if (s.getBoundingClientRect().top <= 60) cur = s.id; });
+  links.forEach(a => {
+    a.classList.remove('active');
+    if (a.getAttribute('href') === '#' + cur) a.classList.add('active');
+  });
+}
+window.addEventListener('scroll', upd, { passive: true });
+upd();
+</script>
+</body>
+</html>
