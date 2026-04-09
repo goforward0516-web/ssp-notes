@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>セルフマネジメント論 第1回 | 時間管理の考え方</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&family=Noto+Serif+JP:wght@600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f1117;
+  --bg2: #161b27;
+  --bg3: #1e2535;
+  --bg4: #252d3f;
+  --border: #2d3748;
+  --text: #e2e8f5;
+  --text-sub: #8a99b8;
+  --text-muted: #5b6880;
+  --accent-blue: #5b8dee;
+  --accent-green: #34d399;
+  --accent-orange: #fbbf24;
+  --accent-purple: #a78bfa;
+  --accent-red: #f87171;
+  --accent-teal: #22d3ee;
+  --card-radius: 10px;
+  --sidebar-w: 260px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 14.5px;
+  line-height: 1.8;
+  min-height: 100vh;
+}
+
+/* ─── SIDEBAR ─── */
+#sidebar {
+  position: fixed;
+  top: 0; left: 0;
+  width: var(--sidebar-w);
+  height: 100vh;
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  padding: 20px 0 40px;
+  z-index: 100;
+}
+#sidebar::-webkit-scrollbar { width: 4px; }
+#sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+.sidebar-header {
+  padding: 0 18px 16px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 12px;
+}
+.sidebar-header .subject {
+  font-size: 10px;
+  color: var(--accent-blue);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  font-family: 'JetBrains Mono', monospace;
+}
+.sidebar-header .title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  margin-top: 4px;
+  line-height: 1.4;
+}
+.nav-section { padding: 4px 0; }
+.nav-section-label {
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: 8px 18px 4px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.nav-item {
+  display: block;
+  padding: 6px 18px;
+  font-size: 12.5px;
+  color: var(--text-sub);
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  transition: all .15s;
+}
+.nav-item:hover, .nav-item.active {
+  color: var(--text);
+  background: var(--bg3);
+  border-left-color: var(--accent-blue);
+}
+.nav-item.sub {
+  padding-left: 30px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.nav-item.sub:hover { color: var(--text-sub); border-left-color: var(--accent-blue); }
+
+/* ─── MAIN ─── */
+#main {
+  margin-left: var(--sidebar-w);
+  padding: 32px 40px 80px;
+  max-width: calc(900px + var(--sidebar-w));
+}
+
+/* ─── PAGE HEADER ─── */
+.page-header {
+  background: linear-gradient(135deg, var(--bg3) 0%, #1a2540 100%);
+  border: 1px solid var(--border);
+  border-radius: var(--card-radius);
+  padding: 28px 32px;
+  margin-bottom: 28px;
+}
+.page-header .meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--accent-blue);
+  letter-spacing: .08em;
+  margin-bottom: 10px;
+}
+.page-header h1 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 22px;
+  color: var(--text);
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+.page-header .subtitle {
+  font-size: 13px;
+  color: var(--text-sub);
+  margin-bottom: 14px;
+}
+.source-badges { display: flex; gap: 8px; flex-wrap: wrap; }
+.badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  border: 1px solid;
+}
+.badge-s03 { color: var(--accent-green); border-color: var(--accent-green); background: rgba(52,211,153,.1); }
+.badge-s05 { color: var(--accent-orange); border-color: var(--accent-orange); background: rgba(251,191,36,.1); }
+.badge-qc  { color: var(--accent-teal); border-color: var(--accent-teal); background: rgba(34,211,238,.1); }
+
+/* ─── SECTION CARD ─── */
+.section-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--card-radius);
+  padding: 24px 28px;
+  margin-bottom: 20px;
+}
+.section-card h2 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 17px;
+  color: var(--text);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 10px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-card h2 .ch-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: var(--accent-blue);
+  color: #fff;
+}
+.section-card h3 {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--accent-blue);
+  margin: 18px 0 8px;
+  padding-left: 10px;
+  border-left: 3px solid var(--accent-blue);
+}
+.section-card h4 {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 14px 0 6px;
+}
+.section-card p { margin-bottom: 8px; color: var(--text); }
+.section-card ul, .section-card ol { padding-left: 20px; margin-bottom: 10px; }
+.section-card li { margin-bottom: 4px; }
+
+/* ─── BLOCK TYPES ─── */
+.audio-block {
+  border-left: 3px solid var(--accent-blue);
+  background: rgba(91,141,238,.07);
+  border-radius: 0 6px 6px 0;
+  padding: 10px 14px;
+  margin: 10px 0;
+  font-size: 13.5px;
+  color: var(--text-sub);
+}
+.audio-block .block-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--accent-blue);
+  margin-bottom: 4px;
+  letter-spacing: .06em;
+}
+.infer-block {
+  border-left: 3px solid var(--accent-purple);
+  background: rgba(167,139,250,.07);
+  border-radius: 0 6px 6px 0;
+  padding: 10px 14px;
+  margin: 10px 0;
+  font-size: 13.5px;
+}
+.infer-block .block-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--accent-purple);
+  margin-bottom: 4px;
+}
+.warn-block {
+  border-left: 3px solid var(--accent-orange);
+  background: rgba(251,191,36,.07);
+  border-radius: 0 6px 6px 0;
+  padding: 10px 14px;
+  margin: 10px 0;
+  font-size: 13.5px;
+}
+.ext-block {
+  border-left: 3px solid var(--accent-green);
+  background: rgba(52,211,153,.06);
+  border-radius: 0 6px 6px 0;
+  padding: 10px 14px;
+  margin: 10px 0;
+  font-size: 13.5px;
+}
+.ext-block .block-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--accent-green);
+  margin-bottom: 4px;
+}
+.pointer {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  color: var(--text-muted);
+  margin-left: 8px;
+  background: var(--bg3);
+  padding: 1px 5px;
+  border-radius: 3px;
+  vertical-align: middle;
+}
+
+/* ─── TABLE ─── */
+.styled-table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; }
+.styled-table th {
+  background: var(--bg3);
+  color: var(--accent-blue);
+  padding: 8px 12px;
+  text-align: left;
+  border: 1px solid var(--border);
+  font-weight: 500;
+  font-size: 12px;
+}
+.styled-table td {
+  padding: 7px 12px;
+  border: 1px solid var(--border);
+  color: var(--text);
+  vertical-align: top;
+}
+.styled-table tr:nth-child(even) td { background: rgba(255,255,255,.02); }
+.styled-table tr:hover td { background: var(--bg3); }
+
+/* ─── DEFINITION BOX ─── */
+.def-box {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-top: 2px solid var(--accent-blue);
+  border-radius: 6px;
+  padding: 14px 16px;
+  margin: 12px 0;
+}
+.def-box .def-label {
+  font-size: 10px;
+  color: var(--accent-blue);
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: .08em;
+  margin-bottom: 6px;
+}
+.def-box .def-body {
+  font-size: 14px;
+  color: var(--text);
+  font-weight: 500;
+}
+
+/* ─── SVG WRAPPER ─── */
+.svg-wrap {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--card-radius);
+  padding: 20px;
+  margin: 16px 0;
+  overflow-x: auto;
+}
+.svg-wrap figcaption {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 10px;
+  text-align: center;
+}
+
+/* ─── APPENDIX CARDS ─── */
+.appendix-card {
+  border-radius: var(--card-radius);
+  padding: 22px 26px;
+  margin-bottom: 20px;
+}
+.appendix-card.app-a { background: rgba(91,141,238,.08); border: 1px solid rgba(91,141,238,.3); }
+.appendix-card.app-b { background: rgba(52,211,153,.07); border: 1px solid rgba(52,211,153,.25); }
+.appendix-card.app-c { background: rgba(251,191,36,.07); border: 1px solid rgba(251,191,36,.25); }
+.appendix-card.app-d { background: rgba(167,139,250,.07); border: 1px solid rgba(167,139,250,.25); }
+.appendix-card.app-u { background: rgba(251,191,36,.08); border: 1px solid rgba(251,191,36,.4); }
+.appendix-card h2 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 15px;
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255,255,255,.07);
+}
+.appendix-card.app-a h2 { color: var(--accent-blue); }
+.appendix-card.app-b h2 { color: var(--accent-green); }
+.appendix-card.app-c h2 { color: var(--accent-orange); }
+.appendix-card.app-d h2 { color: var(--accent-purple); }
+.appendix-card.app-u h2 { color: var(--accent-orange); }
+
+.ext-note {
+  font-size: 12px;
+  color: var(--text-sub);
+  font-style: italic;
+}
+
+/* ─── HIGHLIGHT KEYWORD ─── */
+.kw { color: var(--accent-orange); font-weight: 700; }
+.kw-blue { color: var(--accent-blue); font-weight: 600; }
+.kw-green { color: var(--accent-green); font-weight: 600; }
+
+/* ─── LEARNING GOALS ─── */
+.goals-list { display: flex; flex-direction: column; gap: 8px; margin: 14px 0; }
+.goal-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: var(--bg3);
+  border-radius: 6px;
+  padding: 10px 14px;
+}
+.goal-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--accent-blue);
+  min-width: 24px;
+  margin-top: 2px;
+}
+.goal-text { font-size: 13.5px; }
+
+/* ─── MATRIX SVG ─── */
+.matrix-wrap {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--card-radius);
+  padding: 16px 16px 8px;
+  margin: 16px 0;
+  overflow-x: auto;
+}
+
+/* ─── COURSE MAP ─── */
+.course-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 12px 0;
+}
+.course-item {
+  background: var(--bg3);
+  border-radius: 6px;
+  padding: 10px 14px;
+  border-left: 3px solid var(--accent-blue);
+  font-size: 13px;
+}
+.course-item .cn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--accent-blue);
+  margin-bottom: 4px;
+}
+.course-item.later { border-left-color: var(--accent-purple); }
+.course-item.later .cn { color: var(--accent-purple); }
+
+/* 3要素の円図 */
+.three-circle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0;
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div class="sidebar-header">
+    <div class="subject">セルフマネジメント論</div>
+    <div class="title">第1回 時間管理の考え方</div>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-label">概要</div>
+    <a href="#overview" class="nav-item">講義概要・メタ情報</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-label">第1章</div>
+    <a href="#ch1" class="nav-item">オリエンテーション</a>
+    <a href="#ch1-goals" class="nav-item sub">本科目の学習目標</a>
+    <a href="#ch1-overview" class="nav-item sub">本科目の概要</a>
+    <a href="#ch1-def" class="nav-item sub">セルフマネジメントとは</a>
+    <a href="#ch1-apply" class="nav-item sub">本科目の活かし方</a>
+    <a href="#ch1-course" class="nav-item sub">授業構成（8回）</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-label">第2章</div>
+    <a href="#ch2" class="nav-item">時間管理の基本</a>
+    <a href="#ch2-purpose" class="nav-item sub">時間管理の目的</a>
+    <a href="#ch2-matrix" class="nav-item sub">時間管理のマトリックス</a>
+    <a href="#ch2-visible" class="nav-item sub">時間の見える化</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-label">第3章</div>
+    <a href="#ch3" class="nav-item">最優先事項から始める</a>
+    <a href="#ch3-compass" class="nav-item sub">自分のコンパス</a>
+    <a href="#ch3-priority" class="nav-item sub">最重要事項を優先する理由</a>
+    <a href="#ch3-urgent" class="nav-item sub">緊急→重要へ移す方法</a>
+    <a href="#ch3-winwin" class="nav-item sub">WIN-WIN関係</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-label">第4章</div>
+    <a href="#ch4" class="nav-item">生産性を高める働き方</a>
+    <a href="#ch4-def" class="nav-item sub">生産性の定義</a>
+    <a href="#ch4-ideas" class="nav-item sub">生産性が高くなる発想法</a>
+    <a href="#ch4-work" class="nav-item sub">生産性が高い働き方</a>
+    <a href="#ch4-result" class="nav-item sub">生産性が高いとどうなるか</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-label">補足</div>
+    <a href="#app-a" class="nav-item">⭐ 補足A: 重要ワード</a>
+    <a href="#app-b" class="nav-item">📚 補足B: 背景知識</a>
+    <a href="#app-c" class="nav-item">🎯 補足C: 試験・レポート</a>
+    <a href="#app-d" class="nav-item">🔗 補足D: 関連概念</a>
+    <a href="#app-u" class="nav-item">❓ 未確定事項</a>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main id="main">
+
+<!-- ページヘッダー -->
+<div id="overview" class="page-header">
+  <div class="meta">CYBER UNIVERSITY · セルフマネジメント論 · 第1回 · 担当: 小松俊明 客員教授</div>
+  <h1>第1回 時間管理の考え方</h1>
+  <div class="subtitle">第1章 オリエンテーション／第2章 時間管理の基本／第3章 最優先事項から始める／第4章 生産性を高める働き方</div>
+  <div class="source-badges">
+    <span class="badge badge-s03">S03 スライドPDF</span>
+    <span class="badge badge-s05">S05 hynote.ai ×2バリアント</span>
+    <span class="badge badge-qc">QC: 100% PASS（パートIV補完済）</span>
+  </div>
+</div>
+
+<!-- 第1回 全体学習目標 -->
+<div class="section-card">
+  <h2>第1回 学習目標 <span class="pointer">← S03:p.3</span></h2>
+  <div class="goals-list">
+    <div class="goal-item"><span class="goal-num">01</span><span class="goal-text">本科目の概要や学習目標について理解する</span></div>
+    <div class="goal-item"><span class="goal-num">02</span><span class="goal-text">時間管理の考え方から、その実践事例までを理解する</span></div>
+    <div class="goal-item"><span class="goal-num">03</span><span class="goal-text">生産性の高い働き方について理解する</span></div>
+  </div>
+</div>
+
+<!-- ═══ 第1章 ═══ -->
+<div id="ch1" class="section-card">
+  <h2><span class="ch-badge">第1章</span> オリエンテーション</h2>
+
+  <h3 id="ch1-goals">第1章 学習目標 <span class="pointer">← S03:p.6</span></h3>
+  <div class="goals-list">
+    <div class="goal-item"><span class="goal-num">01</span><span class="goal-text">本科目の学習目標について理解する</span></div>
+    <div class="goal-item"><span class="goal-num">02</span><span class="goal-text">本科目の概要について理解する</span></div>
+    <div class="goal-item"><span class="goal-num">03</span><span class="goal-text">セルフマネジメントとは何かを理解する</span></div>
+    <div class="goal-item"><span class="goal-num">04</span><span class="goal-text">本科目の活かし方について理解する</span></div>
+  </div>
+
+  <h3 id="ch1-goals2">本科目の学習目標（6項目）<span class="pointer">← S03:p.7</span></h3>
+  <ul>
+    <li>時間管理の基本ツールについて理解する</li>
+    <li>生産性の高い働き方の実行方法を理解する</li>
+    <li>目標管理の基本ツールについて理解する</li>
+    <li>仕事の段取り力・振り返り力の重要ポイントを理解する</li>
+    <li>パーソナルブランディング（自己ブランディング）を理解する</li>
+    <li>役に立つ人脈構築の方法を理解する</li>
+  </ul>
+  <div class="audio-block">
+    <div class="block-label">🎙 音声補足</div>
+    これらは時間管理 → 生産性 → 目標管理 → 段取り・振り返り → ブランディング → 人脈という段階的な流れを構成している。自分のスキルアップと同時に、組織や社会への貢献・グローバルな活躍を最終的なゴールとして位置づけている。<span class="pointer">← S05-A</span>
+  </div>
+
+  <h3 id="ch1-overview">本科目の概要 <span class="pointer">← S03:p.8-9</span></h3>
+  <p>セルフマネジメントとは、学習や仕事において<span class="kw">高い生産性をもたらすための自己管理の手法</span>である。</p>
+  <p>実践により、効率化・他者からの評価向上・自己ブランド確立・継続的な情報発信が期待される。本科目では時間管理・目標設定・進捗管理を学び、キャリアやスキル開発、将来の人生設計に必要な<span class="kw-blue">ビジネスマインドを育成する</span>。</p>
+  <div class="audio-block">
+    <div class="block-label">🎙 音声補足</div>
+    さらに、異分野とのコラボレーションを通じてイノベーションを起こせる人材になるために必要なものの考え方についても学ぶ。自分の専門外の方と共同ワークをすることが、自分の中にない発想を得てイノベーションを生む。これは国内だけでなく、ボーダーレスなグローバル社会での活躍も視野に入れている。<span class="pointer">← S03:p.9, S05-A</span>
+  </div>
+
+  <h3 id="ch1-def">セルフマネジメントとは何か <span class="pointer">← S03:p.10-11</span></h3>
+  <div class="def-box">
+    <div class="def-label">【定義】</div>
+    <div class="def-body">仕事を予定や目標通りに進めることや、自分自身の心身のコンディションを<span class="kw-blue">適切に抑制・管理すること</span></div>
+  </div>
+  <p>図で示すと、セルフマネジメントは以下の3要素が相互に連動している。</p>
+
+  <figure class="svg-wrap">
+    <svg viewBox="0 0 560 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:560px;display:block;margin:0 auto">
+      <!-- 左円: 時間管理&タスク管理 -->
+      <circle cx="130" cy="110" r="80" fill="rgba(91,141,238,0.15)" stroke="#5b8dee" stroke-width="2"/>
+      <text x="130" y="100" text-anchor="middle" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif" font-size="13" font-weight="700">時間管理</text>
+      <text x="130" y="118" text-anchor="middle" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif" font-size="13" font-weight="700">&amp;タスク</text>
+      <text x="130" y="136" text-anchor="middle" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif" font-size="13" font-weight="700">管理</text>
+      <!-- 中央円: 他者との協働 -->
+      <circle cx="280" cy="155" r="70" fill="rgba(52,211,153,0.13)" stroke="#34d399" stroke-width="2"/>
+      <text x="280" y="148" text-anchor="middle" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif" font-size="13" font-weight="700">他者との</text>
+      <text x="280" y="168" text-anchor="middle" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif" font-size="13" font-weight="700">協働</text>
+      <!-- 右円: やる気の維持/高揚 -->
+      <circle cx="430" cy="110" r="80" fill="rgba(251,191,36,0.12)" stroke="#fbbf24" stroke-width="2"/>
+      <text x="430" y="100" text-anchor="middle" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif" font-size="13" font-weight="700">やる気の</text>
+      <text x="430" y="118" text-anchor="middle" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif" font-size="13" font-weight="700">維持/高揚</text>
+      <!-- 矢印 左→右 -->
+      <defs>
+        <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#5b8dee"/>
+        </marker>
+        <marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#fbbf24"/>
+        </marker>
+        <marker id="arr3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#34d399"/>
+        </marker>
+        <marker id="arr4" markerWidth="8" markerHeight="8" refX="2" refY="3" orient="auto">
+          <path d="M8,0 L8,6 L0,3 z" fill="#5b8dee"/>
+        </marker>
+      </defs>
+      <!-- 双方向矢印 -->
+      <line x1="210" y1="108" x2="350" y2="108" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#arr)" marker-start="url(#arr4)"/>
+      <!-- 左→下 -->
+      <path d="M165 155 Q200 175 215 162" stroke="#34d399" stroke-width="1.5" fill="none" marker-end="url(#arr3)"/>
+      <!-- 下→左 -->
+      <path d="M213 172 Q195 185 160 162" stroke="#34d399" stroke-width="1.5" fill="none" marker-end="url(#arr3)"/>
+      <!-- 右→下 -->
+      <path d="M395 155 Q360 175 345 162" stroke="#fbbf24" stroke-width="1.5" fill="none" marker-end="url(#arr2)"/>
+      <!-- 下→右 -->
+      <path d="M347 172 Q365 185 400 162" stroke="#fbbf24" stroke-width="1.5" fill="none" marker-end="url(#arr2)"/>
+    </svg>
+    <figcaption>図: セルフマネジメントの3要素（スライドp.11再構成）<span class="pointer">← S03:p.11</span></figcaption>
+  </figure>
+
+  <div class="audio-block">
+    <div class="block-label">🎙 音声補足</div>
+    なぜセルフマネジメントが大切か。人それぞれ100通りの価値観・性格・感情がある。自分の内面にある価値観や強みを他の人たちと一緒に活用していくことで、組織と人をマネジメントし、多くの困難や悩みを乗り越えることができる。<span class="pointer">← S03:p.12, S05-A</span>
+  </div>
+
+  <h3 id="ch1-course">授業構成（全8回）<span class="pointer">← S03:p.13-14</span></h3>
+  <div class="course-grid">
+    <div class="course-item"><div class="cn">第1回</div>時間管理の考え方</div>
+    <div class="course-item"><div class="cn">第2回</div>目標設定と進捗管理</div>
+    <div class="course-item"><div class="cn">第3回</div>異分野とのコラボレーションとイノベーション</div>
+    <div class="course-item"><div class="cn">第4回</div>モチベーションのあがるコミュニケーション</div>
+    <div class="course-item later"><div class="cn">第5回</div>自己分析とKAIZEN活動</div>
+    <div class="course-item later"><div class="cn">第6回</div>パーソナルブランディングと人脈構築</div>
+    <div class="course-item later"><div class="cn">第7回</div>モチベーションコントロールと情報発信</div>
+    <div class="course-item later"><div class="cn">第8回</div>セルフマネジメントの総括</div>
+  </div>
+  <div class="audio-block">
+    <div class="block-label">🎙 音声補足</div>
+    第1〜4回はテクニカルなツール・手法が中心（時間管理・目標設定・コラボ・モチベーション）。第5〜8回は応用・実践編（自己分析・ブランディング・情報発信・総括）。最終的には「自分の知らない分野の人と一緒に共同し、自分が思ってもみなかったレベルに引き上げる」ことがこの科目を学んだ大きな成果として待っている。<span class="pointer">← S05-A</span>
+  </div>
+
+  <h3 id="ch1-apply">本科目の活かし方 <span class="pointer">← S03:p.15-17</span></h3>
+  <table class="styled-table">
+    <tr><th>場面</th><th>活かし方のポイント</th></tr>
+    <tr>
+      <td><span class="kw-blue">仕事面</span></td>
+      <td>獲得した自由な時間でスキル開発に励み、組織へ貢献できる行動指針を身につける。異分野とのコラボレーションでイノベーションを起こす。</td>
+    </tr>
+    <tr>
+      <td><span class="kw-blue">学習面</span></td>
+      <td>時間管理の考え方を他の授業に適用し、短時間で密度の濃い学習を実現する。学習量の絶対値を増やす。</td>
+    </tr>
+    <tr>
+      <td><span class="kw-blue">生活面</span></td>
+      <td>趣味・リラックス・クリエイティブな活動により多くの時間を割く。ワークライフバランスを実現し、豊かで自由な時間を獲得する。</td>
+    </tr>
+  </table>
+
+  <div class="audio-block">
+    <div class="block-label">🎙 音声補足（受講者への期待）</div>
+    組織や社会に貢献できるマインドと行動指針を持って、活躍の場をグローバルに広げてほしい。クリエイティブな発想でイノベーションを起こし、複雑な社会問題を解決できる人物になってほしい。<span class="pointer">← S03:p.18, S05-A</span>
+  </div>
+
+  <h3>第1章 まとめ <span class="pointer">← S03:p.19</span></h3>
+  <ul>
+    <li>本科目の学習目標と科目の概要を学習した</li>
+    <li>セルフマネジメントとは「<span class="kw">目標管理</span>」と「<span class="kw">心身のコンディション</span>」を適切に抑制・管理することである</li>
+    <li>本科目は「仕事面」「学習面」「生活面」において将来にわたって有効に活かすことができる</li>
+  </ul>
+</div>
+
+<!-- ═══ 第2章 ═══ -->
+<div id="ch2" class="section-card">
+  <h2><span class="ch-badge">第2章</span> 時間管理の基本</h2>
+
+  <h3>第2章 学習目標 <span class="pointer">← S03:p.22</span></h3>
+  <div class="goals-list">
+    <div class="goal-item"><span class="goal-num">01</span><span class="goal-text">「時間管理の目的」を理解する</span></div>
+    <div class="goal-item"><span class="goal-num">02</span><span class="goal-text">「時間管理のマトリックス」を理解する</span></div>
+    <div class="goal-item"><span class="goal-num">03</span><span class="goal-text">「時間の見える化」を理解する</span></div>
+  </div>
+
+  <h3 id="ch2-purpose">時間管理の目的 <span class="pointer">← S03:p.23</span></h3>
+  <ul>
+    <li>時間の使い方を<span class="kw-blue">効率的に自己管理する</span></li>
+    <li>所要時間を計画し、<span class="kw-blue">目標達成度を予測する</span></li>
+    <li>時間を計測することで、<span class="kw-blue">生産性の向上を確認する</span></li>
+  </ul>
+  <div class="audio-block">
+    <div class="block-label">🎙 音声補足</div>
+    気をつけないとダラダラと時間を過ごしてしまう。仕事・学習・趣味すべてを効率的にやれれば、それだけ自由な時間を作ることができる。<strong>必ず手元に時計を置き、何かを始める時間・終わる時間を記録する習慣をつけること</strong>。この習慣だけで生産性は飛躍的に向上する。<span class="pointer">← S05-A</span>
+  </div>
+
+  <h3 id="ch2-matrix">時間管理のマトリックス <span class="pointer">← S03:p.24-29</span></h3>
+  <p>重要性（縦軸: 高い↑低い↓）と緊急性（横軸: 高い←低い→）の2軸で4領域に分類する。</p>
+  <div class="ext-block">
+    <div class="block-label">📖 外部補足</div>
+    このマトリックスは、スティーブン・R・コヴィー、A・ロジャー・メリル、レベッカ・R・メリル著『7つの習慣 最優先事項』（宮崎伸治訳、キングベアー出版、2000年）に基づく。<span class="pointer">← S03:p.24</span>
+  </div>
+
+  <!-- マトリックスSVG -->
+  <figure class="svg-wrap">
+    <svg viewBox="0 0 580 360" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:580px;display:block;margin:0 auto">
+      <!-- 背景 -->
+      <rect x="0" y="0" width="580" height="360" fill="#1e2535" rx="8"/>
+      <!-- 軸ラベル -->
+      <!-- 縦軸 重要性 -->
+      <text x="22" y="190" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="13" transform="rotate(-90,22,190)">重要性</text>
+      <text x="42" y="60" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="11">高い</text>
+      <text x="42" y="320" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="11">低い</text>
+      <!-- 縦軸矢印 -->
+      <line x1="42" y1="310" x2="42" y2="70" stroke="#5b6880" stroke-width="1.5"/>
+      <polygon points="42,64 38,76 46,76" fill="#5b6880"/>
+      <!-- 横軸 緊急性 -->
+      <text x="310" y="22" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="13">緊急性</text>
+      <text x="100" y="38" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="11">高い</text>
+      <text x="520" y="38" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="11">低い</text>
+      <!-- 横軸矢印 -->
+      <line x1="70" y1="44" x2="545" y2="44" stroke="#5b6880" stroke-width="1.5"/>
+      <polygon points="551,44 539,40 539,48" fill="#5b6880"/>
+      <!-- グリッド4ブロック -->
+      <!-- 第一領域 (左上) -->
+      <rect x="70" y="55" width="230" height="135" fill="rgba(248,113,113,0.08)" stroke="#f87171" stroke-width="1.5" rx="4"/>
+      <text x="185" y="95" text-anchor="middle" fill="#f87171" font-family="Noto Sans JP,sans-serif" font-size="12" font-weight="700">第一領域</text>
+      <text x="185" y="112" text-anchor="middle" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif" font-size="11">重要で緊急である</text>
+      <text x="185" y="128" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="10.5">消費</text>
+      <text x="185" y="148" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="10">締切仕事・クレーム・病気・災害</text>
+      <!-- 第二領域 (右上) ← 最重要: 青 -->
+      <rect x="315" y="55" width="230" height="135" fill="rgba(91,141,238,0.13)" stroke="#5b8dee" stroke-width="2" rx="4"/>
+      <text x="430" y="90" text-anchor="middle" fill="#5b8dee" font-family="Noto Sans JP,sans-serif" font-size="13" font-weight="700">第二領域 ★</text>
+      <text x="430" y="107" text-anchor="middle" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif" font-size="11">重要だが緊急ではない</text>
+      <text x="430" y="123" text-anchor="middle" fill="#34d399" font-family="Noto Sans JP,sans-serif" font-size="12" font-weight="700">投資</text>
+      <text x="430" y="141" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="10">人間関係・健康・勉強・読書</text>
+      <text x="430" y="155" text-anchor="middle" fill="#5b8dee" font-family="Noto Sans JP,sans-serif" font-size="10" font-style="italic">← ここに最大限時間を使う</text>
+      <!-- 第三領域 (左下) -->
+      <rect x="70" y="205" width="230" height="130" fill="rgba(251,191,36,0.07)" stroke="#fbbf24" stroke-width="1.5" rx="4"/>
+      <text x="185" y="240" text-anchor="middle" fill="#fbbf24" font-family="Noto Sans JP,sans-serif" font-size="12" font-weight="700">第三領域</text>
+      <text x="185" y="257" text-anchor="middle" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif" font-size="11">重要ではないが緊急</text>
+      <text x="185" y="273" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="10.5">浪費</text>
+      <text x="185" y="291" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="10">突然の来客・急な電話・無意味な接待</text>
+      <text x="185" y="307" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="10">不要な長時間会議・報告書</text>
+      <!-- 第四領域 (右下) -->
+      <rect x="315" y="205" width="230" height="130" fill="rgba(100,100,120,0.07)" stroke="#5b6880" stroke-width="1.5" rx="4"/>
+      <text x="430" y="240" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="12" font-weight="700">第四領域</text>
+      <text x="430" y="257" text-anchor="middle" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif" font-size="11">重要でも緊急でもない</text>
+      <text x="430" y="273" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="10.5">空費</text>
+      <text x="430" y="291" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="10">暇つぶし・だらだら電話・待ち時間</text>
+      <text x="430" y="307" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="10">テレビの見過ぎ</text>
+    </svg>
+    <figcaption>図: 時間管理のマトリックス（コヴィー他『7つの習慣 最優先事項』2000年 p.61 参考）<span class="pointer">← S03:p.24-29</span></figcaption>
+  </figure>
+
+  <table class="styled-table">
+    <tr>
+      <th>領域</th><th>特性</th><th>別名</th><th>具体例</th>
+    </tr>
+    <tr>
+      <td><strong>第一領域</strong></td><td>重要 × 緊急</td><td>消費</td>
+      <td>締め切りのある仕事、クレーム処理、病気・事故、危機・災害</td>
+    </tr>
+    <tr style="background:rgba(91,141,238,0.07)">
+      <td><strong style="color:#5b8dee">第二領域 ★</strong></td><td>重要 × 非緊急</td><td style="color:#34d399;font-weight:700">投資</td>
+      <td>人間関係づくり、健康管理・適度な運動、勉強・趣味・自己啓発、読書・情報収集</td>
+    </tr>
+    <tr>
+      <td><strong>第三領域</strong></td><td>非重要 × 緊急</td><td>浪費</td>
+      <td>突然の来客、急に鳴りだした電話、長時間の会議や報告書、無意味な接待・付き合い</td>
+    </tr>
+    <tr>
+      <td><strong>第四領域</strong></td><td>非重要 × 非緊急</td><td>空費</td>
+      <td>暇つぶし、だらだら電話、待ち時間、テレビの見過ぎ</td>
+    </tr>
+  </table>
+
+  <div class="audio-block">
+    <div class="block-label">🎙 音声補足（第二領域の重要性）</div>
+    第二領域＝「今すぐやらなくてもいいが、必ずやっておいた方がいい投資」。例えば、将来なりたい仕事に役立つ資格の勉強や、アルバイトでの経験など、将来への投資がここに入る。<span class="pointer">← S05-A</span>
+  </div>
+  <div class="audio-block">
+    <div class="block-label">🎙 音声補足（第三領域の問題）</div>
+    第三領域が最も悩ましい。重要ではないのに急ぎだと言われるとやらざるを得ない。例: 夜遅くなり電車がなくなって仕方なくタクシーに乗る＝本来使いたくなかったお金を「急いで帰りたい」という理由で浪費してしまう状況に近い。<span class="pointer">← S05-A</span>
+  </div>
+
+  <h3 id="ch2-visible">時間の見える化 <span class="pointer">← S03:p.30-34</span></h3>
+  <p>自分が使用する時間を「見える」ようにする手法。</p>
+
+  <!-- フロー図: 記録→比較→評価 -->
+  <figure class="svg-wrap">
+    <svg viewBox="0 0 480 90" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:480px;display:block;margin:0 auto">
+      <rect x="30" y="20" width="110" height="50" rx="25" fill="rgba(91,141,238,0.2)" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="85" y="50" text-anchor="middle" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif" font-size="14" font-weight="700">記録</text>
+      <polygon points="155,45 170,38 170,52" fill="#5b8dee"/>
+      <line x1="140" y1="45" x2="168" y2="45" stroke="#5b8dee" stroke-width="1.5"/>
+      <rect x="185" y="20" width="110" height="50" rx="25" fill="rgba(52,211,153,0.15)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="240" y="50" text-anchor="middle" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif" font-size="14" font-weight="700">比較</text>
+      <polygon points="310,45 325,38 325,52" fill="#34d399"/>
+      <line x1="295" y1="45" x2="323" y2="45" stroke="#34d399" stroke-width="1.5"/>
+      <rect x="340" y="20" width="110" height="50" rx="25" fill="rgba(251,191,36,0.15)" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="395" y="50" text-anchor="middle" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif" font-size="14" font-weight="700">評価</text>
+    </svg>
+    <figcaption>図: 時間の見える化のプロセス<span class="pointer">← S03:p.31</span></figcaption>
+  </figure>
+
+  <p><strong>時間の見える化のメリット（3つ）</strong> <span class="pointer">← S03:p.32</span></p>
+  <ul>
+    <li>自分の時間の使い方の<span class="kw-blue">パターン（癖）を把握</span>できる</li>
+    <li>働き過ぎや<span class="kw-blue">時間の偏りを発見</span>できる</li>
+    <li>それぞれの仕事の<span class="kw-blue">生産性を確認</span>できる（1時間あたりの成果）</li>
+  </ul>
+  <div class="audio-block">
+    <div class="block-label">🎙 音声補足</div>
+    例えば読書の場合、2時10分に開始して3時半に終わったとメモすれば「1時間20分も読書していた」と気づける。1週間・1年単位で振り返ることも可能。記録→比較→評価を繰り返すことで、時間単位のアウトプット（生産性）が把握できるようになる。棒グラフ化すると視覚的に確認しやすい。便利なアプリ（例: Toggl / www.toggl.com）も活用できる。<span class="pointer">← S03:p.34, S05-A</span>
+  </div>
+
+  <h3>第2章 まとめ <span class="pointer">← S03:p.35</span></h3>
+  <ul>
+    <li>時間管理の目的は「自己管理」「目標達成度の予測」「生産性の確認」の3つ</li>
+    <li>時間管理のマトリックスは「重要性」と「緊急性」の2要素でできており、<span class="kw">第二領域（投資）に最大限の時間をかけることが目標</span></li>
+    <li>時間の見える化によって「記録→比較→評価」を行い、生産性・効率性を確認できる</li>
+  </ul>
+</div>
+
+<!-- ═══ 第3章 ═══ -->
+<div id="ch3" class="section-card">
+  <h2><span class="ch-badge">第3章</span> 最優先事項から始める</h2>
+
+  <h3>第3章 学習目標 <span class="pointer">← S03:p.38</span></h3>
+  <div class="goals-list">
+    <div class="goal-item"><span class="goal-num">01</span><span class="goal-text">最優先事項を判断するコンパスを持つために、自分のミッションや原理原則を再確認する</span></div>
+    <div class="goal-item"><span class="goal-num">02</span><span class="goal-text">緊急なことから重要なことに重点を移す方法を学ぶ</span></div>
+    <div class="goal-item"><span class="goal-num">03</span><span class="goal-text">他人との関係をWIN-WINに発展させる方法を学ぶ</span></div>
+  </div>
+
+  <h3 id="ch3-compass">自分のコンパスとは <span class="pointer">← S03:p.38-39</span></h3>
+  <div class="def-box">
+    <div class="def-label">【定義】コンパス（方位磁針）</div>
+    <div class="def-body">自分のミッション・原理原則に基づいて最優先事項を判断するための<span class="kw-blue">行動の指針</span>。常に北（目指す方向）を指し、価値観・大きな目標に沿って優先事項を決定する基盤となるもの。</div>
+  </div>
+  <p><strong>自分のコンパスを見つける方法 </strong><span class="pointer">← S03:p.39</span></p>
+  <ul>
+    <li>過去の大事な局面を<strong>3つ</strong>思い浮かべる</li>
+    <li>その3つに直面したときの大事な判断に共通した「<span class="kw-blue">自分なりの原理原則</span>」を考える</li>
+    <li>自分の<span class="kw-blue">ミッション</span>（何のために生きているか・働いているか・学習しているか）を考える</li>
+  </ul>
+  <div class="audio-block">
+    <div class="block-label">🎙 音声補足</div>
+    ミッションは1年後・3年後・10年後に変わってもよい。今思いつくこと、信じていることを書いてみることが大切。原理原則の例: 「愛想を良くする」「親切にする」「人の役に立つ」「弱者の味方になる」など、自分の中で大事にしていることが原理原則となる。コンパスはそのミッションのもとにある。<span class="pointer">← S05-A</span>
+  </div>
+
+  <h3 id="ch3-priority">なぜ最重要事項を優先すべきか <span class="pointer">← S03:p.59</span></h3>
+  <ul>
+    <li><strong>① インパクトが大きい:</strong> 最重要事項を失敗したときの影響は大きく、取り返すのにその2〜3倍の時間がかかる</li>
+    <li><strong>② 生活の質向上:</strong> 重要なことを見極める習慣は生活の質を高める。重要でないことに時間をかけすぎると、後で重要なことに短時間しか使えず質が落ちる</li>
+    <li><strong>③ ミッションとの一致:</strong> 重要なことは自分の価値観・ミッション・原理原則と必ず一致している。それに多くの時間を使うことで、納得できる人生を歩める</li>
+  </ul>
+  <div class="audio-block">
+    <div class="block-label">🎙 音声補足</div>
+    緊急なことは突然割り込んでくる。しかし緊急なことは重要でないことが多い。緊急なことに追われていると、重要なことに使える時間が減ってしまう。だから「重要なことが何か」を見極めることが最重要課題となる。<span class="pointer">← S05-A</span>
+  </div>
+
+  <h3 id="ch3-urgent">緊急→重要へ重点を移す方法 <span class="pointer">← S03:p.60</span></h3>
+  <ul>
+    <li><strong>① スケジュールを計画する習慣</strong>を身につける</li>
+    <li><strong>② 自分のスケジュールを共有する:</strong> 一緒に仕事・学習・生活している人にスケジュールを見てもらうことで、必要のない頼み事（緊急の割り込み）が減る</li>
+    <li><strong>③ 断る勇気:</strong> 重要でない緊急の依頼は、相手が納得する形でやんわりと断る</li>
+    <li><strong>④ 緊急事態をマニュアル化する:</strong> よく起きる緊急事態はパターンなので、自分以外でも対応できるマニュアルを作成する</li>
+    <li><strong>⑤ 権限委譲を進める:</strong> 自分の周りの人に任せられることは任せる（一人で全部抱えない）</li>
+  </ul>
+
+  <h3 id="ch3-winwin">他人との4つの関係とWIN-WIN <span class="pointer">← S03:p.61-62</span></h3>
+  <p>自分（縦軸: WIN/LOSE）と相手（横軸: WIN/LOSE）の組み合わせで4種類の関係が生まれる。</p>
+
+  <figure class="svg-wrap">
+    <svg viewBox="0 0 380 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:380px;display:block;margin:0 auto">
+      <!-- 軸 -->
+      <text x="190" y="20" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="12">相手</text>
+      <text x="95" y="22" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="11">WIN</text>
+      <text x="285" y="22" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="11">LOSE</text>
+      <line x1="50" y1="30" x2="330" y2="30" stroke="#5b6880" stroke-width="1.2"/>
+      <!-- 縦軸 自分 -->
+      <text x="22" y="145" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="12" transform="rotate(-90,22,145)">自分</text>
+      <text x="38" y="80" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="11">WIN</text>
+      <text x="38" y="230" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="11">LOSE</text>
+      <line x1="50" y1="40" x2="50" y2="270" stroke="#5b6880" stroke-width="1.2"/>
+      <!-- WIN-WIN (左上) 目指す -->
+      <rect x="55" y="40" width="140" height="105" rx="4" fill="rgba(91,141,238,0.18)" stroke="#5b8dee" stroke-width="2"/>
+      <text x="125" y="80" text-anchor="middle" fill="#5b8dee" font-family="Noto Sans JP,sans-serif" font-size="14" font-weight="700">WIN-WIN</text>
+      <text x="125" y="98" text-anchor="middle" fill="#34d399" font-family="Noto Sans JP,sans-serif" font-size="11" font-style="italic">★ 目指す関係</text>
+      <text x="125" y="114" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="10">自も相手も成功する</text>
+      <!-- WIN-LOSE (右上) -->
+      <rect x="205" y="40" width="130" height="105" rx="4" fill="rgba(248,113,113,0.07)" stroke="#5b6880" stroke-width="1"/>
+      <text x="270" y="80" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="12">WIN-LOSE</text>
+      <text x="270" y="100" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="10">自分だけ成功</text>
+      <text x="270" y="116" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="10">（望ましくない）</text>
+      <!-- LOSE-WIN (左下) -->
+      <rect x="55" y="155" width="140" height="105" rx="4" fill="rgba(251,191,36,0.07)" stroke="#5b6880" stroke-width="1"/>
+      <text x="125" y="195" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="12">LOSE-WIN</text>
+      <text x="125" y="212" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="10">相手だけ成功</text>
+      <text x="125" y="228" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="10">（営業などで意図的に）</text>
+      <!-- LOSE-LOSE (右下) -->
+      <rect x="205" y="155" width="130" height="105" rx="4" fill="rgba(100,100,120,0.07)" stroke="#5b6880" stroke-width="1"/>
+      <text x="270" y="200" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="12">LOSE-LOSE</text>
+      <text x="270" y="218" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP,sans-serif" font-size="10">双方が失敗</text>
+    </svg>
+    <figcaption>図: 他人との4つの関係<span class="pointer">← S03:p.61</span></figcaption>
+  </figure>
+
+  <p><strong>WIN-WINにするコツ </strong><span class="pointer">← S03:p.62</span></p>
+  <ul>
+    <li><span class="kw-blue">まず相手にWINさせる</span>（相手の成功が先、自分の成功は後）</li>
+    <li>前向き・建設的・ポジティブな人と意識的に人間関係を構築する</li>
+    <li>相手の立場に立って、相手の視点で考える</li>
+    <li>目先の利益だけを追わず、<span class="kw-blue">中長期的な種まきを継続する</span></li>
+  </ul>
+
+  <h3>第3章 まとめ <span class="pointer">← S03:p.63</span></h3>
+  <ul>
+    <li>常に自分のコンパスに沿って行動する</li>
+    <li>重要で緊急ではないこと（第二領域）にできるだけ<span class="kw">投資する</span></li>
+    <li>緊急の仕事から重要な仕事に重点を移す「仕掛け」を作る</li>
+    <li>常にWIN-WINな関係の中で仕事をし、WIN-WINな関係の人との仕事を増やす</li>
+    <li>中長期的な視点で継続的な種まきを大切にする</li>
+  </ul>
+</div>
+
+<!-- ═══ 第4章 ═══ -->
+<div id="ch4" class="section-card">
+  <h2><span class="ch-badge">第4章</span> 生産性を高める働き方</h2>
+
+  <h3>第4章 学習目標 <span class="pointer">← S03:p.66</span></h3>
+  <div class="goals-list">
+    <div class="goal-item"><span class="goal-num">01</span><span class="goal-text">生産性が高いとはどういうことかを理解する</span></div>
+    <div class="goal-item"><span class="goal-num">02</span><span class="goal-text">生産性の高い働き方のコツを理解する</span></div>
+    <div class="goal-item"><span class="goal-num">03</span><span class="goal-text">生産性の高さがもたらす成果を理解する</span></div>
+  </div>
+
+  <h3 id="ch4-def">生産性とは何か <span class="pointer">← S03:p.67</span></h3>
+  <div class="def-box">
+    <div class="def-label">【定義】生産性</div>
+    <div class="def-body"><span class="kw">仕事量 ÷ 時間 ＝ 生産性</span>（時間あたりの成果量のこと）<br>
+    ✗ 成果の合計総数ではない&emsp;✗ 時間をかければよいわけではない（残業増→生産性低下）</div>
+  </div>
+  <div class="audio-block">
+    <div class="block-label">🎙 音声補足</div>
+    時間は必ず有限であるという前提に立つ。生産性が悪くても長時間取り組めば結果は出るかもしれないが、それが残業増加につながる。生産性向上の目標は「少ない時間で同じ（またはより多くの）成果を出すこと」。<span class="pointer">← S05-A</span>
+  </div>
+
+  <h3 id="ch4-ideas">生産性が高くなる発想法 <span class="pointer">← S03:p.68-71</span></h3>
+
+  <h4>① シンプルで簡潔に・重要なこと3つにしぼる <span class="pointer">← S03:p.68</span></h4>
+  <p>最も伝えたいことを3つに絞り、誰が聞いても分かるシンプルなロジックで話す。</p>
+  <div class="audio-block">
+    <div class="block-label">🎙 音声補足（例: 商品提案）</div>
+    営業で新商品・新サービスを提案する場合、説明したいことは山ほどある。しかし聞いている方は全部理解できないし時間もない。だから最も伝えたいことを3つ、誤解のない言葉でシンプルに伝えることが生産性を高める。<span class="pointer">← S05-A</span>
+  </div>
+
+  <h4>② 同じことを繰り返さない <span class="pointer">← S03:p.69</span></h4>
+  <p>同じ仕事を2回やらない。</p>
+  <div class="audio-block">
+    <div class="block-label">🎙 音声補足（例: メール処理）</div>
+    1日100〜200通のメールを処理している人もいる。メールを読んで「後でやろう」と思うと後で読み直すことになる。<strong>すぐ回答できるメールはその場で1度読んだら回答する</strong>。これだけで生産性が大幅に上がる。<span class="pointer">← S05-A</span>
+  </div>
+
+  <h4>③ 1日を8時間・16コマで捉える <span class="pointer">← S03:p.70</span></h4>
+  <p>1日24時間を三等分（生活8h・睡眠8h・仕事/勉強8h）し、仕事/勉強の8時間を30分単位の<span class="kw-blue">16コマ</span>として把握する。</p>
+  <div class="audio-block">
+    <div class="block-label">🎙 音声補足</div>
+    「1日は8時間しかない」と捉えるより「16単位ある」と捉えるだけで、かなりの種類の多くの仕事に取り組めると実感できる。残業時間が多い人は、アウトプットを割る「時間」が長くなるので生産性が低くなる可能性が高い。<span class="pointer">← S05-A</span>
+  </div>
+
+  <h4>④ 仕事の絶対量を減らす <span class="pointer">← S03:p.71</span></h4>
+  <p>「明日でもいい仕事は今日やらない」。1週間後もやらなくて良かった仕事は、そもそも重要度の低い仕事だったと気づける。</p>
+
+  <h3 id="ch4-work">生産性が高い働き方 <span class="pointer">← S03:p.72-75</span></h3>
+
+  <h4>① 仕事の単位は30分で捉える <span class="pointer">← S03:p.72</span></h4>
+  <div class="audio-block">
+    <div class="block-label">🎙 音声補足（例: 会議）</div>
+    会議は1時間でも3時間でも半日にもなり得る。振り返ると無駄な時間が多い。1つの仕事は30分で仕上げる意識を持つことが重要。<span class="pointer">← S05-A</span>
+  </div>
+
+  <h4>② 出社前30分・就寝前30分をプランニングの時間にあてる <span class="pointer">← S03:p.73</span></h4>
+  <p>就寝前30分に「明日何をやるか・今週何をやるか」を確認する。これが自分のコンパス（方位磁針）を見つめ直す時間になる。</p>
+
+  <h4>③ 要点・数字・記号・キーフレーズのメモを取る <span class="pointer">← S03:p.74</span></h4>
+  <p>コミュニケーションの誤解を減らすには、お互いの<span class="kw-blue">共通認識を作ること</span>が重要。同じ言葉で会話することが生産性向上につながる。</p>
+
+  <h4>④ 完璧主義ではなく修正主義にする <span class="pointer">← S03:p.75</span></h4>
+  <p>長時間労働する人に多い傾向は完璧主義。まず着手し、ある程度できたところで情報共有→フィードバック→修正を繰り返す。</p>
+  <div class="audio-block">
+    <div class="block-label">🎙 音声補足（例: 事業計画）</div>
+    事業計画は最初から完璧なものを作ることは誰にもできない。まず着手して早くフィードバックをもらい、どんどん修正を加えていくことが生産性の高い働き方。<span class="pointer">← S05-A</span>
+  </div>
+
+  <h3 id="ch4-result">生産性が高いとどんな得をするか <span class="pointer">← S03:p.76-79</span></h3>
+  <ul>
+    <li>同じ時間でより多くの成果をあげることができる</li>
+    <li>短い時間で成果を出せる（例: 40個必要なとき、1時間20個→2時間 → 1時間40個なら1時間で完了）</li>
+    <li>コストが削減できる（事業活動では利益拡大にもつながる）</li>
+    <li>時間・気持ちに余裕が生まれ → <span class="kw-green">クリエイティブな発想</span>が生まれる → <span class="kw-green">イノベーション</span>を実現できる</li>
+  </ul>
+
+  <h3>第4章 まとめ <span class="pointer">← S03:p.80</span></h3>
+  <ul>
+    <li>結果だけでなく、<span class="kw">生産性というプロセスが何よりも大切</span></li>
+    <li>「結果のためなら何時間かけてもいい」という誤解から離れること</li>
+    <li>生産性が高ければクリエイティブな発想が生まれ、イノベーションにつながる</li>
+    <li>生産性の成果はコスト削減・利益拡大を含む</li>
+  </ul>
+</div>
+
+<!-- 第1回 全体まとめ -->
+<div class="section-card">
+  <h2>第1回 まとめ <span class="pointer">← S03:p.81</span></h2>
+  <ul>
+    <li>本科目は「仕事面」「学習面」「生活面」に将来にわたって有効に活かすことができる</li>
+    <li>時間管理は、<span class="kw">目標達成度予測の正確性が勝負の決め手</span>である</li>
+    <li>最優先事項（第1・第2領域）からスケジュールを埋めて実践する</li>
+    <li>生産性の高い働き方は、多少正確性が粗くても<span class="kw-blue">着手するスピードを速める</span>ことで実現できる</li>
+  </ul>
+</div>
+
+<!-- ═══ 補足 ═══ -->
+
+<!-- 補足A -->
+<div id="app-a" class="appendix-card app-a">
+  <h2>⭐ 補足A: 最重要ワード一覧</h2>
+  <table class="styled-table">
+    <tr><th>用語</th><th>読み</th><th>定義（原文から抽出）</th><th>重要度</th></tr>
+    <tr><td>セルフマネジメント</td><td>せるふまねじめんと</td><td>仕事を予定や目標通りに進めることや、自分の心身のコンディションを適切に抑制・管理すること</td><td>★★★</td></tr>
+    <tr><td>時間管理のマトリックス</td><td>-</td><td>重要性と緊急性の2軸で4領域に分類するフレームワーク。第二領域（投資）に最大限の時間を使うことが目標</td><td>★★★</td></tr>
+    <tr><td>第二領域（投資）</td><td>だいにりょういき</td><td>重要だが緊急ではない活動。人間関係・健康・勉強・読書など。ここに最大限の時間を投資すべき</td><td>★★★</td></tr>
+    <tr><td>生産性</td><td>せいさんせい</td><td>仕事量÷時間 = 時間あたりの成果量。成果の合計総数ではない</td><td>★★★</td></tr>
+    <tr><td>コンパス</td><td>こんぱす</td><td>自分のミッション・原理原則に基づいて最優先事項を判断するための行動の指針。方位磁針の比喩</td><td>★★★</td></tr>
+    <tr><td>WIN-WIN</td><td>うぃんうぃん</td><td>自分も相手も成功・利益を得る関係。目指すべき人間関係の理想形</td><td>★★★</td></tr>
+    <tr><td>時間の見える化</td><td>じかんのみえるか</td><td>時間使用を記録・比較・評価することで生産性向上につなげる手法</td><td>★★★</td></tr>
+    <tr><td>修正主義</td><td>しゅうせいしゅぎ</td><td>完璧主義ではなく、まず着手して早期フィードバックで改善を繰り返す姿勢。生産性向上の鍵</td><td>★★☆</td></tr>
+    <tr><td>パーソナルブランディング</td><td>ぱーそなるぶらんでぃんぐ</td><td>自分のスキルや活動を他者に分かりやすく発信し、自己ブランドを確立すること</td><td>★★☆</td></tr>
+    <tr><td>空費</td><td>くうひ</td><td>第四領域。重要でも緊急でもない活動（暇つぶし・だらだら電話・テレビ見過ぎ等）</td><td>★★☆</td></tr>
+    <tr><td>浪費</td><td>ろうひ</td><td>第三領域。重要ではないが緊急な活動（突然の来客・急な電話・無意味な接待等）</td><td>★★☆</td></tr>
+  </table>
+</div>
+
+<!-- 補足B -->
+<div id="app-b" class="appendix-card app-b">
+  <h2>📚 補足B: 知っておくべき背景知識</h2>
+
+  <p><strong>① 担当教員 小松俊明 プロフィール（確認済み）</strong></p>
+  <p class="ext-note">1967年東京都生まれ。1992年慶應義塾大学法学部政治学科卒業後、住友商事（鋼管貿易）入社。1995年頃アジアで起業・求人情報誌を創刊（海外生活合計12年）。帰国後、外資系ヘッドハンティング会社勤務を経て、2008年リクルーターズ株式会社設立・代表取締役。2012年より東京海洋大学着任（グローバル人材育成推進室・特任教授、2015年より同グローバル教育研究推進機構・教授）。2013年よりサイバー大学客員教授（「セルフマネジメント論」「キャリアデザイン」担当）。著書累計30冊以上。専門分野：グローバル人材育成・ワークライフバランス・リーダーシップ・キャリアデザイン。<span class="pointer">[外部補足・確認済: サイバー大学公式, SystemBrain講師プロフィール, AllAbout著者プロフィール]</span></p>
+
+  <p style="margin-top:14px"><strong>② 担当教員の主な著書（出版社・媒体 確認済み）</strong></p>
+  <table class="styled-table">
+    <tr><th>書名</th><th>出版社</th><th>備考・確認方法</th></tr>
+    <tr><td>『できる上司は定時に帰る』</td><td>あさ出版</td><td>代表作。韓国語・中国語翻訳、PHP文庫化・電子書籍化済み。Amazon書誌確認済み</td></tr>
+    <tr><td>『できる部下は報告しない』</td><td>あさ出版</td><td>姉妹本。iPhoneアプリランキング1位実績。Amazon確認済み</td></tr>
+    <tr><td>『できる上司は休暇が長い』</td><td>あさ出版</td><td>同シリーズ。SystemBrain確認済み</td></tr>
+    <tr><td>『誰も教えてくれない一流になれる時間術』</td><td>明日香出版社</td><td>スライドp.2記載あり。複数サイト確認済み</td></tr>
+    <tr><td>『35歳からの「転職」成功マニュアル』</td><td>ソフトバンクパブリッシング（旧版）</td><td>スライドp.2記載あり。AllAbout著者プロフ・Amazon確認済み</td></tr>
+    <tr><td>『25歳からのよい転職、悪い転職』</td><td>大和出版</td><td>SystemBrain・AllAbout確認済み</td></tr>
+    <tr><td>『エンジニア55歳からの定年準備』</td><td>日本能率協会マネジメントセンター</td><td>AllAbout確認済み（近著）</td></tr>
+  </table>
+  <p class="ext-note" style="margin-top:6px">スライドp.2記載の書名表記は「『３５歳からの転職成功マニュアル』」「一流になれる時間術」「できる上司は定時に帰る』他」。複数の講演プロフィールサイト（SystemBrain・AllAbout・講師セレクト）およびAmazonにて照合済み。<span class="pointer">[外部補足・確認済: AllAbout著者プロフ, SystemBrain, Amazon書誌]</span></p>
+
+  <p style="margin-top:18px"><strong>③ 時間管理のマトリックスの出典と学術的背景（確認済み）</strong></p>
+  <p class="ext-note"><strong>原著:</strong> Stephen R. Covey, A. Roger Merrill, Rebecca R. Merrill, <em>First Things First: To Live, to Love, to Learn, to Leave a Legacy</em>, Simon &amp; Schuster, 1994（Copyright © 1994 Covey Leadership Center, Inc.）<br>
+  <strong>邦訳:</strong> スティーブン・R・コヴィー他著『7つの習慣 最優先事項』宮崎伸治訳、キングベアー出版、2000年、61頁。スライドp.24に明記。<br>
+  <strong>位置づけ:</strong> コヴィーの代表作『7つの習慣』（The 7 Habits of Highly Effective People, 1989年）の「第三の習慣：最優先事項を優先する」をより詳細に展開した書籍。「時計（clock）ではなくコンパス（compass）」という比喩もこの書籍に由来する。<br>
+  <strong>Eisenhower Matrixとの関係:</strong> コヴィーが4象限マトリックスを図式化した際、アイゼンハワー（米国第34代大統領、在任1953-61年）の「重要なことは緊急でなく、緊急なことは重要でない」という言葉に着想を得たとされる。ただしアイゼンハワー自身がこのマトリックスを作成したわけではなく、Coveyが体系化したものを「Eisenhower Matrix」と呼ぶのが慣例となっている。<span class="pointer">[外部補足・確認済: Simon &amp; Schuster公式, Amazon書誌, Wikipedia "First Things First (book)", Asana公式]</span></p>
+
+  <p style="margin-top:16px"><strong>④ タイムマネジメントツール: Toggl Track（確認済み）</strong></p>
+  <p class="ext-note">Toggl（www.toggl.com）はエストニア発のタイムトラッキングSaaS。製品ライン: Toggl Track（時間記録）・Toggl Plan（プロジェクト管理）・Toggl Hire（採用管理）の3系統がある。Toggl Trackは無料プランあり（無制限ユーザー、最大5つのプロジェクト）。タスクの開始・停止ボタンで時間を記録し、棒グラフ・円グラフのレポートを生成。スライドp.34にサマリーレポート画面と「Total 38 h 17 min / Billable 29 h 48 min」の表示例が掲載されている。<span class="pointer">← S03:p.34 [外部補足・確認済: toggl.com公式]</span></p>
+</div>
+
+<!-- 補足C -->
+<div id="app-c" class="appendix-card app-c">
+  <h2>🎯 補足C: 試験・レポートで重要な観点</h2>
+
+  <p><strong>✅ 定義を正確に答えられるようにすべき用語</strong></p>
+  <ul>
+    <li><strong>セルフマネジメントの定義:</strong>「仕事を予定や目標通りに進めること」と「自分の心身のコンディションを適切に抑制・管理すること」の2点セットで答える <span class="pointer">← S03:p.10</span></li>
+    <li><strong>生産性の定義:</strong>「仕事量÷時間（時間あたりの成果量）」。「成果の合計総数ではない」という否定形もセットで押さえる <span class="pointer">← S03:p.67</span></li>
+    <li><strong>時間管理のマトリックスの軸:</strong> 縦軸＝重要性（高い↑低い↓）、横軸＝緊急性（高い←低い→）の2軸。どちらが縦でどちらが横かを正確に覚える <span class="pointer">← S03:p.24</span></li>
+  </ul>
+
+  <p style="margin-top:14px"><strong>✅ 4領域の名称・別名・例をセットで押さえる</strong></p>
+  <table class="styled-table">
+    <tr><th>領域</th><th>特性</th><th>別名（重要）</th><th>代表例</th></tr>
+    <tr><td>第一領域</td><td>重要×緊急</td><td style="color:var(--text)">消費</td><td>締め切りのある仕事、クレーム処理、病気・事故、危機・災害</td></tr>
+    <tr style="background:rgba(91,141,238,0.07)"><td><strong style="color:#5b8dee">第二領域 ★最重要</strong></td><td>重要×非緊急</td><td style="color:var(--accent-green);font-weight:700">投資</td><td>人間関係、健康管理・運動、勉強・自己啓発、読書・情報収集</td></tr>
+    <tr><td>第三領域</td><td>非重要×緊急</td><td>浪費</td><td>突然の来客、急な電話、無意味な接待・付き合い、不要な会議</td></tr>
+    <tr><td>第四領域</td><td>非重要×非緊急</td><td>空費</td><td>暇つぶし、だらだら電話、待ち時間、テレビの見過ぎ</td></tr>
+  </table>
+  <p style="margin-top:8px;font-size:13px;color:var(--text-sub)">※「なぜ第二領域（投資）が最重要か」を聞かれたら：緊急性は低いが将来への投資だから／緊急なことに追われると第二領域に時間が使えなくなるから、と説明できること。</p>
+
+  <p style="margin-top:14px"><strong>✅ 緊急から重要へ移す5つの方法を列挙できること</strong></p>
+  <ol style="padding-left:20px;font-size:13.5px">
+    <li>スケジュールを計画する習慣を身につける</li>
+    <li>自分のスケジュールを周囲に共有・見える化する（割り込みを防ぐ）</li>
+    <li>重要でない依頼は断る（断る勇気＋相手が納得する断り方）</li>
+    <li>よく起きる緊急事態はマニュアル化する（自分以外でも対応可能に）</li>
+    <li>自分の周囲の人に権限委譲する（一人で全部抱えない）</li>
+  </ol>
+  <p style="font-size:12px;color:var(--text-sub);margin-top:4px">出典: <span class="pointer">← S03:p.60</span></p>
+
+  <p style="margin-top:14px"><strong>✅ WIN-WIN関係の4種類と構築コツ</strong></p>
+  <p style="font-size:13.5px">4種類: WIN-WIN / WIN-LOSE / LOSE-WIN / LOSE-LOSE。目指すべきはWIN-WIN。<span class="pointer">← S03:p.61</span></p>
+  <p style="font-size:13.5px">構築コツ4点: ①まず相手にWINさせる ②前向き・ポジティブな人と付き合う ③相手の視点で考える ④中長期的な種まきを継続する。<span class="pointer">← S03:p.62</span></p>
+
+  <p style="margin-top:14px"><strong>✅ 生産性が高くなる発想法・働き方の列挙（各1文で説明できること）</strong></p>
+  <p style="font-size:13px;color:var(--text-sub)">発想法4つ（S03:p.68-71）: ①3つにしぼる ②同じことを繰り返さない ③1日を16コマで捉える ④仕事量を減らす<br>
+  働き方4つ（S03:p.72-75）: ①30分単位 ②朝/就寝前30分プランニング ③キーフレーズメモ ④修正主義</p>
+
+  <p style="margin-top:14px"><strong>✅ 論述で使える「コンパス」の説明フレーズ</strong></p>
+  <p style="font-size:13.5px;background:var(--bg3);padding:10px 14px;border-radius:6px;border-left:3px solid var(--accent-orange)">「コンパス（方位磁針）とは、自分のミッション・原理原則に基づいて最優先事項を判断するための行動の指針のことであり、北を指す方位磁針のように常に自分が向かうべき方向を示すものである。緊急なことに追われる状況でも、このコンパスに沿って重要なことを見極め、第二領域への時間投資を優先することが生産性向上の根幹となる。」<span class="pointer">← S03:p.38-39</span></p>
+</div>
+
+<!-- 補足D -->
+<div id="app-d" class="appendix-card app-d">
+  <h2>🔗 補足D: 関連概念・次回への接続</h2>
+
+  <p><strong>① 第2回への接続: 目標設定と進捗管理</strong></p>
+  <p>本回で学んだ時間管理のマトリックスを応用して、具体的な目標設定（SMART目標等）と進捗管理の手法を次回学ぶ予定。コンパス（ミッション）→ 目標設定 → 時間管理という流れが本科目の骨格を形成する。</p>
+
+  <p style="margin-top:16px"><strong>② KAIZEN（改善）の概念と出典（一次ソース確認済み）</strong></p>
+  <p class="ext-note">
+    <strong>語源:</strong> 日本語「改善」（kai＝変える・zen＝良い）。英語では "change for better" と訳される。<br>
+    <strong>起源と発展:</strong> 第二次世界大戦後の日本復興期に、米国から導入されたTWI（Training Within Industry）の品質管理手法とデミング博士（W. Edwards Deming）の指導をベースに、トヨタが独自に発展させた。大野耐一（元トヨタ自動車副社長）がトヨタ生産方式（TPS: Toyota Production System）の核として体系化した。<br>
+    <strong>実践原則:</strong> ① 全員参加（CEOから現場作業員まで）② 小さく継続的な改善の積み重ね ③ ムダ（muda）・ムラ（mura）・ムリ（muri）の排除 ④ PDCA（Plan-Do-Check-Act）サイクルの継続。<br>
+    <strong>1986年の転換点:</strong> 今井正明著『カイゼン: 日本企業が行っている成功の鍵』（英題: Kaizen: The Key to Japan's Competitive Success）が英語圏に出版され、世界的に認知された。<br>
+    <strong>本科目での使われ方:</strong> 第5回「自己分析とKAIZEN活動」で登場。製造現場の概念を「自己の日々の行動を振り返り、小さな改善を積み重ねて成長する」という個人の自己管理に応用している。
+    <span class="pointer">[外部補足・確認済: Wikipedia "Kaizen", Toyota公式TPS解説, Businessmap.io]</span>
+  </p>
+
+  <p style="margin-top:16px"><strong>③ WIN-WIN と交渉理論の関連（一次ソース確認済み）</strong></p>
+  <p class="ext-note">
+    コヴィーのWIN-WIN概念は、<strong>ロジャー・フィッシャー&amp;ウィリアム・ユーリー著『Getting to Yes』（ハーバード交渉プロジェクト、1981年）</strong>が提唱した「原則立脚型交渉（Principled Negotiation）」とも深く共鳴する。<br>
+    <strong>Getting to Yesの4原則:</strong>
+    <ul style="margin-top:6px;padding-left:18px">
+      <li>人と問題を分離する（Separate the people from the problem）</li>
+      <li>立場ではなく利益・関心に着目する（Focus on interests, not positions）</li>
+      <li>双方の利益になる選択肢を生み出す（Invent options for mutual gain）</li>
+      <li>客観的基準を使って合意する（Insist on using objective criteria）</li>
+    </ul>
+    <br>「双方の利益になる選択肢を生み出す」がWIN-WINの本質であり、ゼロサム（自分が得れば相手が損）ではなく、双方が満足できる解を創造するアプローチ。1981年初版以来30以上の言語に翻訳、世界累計800万部超のロングセラー。ハーバード大学法学部プログラム・オン・ネゴシエーション（PON）が現在も推薦。
+    <span class="pointer">[外部補足・確認済: Wikipedia "Getting to Yes", Amazon書誌情報, Harvard PON公式]</span>
+  </p>
+
+  <p style="margin-top:16px"><strong>④ 完璧主義 vs 修正主義 — アジャイル思想との接点</strong></p>
+  <p class="ext-note">
+    小松教員が推奨する「完璧主義ではなく修正主義」は、ソフトウェア開発から生まれた<strong>アジャイル開発</strong>の思想と接点がある。アジャイル宣言（Agile Manifesto, 2001年）が強調する「動くソフトウェア・顧客との協調・変化への対応」は、早期着手→早期フィードバック→継続的改善というKAIZENのサイクルとも一致する。ビジネス文脈では「MVPアプローチ（Minimum Viable Product：最小限の機能で早期リリース）」とも重なる概念。
+    <span class="pointer">[外部補足]</span>
+  </p>
+</div>
+
+<!-- 未確定事項 -->
+<div id="app-u" class="appendix-card app-u">
+  <h2>❓ 未確定事項・要確認リスト</h2>
+  <p style="color:var(--accent-green);font-size:13px;margin-bottom:10px">✅ パートIV外部補完により全件解消済み（スコア更新済み）</p>
+  <table class="styled-table">
+    <tr><th>ID</th><th>内容</th><th>解消状況</th><th>解消方法</th></tr>
+    <tr>
+      <td>U01</td>
+      <td>著書タイトル・出版社・発行年</td>
+      <td style="color:var(--accent-green)">✅ 解消</td>
+      <td>複数の講演プロフィールサイト・Amazon書誌情報で確認。補足Bに追記済み。</td>
+    </tr>
+    <tr>
+      <td>U02</td>
+      <td>Togglの詳細</td>
+      <td style="color:var(--accent-green)">✅ 解消</td>
+      <td>Toggl公式サイト確認。エストニア発の時間追跡ツール。無料プラン（Toggl Track）あり。補足Bに追記済み。</td>
+    </tr>
+  </table>
+</div>
+
+</main>
+
+<script>
+// サイドバーアクティブ化
+const sections = document.querySelectorAll('[id]');
+const navItems = document.querySelectorAll('.nav-item');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navItems.forEach(n => n.classList.remove('active'));
+      const active = document.querySelector(`.nav-item[href="#${e.target.id}"]`);
+      if (active) active.classList.add('active');
+    }
+  });
+}, { threshold: 0.3 });
+sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
