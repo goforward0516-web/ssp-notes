@@ -1,0 +1,1744 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>セルフマネジメント論 第3回｜異分野とのコラボレーションとイノベーション</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-base: #0f1117;
+    --bg-card: #161b27;
+    --bg-card2: #1a2035;
+    --bg-hover: #1e2540;
+    --border: #2a3450;
+    --border-light: #334066;
+    --text-main: #e2e8f5;
+    --text-sub: #8a99b8;
+    --text-dim: #5a6a88;
+    --accent-blue: #5b8dee;
+    --accent-green: #34d399;
+    --accent-yellow: #fbbf24;
+    --accent-purple: #a78bfa;
+    --accent-orange: #fb923c;
+    --accent-red: #f87171;
+    --accent-teal: #22d3ee;
+    --sidebar-w: 260px;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Noto Sans JP', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg-base);
+    color: var(--text-main);
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.75;
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ─── Sidebar ─── */
+  #sidebar {
+    width: var(--sidebar-w);
+    min-height: 100vh;
+    background: var(--bg-card);
+    border-right: 1px solid var(--border);
+    position: fixed;
+    top: 0; left: 0;
+    overflow-y: auto;
+    z-index: 100;
+    padding-bottom: 40px;
+  }
+
+  .sidebar-header {
+    padding: 20px 16px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sidebar-header .course-badge {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--accent-blue);
+    background: rgba(91,141,238,0.12);
+    border: 1px solid rgba(91,141,238,0.3);
+    padding: 2px 7px;
+    border-radius: 4px;
+    letter-spacing: 0.06em;
+    display: inline-block;
+    margin-bottom: 8px;
+  }
+
+  .sidebar-header h1 {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--text-main);
+    line-height: 1.5;
+    letter-spacing: 0.02em;
+  }
+
+  .sidebar-meta {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--text-dim);
+    margin-top: 6px;
+    line-height: 1.6;
+  }
+
+  .toc-section {
+    padding: 10px 0;
+  }
+
+  .toc-chapter {
+    padding: 6px 16px 4px;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--accent-blue);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-family: var(--mono);
+  }
+
+  .toc-link {
+    display: block;
+    padding: 5px 16px 5px 24px;
+    font-size: 11px;
+    color: var(--text-sub);
+    text-decoration: none;
+    transition: all 0.15s;
+    border-left: 2px solid transparent;
+  }
+
+  .toc-link:hover {
+    color: var(--text-main);
+    background: var(--bg-hover);
+    border-left-color: var(--accent-blue);
+  }
+
+  .toc-link.active {
+    color: var(--accent-blue);
+    border-left-color: var(--accent-blue);
+    background: rgba(91,141,238,0.08);
+  }
+
+  .toc-link.sub {
+    padding-left: 34px;
+    font-size: 10.5px;
+  }
+
+  /* ─── Main ─── */
+  #main {
+    margin-left: var(--sidebar-w);
+    flex: 1;
+    padding: 32px 40px 80px;
+    max-width: 860px;
+  }
+
+  /* ─── Page Header ─── */
+  .page-header {
+    margin-bottom: 36px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .page-header .label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--accent-blue);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .page-header h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-main);
+    line-height: 1.4;
+    margin-bottom: 14px;
+  }
+
+  .meta-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 12px;
+  }
+
+  .meta-pill {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-sub);
+    background: var(--bg-card2);
+    border: 1px solid var(--border);
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+
+  .source-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+  }
+
+  .source-badge {
+    font-family: var(--mono);
+    font-size: 9px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+
+  .src-s03 { background: rgba(52,211,153,0.12); color: var(--accent-green); border: 1px solid rgba(52,211,153,0.3); }
+  .src-s05 { background: rgba(251,191,36,0.12); color: var(--accent-yellow); border: 1px solid rgba(251,191,36,0.3); }
+
+  /* ─── Section ─── */
+  .section {
+    margin-bottom: 40px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .chapter-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--accent-blue);
+    background: rgba(91,141,238,0.12);
+    border: 1px solid rgba(91,141,238,0.25);
+    padding: 2px 9px;
+    border-radius: 4px;
+  }
+
+  .section-header h2 {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text-main);
+  }
+
+  .subsection {
+    margin-bottom: 28px;
+  }
+
+  .subsection h3 {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent-teal);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  .subsection h3::before {
+    content: '';
+    display: inline-block;
+    width: 3px;
+    height: 14px;
+    background: var(--accent-teal);
+    border-radius: 2px;
+  }
+
+  p {
+    color: var(--text-main);
+    margin-bottom: 10px;
+    font-size: 13.5px;
+    line-height: 1.8;
+  }
+
+  /* ─── Pointer ─── */
+  .ptr {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--text-dim);
+    background: rgba(90,106,136,0.15);
+    border: 1px solid rgba(90,106,136,0.25);
+    padding: 1px 6px;
+    border-radius: 3px;
+    margin-left: 5px;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+
+  /* ─── Definition box ─── */
+  .def-box {
+    background: var(--bg-card2);
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 14px 0;
+  }
+
+  .def-box .def-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 600;
+    color: var(--accent-green);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 6px;
+  }
+
+  .def-box .def-content {
+    font-size: 13.5px;
+    color: var(--text-main);
+    line-height: 1.75;
+  }
+
+  .def-box .def-term {
+    font-weight: 700;
+    color: var(--accent-yellow);
+  }
+
+  /* ─── Audio block ─── */
+  .audio-block {
+    border-left: 3px solid var(--accent-blue);
+    background: rgba(91,141,238,0.06);
+    border-radius: 0 6px 6px 0;
+    padding: 10px 14px;
+    margin: 10px 0;
+    font-size: 13px;
+  }
+
+  .audio-block .audio-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--accent-blue);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    margin-bottom: 5px;
+  }
+
+  /* ─── Ext block ─── */
+  .ext-block {
+    border-left: 3px solid var(--accent-green);
+    background: rgba(52,211,153,0.05);
+    border-radius: 0 6px 6px 0;
+    padding: 10px 14px;
+    margin: 10px 0;
+    font-size: 13px;
+  }
+
+  .ext-block .ext-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--accent-green);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    margin-bottom: 5px;
+  }
+
+  /* ─── Infer block ─── */
+  .infer-block {
+    border-left: 3px solid var(--accent-purple);
+    background: rgba(167,139,250,0.06);
+    border-radius: 0 6px 6px 0;
+    padding: 10px 14px;
+    margin: 10px 0;
+    font-size: 13px;
+  }
+
+  /* ─── Warn block ─── */
+  .warn-block {
+    border-left: 3px solid var(--accent-orange);
+    background: rgba(251,146,60,0.06);
+    border-radius: 0 6px 6px 0;
+    padding: 10px 14px;
+    margin: 10px 0;
+    font-size: 13px;
+  }
+
+  .warn-block .warn-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--accent-orange);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    margin-bottom: 5px;
+  }
+
+  /* ─── Highlight box ─── */
+  .highlight-box {
+    background: rgba(251,191,36,0.07);
+    border: 1px solid rgba(251,191,36,0.25);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 14px 0;
+    font-size: 13.5px;
+  }
+
+  /* ─── Table ─── */
+  .table-wrap {
+    overflow-x: auto;
+    margin: 16px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.5px;
+  }
+
+  thead th {
+    background: var(--bg-card2);
+    color: var(--accent-blue);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    text-align: left;
+  }
+
+  tbody td {
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    color: var(--text-main);
+    vertical-align: top;
+    line-height: 1.65;
+  }
+
+  tbody tr:hover td { background: rgba(255,255,255,0.02); }
+
+  /* ─── SVG Figure ─── */
+  .fig-wrap {
+    margin: 20px 0;
+    text-align: center;
+  }
+
+  .fig-wrap figcaption {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-top: 8px;
+    letter-spacing: 0.04em;
+  }
+
+  /* ─── Appendix Cards ─── */
+  .appendix-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 22px;
+    margin-bottom: 24px;
+  }
+
+  .appendix-card .card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .appendix-card .card-icon {
+    font-size: 18px;
+  }
+
+  .appendix-card .card-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-main);
+  }
+
+  /* ─── Unconfirmed card ─── */
+  .unconfirmed-card {
+    background: rgba(251,146,60,0.06);
+    border: 1px solid rgba(251,146,60,0.25);
+    border-radius: 10px;
+    padding: 20px 22px;
+    margin-bottom: 24px;
+  }
+
+  .unconfirmed-card .card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(251,146,60,0.2);
+  }
+
+  .unconfirmed-card .card-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--accent-orange);
+  }
+
+  /* ─── List styles ─── */
+  ul.content-list {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+  }
+
+  ul.content-list li {
+    padding: 4px 0 4px 18px;
+    font-size: 13.5px;
+    color: var(--text-main);
+    position: relative;
+    line-height: 1.7;
+  }
+
+  ul.content-list li::before {
+    content: '▸';
+    color: var(--accent-blue);
+    font-size: 10px;
+    position: absolute;
+    left: 0;
+    top: 6px;
+  }
+
+  ul.content-list.green li::before { color: var(--accent-green); }
+  ul.content-list.yellow li::before { color: var(--accent-yellow); }
+
+  .step-list {
+    list-style: none;
+    padding: 0;
+    counter-reset: step;
+  }
+
+  .step-list li {
+    counter-increment: step;
+    padding: 6px 0 6px 32px;
+    font-size: 13.5px;
+    color: var(--text-main);
+    position: relative;
+    line-height: 1.7;
+  }
+
+  .step-list li::before {
+    content: counter(step);
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--bg-base);
+    background: var(--accent-blue);
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    left: 0;
+    top: 7px;
+  }
+
+  /* ─── Divider ─── */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 32px 0;
+  }
+
+  strong { color: var(--accent-yellow); font-weight: 600; }
+  em { color: var(--accent-teal); font-style: normal; }
+
+  .text-sub { color: var(--text-sub); }
+  .text-dim { color: var(--text-dim); font-size: 12px; }
+
+  /* ─── Scrollbar ─── */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg-base); }
+  ::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════
+     SIDEBAR
+═══════════════════════════════════════ -->
+<nav id="sidebar">
+  <div class="sidebar-header">
+    <div class="course-badge">SD103 · 第3回</div>
+    <h1>セルフマネジメント論<br>異分野とのコラボレーションとイノベーション</h1>
+    <div class="sidebar-meta">
+      担当: 小松 俊明<br>
+      ソース: S03 · S05×2
+    </div>
+  </div>
+
+  <div class="toc-section">
+    <div class="toc-chapter">第1章</div>
+    <a class="toc-link" href="#ch1">ジェネラリストとは何か</a>
+    <a class="toc-link sub" href="#ch1-def">定義と比較</a>
+    <a class="toc-link sub" href="#ch1-bio">生物学的視点</a>
+    <a class="toc-link sub" href="#ch1-mid">管理者と処理者</a>
+    <a class="toc-link sub" href="#ch1-goal">目指すべき姿</a>
+
+    <div class="toc-chapter">第2章</div>
+    <a class="toc-link" href="#ch2">プロフェッショナルの価値</a>
+    <a class="toc-link sub" href="#ch2-def">定義と比較</a>
+    <a class="toc-link sub" href="#ch2-feat">特徴と成り方</a>
+    <a class="toc-link sub" href="#ch2-grow">成長のコツ</a>
+
+    <div class="toc-chapter">第3章</div>
+    <a class="toc-link" href="#ch3">効果の高いコラボレーション</a>
+    <a class="toc-link sub" href="#ch3-def">定義と形</a>
+    <a class="toc-link sub" href="#ch3-case">事例</a>
+    <a class="toc-link sub" href="#ch3-step">実現ステップ</a>
+
+    <div class="toc-chapter">第4章</div>
+    <a class="toc-link" href="#ch4">イノベーションを起こす人材像</a>
+    <a class="toc-link sub" href="#ch4-def">定義と例</a>
+    <a class="toc-link sub" href="#ch4-req">必要な3要素</a>
+    <a class="toc-link sub" href="#ch4-dil">イノベーションのジレンマ</a>
+    <a class="toc-link sub" href="#ch4-toyota">トヨタ事例</a>
+    <a class="toc-link sub" href="#ch4-5power">5つの発見力</a>
+
+    <div class="toc-chapter">補足</div>
+    <a class="toc-link" href="#app-a">⭐ 補足A: 最重要ワード</a>
+    <a class="toc-link" href="#app-b">📚 補足B: 背景知識</a>
+    <a class="toc-link" href="#app-c">🎯 補足C: 試験ポイント</a>
+    <a class="toc-link" href="#app-d">🔗 補足D: 関連概念</a>
+    <a class="toc-link" href="#unconfirmed">❓ 未確定事項</a>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════
+     MAIN CONTENT
+═══════════════════════════════════════ -->
+<main id="main">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="label">LECTURE NOTE · SSP v4.2</div>
+    <h1>第3回 異分野とのコラボレーションとイノベーション</h1>
+    <div class="meta-grid">
+      <span class="meta-pill">セルフマネジメント論</span>
+      <span class="meta-pill">担当: 小松 俊明</span>
+      <span class="meta-pill">QC: PASS · 外部補完済</span>
+    </div>
+    <div class="source-row">
+      <span class="source-badge src-s03">S03: スライドPDF</span>
+      <span class="source-badge src-s05">S05-A: hynote.ai</span>
+      <span class="source-badge src-s05">S05-B: hynote.ai</span>
+    </div>
+  </div>
+
+  <!-- ─── 学習目標 ─── -->
+  <div class="subsection">
+    <div class="def-box" style="border-color: var(--accent-blue); background: rgba(91,141,238,0.05);">
+      <div class="def-label" style="color: var(--accent-blue);">第3回 学習目標</div>
+      <ul class="content-list">
+        <li>ジェネラリストとスペシャリストの違い・特徴を理解する <span class="ptr">← S03:p.2</span></li>
+        <li>プロフェッショナルとアマチュアの違い・特徴を理解する <span class="ptr">← S03:p.2</span></li>
+        <li>コラボレーションの意味とその効果を理解する <span class="ptr">← S03:p.2</span></li>
+        <li>イノベーションを起こす人材像を理解する <span class="ptr">← S03:p.2</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       第1章
+  ═══════════════════════════════════════ -->
+  <div id="ch1" class="section">
+    <div class="section-header">
+      <span class="chapter-num">第1章</span>
+      <h2>ジェネラリストとは何か</h2>
+    </div>
+
+    <!-- 定義 -->
+    <div id="ch1-def" class="subsection">
+      <h3>ジェネラリストとスペシャリストの定義</h3>
+
+      <div class="def-box">
+        <div class="def-label">定義: ジェネラリスト</div>
+        <div class="def-content">
+          <span class="def-term">特定の分野に拘らず汎用性をもった人、潜在的な能力・マネジメント力をもった人</span>
+          <span class="ptr">← S03:p.6</span>
+        </div>
+      </div>
+
+      <div class="audio-block">
+        <div class="audio-label">🔊 音声補足</div>
+        「潜在的な能力」とは、これから可能性のある、まだ顕在化していない能力のこと。特定の分野に絞られるのではなく、汎用的・幅広く使える知識・見識を持ち、かつマネジメント力を有する人物を指す。<span class="ptr">← S05-A/B</span>
+      </div>
+
+      <div class="def-box">
+        <div class="def-label">定義: スペシャリスト</div>
+        <div class="def-content">
+          <span class="def-term">特定の分野の専門性をもった人、顕在的な資格・技術力を持った人</span>
+          <span class="ptr">← S03:p.7</span>
+        </div>
+      </div>
+
+      <div class="audio-block">
+        <div class="audio-label">🔊 音声補足</div>
+        国家資格・民間資格など、誰もが見てわかる能力・技術力を公の機関が認めている「顕在的な」資格を持つ人を指す。ジェネラリストの「潜在的能力」と対比的な概念。<span class="ptr">← S05-A/B</span>
+      </div>
+
+      <!-- 比較表 -->
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>項目</th>
+              <th>ジェネラリスト</th>
+              <th>スペシャリスト</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>専門性の幅</td>
+              <td>広く汎用的</td>
+              <td>深く特定分野に集中</td>
+            </tr>
+            <tr>
+              <td>能力の種類</td>
+              <td>潜在的能力・マネジメント力</td>
+              <td>顕在的資格・技術力</td>
+            </tr>
+            <tr>
+              <td>強み</td>
+              <td>全体俯瞰・仕組み作り・調整</td>
+              <td>深い専門知識・高度な技術</td>
+            </tr>
+            <tr>
+              <td>課題</td>
+              <td>能力個人差・仕事偏在・マネジメント視点欠如</td>
+              <td>深く狭い視野・個人優先・目先の利益追求</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-dim" style="margin-top:4px;">← S03:p.6-7, S03:p.10-11</p>
+    </div>
+
+    <!-- 医療 -->
+    <div class="subsection">
+      <h3>どちらが求められているか — 医療の事例</h3>
+
+      <div class="def-box" style="background: rgba(34,211,238,0.04); border-color: rgba(34,211,238,0.3);">
+        <div class="def-label" style="color: var(--accent-teal);">スライド本文</div>
+        <div class="def-content">
+          医療技術が急速に進歩を続ける現代、最先端の情報と技術を持つ<strong>スペシャリストとしての医師</strong>が求められる。しかし一方で、その領域を横断した広い視点で医療に挑む必要もある。なぜなら、<strong>人体はひとつに繋がっていて</strong>、各部の連携と調和の上に成り立っているから。さらに医療は心と身体のバランスや調和を図ることを目的としており、<strong>ジェネラリストもますます必要</strong>。
+          <span class="ptr">← S03:p.8</span>
+        </div>
+      </div>
+
+      <div class="audio-block">
+        <div class="audio-label">🔊 音声補足</div>
+        社会の問題は複雑になり、専門家が多数いても解決できない事例も多い。医療においても、心と体のバランス・調和を図る観点からも、ジェネラリスト的な見方・捉え方が大変求められている。<span class="ptr">← S05-A/B</span>
+      </div>
+    </div>
+
+    <!-- 生物学 -->
+    <div id="ch1-bio" class="subsection">
+      <h3>どちらが生き延びるか — 生物学的視点</h3>
+
+      <div class="def-box" style="background: rgba(34,211,238,0.04); border-color: rgba(34,211,238,0.3);">
+        <div class="def-label" style="color: var(--accent-teal);">スライド本文</div>
+        <div class="def-content">
+          生態系では色々な種類の餌を食べる生物をジェネラリストと呼び、特定の餌しか食べない生物をスペシャリストと呼ぶ。両者は長い時間をかけて進化してきた。実際、環境に変動が起こった時に、理論的な研究や野外観察・化石記録からは、<strong>一般的にはスペシャリストの方が滅びやすい</strong>と考えられている。
+          <span class="ptr">← S03:p.9</span>
+        </div>
+      </div>
+
+      <div class="audio-block">
+        <div class="audio-label">🔊 音声補足</div>
+        「生き延びる」という言葉通りに、生物学の事例が人間社会のキャリア選択を考える上でのヒントになる。地球の環境変化の中で、食べ物の選択肢が広いジェネラリスト型の生物の方が変動に強い。<span class="ptr">← S05-A/B</span>
+      </div>
+    </div>
+
+    <!-- ジェネラリストの課題 -->
+    <div class="subsection">
+      <h3>ジェネラリストの課題</h3>
+
+      <div class="def-box" style="background: rgba(34,211,238,0.04); border-color: rgba(34,211,238,0.3);">
+        <div class="def-label" style="color: var(--accent-teal);">スライド本文</div>
+        <div class="def-content">
+          <ul class="content-list" style="margin-top:4px;">
+            <li>仕事の経験や資質による<strong>能力の個人差が生まれやすい</strong></li>
+            <li>意識や対応能力の高い人に<strong>仕事が偏る</strong></li>
+            <li>スペシャリストを多用し、<strong>全体の俯瞰を忘れる</strong></li>
+            <li><strong>マネジメントの視点が欠如</strong>しがち</li>
+          </ul>
+          <span class="ptr">← S03:p.10</span>
+        </div>
+      </div>
+
+      <div class="audio-block">
+        <div class="audio-label">🔊 音声補足</div>
+        「スペシャリストをたくさん使いこなせばことが足りる」と考え、任せきりになることで、本来やるべき全体を見渡す「俯瞰」とマネジメントが失われてしまう。これがジェネラリストが陥りがちな代表的な失敗。<span class="ptr">← S05-A/B</span>
+      </div>
+    </div>
+
+    <!-- スペシャリストの課題 -->
+    <div class="subsection">
+      <h3>スペシャリストの課題</h3>
+
+      <div class="def-box" style="background: rgba(34,211,238,0.04); border-color: rgba(34,211,238,0.3);">
+        <div class="def-label" style="color: var(--accent-teal);">スライド本文</div>
+        <div class="def-content">
+          <ul class="content-list" style="margin-top:4px;">
+            <li>深く狭い視野が、<strong>横断的な物の見方を阻害</strong>する</li>
+            <li>個人のこだわりが<strong>組織の効率性より優先</strong>されることがある</li>
+            <li><strong>目先の利益を追いがち</strong>になる</li>
+          </ul>
+          <span class="ptr">← S03:p.11</span>
+        </div>
+      </div>
+
+      <div class="audio-block">
+        <div class="audio-label">🔊 音声補足</div>
+        スペシャリストとして自分を捉えている人は、中長期的な投資の視点を身につける必要がある。自分の専門領域だけでなく、組織全体の効率性を意識することが重要。<span class="ptr">← S05-A/B</span>
+      </div>
+    </div>
+
+    <!-- 管理者と処理者 -->
+    <div id="ch1-mid" class="subsection">
+      <h3>中間に位置するもの: 管理者と処理者</h3>
+
+      <div class="def-box" style="background: rgba(34,211,238,0.04); border-color: rgba(34,211,238,0.3);">
+        <div class="def-label" style="color: var(--accent-teal);">スライド本文</div>
+        <div class="def-content">
+          <strong>管理者（監視をする人）</strong>: チェック・コントロール・問題解決<br>
+          <strong>処理者（たくさんこなす人）</strong>: 正確性・迅速性・効率性
+          <span class="ptr">← S03:p.12</span>
+        </div>
+      </div>
+
+      <!-- SVG: 連続体図 -->
+      <div class="fig-wrap">
+        <figure>
+          <svg viewBox="0 0 700 120" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;">
+            <!-- 背景 -->
+            <rect width="700" height="120" fill="#161b27" rx="8"/>
+            <!-- バー -->
+            <rect x="50" y="50" width="600" height="20" rx="10" fill="#2a3450"/>
+            <!-- グラデーション分割 -->
+            <rect x="50" y="50" width="150" height="20" rx="10" fill="#5b8dee" opacity="0.7"/>
+            <rect x="200" y="50" width="150" height="20" fill="#5b8dee" opacity="0.4"/>
+            <rect x="350" y="50" width="150" height="20" fill="#fbbf24" opacity="0.4"/>
+            <rect x="500" y="50" width="150" height="20" rx="10" fill="#fbbf24" opacity="0.7"/>
+            <!-- ラベル -->
+            <text x="125" y="40" text-anchor="middle" fill="#5b8dee" font-family="Noto Sans JP" font-size="12" font-weight="700">ジェネラリスト</text>
+            <text x="275" y="40" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP" font-size="11">管理者</text>
+            <text x="425" y="40" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP" font-size="11">処理者</text>
+            <text x="575" y="40" text-anchor="middle" fill="#fbbf24" font-family="Noto Sans JP" font-size="12" font-weight="700">スペシャリスト</text>
+            <!-- 下部説明 -->
+            <text x="275" y="88" text-anchor="middle" fill="#5a6a88" font-family="Noto Sans JP" font-size="10">チェック・コントロール・問題解決</text>
+            <text x="425" y="88" text-anchor="middle" fill="#5a6a88" font-family="Noto Sans JP" font-size="10">正確性・迅速性・効率性</text>
+          </svg>
+          <figcaption>図: ジェネラリスト〜スペシャリスト連続体 &nbsp;<span class="ptr">S03:p.12</span></figcaption>
+        </figure>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>役割</th>
+              <th>本質</th>
+              <th>求められるもの</th>
+              <th>不足するもの</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong style="color: var(--accent-blue);">ジェネラリスト</strong></td>
+              <td>マネジメント力のある人</td>
+              <td>仕組み作り・他者との調整・継続性</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td>管理者</td>
+              <td>監視をする人</td>
+              <td>チェック・コントロール・問題解決</td>
+              <td>問題解決プロセスの継続性</td>
+            </tr>
+            <tr>
+              <td>処理者</td>
+              <td>たくさんこなす人</td>
+              <td>正確性・迅速性・効率性</td>
+              <td>顧客ニーズへの配慮</td>
+            </tr>
+            <tr>
+              <td><strong style="color: var(--accent-yellow);">スペシャリスト</strong></td>
+              <td>専門性がある人</td>
+              <td>深さ・顧客ニーズへの対応</td>
+              <td>—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-dim">← S03:p.13-14</p>
+
+      <div class="audio-block">
+        <div class="audio-label">🔊 音声補足 — ジェネラリストと管理者の違い</div>
+        管理者（監視者）はその場で起きていることを解決することで止まってしまう。一方ジェネラリストは、問題解決のプロセスを継続させていく視点を持つ。「仕組みを作る・利害を調整する・継続性をもたらす」がジェネラリストの本質。<span class="ptr">← S05-A/B</span>
+      </div>
+
+      <div class="audio-block">
+        <div class="audio-label">🔊 音声補足 — スペシャリストと処理者の違い</div>
+        処理者はたくさんこなすことに邁進するが、自分のやっていることが顧客のニーズに合っているかへの配慮が足りない場合がある。スペシャリストは適度な深さで顧客ニーズに応えることが望ましい姿。<span class="ptr">← S05-A/B</span>
+      </div>
+    </div>
+
+    <!-- 木と森の比喩 -->
+    <div id="ch1-goal" class="subsection">
+      <h3>目指すべき姿: 専門性をもったジェネラリスト</h3>
+
+      <div class="highlight-box">
+        <strong>木と森の比喩</strong> <span class="ptr">← S03:p.15</span><br>
+        1本の木を太く大きく育てていくのが<em>スペシャリスト</em>。<br>
+        1本の木から、木々で溢れる<em>森をつくる</em>のが<em>ジェネラリスト</em>。<br>
+        両者の課題を補い合い、バランスよく使用すべき。
+      </div>
+
+      <div class="def-box" style="background: rgba(52,211,153,0.06); border-color: rgba(52,211,153,0.3);">
+        <div class="def-label" style="color: var(--accent-green);">第1章 まとめ</div>
+        <div class="def-content">
+          <ul class="content-list green" style="margin-top:4px;">
+            <li>ジェネラリストは<strong>マネジメント力を持った人</strong>である <span class="ptr">← S03:p.16</span></li>
+            <li>スペシャリストは<strong>専門性の高い人</strong>である</li>
+            <li>管理者よりも<strong>ジェネラリスト</strong>が求められている</li>
+            <li>処理者よりも<strong>スペシャリスト</strong>が求められている</li>
+            <li>目指すべきは<strong>「専門性の高いジェネラリスト」</strong></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ═══════════════════════════════════════
+       第2章
+  ═══════════════════════════════════════ -->
+  <div id="ch2" class="section">
+    <div class="section-header">
+      <span class="chapter-num">第2章</span>
+      <h2>プロフェッショナルの価値</h2>
+    </div>
+
+    <div id="ch2-def" class="subsection">
+      <h3>プロフェッショナルとアマチュアの定義</h3>
+
+      <div class="def-box" style="background: rgba(251,191,36,0.06); border-color: rgba(251,191,36,0.3);">
+        <div class="def-label" style="color: var(--accent-yellow);">定義: プロフェッショナル = ギャランティ型</div>
+        <div class="def-content">
+          <span class="def-term">どんな手段を使ってでも、約束を果たすのがプロフェッショナル</span>
+          <span class="ptr">← S03:p.20</span>
+        </div>
+      </div>
+
+      <div class="def-box">
+        <div class="def-label">定義: アマチュア = ベストエフォート型</div>
+        <div class="def-content">
+          <span class="def-term">最大限の努力はするが、結果を約束できないのがアマチュア</span>
+          <span class="ptr">← S03:p.21</span>
+        </div>
+      </div>
+
+      <div class="audio-block">
+        <div class="audio-label">🔊 音声補足 — 「どんな手段」の意味</div>
+        「どんな手段を使っても」とは、ただスポーツのようなルールの中だけでなく、人間社会で守らなければいけない常識・倫理観を使うということ。知識・見識・人格・人間的な魅力・努力——これらすべての「あらゆる手段」を駆使して成果を出すことにコミットする。<span class="ptr">← S05-A/B</span>
+      </div>
+
+      <div class="highlight-box">
+        <strong>決定的な違い: 成果に対するコミットメント</strong> <span class="ptr">← S03:p.22</span><br>
+        技術の差が小さくても、プロとアマを分けるのは<em>「成果へのコミットメント」</em>の有無。<br>
+        「ベストを尽くしたが結果が出ない」を繰り返していると評価は厳しくなる。
+      </div>
+    </div>
+
+    <!-- エキスパート -->
+    <div class="subsection">
+      <h3>プロフェッショナルとエキスパートの違い</h3>
+
+      <div class="def-box" style="background: rgba(34,211,238,0.04); border-color: rgba(34,211,238,0.3);">
+        <div class="def-label" style="color: var(--accent-teal);">スライド本文</div>
+        <div class="def-content">
+          高度な専門知識や技術力を持つのが<strong>エキスパート</strong>。<br>
+          → プロフェッショナルとは同義語ではない <span class="ptr">← S03:p.23</span>
+        </div>
+      </div>
+
+      <div class="audio-block">
+        <div class="audio-label">🔊 音声補足</div>
+        高度な専門知識・技術を持っていても、成果に対してコミットできなければ、それはプロフェッショナルではなくエキスパートである。成果コミットメントがプロとエキスパートを分ける。<span class="ptr">← S05-A/B</span>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>呼び名</th><th>専門知識・技術</th><th>成果コミットメント</th><th>評価軸</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong style="color:var(--accent-yellow);">プロフェッショナル</strong></td>
+              <td>あり</td>
+              <td>あり（ギャランティ型）</td>
+              <td>顧客満足・成果</td>
+            </tr>
+            <tr>
+              <td>エキスパート</td>
+              <td>あり（高度）</td>
+              <td>なし or 限定的</td>
+              <td>知識・技術水準</td>
+            </tr>
+            <tr>
+              <td>アマチュア</td>
+              <td>あり（程度は様々）</td>
+              <td>なし（ベストエフォート型）</td>
+              <td>努力・熱意</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 特徴と成り方 -->
+    <div id="ch2-feat" class="subsection">
+      <h3>プロフェッショナルの特徴</h3>
+
+      <div class="def-box" style="background: rgba(34,211,238,0.04); border-color: rgba(34,211,238,0.3);">
+        <div class="def-label" style="color: var(--accent-teal);">スライド本文</div>
+        <div class="def-content">
+          <ul class="content-list" style="margin-top:4px;">
+            <li>どんなときも<strong>顧客満足を第一に考える</strong></li>
+            <li>常に<strong>専門知識や最新情報にアンテナをたてている</strong></li>
+            <li>常に<strong>顧客の期待以上の成果を出す</strong></li>
+            <li><strong>高い価値観、効果的なコミュニケーション力</strong>をもっている</li>
+          </ul>
+          <span class="ptr">← S03:p.24</span>
+        </div>
+      </div>
+
+      <div class="audio-block">
+        <div class="audio-label">🔊 音声補足</div>
+        プロフェッショナルはただ成果を出せばいいだけでなく、人から見て尊敬されるような高い価値観（モラル・倫理観）も必要。相手が分かりやすく「腹に落ちる」効果的なコミュニケーションもプロフェッショナルの重要な要素。<span class="ptr">← S05-A/B</span>
+      </div>
+
+      <h3>どうしたらプロフェッショナルになれるか</h3>
+
+      <div class="highlight-box">
+        <strong>ヒント:</strong> 「自分は他人からなんと呼ばれたいか」を考えてみること。
+        その答えが、プロフェッショナルへの近道になる。
+        <span class="ptr">← S03:p.25</span>
+      </div>
+
+      <div class="def-box" style="background: rgba(34,211,238,0.04); border-color: rgba(34,211,238,0.3);">
+        <div class="def-label" style="color: var(--accent-teal);">どの分野でプロになるか — 4つの基準</div>
+        <div class="def-content">
+          <ul class="content-list" style="margin-top:4px;">
+            <li>やっていて<strong>楽しい</strong>分野を選ぶ（苦痛な分野は続かない）</li>
+            <li><strong>日常的に習慣化</strong>できる分野を選ぶ</li>
+            <li><strong>独自性がある</strong>分野を選ぶ（人まねでない）</li>
+            <li><strong>発展性がある</strong>分野を選ぶ（将来も大切にされる）</li>
+          </ul>
+          <span class="ptr">← S03:p.26</span>
+        </div>
+      </div>
+
+      <h3>強みの見つけ方: フィードバック分析</h3>
+
+      <div class="def-box" style="background: rgba(34,211,238,0.04); border-color: rgba(34,211,238,0.3);">
+        <div class="def-label" style="color: var(--accent-teal);">スライド本文</div>
+        <div class="def-content">
+          <ol class="step-list">
+            <li>何かをすることを決めたならば、<strong>その期待を直ちに書きとめておく</strong></li>
+            <li><strong>半年後・1年後に、その期待と実際の結果を照合する</strong></li>
+            <li>自分の期待以上の成果が出ているものが<strong>自分の強み</strong></li>
+          </ol>
+          <span class="ptr">← S03:p.27</span>
+        </div>
+      </div>
+
+      <div class="audio-block">
+        <div class="audio-label">🔊 音声補足</div>
+        強みは自分が気づくより他人から教えてもらう（フィードバックを聞く）ことが最も効果的。また、強みの気づきはいつ訪れるか分からない（電車に乗っているとき、別の学習中など）ので、気づいた瞬間に書き留める習慣を身につけること。<span class="ptr">← S05-A/B</span>
+      </div>
+
+      <div class="ext-block">
+        <div class="ext-label">📗 外部補足・確認済</div>
+        「フィードバック分析（Feedback Analysis）」は、経営学者ピーター・ドラッカー（1909–2005）が強みの発見手法として推奨した方法。具体的手順: 重要な決断・行動をした際にすぐ「期待する結果」を書き留め、9〜12ヶ月後に実際の結果と照合する。このサイクルを繰り返すことで自分の強みが明確になる。なお、ドラッカー自身は「この手法は14世紀のドイツ人神学者が考案し、後にカルヴァンとイグナチウス・デ・ロヨラが独立して取り入れた」と述べており、新しい手法ではないとしている。<br>
+        <span style="font-size:11px;color:var(--text-dim);">出典: Drucker, P. F. "Managing Oneself," Harvard Business Review, Vol.77, No.2 (Mar–Apr 1999), pp.64–74. / Management Challenges for the 21st Century, HarperCollins, 1999. [確認済: PubMed PMID 10387772]</span>
+      </div>
+    </div>
+
+    <!-- 成長のコツ -->
+    <div id="ch2-grow" class="subsection">
+      <h3>プロフェッショナルが成長し続けるコツ</h3>
+
+      <div class="def-box" style="background: rgba(34,211,238,0.04); border-color: rgba(34,211,238,0.3);">
+        <div class="def-label" style="color: var(--accent-teal);">スライド本文</div>
+        <div class="def-content">
+          <ul class="content-list" style="margin-top:4px;">
+            <li>自分が学んだことを<strong>人に教える</strong>（アウトプット）</li>
+            <li>自ら<strong>環境を変えたり、変化を起こす</strong></li>
+            <li>常に<strong>実務には強くある</strong>こと</li>
+          </ul>
+          <span class="ptr">← S03:p.28</span>
+        </div>
+      </div>
+
+      <div class="audio-block">
+        <div class="audio-label">🔊 音声補足</div>
+        人に教える過程で一番自分が理解できる。他人に分かってもらうためには本当に深く理解していないと伝えられない。また、「ただ戦略を作る・指示を出す・経験談を語るだけ」で終わることがプロとして伸び悩む原因になる。強いプロフェッショナルは実務に強く、その時々に必要とされる実務を学び続ける。<span class="ptr">← S05-A/B</span>
+      </div>
+
+      <div class="def-box" style="background: rgba(52,211,153,0.06); border-color: rgba(52,211,153,0.3);">
+        <div class="def-label" style="color: var(--accent-green);">第2章 まとめ</div>
+        <div class="def-content">
+          <ul class="content-list green" style="margin-top:4px;">
+            <li>プロフェッショナルには<strong>成果に対するコミットメント</strong>がある <span class="ptr">← S03:p.29</span></li>
+            <li>「他人からなんと呼ばれたいか」を探ることが近道</li>
+            <li>期待と結果を照合すれば、自分の強みがわかる</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ═══════════════════════════════════════
+       第3章
+  ═══════════════════════════════════════ -->
+  <div id="ch3" class="section">
+    <div class="section-header">
+      <span class="chapter-num">第3章</span>
+      <h2>効果の高いコラボレーションとは</h2>
+    </div>
+
+    <div id="ch3-def" class="subsection">
+      <h3>コラボレーションとは何か</h3>
+
+      <div class="def-box">
+        <div class="def-label">定義: コラボレーション</div>
+        <div class="def-content">
+          <strong>「共に働く」「協力する」</strong>という意味、また<strong>「つなぐ」</strong>という意味で使われる。略して「コラボ」。<br>
+          同義語: 共演・合作・共同作業・提携・協定
+          <span class="ptr">← S03:p.33</span>
+        </div>
+      </div>
+
+      <div class="audio-block">
+        <div class="audio-label">🔊 音声補足</div>
+        本来は一緒にやるべきではない2人が、全く異分野から協力して何かをやる——そういったことが最近は一般的になってきた。「初コラボ」「異色のコラボ」等の使い方がある。<span class="ptr">← S05-A/B</span>
+      </div>
+
+      <h3>よくあるコラボレーションの例</h3>
+      <div class="def-box" style="background: rgba(34,211,238,0.04); border-color: rgba(34,211,238,0.3);">
+        <div class="def-label" style="color: var(--accent-teal);">スライド本文</div>
+        <div class="def-content">
+          <ul class="content-list" style="margin-top:4px;">
+            <li>企業同士の業務提携・合併・買収</li>
+            <li>大学と企業の共同研究</li>
+            <li>専門家同士の対談・インタビュー</li>
+            <li>小説の映画化</li>
+            <li>音楽家同士の共演</li>
+            <li>歌舞伎役者のドラマ出演</li>
+          </ul>
+          <span class="ptr">← S03:p.34</span>
+        </div>
+      </div>
+
+      <h3>コラボレーションの魅力</h3>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>種類</th><th>魅力・特徴</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>初コラボ</strong></td><td>初めて見る・何が起きるか未知数 → 注目を集める</td></tr>
+            <tr><td><strong>大物コラボ</strong></td><td>注目度抜群、メッセージ性が強い</td></tr>
+            <tr><td><strong>相乗効果コラボ</strong></td><td>1+1が3以上になる相互利益 → シナジー効果</td></tr>
+            <tr><td><strong>敵対関係コラボ</strong></td><td>競合同士が手を組む緊張感・刺激 → 意外性</td></tr>
+            <tr><td><strong style="color:var(--accent-yellow);">異色コラボ</strong></td><td>予想外の結末 → <em>イノベーションの予感</em></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-dim">← S03:p.35</p>
+    </div>
+
+    <!-- 事例 -->
+    <div id="ch3-case" class="subsection">
+      <h3>異色コラボレーションの事例</h3>
+
+      <div class="def-box" style="background: rgba(34,211,238,0.04); border-color: rgba(34,211,238,0.3);">
+        <div class="def-label" style="color: var(--accent-teal);">事例①: ビックロ（ビックカメラ × ユニクロ）</div>
+        <div class="def-content">
+          カジュアル衣料店を展開するユニクロと、家電量販店のビックカメラがコラボした売り場。2012年9月27日、新宿東口にオープン（旧三越新宿アルコット店跡地）。<br>
+          ビックカメラは女性客が通常<strong>30%強</strong>だったが、ビックロでは<strong>45%前後</strong>に増加。<br>
+          女性客の多いユニクロとコラボしたことで<strong>新たな客層にアピール</strong>できた。
+          <span class="ptr">← S03:p.36</span>
+          <br><span style="font-size:11px;color:var(--text-dim);">※ 女性比率の数値はS03記載。開店年・立地はWikipediaおよびユニクロ公式プレスリリース（2012年9月）で確認済み。ビックロは2022年に閉店（ユニクロが契約更新せず撤退）し、現在はビックカメラ新宿東口店として営業継続。[外部補足・確認済]</span>
+        </div>
+      </div>
+
+      <div class="def-box" style="background: rgba(34,211,238,0.04); border-color: rgba(34,211,238,0.3);">
+        <div class="def-label" style="color: var(--accent-teal);">事例②: 資生堂 × パークホテル東京</div>
+        <div class="def-content">
+          化粧品大手の資生堂が、港区汐留にあるパークホテル東京（汐留メディアタワー25〜34階）のスイートルームをコラボルームとして、<strong>10〜20歳代向けの資生堂の化粧品のイメージで内装を施し</strong>、この化粧品を使い放題にして大勢の宿泊客を集めた。
+          <span class="ptr">← S03:p.37</span>
+          <br><span style="font-size:11px;color:var(--text-dim);">※ パークホテル東京は2003年開業の汐留メディアタワー高層部ホテル（268室、アーティストルームで有名）。港区所在は確認済み。コラボ実施時期の詳細はS03に記載なし。[外部補足・確認済: パークホテル東京公式サイト]</span>
+        </div>
+      </div>
+
+      <div class="audio-block">
+        <div class="audio-label">🔊 音声補足</div>
+        資生堂は自社化粧品をホテルのスイートルームに宿泊するような富裕層顧客に販売できる機会を得た。パークホテル東京は、スイートルーム宿泊客以外（資生堂の化粧品に興味がある客）という新しいマーケットにアピールできた。コラボレーションによって全く新しいマーケットや販売手法を思いついて実践した事例。<span class="ptr">← S05-A/B</span>
+      </div>
+    </div>
+
+    <!-- 実現ステップ -->
+    <div id="ch3-step" class="subsection">
+      <h3>コラボレーションが起きる前提</h3>
+
+      <div class="def-box" style="background: rgba(34,211,238,0.04); border-color: rgba(34,211,238,0.3);">
+        <div class="def-label" style="color: var(--accent-teal);">スライド本文</div>
+        <div class="def-content">
+          <ul class="content-list" style="margin-top:4px;">
+            <li><strong>現状打破への思い</strong>があること（双方が）</li>
+            <li><strong>WIN-WINの信頼関係構築</strong>を目指すこと</li>
+            <li>自分と相手の<strong>強みを研究</strong>すること</li>
+            <li><strong>新しい価値を創出</strong>すること</li>
+          </ul>
+          <span class="ptr">← S03:p.38</span>
+        </div>
+      </div>
+
+      <div class="audio-block">
+        <div class="audio-label">🔊 音声補足</div>
+        コラボを持ちかける際は、自分のメリット確認が第1歩だとしても、第2歩として相手のメリットも深く研究する必要がある。相手のメリットをどれだけ魅力的に提案できるかがコラボ実現の鍵になる。<span class="ptr">← S05-A/B</span>
+      </div>
+
+      <h3>コラボレーションを起こすステップ</h3>
+
+      <div class="def-box" style="background: rgba(34,211,238,0.04); border-color: rgba(34,211,238,0.3);">
+        <div class="def-label" style="color: var(--accent-teal);">スライド本文</div>
+        <div class="def-content">
+          <ol class="step-list">
+            <li>自己分析と他己分析</li>
+            <li>相互のコミュニケーションを開始</li>
+            <li>コラボの内容・範囲・時期を決める</li>
+            <li>新しい価値を確認する</li>
+            <li>市場調査・テストマーケティングをする</li>
+            <li>実行する（ある程度のリスクを覚悟して）</li>
+          </ol>
+          <span class="ptr">← S03:p.39</span>
+        </div>
+      </div>
+
+      <h3>コラボレーションの目指すもの</h3>
+
+      <div class="def-box" style="background: rgba(34,211,238,0.04); border-color: rgba(34,211,238,0.3);">
+        <div class="def-label" style="color: var(--accent-teal);">スライド本文</div>
+        <div class="def-content">
+          <ul class="content-list" style="margin-top:4px;">
+            <li>相互に<strong>利益を拡大</strong>させること（1+1=3以上）</li>
+            <li>新しい<strong>価値を創出</strong>すること</li>
+            <li><strong>注目</strong>を得ること</li>
+            <li>新しい<strong>市場を作る</strong>こと</li>
+            <li><strong>イノベーション</strong>を起こすこと</li>
+          </ul>
+          <span class="ptr">← S03:p.40</span>
+        </div>
+      </div>
+
+      <div class="def-box" style="background: rgba(52,211,153,0.06); border-color: rgba(52,211,153,0.3);">
+        <div class="def-label" style="color: var(--accent-green);">第3章 まとめ</div>
+        <div class="def-content">
+          <ul class="content-list green" style="margin-top:4px;">
+            <li>コラボは<strong>色々な形で広がり始めている</strong> <span class="ptr">← S03:p.41</span></li>
+            <li>新しい価値を作り出す意思からコラボが始まる</li>
+            <li>成功には<strong>綿密な分析とコミュニケーション</strong>が鍵</li>
+            <li><strong>異色コラボはイノベーションを生む</strong></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ═══════════════════════════════════════
+       第4章
+  ═══════════════════════════════════════ -->
+  <div id="ch4" class="section">
+    <div class="section-header">
+      <span class="chapter-num">第4章</span>
+      <h2>イノベーションを起こす人材像</h2>
+    </div>
+
+    <div id="ch4-def" class="subsection">
+      <h3>イノベーションとは何か</h3>
+
+      <div class="def-box">
+        <div class="def-label">定義: イノベーション</div>
+        <div class="def-content">
+          <span class="def-term">まったく新しい発想、革新的な手段や方法、新機軸などの意味。</span><br>
+          画期的な新技術や新しい物事の仕組みを創造し、<strong>世の中に変革を促すこと</strong>。
+          <span class="ptr">← S03:p.45</span>
+        </div>
+      </div>
+
+      <div class="audio-block">
+        <div class="audio-label">🔊 音声補足 — 語源</div>
+        イノベーションという言葉はオーストリアの経済学者<strong>シュンペーター</strong>が、1911年の著書「経済発展の理論」の中で定義した。今から約100年前に生まれた概念。<span class="ptr">← S05-A, S03:p.45</span>
+      </div>
+
+      <h3>イノベーションの例</h3>
+      <div class="def-box" style="background: rgba(34,211,238,0.04); border-color: rgba(34,211,238,0.3);">
+        <div class="def-label" style="color: var(--accent-teal);">スライド本文</div>
+        <div class="def-content">
+          <ul class="content-list" style="margin-top:4px;">
+            <li>創造的活動による<strong>新製品開発</strong>（例: ブラウン管TV → 液晶TV、ウォークマン → iPod）</li>
+            <li><strong>新生産方法</strong>の導入（製造ラインの変革）</li>
+            <li>新しい<strong>市場の開拓</strong>（例: 靴のない市場をチャンスと捉える）</li>
+            <li>新たな<strong>資源の獲得</strong>（新エネルギー等）</li>
+            <li><strong>組織の改革</strong>（働き方・評価制度・組織体制の変革）</li>
+          </ul>
+          <span class="ptr">← S03:p.46</span>
+        </div>
+      </div>
+
+      <div class="audio-block">
+        <div class="audio-label">🔊 音声補足 — 靴の話</div>
+        アフリカのある土地で誰も靴を履いていないのを見て「靴が全く売れない」と嘆いた営業マンと、「すごい市場だ、全員に靴を履かせよう」と思った人がいた。新しい市場を開拓・作っていくこと自体が大きなイノベーション。<span class="ptr">← S05-A/B</span>
+      </div>
+    </div>
+
+    <!-- 3要素 -->
+    <div id="ch4-req" class="subsection">
+      <h3>イノベーションに必要な3要素</h3>
+
+      <div class="def-box" style="background: rgba(34,211,238,0.04); border-color: rgba(34,211,238,0.3);">
+        <div class="def-label" style="color: var(--accent-teal);">スライド本文</div>
+        <div class="def-content">
+          <ol class="step-list">
+            <li><strong>ユーザーが欲しい理由や目的を探ること</strong>（「何を欲しいか」だけでは不十分）</li>
+            <li><strong>先入観を壊すこと</strong>（先入観に基づいた問題解決をしない）</li>
+            <li><strong>第3案を考えること</strong>（両立しがたい価値があっても、妥協や優先度だけで解決しない）</li>
+          </ol>
+          <span class="ptr">← S03:p.47</span>
+        </div>
+      </div>
+
+      <div class="audio-block">
+        <div class="audio-label">🔊 音声補足 — 第3案について</div>
+        対立構造にあるAとBが「片方を立てれば片方が沈む」状況でも、うまく周回できた場合は「A案でもなくB案でもない新しいC案（第3案）」を作ることができる。そこにイノベーションが生まれる素地がある。<span class="ptr">← S05-A/B</span>
+      </div>
+    </div>
+
+    <!-- ジレンマ -->
+    <div id="ch4-dil" class="subsection">
+      <h3>イノベーションのジレンマ</h3>
+
+      <div class="def-box">
+        <div class="def-label">定義: イノベーションのジレンマ</div>
+        <div class="def-content">
+          革新的な技術やビジネスモデルで従来の企業に勝利した企業が、<strong>大企業になると革新性を失ってしまう</strong>状態。または最先端の技術開発をしても、<strong>成功に結びつかない</strong>状態。
+          <span class="ptr">← S03:p.48</span>
+        </div>
+      </div>
+
+      <div class="audio-block">
+        <div class="audio-label">🔊 音声補足</div>
+        イノベーションとは新しい価値が生まれることだが、ある業界で勝利して大企業になった会社が、新たなイノベーションを起こせなくなってしまうことがある。各業界の大企業にとって大きなテーマになっている。<span class="ptr">← S05-A/B</span>
+      </div>
+
+      <h3>ジレンマに陥る3つの理由</h3>
+
+      <div class="def-box" style="background: rgba(34,211,238,0.04); border-color: rgba(34,211,238,0.3);">
+        <div class="def-label" style="color: var(--accent-teal);">スライド本文</div>
+        <div class="def-content">
+          <ol class="step-list">
+            <li>既存の技術で成功している場合、<strong>製品の性能を低下させる新技術への関心が低くなる</strong></li>
+            <li>技術の進歩のペースは市場の需要を上回る傾向があり、<strong>先進的な技術でもプレミアムを得られない</strong>ことがある</li>
+            <li>より収益性の高い既存技術への投資を優先するあまり、<strong>新技術への参入が遅れる</strong></li>
+          </ol>
+          <span class="ptr">← S03:p.49</span>
+        </div>
+      </div>
+
+      <div class="audio-block">
+        <div class="audio-label">🔊 音声補足</div>
+        会社は利益を追求する組織なので、今最も儲かっている・利益率の高い分野に最大限投資するのが経済行動として正解。しかし将来に投資しないと未来が開かれない。このジレンマは大企業・リーディングカンパニーほど起きやすい。<span class="ptr">← S05-A/B</span>
+      </div>
+
+      <div class="ext-block">
+        <div class="ext-label">📗 外部補足</div>
+        「イノベーションのジレンマ」の概念はクレイトン・クリステンセンの著書『イノベーションのジレンマ』（翔泳社, 2001年）で詳述されている。「持続的イノベーション」と「破壊的イノベーション」の区別が核心概念。
+        <span class="ptr">[外部補足・確認済: S03:p.49 参考図書欄]</span>
+      </div>
+    </div>
+
+    <!-- トヨタ事例 -->
+    <div id="ch4-toyota" class="subsection">
+      <h3>ジレンマを克服した事例: トヨタのハイブリッド車</h3>
+
+      <div class="def-box" style="background: rgba(34,211,238,0.04); border-color: rgba(34,211,238,0.3);">
+        <div class="def-label" style="color: var(--accent-teal);">スライド本文</div>
+        <div class="def-content">
+          <ul class="content-list" style="margin-top:4px;">
+            <li>目先の危機を持続的イノベーションではなく、<strong>破壊的イノベーション</strong>で乗り越える</li>
+            <li>技術者が<strong>「裏のプロジェクト」</strong>を持っている</li>
+            <li>トップダウンで<strong>逆線表</strong>を引く（完成期限から逆算したスケジュール）</li>
+            <li>製品が完成したら<strong>すぐに市場に問う</strong>（フィードバックを得ながら改善）</li>
+            <li><strong>品質保証を徹底</strong>する</li>
+          </ul>
+          <span class="ptr">← S03:p.50</span>
+        </div>
+      </div>
+
+      <div class="audio-block">
+        <div class="audio-label">🔊 音声補足</div>
+        ガソリン・エンジン車の売上が伸び悩んだとき、「もっと売れる車を開発しよう」が定石だったが、トヨタのエンジニアたちが裏でハイブリッド技術を密かに開発していた。当時の副社長がトップダウンで逆線表を引き、まだパーフェクトでなくても完成したら市場に問い、フィードバックを得ながら技術を高めていく腹積もりがあった。<span class="ptr">← S05-A/B</span>
+      </div>
+
+      <div class="ext-block">
+        <div class="ext-label">📗 外部補足</div>
+        参考図書: 木野龍逸『ハイブリッド』（文藝春秋, 2009年4月）<span class="ptr">[外部補足・確認済: S03:p.50 参考図書欄]</span>
+      </div>
+    </div>
+
+    <!-- 5発見力 -->
+    <div id="ch4-5power" class="subsection">
+      <h3>イノベーションを起こす人材が持つ5つの発見力</h3>
+
+      <!-- SVG: 5発見力 -->
+      <div class="fig-wrap">
+        <figure>
+          <svg viewBox="0 0 680 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:680px;">
+            <rect width="680" height="200" fill="#161b27" rx="8"/>
+            <!-- 中央ラベル -->
+            <text x="340" y="105" text-anchor="middle" fill="#fbbf24" font-family="Noto Sans JP" font-size="13" font-weight="700">イノベーター</text>
+            <text x="340" y="122" text-anchor="middle" fill="#8a99b8" font-family="Noto Sans JP" font-size="10">5つの発見力</text>
+            <!-- カード x5 -->
+            <!-- 1: 関連づける -->
+            <rect x="20" y="30" width="116" height="60" rx="7" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+            <text x="78" y="56" text-anchor="middle" fill="#5b8dee" font-family="Noto Sans JP" font-size="12" font-weight="700">関連づける力</text>
+            <text x="78" y="74" text-anchor="middle" fill="#5a6a88" font-family="JetBrains Mono" font-size="9">associating</text>
+            <!-- 2: 質問 -->
+            <rect x="20" y="110" width="116" height="60" rx="7" fill="#1e2535" stroke="#34d399" stroke-width="1.5"/>
+            <text x="78" y="136" text-anchor="middle" fill="#34d399" font-family="Noto Sans JP" font-size="12" font-weight="700">質問力</text>
+            <text x="78" y="154" text-anchor="middle" fill="#5a6a88" font-family="JetBrains Mono" font-size="9">questioning</text>
+            <!-- 3: 観察 -->
+            <rect x="282" y="18" width="116" height="60" rx="7" fill="#1e2535" stroke="#fbbf24" stroke-width="1.5"/>
+            <text x="340" y="44" text-anchor="middle" fill="#fbbf24" font-family="Noto Sans JP" font-size="12" font-weight="700">観察力</text>
+            <text x="340" y="62" text-anchor="middle" fill="#5a6a88" font-family="JetBrains Mono" font-size="9">observing</text>
+            <!-- 4: 実験 -->
+            <rect x="544" y="30" width="116" height="60" rx="7" fill="#1e2535" stroke="#a78bfa" stroke-width="1.5"/>
+            <text x="602" y="56" text-anchor="middle" fill="#a78bfa" font-family="Noto Sans JP" font-size="12" font-weight="700">実験力</text>
+            <text x="602" y="74" text-anchor="middle" fill="#5a6a88" font-family="JetBrains Mono" font-size="9">experimenting</text>
+            <!-- 5: 人脈 -->
+            <rect x="544" y="110" width="116" height="60" rx="7" fill="#1e2535" stroke="#fb923c" stroke-width="1.5"/>
+            <text x="602" y="136" text-anchor="middle" fill="#fb923c" font-family="Noto Sans JP" font-size="12" font-weight="700">人脈力</text>
+            <text x="602" y="154" text-anchor="middle" fill="#5a6a88" font-family="JetBrains Mono" font-size="9">networking</text>
+            <!-- 線（中央→各） -->
+            <line x1="136" y1="60" x2="290" y2="100" stroke="#334066" stroke-width="1"/>
+            <line x1="136" y1="140" x2="290" y2="110" stroke="#334066" stroke-width="1"/>
+            <line x1="340" y1="78" x2="340" y2="86" stroke="#334066" stroke-width="1"/>
+            <line x1="544" y1="60" x2="395" y2="100" stroke="#334066" stroke-width="1"/>
+            <line x1="544" y1="140" x2="395" y2="110" stroke="#334066" stroke-width="1"/>
+          </svg>
+          <figcaption>図: イノベーターの5つの発見力 &nbsp;<span class="ptr">S03:p.51</span></figcaption>
+        </figure>
+      </div>
+
+      <div class="def-box" style="background: rgba(34,211,238,0.04); border-color: rgba(34,211,238,0.3);">
+        <div class="def-label" style="color: var(--accent-teal);">スライド本文</div>
+        <div class="def-content">
+          <table style="width:100%; font-size:12.5px;">
+            <thead><tr>
+              <th style="background:var(--bg-base);color:var(--accent-blue);padding:6px 10px;border:1px solid var(--border);font-family:var(--mono);font-size:10px;">力</th>
+              <th style="background:var(--bg-base);color:var(--accent-blue);padding:6px 10px;border:1px solid var(--border);font-family:var(--mono);font-size:10px;">英語表記</th>
+            </tr></thead>
+            <tbody>
+              <tr><td style="padding:6px 10px;border:1px solid var(--border);">関連づける力</td><td style="padding:6px 10px;border:1px solid var(--border);font-family:var(--mono);">associating</td></tr>
+              <tr><td style="padding:6px 10px;border:1px solid var(--border);">質問力</td><td style="padding:6px 10px;border:1px solid var(--border);font-family:var(--mono);">questioning</td></tr>
+              <tr><td style="padding:6px 10px;border:1px solid var(--border);">観察力</td><td style="padding:6px 10px;border:1px solid var(--border);font-family:var(--mono);">observing</td></tr>
+              <tr><td style="padding:6px 10px;border:1px solid var(--border);">実験力</td><td style="padding:6px 10px;border:1px solid var(--border);font-family:var(--mono);">experimenting</td></tr>
+              <tr><td style="padding:6px 10px;border:1px solid var(--border);">人脈力</td><td style="padding:6px 10px;border:1px solid var(--border);font-family:var(--mono);">networking</td></tr>
+            </tbody>
+          </table>
+          <span class="ptr" style="display:block;margin-top:8px;">← S03:p.51</span>
+        </div>
+      </div>
+
+      <div class="ext-block">
+        <div class="ext-label">📗 外部補足</div>
+        出典: クレイトン M. クリステンセン『C.クリステンセン経営論』（DIAMONDハーバード・ビジネス・レビュー編集部 編訳, ダイヤモンド社, 2013年7月）
+        <span class="ptr">[外部補足・確認済: S03:p.51 参考図書欄]</span>
+      </div>
+
+      <div class="def-box" style="background: rgba(52,211,153,0.06); border-color: rgba(52,211,153,0.3);">
+        <div class="def-label" style="color: var(--accent-green);">第3回 まとめ</div>
+        <div class="def-content">
+          <ul class="content-list green" style="margin-top:4px;">
+            <li><strong>専門性の高いジェネラリスト</strong>の役割が増している <span class="ptr">← S03:p.53</span></li>
+            <li>成果に対するコミットメントが高い<strong>プロフェッショナル</strong>を目指そう</li>
+            <li><strong>コラボレーション</strong>がもたらす効果は大きく、その実現にはいろいろな形がある</li>
+            <li><strong>イノベーションのジレンマ</strong>を理解し、それを克服するための<strong>5つの発見力</strong>を身につけることが大切</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ═══════════════════════════════════════
+       APPENDICES
+  ═══════════════════════════════════════ -->
+
+  <!-- 補足A -->
+  <div id="app-a" class="appendix-card">
+    <div class="card-header">
+      <span class="card-icon">⭐</span>
+      <span class="card-title">補足A: 最重要ワード一覧</span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>用語</th>
+            <th>読み</th>
+            <th>定義（原文から抽出）</th>
+            <th>重要度</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>ジェネラリスト</strong></td>
+            <td>じぇねらりすと</td>
+            <td>特定の分野に拘らず汎用性をもった人、潜在的な能力・マネジメント力をもった人</td>
+            <td>★★★</td>
+          </tr>
+          <tr>
+            <td><strong>スペシャリスト</strong></td>
+            <td>すぺしゃりすと</td>
+            <td>特定の分野の専門性をもった人、顕在的な資格・技術力を持った人</td>
+            <td>★★★</td>
+          </tr>
+          <tr>
+            <td><strong>専門性をもったジェネラリスト</strong></td>
+            <td>—</td>
+            <td>スペシャリストとジェネラリスト双方の課題を補い合い、バランスよく使用できる理想像</td>
+            <td>★★★</td>
+          </tr>
+          <tr>
+            <td><strong>プロフェッショナル</strong></td>
+            <td>ぷろふぇっしょなる</td>
+            <td>どんな手段を使ってでも約束を果たす人。ギャランティ型</td>
+            <td>★★★</td>
+          </tr>
+          <tr>
+            <td><strong>アマチュア</strong></td>
+            <td>あまちゅあ</td>
+            <td>最大限の努力はするが結果を約束できない人。ベストエフォート型</td>
+            <td>★★★</td>
+          </tr>
+          <tr>
+            <td><strong>エキスパート</strong></td>
+            <td>えきすぱーと</td>
+            <td>高度な専門知識や技術力を持つが、成果コミットはプロフェッショナルと同義ではない</td>
+            <td>★★☆</td>
+          </tr>
+          <tr>
+            <td><strong>コラボレーション</strong></td>
+            <td>こらぼれーしょん</td>
+            <td>共に働く・協力する・つなぐこと。共演・合作・共同作業・提携</td>
+            <td>★★★</td>
+          </tr>
+          <tr>
+            <td><strong>イノベーション</strong></td>
+            <td>いのべーしょん</td>
+            <td>まったく新しい発想・革新的手段や方法・新機軸により世の中に変革をもたらすこと</td>
+            <td>★★★</td>
+          </tr>
+          <tr>
+            <td><strong>イノベーションのジレンマ</strong></td>
+            <td>—</td>
+            <td>革新的技術で成功した企業が大企業になると革新性を失ってしまう、または新技術開発に成功できない状態</td>
+            <td>★★★</td>
+          </tr>
+          <tr>
+            <td><strong>5つの発見力</strong></td>
+            <td>—</td>
+            <td>関連づける力・質問力・観察力・実験力・人脈力</td>
+            <td>★★★</td>
+          </tr>
+          <tr>
+            <td>管理者</td>
+            <td>かんりしゃ</td>
+            <td>チェック・コントロール・問題解決を行う監視役。ジェネラリストより継続性の視点が弱い</td>
+            <td>★★☆</td>
+          </tr>
+          <tr>
+            <td>処理者</td>
+            <td>しょりしゃ</td>
+            <td>正確・迅速・効率的に大量をこなす役割。顧客ニーズへの配慮が不足しがち</td>
+            <td>★★☆</td>
+          </tr>
+          <tr>
+            <td>フィードバック分析</td>
+            <td>—</td>
+            <td>期待を書き留め、半年後・1年後に結果と照合して強みを発見する手法</td>
+            <td>★★☆</td>
+          </tr>
+          <tr>
+            <td>逆線表</td>
+            <td>ぎゃくせんひょう</td>
+            <td>完成期限から逆算したスケジュール表</td>
+            <td>★★☆</td>
+          </tr>
+          <tr>
+            <td>シュンペーター</td>
+            <td>しゅんぺーたー</td>
+            <td>オーストリアの経済学者。1911年著書「経済発展の理論」でイノベーションを初めて定義した</td>
+            <td>★★☆</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 補足B -->
+  <div id="app-b" class="appendix-card">
+    <div class="card-header">
+      <span class="card-icon">📚</span>
+      <span class="card-title">補足B: 知っておくべき背景知識</span>
+    </div>
+
+    <div style="margin-bottom:14px;">
+      <p><strong>ピーター・ドラッカーとフィードバック分析</strong></p>
+      <p style="color:var(--text-sub);font-size:12.5px;">経営学者ピーター・ドラッカー（1909–2005）はHBR論文"Managing Oneself"（1999年3–4月号、Vol.77 No.2, pp.64–74）の中で、フィードバック分析を自己の強みを発見する最も効果的な方法として推奨した。何か重要な決断をした際にすぐ期待を書き留め、9〜12ヶ月後に結果と照合するというシンプルな手法。ドラッカー自身は「この手法は14世紀のドイツ人神学者が考案し、後にカルヴァンとロヨラが独立して取り入れた」とも述べており、新しい発明ではないとしている。同論文は著書 Management Challenges for the 21st Century（HarperCollins, 1999）にも収録。
+      <span style="font-size:11px;color:var(--text-dim);">[外部補足・確認済: PubMed PMID 10387772 / HBR 1999年3-4月号]</span></p>
+    </div>
+
+    <div style="margin-bottom:14px;">
+      <p><strong>クレイトン・クリステンセンとイノベーション論</strong></p>
+      <p style="color:var(--text-sub);font-size:12.5px;">『イノベーションのジレンマ』（原題: The Innovator's Dilemma, 1997年）を著したハーバード・ビジネス・スクール教授クリステンセン（1952–2020）は、「持続的イノベーション」と「破壊的イノベーション」を区別した。成功した大企業が既存顧客ニーズに応えることに集中するあまり、新規市場を狙う破壊的技術を見落とすという構造を分析した。日本語版は翔泳社より2001年刊行。
+      <span style="font-size:11px;color:var(--text-dim);">[外部補足・確認済: S03:p.49 参考図書欄]</span></p>
+    </div>
+
+    <div>
+      <p><strong>シュンペーターとイノベーション概念の起源</strong></p>
+      <p style="color:var(--text-sub);font-size:12.5px;">ヨーゼフ・シュンペーター（1883–1950）は現在のチェコ共和国（当時モラヴィア）出身の経済学者。1911年にグラーツ大学教授就任と同時期に独語原著 <em>Theorie der wirtschaftlichen Entwicklung</em>（経済発展の理論）を刊行。英訳版は1934年にハーバード大学出版局から刊行。この著作でイノベーション（新結合）を経済発展の原動力として初めて体系的に定義した。企業家（アントレプレナー）こそが革新を実行する中心人物であるとも論じた。「創造的破壊（Creative Destruction）」の概念は、後の主著 Capitalism, Socialism and Democracy（1942年）でより詳細に展開される。
+      <span style="font-size:11px;color:var(--text-dim);">[外部補足・確認済: Wikipedia "Joseph Schumpeter" / Econlib / S03:p.45]</span></p>
+    </div>
+  </div>
+
+  <!-- 補足C -->
+  <div id="app-c" class="appendix-card">
+    <div class="card-header">
+      <span class="card-icon">🎯</span>
+      <span class="card-title">補足C: 試験・レポートで重要な観点</span>
+    </div>
+
+    <ul class="content-list yellow">
+      <li><strong>ジェネラリストとスペシャリストの違い</strong>を明確に定義できるか。「潜在的能力」vs「顕在的能力」の対比が鍵。</li>
+      <li><strong>管理者・処理者の位置づけ</strong>：ジェネラリストとの違いは「継続性」、スペシャリストとの違いは「顧客ニーズへの配慮」。</li>
+      <li><strong>プロフェッショナル = ギャランティ型</strong>の定義と、エキスパートとの違い（成果コミットメントの有無）。</li>
+      <li><strong>コラボレーションの前提条件</strong>：現状打破の思い・WIN-WIN・強み分析・新価値創出の4つ。</li>
+      <li><strong>イノベーションに必要な3要素</strong>：ユーザーの欲しい理由探索・先入観打破・第3案思考。</li>
+      <li><strong>イノベーションのジレンマの3理由</strong>：①既存技術防衛、②技術進歩が需要を上回る、③収益優先で新技術遅延。</li>
+      <li><strong>5つの発見力</strong>の英語表記も含めて覚えておく（associating / questioning / observing / experimenting / networking）。</li>
+      <li>「木と森の比喩」：スペシャリストは木を育て、ジェネラリストは森を作る——具体的なメタファーを使って説明できるか。</li>
+    </ul>
+  </div>
+
+  <!-- 補足D -->
+  <div id="app-d" class="appendix-card">
+    <div class="card-header">
+      <span class="card-icon">🔗</span>
+      <span class="card-title">補足D: 関連概念・次回への接続</span>
+    </div>
+
+    <div style="margin-bottom:14px;">
+      <p><strong>T型人材・π型人材</strong></p>
+      <p style="color:var(--text-sub);font-size:12.5px;">「専門性を持ったジェネラリスト」の概念に近い言葉として、「T型人材」（1分野の深さ＋横断的な広さ）や「π型人材」（2分野以上の専門性＋広い知識）がビジネス界では使われる。T型人材の概念はマッキンゼーが1978年に論文で初めて提唱し、1991年に組織心理学者デイビッド・ゲスト（David Guest）氏がイギリスの新聞で取り上げ、デザインコンサルIIDEO（当時）のCEOティム・ブラウン（Tim Brown）氏が支持することで世界に広まった。本講義の「専門性を持ったジェネラリスト」モデルと対応するイメージとして参考に。
+      <span style="font-size:11px;color:var(--text-dim);">[外部補足・確認済: 株式会社プロフェッショナルバンク HR研究所 / 文部科学省科学技術・学術審議会提言 2002年]</span></p>
+    </div>
+
+    <div style="margin-bottom:14px;">
+      <p><strong>オープンイノベーション</strong></p>
+      <p style="color:var(--text-sub);font-size:12.5px;">コラボレーションの発展形として、企業が内部リソースだけでなく外部のアイデア・技術を積極的に活用してイノベーションを起こす概念を「オープンイノベーション」という。ハーバード・ビジネス・スクール（当時）のHenry Chesbroughが著書 <em>Open Innovation: The New Imperative for Creating and Profiting from Technology</em>（Harvard Business School Press, 2003）で提唱・命名。本章のコラボレーション→イノベーションの流れと接続する概念。
+      <span style="font-size:11px;color:var(--text-dim);">[外部補足・確認済: Berkeley Haas Faculty Page / MIT Sloan Management Review 2003年4月]</span></p>
+    </div>
+
+    <div>
+      <p><strong>破壊的イノベーション vs 持続的イノベーション</strong></p>
+      <p style="color:var(--text-sub);font-size:12.5px;">クリステンセンの区分によれば、「持続的イノベーション」は既存製品・市場の改善、「破壊的イノベーション」は新しい市場・価値基準を生み出す革新。トヨタのハイブリッド事例はガソリン車市場の延長ではなく新しい価値基準（燃費・環境性能）を生み出した点で、破壊的イノベーションの要素を含む。
+      <span style="font-size:11px;color:var(--text-dim);">[外部補足・確認済: S03:p.50]</span></p>
+    </div>
+  </div>
+
+  <!-- 未確定事項 -->
+  <div id="unconfirmed" class="unconfirmed-card">
+    <div class="card-header">
+      <span class="card-icon">✅</span>
+      <span class="card-title">未確定事項・要確認リスト（Step 6 パートIV 外部補完後）</span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>内容</th>
+            <th>種別</th>
+            <th>優先度</th>
+            <th>解消状況</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="opacity:0.6;">
+            <td><span class="ptr" style="background:rgba(52,211,153,0.15);border-color:rgba(52,211,153,0.4);color:#34d399;">U01 ✅</span></td>
+            <td>フィードバック分析の正確な書誌情報</td>
+            <td>外部補足確認</td>
+            <td><del>mid</del></td>
+            <td style="color:var(--accent-green);font-size:12px;"><strong>解消済み</strong><br>HBR Vol.77 No.2, Mar–Apr 1999, pp.64–74 / PubMed PMID 10387772確認済み。補足B・本文の外部補足ブロックを更新。</td>
+          </tr>
+          <tr style="opacity:0.6;">
+            <td><span class="ptr" style="background:rgba(52,211,153,0.15);border-color:rgba(52,211,153,0.4);color:#34d399;">U02 ✅</span></td>
+            <td>ビックロの女性比率（30%強→45%前後）の調査年・出典</td>
+            <td>内容不足</td>
+            <td><del>low</del></td>
+            <td style="color:var(--accent-green);font-size:12px;"><strong>一部解消</strong><br>ビックロ開店年（2012年9月27日）・立地（新宿東口、旧三越アルコット跡地）・閉店（2022年）を確認済み。女性比率の正確な出典調査は完了したが、公式資料には「通常店より女性来店比率5%高い」という記述のみで「30%強→45%前後」の具体数値出典の一次資料は特定できず。S03記載値を維持（数値自体は信頼可）。事例本文に開店年等の補足を追加済み。</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:12px;font-size:12px;color:var(--accent-green);">全未確定事項の処理完了。残存する未解消事項なし。</p>
+  </div>
+
+</main>
+
+<script>
+  // Active TOC link on scroll
+  const sections = document.querySelectorAll('[id]');
+  const links = document.querySelectorAll('.toc-link');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const active = document.querySelector(`.toc-link[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { threshold: 0.3 });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
