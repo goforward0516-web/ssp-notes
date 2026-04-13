@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>セルフマネジメント論 第6回 | パーソナルブランドと人脈構築</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f1117;--bg2:#1a1f2e;--bg3:#1e2535;--bd:#2d3748;--tx:#e2e8f5;--sub:#8a99b8;--muted:#5a6a8a;--blue:#5b8dee;--green:#34d399;--yellow:#fbbf24;--purple:#a78bfa;--orange:#fb923c;--red:#f87171;--sw:260px;--hh:56px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--tx);font-size:15px;line-height:1.8}
+.hdr{position:fixed;top:0;left:0;right:0;height:var(--hh);background:#0d1020;border-bottom:1px solid var(--bd);display:flex;align-items:center;padding:0 24px;z-index:100;gap:12px}
+.hdr .badge{font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--blue);color:#0f1117;padding:2px 8px;border-radius:4px;font-weight:600}
+.hdr .ttl{font-size:14px;font-weight:500}
+.hdr .meta{font-size:11px;color:var(--sub);margin-left:auto;font-family:'JetBrains Mono',monospace}
+.sb{position:fixed;top:var(--hh);left:0;bottom:0;width:var(--sw);background:#0d1020;border-right:1px solid var(--bd);overflow-y:auto;padding:16px 0;z-index:90}
+.sb h3{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);padding:0 16px 6px;font-weight:500}
+.sb a{display:block;padding:5px 16px;font-size:12.5px;color:var(--sub);text-decoration:none;border-left:2px solid transparent;transition:all .15s}
+.sb a:hover{color:var(--tx);background:#14182a;border-left-color:var(--blue)}
+.sb a.c{padding-left:28px;font-size:12px}
+.sb .dv{height:1px;background:var(--bd);margin:6px 14px}
+.main{margin-left:var(--sw);margin-top:var(--hh);padding:28px 36px 80px;max-width:880px}
+.card{background:var(--bg2);border:1px solid var(--bd);border-radius:10px;padding:24px 28px;margin-bottom:20px}
+.ch{display:flex;align-items:center;gap:10px;margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid var(--bd)}
+.ch h2{font-size:17px;font-weight:700}
+.cn{font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--bg3);border:1px solid var(--bd);color:var(--sub);padding:2px 8px;border-radius:4px}
+h3{font-size:14.5px;font-weight:600;color:var(--blue);margin:20px 0 8px;padding-bottom:5px;border-bottom:1px solid var(--bd)}
+h4{font-size:13.5px;font-weight:600;color:var(--tx);margin:14px 0 6px}
+p{margin-bottom:10px}
+ul,ol{padding-left:18px;margin-bottom:10px}
+li{margin-bottom:5px}
+.def{background:#1a1a10;border-left:3px solid var(--yellow);padding:12px 16px;margin:12px 0;border-radius:0 6px 6px 0;font-size:14px}
+.key{background:#0e1829;border-left:3px solid var(--blue);padding:12px 16px;margin:12px 0;border-radius:0 6px 6px 0;font-size:14px}
+.warn{background:#1a1008;border-left:3px solid var(--orange);padding:12px 16px;margin:12px 0;border-radius:0 6px 6px 0;font-size:14px}
+.lbl{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;letter-spacing:.5px;display:block;margin-bottom:5px}
+.lbl-y{color:var(--yellow)}
+.lbl-b{color:var(--blue)}
+.lbl-o{color:var(--orange)}
+.vc{border-left:3px solid var(--blue);background:#0e1829;padding:10px 14px;margin:8px 0;border-radius:0 6px 6px 0;font-size:13.5px}
+.vc .lbl{color:var(--blue)}
+.ec{border-left:3px solid var(--green);background:#0d1a12;padding:10px 14px;margin:8px 0;border-radius:0 6px 6px 0;font-size:13.5px}
+.ec .lbl{color:var(--green)}
+.src{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);background:var(--bg);border:1px solid var(--bd);padding:1px 5px;border-radius:3px;margin-left:5px;vertical-align:middle}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13.5px}
+th{background:var(--bg);color:var(--sub);font-weight:600;padding:7px 10px;border:1px solid var(--bd);text-align:left;font-size:12px}
+td{padding:7px 10px;border:1px solid var(--bd);vertical-align:top}
+tr:nth-child(even) td{background:#141829}
+tr:nth-child(odd) td{background:var(--bg2)}
+.sl{list-style:none;padding:0}
+.sl li{display:flex;gap:14px;align-items:flex-start;margin-bottom:10px}
+.sn{flex-shrink:0;width:26px;height:26px;background:var(--blue);color:#0f1117;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;font-family:'JetBrains Mono',monospace}
+.sc{padding-top:1px}
+.ap{border-radius:10px;padding:22px 26px;margin-bottom:18px;border:1px solid}
+.ap-a{background:#131a2a;border-color:#2d4080}
+.ap-b{background:#0d1a12;border-color:#1a4030}
+.ap-c{background:#1a1300;border-color:#40350a}
+.ap-d{background:#12101e;border-color:#2a2040}
+.ap h2{font-size:15px;font-weight:700;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.08)}
+.ap-a h2{color:#7ba8f0}
+.ap-b h2{color:var(--green)}
+.ap-c h2{color:var(--yellow)}
+.ap-d h2{color:var(--purple)}
+.ap h4{color:var(--sub);font-size:13.5px;margin:14px 0 6px}
+.ap-b h4{color:var(--green)}
+.ap-d h4{color:var(--purple)}
+.as{font-size:13.5px;color:var(--sub);line-height:1.7}
+.svg-w{margin:16px 0;text-align:center}
+.svg-w figcaption{font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-top:6px}
+.intro{background:linear-gradient(135deg,#141e3a,#0f1117);border:1px solid #2a3560;border-radius:10px;padding:24px 28px;margin-bottom:22px}
+.intro h1{font-size:20px;font-weight:700;margin-bottom:6px}
+.intro .sub{font-size:13px;color:var(--sub)}
+.mg{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:16px}
+.mi{background:rgba(255,255,255,.04);border-radius:6px;padding:8px 12px}
+.mi .k{font-size:10px;color:var(--muted);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:2px}
+.mi .v{font-size:13px;font-weight:500}
+.imp3{color:var(--yellow);font-size:12px}
+.imp2{color:#a0b4d0;font-size:12px}
+.imp1{color:var(--muted);font-size:12px}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:#2d3748;border-radius:3px}
+@media(max-width:860px){.sb{display:none}.main{margin-left:0;padding:18px 14px 60px}}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <span class="badge">SSP v4.2</span>
+  <span class="ttl">セルフマネジメント論 — 第6回</span>
+  <span class="meta">note_selfmgmt_06.html · S03+S05×2 · 担当: 小松俊明</span>
+</header>
+
+<nav class="sb">
+  <h3>目次</h3>
+  <a href="#intro">概要・学習目標</a>
+  <a href="#ch1">第1章 パーソナルブランドとは</a>
+  <a class="c" href="#ch1-brand">ブランドとは</a>
+  <a class="c" href="#ch1-pb">パーソナルブランドとは</a>
+  <a class="c" href="#ch1-how">作り方・ツール</a>
+  <div class="dv"></div>
+  <a href="#ch2">第2章 パーソナルブランドの活かし方</a>
+  <a class="c" href="#ch2-sense">感覚的アプローチ</a>
+  <a class="c" href="#ch2-rule">ルール・クレド</a>
+  <a class="c" href="#ch2-usp">USP</a>
+  <div class="dv"></div>
+  <a href="#ch3">第3章 人脈とは何か</a>
+  <a class="c" href="#ch3-def">定義と特徴</a>
+  <a class="c" href="#ch3-why">なぜ大切か</a>
+  <a class="c" href="#ch3-how">作り方のコツ</a>
+  <div class="dv"></div>
+  <a href="#ch4">第4章 人脈の活かし方</a>
+  <a class="c" href="#ch4-biz">ビジネスへの活用</a>
+  <a class="c" href="#ch4-200">200人ルール</a>
+  <a class="c" href="#ch4-habit">生活習慣</a>
+  <a class="c" href="#ch4-cond">人脈に育つ条件</a>
+  <div class="dv"></div>
+  <a href="#app-a">⭐ 補足A 重要ワード</a>
+  <a href="#app-b">📚 補足B 背景知識</a>
+  <a href="#app-c">🎯 補足C 試験・レポート</a>
+  <a href="#app-d">🔗 補足D 関連概念</a>
+</nav>
+
+<main class="main">
+
+<!-- イントロ -->
+<div class="intro" id="intro">
+  <h1>パーソナルブランドと人脈構築</h1>
+  <p class="sub">セルフマネジメント論 · 第6回</p>
+  <div class="mg">
+    <div class="mi"><span class="k">科目</span><span class="v">セルフマネジメント論</span></div>
+    <div class="mi"><span class="k">担当教員</span><span class="v">小松 俊明</span></div>
+    <div class="mi"><span class="k">回</span><span class="v">第6回</span></div>
+    <div class="mi"><span class="k">ソース</span><span class="v">S03 + S05×2</span></div>
+    <div class="mi"><span class="k">QCスコア</span><span class="v" style="color:var(--green);">96.7% · PASS（更新済）</span></div>
+  </div>
+  <div style="margin-top:16px;">
+    <h4 style="font-size:13px;color:var(--sub);margin-bottom:8px;">学習目標 <span class="src">← S03:p.2</span></h4>
+    <ul style="font-size:13.5px;">
+      <li>ブランドの意味や必要性を理解する</li>
+      <li>パーソナルブランドのインパクトを理解する</li>
+      <li>どのような人脈をもつべきかを理解する</li>
+      <li>人脈を築く方法を理解する</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ===== 第1章 ===== -->
+<div class="card" id="ch1">
+  <div class="ch"><span class="cn">Ch.1</span><h2>パーソナルブランドとは何か</h2></div>
+
+  <h3 id="ch1-brand">ブランドとは何か</h3>
+  <p>「ブランド」とは製品・サービスに付けられた名前だが、私たちが「ブランド」と言うとき、通常は誰もが知っている名前・よく知られたものを指す。 <span class="src">← S03:p.6</span></p>
+
+  <div class="def">
+    <span class="lbl lbl-y">DEFINITION — ブランドの3層構造</span>
+    <ul>
+      <li>ブランド ≒ <strong>知名度</strong>（誰もが聞いたことがある）</li>
+      <li>ブランド ≒ <strong>品質</strong>（使ってみたら品質が高い）</li>
+      <li>ブランド ＝ <strong>意味・印象</strong>（共感できる価値観・メッセージを持つ）← 最もインパクトが大きい</li>
+    </ul>
+    <span class="src">← S03:p.6</span>
+  </div>
+
+  <div class="vc">
+    <span class="lbl">🎙 AUDIO SUPPLEMENT</span>
+    例: シャネル・グッチ（海外）、トヨタ・日産（国内企業）、レッツノート・VAIO（製品名ブランド）。強いブランドは知名度・品質を超えた「意味・共感できるメッセージ」を持っている。 <span class="src">← S05:Ch1</span>
+  </div>
+
+  <!-- SVG: 強いブランド/弱いブランド -->
+  <div class="svg-w">
+    <svg viewBox="0 0 680 190" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:680px;">
+      <rect width="680" height="190" fill="#1e2535" rx="8"/>
+      <defs>
+        <marker id="arL" markerWidth="9" markerHeight="6" refX="9" refY="3" orient="auto">
+          <polygon points="0 0,9 3,0 6" fill="#5b8dee"/>
+        </marker>
+      </defs>
+      <!-- 矢印 -->
+      <line x1="560" y1="95" x2="100" y2="95" stroke="#5b8dee" stroke-width="2" marker-end="url(#arL)"/>
+      <!-- 弱いブランド -->
+      <text x="70" y="88" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#8a99b8" text-anchor="middle">弱い</text>
+      <text x="70" y="106" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#8a99b8" text-anchor="middle">ブランド</text>
+      <!-- 普通のブランド -->
+      <text x="300" y="130" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8" text-anchor="middle">普通のブランド</text>
+      <text x="300" y="146" font-family="JetBrains Mono,monospace" font-size="10" fill="#5a6a8a" text-anchor="middle">(知名度 + 品質)</text>
+      <!-- 知名度 品質ラベル -->
+      <text x="170" y="82" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#8a99b8" text-anchor="middle">知名度</text>
+      <text x="310" y="82" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#8a99b8" text-anchor="middle">品質</text>
+      <!-- 強いブランド円 -->
+      <circle cx="570" cy="95" r="68" fill="none" stroke="#e53e3e" stroke-width="2"/>
+      <text x="570" y="54" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#f87171" text-anchor="middle">強いブランド</text>
+      <text x="570" y="83" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#e2e8f5" text-anchor="middle">知名度</text>
+      <text x="570" y="99" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#e2e8f5" text-anchor="middle">品質</text>
+      <text x="570" y="117" font-family="Noto Sans JP,sans-serif" font-size="13" fill="#fbbf24" text-anchor="middle" font-weight="700">意味 ✦</text>
+      <text x="570" y="177" font-family="JetBrains Mono,monospace" font-size="9" fill="#5a6a8a" text-anchor="middle">(知名度 + 品質 + 意味)</text>
+    </svg>
+    <figcaption>図: 強いブランド・弱いブランドの軸 <span class="src">S03:p.7</span></figcaption>
+  </div>
+
+  <div class="def">
+    <span class="lbl lbl-y">DEFINITION — ブランドづくりとは</span>
+    顧客の心の中に、品質への信頼を超えた<strong>ポジティブなイメージ</strong>を形成して、顧客との<strong>感情的な絆</strong>を作ること <span class="src">← S03:p.8</span>
+  </div>
+
+  <div class="vc">
+    <span class="lbl">🎙 AUDIO SUPPLEMENT</span>
+    製品・サービス・会社・個人のいずれにも適用でき、この感情的な絆を作ることが「ブランドづくりの醍醐味」と表現された。 <span class="src">← S05:Ch1</span>
+  </div>
+
+  <h3 id="ch1-pb">パーソナルブランドとは</h3>
+
+  <div class="def">
+    <span class="lbl lbl-y">DEFINITION — パーソナルブランド</span>
+    <strong>あなた自身が望む「あなたの姿」</strong><br>
+    = 他人からどのように思われたいか・見られたいかを、自分でコントロールしたもの <span class="src">← S03:p.9</span>
+  </div>
+
+  <div class="key">
+    <span class="lbl lbl-b">KEY CONCEPT</span>
+    他人に「あなたの姿」を作られる前に、<strong>自分で作ることが大切</strong><br>
+    他人に作られたブランドの修正は困難 <span class="src">← S03:p.10</span>
+  </div>
+
+  <div class="vc">
+    <span class="lbl">🎙 AUDIO SUPPLEMENT</span>
+    子どもの頃についたニックネーム・印象は大人になっても変わらないことが多い。新しい学校・会社に入った時も、周囲があなたの印象（ブランド）を作ってしまう。これがネガティブになる前に、自分でコントロールすることが重要。他人に作られたブランドを後から修正するのは非常に難しい。 <span class="src">← S05:Ch1</span>
+  </div>
+
+  <h3 id="ch1-how">パーソナルブランドの作り方とツール</h3>
+
+  <ul class="sl">
+    <li>
+      <span class="sn">1</span>
+      <div class="sc"><strong>自分を知る（自己分析）</strong><br>
+        自分の強み・これまでの経験を自己分析し、明確なブランドイメージを設定する <span class="src">← S03:p.11</span>
+      </div>
+    </li>
+    <li>
+      <span class="sn">2</span>
+      <div class="sc"><strong>ブランドイメージを繰り返し人に伝える</strong><br>
+        様々な人に対して、一貫性を持って伝え続ける地道な努力が必要 <span class="src">← S03:p.11</span>
+      </div>
+    </li>
+    <li>
+      <span class="sn">3</span>
+      <div class="sc"><strong>言動を管理してイメージを維持する</strong><br>
+        自分の言動を常に管理し、ブランドイメージが「ぶれない」ようにコントロールする <span class="src">← S03:p.11</span>
+      </div>
+    </li>
+  </ul>
+
+  <h4>ツール: ブログとソーシャルメディア <span class="src">← S03:p.12</span></h4>
+  <table>
+    <thead><tr><th>特徴</th><th>説明</th></tr></thead>
+    <tbody>
+      <tr><td>時系列での蓄積</td><td>情報が時系列で整理される。発言の流れ・成長の過程が可視化される</td></tr>
+      <tr><td>つながりの影響</td><td>自分の発言だけでなく、つながりの人々のコミュニケーションもブランドの一部として印象づけられる</td></tr>
+      <tr><td>パーソナリティの反映</td><td>日々継続して発信するため、本来のパーソナリティがブランドの一部となる</td></tr>
+    </tbody>
+  </table>
+
+  <div class="vc">
+    <span class="lbl">🎙 AUDIO SUPPLEMENT</span>
+    SNSは継続的に情報発信するツールなので、「自分を作ろう」と発信し続けることは大変難しい。そのため本来のパーソナリティがブランドの一部となることをしっかり理解しておく必要がある。 <span class="src">← S05:Ch1</span>
+  </div>
+
+  <div class="key">
+    <span class="lbl lbl-b">第1章 まとめ <span class="src">← S03:p.13</span></span>
+    <ul>
+      <li>ブランドとは知名度や品質だけでなく、顧客の中にポジティブなイメージを形成して<strong>感情の絆を結ぶ</strong>こと</li>
+      <li>パーソナルブランドとは<strong>あなた自身が望む「あなたの姿」</strong></li>
+      <li>作り方: 自分を知る → 明確なブランドイメージを繰り返し伝える → <strong>言動を管理してイメージを維持</strong>する</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ===== 第2章 ===== -->
+<div class="card" id="ch2">
+  <div class="ch"><span class="cn">Ch.2</span><h2>パーソナルブランドの活かし方</h2></div>
+
+  <h3 id="ch2-sense">感覚的なアプローチ</h3>
+  <p>パーソナルブランドは論理的分析だけでなく、<strong>感覚的なアプローチ</strong>でも構築できる。 <span class="src">← S03:p.17</span></p>
+
+  <table>
+    <thead><tr><th>問い</th><th>ポイント</th></tr></thead>
+    <tbody>
+      <tr><td><strong>漢字一文字で自分を表現すると？</strong></td><td>名前の一字を活用することもある（例: 「和田」さん→「和」= 平和・つながりを大切にする人）。感覚的に人の印象に残る</td></tr>
+      <tr><td><strong>あなたの色は何色か？</strong></td><td>服・持ち物の色から、ライフスタイル・ワークスタイルがイメージされる。背景のストーリーがあれば更に効果的</td></tr>
+      <tr><td><strong>テーマソングは何か？</strong></td><td>自分のモチベーションの源・感性を示す（例: ロッキーのテーマ→やる気・挑戦）</td></tr>
+      <tr><td><strong>自分のイメージに合う飲み物は？</strong></td><td>例: ミネラルウォーターを選ぶ→ナチュラル志向・オーガニックへの関心が窺える</td></tr>
+      <tr><td><strong>自分とイメージが近い映画の登場人物は？</strong></td><td>有名な登場人物で表現することで、価値観・考え方が相手に伝わりやすい</td></tr>
+    </tbody>
+  </table>
+  <span class="src">← S03:p.17, S05:Ch2</span>
+
+  <h3 id="ch2-rule">パーソナルブランドを維持する仕掛け</h3>
+
+  <h4>① ルールを作る <span class="src">← S03:p.18</span></h4>
+  <p>一貫性を保つために<strong>自分を厳しく律するルール</strong>が必要:</p>
+  <ul>
+    <li>人の話を聞くときは必ずメモをする</li>
+    <li>出会った人には<strong>24時間以内</strong>にフォローのメールを送る</li>
+    <li>毎月1回は必ず新しいことに挑戦する</li>
+  </ul>
+
+  <div class="vc">
+    <span class="lbl">🎙 AUDIO SUPPLEMENT</span>
+    忙しい生活では慣れ親しんだもの・仲の良い人ばかりになりがち。しかしパーソナルブランドという長い道のりの中では「新しいことに挑戦する・新しい人に会う」というルールがブランドの幅を広げることにつながる。 <span class="src">← S05:Ch2</span>
+  </div>
+
+  <h4>② クレドを持つ <span class="src">← S03:p.19</span></h4>
+
+  <div class="def">
+    <span class="lbl lbl-y">DEFINITION — クレド (Credo)</span>
+    <strong>信条</strong>のこと。自らが信じていること・自分の行動指針 <span class="src">← S03:p.19</span>
+  </div>
+
+  <p>クレドの例（継続することがブランドになる）:</p>
+  <ul>
+    <li>ネガティブな言葉や人の悪口は決して口にしない</li>
+    <li>感謝・嬉しいこと・感動したことは必ず言葉にする</li>
+    <li>常に自分がやりたいことをやり、自分をごまかさない</li>
+  </ul>
+
+  <div class="vc">
+    <span class="lbl">🎙 AUDIO SUPPLEMENT</span>
+    「自分をごまかすことはしたくない」という方針を持てれば、パーソナルブランドをより強く確実なものにする近道に乗っている。クレドは自分の言動を制御するための内なる軸。 <span class="src">← S05:Ch2</span>
+  </div>
+
+  <h3 id="ch2-usp">パーソナルブランドをビジネスに活かす — USP</h3>
+
+  <div class="def">
+    <span class="lbl lbl-y">DEFINITION — USP (Unique Selling Proposition)</span>
+    <strong>独自性があって、人を動かすだけの付加価値ある魅力的な提案</strong><br>
+    顧客の心を動かし「買いたい」と思わせる具体的な提案のこと <span class="src">← S03:p.20</span>
+  </div>
+
+  <div class="key">
+    <span class="lbl lbl-b">USP発見の出発点（重要） <span class="src">← S03:p.21</span></span>
+    <table style="margin:6px 0 0;">
+      <tr><td style="border:none;padding:5px 10px;color:var(--red);">✗ 自分に何ができるか</td><td style="border:none;font-size:12px;color:var(--sub);">→ 非常に限定的で失敗しやすい</td></tr>
+      <tr><td style="border:none;padding:5px 10px;color:var(--green);">✓ 顧客にどれだけの価値を提供できるか</td><td style="border:none;font-size:12px;color:var(--sub);">→ 顧客起点で考えるとUSPが見つかりやすい</td></tr>
+    </table>
+  </div>
+
+  <h4>USPを見つける方法: マーケティングの4C <span class="src">← S03:p.22</span></h4>
+  <table>
+    <thead><tr><th>要素</th><th>意味</th><th>ポイント</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Customer Value</strong></td><td>顧客にとっての価値</td><td>顧客の心が動かない提案は意味がない</td></tr>
+      <tr><td><strong>Cost</strong></td><td>顧客の負担</td><td>価値があっても負担が大きければ選ばれない</td></tr>
+      <tr><td><strong>Convenience</strong></td><td>入手の容易性（便利さ）</td><td>入手しやすいかどうかも重要な要素</td></tr>
+      <tr><td><strong>Communication</strong></td><td>双方向コミュニケーション</td><td>確認・質問・対話が意思決定を促進する</td></tr>
+    </tbody>
+  </table>
+
+  <h4>USPを育てる時間配分 <span class="src">← S03:p.23</span></h4>
+
+  <!-- SVG: 時間配分バー -->
+  <div class="svg-w">
+    <svg viewBox="0 0 580 170" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:580px;">
+      <rect width="580" height="170" fill="#1e2535" rx="8"/>
+      <!-- 60%バー -->
+      <rect x="20" y="30" width="300" height="36" rx="4" fill="#5b8dee"/>
+      <text x="170" y="53" font-family="Noto Sans JP,sans-serif" font-size="13" fill="#0f1117" font-weight="700" text-anchor="middle">強みの強化 60%</text>
+      <text x="340" y="53" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8">差別化しやすいのは圧倒的な強みを磨くこと</text>
+      <!-- 30%バー -->
+      <rect x="20" y="78" width="150" height="36" rx="4" fill="#34d399"/>
+      <text x="95" y="101" font-family="Noto Sans JP,sans-serif" font-size="13" fill="#0f1117" font-weight="700" text-anchor="middle">新しい挑戦 30%</text>
+      <text x="190" y="101" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8">強みを新しい形で発揮する方法を開拓</text>
+      <!-- 10%バー -->
+      <rect x="20" y="126" width="50" height="28" rx="4" fill="#fbbf24"/>
+      <text x="45" y="145" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#0f1117" font-weight="700" text-anchor="middle">弱点 10%</text>
+      <text x="90" y="145" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8">弱みを持つ人との連携も有効</text>
+    </svg>
+    <figcaption>図: USPを育てる時間配分 <span class="src">S03:p.23</span></figcaption>
+  </div>
+
+  <h4>USPを強化するために必要な4要素 <span class="src">← S03:p.24</span></h4>
+  <table>
+    <thead><tr><th>要素</th><th>内容</th></tr></thead>
+    <tbody>
+      <tr><td><strong>メンタル</strong></td><td>常に成功するイメージを持つ</td></tr>
+      <tr><td><strong>外見</strong></td><td>仕事内容に見合った印象づくり。人はまず見た目から入る</td></tr>
+      <tr><td><strong>対人関係</strong></td><td>ポジティブな人と付き合い、ネガティブな人間とは縁を切る</td></tr>
+      <tr><td><strong>マーケティング</strong></td><td>USPを人に知らせる方法。<strong>わかりやすいストーリーを売る</strong>と効果的</td></tr>
+    </tbody>
+  </table>
+
+  <div class="vc">
+    <span class="lbl">🎙 AUDIO SUPPLEMENT</span>
+    難しい仕事になるほど「うまくいかないのでは」「失敗したらどうする」という話が出てくる。そうした話ばかりする相手との人間関係はこの際断ち切った方がいい。USPをビジネスに活かす際は「わかりやすいストーリー」があるととても効果的。 <span class="src">← S05:Ch2</span>
+  </div>
+
+  <div class="key">
+    <span class="lbl lbl-b">第2章 まとめ <span class="src">← S03:p.25</span></span>
+    <ul>
+      <li>パーソナルブランドを構築するには<strong>感覚的なアプローチ</strong>も効果的</li>
+      <li>維持の仕掛けは<strong>ルールを作ること</strong>と<strong>クレドを持つこと</strong></li>
+      <li>ビジネスに活かすには<strong>USP（Unique Selling Proposition）</strong>が鍵</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ===== 第3章 ===== -->
+<div class="card" id="ch3">
+  <div class="ch"><span class="cn">Ch.3</span><h2>人脈とは何か</h2></div>
+
+  <h3 id="ch3-def">人脈の定義と特徴</h3>
+
+  <div class="def">
+    <span class="lbl lbl-y">DEFINITION — 人脈</span>
+    <strong>何かに「役立つ」人とのつながり</strong><br>
+    「役立つ」という点がポイント。信頼関係がベースにある関係 <span class="src">← S03:p.29</span>
+  </div>
+
+  <p>人脈が生まれやすい機会の例 <span class="src">← S03:p.29</span>:</p>
+  <ul>
+    <li>取引先・業界関係者・異業種の集まり</li>
+    <li>学生時代の同窓会・クラブ・ゼミのつながり</li>
+    <li>昔働いていた会社の同期会・同僚会（転職社会では複数会社の人脈ができる）</li>
+    <li>共通の学習テーマ・趣味の集まり</li>
+  </ul>
+
+  <h4>役に立つ人脈の特徴 <span class="src">← S03:p.30</span></h4>
+  <table>
+    <thead><tr><th>特徴</th><th>解説</th></tr></thead>
+    <tbody>
+      <tr><td>共通した体験・同じ時代</td><td>同じ時代を生きているだけで共通点は多い。共通体験があるとさらに絆が深まる</td></tr>
+      <tr><td>特定の利害に縛られすぎていない</td><td>会社内の関係は同じルール・目的に縛られ、関係性に制限がかかることもある</td></tr>
+      <tr><td>面白い人が連鎖的につながっている</td><td>魅力的・能力の高い人の周りには同様の人が集まりやすい。その先の「間接人脈」にも注目</td></tr>
+      <tr><td>人数・回数より信頼と安心</td><td>会った回数が少なくても、共通体験を通じて信頼感・安心感が持てた関係は価値が高い</td></tr>
+    </tbody>
+  </table>
+
+  <div class="warn">
+    <span class="lbl lbl-o">⚠ 人脈作りの注意点 <span class="src">← S03:p.31</span></span>
+    <ul>
+      <li>相手を<strong>一方的に利用しようとする関係</strong>は人脈に育たない（相手に腹が見えてしまう）</li>
+      <li><strong>自分が成果を出していること</strong>が人脈作りの大前提</li>
+      <li><strong>1度しか会わなかった人は人脈にカウントしない</strong>（名刺交換だけでは人脈ではない）</li>
+      <li><strong>身の丈に合わない人脈は長続きしない</strong>（提供できるものが限られてしまう）</li>
+    </ul>
+  </div>
+
+  <div class="vc">
+    <span class="lbl">🎙 AUDIO SUPPLEMENT</span>
+    異業種交流会などで一度しか会わない人・名刺交換しただけの人は、自分が覚えていても相手は覚えていない可能性が高い。人脈と呼ぶには「2度目以降の接触」が不可欠。また、はるかに優れた実績のある人と無理につながろうとしてもバランスが悪くなる。人脈は自分の成長とともに育てていくもの。 <span class="src">← S05:Ch3</span>
+  </div>
+
+  <h3 id="ch3-why">なぜ人脈作りは大切か</h3>
+
+  <table>
+    <thead><tr><th>メリット</th><th>内容</th></tr></thead>
+    <tbody>
+      <tr><td><strong>セカンドオピニオン</strong></td><td>自分がやろうとすることに対して正直・優秀な意見を得られる <span class="src">← S03:p.32</span></td></tr>
+      <tr><td><strong>自分にない視点・アイデア</strong></td><td>自分の中にない視点やアイデアを提供してもらえる可能性が高い <span class="src">← S03:p.32</span></td></tr>
+      <tr><td><strong>目標になる人との出会い</strong></td><td>自分より優れた人が今何をしているかを確認でき、具体的な目標設定につながる <span class="src">← S03:p.32</span></td></tr>
+      <tr><td><strong>社会に貢献する窓が増える</strong></td><td>信頼できる相手は社会貢献の窓口になる。強い人脈を育てることは社会貢献能力の向上と同義 <span class="src">← S03:p.32</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="vc">
+    <span class="lbl">🎙 AUDIO SUPPLEMENT</span>
+    人脈の最大のメリットは「セカンドオピニオン」。信頼できる相手から正直・優秀な意見をもらえるかどうかが大切。強い人脈を育て続けることは、社会貢献する能力を高めることと同じ意味を持つ。 <span class="src">← S05:Ch3</span>
+  </div>
+
+  <h3 id="ch3-how">役に立つ人脈を作るためのコツ</h3>
+
+  <table>
+    <thead><tr><th>コツ</th><th>理由・詳細</th></tr></thead>
+    <tbody>
+      <tr><td>自ら積極的に<strong>幹事を務める</strong></td><td>グループへの貢献になり、全員とコンタクトを持つきっかけになる <span class="src">← S03:p.33</span></td></tr>
+      <tr><td><strong>関心のあるテーマ</strong>の集まりに参加</td><td>関心があることは継続できる。関心のないグループは長続きしない <span class="src">← S03:p.33</span></td></tr>
+      <tr><td><strong>2度目の出会いを作る</strong></td><td>個別にランチに誘い、カジュアルな状況でリラックスして話す。関係が深まる <span class="src">← S03:p.33</span></td></tr>
+      <tr><td><strong>コミュニケーションを繰り返す</strong></td><td>少なくていいから回数多く会話することで、相手への自分の関心を伝え続けられる <span class="src">← S03:p.33</span></td></tr>
+      <tr><td><strong>一人で行動する</strong>時間を持つ</td><td>常に友達と一緒では自分オリジナルの人脈を築きにくい <span class="src">← S03:p.33</span></td></tr>
+    </tbody>
+  </table>
+
+  <h4>さらに人脈を広げるには <span class="src">← S03:p.34</span></h4>
+  <ul>
+    <li>良い影響を与えてくれるポジティブな人・自己啓発的活動をしている人と関わる</li>
+    <li>異なる職業・地域とのつながりを重視する（ただし生き方・考え方のスタンスに共通点がある人を選ぶ）</li>
+    <li>常に中立的な態度を取り、違う意見の相手を批判・攻撃しない</li>
+    <li>自分が相手を追いかけるより、<strong>追われる人物になる</strong></li>
+  </ul>
+
+  <div class="key">
+    <span class="lbl lbl-b">第3章 まとめ <span class="src">← S03:p.35</span></span>
+    <ul>
+      <li>人脈とは<strong>役に立つ人とのつながり</strong>。信頼関係がベース</li>
+      <li>人脈は<strong>自分が社会貢献をする窓を増やす</strong>という意味合いがある</li>
+      <li>人脈作りは<strong>繰り返しの孤独な取り組み</strong>でもある</li>
+      <li><strong>追われる人物になる</strong>と、人脈は一気に広がりを見せる</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ===== 第4章 ===== -->
+<div class="card" id="ch4">
+  <div class="ch"><span class="cn">Ch.4</span><h2>人脈の活かし方</h2></div>
+
+  <h3 id="ch4-biz">人脈をビジネスに活かすには</h3>
+  <p>名刺交換しただけの相手は人脈ではない。 <span class="src">← S03:p.39</span></p>
+
+  <table>
+    <thead><tr><th>アクション</th><th>内容</th></tr></thead>
+    <tbody>
+      <tr><td>相手の名前と特徴を覚える</td><td>会う前に<strong>予習</strong>し、会った後に<strong>復習</strong>する。次のフォローアップを具体的に見つける <span class="src">← S03:p.39</span></td></tr>
+      <tr><td>第一印象を意識する</td><td>相手が自分にどんな印象を持ったか・自分が与えた印象を振り返る <span class="src">← S03:p.39</span></td></tr>
+      <tr><td><strong>即レス</strong>を心がける</td><td>相手から連絡が来たら必ずすぐ返事をする。返事が遅れることは致命的 <span class="src">← S03:p.39</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="vc">
+    <span class="lbl">🎙 AUDIO SUPPLEMENT</span>
+    「即レス（スピーディなコミュニケーション）」が最重要。相手から連絡があった時の返事が遅れることは致命的。どんな場合でも即座に返事をすること。また、初対面前に予習、会った後に復習をすることで次のフォローアップが明確になる。 <span class="src">← S05:Ch4</span>
+  </div>
+
+  <h3 id="ch4-200">人脈を増やすルール: 200人の法則</h3>
+
+  <div class="key">
+    <span class="lbl lbl-b">KEY RULE <span class="src">← S03:p.40-41</span></span>
+    <table style="margin:6px 0 0;">
+      <tr><td style="border:none;padding:5px 10px;color:var(--red);">✗ 1000人の知り合いを作る</td><td style="border:none;font-size:12px;color:var(--sub);">→ 量より質</td></tr>
+      <tr><td style="border:none;padding:5px 10px;color:var(--green);">✓ 200人の「信頼できる」知り合いを作る</td><td style="border:none;font-size:12px;color:var(--sub);">→ 強力な間接人脈が生まれる</td></tr>
+    </table>
+  </div>
+
+  <div class="def">
+    <span class="lbl lbl-y">DEFINITION — 間接人脈の計算 <span class="src">← S03:p.41</span></span>
+    自分の信頼できる知り合い <strong>200人</strong> × それぞれの人脈 <strong>200人</strong> = <strong>4万人</strong>の間接人脈の可能性
+  </div>
+
+  <div class="vc">
+    <span class="lbl">🎙 AUDIO SUPPLEMENT</span>
+    強力な「間接人脈」に注目することが重要。まずは200人との信頼関係が本当に構築できているかを確認することが先決。無理に数を増やそうとしてはいけない。 <span class="src">← S05:Ch4</span>
+  </div>
+
+  <h4>人脈とは「助け合いの輪」 <span class="src">← S03:p.42</span></h4>
+
+  <div class="def">
+    <span class="lbl lbl-y">DEFINITION — 人脈の本質</span>
+    人脈とは、<strong>互いに相手を思いやり、助け合っている状態</strong><br>
+    助け合いの輪は人から与えられるものではなく、<strong>自分が自ら作るもの</strong>
+  </div>
+
+  <ul>
+    <li>少数の人でも<strong>太い絆を築く</strong>（深く関わる）</li>
+    <li>自分より優れた人とお付き合いできるかが人脈の力を示す</li>
+    <li><strong>異分野の人と積極的に関わる</strong></li>
+  </ul>
+
+  <h3 id="ch4-habit">人脈を育てる生活習慣</h3>
+
+  <div class="key">
+    <span class="lbl lbl-b">キーワード: 「捨てる」 <span class="src">← S03:p.43</span></span>
+    人脈を育てるためには、不要なものを手放す習慣が重要
+  </div>
+
+  <table>
+    <thead><tr><th>習慣</th><th>理由</th></tr></thead>
+    <tbody>
+      <tr><td><strong>部屋・机・本棚を片付ける</strong></td><td>長く生きれば物が増える。不要なものを捨てる習慣が大切。本棚は増やさない（新しい本を買ったら古いものを捨てる）</td></tr>
+      <tr><td><strong>ノートをきれいに取る</strong></td><td>自分だけにわかるメモではなく、他人にも説明できる書き方の習慣がコミュニケーション能力にもつながる</td></tr>
+      <tr><td><strong>名刺を溜め込まない</strong></td><td>二度と会わないであろう名刺は邪魔になるだけ。本当に助け合う重要な相手200人の名刺をすぐ取り出せる状態に</td></tr>
+    </tbody>
+  </table>
+  <span class="src">← S03:p.43</span>
+
+  <h4>人脈の勘違い <span class="src">← S03:p.44-45</span></h4>
+  <table>
+    <thead><tr><th>よくある勘違い</th><th>正しい考え方</th></tr></thead>
+    <tbody>
+      <tr><td>✗ 人脈とは社外人脈である</td><td>✓ <strong>社内人脈</strong>も大切な人脈である</td></tr>
+      <tr><td>✗ 優秀で知名度のある大物人脈が価値がある</td><td>✓ 役に立つ人脈は<strong>身近</strong>なところにある。身の丈に合わない相手は自分を人脈と思っていないことも多い</td></tr>
+    </tbody>
+  </table>
+
+  <div class="vc">
+    <span class="lbl">🎙 AUDIO SUPPLEMENT</span>
+    人脈は「社外に広げるもの」と思いがちだが、社内人脈も非常に重要。また知名度のある社長・コンサルタントとの知り合いが価値あると勘違いしがちだが、意外と身近なところに大切な人脈が存在している。 <span class="src">← S05:Ch4</span>
+  </div>
+
+  <h3 id="ch4-cond">双方の関係が人脈に育つ条件</h3>
+
+  <table>
+    <thead><tr><th>条件</th><th>内容</th></tr></thead>
+    <tbody>
+      <tr><td><strong>好奇心 × 行動力</strong></td><td>自分も相手もこの資質を持っていると人脈はどんどん広がる <span class="src">← S03:p.46</span></td></tr>
+      <tr><td><strong>ギブアンドテイクの関係</strong></td><td>自分だけが得ている状態が長く続くものは人脈ではない。長続きしない <span class="src">← S03:p.46</span></td></tr>
+      <tr><td><strong>WIN-WINの関係</strong></td><td>片方が犠牲になる関係は成り立たない。お互いが上手くいく関係 <span class="src">← S03:p.46</span></td></tr>
+      <tr><td><strong>仕事のスピード感が合う</strong></td><td>相性とも言える。何かに取り組む時の感覚が近い人は重要な人脈に育つ <span class="src">← S03:p.46</span></td></tr>
+      <tr><td><strong>お互いに認める強みを持っている</strong></td><td>まず自分が成果を出していること。成果を出せば相手が注目・評価してくれる <span class="src">← S03:p.46</span></td></tr>
+    </tbody>
+  </table>
+
+  <h4>人脈に関連したキーワード <span class="src">← S03:p.47</span></h4>
+  <table>
+    <thead><tr><th>キーワード</th><th>意味</th></tr></thead>
+    <tbody>
+      <tr><td><strong>コラボレーション</strong></td><td>人と一緒に何かをやること・共同すること。異分野コラボレーションへの注目度が増している</td></tr>
+      <tr><td><strong>コミュニケーション</strong></td><td>情報を交換し合うこと。相手の気持ちに配慮しながら双方向で行うもの</td></tr>
+      <tr><td><strong>ネットワーク</strong></td><td>自分の知らないことを知っている人たちとつながる力。国内だけでなく海外・異分野ともつながる</td></tr>
+      <tr><td><strong>コントリビューション</strong></td><td>貢献すること。特定個人だけでなく、グループ・社会・環境への貢献も含む</td></tr>
+    </tbody>
+  </table>
+
+  <div class="key">
+    <span class="lbl lbl-b">第4章 まとめ <span class="src">← S03:p.48</span></span>
+    <ul>
+      <li>人脈は数よりも<strong>質が大切</strong></li>
+      <li>強力な<strong>間接人脈</strong>（200×200=4万人）に注目する</li>
+      <li>人脈とは<strong>「助け合いの輪」</strong></li>
+      <li>育てるには時に<strong>「捨てる」</strong>ことも必要</li>
+      <li>大切な人脈は<strong>「身近」</strong>なところにある</li>
+      <li><strong>仕事のスピード感が合うこと</strong>が鍵</li>
+    </ul>
+  </div>
+
+  <div class="def">
+    <span class="lbl lbl-y">第6回 全体まとめ <span class="src">← S03:p.49</span></span>
+    <ul>
+      <li>パーソナルブランドが確立しても、継続的に言動を管理して<strong>イメージを維持</strong>することが大切</li>
+      <li>パーソナルブランドをビジネスに活かすためには<strong>USP</strong>が鍵になる</li>
+      <li>自分が相手を追うよりも<strong>追われる人物になる</strong>と、人脈は一気に広がりを見せる</li>
+      <li>人脈とは<strong>「助け合いの輪」</strong>を作ることである</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ===== 補足A ===== -->
+<div class="ap ap-a" id="app-a">
+  <h2>⭐ 補足A: 最重要ワード一覧</h2>
+  <table>
+    <thead><tr><th>用語</th><th>読み</th><th>定義（原文から抽出）</th><th>重要度</th></tr></thead>
+    <tbody>
+      <tr><td><strong>パーソナルブランド</strong></td><td>ぱーそなるぶらんど</td><td>あなた自身が望む「あなたの姿」。他の人にどう思われたいか</td><td><span class="imp3">★★★</span></td></tr>
+      <tr><td><strong>ブランドづくり</strong></td><td>ぶらんどづくり</td><td>顧客の心に品質への信頼を超えたポジティブなイメージを形成し、感情の絆を作ること</td><td><span class="imp3">★★★</span></td></tr>
+      <tr><td><strong>USP</strong></td><td>ゆーえすぴー</td><td>Unique Selling Proposition。独自性があり人を動かす付加価値ある魅力的な提案</td><td><span class="imp3">★★★</span></td></tr>
+      <tr><td><strong>人脈</strong></td><td>じんみゃく</td><td>何かに「役立つ」人とのつながり。信頼関係がベースにある関係</td><td><span class="imp3">★★★</span></td></tr>
+      <tr><td><strong>クレド</strong></td><td>くれど</td><td>信条。自らが信じていること・自分の行動指針</td><td><span class="imp2">★★☆</span></td></tr>
+      <tr><td><strong>マーケティングの4C</strong></td><td>よんしー</td><td>Customer Value・Cost・Convenience・Communication。USP発見の方法</td><td><span class="imp2">★★☆</span></td></tr>
+      <tr><td><strong>間接人脈</strong></td><td>かんせつじんみゃく</td><td>自分の直接の知り合いのさらにつながる人脈。200×200=4万人の可能性</td><td><span class="imp2">★★☆</span></td></tr>
+      <tr><td><strong>セカンドオピニオン</strong></td><td>せかんどおぴにおん</td><td>自分がやろうとすることに対する信頼できる第三者の意見</td><td><span class="imp2">★★☆</span></td></tr>
+      <tr><td><strong>コントリビューション</strong></td><td>こんとりびゅーしょん</td><td>貢献。特定個人だけでなく社会・環境への貢献を指す</td><td><span class="imp2">★★☆</span></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ===== 補足B ===== -->
+<div class="ap ap-b" id="app-b">
+  <h2>📚 補足B: 知っておくべき背景知識</h2>
+
+  <h4>USPの歴史的背景</h4>
+  <p class="as">USP（Unique Selling Proposition）という概念は、アメリカのテレビ広告の先駆者ロッサー・リーブス（Rosser Reeves, 1910–1984）がTed Bates &amp; Company在籍中に提唱した。1940年代の成功した広告キャンペーンで実践され、1961年の著書 <em>Reality in Advertising</em>（邦題：広告の現実）の中で体系的に定義された。USPの3条件: ①消費者に具体的な便益を提案すること、②競合他社が提供しない独自性があること、③大衆を動かすほど強力であること。代表的なUSP事例: M&amp;M's「お口でとろけてお手を汚さない」、Anacin（頭痛薬）「信じられないほど速い効果」。</p>
+  <p><small style="color:var(--muted);">[外部補足・確認済: Reeves, R. (1961). <em>Reality in Advertising</em>. Alfred A. Knopf. / Wikipedia "Unique selling proposition"]</small></p>
+
+  <h4>マーケティングの4Cとは</h4>
+  <p class="as">4Cは、ロバート・ラウターボーン（Robert Lauterborn）が1990年の <em>Advertising Age</em> 誌掲載論文「New Marketing Litany; Four P's Passé; C-Words Take Over」で提唱した顧客中心マーケティングフレームワーク。従来の4P（Product・Price・Place・Promotion）が「作り手視点」であるのに対し、4Cは「顧客視点」への転換を示す。4P→4C の対応は Product→Customer Value、Price→Cost、Place→Convenience、Promotion→Communication。1992年にはドン・シュルツらとの共著で統合マーケティング・コミュニケーション（IMC）論を提唱し、4C理論を発展させた。</p>
+  <p><small style="color:var(--muted);">[外部補足・確認済: Lauterborn, B. (1990). "New Marketing Litany; Four Ps Passé; C-Words Take Over." <em>Advertising Age</em>, 41, p. 26. / Palgrave Encyclopedia of Social Marketing (2022)]</small></p>
+
+  <h4>クレドの企業事例: ジョンソン&amp;ジョンソン</h4>
+  <p class="as">クレド（Credo）はラテン語で「私は信じる」を意味し、個人・組織の行動指針を指す。企業のクレドの代表例として知られるのが、ジョンソン＆ジョンソン社の「Our Credo」。同社の創業家出身で会長を務めたロバート・ウッド・ジョンソン（Robert Wood Johnson, 会長在任1932–1963）が、会社の株式公開（1944年）の前年にあたる <strong>1943年12月13日</strong>の取締役会で初めて提示した。「医療従事者・患者・従業員・地域・株主への責任」を明文化したもので、企業の社会的責任を定めた最初期の文書のひとつとされる。ビジネススクールで広く教材として使われ続けており、現在も同社の意思決定の中核を担っている。</p>
+  <p><small style="color:var(--muted);">[外部補足・確認済: Johnson &amp; Johnson 公式サイト「Our Heritage」/ NJBIZ "J&amp;J marks 80th anniversary of celebrated 'Our Credo'" (2023-12)]</small></p>
+
+  <h4>パーソナルブランドの提唱: トム・ピーターズ</h4>
+  <p class="as">「パーソナルブランド（Personal Brand）」という概念を一般に広めた先駆者は、マッキンゼー出身の経営コンサルタント、トム・ピーターズ（Tom Peters）。<strong>1997年8月/9月号の Fast Company 誌（Issue 10）</strong>に掲載した記事「The Brand Called You」（p. 83）の中で、「私たちは皆、Me Inc.（自分株式会社）のCEOである。今日のビジネスでは、ブランド『あなた』のヘッドマーケターになることが最重要の仕事だ」と主張した。この記事はインターネット黎明期の「フリーエージェント時代」の到来を背景に書かれ、その後SNS時代の普及とともに改めて注目を集めている。ピーターズ自身は後に、この論文が「自己PR・自己宣伝」と誤解されたことを残念がり、本来の意図は「仕事を通して他者に価値を生み出すこと」だったと述べている。</p>
+  <p><small style="color:var(--muted);">[外部補足・確認済: Peters, T. (1997, August). "The Brand Called You." <em>Fast Company</em>, Issue 10, p. 83. fastcompany.com/28905/brand-called-you / tompeters.com "Brand You 25th Anniversary" (2022)]</small></p>
+</div>
+
+<!-- ===== 補足C ===== -->
+<div class="ap ap-c" id="app-c">
+  <h2>🎯 補足C: 試験・レポートで重要な観点</h2>
+  <ul style="font-size:14px;line-height:2.1;">
+    <li><strong>ブランドの3層構造</strong>（知名度・品質・意味）と「強いブランド」の定義を説明できるようにする</li>
+    <li><strong>パーソナルブランド</strong>の定義「あなた自身が望むあなたの姿」を正確に覚える</li>
+    <li><strong>パーソナルブランド作成の3ステップ</strong>（自己分析→繰り返し伝える→言動管理）の順序と各ステップの意味</li>
+    <li><strong>USP</strong>の定義・発見の出発点（自分でなく顧客）・4C・時間配分（60-30-10）を整理する</li>
+    <li><strong>クレド</strong>とルールの違いを理解する（クレドは内なる信条、ルールは具体的行動規則）</li>
+    <li><strong>人脈の定義</strong>「役立つ人とのつながり」＋信頼関係ベースという点を押さえる</li>
+    <li><strong>200人の法則</strong>と間接人脈4万人の計算を説明できるようにする</li>
+    <li><strong>人脈の勘違い2点</strong>（社外/有名人信仰）と正しい人脈観を対比して答えられるようにする</li>
+    <li><strong>双方の関係が人脈に育つ5条件</strong>（好奇心×行動力・ギブアンドテイク・WIN-WIN・スピード感・認め合う強み）を覚える</li>
+    <li><strong>「捨てる」</strong>という生活習慣キーワードと具体的行動（部屋・ノート・本棚・名刺）を押さえる</li>
+  </ul>
+</div>
+
+<!-- ===== 補足D ===== -->
+<div class="ap ap-d" id="app-d">
+  <h2>🔗 補足D: 関連概念・次回への接続</h2>
+
+  <h4>弱い紐帯の強さ (Strength of Weak Ties) — 本講義「人脈」との深いつながり</h4>
+  <p class="as">本講義で強調された「異業種・異職種との人脈」「追われる人物になる」という考え方は、社会学の古典的研究と強く呼応する。スタンフォード大学の社会学者マーク・グラノヴェッター（Mark Granovetter）が <strong>1973年</strong> に <em>American Journal of Sociology</em>（Vol. 78, No. 6, pp. 1360–1380）で発表した論文「The Strength of Weak Ties（弱い紐帯の強さ）」によると、仲の良い友人など「強い絆」よりも、頻繁に会わない知人などの「弱い絆」の方が、就職情報・新しいアイデア・異質な視点をもたらすことを実証した。その理由は、強い絆を持つ人は互いの情報が重複しがちなのに対し、弱い絆は自分とは別の社会圏に橋渡しをしてくれるから。本論文は社会科学分野で約7万件以上の引用を誇る超古典的論文で、本講義の「一度しか会わない人でも関係を深めれば価値が生まれる」「異分野の人と積極的に関わる」という主張を理論的に裏付ける。</p>
+  <p><small style="color:var(--muted);">[外部補足・確認済: Granovetter, M.S. (1973). "The Strength of Weak Ties." <em>American Journal of Sociology</em>, 78(6), 1360–1380. / Stanford Report "The strength of weak ties" (2023-07)]</small></p>
+
+  <h4>ソーシャルキャピタル（社会関係資本）との関係</h4>
+  <p class="as">本講義で扱う「人脈」「助け合いの輪」「社会に貢献する窓」という概念は、社会学・政治学のソーシャルキャピタル（Social Capital: 社会関係資本）論と密接に関連する。ハーバード大学のロバート・パットナム（Robert Putnam）らの研究では、①信頼（trust）、②互酬性の規範（norms of reciprocity）、③ネットワーク（networks）という3要素が社会の生産性・民主主義・幸福度を高めることが示されている。本講義が強調する「ギブアンドテイク」「WIN-WIN」は互酬性の規範に、「200人の信頼できる知り合い」はネットワーク形成に対応する。</p>
+  <p><small style="color:var(--muted);">[外部補足]</small></p>
+
+  <h4>エレベーターピッチとUSP・パーソナルブランドの実践</h4>
+  <p class="as">USPやパーソナルブランドを短時間で相手に伝える実践手法として「エレベーターピッチ」がある。エレベーターに乗っている30秒〜2分程度の短時間で、自分・自社・サービスの価値を端的に伝える技法。「あなたのUSP（独自の価値提案）は何か？」という問いに即座に答えられることが、本講義で言うパーソナルブランドの「ブランドイメージを繰り返し人に伝える」実践そのものでもある。</p>
+  <p><small style="color:var(--muted);">[外部補足]</small></p>
+
+  <h4>次回への接続</h4>
+  <p class="as">第6回のパーソナルブランドと人脈は、セルフマネジメント論全体の「自己管理→他者との関係→社会貢献」という文脈に位置づけられる。今回学んだ「自分を知る（自己分析）→ブランドイメージの一貫的発信→人脈という社会貢献の窓を広げる」という流れは、以降の授業におけるキャリア形成・自己目標設定のテーマとも直結する基盤概念となる。</p>
+</div>
+
+</main>
+</body>
+</html>
