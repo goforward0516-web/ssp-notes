@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>セルフマネジメント論 第8回 — セルフマネジメントの総論</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:         #0f1117;
+    --bg2:        #161b27;
+    --bg3:        #1e2535;
+    --border:     #2a3347;
+    --text:       #e2e8f5;
+    --text-sub:   #8a99b8;
+    --text-dim:   #4a5568;
+    --accent-blue:#5b8dee;
+    --accent-grn: #34d399;
+    --accent-yel: #fbbf24;
+    --accent-red: #f87171;
+    --accent-pur: #a78bfa;
+    --accent-ora: #fb923c;
+    --card-head:  #1a2236;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Noto Sans JP',sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    font-size:15px;
+    line-height:1.8;
+    display:flex;
+  }
+
+  /* ===== SIDEBAR ===== */
+  #sidebar{
+    position:fixed;
+    top:0;left:0;
+    width:260px;height:100vh;
+    background:var(--bg2);
+    border-right:1px solid var(--border);
+    overflow-y:auto;
+    padding:24px 0 40px;
+    z-index:100;
+    flex-shrink:0;
+  }
+  #sidebar::-webkit-scrollbar{width:4px}
+  #sidebar::-webkit-scrollbar-track{background:transparent}
+  #sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+  .sidebar-title{
+    padding:0 20px 16px;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--text-sub);
+    border-bottom:1px solid var(--border);
+    margin-bottom:12px;
+  }
+  .toc-section{margin-bottom:4px}
+  .toc-section>a{
+    display:block;
+    padding:7px 20px;
+    color:var(--text-sub);
+    text-decoration:none;
+    font-size:12.5px;
+    font-weight:500;
+    transition:all .15s;
+    border-left:2px solid transparent;
+  }
+  .toc-section>a:hover,
+  .toc-section>a.active{
+    color:var(--accent-blue);
+    background:rgba(91,141,238,.07);
+    border-left-color:var(--accent-blue);
+  }
+  .toc-sub a{
+    display:block;
+    padding:5px 20px 5px 32px;
+    color:var(--text-dim);
+    text-decoration:none;
+    font-size:11.5px;
+    transition:color .15s;
+  }
+  .toc-sub a:hover{color:var(--text-sub)}
+  .toc-chapter-label{
+    padding:10px 20px 4px;
+    font-size:10px;
+    font-weight:700;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--text-dim);
+  }
+
+  /* ===== MAIN ===== */
+  #main{
+    margin-left:260px;
+    flex:1;
+    max-width:860px;
+    padding:48px 48px 80px;
+  }
+
+  /* ===== HEADER ===== */
+  .page-header{
+    border-bottom:1px solid var(--border);
+    padding-bottom:28px;
+    margin-bottom:40px;
+  }
+  .page-header .kv-label{
+    display:inline-block;
+    background:rgba(91,141,238,.15);
+    color:var(--accent-blue);
+    font-size:10.5px;
+    font-weight:700;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    padding:3px 10px;
+    border-radius:4px;
+    margin-bottom:12px;
+    font-family:'JetBrains Mono',monospace;
+  }
+  .page-header h1{
+    font-size:26px;
+    font-weight:700;
+    line-height:1.3;
+    margin-bottom:10px;
+    letter-spacing:-.01em;
+  }
+  .meta-row{
+    display:flex;flex-wrap:wrap;gap:16px;
+    margin-top:16px;
+  }
+  .meta-item{
+    display:flex;align-items:center;gap:6px;
+    font-size:12px;color:var(--text-sub);
+  }
+  .meta-item .dot{
+    width:6px;height:6px;
+    border-radius:50%;
+    background:var(--accent-blue);
+    flex-shrink:0;
+  }
+  .source-badges{
+    display:flex;flex-wrap:wrap;gap:6px;
+    margin-top:14px;
+  }
+  .badge{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10.5px;
+    padding:2px 8px;
+    border-radius:3px;
+    border:1px solid;
+    letter-spacing:.04em;
+  }
+  .badge-s03{color:#34d399;border-color:rgba(52,211,153,.3);background:rgba(52,211,153,.08)}
+  .badge-s05{color:var(--accent-blue);border-color:rgba(91,141,238,.3);background:rgba(91,141,238,.08)}
+
+  /* ===== CHAPTER CARD ===== */
+  .chapter{
+    background:var(--bg2);
+    border:1px solid var(--border);
+    border-radius:10px;
+    margin-bottom:32px;
+    overflow:hidden;
+  }
+  .chapter-header{
+    background:var(--card-head);
+    padding:16px 24px;
+    border-bottom:1px solid var(--border);
+    display:flex;align-items:center;gap:12px;
+  }
+  .chapter-num{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10.5px;
+    font-weight:600;
+    color:var(--accent-blue);
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    opacity:.7;
+  }
+  .chapter-title{
+    font-size:17px;
+    font-weight:700;
+  }
+  .chapter-body{padding:24px}
+  .section{margin-bottom:24px}
+  .section:last-child{margin-bottom:0}
+  .section-title{
+    font-size:14px;
+    font-weight:700;
+    color:var(--accent-blue);
+    margin-bottom:10px;
+    padding-bottom:6px;
+    border-bottom:1px solid var(--border);
+    display:flex;align-items:center;gap:8px;
+  }
+  .section-title::before{
+    content:'';
+    width:3px;height:14px;
+    background:var(--accent-blue);
+    border-radius:2px;
+    flex-shrink:0;
+  }
+  .slide-text{
+    background:var(--bg3);
+    border-left:3px solid var(--accent-grn);
+    padding:12px 16px;
+    border-radius:0 6px 6px 0;
+    margin-bottom:10px;
+    font-size:13.5px;
+  }
+  .slide-pointer{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10px;
+    color:var(--accent-grn);
+    opacity:.7;
+    margin-top:4px;
+  }
+
+  /* ===== BLOCKS ===== */
+  .voice-block{
+    border-left:3px solid var(--accent-blue);
+    background:rgba(91,141,238,.06);
+    padding:12px 16px;
+    border-radius:0 6px 6px 0;
+    margin:8px 0;
+    font-size:13.5px;
+  }
+  .voice-block .block-label{
+    font-size:10px;font-weight:700;
+    color:var(--accent-blue);
+    letter-spacing:.08em;text-transform:uppercase;
+    font-family:'JetBrains Mono',monospace;
+    margin-bottom:5px;opacity:.8;
+  }
+  .ext-block{
+    border-left:3px solid var(--accent-grn);
+    background:rgba(52,211,153,.05);
+    padding:12px 16px;
+    border-radius:0 6px 6px 0;
+    margin:8px 0;
+    font-size:13px;
+    color:var(--text-sub);
+  }
+  .ext-block .block-label{
+    font-size:10px;font-weight:700;
+    color:var(--accent-grn);
+    letter-spacing:.08em;text-transform:uppercase;
+    font-family:'JetBrains Mono',monospace;
+    margin-bottom:5px;opacity:.8;
+  }
+  .warn-block{
+    border-left:3px solid var(--accent-ora);
+    background:rgba(251,146,60,.05);
+    padding:12px 16px;
+    border-radius:0 6px 6px 0;
+    margin:8px 0;
+    font-size:13px;
+  }
+  .warn-block .block-label{
+    font-size:10px;font-weight:700;
+    color:var(--accent-ora);
+    letter-spacing:.08em;text-transform:uppercase;
+    font-family:'JetBrains Mono',monospace;
+    margin-bottom:5px;opacity:.8;
+  }
+  .key-point{
+    background:rgba(251,191,36,.06);
+    border:1px solid rgba(251,191,36,.2);
+    border-radius:6px;
+    padding:14px 18px;
+    margin:10px 0;
+    font-size:13.5px;
+  }
+  .key-point .kp-label{
+    font-size:10px;font-weight:700;
+    color:var(--accent-yel);
+    letter-spacing:.08em;
+    font-family:'JetBrains Mono',monospace;
+    margin-bottom:5px;
+  }
+
+  /* ===== POINTER ===== */
+  .ptr{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10px;
+    color:var(--text-dim);
+    letter-spacing:.04em;
+    margin-left:6px;
+  }
+
+  /* ===== TABLE ===== */
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px}
+  th{
+    background:var(--bg3);
+    color:var(--text-sub);
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    padding:9px 12px;
+    border:1px solid var(--border);
+    text-align:left;
+  }
+  td{
+    padding:9px 12px;
+    border:1px solid var(--border);
+    vertical-align:top;
+  }
+  tr:nth-child(even) td{background:rgba(30,37,53,.5)}
+  .star-3{color:var(--accent-yel)}
+  .star-2{color:var(--accent-grn)}
+  .star-1{color:var(--text-sub)}
+
+  /* ===== SVG WRAPPER ===== */
+  .svg-wrap{
+    background:var(--bg3);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:20px;
+    margin:14px 0;
+    overflow:hidden;
+  }
+  .svg-wrap figcaption{
+    font-size:11px;
+    color:var(--text-dim);
+    margin-top:10px;
+    font-family:'JetBrains Mono',monospace;
+  }
+
+  /* ===== LIST ===== */
+  ul,ol{padding-left:20px}
+  li{margin:4px 0;font-size:13.5px}
+  li::marker{color:var(--accent-blue)}
+
+  /* ===== APPENDIX CARDS ===== */
+  .appendix{
+    margin-bottom:24px;
+    border-radius:10px;
+    overflow:hidden;
+    border:1px solid var(--border);
+  }
+  .appendix-header{
+    padding:14px 22px;
+    font-size:14px;
+    font-weight:700;
+    display:flex;align-items:center;gap:10px;
+  }
+  .appendix-header .icon{font-size:17px}
+  .appendix-body{
+    padding:22px;
+    background:var(--bg2);
+  }
+  .app-a .appendix-header{background:rgba(251,191,36,.1);color:var(--accent-yel)}
+  .app-b .appendix-header{background:rgba(52,211,153,.08);color:var(--accent-grn)}
+  .app-c .appendix-header{background:rgba(91,141,238,.1);color:var(--accent-blue)}
+  .app-d .appendix-header{background:rgba(167,139,250,.08);color:var(--accent-pur)}
+  .app-u .appendix-header{background:rgba(251,146,60,.1);color:var(--accent-ora)}
+
+  /* ===== EXT SUB TEXT ===== */
+  .ext-sub{
+    font-size:12px;
+    color:var(--text-sub);
+    margin-top:4px;
+  }
+
+  p{font-size:13.5px;margin:8px 0}
+  strong{color:var(--text);font-weight:700}
+
+  /* scrollbar */
+  ::-webkit-scrollbar{width:6px}
+  ::-webkit-scrollbar-track{background:var(--bg)}
+  ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div class="sidebar-title">セルフマネジメント論</div>
+
+  <div class="toc-chapter-label">概要</div>
+  <div class="toc-section"><a href="#top">第8回 総論</a></div>
+
+  <div class="toc-chapter-label">第1章</div>
+  <div class="toc-section"><a href="#ch1">タイムマネジメント</a></div>
+  <div class="toc-sub">
+    <a href="#ch1-matrix">時間管理のマトリックス</a>
+    <a href="#ch1-cases">実践場面</a>
+    <a href="#ch1-summary">第1章まとめ</a>
+  </div>
+
+  <div class="toc-chapter-label">第2章</div>
+  <div class="toc-section"><a href="#ch2">目標管理</a></div>
+  <div class="toc-sub">
+    <a href="#ch2-pdca">PDCAサイクル</a>
+    <a href="#ch2-cases">実践場面</a>
+    <a href="#ch2-summary">第2章まとめ</a>
+  </div>
+
+  <div class="toc-chapter-label">第3章</div>
+  <div class="toc-section"><a href="#ch3">モチベーションコントロール</a></div>
+  <div class="toc-sub">
+    <a href="#ch3-what">とは何か</a>
+    <a href="#ch3-cases">実践場面</a>
+    <a href="#ch3-summary">第3章まとめ</a>
+  </div>
+
+  <div class="toc-chapter-label">第4章</div>
+  <div class="toc-section"><a href="#ch4">パーソナルブランド</a></div>
+  <div class="toc-sub">
+    <a href="#ch4-usp">USPと人脈</a>
+    <a href="#ch4-cases">実践場面</a>
+    <a href="#ch4-summary">第4章まとめ</a>
+  </div>
+
+  <div class="toc-chapter-label">補足</div>
+  <div class="toc-section"><a href="#app-a">⭐ 補足A: 最重要ワード</a></div>
+  <div class="toc-section"><a href="#app-b">📚 補足B: 背景知識</a></div>
+  <div class="toc-section"><a href="#app-c">🎯 補足C: 試験観点</a></div>
+  <div class="toc-section"><a href="#app-d">🔗 補足D: 関連概念</a></div>
+  <div class="toc-section"><a href="#app-u">✅ 未確定事項（解消済）</a></div>
+</nav>
+
+<!-- MAIN -->
+<main id="main">
+
+<!-- PAGE HEADER -->
+<div id="top" class="page-header">
+  <div class="kv-label">SD103 · 第8回 · 最終回</div>
+  <h1>セルフマネジメントの総論</h1>
+  <p style="color:var(--text-sub);font-size:13.5px;margin-top:6px">担当: 小松 俊明 ／ サイバー大学 学部共通教養科目</p>
+  <div class="meta-row">
+    <div class="meta-item"><span class="dot"></span>全4章構成（タイムマネジメント・目標管理・モチベーション・パーソナルブランド）</div>
+    <div class="meta-item"><span class="dot"></span>第1〜7回の総復習＋実践場面での応用</div>
+  </div>
+  <div class="source-badges">
+    <span class="badge badge-s03">S03: スライドPDF（49枚）</span>
+    <span class="badge badge-s05">S05-A: hynote文字起こし</span>
+    <span class="badge badge-s05">S05-B: hynote文字起こし</span>
+  </div>
+</div>
+
+<!-- ===== 第1章 ===== -->
+<div id="ch1" class="chapter">
+  <div class="chapter-header">
+    <span class="chapter-num">Chapter 01</span>
+    <span class="chapter-title">タイムマネジメント総論</span>
+  </div>
+  <div class="chapter-body">
+
+    <!-- 学習目標 -->
+    <div class="section">
+      <div class="section-title">学習目標</div>
+      <div class="slide-text">
+        <ul>
+          <li>時間管理のポイントをおさらいする</li>
+          <li>時間管理の考え方を活用して問題解決をする</li>
+        </ul>
+        <div class="slide-pointer">← S03:p.5</div>
+      </div>
+    </div>
+
+    <!-- タイムマネジメントのまとめ -->
+    <div class="section">
+      <div class="section-title">タイムマネジメントのまとめ（復習）</div>
+      <div class="slide-text">
+        <ul>
+          <li>時間管理は、<strong>目標達成度予測の正確性</strong>が勝負の決め手である</li>
+          <li>時間管理のマトリックスは、<strong>第二領域に投資する</strong></li>
+          <li>最優先事項からスケジュールを埋めて実践する</li>
+          <li>生産性の高い働き方は、多少正確性が粗くても、<strong>着手するスピードが速いこと</strong>で実現できる</li>
+        </ul>
+        <div class="slide-pointer">← S03:p.6</div>
+      </div>
+      <div class="voice-block">
+        <div class="block-label">🎙 音声補足</div>
+        タイムマネジメントとは「誰にも共通に与えられた時間をどのように有効活用するか」。目標達成の予測が外れると、自分の計画が崩れるだけでなく一緒に働く人にも迷惑をかける。予測精度の高さが時間管理成功の鍵。<span class="ptr">← S05</span>
+      </div>
+    </div>
+
+    <!-- 時間管理のマトリックス -->
+    <div id="ch1-matrix" class="section">
+      <div class="section-title">時間管理のマトリックス</div>
+      <div class="svg-wrap">
+        <figure>
+          <!-- viewBox: 600×380 -->
+          <!-- 中央グリッド: x=60〜540 (幅480), y=50〜330 (高さ280) -->
+          <!-- 中心点: (300,190) -->
+          <svg viewBox="0 0 600 380" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-height:320px">
+            <!-- 背景 -->
+            <rect width="600" height="380" fill="#1e2535" rx="6"/>
+
+            <!-- タイトル -->
+            <text x="300" y="30" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="14" fill="#e2e8f5" font-weight="700">時間管理のマトリックス</text>
+
+            <!-- 軸ラベル -->
+            <!-- 緊急性（横軸）高→左, 低→右 -->
+            <text x="90" y="50" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8">高い（緊急）</text>
+            <text x="510" y="50" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8">低い（非緊急）</text>
+            <!-- 矢印 横 -->
+            <line x1="130" y1="55" x2="470" y2="55" stroke="#5b8dee" stroke-width="1.2" marker-end="url(#ah)"/>
+            <text x="300" y="51" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#5b8dee">緊急性</text>
+
+            <!-- 重要性（縦軸）高→上, 低→下 -->
+            <text x="28" y="130" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8" transform="rotate(-90,28,130)">高い（重要）</text>
+            <text x="28" y="270" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8" transform="rotate(-90,28,270)">低い（非重要）</text>
+            <line x1="55" y1="320" x2="55" y2="68" stroke="#5b8dee" stroke-width="1.2" marker-end="url(#av)"/>
+            <text x="42" y="195" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#5b8dee" transform="rotate(-90,42,195)">重要性</text>
+
+            <!-- arrowhead defs -->
+            <defs>
+              <marker id="ah" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto">
+                <polygon points="0 0, 7 3.5, 0 7" fill="#5b8dee"/>
+              </marker>
+              <marker id="av" markerWidth="7" markerHeight="7" refX="3.5" refY="5" orient="auto">
+                <polygon points="0 7, 3.5 0, 7 7" fill="#5b8dee"/>
+              </marker>
+            </defs>
+
+            <!-- 4象限 -->
+            <!-- 第一領域: 緊急×重要 (左上) x=60-300, y=65-190 -->
+            <rect x="60" y="65" width="240" height="130" fill="rgba(248,113,113,0.12)" stroke="#f87171" stroke-width="1.2" rx="4"/>
+            <text x="180" y="100" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="#f87171" font-weight="700">第一領域</text>
+            <text x="180" y="118" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">締め切りのある仕事</text>
+            <text x="180" y="133" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">突然の来客・緊急対応</text>
+            <text x="180" y="150" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">緊急かつ重要</text>
+            <text x="180" y="183" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#f87171" opacity=".7">DO FIRST</text>
+
+            <!-- 第二領域: 非緊急×重要 (右上) x=300-540, y=65-190 -->
+            <rect x="300" y="65" width="240" height="130" fill="rgba(52,211,153,0.12)" stroke="#34d399" stroke-width="2" rx="4"/>
+            <text x="420" y="100" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="#34d399" font-weight="700">第二領域 ⭐</text>
+            <text x="420" y="118" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">人間関係作り</text>
+            <text x="420" y="133" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">自己啓発・計画立案</text>
+            <text x="420" y="148" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">非緊急だが重要</text>
+            <text x="420" y="178" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#34d399">最も投資すべき領域</text>
+
+            <!-- 第三領域: 緊急×非重要 (左下) x=60-300, y=195-330 -->
+            <rect x="60" y="195" width="240" height="130" fill="rgba(251,191,36,0.08)" stroke="#fbbf24" stroke-width="1" stroke-dasharray="5,3" rx="4"/>
+            <text x="180" y="230" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="#fbbf24" font-weight="700">第三領域</text>
+            <text x="180" y="248" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">一部の会議・電話</text>
+            <text x="180" y="263" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">緊急だが重要でない</text>
+            <text x="180" y="310" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#fbbf24" opacity=".6">DELEGATE</text>
+
+            <!-- 第四領域: 非緊急×非重要 (右下) x=300-540, y=195-330 -->
+            <rect x="300" y="195" width="240" height="130" fill="rgba(100,116,139,0.08)" stroke="#4a5568" stroke-width="1" rx="4"/>
+            <text x="420" y="230" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="#4a5568" font-weight="700">第四領域</text>
+            <text x="420" y="248" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8">暇つぶし</text>
+            <text x="420" y="263" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#4a5568">非緊急かつ非重要</text>
+            <text x="420" y="310" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#4a5568" opacity=".6">ELIMINATE</text>
+
+            <!-- 中心仕切り線 -->
+            <line x1="300" y1="65" x2="300" y2="325" stroke="#2a3347" stroke-width="1.5"/>
+            <line x1="60" y1="190" x2="540" y2="190" stroke="#2a3347" stroke-width="1.5"/>
+
+            <!-- 重要度ラベル-->
+            <text x="300" y="345" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#5b8dee">⭐ 第二領域（非緊急×重要）に最も多くの時間を投資することが生産性向上の鍵</text>
+          </svg>
+          <figcaption>図：時間管理のマトリックス（コヴィー式4象限）　← S03:p.7</figcaption>
+        </figure>
+      </div>
+      <div class="voice-block">
+        <div class="block-label">🎙 音声補足</div>
+        第二領域の具体例：人間関係・信頼関係の構築。「いざというときに頼みたくても頼めない、頼れる人がいない」状況を防ぐために、今から投資が必要。急いでないから後回し、では手遅れになる。<span class="ptr">← S05</span>
+      </div>
+    </div>
+
+    <!-- 実践場面 -->
+    <div id="ch1-cases" class="section">
+      <div class="section-title">実践場面：時間管理が問われるシチュエーション</div>
+
+      <div class="key-point">
+        <div class="kp-label">📌 場面①：夜遅くまで残る職場</div>
+        <p>長時間労働の原因：①仕事量過多 ②仕事に不慣れ ③他者の作業待ちで待機時間が発生。<br>
+        <strong>対策：</strong>仕事のやり方・優先順位の付け方・進捗報告方法を自分で変える。他人が変わることを待つのではなく、まず自分が変わる。</p>
+        <span class="ptr">← S03:p.8, S05</span>
+      </div>
+
+      <div class="key-point">
+        <div class="kp-label">📌 場面②：繰り返される長い会議</div>
+        <p>原因：情報の事前整理・共有不足 → 「あのこと、まだ話してなかった」が頻発。<br>
+        <strong>対策：</strong>若手でも（1）議事録作成 （2）議題の事前項目立て・全員共有 → 会議時間を短縮できる。自分から動くことが重要。</p>
+        <span class="ptr">← S03:p.9, S05</span>
+      </div>
+
+      <div class="key-point">
+        <div class="kp-label">📌 場面③：顧客からの無理な納期設定</div>
+        <p>顧客の内情は社外から見えにくいが、<strong>「なぜその期日が必要か」を顧客に確認</strong>することで、他の仕事の優先順位を下げてもらえる可能性がある。<br>
+        限られた時間に全てを詰め込むと一つ一つの質が低下し、最終的に顧客の不利益になる。これをロジックとして説明できる。</p>
+        <span class="ptr">← S03:p.10, S05</span>
+      </div>
+
+      <div class="key-point">
+        <div class="kp-label">📌 場面④：次から次へと山積みになる仕事</div>
+        <p>「火が燃えているときは原因より消火が先」→ ただし火を消した後に<strong>防止策を考えることが第二領域の仕事</strong>。<br>
+        重要な仕事が何かを見極め、それを中心に進める。先々を予測する正確度が高いほど時間管理は成功する。</p>
+        <span class="ptr">← S03:p.11, S05</span>
+      </div>
+    </div>
+
+    <!-- まとめ -->
+    <div id="ch1-summary" class="section">
+      <div class="section-title">第1章まとめ</div>
+      <div class="slide-text">
+        <ul>
+          <li>時間管理は、<strong>先々のスケジュールの予測</strong>が大切</li>
+          <li>時間短縮には、<strong>業務フローの見直し</strong>が必要（省略できるものを探す）</li>
+          <li>自分の仕事のやり方の<strong>見える化</strong>を進めると効果的（チームへの進捗共有）</li>
+          <li>仕事は、時には<strong>断る勇気とそのロジック</strong>を持つ</li>
+        </ul>
+        <div class="slide-pointer">← S03:p.12</div>
+      </div>
+      <div class="voice-block">
+        <div class="block-label">🎙 音声補足（断る勇気について）</div>
+        何でも受け入れているとパンクして評価を落とす。仕事を頼む人は「いい成果」を望んでいる。重要でない仕事は断ることが結果的に依頼者の利益になる。断るときには「納得できるロジック・理屈」を丁寧に説明することが必要。<span class="ptr">← S05</span>
+      </div>
+    </div>
+
+  </div><!-- /chapter-body -->
+</div><!-- /chapter -->
+
+<!-- ===== 第2章 ===== -->
+<div id="ch2" class="chapter">
+  <div class="chapter-header">
+    <span class="chapter-num">Chapter 02</span>
+    <span class="chapter-title">目標管理総論</span>
+  </div>
+  <div class="chapter-body">
+
+    <div class="section">
+      <div class="section-title">学習目標</div>
+      <div class="slide-text">
+        <ul>
+          <li>目標管理に有効なPDCAの活用法をおさらいする</li>
+          <li>目標管理を仕事の場面で応用する方法を学ぶ</li>
+        </ul>
+        <div class="slide-pointer">← S03:p.15</div>
+      </div>
+    </div>
+
+    <div id="ch2-pdca" class="section">
+      <div class="section-title">PDCAサイクルのまとめ（復習）</div>
+      <div class="slide-text">
+        <ul>
+          <li>PDCAは「<strong>計画（Plan）・実行（Do）・評価（Check）・対策（Action）</strong>」のサイクルで改善を目指す</li>
+          <li>PDCAがうまく行かない原因は、<strong>状況やモチベーションの変化、計画ミス</strong>などに起因する</li>
+          <li>PDCAを回す際に有効なのは、<strong>できるだけ正確な予測</strong>を試みること</li>
+        </ul>
+        <div class="slide-pointer">← S03:p.16</div>
+      </div>
+
+      <!-- PDCAサイクル SVG -->
+      <div class="svg-wrap">
+        <figure>
+          <!-- viewBox: 500×280 -->
+          <!-- 中心: (250,140) -->
+          <!-- 4ノード円配置: 半径85px -->
+          <!-- Plan: 上(250,55) Do: 右(335,140) Check: 下(250,225) Action: 左(165,140) -->
+          <svg viewBox="0 0 500 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-height:260px">
+            <defs>
+              <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                <path d="M0,0 L0,6 L8,3 z" fill="#5b8dee"/>
+              </marker>
+            </defs>
+            <rect width="500" height="280" fill="#1e2535" rx="6"/>
+
+            <!-- 円弧矢印（時計回り） -->
+            <!-- P→D: (250,55)→(335,140) -->
+            <path d="M270,63 Q320,80 328,122" stroke="#5b8dee" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+            <!-- D→C: (335,140)→(250,225) -->
+            <path d="M328,158 Q315,200 270,218" stroke="#5b8dee" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+            <!-- C→A: (250,225)→(165,140) -->
+            <path d="M230,218 Q185,200 172,158" stroke="#5b8dee" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+            <!-- A→P: (165,140)→(250,55) -->
+            <path d="M172,122 Q185,80 230,63" stroke="#5b8dee" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+
+            <!-- 中央テキスト -->
+            <text x="250" y="135" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#5b8dee" font-weight="700">PDCA</text>
+            <text x="250" y="150" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#8a99b8">改善サイクル</text>
+
+            <!-- Plan ノード (250,55) -->
+            <circle cx="250" cy="55" r="38" fill="#1a2236" stroke="#34d399" stroke-width="2"/>
+            <text x="250" y="51" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="13" fill="#34d399" font-weight="700">P</text>
+            <text x="250" y="64" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#e2e8f5">計画</text>
+            <text x="250" y="77" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="8" fill="#8a99b8">Plan</text>
+
+            <!-- Do ノード (335,140) -->
+            <circle cx="335" cy="140" r="38" fill="#1a2236" stroke="#5b8dee" stroke-width="2"/>
+            <text x="335" y="136" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="13" fill="#5b8dee" font-weight="700">D</text>
+            <text x="335" y="149" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#e2e8f5">実行</text>
+            <text x="335" y="162" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="8" fill="#8a99b8">Do</text>
+
+            <!-- Check ノード (250,225) -->
+            <circle cx="250" cy="225" r="38" fill="#1a2236" stroke="#fbbf24" stroke-width="2"/>
+            <text x="250" y="221" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="13" fill="#fbbf24" font-weight="700">C</text>
+            <text x="250" y="234" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#e2e8f5">評価</text>
+            <text x="250" y="247" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="8" fill="#8a99b8">Check</text>
+
+            <!-- Action ノード (165,140) -->
+            <circle cx="165" cy="140" r="38" fill="#1a2236" stroke="#f87171" stroke-width="2"/>
+            <text x="165" y="136" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="13" fill="#f87171" font-weight="700">A</text>
+            <text x="165" y="149" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#e2e8f5">対策</text>
+            <text x="165" y="162" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="8" fill="#8a99b8">Action</text>
+
+            <!-- 螺旋上昇アイコン -->
+            <text x="430" y="80" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#34d399">🔺 能力向上</text>
+            <text x="430" y="98" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">繰り返すことで</text>
+            <text x="430" y="112" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">螺旋的に発展</text>
+          </svg>
+          <figcaption>図：PDCAサイクル　← S03:p.16</figcaption>
+        </figure>
+      </div>
+
+      <div class="voice-block">
+        <div class="block-label">🎙 音声補足</div>
+        PDCAを意識できるようになると、仕事が「螺旋階段を登るように」どんどん発展していく。人脈が広がり、難易度の高い・社会貢献度の高い仕事を任されるようになる。難しい仕事ほど、ゴールへのプロセスをより正確に予測することが重要になる。<span class="ptr">← S05</span>
+      </div>
+    </div>
+
+    <!-- 実践場面 -->
+    <div id="ch2-cases" class="section">
+      <div class="section-title">実践場面：目標管理の悩みと対策</div>
+
+      <div class="key-point">
+        <div class="kp-label">📌 計画を立てるのが苦手</div>
+        <p><strong>対策：</strong>計画が苦手な人ほど「<strong>前日の夜に翌日の計画を立てる</strong>」習慣が効果的。仕事終わりは次の仕事のイメージがしやすい。当日朝に計画を変更する必要が生じれば前日の計画を修正すればよい。</p>
+        <span class="ptr">← S03:p.17, S05</span>
+      </div>
+
+      <div class="key-point">
+        <div class="kp-label">📌 仕事でミスが多い</div>
+        <p>原因：①不慣れな仕事 ②性格的なうっかり ③集中力の欠如 ④精神的な悩み。<br>
+        <strong>対策：</strong>ToDoリストをABC優先度付きで管理し、前日夜に作成しておく。ベテランと仕事する際は必ずメモを取る（「気づき」はその瞬間に起きて瞬間的に消える）。</p>
+        <span class="ptr">← S03:p.18, S05</span>
+      </div>
+
+      <div class="key-point">
+        <div class="kp-label">📌 予定した時間内に仕事が終わらない</div>
+        <p>2つのアプローチ：<br>
+        ①<strong>スピードを倍にする</strong>（スキルアップ・仕事を覚える） → 半分の時間で終わる<br>
+        ②<strong>無駄を削除する</strong>（評価されない・重要でない繰り返し作業を思い切って排除） → 時間的余裕を作る<br>
+        余裕がないとイノベーションは起きない。時間的余裕は質の高い仕事の前提。</p>
+        <span class="ptr">← S03:p.19, S05</span>
+      </div>
+
+      <div class="key-point">
+        <div class="kp-label">📌 細かい仕事をするのが苦手</div>
+        <p>得意・不得意で仕事の性質に好き嫌いを持ちすぎないほうがよい。<strong>PDCAを意識して進めれば</strong>、細かい仕事が得意か大胆な仕事が得意かに関わらず、計画通りに進められる。うまくいかない時の根本原因はほとんどの場合「計画性の不足」にある。</p>
+        <span class="ptr">← S03:p.20, S05</span>
+      </div>
+
+      <div class="key-point">
+        <div class="kp-label">📌 人前に出るとあがってしまう</div>
+        <p><strong>対策：</strong>十分な準備と「何を求められているか」を把握していれば大体うまくいく。PDCAを積んで経験を重ねると緊張しなくなる。<br>
+        さらに<strong>「失敗シナリオを事前に想定」</strong>する：例）プレゼン中に動画が流れなかったら→代替手段を事前に決めておく。これでパニックを防げる。</p>
+        <span class="ptr">← S03:p.21-22, S05</span>
+      </div>
+
+      <div class="key-point">
+        <div class="kp-label">📌 上司に正当に評価されているか不安</div>
+        <p><strong>対策：</strong>自分の仕事のゴール・プロセス・計画を上司や同僚に<strong>見える化</strong>する。進捗が見えると周囲の不安も減り、適切な評価につながる。</p>
+        <span class="ptr">← S03:p.23, S05</span>
+      </div>
+    </div>
+
+    <!-- まとめ -->
+    <div id="ch2-summary" class="section">
+      <div class="section-title">第2章まとめ</div>
+      <div class="slide-text">
+        <ul>
+          <li>PDCAを意識して仕事を進めると効果がある（失敗も減る）</li>
+          <li>仕事の段取りだけでなく、<strong>状況の変化への対応</strong>やモチベーションコントロールも大切</li>
+          <li>計画通りに行かなくても、<strong>その場で最善策を探る</strong>姿勢が大切</li>
+          <li>正確な予測をするには、<strong>過去の経験の分析</strong>が活きる</li>
+        </ul>
+        <div class="slide-pointer">← S03:p.24</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== 第3章 ===== -->
+<div id="ch3" class="chapter">
+  <div class="chapter-header">
+    <span class="chapter-num">Chapter 03</span>
+    <span class="chapter-title">モチベーションコントロール総論</span>
+  </div>
+  <div class="chapter-body">
+
+    <div class="section">
+      <div class="section-title">学習目標</div>
+      <div class="slide-text">
+        <ul>
+          <li>モチベーションを上げるための工夫をおさらいする</li>
+          <li>モチベーションコントロールで問題を解決する</li>
+        </ul>
+        <div class="slide-pointer">← S03:p.27</div>
+      </div>
+    </div>
+
+    <div id="ch3-what" class="section">
+      <div class="section-title">モチベーションコントロールとは何か</div>
+      <div class="slide-text">
+        <ul>
+          <li>自分の考え方や行動に<strong>プラスのエネルギーを保つ</strong>ことがモチベーションコントロールの目的</li>
+          <li>モチベーションをコントロールするには、まず<strong>自分の現状分析</strong>をしっかりと行うことが大切</li>
+          <li>モチベーションコントロールには、<strong>具体的で明確な目標設定</strong>が必須</li>
+          <li>最も効果が高いのは<strong>目標を達成すること</strong>（達成の喜び・自信が次の目標へ向かわせる）</li>
+        </ul>
+        <div class="slide-pointer">← S03:p.28</div>
+      </div>
+      <div class="voice-block">
+        <div class="block-label">🎙 音声補足</div>
+        モチベーションは自分だけでなく「周りの人のモチベーション」も影響する。周りが低ければ、自分が周りのモチベーションを高める働きかけをする視点も必要。モチベーション向上の出発点は常に「まず自分が変わること」。他人が変わるのを待っていても何も変わらない。<span class="ptr">← S05</span>
+      </div>
+    </div>
+
+    <!-- 実践場面 -->
+    <div id="ch3-cases" class="section">
+      <div class="section-title">実践場面：モチベーション低下の原因と対処</div>
+
+      <div class="key-point">
+        <div class="kp-label">📌 職場が一体となって働けていない</div>
+        <p>意見がバラバラ・目標が定まらない・不平不満が出る状況では、結果が出なくなり批判が生まれモチベーションが下がる。<br>
+        <strong>対処：</strong>受け身にならない。「他人が変わるから自分が変わる」ではなく「<strong>自分が変わることで相手が変わる可能性がある</strong>」という順番を守る。</p>
+        <span class="ptr">← S03:p.29, S05</span>
+      </div>
+
+      <div class="key-point">
+        <div class="kp-label">📌 来週のプレゼンが憂鬱</div>
+        <p>準備が進んでいない・協力が得られない → 憂鬱。<br>
+        逆に、良いスライドができている・良い結果が出ている → 「早く伝えたい」に変わる。<br>
+        <strong>鍵：</strong>結果を出すことでモチベーションが自然に上がる。チームで動くと一人より大きなインパクトが生まれる。自己分析→改善→周囲への働きかけの順番を守る。</p>
+        <span class="ptr">← S03:p.30, S05</span>
+      </div>
+
+      <div class="key-point">
+        <div class="kp-label">📌 会社・学校に行く気力が湧いてこない</div>
+        <p>原因：楽しくない・辛いことがある・興味がない・疲れてしまう。<br>
+        <strong>対処①：</strong>自分で解決できることは自分で。<br>
+        <strong>対処②：</strong>同じ苦労をする仲間と「苦労を分かち合い、励まし合う」。<br>
+        一人で解決しなくてよい。モチベーションの連帯・共助も有効な手段。</p>
+        <span class="ptr">← S03:p.31, S05</span>
+      </div>
+
+      <div class="key-point">
+        <div class="kp-label">📌 顧客との関係がぎくしゃくしている</div>
+        <p>努力が評価されないと感じるほど辛くなる。顧客との信頼関係は日々のコミュニケーションが基盤。<br>
+        <strong>対処：</strong>ぎくしゃくを感じたら<strong>コミュニケーションを増やして早期解決</strong>する。無視・軽視すると問題が深刻化する。自分の態度・接し方を変えることで相手も変わる可能性がある。</p>
+        <span class="ptr">← S03:p.32, S05</span>
+      </div>
+
+      <div class="key-point">
+        <div class="kp-label">📌 仕事に常に追い立てられている</div>
+        <p>新しいことに挑戦する余裕がない状態が続くとモチベーションは低下する。<br>
+        <strong>対処：</strong>仕事の中身を変えられるよう周囲に相談・働きかける。時間的余裕を作ることが質の高い仕事・高いモチベーションの前提条件。</p>
+        <span class="ptr">← S03:p.33, S05</span>
+      </div>
+
+      <div class="key-point">
+        <div class="kp-label">📌 上司・同僚との相性が悪い</div>
+        <p>誤解が原因で生まれた関係悪化を放置しない。<br>
+        <strong>対処：</strong>誤解を見つけて解く努力をする。やりたい仕事を任せてもらうには「何をやりたいか」を相手に理解してもらうプロセスが必要。モチベーションが上がらない→良い成果が出ない→良い仕事を任せてもらえない、という<strong>負のスパイラル</strong>に入らないよう日々気をつける。</p>
+        <span class="ptr">← S03:p.34-35, S05</span>
+      </div>
+    </div>
+
+    <!-- まとめ -->
+    <div id="ch3-summary" class="section">
+      <div class="section-title">第3章まとめ</div>
+      <div class="slide-text">
+        <ul>
+          <li><strong>ポジティブな態度は仕事仲間に伝染する</strong>（自分が変われば周りも変わる）</li>
+          <li>仕事の目標は、<strong>短期的なものと中長期的なもの</strong>をバランスよく持つことが大切</li>
+          <li>うまくいかないときは、<strong>時間が解決してくれることもある</strong>（特に人間関係の修復）</li>
+          <li>受け身にならず、<strong>主体的に粘り強く働きかける</strong>ことがリーダーへの道</li>
+        </ul>
+        <div class="slide-pointer">← S03:p.36</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== 第4章 ===== -->
+<div id="ch4" class="chapter">
+  <div class="chapter-header">
+    <span class="chapter-num">Chapter 04</span>
+    <span class="chapter-title">パーソナルブランド総論</span>
+  </div>
+  <div class="chapter-body">
+
+    <div class="section">
+      <div class="section-title">学習目標</div>
+      <div class="slide-text">
+        <ul>
+          <li>パーソナルブランディングの効果をおさらいする</li>
+          <li>パーソナルブランディングの仕事への活かし方を学ぶ</li>
+        </ul>
+        <div class="slide-pointer">← S03:p.39</div>
+      </div>
+    </div>
+
+    <div id="ch4-usp" class="section">
+      <div class="section-title">パーソナルブランディングのまとめ（復習）</div>
+      <div class="slide-text">
+        <ul>
+          <li>パーソナルブランドが確立しても、<strong>継続的に自分の言動を管理してイメージを維持</strong>することが大切</li>
+          <li>パーソナルブランドをビジネスに活かすためには、<strong>USP（ユニーク・セリング・プロポジション）</strong>が鍵になる</li>
+          <li>自分が相手を追うよりも、<strong>追われる人物になると、人脈は一気に広がりを見せる</strong></li>
+          <li>人脈とは、<strong>「助け合いの輪」</strong>を作ることである</li>
+        </ul>
+        <div class="slide-pointer">← S03:p.40</div>
+      </div>
+
+      <!-- USPと人脈の関係図 -->
+      <div class="svg-wrap">
+        <figure>
+          <!-- viewBox: 560×220 -->
+          <svg viewBox="0 0 560 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-height:200px">
+            <rect width="560" height="220" fill="#1e2535" rx="6"/>
+            <defs>
+              <marker id="arr2" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto">
+                <path d="M0,0 L0,7 L7,3.5 z" fill="#5b8dee"/>
+              </marker>
+            </defs>
+
+            <!-- USPボックス -->
+            <rect x="30" y="70" width="140" height="80" fill="#1a2236" stroke="#fbbf24" stroke-width="1.5" rx="6"/>
+            <text x="100" y="102" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#fbbf24" font-weight="700">USP</text>
+            <text x="100" y="118" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#e2e8f5">ユニーク・セリング</text>
+            <text x="100" y="130" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#e2e8f5">プロポジション</text>
+            <text x="100" y="142" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="8" fill="#8a99b8">差別化された独自価値</text>
+
+            <!-- 矢印 USP → 情報発信 -->
+            <line x1="170" y1="110" x2="208" y2="110" stroke="#5b8dee" stroke-width="1.2" marker-end="url(#arr2)"/>
+
+            <!-- 情報発信ボックス -->
+            <rect x="210" y="70" width="140" height="80" fill="#1a2236" stroke="#34d399" stroke-width="1.5" rx="6"/>
+            <text x="280" y="102" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#34d399" font-weight="700">継続的情報発信</text>
+            <text x="280" y="118" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#e2e8f5">SNS・ブログ</text>
+            <text x="280" y="130" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#e2e8f5">専門分野での発言</text>
+            <text x="280" y="142" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="8" fill="#8a99b8">止めるとイメージが薄れる</text>
+
+            <!-- 矢印 情報発信 → 追われる人物 -->
+            <line x1="350" y1="110" x2="388" y2="110" stroke="#5b8dee" stroke-width="1.2" marker-end="url(#arr2)"/>
+
+            <!-- 追われる人物ボックス -->
+            <rect x="390" y="70" width="140" height="80" fill="#1a2236" stroke="#a78bfa" stroke-width="1.5" rx="6"/>
+            <text x="460" y="102" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#a78bfa" font-weight="700">追われる人物</text>
+            <text x="460" y="118" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#e2e8f5">相手から近づいてくる</text>
+            <text x="460" y="130" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#e2e8f5">人脈が広がる</text>
+            <text x="460" y="142" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="8" fill="#8a99b8">助け合いの輪の形成</text>
+
+            <!-- 結果テキスト -->
+            <text x="280" y="185" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#e2e8f5">→ 自分・周囲の仕事効率向上、社会貢献へ</text>
+            <text x="280" y="200" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#8a99b8">パーソナルブランドは自分だけでなく周囲の満足度も改善する</text>
+          </svg>
+          <figcaption>図：パーソナルブランディングの効果連鎖　← S03:p.40</figcaption>
+        </figure>
+      </div>
+
+      <div class="voice-block">
+        <div class="block-label">🎙 音声補足（USPについて）</div>
+        USPとは「似たようなものが他にもあるが、自分はどこが違うか」を明確にすること。パーソナルブランドをビジネスに活かす際、この独自性の言語化が最重要。名刺を何枚交換したかで人脈はできない。相手が自分に興味を持って近づいてきたとき、それが真の人脈。<span class="ptr">← S05</span>
+      </div>
+    </div>
+
+    <!-- 実践場面 -->
+    <div id="ch4-cases" class="section">
+      <div class="section-title">実践場面：パーソナルブランドを仕事に活かす</div>
+
+      <div class="key-point">
+        <div class="kp-label">📌 「専門家」という言葉に惑わされない</div>
+        <p>世の中には様々な専門家がいるが、一つのことだけをずっとやっている人は実は少ない。<br>
+        重要なのは<strong>異分野とのコラボレーション</strong>：異なる専門家が話し合うことで新しい発見が生まれる。自分の専門性にこだわりすぎず、積極的に異分野の人とコミュニケーションを取ることが今の時代に求められる。</p>
+        <span class="ptr">← S03:p.41, S05</span>
+      </div>
+
+      <div class="key-point">
+        <div class="kp-label">📌 新しい知識のインプットとアウトプットを絶やさない</div>
+        <p>知識を得てアウトプットすることで学びが深まる。インプットだけでは学びは完結しない。<br>
+        <strong>インプット ⇄ アウトプットのバランス</strong>が重要。「誰かに伝える・教える」という作業がさらに学びを深化させる。</p>
+        <span class="ptr">← S03:p.42, S05</span>
+      </div>
+
+      <div class="key-point">
+        <div class="kp-label">📌 世の中の変化や時流をつかむ</div>
+        <p>自分の興味だけにとどまっていると社会貢献・他者との接点が見つかりにくい。<br>
+        今何が注目されているか・必要とされているかをウォッチし続けることで、パーソナルブランドに「社会との接続」が生まれる。</p>
+        <span class="ptr">← S03:p.43, S05</span>
+      </div>
+
+      <div class="key-point">
+        <div class="kp-label">📌 常に疑問を持ち、柔軟に改善を加える</div>
+        <p>製造現場の「無駄を見つけて改善する（カイゼン）」の発想を日常生活に取り入れる。<br>
+        日々の小さな積み重ね（ドミノ式）がいずれ大きな成果につながる。「1つ1つの点を打つ気持ちでも、最後は必ず線で結ばれる」。</p>
+        <span class="ptr">← S03:p.44-45, S05</span>
+      </div>
+
+      <div class="key-point">
+        <div class="kp-label">📌 オリジナリティにこだわり、自分らしいブランドを作る</div>
+        <p>自分のキャラクター・これまでの生き様が全てオリジナルの素材。人の真似だけでは注目されるパーソナルブランドにはなれない。<br>
+        自分らしさを前面に出すことで「好ましい・サポートしたい」と思ってくれるファンが生まれる。<strong>ファン作りがパーソナルブランドの実践的な目標</strong>。</p>
+        <span class="ptr">← S03:p.46, S05</span>
+      </div>
+    </div>
+
+    <!-- まとめ -->
+    <div id="ch4-summary" class="section">
+      <div class="section-title">第4章まとめ</div>
+      <div class="slide-text">
+        <ul>
+          <li>パーソナルブランドは、<strong>相手へのわかりやすさ</strong>が鍵（自己満足ではなく他者視点）</li>
+          <li>世の中の変化をとらえ、<strong>常に新しい知識や人脈を得られるよう継続的な働きかけ</strong>が必要</li>
+          <li><strong>情報発信は、蓄積が大きな効果をもたらす</strong></li>
+          <li>自分らしさを前面に出し、<strong>ファンを作るアプローチ</strong>が効果的なパーソナルブランドを作る</li>
+        </ul>
+        <div class="slide-pointer">← S03:p.47</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- 第8回まとめ（全体） -->
+<div class="chapter">
+  <div class="chapter-header">
+    <span class="chapter-num">第8回 全体まとめ</span>
+    <span class="chapter-title">セルフマネジメントの4本柱</span>
+  </div>
+  <div class="chapter-body">
+    <div class="slide-text">
+      <ul>
+        <li><strong>タイムマネジメント</strong>ができていることを周囲にアピールすることが大切（信頼度向上）</li>
+        <li><strong>目標管理（PDCA）</strong>がうまくいくと、細かな仕事の悩みの大半が解決できる</li>
+        <li><strong>ポジティブなエネルギーはお互いに伝染する</strong>ため、できるかぎりモチベーションの高い人と付き合う</li>
+        <li><strong>パーソナルブランド</strong>ができると、自分だけでなく相手の仕事効率も改善できる</li>
+      </ul>
+      <div class="slide-pointer">← S03:p.48</div>
+    </div>
+    <div class="voice-block">
+      <div class="block-label">🎙 音声補足</div>
+      「できる人にできる仕事を頼む」という合理的な仕事の割り振りは、パーソナルブランドが確立していることで可能になる。上司から見ても仕事の割り振りがしやすくなり、総合的な生産性が上がる。<span class="ptr">← S05</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 補足A ===== -->
+<div id="app-a" class="appendix app-a">
+  <div class="appendix-header"><span class="icon">⭐</span>補足A: 最重要ワード一覧</div>
+  <div class="appendix-body">
+    <table>
+      <thead>
+        <tr><th>用語</th><th>読み</th><th>定義</th><th>重要度</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>タイムマネジメント</strong></td>
+          <td>たいむまねじめんと</td>
+          <td>誰にも共通に与えられた時間を有効活用し、生産性を高め、より良い結果を出すための管理手法</td>
+          <td class="star-3">★★★</td>
+        </tr>
+        <tr>
+          <td><strong>時間管理のマトリックス</strong></td>
+          <td>じかんかんりのまとりっくす</td>
+          <td>緊急性（高低）×重要性（高低）の2軸で仕事を4領域に分類するツール。第二領域（非緊急×重要）への投資が最優先</td>
+          <td class="star-3">★★★</td>
+        </tr>
+        <tr>
+          <td><strong>第二領域</strong></td>
+          <td>だいにりょういき</td>
+          <td>時間管理のマトリックスの4象限のうち「緊急でないが重要」な領域（例：人間関係作り・計画立案）。最も時間を投資すべき領域</td>
+          <td class="star-3">★★★</td>
+        </tr>
+        <tr>
+          <td><strong>PDCA</strong></td>
+          <td>ぴーでぃーしーえー</td>
+          <td>Plan（計画）→Do（実行）→Check（評価）→Action（対策）の改善サイクル。繰り返すことで能力開発・成果向上を実現</td>
+          <td class="star-3">★★★</td>
+        </tr>
+        <tr>
+          <td><strong>モチベーションコントロール</strong></td>
+          <td>もちべーしょんこんとろーる</td>
+          <td>自分の考え方や行動にプラスのエネルギーを保ち、モチベーションを高く維持・管理すること。まず自分の現状分析→自分が変わることが起点</td>
+          <td class="star-3">★★★</td>
+        </tr>
+        <tr>
+          <td><strong>パーソナルブランディング</strong></td>
+          <td>ぱーそなるぶらんでぃんぐ</td>
+          <td>個人の独自性・専門性・価値観を明確にし、他者に一貫したイメージとして認識させる継続的活動。「他者から見てわかりやすいこと」が最重要ポイント</td>
+          <td class="star-3">★★★</td>
+        </tr>
+        <tr>
+          <td><strong>USP（ユニーク・セリング・プロポジション）</strong></td>
+          <td>ゆーえすぴー</td>
+          <td>自分が他者と差別化できる独自の強み・提案価値。「似たものが他にもあるが、自分はどこが違うか」を明確にしたもの</td>
+          <td class="star-3">★★★</td>
+        </tr>
+        <tr>
+          <td><strong>ToDoリスト</strong></td>
+          <td>とぅーどぅーりすと</td>
+          <td>やるべき仕事を箇条書きにし、A・B・Cなどの優先度を付けて管理するツール。前日夜に作成し、翌日のスタートをスムーズにする</td>
+          <td class="star-2">★★☆</td>
+        </tr>
+        <tr>
+          <td><strong>人脈</strong></td>
+          <td>じんみゃく</td>
+          <td>いざとなったときに頼れる・助け合える関係。「追われる人物」になることで自然に形成される。名刺交換の数ではない</td>
+          <td class="star-2">★★☆</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== 補足B ===== -->
+<div id="app-b" class="appendix app-b">
+  <div class="appendix-header"><span class="icon">📚</span>補足B: 知っておくべき背景知識</div>
+  <div class="appendix-body">
+    <p class="ext-sub">
+      <strong>時間管理のマトリックスの出典：</strong>
+      スティーブン・コヴィー（Stephen R. Covey）著『The 7 Habits of Highly Effective People（7つの習慣）』（1989年）。第三の習慣「最優先事項を優先する」で提唱されたフレームワーク。第二領域への投資が生産性向上の核心とされる。
+      <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim)">[外部補足・確認済: Covey, S.R., 1989]</span>
+    </p>
+    <p class="ext-sub" style="margin-top:12px">
+      <strong>PDCAサイクルの出典：</strong>
+      起源はアメリカの統計学者ウォルター・シューハート（Walter Shewhart）が1939年に提唱した「環状経路（シューハート・サイクル）」。その弟子エドワーズ・デミング（W. Edwards Deming）が1950年に日本科学技術連盟（日科技連）での講演でこのサイクルを紹介。講演を聞いた日科技連メンバーが「Plan→Do→Check→Act」として整理し、現在の「PDCAサイクル」として普及させた。デミング本人は晩年（1993年）に「Check（確認）」より「Study（研究・考察）」の方が正確として、PDSAサイクルに修正すべきと主張した経緯がある。現在はISO 9001をはじめあらゆる分野の業務改善に応用されている。
+      <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim)">[外部補足・確認済: Shewhart, 1939; Deming, 1950; Wikipedia PDCAサイクル]</span>
+    </p>
+    <p class="ext-sub" style="margin-top:12px">
+      <strong>USP（ユニーク・セリング・プロポジション）の出典：</strong>
+      アメリカの広告コピーライター・ロッサー・リーブス（Rosser Reeves, 1910–1984）が1940年代に成功した広告キャンペーンを調査・研究し、共通パターンとして発見した概念。1961年刊行の著書『Reality in Advertising（USP ユニーク・セリング・プロポジション）』で正式に提唱した。リーブス本人は「①顧客への明確な利益提案、②競合が提示できない独自性、③大衆を動かすほどの強力さ」の3要素をUSPの基準と定めた。もともとは商品広告戦略として生まれたが、現在はパーソナルブランディングにも広く応用されている。
+      <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim)">[外部補足・確認済: Reeves, R. 『Reality in Advertising』 1961]</span>
+    </p>
+    <p class="ext-sub" style="margin-top:12px">
+      <strong>ポジティブな態度の伝染（感情伝染・情動伝染）：</strong>
+      心理学では「情動伝染（Emotional Contagion）」と呼ばれ、人は周囲の感情状態を無意識に模倣・同期させる傾向がある。エレイン・ハットフィールド、ジョン・カシオッポ、リチャード・ラプソンが1993年の論文（*Current Directions in Psychological Science*, Vol.2, pp.96–100）で「他者の表現・発声・姿勢・動きを自動的に模倣し同期させる傾向、そして結果として感情的に収束する傾向」と定義した。ポジティブな感情もネガティブな感情も同様に伝染し、職場のムードや生産性に大きく影響する（Barsade, 2002など多数の研究で確認）。講義で「ポジティブなエネルギーはお互いに伝染する」と述べられた内容はこの知見と一致する。
+      <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim)">[外部補足・確認済: Hatfield, Cacioppo &amp; Rapson, 1993]</span>
+    </p>
+  </div>
+</div>
+
+<!-- ===== 補足C ===== -->
+<div id="app-c" class="appendix app-c">
+  <div class="appendix-header"><span class="icon">🎯</span>補足C: 試験・レポートで重要な観点</div>
+  <div class="appendix-body">
+    <ul style="font-size:13.5px">
+      <li style="margin-bottom:8px"><strong>時間管理のマトリックスの4領域</strong>を正確に描ける（緊急性×重要性、各領域の具体例）。特に<strong>第二領域の重要性と具体例</strong>は頻出。</li>
+      <li style="margin-bottom:8px"><strong>PDCAの各フェーズ</strong>（Plan/Do/Check/Action）の意味と、うまく回らない原因（状況・モチベーション変化・計画ミス）を説明できる。</li>
+      <li style="margin-bottom:8px"><strong>「まず自分が変わる」原則</strong>：モチベーションコントロール・人間関係改善において一貫して強調された最重要メッセージ。論述問題でこの視点を使えると評価が高い。</li>
+      <li style="margin-bottom:8px"><strong>パーソナルブランドの3要素</strong>：①USPによる差別化 ②継続的情報発信 ③「追われる人物」になること。これらが人脈形成・仕事効率向上につながる流れを説明できると良い。</li>
+      <li style="margin-bottom:8px"><strong>負のスパイラル</strong>：モチベーション低下→成果が出ない→良い仕事を任せてもらえない、の連鎖を断ち切るための具体的行動を論述できるか。</li>
+      <li><strong>インプット⇄アウトプットのバランス</strong>：パーソナルブランド維持と学びの深化を同時に実現する手段として位置づけられている。</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ===== 補足D ===== -->
+<div id="app-d" class="appendix app-d">
+  <div class="appendix-header"><span class="icon">🔗</span>補足D: 関連概念・次回への接続</div>
+  <div class="appendix-body">
+    <p class="ext-sub"><strong>第8回は最終回（総論）</strong>のため「次回」はないが、学習継続の観点から関連知識を記載する。</p>
+    <ul style="margin-top:12px;font-size:13px">
+      <li style="margin-bottom:8px">
+        <strong>OKR（Objectives and Key Results）：</strong>
+        インテルのアンドリュー・グローブが導入し、Googleが採用したことで広まった目標管理フレームワーク。「O（目標）」と「KR（主要結果）」のセットで目標を管理する。PDCAとの最大の違いは「あえて達成困難な挑戦的目標（ムーンショット）を設定し、達成率60〜70%を良い結果とみなす」点。四半期単位で設定・評価するため変化への対応も速い。現代のビジネスシーンでPDCAと並んで広く使われている。
+        <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim)">[外部補足・確認済: Grove, 1983; Doerr, 2018『Measure What Matters』]</span>
+      </li>
+      <li style="margin-bottom:8px">
+        <strong>カイゼン（Kaizen）：</strong>
+        講義で「製造現場での無駄を見つけて改善する」として言及された概念。トヨタ生産方式（TPS）の中核をなす考え方で、「継続的な小さな改善の積み重ね」を指す。英語圏でも "Kaizen" として通用し、ISOや多くの品質管理システムで参照されている。PDCAサイクルとも密接に関連しており、「螺旋状のスパイラルアップ」で能力を向上させるという講義の説明と一致する。
+        <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim)">[外部補足・確認済: Toyota Production System]</span>
+      </li>
+      <li style="margin-bottom:8px">
+        <strong>セルフ・エフィカシー（Self-Efficacy：自己効力感）：</strong>
+        カナダの心理学者アルバート・バンデューラ（Albert Bandura）が1977年に提唱した概念。「自分は特定の行動を遂行できる」という確信（自己効力感）がモチベーション・行動・継続性に強く影響する。特に「過去の成功体験（達成体験）」が自己効力感を高める最大の要因とされる。講義でくり返し強調された「目標達成体験がモチベーションを最も高める」という主張はこの理論と直結する。
+        <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim)">[外部補足・確認済: Bandura, A. "Self-efficacy: toward a unifying theory of behavioral change." Psychological Review, 1977]</span>
+      </li>
+      <li style="margin-bottom:8px">
+        <strong>ジョハリの窓（Johari Window）：</strong>
+        心理学者ジョセフ・ルフト（Joseph Luft）とハリントン・インガム（Harrington Ingham）が1955年に提唱。「自分が知っている／知らない」×「他者が知っている／知らない」の4象限で自己理解を深めるツール。パーソナルブランディングで重要な「他者から見た自分のイメージ（開放の窓）を広げる」「盲点の窓（自分では気づかない強み）を発見する」という観点に直接つながる。
+        <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim)">[外部補足・確認済: Luft &amp; Ingham, 1955]</span>
+      </li>
+      <li>
+        <strong>OODA ループ（Observe-Orient-Decide-Act）：</strong>
+        アメリカ空軍のジョン・ボイド大佐が開発した意思決定フレームワーク。「観察→情勢適応→意思決定→行動」の4段階を高速で繰り返す。PDCAが「計画先行型」であるのに対し、OODAは「状況観察先行型」で不確実性の高い場面に強い。近年のビジネス環境の変化スピードが増す中で、PDCAの補完または代替として注目されている。
+        <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim)">[外部補足: Boyd, 1980s; Wikipedia OODAループ]</span>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<!-- ===== 未確定事項 ===== -->
+<div id="app-u" class="appendix app-u">
+  <div class="appendix-header"><span class="icon">✅</span>未確定事項・要確認リスト（解消済み）</div>
+  <div class="appendix-body">
+    <table>
+      <thead>
+        <tr><th>ID</th><th>内容</th><th>状態</th><th>解消根拠</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span style="font-family:'JetBrains Mono',monospace;color:var(--accent-grn)">U01 ✅</span></td>
+          <td>S05-Aに「コロナクリプトル」という語句が出現。文脈は「マトリクスの中で一番重要だったこと」という箇所。</td>
+          <td style="color:var(--accent-grn);font-weight:700">解消済み</td>
+          <td>S05-Bおよびその文脈（「マトリクスの中で一番重要だったこと」→第二領域の説明箇所）を照合した結果、S05-Aのみに現れる全文破損断片と確認。S03:p.6「第二領域に投資する」に対応する箇所であり、本文の内容・記述に影響なし。</td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="font-size:12px;color:var(--accent-grn);margin-top:12px">🎉 全ての未確定事項が解消されました。</p>
+  </div>
+</div>
+
+<!-- フッター -->
+<div style="margin-top:48px;padding-top:20px;border-top:1px solid var(--border);text-align:center">
+  <p style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-dim)">
+    note_selfmgmt_08.html &nbsp;·&nbsp; SSP v4.2 / prompt v4.6.1 &nbsp;·&nbsp; v1.1 2026-04-13（Step 6 QC完了・未確定事項解消）
+  </p>
+  <p style="font-size:11px;color:var(--text-dim);margin-top:4px">
+    Sources: S03（スライドPDF 49p）· S05-A · S05-B（hynote.ai）
+  </p>
+</div>
+
+</main><!-- /main -->
+
+<script>
+// アクティブなTOCリンクをハイライト
+const sections = document.querySelectorAll('[id]');
+const tocLinks = document.querySelectorAll('#sidebar a');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      tocLinks.forEach(l => l.classList.remove('active'));
+      const active = document.querySelector(`#sidebar a[href="#${entry.target.id}"]`);
+      if(active) active.classList.add('active');
+    }
+  });
+}, {threshold:0.3, rootMargin:'-60px 0px -60% 0px'});
+sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
