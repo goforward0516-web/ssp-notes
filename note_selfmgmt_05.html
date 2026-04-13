@@ -1,0 +1,1535 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>セルフマネジメント論 第5回｜自己分析とKAIZEN活動</title>
+<!--
+  SSP v4.2 準拠 | Step 5-B 出力
+  科目: セルフマネジメント論 第5回
+  担当: 小松俊明
+  ソース: S03（スライドPDF 61p）, S05-A（hynote.ai）, S05-B（hynote.ai）
+  生成: v4.6.1 準拠
+  v1.0 初版（Step 5-B完了）
+  v1.1 背景知識・外部補足を確認済みソースで補強
+  v1.3 SVG図修正（ジョハリ均等4象限・スパイラルviewBox720・KAIZENサイクルviewBox130）・自己効力感を確認済みで補強・未確定事項U03-U04解消
+-->
+<style>
+/* ══════════════════════════════════
+   CSS変数 / ダークテーマ
+══════════════════════════════════ */
+:root {
+  --bg: #0f1117;
+  --bg2: #161b27;
+  --bg3: #1e2535;
+  --border: #2a3347;
+  --accent: #c0392b;
+  --accent2: #e74c3c;
+  --gold: #f39c12;
+  --blue: #2980b9;
+  --blue2: #3498db;
+  --green: #27ae60;
+  --green2: #2ecc71;
+  --purple: #8e44ad;
+  --purple2: #9b59b6;
+  --orange: #e67e22;
+  --orange2: #f39c12;
+  --text: #e2e8f5;
+  --text-muted: #8a99b8;
+  --text-sub: #b0bcd0;
+  --sidebar-w: 268px;
+  --radius: 8px;
+  --mono: 'JetBrains Mono', 'Courier New', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Yu Gothic Medium', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 14px;
+}
+
+/* ══ Sidebar ══ */
+#sidebar {
+  position: fixed; top: 0; left: 0;
+  width: var(--sidebar-w); height: 100vh;
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  overflow-y: auto; z-index: 100;
+  padding: 0 0 40px;
+  scrollbar-width: thin;
+}
+
+.sidebar-header {
+  padding: 18px 16px 14px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg2);
+  position: sticky; top: 0; z-index: 10;
+}
+
+.sidebar-course { font-size: 10px; color: var(--text-muted); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 4px; }
+.sidebar-title  { font-size: 12px; font-weight: 700; color: var(--text); line-height: 1.4; }
+.sidebar-meta   { font-size: 10px; color: var(--text-muted); margin-top: 4px; }
+.sidebar-badge  { display:inline-block; margin-top:6px; padding:2px 8px; background:var(--accent); color:#fff; font-size:10px; border-radius:3px; font-weight:700; }
+
+.nav-section { padding: 10px 0 3px 14px; font-size: 10px; color: var(--text-muted); letter-spacing: .1em; text-transform: uppercase; font-weight: 700; }
+.nav-item {
+  display: block; padding: 5px 14px 5px 20px;
+  font-size: 12px; color: var(--text-sub); text-decoration: none;
+  border-left: 2px solid transparent; transition: all .12s;
+}
+.nav-item:hover { color: var(--text); border-left-color: var(--accent); background: rgba(192,57,43,.07); }
+.nav-item.active { color: var(--accent2); border-left-color: var(--accent); background: rgba(192,57,43,.10); font-weight: 700; }
+.nav-sub { padding-left: 30px; font-size: 11px; }
+
+/* ══ Main ══ */
+#main {
+  margin-left: var(--sidebar-w);
+  min-height: 100vh;
+  padding: 40px 48px 100px;
+  max-width: 920px;
+}
+
+/* ══ Progress bar ══ */
+.toc-progress { position:fixed; top:0; left:var(--sidebar-w); right:0; height:2px; background:var(--border); z-index:200; }
+#progress-fill { height:100%; background: linear-gradient(90deg,var(--accent),var(--gold)); width:0%; transition:width .1s; }
+
+/* ══ Hero ══ */
+.hero { border-bottom: 2px solid var(--accent); padding-bottom: 28px; margin-bottom: 40px; }
+.hero-meta { display:flex; gap:10px; align-items:center; margin-bottom:10px; flex-wrap:wrap; }
+.chip { display:inline-flex; align-items:center; gap:4px; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:600; }
+.chip-red   { background:rgba(192,57,43,.2);  color:#e74c3c; border:1px solid rgba(192,57,43,.4); }
+.chip-blue  { background:rgba(41,128,185,.2); color:#3498db; border:1px solid rgba(41,128,185,.4); }
+.chip-green { background:rgba(39,174,96,.2);  color:#2ecc71; border:1px solid rgba(39,174,96,.4); }
+.chip-gray  { background:rgba(136,146,164,.15); color:#8892a4; border:1px solid rgba(136,146,164,.25); }
+.chip-gold  { background:rgba(243,156,18,.15); color:#f39c12; border:1px solid rgba(243,156,18,.3); }
+.hero h1 { font-size:26px; font-weight:800; color:var(--text); line-height:1.3; letter-spacing:-.02em; }
+.hero h1 span { color:var(--accent2); }
+.hero-sub { margin-top:8px; font-size:13px; color:var(--text-muted); }
+
+/* ══ Source info bar ══ */
+.source-bar {
+  display:flex; gap:8px; flex-wrap:wrap; padding:10px 14px;
+  background:var(--bg3); border:1px solid var(--border); border-radius:var(--radius);
+  margin-bottom:32px; font-size:11px; color:var(--text-muted); align-items:center;
+}
+.source-bar strong { color:var(--text-sub); }
+
+/* ══ Chapter break ══ */
+.chapter-break {
+  display:flex; align-items:center; gap:14px;
+  padding:20px 0 16px; margin:48px 0 24px;
+  border-top:1px solid var(--border);
+}
+.chapter-num { min-width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; display:flex; align-items:center; justify-content:center; font-size:16px; font-weight:800; }
+.chapter-info h2 { font-size:19px; font-weight:700; color:var(--text); }
+.chapter-info p  { font-size:12px; color:var(--text-muted); margin-top:2px; }
+
+/* ══ Section headings ══ */
+.sec-title {
+  font-size:15.5px; font-weight:700; color:var(--text);
+  padding:4px 0 4px 12px;
+  border-left:3px solid var(--accent); margin:28px 0 12px;
+}
+.sub-title { font-size:13.5px; font-weight:700; color:var(--blue2); margin:18px 0 8px; }
+
+/* ══ Source pointer badge ══ */
+.src {
+  display:inline-block; padding:0 6px; border-radius:3px;
+  font-size:10px; font-weight:700; font-family:var(--mono);
+  margin-left:4px; vertical-align:middle; line-height:18px;
+}
+.src-s03 { background:rgba(192,57,43,.2);  color:#e74c3c; border:1px solid rgba(192,57,43,.35); }
+.src-s05 { background:rgba(41,128,185,.2); color:#3498db; border:1px solid rgba(41,128,185,.35); }
+.src-ext { background:rgba(39,174,96,.2);  color:#2ecc71; border:1px solid rgba(39,174,96,.35); }
+.src-extq{ background:rgba(231,76,60,.15); color:#e74c3c; border:1px solid rgba(231,76,60,.3); }
+
+/* ══ SSP supplement blocks ══ */
+/* 音声補足 ── 青ボーダー */
+.voice-block {
+  background:rgba(41,128,185,.07);
+  border-left:3px solid var(--blue2);
+  border-radius:0 var(--radius) var(--radius) 0;
+  padding:10px 14px; margin:10px 0;
+}
+.voice-label { font-size:10px; font-weight:700; color:var(--blue2); letter-spacing:.08em; text-transform:uppercase; margin-bottom:4px; }
+
+/* 推測補完 ── 紫ボーダー */
+.infer-block {
+  background:rgba(142,68,173,.08);
+  border-left:3px solid var(--purple2);
+  border-radius:0 var(--radius) var(--radius) 0;
+  padding:10px 14px; margin:10px 0;
+}
+.infer-label { font-size:10px; font-weight:700; color:var(--purple2); letter-spacing:.08em; text-transform:uppercase; margin-bottom:4px; }
+
+/* 要確認 ── オレンジボーダー */
+.uncert-block {
+  background:rgba(230,126,34,.07);
+  border-left:3px solid var(--orange);
+  border-radius:0 var(--radius) var(--radius) 0;
+  padding:10px 14px; margin:10px 0;
+}
+.uncert-label { font-size:10px; font-weight:700; color:var(--orange); letter-spacing:.08em; text-transform:uppercase; margin-bottom:4px; }
+
+/* 外部補足 ── 緑ボーダー（本文セクション用） */
+.ext-block {
+  background:rgba(39,174,96,.07);
+  border-left:3px solid var(--green2);
+  border-radius:0 var(--radius) var(--radius) 0;
+  padding:10px 14px; margin:10px 0;
+}
+.ext-label { font-size:10px; font-weight:700; color:var(--green2); letter-spacing:.08em; text-transform:uppercase; margin-bottom:4px; }
+
+/* 外部補足バッジ（インライン） */
+.badge-ext-ok  { display:inline-block; padding:1px 6px; border-radius:3px; font-size:10px; font-weight:700; background:rgba(39,174,96,.2);  color:#2ecc71; font-family:var(--mono); }
+.badge-ext     { display:inline-block; padding:1px 6px; border-radius:3px; font-size:10px; font-weight:700; background:rgba(243,156,18,.2); color:#f39c12; font-family:var(--mono); }
+.badge-ext-q   { display:inline-block; padding:1px 6px; border-radius:3px; font-size:10px; font-weight:700; background:rgba(231,76,60,.2);  color:#e74c3c; font-family:var(--mono); }
+
+/* ══ Content blocks ══ */
+.card { background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius); padding:16px 20px; margin:12px 0; }
+.card-gold  { background:rgba(243,156,18,.07); border:1px solid rgba(243,156,18,.3); border-radius:var(--radius); padding:14px 18px; margin:12px 0; }
+.card-warn  { background:rgba(231,76,60,.06); border:1px solid rgba(231,76,60,.25); border-radius:var(--radius); padding:14px 18px; margin:12px 0; }
+
+.def-block {
+  background:var(--bg3); border:1px solid var(--border); border-top:3px solid var(--gold);
+  border-radius:var(--radius); padding:14px 18px; margin:12px 0;
+}
+.def-label { font-size:10px; font-weight:700; letter-spacing:.12em; color:var(--gold); text-transform:uppercase; margin-bottom:6px; }
+
+/* ══ Lists ══ */
+ul.note-list { list-style:none; padding:0; margin:8px 0; }
+ul.note-list li { padding:4px 0 4px 18px; position:relative; font-size:13.5px; color:var(--text-sub); line-height:1.65; }
+ul.note-list li::before { content:'▸'; position:absolute; left:0; color:var(--accent2); font-size:11px; top:6px; }
+
+ul.check-list { list-style:none; padding:0; margin:8px 0; }
+ul.check-list li { padding:3px 0 3px 20px; position:relative; font-size:13.5px; color:var(--text-sub); }
+ul.check-list li::before { content:'✦'; position:absolute; left:0; color:var(--green2); font-size:10px; top:5px; }
+
+ol.step-list { padding:0; margin:8px 0; counter-reset:step; list-style:none; }
+ol.step-list li { counter-increment:step; padding:8px 0 8px 38px; position:relative; font-size:13.5px; color:var(--text-sub); border-bottom:1px solid var(--border); }
+ol.step-list li:last-child { border-bottom:none; }
+ol.step-list li::before {
+  content:counter(step); position:absolute; left:0; top:9px;
+  width:24px; height:24px; background:var(--accent); color:#fff;
+  border-radius:50%; display:flex; align-items:center; justify-content:center;
+  font-size:11px; font-weight:700; line-height:24px; text-align:center;
+}
+
+/* ══ Tags (inline) ══ */
+.tag { display:inline-block; padding:1px 7px; border-radius:3px; font-size:10px; font-weight:700; margin:0 2px; vertical-align:middle; }
+.tag-def { background:rgba(243,156,18,.2); color:#f39c12; }
+.tag-ex  { background:rgba(41,128,185,.2); color:#3498db; }
+.tag-imp { background:rgba(231,76,60,.2);  color:#e74c3c; }
+.tag-ok  { background:rgba(39,174,96,.2);  color:#2ecc71; }
+.tag-q   { background:rgba(142,68,173,.2); color:#9b59b6; }
+.tag-hint{ background:rgba(243,156,18,.15); color:#f39c12; }
+
+/* ══ Tables ══ */
+.note-table { width:100%; border-collapse:collapse; margin:12px 0; font-size:13px; }
+.note-table th { background:var(--bg3); color:var(--text-muted); font-size:11px; font-weight:700; letter-spacing:.06em; padding:8px 12px; text-align:left; border:1px solid var(--border); text-transform:uppercase; }
+.note-table td { padding:8px 12px; border:1px solid var(--border); color:var(--text-sub); vertical-align:top; line-height:1.65; }
+.note-table tr:nth-child(even) td { background:rgba(255,255,255,.02); }
+
+/* ══ Grids ══ */
+.grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:12px 0; }
+.grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin:12px 0; }
+
+/* ══ Johari diagram ══ */
+.johari-wrap { margin:16px 0; }
+.johari-axis-row { display:flex; max-width:500px; margin-bottom:2px; padding-left:36px; }
+.johari-axis-label { flex:1; text-align:center; font-size:11px; color:var(--text-muted); font-weight:600; padding:4px; }
+.johari-row { display:flex; max-width:536px; }
+.johari-side-label {
+  width:32px; display:flex; align-items:center; justify-content:center; margin-right:4px;
+  font-size:10px; color:var(--text-muted); font-weight:600;
+  writing-mode:vertical-rl; text-orientation:mixed; transform:rotate(180deg);
+  letter-spacing:.05em;
+}
+.johari-grid { display:grid; grid-template-columns:1fr 1fr; gap:2px; background:var(--border); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; flex:1; }
+.johari-cell { padding:14px 12px; text-align:center; }
+.j-open   { background:rgba(192,57,43,.18); }
+.j-blind  { background:rgba(39,174,96,.13); }
+.j-hidden { background:rgba(41,128,185,.13); }
+.j-unknown{ background:rgba(142,68,173,.13); }
+.johari-cell h4 { font-size:14px; font-weight:800; margin-bottom:4px; }
+.j-open   h4 { color:#e74c3c; }
+.j-blind  h4 { color:#2ecc71; }
+.j-hidden h4 { color:#3498db; }
+.j-unknown h4{ color:#9b59b6; }
+.johari-cell p { font-size:11px; color:var(--text-muted); line-height:1.5; }
+.johari-cell .en { font-size:10px; color:var(--text-muted); font-family:var(--mono); margin-top:2px; }
+
+/* ══ Appendix ══ */
+.appendix-section { margin-top:64px; padding-top:36px; border-top:2px solid var(--border); }
+.appendix-h { font-size:12px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; color:var(--text-muted); margin-bottom:20px; display:flex; align-items:center; gap:8px; }
+.appendix-h::after { content:''; flex:1; height:1px; background:var(--border); }
+
+/* Appendix card headers */
+.apx-card { background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius); padding:20px 24px; margin-bottom:20px; }
+.apx-card-header { display:flex; align-items:center; gap:10px; margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid var(--border); }
+.apx-icon { font-size:18px; }
+.apx-title { font-size:15px; font-weight:700; color:var(--text); }
+.apx-sub   { font-size:11px; color:var(--text-muted); margin-top:2px; }
+
+/* Term entries */
+.term-entry { padding:12px 0; border-bottom:1px solid var(--border); }
+.term-entry:last-child { border-bottom:none; }
+.term-name { font-size:14px; font-weight:700; color:var(--text); display:flex; align-items:center; gap:6px; flex-wrap:wrap; margin-bottom:4px; }
+.term-def  { font-size:13px; color:var(--text-sub); line-height:1.7; }
+.imp3 { color:var(--accent2); }
+.imp2 { color:var(--gold); }
+.imp1 { color:var(--blue2); }
+
+/* Uncert card */
+.uncert-card { background:rgba(230,126,34,.06); border:1px solid rgba(230,126,34,.3); border-radius:var(--radius); padding:20px 24px; margin-bottom:20px; }
+.uncert-card-header { display:flex; align-items:center; gap:8px; margin-bottom:14px; }
+.uncert-card-header h3 { font-size:14px; font-weight:700; color:var(--orange); }
+
+/* ══ Misc ══ */
+.summary-box { background:var(--bg3); border:1px solid var(--border); border-radius:var(--radius); padding:16px 20px; margin:20px 0; }
+.summary-box h3 { font-size:12px; font-weight:700; color:var(--text-muted); letter-spacing:.1em; text-transform:uppercase; margin-bottom:10px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+.note-text { font-size:13.5px; color:var(--text-sub); line-height:1.8; }
+.em     { color:var(--text); font-weight:600; }
+.em-red { color:var(--accent2); font-weight:600; }
+.em-gold{ color:var(--gold); font-weight:600; }
+.em-blue{ color:var(--blue2); font-weight:600; }
+.em-grn { color:var(--green2); font-weight:600; }
+strong  { color:var(--text); font-weight:700; }
+.small  { font-size:11.5px; color:var(--text-muted); }
+p { margin:6px 0; }
+a { color:var(--blue2); text-decoration:none; }
+a:hover { text-decoration:underline; }
+
+/* Eyes grid */
+.eyes-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin:12px 0; }
+.eye-card { background:var(--bg3); border:1px solid var(--border); border-radius:var(--radius); padding:14px; text-align:center; }
+.eye-icon { font-size:24px; margin-bottom:6px; }
+.eye-card h4 { font-size:13px; font-weight:700; margin-bottom:6px; }
+.eye-bird h4 { color:var(--blue2); }
+.eye-bug  h4 { color:var(--green2); }
+.eye-fish h4 { color:var(--purple2); }
+.eye-card p  { font-size:11.5px; color:var(--text-muted); line-height:1.5; }
+.eye-card .eye-ex { margin-top:6px; font-size:11px; color:var(--text-muted); background:var(--bg2); border-radius:4px; padding:4px 8px; text-align:left; }
+
+/* 5S row */
+.fives-row { display:flex; gap:8px; margin:10px 0; flex-wrap:wrap; }
+.fives-item { flex:1; min-width:76px; background:var(--bg3); border:1px solid var(--border); border-radius:var(--radius); padding:10px; text-align:center; }
+.fives-s { font-size:20px; font-weight:900; color:var(--accent2); line-height:1; }
+.fives-jp{ font-size:12px; font-weight:700; color:var(--text); margin-top:2px; }
+.fives-en{ font-size:10px; color:var(--text-muted); margin-top:2px; font-family:var(--mono); }
+
+/* Tool headers */
+.tool-header { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+.tool-num { width:28px; height:28px; border-radius:var(--radius); background:var(--accent); color:#fff; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:800; }
+.tool-title { font-size:15px; font-weight:700; color:var(--text); }
+
+/* Scrollbar */
+::-webkit-scrollbar { width:5px; }
+::-webkit-scrollbar-track { background:var(--bg); }
+::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
+
+/* Version badge */
+.version-badge { font-size:10px; font-family:var(--mono); color:var(--text-muted); background:var(--bg3); border:1px solid var(--border); border-radius:3px; padding:1px 6px; margin-left:6px; }
+
+/* URL link row */
+.url-row { font-size:11px; color:var(--text-muted); margin-top:4px; font-family:var(--mono); }
+
+@media (max-width:800px) {
+  #sidebar { display:none; }
+  #main { margin-left:0; padding:24px 20px 60px; }
+  .grid-2,.grid-3,.eyes-grid { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="toc-progress"><div id="progress-fill"></div></div>
+
+<!-- ══════════════ SIDEBAR ══════════════ -->
+<nav id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-course">セルフマネジメント論</div>
+    <div class="sidebar-title">第5回 自己分析とKAIZEN活動</div>
+    <div class="sidebar-meta">担当：小松俊明 ｜ S03 · S05×2</div>
+    <span class="sidebar-badge">第5回</span>
+  </div>
+
+  <div class="nav-section">概要</div>
+  <a href="#overview" class="nav-item">学習目標・授業構成</a>
+
+  <div class="nav-section">第1章</div>
+  <a href="#ch1" class="nav-item">自己分析とは何か</a>
+  <a href="#ch1-def" class="nav-item nav-sub">定義・注意点</a>
+  <a href="#ch1-step" class="nav-item nav-sub">ステップ</a>
+  <a href="#ch1-effect" class="nav-item nav-sub">効果</a>
+  <a href="#ch1-johari" class="nav-item nav-sub">ジョハリの窓</a>
+  <a href="#ch1-spiral" class="nav-item nav-sub">成長のスパイラル</a>
+
+  <div class="nav-section">第2章</div>
+  <a href="#ch2" class="nav-item">自己分析の活かし方</a>
+  <a href="#ch2-steps" class="nav-item nav-sub">就活活用ステップ</a>
+  <a href="#ch2-stages" class="nav-item nav-sub">就活5場面</a>
+
+  <div class="nav-section">第3章</div>
+  <a href="#ch3" class="nav-item">KAIZEN活動とは何か</a>
+  <a href="#ch3-steps" class="nav-item nav-sub">4ステップ</a>
+  <a href="#ch3-mieru" class="nav-item nav-sub">見える化</a>
+  <a href="#ch3-eyes" class="nav-item nav-sub">3つの眼</a>
+  <a href="#ch3-essence" class="nav-item nav-sub">本質・5S</a>
+  <a href="#ch3-caution" class="nav-item nav-sub">導入注意点</a>
+
+  <div class="nav-section">第4章</div>
+  <a href="#ch4" class="nav-item">KAIZEN活動の活かし方</a>
+  <a href="#ch4-nippo" class="nav-item nav-sub">①日報</a>
+  <a href="#ch4-survey" class="nav-item nav-sub">②アンケート</a>
+  <a href="#ch4-manual" class="nav-item nav-sub">③業務マニュアル</a>
+
+  <div class="nav-section">末尾補足</div>
+  <a href="#appendix-a" class="nav-item">⭐ A. 最重要ワード一覧</a>
+  <a href="#appendix-b" class="nav-item">📚 B. 背景知識</a>
+  <a href="#appendix-c" class="nav-item">🎯 C. 試験・重要観点</a>
+  <a href="#appendix-d" class="nav-item">🔗 D. 関連概念・発展</a>
+  <a href="#appendix-u" class="nav-item">❓ 未確定事項リスト</a>
+</nav>
+
+<!-- ══════════════ MAIN ══════════════ -->
+<main id="main">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-meta">
+    <span class="chip chip-red">第5回</span>
+    <span class="chip chip-blue">セルフマネジメント論</span>
+    <span class="chip chip-gold">小松俊明</span>
+    <span class="chip chip-green">QC: v1.3</span>
+  </div>
+  <h1>自己分析と<span>KAIZEN活動</span></h1>
+  <p class="hero-sub">自己分析の理論・就活への応用 ／ KAIZEN活動の理念・見える化・実践ツール（日報・アンケート・業務マニュアル）</p>
+</div>
+
+<!-- ソース情報バー -->
+<div class="source-bar">
+  <strong>ソース:</strong>
+  <span class="src src-s03">S03 スライドPDF (p.1–61)</span>
+  <span class="src src-s05">S05-A hynote.ai</span>
+  <span class="src src-s05">S05-B hynote.ai</span>
+  <span style="margin-left:8px;">⚠️ S05誤変換修正済: ジョセフ・ダフト→ルフト、連発→円滑</span>
+  <span class="version-badge">v1.2</span>
+</div>
+
+<!-- ══ OVERVIEW ══ -->
+<section id="overview">
+  <div class="sec-title">学習目標・授業構成 <span class="src src-s03">← S03:p.2–3</span></div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="sub-title">第5回 学習目標</div>
+      <ul class="check-list">
+        <li>自分の強み・弱みを<span class="em">分析する手法</span>を学ぶ</li>
+        <li>自己分析の<span class="em">活用方法</span>を理解する</li>
+        <li>KAIZEN活動の<span class="em">考え方</span>を理解する</li>
+        <li>KAIZEN活動の<span class="em">活用方法</span>を理解する</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="sub-title">授業構成（4章）</div>
+      <ol class="step-list">
+        <li>自己分析とは何か</li>
+        <li>自己分析の活かし方</li>
+        <li>KAIZEN活動とは何か</li>
+        <li>KAIZEN活動の活かし方</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CH1 ══ -->
+<div class="chapter-break" id="ch1">
+  <div class="chapter-num">1</div>
+  <div class="chapter-info">
+    <h2>自己分析とは何か</h2>
+    <p>定義 ／ 注意点 ／ ステップ ／ 効果 ／ ジョハリの窓 ／ 成長のスパイラル</p>
+  </div>
+</div>
+
+<!-- 1-1 定義 -->
+<section id="ch1-def">
+  <div class="sec-title">定義と注意点 <span class="src src-s03">← S03:p.5–7</span></div>
+
+  <div class="def-block">
+    <div class="def-label">【定義】自己分析</div>
+    <p class="note-text"><span class="em">自分を客観的に評価するために行うアプローチ</span>のこと。<br>
+    キーワード：<span class="em-gold">「客観的に」</span> ── 自分の主観・思い込みを排除して評価することが本質。</p>
+  </div>
+
+  <div class="voice-block">
+    <div class="voice-label">🎙 音声補足</div>
+    <p class="note-text">自己分析において答えるべき3つの問い：<span class="src src-s05">← S05</span></p>
+    <ul class="note-list">
+      <li>自分の長所・短所は何か</li>
+      <li>今までどのようなことをしてきたか</li>
+      <li><span class="em">人格形成に影響を与えた出来事</span>は何か ── 過去の試練・挑戦を通じて自分自身が成長していく過程。その瞬間々に多くの学びがある。</li>
+    </ul>
+  </div>
+
+  <div class="sec-title" style="margin-top:20px;">自己分析の注意点 <span class="src src-s03">← S03:p.7</span></div>
+  <div class="card-warn">
+    <ul class="note-list">
+      <li>過去の経験は<span class="em-red">ことの大小で判断しない</span>（大切なのは中身そのもの）</li>
+      <li><span class="em-red">なりたい人物像をイメージして</span>分析しない（本来の自分と異なる分析になる）</li>
+      <li>「気が小さい」「失敗しがち」等の<span class="em-red">思い込みを捨てる</span>（自己分析の邪魔になる）</li>
+      <li>自分の<span class="em-red">短所・課題・劣っているかもしれない点も排除しない</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- 1-2 ステップ -->
+<section id="ch1-step">
+  <div class="sec-title">自己分析のステップ <span class="src src-s03">← S03:p.8</span></div>
+
+  <ol class="step-list">
+    <li>
+      <strong>体験したこと</strong>を思い出す<br>
+      <span class="small">例：レストランで2年間アルバイトをした</span>
+    </li>
+    <li>
+      <strong>苦労したこと</strong>に特に注目する<br>
+      <span class="small">例：煩雑な作業、ランチ・夕食時間帯のピーク時の多忙</span>
+    </li>
+    <li>
+      体験から<strong>得たこと・学んだこと</strong>を振り返る<br>
+      <span class="small">例：顧客視点に立った接客の重要性、仲間との協力・工夫</span>
+    </li>
+    <li>
+      <strong>現在の考え方・感じ方</strong>を言語化する<br>
+      <span class="small">例：付加価値の重要性、信頼・感謝が人間関係の鍵</span>
+    </li>
+  </ol>
+
+  <div class="voice-block">
+    <div class="voice-label">🎙 音声補足</div>
+    <p class="note-text">苦労した時間帯で「何を工夫したか」「仲間とどう協力したか」「信頼関係・感謝の気持ちが芽生えたか」という観点から振り返ることが重要。<span class="em">苦労した瞬間こそ最も成長している可能性がある</span>。<span class="src src-s05">← S05</span></p>
+  </div>
+</section>
+
+<!-- 1-3 効果 -->
+<section id="ch1-effect">
+  <div class="sec-title">自己分析の効果 <span class="src src-s03">← S03:p.9</span></div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="sub-title">① 自分に自信を持てる</div>
+      <p class="note-text">自己評価が低い人でも、分析を進めるうちに<span class="em">自分の強み・誇れる特徴</span>に具体的に気づける。</p>
+    </div>
+    <div class="card">
+      <div class="sub-title">② 自己肯定感を持てる</div>
+      <p class="note-text">「やっていることは間違っていない」「存在に意味がある」という感覚 → <span class="em">モチベーション向上</span>につながる。</p>
+    </div>
+    <div class="card">
+      <div class="sub-title">③ 自分の中にある解決策に気づく</div>
+      <p class="note-text">自己分析で把握した特徴を思い出すことで、<span class="em">他者に頼らず問題解決</span>できる自信がつく。</p>
+    </div>
+    <div class="card">
+      <div class="sub-title">④ 自分に合わないやり方に追随しない</div>
+      <p class="note-text">強みを正確に把握していれば<span class="em">自分らしいアプローチ</span>で目標に取り組める。他者の方法をそのまま真似する必要がなくなる。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 1-4 ジョハリの窓 -->
+<section id="ch1-johari">
+  <div class="sec-title">ジョハリの窓（Johari window） <span class="src src-s03">← S03:p.10–14</span></div>
+
+  <div class="def-block">
+    <div class="def-label">【定義】ジョハリの窓</div>
+    <p class="note-text">
+      <span class="em">1955年</span>、サンフランシスコ州立大学の心理学者<span class="em">ジョセフ・ルフト（Joseph Luft）</span>と<span class="em">ハリントン・インガム（Harrington Ingham）</span>が「グループ成長のためのラボラトリートレーニング」席上で発表した「対人関係における気づきのグラフモデル」。後に二人のファーストネームから「<strong>Johari</strong>（ジョハリ）」と命名された。<br>
+      人が<span class="em-gold">円滑なコミュニケーション</span>を進めるために考案された<span class="em">コミュニケーション分析のモデル</span>。
+      <span class="badge-ext-ok">外部補足・確認済: Wikipedia・カオナビ</span>
+    </p>
+  </div>
+
+  <!-- ジョハリの窓ダイアグラム（SVG均等4象限） -->
+  <!-- 座標設計:
+       viewBox: 0 0 560 320
+       軸ラベル帯: 上=30px, 左=44px
+       グリッド開始: x=44, y=30
+       各セル幅: (560-44)/2 = 258px, 高さ: (320-30)/2 = 145px
+       セル1(開放): x=44,y=30  w=258,h=145
+       セル2(盲点): x=302,y=30  w=258,h=145
+       セル3(秘密): x=44,y=175  w=258,h=145
+       セル4(未知): x=302,y=175  w=258,h=145
+       各セル中心X: 44+129=173 / 302+129=431
+       各セル中心Y: 30+72=102 / 175+72=247
+  -->
+  <figure style="margin:16px 0;">
+    <svg viewBox="0 0 560 320" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:560px;display:block;">
+      <!-- 上軸ラベル（列） -->
+      <text x="173" y="18" text-anchor="middle" font-size="11" fill="#8a99b8" font-family="sans-serif">自分が知っている</text>
+      <text x="431" y="18" text-anchor="middle" font-size="11" fill="#8a99b8" font-family="sans-serif">自分が知らない</text>
+      <!-- 左軸ラベル（行）– 縦書き相当: rotateで表現 -->
+      <text x="12" y="102" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="sans-serif" transform="rotate(-90 12 102)">他人が知っている</text>
+      <text x="12" y="247" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="sans-serif" transform="rotate(-90 12 247)">他人が知らない</text>
+      <!-- セル1: 開放 (x=44,y=30, w=258,h=145) -->
+      <rect x="44" y="30" width="258" height="145" rx="6" fill="rgba(192,57,43,.15)" stroke="#e74c3c" stroke-width="1.5"/>
+      <text x="173" y="82" text-anchor="middle" font-size="20" font-weight="700" fill="#e74c3c" font-family="sans-serif">開放</text>
+      <text x="173" y="102" text-anchor="middle" font-size="11" fill="#e2e8f5" font-family="sans-serif">自分も他人も知っている</text>
+      <text x="173" y="118" text-anchor="middle" font-size="10" fill="#2ecc71" font-family="sans-serif">→ 自己開示で拡大</text>
+      <text x="173" y="132" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="sans-serif" font-style="italic">open self</text>
+      <!-- セル2: 盲点 (x=302,y=30, w=258,h=145) -->
+      <rect x="302" y="30" width="258" height="145" rx="6" fill="rgba(39,174,96,.12)" stroke="#2ecc71" stroke-width="1.5"/>
+      <text x="431" y="82" text-anchor="middle" font-size="20" font-weight="700" fill="#2ecc71" font-family="sans-serif">盲点</text>
+      <text x="431" y="102" text-anchor="middle" font-size="11" fill="#e2e8f5" font-family="sans-serif">他人は知っているが</text>
+      <text x="431" y="116" text-anchor="middle" font-size="11" fill="#e2e8f5" font-family="sans-serif">自分は気づいていない</text>
+      <text x="431" y="132" text-anchor="middle" font-size="10" fill="#2ecc71" font-family="sans-serif">→ FBで縮小</text>
+      <text x="431" y="148" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="sans-serif" font-style="italic">blind self</text>
+      <!-- セル3: 秘密 (x=44,y=175, w=258,h=145) -->
+      <rect x="44" y="175" width="258" height="145" rx="6" fill="rgba(41,128,185,.12)" stroke="#3498db" stroke-width="1.5"/>
+      <text x="173" y="227" text-anchor="middle" font-size="20" font-weight="700" fill="#3498db" font-family="sans-serif">秘密</text>
+      <text x="173" y="247" text-anchor="middle" font-size="11" fill="#e2e8f5" font-family="sans-serif">自分は知っているが</text>
+      <text x="173" y="261" text-anchor="middle" font-size="11" fill="#e2e8f5" font-family="sans-serif">他人には言わない</text>
+      <text x="173" y="277" text-anchor="middle" font-size="10" fill="#3498db" font-family="sans-serif">→ 自己開示で縮小</text>
+      <text x="173" y="293" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="sans-serif" font-style="italic">hidden self</text>
+      <!-- セル4: 未知 (x=302,y=175, w=258,h=145) -->
+      <rect x="302" y="175" width="258" height="145" rx="6" fill="rgba(142,68,173,.12)" stroke="#9b59b6" stroke-width="1.5"/>
+      <text x="431" y="227" text-anchor="middle" font-size="20" font-weight="700" fill="#9b59b6" font-family="sans-serif">未知</text>
+      <text x="431" y="247" text-anchor="middle" font-size="11" fill="#e2e8f5" font-family="sans-serif">自分も他人も</text>
+      <text x="431" y="261" text-anchor="middle" font-size="11" fill="#e2e8f5" font-family="sans-serif">知らない領域</text>
+      <text x="431" y="293" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="sans-serif" font-style="italic">unknown self</text>
+    </svg>
+    <figcaption class="small" style="margin-top:4px;">図：ジョハリの4つの窓（4セル均等・各領域の英語名付き）<span class="src src-s03">← S03:p.11</span></figcaption>
+  </figure>
+
+  <div class="sub-title">コミュニケーション改善の手順 <span class="src src-s03">← S03:p.12–14</span></div>
+  <ol class="step-list">
+    <li>
+      <strong>自己開示（Self-disclosure）</strong>：「開放」の窓を拡大する<br>
+      <span class="small">自分が知っていることをどんどん他人に見せる → 秘密が減り、相手の理解が深まる</span>
+    </li>
+    <li>
+      <strong>フィードバック（Feedback）</strong>を受ける：「盲点」を縮小する<br>
+      <span class="small">他人から自分についてのフィードバックを得る → 自分が気づいていない特徴がわかる</span>
+    </li>
+    <li>
+      <strong>自己開示 ＋ フィードバックを繰り返す</strong>：「気づき」を得る<br>
+      <span class="small">「開放」の窓がどんどん大きくなり、今まで気づいていなかったことに気づく（＝気づき）</span>
+    </li>
+  </ol>
+</section>
+
+<!-- 1-5 成長のスパイラル -->
+<section id="ch1-spiral">
+  <div class="sec-title">成長のスパイラル <span class="src src-s03">← S03:p.15</span></div>
+
+  <!-- SVG: 成長のスパイラル
+       座標設計:
+       viewBox: 0 0 720 120  ← 元680→720に拡張（右端テキスト確保）
+       円半径: r=38 (各ノード), r=42 (気づき起点)
+       ノード中心X: 50, 180, 300, 420, 540
+       間隔: 130px (50+130=180, +120=300, +120=420, +120=540)
+       矢印: cx_left+r → cx_right-r の区間
+       ↺テキスト: x=640 (最右=708から-68px余裕) ← 安全圏
+  -->
+  <figure style="margin:16px 0;">
+    <svg viewBox="0 0 720 120" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:720px;display:block;">
+      <!-- 気づき（起点・赤） r=42, cx=52 -->
+      <circle cx="52" cy="60" r="42" fill="#c0392b" opacity="0.88"/>
+      <text x="52" y="56" text-anchor="middle" fill="#fff" font-size="13" font-weight="700" font-family="sans-serif">気づき</text>
+      <text x="52" y="73" text-anchor="middle" fill="#ffd0c8" font-size="10" font-family="sans-serif">きっかけ</text>
+      <!-- →  94→142 -->
+      <path d="M94 60 L138 60" stroke="#e74c3c" stroke-width="2.5" marker-end="url(#arr1)"/>
+      <defs>
+        <marker id="arr1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#e74c3c"/></marker>
+        <marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#f39c12"/></marker>
+      </defs>
+      <!-- 意欲 r=38, cx=180 -->
+      <circle cx="180" cy="60" r="38" fill="#1e2535" stroke="#f39c12" stroke-width="2"/>
+      <text x="180" y="56" text-anchor="middle" fill="#f39c12" font-size="13" font-weight="700" font-family="sans-serif">意欲</text>
+      <text x="180" y="72" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="sans-serif">モチベ</text>
+      <!-- → 218→262 -->
+      <path d="M218 60 L258 60" stroke="#e74c3c" stroke-width="2.5" marker-end="url(#arr1)"/>
+      <!-- 行動 r=38, cx=300 -->
+      <circle cx="300" cy="60" r="38" fill="#1e2535" stroke="#3498db" stroke-width="2"/>
+      <text x="300" y="65" text-anchor="middle" fill="#3498db" font-size="13" font-weight="700" font-family="sans-serif">行動</text>
+      <!-- → 338→382 -->
+      <path d="M338 60 L378 60" stroke="#e74c3c" stroke-width="2.5" marker-end="url(#arr1)"/>
+      <!-- 結果 r=38, cx=420 -->
+      <circle cx="420" cy="60" r="38" fill="#1e2535" stroke="#2ecc71" stroke-width="2"/>
+      <text x="420" y="65" text-anchor="middle" fill="#2ecc71" font-size="13" font-weight="700" font-family="sans-serif">結果</text>
+      <!-- → 458→502 -->
+      <path d="M458 60 L498 60" stroke="#e74c3c" stroke-width="2.5" marker-end="url(#arr1)"/>
+      <!-- 自信 r=38, cx=540 -->
+      <circle cx="540" cy="60" r="38" fill="#1e2535" stroke="#9b59b6" stroke-width="2"/>
+      <text x="540" y="65" text-anchor="middle" fill="#9b59b6" font-size="13" font-weight="700" font-family="sans-serif">自信</text>
+      <!-- ↺ 折り返し矢印: 540右端578→カーブ→意欲方向へ (y=100水準) -->
+      <path d="M578 60 Q630 20 650 60 Q650 105 420 105 Q250 105 180 105 Q180 105 180 98" fill="none" stroke="#f39c12" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arr2)"/>
+      <!-- ↺ラベル: x=640 (viewBox幅720内、安全) -->
+      <text x="655" y="58" text-anchor="middle" fill="#f39c12" font-size="14" font-family="sans-serif">↺</text>
+      <text x="655" y="72" text-anchor="middle" fill="#f39c12" font-size="9" font-family="sans-serif">意欲へ</text>
+    </svg>
+    <figcaption class="small" style="margin-top:4px;">図：成長のスパイラル（気づき→意欲→行動→結果→自信→意欲の好循環） <span class="src src-s03">← S03:p.15</span></figcaption>
+  </figure>
+
+  <div class="voice-block">
+    <div class="voice-label">🎙 音声補足</div>
+    <p class="note-text">「気づき」を得ると「これはやるべきだ」というやる気（意欲）が湧く → 具体的な行動に移す → 結果が出る → 自信がつく → さらに意欲が高まる。この<span class="em">好循環が成長のスパイラル</span>。自己開示とフィードバックの繰り返しがこの循環の起点となる。<span class="src src-s05">← S05</span></p>
+  </div>
+
+  <div class="summary-box">
+    <h3>第1章まとめ</h3>
+    <ul class="check-list">
+      <li>自己分析とは、自分を<span class="em">客観的に評価するアプローチ</span>のこと</li>
+      <li>ジョハリの窓は<span class="em">コミュニケーション分析のモデル</span>（1955年、ルフト＋インガム）</li>
+      <li>自己開示とフィードバックの繰り返しで<span class="em">気づきが増える</span></li>
+      <li>気づきが増えると意欲が高まり、<span class="em">成長のスパイラル</span>を築ける</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ══ CH2 ══ -->
+<div class="chapter-break" id="ch2">
+  <div class="chapter-num">2</div>
+  <div class="chapter-info">
+    <h2>自己分析の活かし方</h2>
+    <p>就職活動への応用 ／ 自己分析が活きる5つの場面</p>
+  </div>
+</div>
+
+<div class="voice-block">
+  <div class="voice-label">🎙 音声補足</div>
+  <p class="note-text">第2章の焦点：第1章で学んだ自己分析の手法を、<span class="em">就職活動（初就職・転職）</span>という実社会の場面でどのように使うか。就活は成長のスパイラルの中に位置づけられる。<span class="src src-s05">← S05</span></p>
+</div>
+
+<!-- 2-1 就活ステップ -->
+<section id="ch2-steps">
+  <div class="sec-title">就活に自己分析を活かすステップ <span class="src src-s03">← S03:p.22–23</span></div>
+
+  <ol class="step-list">
+    <li><strong>過去・現在の学習や経験をリストアップ</strong><br><span class="small">学んだこと・経験したことを箇条書きで書き出す</span></li>
+    <li><strong>将来取り組んでみたいことをリストアップ</strong><br><span class="small">①のリストの横に並べて書く（対比することで気づきが生まれる）</span></li>
+    <li><strong>人間的成長をしたエピソードを詳しく書き留める</strong><br><span class="small">他者に説明するため、わかりやすく・長くなく・複雑すぎない事例。必ず紙に書き留める。</span></li>
+    <li><strong>具体的な出来事から得たもの・学んだことを言語化</strong><br><span class="small">自分の人生観・価値観への影響を具体的な言葉にする</span></li>
+  </ol>
+
+  <div class="sub-title">自己分析の注意点（就活特有）<span class="src src-s03">← S03:p.23</span></div>
+  <div class="card-warn">
+    <ul class="note-list">
+      <li>就職する目的を<span class="em-red">ワンセンテンス・ワンメッセージ</span>で箇条書き</li>
+      <li>目的ごとに「なぜそう思ったか」を3〜4行で補足する</li>
+      <li>自分の性格・長所・短所を書いたうえで<span class="em-red">身近な人にフィードバック</span>をもらい、ギャップ・一致点を確認</li>
+      <li>10年後・20年後の自分の姿を具体的に予測する（どんな人間になりたいか・何を得たいか）</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 2-2 就活5場面 -->
+<section id="ch2-stages">
+  <div class="sec-title">自己分析が就活に活きる5場面 <span class="src src-s03">← S03:p.24–29</span></div>
+
+  <table class="note-table">
+    <thead>
+      <tr><th>場面</th><th>活かし方のポイント</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>① 応募業界・企業を絞るとき</td>
+        <td>
+          <ul class="note-list">
+            <li>やりたい仕事がその業界・会社に<span class="em">存在するか</span></li>
+            <li>やりたい仕事ができなくてもその<span class="em">業界・会社で働き続けられるか</span></li>
+            <li><span class="em">業界・企業文化</span>が自分に合っているか</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td>② 職務経歴書を作成するとき</td>
+        <td>
+          <ul class="note-list">
+            <li>やりたい仕事の適性と自分の強みが<span class="em">マッチしているか</span></li>
+            <li>自分の強みを<span class="em">具体的なエピソード</span>で裏付けているか（説得力が増す）</li>
+            <li>採用側が求める<span class="em">人物像に自分を当てはめられているか</span></li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td>③ 面接質問を受けたとき</td>
+        <td>
+          <ul class="note-list">
+            <li><span class="em">自分オリジナルの言葉</span>で答えられているか</li>
+            <li>1問につき<span class="em">2〜3つの具体的エピソード</span>を準備し、流れで使い分けるか</li>
+            <li>自分の性格・特徴を<span class="em">前向きな表現</span>で話せているか</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td>④ 企業から内定が出るとき</td>
+        <td>
+          <ul class="note-list">
+            <li>「その会社で働きたい」という<span class="em">意思表明</span>を明確に伝えられるか</li>
+            <li>面接を通じて<span class="em">何を学んだか</span>を説明できるか</li>
+            <li><span class="em">入社後の展望</span>を自分の言葉で語れるか</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td>⑤ 入社判断をするとき</td>
+        <td>
+          <ul class="note-list">
+            <li>就活全体を<span class="em">総括</span>し、決断の理由を他者に説明できるか</li>
+            <li>業界・会社・仕事への<span class="em">理解を具体的に</span>説明できるか</li>
+            <li>自分の<span class="em">成長意欲・今後の課題</span>を具体的に説明できるか</li>
+          </ul>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="summary-box">
+    <h3>第2章まとめ</h3>
+    <ul class="check-list">
+      <li>自己分析は、自分の特徴と志望動機に<span class="em">一貫性</span>があると説得力が増す</li>
+      <li>具体的な自己分析ができていると、就活<span class="em">あらゆる場面で正確な判断</span>ができる</li>
+      <li>自己分析は<span class="em">新しいことへの挑戦・未来への取り組み</span>で特に有効</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ══ CH3 ══ -->
+<div class="chapter-break" id="ch3">
+  <div class="chapter-num">3</div>
+  <div class="chapter-info">
+    <h2>KAIZEN活動とは何か</h2>
+    <p>定義 ／ 4ステップ ／ アプローチ ／ 見える化 ／ 3つの眼 ／ 本質・5S ／ 導入注意点</p>
+  </div>
+</div>
+
+<div class="def-block">
+  <div class="def-label">【定義】KAIZEN活動</div>
+  <p class="note-text">
+    製造業の世界で、<span class="em">工場の作業者が中心になって行う</span>、作業効率の向上や作業安全性の確保などの生産に関する<span class="em-gold">ボトムアップ活動</span>。<span class="src src-s03">← S03:p.34</span><br>
+    特に<span class="em">トヨタ自動車の生産方式（TPS）</span>の強みとして有名。現在は製造業以外のあらゆる業種にも応用されている。
+  </p>
+  <div class="ext-block" style="margin-top:8px;">
+    <div class="ext-label">🌐 外部補足・確認済</div>
+    <p class="note-text">「KAIZEN」は英語圏でも日本語のままの世界共通語。漢字「改善」が「悪い点を直す」のに対し、カタカナ「カイゼン」は「現状に満足せず今よりもっと良くする」という前向きな継続改善の意味。大野耐一著『トヨタ生産方式』（1978年）→ 1988年英語版刊行で世界に普及。海外では「リーン生産方式（Lean Manufacturing）」として再整理・普及。 <span class="src src-ext">← GAZOO.com・Skillnote</span></p>
+  </div>
+</div>
+
+<!-- 3-1 4ステップ -->
+<section id="ch3-steps">
+  <div class="sec-title">KAIZEN活動の4ステップ <span class="src src-s03">← S03:p.35</span></div>
+
+  <!-- SVG: KAIZENサイクル
+       座標設計:
+       viewBox: 0 0 620 130  ← 元110→130に拡張（底部テキスト確保）
+       各BOX: y=15, h=64 → 上端15, 下端79
+       矢印: BOX右端→次BOX左端-5
+       戻り矢印: y=85のラインを経由
+       テキスト「↺継続して繰り返す」: y=124 ← viewBox130内
+  -->
+  <figure style="margin:16px 0;">
+    <svg viewBox="0 0 620 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:620px;display:block;">
+      <!-- Step1 問題発見: x=10, w=125, cx=72 -->
+      <rect x="10" y="15" width="125" height="64" rx="8" fill="#1e2535" stroke="#e74c3c" stroke-width="1.5"/>
+      <text x="72" y="43" text-anchor="middle" fill="#e74c3c" font-size="11" font-weight="700" font-family="sans-serif">① 問題・課題</text>
+      <text x="72" y="58" text-anchor="middle" fill="#e74c3c" font-size="11" font-weight="700" font-family="sans-serif">の発見</text>
+      <!-- →  135→158 -->
+      <path d="M135 47 L155 47" stroke="#8a99b8" stroke-width="2" marker-end="url(#arrk)"/>
+      <defs><marker id="arrk" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><path d="M0,0 L0,7 L7,3.5 z" fill="#8a99b8"/></marker></defs>
+      <!-- Step2 原因発見: x=160, w=125, cx=222 -->
+      <rect x="160" y="15" width="125" height="64" rx="8" fill="#1e2535" stroke="#3498db" stroke-width="1.5"/>
+      <text x="222" y="43" text-anchor="middle" fill="#3498db" font-size="11" font-weight="700" font-family="sans-serif">② 原因</text>
+      <text x="222" y="58" text-anchor="middle" fill="#3498db" font-size="11" font-weight="700" font-family="sans-serif">の発見</text>
+      <!-- → 285→308 -->
+      <path d="M285 47 L305 47" stroke="#8a99b8" stroke-width="2" marker-end="url(#arrk)"/>
+      <!-- Step3 解決: x=310, w=125, cx=372 -->
+      <rect x="310" y="15" width="125" height="64" rx="8" fill="#1e2535" stroke="#2ecc71" stroke-width="1.5"/>
+      <text x="372" y="43" text-anchor="middle" fill="#2ecc71" font-size="11" font-weight="700" font-family="sans-serif">③ 解決・</text>
+      <text x="372" y="58" text-anchor="middle" fill="#2ecc71" font-size="11" font-weight="700" font-family="sans-serif">あるべき姿へ</text>
+      <!-- → 435→458 -->
+      <path d="M435 47 L455 47" stroke="#8a99b8" stroke-width="2" marker-end="url(#arrk)"/>
+      <!-- Step4 確認: x=460, w=150, cx=535 -->
+      <rect x="460" y="15" width="150" height="64" rx="8" fill="#1e2535" stroke="#f39c12" stroke-width="1.5"/>
+      <text x="535" y="43" text-anchor="middle" fill="#f39c12" font-size="11" font-weight="700" font-family="sans-serif">④ 確認・</text>
+      <text x="535" y="58" text-anchor="middle" fill="#f39c12" font-size="11" font-weight="700" font-family="sans-serif">繰り返し</text>
+      <!-- 戻り矢印 (y=85のライン) -->
+      <defs><marker id="arrkr" markerWidth="7" markerHeight="7" refX="2" refY="3.5" orient="auto"><path d="M7,0 L7,7 L0,3.5 z" fill="#f39c12"/></marker></defs>
+      <path d="M535 79 Q535 95 310 95 Q72 95 72 79" fill="none" stroke="#f39c12" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrkr)"/>
+      <!-- テキスト y=115: viewBox高さ130内 -->
+      <text x="310" y="115" text-anchor="middle" fill="#f39c12" font-size="10" font-family="sans-serif">↺ 継続して繰り返す（日常的なKAIZEN）</text>
+    </svg>
+    <figcaption class="small" style="margin-top:4px;">図：KAIZEN活動の4ステップ（継続サイクル）<span class="src src-s03">← S03:p.35</span></figcaption>
+  </figure>
+
+  <div class="card-gold">
+    <p class="note-text"><span class="em-gold">重要ポイント：</span>KAIZENは一度やれば終わりではなく、<span class="em">日常的に繰り返す</span>こと。継続的な正しい意思決定の積み重ねで質を高める。</p>
+  </div>
+
+  <div class="sub-title">KAIZEN活動のアプローチ <span class="src src-s03">← S03:p.36</span></div>
+  <div class="card">
+    <ul class="note-list">
+      <li>その仕事の<span class="em">目的を問う</span>：どうしても必要な仕事か？</li>
+      <li>全部でなくとも<span class="em">一部を捨てられる</span>ところはないか</li>
+      <li>今のやり方より<span class="em">安く・早くできる方法</span>はないか（コスト・時間の無駄に気づく機会）</li>
+      <li>部分的に変えるか、プロセス全体が不要なら<span class="em">一気に取り替える</span>か</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 3-2 見える化 -->
+<section id="ch3-mieru">
+  <div class="sec-title">KAIZEN活動に必要な3つの「見える化」 <span class="src src-s03">← S03:p.37</span></div>
+
+  <div class="grid-3">
+    <div class="card">
+      <div class="sub-title" style="font-size:12px;">① 組織共通認識のための見える化</div>
+      <p class="note-text small">組織全員が<span class="em">共通認識</span>を持つため。見えていないと、存在することに気づけない。</p>
+    </div>
+    <div class="card">
+      <div class="sub-title" style="font-size:12px;">② 担当者が自律行動するための見える化</div>
+      <p class="note-text small">担当者自身が<span class="em">正しい判断と行動</span>を取れるようにする。</p>
+    </div>
+    <div class="card">
+      <div class="sub-title" style="font-size:12px;">③ 次のKAIZENにつなげるための見える化</div>
+      <p class="note-text small">行動した<span class="em">結果を数値等で可視化</span>し次の改善へ活かす。例：3か月の売上目標を数字で見える化 → 次の計画に反映。</p>
+    </div>
+  </div>
+
+  <div class="card-gold">
+    <p class="note-text">→ 「見える化」によって<span class="em-gold">迅速に正しい意思決定</span>を繰り返し行えるようになる。 <span class="src src-s03">← S03:p.37</span></p>
+  </div>
+</section>
+
+<!-- 3-3 3つの眼 -->
+<section id="ch3-eyes">
+  <div class="sec-title">KAIZEN活動の3つの眼 <span class="src src-s03">← S03:p.38</span></div>
+  <p class="note-text" style="margin-bottom:12px;">目的によって見る眼を変える。</p>
+
+  <div class="eyes-grid">
+    <div class="eye-card eye-bird">
+      <div class="eye-icon">🦅</div>
+      <h4>鳥の眼</h4>
+      <p>高い空から全体を見る<br>→ <strong>全体をつかむ</strong></p>
+      <div class="eye-ex">例：会社の売上・利益・キャッシュフロー全体を把握</div>
+    </div>
+    <div class="eye-card eye-bug">
+      <div class="eye-icon">🔍</div>
+      <h4>虫の眼</h4>
+      <p>小さく細かく個別を見る<br>→ <strong>詳細を見る</strong></p>
+      <div class="eye-ex">例：特定のプロジェクト・得意先別・製品別情報の詳細</div>
+    </div>
+    <div class="eye-card eye-fish">
+      <div class="eye-icon">🐟</div>
+      <h4>魚の眼</h4>
+      <p>海の中を3次元に泳ぐ<br>→ <strong>流れをつかむ</strong></p>
+      <div class="eye-ex">例：注文→配送→返品→クレーム→要望という一連の流れを把握</div>
+    </div>
+  </div>
+</section>
+
+<!-- 3-4 本質・5S -->
+<section id="ch3-essence">
+  <div class="sec-title">KAIZEN活動の本質 <span class="src src-s03">← S03:p.40–41</span></div>
+
+  <div class="sub-title">5S（整理・整頓・清掃・清潔・しつけ）<span class="src src-s03">← S03:p.40</span></div>
+
+  <div class="fives-row">
+    <div class="fives-item">
+      <div class="fives-s">S</div>
+      <div class="fives-jp">整理</div>
+      <div class="fives-en">Sort</div>
+    </div>
+    <div class="fives-item">
+      <div class="fives-s">S</div>
+      <div class="fives-jp">整頓</div>
+      <div class="fives-en">Set in Order</div>
+    </div>
+    <div class="fives-item">
+      <div class="fives-s">S</div>
+      <div class="fives-jp">清掃</div>
+      <div class="fives-en">Shine</div>
+    </div>
+    <div class="fives-item">
+      <div class="fives-s">S</div>
+      <div class="fives-jp">清潔</div>
+      <div class="fives-en">Standardize</div>
+    </div>
+    <div class="fives-item">
+      <div class="fives-s">S</div>
+      <div class="fives-jp">しつけ</div>
+      <div class="fives-en">Sustain</div>
+    </div>
+  </div>
+
+  <div class="ext-block">
+    <div class="ext-label">🌐 外部補足・確認済</div>
+    <p class="note-text">5SはローマジのSeiri / Seiton / Seisou / Seiketsu / Shitsuke の頭文字から命名。英語圏では Sort / Set in Order / Shine / Standardize / Sustain に対応し "Five S" として通用する。日本発の概念だが世界標準となっている。 <span class="src src-ext">← Wikipedia（5S）・ASQ（米国品質協会）</span></p>
+  </div>
+
+  <p class="note-text" style="margin:10px 0 16px;">→ 5Sを徹底することで、仕事の中から<span class="em-red">ムリ・ムダ・ムラをなくす</span>。</p>
+
+  <div class="card">
+    <ul class="note-list">
+      <li><span class="em">頭で考えるより、まず動く</span>：実行してみることで見えてくるものがある。「自分には向いていない・できない」という考えはKAIZENの概念にない。</li>
+      <li>人間の知恵が加わった「動き」が<span class="em">「働き」</span>になる：知恵を入れて改善し、より良い働き方を見つけていく。</li>
+      <li>問題解決とは<span class="em">根本原因を解決すること</span>：表面をごまかす・部分的解決ではなく。</li>
+      <li>仕事の状況が<span class="em">一瞬でわかるようにする</span>：見える化の本質。</li>
+      <li><span class="em">非常識な目標</span>を立てることで→斬新なアイデアが生まれ→一気に物事が解決することがある。</li>
+    </ul>
+  </div>
+
+  <div class="def-block" style="margin-top:12px;">
+    <div class="def-label">KAIZEN活動の特徴（補足）</div>
+    <p class="note-text">
+      KAIZENは<span class="em">仕事が増えるのではなく</span>、従来からの<span class="em">仕事の習慣を変えること</span>。期限のあるプロジェクトではなく、<span class="em">継続して積み上げていく</span>ことで質を高めるもの。また、従業員の<span class="em">考え方・目標の一本化</span>に役立つ。<span class="src src-s03">← S03:p.39</span>
+    </p>
+  </div>
+</section>
+
+<!-- 3-5 導入注意点 -->
+<section id="ch3-caution">
+  <div class="sec-title">KAIZEN導入時の注意点 <span class="src src-s03">← S03:p.42</span></div>
+
+  <div class="card-warn">
+    <ul class="note-list">
+      <li>手順が分からないために<span class="em-red">必要のない手順を増やしてしまう</span>（手順増加 → 仕事の硬直化・柔軟性の低下）</li>
+      <li><span class="em-red">机上で定めた手順</span>（現場で決めていない手順）は実行できないことが多い → 現場で決めていく</li>
+      <li>決めた通りにならないことがある → <span class="em-red">イレギュラーな対応・作業の応用</span>も考えておく</li>
+      <li>手順書は<span class="em-red">明文化</span>し、全員で共有する</li>
+    </ul>
+  </div>
+
+  <div class="summary-box">
+    <h3>第3章まとめ</h3>
+    <ul class="check-list">
+      <li>KAIZENは従来の仕事の習慣を変えることで<span class="em">継続的に作業効率と品質を向上</span>させる</li>
+      <li>「仕事の見える化」によって<span class="em">迅速に正しい意思決定</span>ができる</li>
+      <li>KAIZEN活動がきっかけで<span class="em">斬新なアイデアが生まれ、イノベーションを実現</span>できる</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ══ CH4 ══ -->
+<div class="chapter-break" id="ch4">
+  <div class="chapter-num">4</div>
+  <div class="chapter-info">
+    <h2>KAIZEN活動の活かし方</h2>
+    <p>ツール① 日報 ／ ツール② アンケート ／ ツール③ 業務マニュアル</p>
+  </div>
+</div>
+
+<!-- ツール①：日報 -->
+<section id="ch4-nippo">
+  <div class="card">
+    <div class="tool-header">
+      <div class="tool-num">1</div>
+      <div class="tool-title">日報 <span class="src src-s03">← S03:p.47–50</span></div>
+    </div>
+
+    <div class="def-block" style="margin:0 0 12px;">
+      <div class="def-label">【定義】日報</div>
+      <p class="note-text">「その日の報告」のこと。<span class="em">ホウ・レン・ソウ</span>（報告・連絡・相談）の具体的な実践ツール。<br>
+      重要ポイント：報告内容を仕事にどう<span class="em-gold">活かすか</span>が本質。単に書くだけでは意味がない。</p>
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <div class="sub-title" style="margin-top:0;">日報の目的</div>
+        <ul class="check-list">
+          <li>仕事の進捗を<span class="em">記録に残す</span></li>
+          <li>上司が現場の<span class="em">進捗状況を確認</span>する</li>
+          <li>異常の<span class="em">兆候を早期発見</span>する</li>
+          <li>情報を<span class="em">共有</span>する</li>
+          <li><span class="em">職場の気づきは日報から</span>始まる</li>
+        </ul>
+      </div>
+      <div>
+        <div class="sub-title" style="margin-top:0;">日報の効果</div>
+        <ul class="check-list">
+          <li>当たり前の日常に<span class="em">改善ヒントが隠れている</span></li>
+          <li>過去の仕事を<span class="em">振り返る機会</span>が生まれる</li>
+          <li>物事を<span class="em">数字でとらえる習慣</span>ができる（変化を追える）</li>
+          <li>どこに<span class="em">ムダ・ムラ・ムリ</span>があるかに気づく</li>
+          <li>上司からの<span class="em">アドバイスを受ける</span>ツールになる</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="voice-block" style="margin-top:10px;">
+      <div class="voice-label">🎙 音声補足</div>
+      <p class="note-text">日報 → 気づき → 成長のスパイラルへとつながる。「3日前に何をやったか覚えていますか？」→ 日報がなければ覚えていない。毎日の記録が成長の起点となる。<span class="src src-s05">← S05</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- ツール②：アンケート -->
+<section id="ch4-survey">
+  <div class="card" style="margin-top:16px;">
+    <div class="tool-header">
+      <div class="tool-num">2</div>
+      <div class="tool-title">アンケート <span class="src src-s03">← S03:p.51–54</span></div>
+    </div>
+
+    <div class="def-block" style="margin:0 0 12px;">
+      <div class="def-label">【定義】アンケート</div>
+      <p class="note-text">
+        フランス語で「調査」を意味する言葉。<span class="em">特定の問題を解決するために</span>、質問項目が記載された調査票・質問用紙を用い、<span class="em">複数の人に同じ質問を行ってデータを収集</span>する活動。コミュニケーションの手段でもある。
+      </p>
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <div class="sub-title" style="margin-top:0;">質問の作り方</div>
+        <ul class="check-list">
+          <li>最初は<span class="em">簡単な質問</span>から始める</li>
+          <li>できるだけ<span class="em">数値化</span>する</li>
+          <li>1問に2つ以上の内容を<span class="em">聞かない</span></li>
+          <li>自由回答・複数回答も<span class="em">適度に混ぜる</span></li>
+          <li>答えにくい・<span class="em">曖昧な質問は避ける</span></li>
+        </ul>
+      </div>
+      <div>
+        <div class="sub-title" style="margin-top:0;">配信の注意点</div>
+        <ul class="check-list">
+          <li>目的に合った<span class="em">対象を絞る</span></li>
+          <li>回答者の<span class="em">属性を記録</span>する（性別・世代など、後の分析で重要）</li>
+          <li><span class="em">有効回答数</span>を設定する</li>
+          <li><span class="em">回答期限を明記</span>する</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="sub-title">アンケートの効果</div>
+    <ul class="check-list">
+      <li>相手の<span class="em">潜在的なニーズをつかめる</span></li>
+      <li>顧客の<span class="em">満足度を高める</span></li>
+      <li>顧客名簿を作り<span class="em">継続的にアプローチ</span>できる（2回目・3回目と展開可）</li>
+      <li>社員の<span class="em">モチベーションアップ</span>につながる</li>
+      <li>アンケートの<span class="em">結果を最重要視</span>する──声が大きい人や偏った意見に振り回されない</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ツール③：業務マニュアル -->
+<section id="ch4-manual">
+  <div class="card" style="margin-top:16px;">
+    <div class="tool-header">
+      <div class="tool-num">3</div>
+      <div class="tool-title">業務マニュアル <span class="src src-s03">← S03:p.55–58</span></div>
+    </div>
+
+    <div class="def-block" style="margin:0 0 12px;">
+      <div class="def-label">【定義】業務マニュアル</div>
+      <p class="note-text">
+        一定品質の業務を達成するために、<span class="em">処理手順・判断基準・ルール</span>などを解説するもの。初心者・未経験者への業務説明文書としても使用。個人参照・指導・教育用に活用する。
+      </p>
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <div class="sub-title" style="margin-top:0;">作成の目的</div>
+        <ul class="check-list">
+          <li>業務の効率化 → <span class="em">生産性・顧客満足度の向上</span></li>
+          <li><span class="em">コンプライアンス遵守</span>・モラル低下への対処</li>
+          <li><span class="em">ノウハウを集約</span>させ断絶を避ける</li>
+          <li><span class="em">グローバル基準</span>への対応</li>
+        </ul>
+      </div>
+      <div>
+        <div class="sub-title" style="margin-top:0;">ない場合の問題点</div>
+        <ul class="check-list">
+          <li>手順が不安定 → <span class="em-red">無駄な時間が発生</span></li>
+          <li>過去のノウハウが<span class="em-red">活かされない</span></li>
+          <li>仕事の進め方に<span class="em-red">個人差が生まれる</span></li>
+          <li>組織の方針が<span class="em-red">現場に反映されない</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="sub-title">業務マニュアルを使用する4つの効果 <span class="src src-s03">← S03:p.58</span></div>
+
+    <!-- SVG: 4効果ダイアグラム -->
+    <figure style="margin:12px 0;">
+      <svg viewBox="0 0 600 80" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:600px;display:block;">
+        <!-- 個人知→共有知 -->
+        <rect x="5"   y="15" width="130" height="50" rx="6" fill="#1e2535" stroke="#2ecc71" stroke-width="1.5"/>
+        <text x="70"  y="35" text-anchor="middle" fill="#2ecc71" font-size="10" font-weight="700" font-family="sans-serif">個人知</text>
+        <text x="70"  y="48" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="sans-serif">→ 共有知</text>
+        <text x="70"  y="58" text-anchor="middle" fill="#5a6a80" font-size="9" font-family="sans-serif">知識の水平展開</text>
+        <!-- 暗黙知→形式知 -->
+        <rect x="148" y="15" width="130" height="50" rx="6" fill="#1e2535" stroke="#3498db" stroke-width="1.5"/>
+        <text x="213" y="35" text-anchor="middle" fill="#3498db" font-size="10" font-weight="700" font-family="sans-serif">暗黙知</text>
+        <text x="213" y="48" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="sans-serif">→ 形式知</text>
+        <text x="213" y="58" text-anchor="middle" fill="#5a6a80" font-size="9" font-family="sans-serif">言語化・文書化</text>
+        <!-- 部分最適→全体最適 -->
+        <rect x="291" y="15" width="130" height="50" rx="6" fill="#1e2535" stroke="#9b59b6" stroke-width="1.5"/>
+        <text x="356" y="35" text-anchor="middle" fill="#9b59b6" font-size="10" font-weight="700" font-family="sans-serif">部分最適</text>
+        <text x="356" y="48" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="sans-serif">→ 全体最適</text>
+        <text x="356" y="58" text-anchor="middle" fill="#5a6a80" font-size="9" font-family="sans-serif">組織全体の底上げ</text>
+        <!-- 眠っている知の資産 -->
+        <rect x="434" y="15" width="160" height="50" rx="6" fill="#1e2535" stroke="#f39c12" stroke-width="1.5"/>
+        <text x="514" y="35" text-anchor="middle" fill="#f39c12" font-size="10" font-weight="700" font-family="sans-serif">眠っている</text>
+        <text x="514" y="48" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="sans-serif">知の資産を活かす</text>
+        <text x="514" y="58" text-anchor="middle" fill="#5a6a80" font-size="9" font-family="sans-serif">潜在ノウハウの発掘</text>
+      </svg>
+      <figcaption class="small" style="margin-top:4px;">図：業務マニュアルの4つの効果 <span class="src src-s03">← S03:p.58</span></figcaption>
+    </figure>
+
+    <div class="ext-block">
+      <div class="ext-label">🌐 外部補足・確認済（SECIモデルとの接続）</div>
+      <p class="note-text">「暗黙知→形式知」の変換は野中郁次郎（一橋大学名誉教授）の<strong>SECIモデル</strong>の「表出化（Externalization）」に相当する。業務マニュアルの作成はまさにこのプロセス。SECIモデル（1990年、後に竹内弘高との共著『知識創造企業』1995年で世界普及、10か国語以上に翻訳）はナレッジマネジメントの基礎理論。トヨタのKAIZEN活動はSECIモデルの実践例として頻繁に引用される。 <span class="src src-ext">← Wikipedia・グロービス経営大学院</span></p>
+    </div>
+  </div>
+
+  <div class="summary-box">
+    <h3>第4章・第5回 まとめ</h3>
+    <ul class="check-list">
+      <li>職場の気づきは<span class="em">日報から生まれ</span>、目的意識の高い仕事が質を高める</li>
+      <li>アンケートはコミュニケーション手段として有効 → <span class="em">結果を最重要視する</span></li>
+      <li>良い業務マニュアルが作成できれば<span class="em">眠っていた知の資産を活かせる</span></li>
+      <li>自己分析の効果は<span class="em">気づきを深めることで意欲を高めること</span>にある</li>
+      <li>自己分析は<span class="em">新しいことに挑戦する時</span>に特に効果を発揮する</li>
+      <li>継続的なKAIZEN活動によって<span class="em">効率と質が向上し、イノベーションも実現できる</span></li>
+    </ul>
+  </div>
+</section>
+
+
+<!-- ══════════════ 末尾補足 ══════════════ -->
+<div class="appendix-section">
+
+  <!-- ⭐ 補足A -->
+  <div id="appendix-a" class="appendix-h">⭐ A — 最重要ワード一覧</div>
+  <div class="apx-card">
+    <div class="apx-card-header">
+      <span class="apx-icon">⭐</span>
+      <div>
+        <div class="apx-title">最重要ワード一覧</div>
+        <div class="apx-sub">授業全体を通じて繰り返し登場した語・試験に出やすい語</div>
+      </div>
+    </div>
+
+    <table class="note-table">
+      <thead>
+        <tr><th>用語</th><th>読み</th><th>定義（原文から抽出）</th><th>重要度</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>自己分析</strong></td>
+          <td>じこぶんせき</td>
+          <td>自分を客観的に評価するために行うアプローチのこと <span class="src src-s03">← S03:p.6</span></td>
+          <td><span class="imp3">★★★</span></td>
+        </tr>
+        <tr>
+          <td><strong>ジョハリの窓</strong><br><small>Johari window</small></td>
+          <td>じょはりのまど</td>
+          <td>1955年、ジョセフ・ルフト（Joseph Luft）とハリントン・インガム（Harrington Ingham）が考案したコミュニケーション分析のモデル。4つの窓で自己認識と他者認識のギャップを可視化する <span class="src src-s03">← S03:p.10</span></td>
+          <td><span class="imp3">★★★</span></td>
+        </tr>
+        <tr>
+          <td><strong>成長のスパイラル</strong></td>
+          <td>せいちょうのすぱいらる</td>
+          <td>気づき→意欲→行動→結果→自信→意欲（↺繰り返し）の好循環。自己開示とフィードバックの繰り返しがこの起点 <span class="src src-s03">← S03:p.15</span></td>
+          <td><span class="imp3">★★★</span></td>
+        </tr>
+        <tr>
+          <td><strong>KAIZEN活動</strong></td>
+          <td>かいぜんかつどう</td>
+          <td>製造業の工場作業者が中心になって行う、作業効率向上や作業安全性確保などの生産に関するボトムアップ活動。トヨタ生産方式（TPS）の強みとして有名 <span class="src src-s03">← S03:p.34</span></td>
+          <td><span class="imp3">★★★</span></td>
+        </tr>
+        <tr>
+          <td><strong>見える化</strong></td>
+          <td>みえるか</td>
+          <td>仕事のプロセス・状況・結果を人の目に見えるようにすること。3つの目的（共通認識・自律行動・次のKAIZENへの接続）を持つ <span class="src src-s03">← S03:p.37</span></td>
+          <td><span class="imp2">★★☆</span></td>
+        </tr>
+        <tr>
+          <td><strong>5S</strong></td>
+          <td>ごえす</td>
+          <td>整理（Sort）・整頓（Set in Order）・清掃（Shine）・清潔（Standardize）・しつけ（Sustain）。徹底することでムリ・ムダ・ムラをなくす <span class="src src-s03">← S03:p.40</span></td>
+          <td><span class="imp2">★★☆</span></td>
+        </tr>
+        <tr>
+          <td><strong>3つの眼</strong><br><small>鳥・虫・魚</small></td>
+          <td>みっつのめ</td>
+          <td>鳥の眼（全体をつかむ）・虫の眼（詳細を見る）・魚の眼（流れをつかむ）。目的によって視点を使い分ける <span class="src src-s03">← S03:p.38</span></td>
+          <td><span class="imp2">★★☆</span></td>
+        </tr>
+        <tr>
+          <td><strong>ホウ・レン・ソウ</strong></td>
+          <td>ほうれんそう</td>
+          <td>報告・連絡・相談の頭文字。日報はこの具体的な実践ツール <span class="src src-s03">← S03:p.47</span></td>
+          <td><span class="imp2">★★☆</span></td>
+        </tr>
+        <tr>
+          <td><strong>自己開示</strong><br><small>Self-disclosure</small></td>
+          <td>じこかいじ</td>
+          <td>自分が知っていることをどんどん他人に見せること。ジョハリの窓の「開放」の窓を広げる行為 <span class="src src-s03">← S03:p.12</span></td>
+          <td><span class="imp1">★☆☆</span></td>
+        </tr>
+        <tr>
+          <td><strong>業務マニュアル</strong></td>
+          <td>ぎょうむまにゅある</td>
+          <td>一定品質の業務達成のための処理手順・判断基準・ルールを解説した文書。暗黙知→形式知への変換ツール（4効果：個人知→共有知、暗黙知→形式知、部分最適→全体最適、眠っている知の資産を活かす）<span class="src src-s03">← S03:p.55,58</span></td>
+          <td><span class="imp2">★★☆</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 📚 補足B -->
+  <div id="appendix-b" class="appendix-h">📚 B — 知っておくべき背景知識</div>
+  <div class="apx-card">
+    <div class="apx-card-header">
+      <span class="apx-icon">📚</span>
+      <div>
+        <div class="apx-title">知っておくべき背景知識</div>
+        <div class="apx-sub">授業を理解するために前提として知っておくべき知識（外部補足・信頼性記載済み）</div>
+      </div>
+    </div>
+
+    <div class="term-entry">
+      <div class="term-name">ジョハリの窓：考案の経緯と正確な表記 <span class="badge-ext-ok">外部補足・確認済</span></div>
+      <div class="term-def">
+        <strong>考案年・場所：</strong>1955年夏、アメリカで開催された「グループ成長のためのラボラトリートレーニング」席上で発表。<br>
+        <strong>考案者の正式名：</strong>ジョセフ・ルフト（Joseph Luft、サンフランシスコ州立大学）とハリントン・インガム（Harrington Ingham）。フルネームは Harrington Ingham だが通称 Harry Ingham。<br>
+        <strong>名称の由来：</strong>二人のファーストネーム "Jo（seph）" + "Hari（ngton）" を組み合わせて "Johari（ジョハリ）"。ジョハリという人物は実在しない。<br>
+        <strong>英語4領域の正式名：</strong>開放＝open self、盲点＝blind self、秘密＝hidden self、未知＝unknown self。<br>
+        <span style="font-size:11px; color:var(--text-muted);">参照: <a href="https://ja.wikipedia.org/wiki/%E3%82%B8%E3%83%A7%E3%83%8F%E3%83%AA%E3%81%AE%E7%AA%93">Wikipedia</a> / <a href="https://www.kaonavi.jp/dictionary/johari/">カオナビ</a> / <a href="https://jinjibu.jp/keyword/detl/736/">日本の人事部</a></span>
+      </div>
+    </div>
+
+    <div class="term-entry">
+      <div class="term-name">トヨタ生産方式（TPS）とKAIZENの世界普及 <span class="badge-ext-ok">外部補足・確認済</span></div>
+      <div class="term-def">
+        <strong>体系化者：</strong>大野耐一（おおの たいいち）。著書『トヨタ生産方式—脱規模の経営をめざして—』（1978年）は生産管理者のバイブル。1988年英語版刊行で世界に普及。<br>
+        <strong>「カイゼン」と「改善」の違い：</strong>漢字「改善」は「悪い部分を直す」こと。カタカナ「KAIZEN」は「現状に満足せずさらに良くする」という前向きな継続改善の意味を含む。英語でも "Kaizen" として世界共通語になっている。<br>
+        <strong>海外での再整理：</strong>TPSの研究から欧米で「リーン生産方式（Lean Manufacturing）」として体系化。製造業だけでなく病院・行政・IT（アジャイル開発）などに応用されている。<br>
+        <span style="font-size:11px; color:var(--text-muted);">参照: <a href="https://ja.wikipedia.org/wiki/%E3%83%88%E3%83%A8%E3%82%BF%E7%94%9F%E7%94%A3%E6%96%B9%E5%BC%8F">Wikipedia: トヨタ生産方式</a> / <a href="https://gazoo.com/feature/gazoo-museum/car-history/14/03/19/">GAZOO.com: 大野耐一</a></span>
+      </div>
+    </div>
+
+    <div class="term-entry">
+      <div class="term-name">5Sの英語表記と各Sの意味 <span class="badge-ext-ok">外部補足・確認済</span></div>
+      <div class="term-def">
+        5Sはローマ字読みの頭文字（Seiri / Seiton / Seisou / Seiketsu / Shitsuke）から命名。英語圏では下記の対応で "Five S" として通用する。
+        <table class="note-table" style="margin-top:8px;">
+          <thead><tr><th>日本語</th><th>ローマ字</th><th>英語訳</th><th>内容</th></tr></thead>
+          <tbody>
+            <tr><td>整理</td><td>Seiri</td><td>Sort</td><td>不要なものを捨て、必要なものだけにする</td></tr>
+            <tr><td>整頓</td><td>Seiton</td><td>Set in Order</td><td>必要なものを決められた場所に配置し、すぐ取り出せる状態にする</td></tr>
+            <tr><td>清掃</td><td>Seisou</td><td>Shine</td><td>常に掃除・点検を行う</td></tr>
+            <tr><td>清潔</td><td>Seiketsu</td><td>Standardize</td><td>整理・整頓・清掃の状態を維持・標準化する</td></tr>
+            <tr><td>しつけ</td><td>Shitsuke</td><td>Sustain</td><td>決めたルール・手順を正しく守る習慣をつける</td></tr>
+          </tbody>
+        </table>
+        <span style="font-size:11px; color:var(--text-muted);">参照: <a href="https://ja.wikipedia.org/wiki/5S">Wikipedia: 5S</a> / <a href="https://asq.org/quality-resources/five-s-tutorial">ASQ（米国品質協会）</a> / <a href="https://en.wikipedia.org/wiki/5S_(methodology)">Wikipedia EN: 5S methodology</a></span>
+      </div>
+    </div>
+
+    <div class="term-entry">
+      <div class="term-name">暗黙知・形式知とSECIモデル（野中郁次郎） <span class="badge-ext-ok">外部補足・確認済</span></div>
+      <div class="term-def">
+        <strong>提唱者：</strong>野中郁次郎（一橋大学名誉教授）。竹内弘高との共著『知識創造企業（The Knowledge-Creating Company）』（1995年、オックスフォード大学出版）で世界的に知られ、10か国語以上に翻訳。<br>
+        <strong>暗黙知（Tacit Knowledge）：</strong>言語化・数値化が困難な個人の経験・感覚・ノウハウ・勘。<br>
+        <strong>形式知（Explicit Knowledge）：</strong>言語や図表で明示できる知識（マニュアル・報告書・手順書など）。<br>
+        <strong>SECIモデル：</strong>共同化（Socialization）→表出化（Externalization）→連結化（Combination）→内面化（Internalization）の4プロセスを螺旋状に循環して新たな知識が創造されるモデル。業務マニュアルの作成は「表出化」（暗黙知→形式知への変換）に相当。<br>
+        <span style="font-size:11px; color:var(--text-muted);">参照: <a href="https://ja.wikipedia.org/wiki/SECI%E3%83%A2%E3%83%87%E3%83%AB">Wikipedia: SECIモデル</a> / <a href="https://mba.globis.ac.jp/about_mba/glossary/detail-11667.html">グロービス経営大学院</a></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🎯 補足C -->
+  <div id="appendix-c" class="appendix-h">🎯 C — 試験・レポートで重要な観点</div>
+  <div class="apx-card">
+    <div class="apx-card-header">
+      <span class="apx-icon">🎯</span>
+      <div>
+        <div class="apx-title">試験・レポートで重要な観点</div>
+        <div class="apx-sub">教員が繰り返した表現・授業全体を通じて強調されたポイント</div>
+      </div>
+    </div>
+
+    <div class="card-gold" style="margin-bottom:10px;">
+      <div class="sub-title" style="margin-top:0;">【最頻出】成長のスパイラルの順序 <span class="tag tag-imp">重要度推測</span></div>
+      <p class="note-text">「<span class="em">気づき → 意欲 → 行動 → 結果 → 自信 → （意欲へ戻る）</span>」の正確な順序。スライドp.15に明示。第1〜4章にわたって繰り返し登場する本授業の中核概念。就活・日報・KAIZENすべてに接続している。</p>
+    </div>
+
+    <div class="card-gold" style="margin-bottom:10px;">
+      <div class="sub-title" style="margin-top:0;">【頻出】ジョハリの窓の4領域 <span class="tag tag-imp">重要度推測</span></div>
+      <p class="note-text">開放・盲点・秘密・未知の4領域と、それぞれの意味（自分が知っているか × 他人が知っているか）を正確に覚える。英語名（open / blind / hidden / unknown self）も整理しておく。コミュニケーション改善手順（自己開示・フィードバック）との対応も問われやすい。考案者名・考案年（ルフト＋インガム、1955年）も把握。</p>
+    </div>
+
+    <div class="card-gold" style="margin-bottom:10px;">
+      <div class="sub-title" style="margin-top:0;">【頻出】3つの眼の名称と意味 <span class="tag tag-imp">重要度推測</span></div>
+      <p class="note-text">鳥（全体）・虫（詳細）・魚（流れ）の対応関係。それぞれの具体例（売上全体、得意先別、返品クレームの流れ等）とセットで記憶する。</p>
+    </div>
+
+    <div class="card-gold" style="margin-bottom:10px;">
+      <div class="sub-title" style="margin-top:0;">【頻出】5Sの内容と目的 <span class="tag tag-imp">重要度推測</span></div>
+      <p class="note-text">整理（Sort）・整頓（Set in Order）・清掃（Shine）・清潔（Standardize）・しつけ（Sustain）。目的は「ムリ・ムダ・ムラをなくす」こと。KAIZENの本質として授業で強調。英語の5Sも含めて整理しておくと理解が深まる。</p>
+    </div>
+
+    <div class="card-gold" style="margin-bottom:10px;">
+      <div class="sub-title" style="margin-top:0;">【頻出】業務マニュアルの4効果 <span class="tag tag-imp">重要度推測</span></div>
+      <p class="note-text">「<span class="em">個人知→共有知・暗黙知→形式知・部分最適→全体最適・眠っている知の資産を活かす</span>」の4つ。スライドp.58に一覧で明示。</p>
+    </div>
+
+    <div class="card-gold">
+      <div class="sub-title" style="margin-top:0;">【頻出】KAIZENの4ステップとその本質 <span class="tag tag-imp">重要度推測</span></div>
+      <p class="note-text">①問題発見→②原因発見→③解決→④確認（繰り返し）の4ステップ。本質は「仕事が増えるのではなく<span class="em">従来の仕事の習慣を変えること</span>」「一度で終わらず<span class="em">継続して積み上げる</span>」こと。</p>
+    </div>
+  </div>
+
+  <!-- 🔗 補足D -->
+  <div id="appendix-d" class="appendix-h">🔗 D — 関連概念・発展知識</div>
+  <div class="apx-card">
+    <div class="apx-card-header">
+      <span class="apx-icon">🔗</span>
+      <div>
+        <div class="apx-title">関連概念・発展知識</div>
+        <div class="apx-sub">授業で触れていない関連知識はここにのみ記載する</div>
+      </div>
+    </div>
+
+    <div class="term-entry">
+      <div class="term-name">自己肯定感と自己効力感（Self-efficacy） <span class="badge-ext-ok">外部補足・確認済</span></div>
+      <div class="term-def">
+        授業スライド（S03:p.9）に「自己肯定感」という語が登場する。これは心理学の<strong>自己効力感（Self-efficacy）</strong>と密接に関連する概念。<br>
+        <strong>提唱者：</strong>カナダ人心理学者アルバート・バンデューラ（Albert Bandura）。1977年の論文 "Self-efficacy: Toward a unifying theory of behavioral change"（Psychological Review, 84(2), 191-215）で概念化。<br>
+        <strong>定義：</strong>「自分が特定の行動を遂行し、目標を達成できるという信念」（Bandura, 1977）。ある状況において必要な行動をうまく遂行できると自分の可能性を認知していること。<br>
+        <strong>授業との接続：</strong>自己分析によって自分の強みに気づくことが自己効力感を高める。高い自己効力感は意欲・行動・成長のスパイラルの起点となる。授業でいう「自己肯定感」はこれに相当する（「自分のやっていることは間違っていない」「存在することに意味がある」という感覚）。<br>
+        <strong>自己効力感 vs 自己肯定感：</strong>自己効力感＝「自分にはそれだけの能力がある」という認知（行動遂行に特化）。自己肯定感＝「ありのままの自分を肯定する感覚」（より広い自己受容）。<br>
+        <span style="font-size:11px; color:var(--text-muted);">参照: <a href="https://ja.wikipedia.org/wiki/%E8%87%AA%E5%B7%B1%E5%8A%B9%E5%8A%9B%E6%84%9F">Wikipedia: 自己効力感</a> / <a href="https://mba.globis.ac.jp/careernote/1302.html">グロービス: 自己効力感</a></span>
+      </div>
+    </div>
+
+    <div class="term-entry">
+      <div class="term-name">PDCAサイクルとKAIZENの比較 <span class="badge-ext">外部補足</span></div>
+      <div class="term-def">
+        KAIZENの4ステップはPDCAサイクル（Plan-Do-Check-Act）と構造が重なるが違いがある。
+        <table class="note-table" style="margin-top:8px;">
+          <thead><tr><th>比較軸</th><th>KAIZEN</th><th>PDCA</th></tr></thead>
+          <tbody>
+            <tr><td>起点</td><td>現場発・ボトムアップ</td><td>計画・指示から始まるトップダウンも多い</td></tr>
+            <tr><td>規模感</td><td>小さな改善の積み重ね</td><td>プロジェクト単位での計画実行</td></tr>
+            <tr><td>継続性</td><td>終わりのない継続的活動</td><td>サイクルを繰り返す設計だが区切りがある</td></tr>
+            <tr><td>知識前提</td><td>現場の暗黙知を活用</td><td>形式知（計画書）が前提になりやすい</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="term-entry">
+      <div class="term-name">ジョハリの窓の現代的応用 <span class="badge-ext-ok">外部補足・確認済</span></div>
+      <div class="term-def">
+        1955年の提唱後、企業のコミュニケーション促進・能力開発・キャリアコンサルティングで広く活用されている。就職活動での自己分析ツールとしても有名（授業の第2章と直結）。現在はリーダーシップ開発・チームビルディング・コーチングの場でも使われている。注意点：あくまで一理論であり過信は禁物。<br>
+        <span style="font-size:11px; color:var(--text-muted);">参照: <a href="https://www.hrbrain.jp/media/human-resources-management/johari">HRBrain</a> / <a href="https://www.all-different.co.jp/column_report/column/johari_window/hrd_column_199.html">ALL DIFFERENT</a></span>
+      </div>
+    </div>
+
+    <div class="term-entry">
+      <div class="term-name">次回授業との接続 <span class="tag tag-q">次回</span></div>
+      <div class="term-def">
+        第5回は「自己分析」と「KAIZEN活動」という2つの柱を学んだ。いずれも<strong>「気づき → 成長」</strong>という共通の構造を持ち、成長のスパイラルという同一フレームワークで統合されている。次回以降でセルフマネジメントの他の側面（目標設定・時間管理等）と統合的に理解することが重要。
+      </div>
+    </div>
+  </div>
+
+  <!-- ❓ 未確定事項リスト（補足D後に配置） -->
+  <div id="appendix-u"></div>
+  <div class="uncert-card">
+    <div class="uncert-card-header">
+      <span style="font-size:18px;">❓</span>
+      <h3>未確定事項・要確認リスト</h3>
+    </div>
+    <p class="small" style="margin-bottom:12px;">S03・S05バリアント照合・外部検索をすべて試みても解消できなかった項目のみ。高・中優先度は解消済み。</p>
+
+    <table class="note-table">
+      <thead>
+        <tr><th>ID</th><th>内容</th><th>種別</th><th>優先度</th><th>解消できない理由 / 解消方法</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="color:var(--green2);">U01<br><small>✓解決済</small></td>
+          <td>「ジョハリの窓」S05-Aに「ジョセフ・ダフト」という誤変換</td>
+          <td>[AI変換修正済み]</td>
+          <td>—</td>
+          <td>S03:p.10・Wikipedia・カオナビ等複数ソースで「Joseph Luft（ジョセフ・ルフト）」と確定。ノート内を修正済み。</td>
+        </tr>
+        <tr>
+          <td style="color:var(--green2);">U02<br><small>✓解決済</small></td>
+          <td>「連発に」（S05-B）→「円滑に」への修正</td>
+          <td>[AI変換修正済み]</td>
+          <td>—</td>
+          <td>S03:p.10「円滑なコミュニケーション」で確定。修正済み。</td>
+        </tr>
+        <tr>
+          <td style="color:var(--green2);">U03<br><small>✓解決済</small></td>
+          <td>自己効力感（Self-efficacy）の提唱者・年号・定義の確認</td>
+          <td>[外部補足]</td>
+          <td>—</td>
+          <td>Bandura（1977）Psychological Review 84(2)で確認。Wikipedia・グロービス照合済み。補足Dに記載済み。</td>
+        </tr>
+        <tr>
+          <td style="color:var(--green2);">U04<br><small>✓解決済</small></td>
+          <td>5Sの英語対応（Sort/Set in Order/Shine/Standardize/Sustain）の確認</td>
+          <td>[外部補足]</td>
+          <td>—</td>
+          <td>ASQ（米国品質協会）・Wikipedia EN（5S methodology）で確認。補足B・補足Cに記載済み。</td>
+        </tr>
+        <tr>
+          <td>U05</td>
+          <td>セルフマネジメント論の次回（第6回）以降のトピックとの接続内容</td>
+          <td>[省略疑い]</td>
+          <td>低</td>
+          <td>S03:p.60-61（まとめスライド）には次回内容の記載なし。S05末尾も確認済みだが次回トピックへの言及なし。次回受講時に確認。</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="small" style="margin-top:8px; color:var(--green2);">✓ U01〜U04は外部検索・S03照合により完全解消済み。高・中優先度の未確定事項はゼロ。</p>
+  </div>
+
+</div><!-- appendix-section -->
+
+<!-- メタフッター -->
+<div style="margin-top:48px; padding-top:20px; border-top:1px solid var(--border); font-size:11px; color:var(--text-muted);">
+  <div>SSP v4.2 準拠 ｜ Step 5-B 出力 ｜ v4.6.1対応</div>
+  <div class="url-row">GitHub Pages: <a href="https://goforward0516-web.github.io/ssp-notes/note_selfmgmt_05.html">https://goforward0516-web.github.io/ssp-notes/note_selfmgmt_05.html</a></div>
+  <div style="margin-top:4px;">v1.0 初版 ｜ v1.1 外部補足補強 ｜ v1.2 v4.6.1完全準拠・SVG図・音声補足ブロック・補足A〜D構造整備</div>
+</div>
+
+</main>
+
+<script>
+// Progress bar
+window.addEventListener('scroll', function() {
+  const d = document.documentElement;
+  const st = d.scrollTop || document.body.scrollTop;
+  const sh = d.scrollHeight - d.clientHeight;
+  document.getElementById('progress-fill').style.width = (sh > 0 ? st / sh * 100 : 0) + '%';
+});
+
+// Nav highlight
+const secs = document.querySelectorAll('section[id], div[id], .chapter-break[id]');
+const navs = document.querySelectorAll('.nav-item');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const id = e.target.id;
+      navs.forEach(n => {
+        n.classList.remove('active');
+        if (n.getAttribute('href') === '#' + id) n.classList.add('active');
+      });
+    }
+  });
+}, { threshold: 0.2 });
+secs.forEach(s => obs.observe(s));
+</script>
+</body>
+</html>
