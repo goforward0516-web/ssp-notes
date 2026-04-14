@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ロジカルシンキング 第2回 | 考える際に役立つ5つの図</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+JP:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0f1117;--bg-card:#161b27;--bg-sidebar:#0d1220;
+  --border:#2a3450;--border-b:#3d4f6e;
+  --txt:#e2e8f5;--sub:#8a99b8;--muted:#5a6a8a;
+  --blue:#5b8dee;--green:#34d399;--yellow:#fbbf24;
+  --orange:#f97316;--purple:#a78bfa;--red:#f87171;--teal:#2dd4bf;
+  --sw:260px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--txt);font-family:'Noto Sans JP',sans-serif;font-size:15px;line-height:1.85;display:flex;min-height:100vh}
+
+/* SIDEBAR */
+#sb{width:var(--sw);min-width:var(--sw);background:var(--bg-sidebar);border-right:1px solid var(--border);position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100;padding:20px 0;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+#sb .logo{padding:0 16px 14px;border-bottom:1px solid var(--border);margin-bottom:10px}
+#sb .logo .subj{font-size:10px;color:var(--blue);letter-spacing:.12em;text-transform:uppercase;font-family:'JetBrains Mono',monospace}
+#sb .logo .ttl{font-size:13px;font-weight:700;color:var(--txt);line-height:1.4;margin-top:4px}
+#sb nav a{display:block;padding:5px 16px;color:var(--sub);text-decoration:none;font-size:12px;line-height:1.5;border-left:2px solid transparent;transition:all .15s}
+#sb nav a:hover{color:var(--txt);background:rgba(91,141,238,.06)}
+#sb nav a.active{color:var(--blue);border-left-color:var(--blue);background:rgba(91,141,238,.08)}
+#sb nav a.h2{font-weight:700;color:var(--txt);padding-top:10px;font-size:12.5px}
+#sb nav a.h3{padding-left:26px;font-size:11.5px}
+#sb nav .sg{border-bottom:1px solid var(--border);padding-bottom:8px;margin-bottom:4px}
+
+/* MAIN */
+#main{margin-left:var(--sw);flex:1;max-width:920px;padding:40px 40px 80px}
+
+/* HEADER */
+.nh{margin-bottom:36px;padding-bottom:24px;border-bottom:1px solid var(--border)}
+.nh .lbl{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--blue);letter-spacing:.15em;text-transform:uppercase;margin-bottom:10px}
+.nh h1{font-family:'Noto Serif JP',serif;font-size:26px;font-weight:600;line-height:1.4;margin-bottom:14px}
+.nh .meta{display:flex;flex-wrap:wrap;gap:14px;font-size:12px;color:var(--sub);font-family:'JetBrains Mono',monospace}
+.nh .meta .dot{color:var(--teal)}
+
+/* BADGES */
+.sb{display:inline-flex;align-items:center;gap:4px;font-family:'JetBrains Mono',monospace;font-size:10px;padding:2px 7px;border-radius:4px;background:rgba(91,141,238,.12);color:var(--blue);border:1px solid rgba(91,141,238,.25);margin:0 2px;vertical-align:middle}
+.sb.g{background:rgba(52,211,153,.1);color:var(--green);border-color:rgba(52,211,153,.2)}
+.sb.y{background:rgba(251,191,36,.1);color:var(--yellow);border-color:rgba(251,191,36,.2)}
+
+/* SECTIONS */
+.sec{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:28px 32px;margin-bottom:20px;scroll-margin-top:20px}
+.sec h2{font-size:18px;font-weight:700;margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.sec h2 .nm{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--blue);background:rgba(91,141,238,.12);padding:3px 8px;border-radius:4px}
+.sec h3{font-size:15.5px;font-weight:700;color:var(--teal);margin:24px 0 10px}
+.sec h4{font-size:13.5px;font-weight:700;color:var(--yellow);margin:18px 0 8px}
+.sec p{margin-bottom:10px}
+.sec ul,.sec ol{padding-left:22px;margin-bottom:10px}
+.sec li{margin-bottom:5px}
+
+/* BLOCKS */
+.ab{background:rgba(59,130,246,.08);border-left:3px solid #3b82f6;padding:10px 16px;border-radius:0 6px 6px 0;margin:10px 0;font-size:14px}
+.ab .bl{font-size:10px;font-family:'JetBrains Mono',monospace;color:#60a5fa;letter-spacing:.1em;margin-bottom:4px}
+.eb{background:rgba(52,211,153,.08);border-left:3px solid var(--green);padding:10px 16px;border-radius:0 6px 6px 0;margin:10px 0;font-size:14px}
+.eb .bl{font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--green);letter-spacing:.1em;margin-bottom:4px}
+.wb{background:rgba(249,115,22,.08);border-left:3px solid var(--orange);padding:10px 16px;border-radius:0 6px 6px 0;margin:10px 0;font-size:14px}
+.db{background:rgba(91,141,238,.07);border:1px solid rgba(91,141,238,.2);border-radius:8px;padding:14px 18px;margin:12px 0}
+.db strong{color:var(--blue)}
+
+/* POINTER */
+.ptr{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);background:rgba(255,255,255,.04);padding:1px 5px;border-radius:3px;margin-left:6px;white-space:nowrap}
+
+/* TABLES */
+.tw{overflow-x:auto;margin:14px 0}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{background:rgba(91,141,238,.12);color:var(--blue);padding:8px 12px;text-align:left;border:1px solid var(--border);font-size:12px;font-weight:600}
+td{padding:8px 12px;border:1px solid var(--border);color:var(--txt);vertical-align:top}
+tr:nth-child(even) td{background:rgba(255,255,255,.02)}
+
+/* FIGURE */
+figure{margin:16px 0;text-align:center}
+figcaption{font-size:11.5px;color:var(--sub);font-family:'JetBrains Mono',monospace;margin-top:6px}
+
+/* GRID */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0}
+.mc{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:8px;padding:14px 16px}
+.mc h5{font-size:13px;color:var(--yellow);margin-bottom:8px}
+
+/* APPENDIX */
+.ac{border-radius:10px;padding:24px 28px;margin-bottom:16px}
+.ac.a{background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.2)}
+.ac.b{background:rgba(52,211,153,.05);border:1px solid rgba(52,211,153,.15)}
+.ac.c{background:rgba(249,115,22,.06);border:1px solid rgba(249,115,22,.2)}
+.ac.d{background:rgba(167,139,250,.06);border:1px solid rgba(167,139,250,.2)}
+.ac.u{background:rgba(249,115,22,.07);border:1px solid rgba(249,115,22,.25)}
+.ac h2{border-bottom-color:rgba(255,255,255,.08)}
+.en{font-size:12px;color:var(--sub)}
+
+@media(max-width:768px){#sb{width:200px;min-width:200px}:root{--sw:200px}#main{padding:24px 20px 60px}.g2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside id="sb">
+  <div class="logo">
+    <div class="subj">ロジカルシンキング</div>
+    <div class="ttl">第2回<br>考える際に役立つ5つの図</div>
+  </div>
+  <nav>
+    <div class="sg"><a href="#meta" class="h3">📋 概要・学習目標</a></div>
+    <div class="sg">
+      <a href="#ch1" class="h2">第1章 図の種類・FW</a>
+      <a href="#fishbone" class="h3">フィッシュボーンチャート</a>
+      <a href="#value" class="h3">価値曲線</a>
+      <a href="#ppm" class="h3">PPM分析</a>
+      <a href="#pert" class="h3">PERT図</a>
+      <a href="#swot" class="h3">SWOT分析</a>
+      <a href="#pareto" class="h3">パレート図</a>
+      <a href="#fw" class="h3">フレームワーク</a>
+    </div>
+    <div class="sg">
+      <a href="#ch2" class="h2">第2章 ツリー図とベン図</a>
+      <a href="#tree" class="h3">ツリー図</a>
+      <a href="#venn" class="h3">ベン図</a>
+    </div>
+    <div class="sg">
+      <a href="#ch3" class="h2">第3章 マトリクス図と点グラフ</a>
+      <a href="#matrix" class="h3">マトリクス図</a>
+      <a href="#dot" class="h3">点グラフ</a>
+    </div>
+    <div class="sg">
+      <a href="#ch4" class="h2">第4章 フロー図と見つけ方</a>
+      <a href="#flow" class="h3">フロー図</a>
+      <a href="#howto" class="h3">図タイプの見つけ方</a>
+    </div>
+    <div class="sg">
+      <a href="#appa" class="h3">⭐ 補足A: 重要ワード</a>
+      <a href="#appb" class="h3">📚 補足B: 背景知識</a>
+      <a href="#appc" class="h3">🎯 補足C: 試験観点</a>
+      <a href="#appd" class="h3">🔗 補足D: 関連概念</a>
+      <a href="#appu" class="h3">✅ 解消済み事項</a>
+    </div>
+  </nav>
+</aside>
+
+<!-- MAIN -->
+<main id="main">
+
+<!-- HEADER -->
+<div class="nh">
+  <div class="lbl">SSP v4.2 · note_logical_02 · v1.1</div>
+  <h1>第2回　考える際に役立つ5つの図</h1>
+  <div class="meta">
+    <span><span class="dot">●</span> 科目：ロジカルシンキング</span>
+    <span><span class="dot">●</span> 担当：奥村 隆一</span>
+    <span><span class="dot">●</span> サイバー大学 IT総合学部 教養科目</span>
+  </div>
+  <div class="meta" style="margin-top:10px">
+    <span class="sb">S03 スライドPDF 93p</span>
+    <span class="sb">S05-A hynote.ai</span>
+    <span class="sb">S05-B hynote.ai</span>
+    <span class="sb g">Web照合済 v1.1</span>
+  </div>
+</div>
+
+<!-- META -->
+<div id="meta" class="sec">
+  <h2><span class="nm">概要</span> 学習目標・授業構成</h2>
+  <div class="db">
+    <strong>第2回 学習目標：</strong>ツリー図・ベン図・マトリクス図・フロー図・点グラフの特徴を説明できる。<span class="ptr">← S03:p.2</span>
+  </div>
+  <p style="margin-top:12px">授業は4章構成。第1章でビジネス現場で使われるフレームワーク6種を紹介した後、第2〜4章でこの科目の主役となる「5つの図」を解説する。<span class="ptr">← S03:p.3</span></p>
+
+  <!-- 図とは何か -->
+  <h3>図とは何か（第1回の復習）</h3>
+  <div class="db">
+    <strong>定義：</strong>言葉（通常キーワードかキーフレーズ）と、以下の①〜③のいずれかあるいはすべてを使って表現されるもの。<span class="ptr">← S03:p.6</span>
+  </div>
+
+  <!-- 図の3要素 SVG -->
+  <figure>
+    <svg viewBox="0 0 600 130" xmlns="http://www.w3.org/2000/svg" style="max-width:600px;width:100%">
+      <!-- 線 -->
+      <rect x="20" y="20" width="170" height="90" rx="8" fill="rgba(91,141,238,.1)" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="105" y="48" text-anchor="middle" fill="#5b8dee" font-size="18" font-weight="bold" font-family="Noto Sans JP,sans-serif">① 線</text>
+      <line x1="45" y1="72" x2="165" y2="72" stroke="#5b8dee" stroke-width="2.5"/>
+      <text x="105" y="98" text-anchor="middle" fill="#8a99b8" font-size="12" font-family="Noto Sans JP,sans-serif">仕切る・つなぐ</text>
+      <!-- 囲み -->
+      <rect x="215" y="20" width="170" height="90" rx="8" fill="rgba(52,211,153,.1)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="300" y="48" text-anchor="middle" fill="#34d399" font-size="18" font-weight="bold" font-family="Noto Sans JP,sans-serif">② 囲み</text>
+      <rect x="248" y="58" width="50" height="28" rx="5" fill="rgba(52,211,153,.15)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="300" y="98" text-anchor="middle" fill="#8a99b8" font-size="12" font-family="Noto Sans JP,sans-serif">内と外に分ける</text>
+      <!-- 矢印 -->
+      <rect x="410" y="20" width="170" height="90" rx="8" fill="rgba(251,191,36,.1)" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="495" y="48" text-anchor="middle" fill="#fbbf24" font-size="18" font-weight="bold" font-family="Noto Sans JP,sans-serif">③ 矢印</text>
+      <defs><marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#fbbf24"/></marker></defs>
+      <line x1="435" y1="72" x2="558" y2="72" stroke="#fbbf24" stroke-width="2.5" marker-end="url(#arr)"/>
+      <text x="495" y="98" text-anchor="middle" fill="#8a99b8" font-size="12" font-family="Noto Sans JP,sans-serif">動き・変化をつくりだす</text>
+    </svg>
+    <figcaption>図：図を構成する3要素 <span class="ptr">S03:p.6</span></figcaption>
+  </figure>
+</div>
+
+<!-- CHAPTER 1 -->
+<div id="ch1" class="sec">
+  <h2><span class="nm">第1章</span> 図にはいろいろな種類がある</h2>
+  <p>ビジネスの現場では用途に応じて様々な図（フレームワーク）が使われている。以下に代表的な6種類を紹介する。<span class="ptr">← S03:p.7</span></p>
+
+  <!-- フィッシュボーン -->
+  <h3 id="fishbone">1-1 フィッシュボーンチャート（特性要因図）</h3>
+  <div class="db">
+    <strong>定義：</strong>問題の要因を細分化して対策を検討するための図。魚の骨の形をしているためフィッシュボーンチャートと呼ばれる。<span class="ptr">← S03:p.8</span>
+  </div>
+
+  <!-- 石川馨 補足 -->
+  <div class="eb">
+    <div class="bl">🌿 外部補足・確認済: Wikipedia / 文献</div>
+    <strong>考案者：石川馨（いしかわ かおる）氏</strong>（1915〜1989年）<br>
+    化学工学者・工学博士。1960年に東京大学工学部教授に就任し、1976年退官後は東京理科大学教授、1978年より武蔵工業大学（現・東京都市大学）学長を歴任。東京大学名誉教授。1952年頃に特性要因図（フィッシュボーンチャート）を考案し、日本のQC（品質管理）運動の中心人物として世界的に活躍した。QCサークル活動の普及にも大きく貢献。<span class="ptr">← S03:p.8 + Wikipedia「石川馨」</span>
+  </div>
+
+  <ul>
+    <li>主に品質管理に役立ち、予防・改善活動に適している</li>
+    <li>魚の骨の「頭」に問題・結果を書き、「中骨」に要因・原因、「細い骨」にさらに詳細を記述</li>
+  </ul>
+
+  <!-- フィッシュボーン SVG -->
+  <figure>
+    <svg viewBox="0 0 620 240" xmlns="http://www.w3.org/2000/svg" style="max-width:620px;width:100%">
+      <!-- 背骨（main bone）左端から「太る」まで -->
+      <defs>
+        <marker id="boneArr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#f97316"/>
+        </marker>
+        <marker id="midArr" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L7,3 z" fill="#5b8dee"/>
+        </marker>
+        <marker id="subArr" markerWidth="6" markerHeight="6" refX="4" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L6,3 z" fill="#8a99b8"/>
+        </marker>
+      </defs>
+      <!-- 背骨 -->
+      <line x1="60" y1="120" x2="490" y2="120" stroke="#f97316" stroke-width="3" marker-end="url(#boneArr)"/>
+      <!-- 頭（結果）-->
+      <ellipse cx="545" cy="120" rx="62" ry="32" fill="rgba(249,115,22,.15)" stroke="#f97316" stroke-width="1.5"/>
+      <text x="545" y="115" text-anchor="middle" fill="#fbbf24" font-size="13" font-weight="bold" font-family="Noto Sans JP,sans-serif">問題・</text>
+      <text x="545" y="131" text-anchor="middle" fill="#fbbf24" font-size="13" font-weight="bold" font-family="Noto Sans JP,sans-serif">結果</text>
+      <!-- 例ラベル -->
+      <text x="545" y="165" text-anchor="middle" fill="#8a99b8" font-size="10.5" font-family="Noto Sans JP,sans-serif">例：「太る」</text>
+
+      <!-- 中骨1: 食べ過ぎ (上左) -->
+      <line x1="160" y1="120" x2="115" y2="58" stroke="#5b8dee" stroke-width="2" marker-end="url(#midArr)"/>
+      <rect x="55" y="28" width="90" height="30" rx="6" fill="rgba(91,141,238,.12)" stroke="#5b8dee" stroke-width="1.2"/>
+      <text x="100" y="48" text-anchor="middle" fill="#e2e8f5" font-size="12" font-family="Noto Sans JP,sans-serif">食べ過ぎ</text>
+      <!-- 小骨 -->
+      <line x1="135" y1="62" x2="158" y2="90" stroke="#5a6a8a" stroke-width="1.2"/>
+      <text x="120" y="90" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP,sans-serif">1日4食</text>
+      <line x1="120" y1="66" x2="150" y2="100" stroke="#5a6a8a" stroke-width="1.2"/>
+      <text x="100" y="108" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP,sans-serif">大盛りにする</text>
+
+      <!-- 中骨2: 栄養過多 (上右) -->
+      <line x1="310" y1="120" x2="285" y2="58" stroke="#5b8dee" stroke-width="2" marker-end="url(#midArr)"/>
+      <rect x="230" y="28" width="90" height="30" rx="6" fill="rgba(91,141,238,.12)" stroke="#5b8dee" stroke-width="1.2"/>
+      <text x="275" y="48" text-anchor="middle" fill="#e2e8f5" font-size="12" font-family="Noto Sans JP,sans-serif">栄養過多</text>
+      <!-- 小骨 -->
+      <line x1="303" y1="60" x2="308" y2="92" stroke="#5a6a8a" stroke-width="1.2"/>
+      <text x="303" y="107" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP,sans-serif">夕食は晩酌</text>
+      <line x1="280" y1="58" x2="290" y2="88" stroke="#5a6a8a" stroke-width="1.2"/>
+      <text x="256" y="103" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP,sans-serif">インスタント多</text>
+
+      <!-- 中骨3: 運動不足 (下左) -->
+      <line x1="210" y1="120" x2="165" y2="182" stroke="#5b8dee" stroke-width="2" marker-end="url(#midArr)"/>
+      <rect x="105" y="180" width="90" height="30" rx="6" fill="rgba(91,141,238,.12)" stroke="#5b8dee" stroke-width="1.2"/>
+      <text x="150" y="200" text-anchor="middle" fill="#e2e8f5" font-size="12" font-family="Noto Sans JP,sans-serif">運動不足</text>
+      <!-- 小骨 -->
+      <line x1="155" y1="176" x2="165" y2="150" stroke="#5a6a8a" stroke-width="1.2"/>
+      <text x="148" y="144" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP,sans-serif">スポーツ嫌い</text>
+      <line x1="172" y1="180" x2="185" y2="153" stroke="#5a6a8a" stroke-width="1.2"/>
+      <text x="210" y="150" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP,sans-serif">車を多用</text>
+
+      <!-- 中骨4: 体質 (下右) -->
+      <line x1="380" y1="120" x2="360" y2="182" stroke="#5b8dee" stroke-width="2" marker-end="url(#midArr)"/>
+      <rect x="305" y="180" width="80" height="30" rx="6" fill="rgba(91,141,238,.12)" stroke="#5b8dee" stroke-width="1.2"/>
+      <text x="345" y="200" text-anchor="middle" fill="#e2e8f5" font-size="12" font-family="Noto Sans JP,sans-serif">体質</text>
+      <line x1="350" y1="178" x2="360" y2="153" stroke="#5a6a8a" stroke-width="1.2"/>
+      <text x="348" y="146" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP,sans-serif">親も肥満</text>
+
+      <!-- ラベル：中骨説明 -->
+      <text x="30" y="125" text-anchor="start" fill="#8a99b8" font-size="10" font-family="Noto Sans JP,sans-serif">← 中骨（要因）</text>
+    </svg>
+    <figcaption>図：フィッシュボーンチャートの例（「太る」という結果に対する要因分析） <span class="ptr">S03:p.9</span></figcaption>
+  </figure>
+
+  <div class="wb"><strong>注意：</strong>原因と結果が循環していたり、中骨の要素自体が因果関係でつながっている場合はこのチャートで表現できない。<span class="ptr">← S03:p.8</span></div>
+
+  <!-- 価値曲線 -->
+  <h3 id="value">1-2 価値曲線</h3>
+  <div class="db">
+    <strong>定義：</strong>自社と競合の商品・サービスの特徴や顧客ニーズを項目別に分けて、その優位性を折れ線グラフで示したもの。<span class="ptr">← S03:p.10</span>
+  </div>
+  <div class="eb">
+    <div class="bl">🌿 外部補足・確認済: 書籍「ブルー・オーシャン戦略」</div>
+    書籍「ブルー・オーシャン戦略」（W・チャン・キム、レネ・モボルニュ著、日本語版2005年ランダムハウス講談社刊）の中で示されているツール。「ブルー・オーシャン戦略」とは、従来存在しなかった新しい市場を生み出すことで新領域に事業展開する戦略のこと。<span class="ptr">← S03:p.10</span>
+  </div>
+
+  <!-- 価値曲線 SVG（QBハウス vs 一般理髪店） -->
+  <figure>
+    <svg viewBox="0 0 620 260" xmlns="http://www.w3.org/2000/svg" style="max-width:620px;width:100%">
+      <!-- 軸 -->
+      <line x1="60" y1="30" x2="60" y2="210" stroke="#3d4f6e" stroke-width="1.5"/>
+      <line x1="60" y1="210" x2="590" y2="210" stroke="#3d4f6e" stroke-width="1.5"/>
+      <!-- 軸ラベル -->
+      <text x="14" y="120" fill="#8a99b8" font-size="11" font-family="Noto Sans JP,sans-serif" transform="rotate(-90,14,120)">価値（高/低）</text>
+      <text x="20" y="38" fill="#5b8dee" font-size="10" font-family="Noto Sans JP,sans-serif">高</text>
+      <text x="20" y="208" fill="#8a99b8" font-size="10" font-family="Noto Sans JP,sans-serif">低</text>
+      <!-- 横軸 項目ラベル（x座標: 90,150,210,270,330,390,450,510,570） -->
+      <!-- 項目: 価格,予約担当,各種サービス,ヘアトリートメント,衛生,待ち時間短縮,カット時間短縮,エアーウォッシャー -->
+      <text x="90"  y="228" text-anchor="middle" fill="#8a99b8" font-size="8.5" font-family="Noto Sans JP,sans-serif">価格</text>
+      <text x="150" y="228" text-anchor="middle" fill="#8a99b8" font-size="8.5" font-family="Noto Sans JP,sans-serif">予約</text>
+      <text x="150" y="238" text-anchor="middle" fill="#8a99b8" font-size="8.5" font-family="Noto Sans JP,sans-serif">担当</text>
+      <text x="210" y="228" text-anchor="middle" fill="#8a99b8" font-size="8.5" font-family="Noto Sans JP,sans-serif">各種</text>
+      <text x="210" y="238" text-anchor="middle" fill="#8a99b8" font-size="8.5" font-family="Noto Sans JP,sans-serif">サービス</text>
+      <text x="270" y="225" text-anchor="middle" fill="#8a99b8" font-size="8.5" font-family="Noto Sans JP,sans-serif">ヘア</text>
+      <text x="270" y="235" text-anchor="middle" fill="#8a99b8" font-size="8.5" font-family="Noto Sans JP,sans-serif">トリートメント</text>
+      <text x="330" y="228" text-anchor="middle" fill="#8a99b8" font-size="8.5" font-family="Noto Sans JP,sans-serif">衛生</text>
+      <text x="390" y="225" text-anchor="middle" fill="#8a99b8" font-size="8.5" font-family="Noto Sans JP,sans-serif">待ち時間</text>
+      <text x="390" y="235" text-anchor="middle" fill="#8a99b8" font-size="8.5" font-family="Noto Sans JP,sans-serif">短縮</text>
+      <text x="450" y="225" text-anchor="middle" fill="#8a99b8" font-size="8.5" font-family="Noto Sans JP,sans-serif">カット時間</text>
+      <text x="450" y="235" text-anchor="middle" fill="#8a99b8" font-size="8.5" font-family="Noto Sans JP,sans-serif">短縮</text>
+      <text x="510" y="225" text-anchor="middle" fill="#8a99b8" font-size="8.5" font-family="Noto Sans JP,sans-serif">エアー</text>
+      <text x="510" y="235" text-anchor="middle" fill="#8a99b8" font-size="8.5" font-family="Noto Sans JP,sans-serif">ウォッシャー</text>
+      <!-- 目盛り線 -->
+      <line x1="60" y1="75" x2="590" y2="75" stroke="#1e2535" stroke-width="1" stroke-dasharray="4"/>
+      <line x1="60" y1="120" x2="590" y2="120" stroke="#1e2535" stroke-width="1" stroke-dasharray="4"/>
+      <line x1="60" y1="165" x2="590" y2="165" stroke="#1e2535" stroke-width="1" stroke-dasharray="4"/>
+      <!-- 一般の理髪店ライン（高め）y座標: 75,80,80,82,95,160,165,170 -->
+      <polyline points="90,82 150,78 210,80 270,83 330,90 390,168 450,170 510,175" fill="none" stroke="#5b8dee" stroke-width="2.5" stroke-dasharray="0"/>
+      <!-- 点 -->
+      <circle cx="90"  cy="82"  r="5" fill="#5b8dee"/>
+      <circle cx="150" cy="78"  r="5" fill="#5b8dee"/>
+      <circle cx="210" cy="80"  r="5" fill="#5b8dee"/>
+      <circle cx="270" cy="83"  r="5" fill="#5b8dee"/>
+      <circle cx="330" cy="90"  r="5" fill="#5b8dee"/>
+      <circle cx="390" cy="168" r="5" fill="#5b8dee"/>
+      <circle cx="450" cy="170" r="5" fill="#5b8dee"/>
+      <circle cx="510" cy="175" r="5" fill="#5b8dee"/>
+      <!-- QBハウスライン（低→高） y: 168,172,170,175,90,65,60,58 -->
+      <polyline points="90,170 150,174 210,172 270,176 330,90 390,65 450,62 510,58" fill="none" stroke="#f97316" stroke-width="2.5"/>
+      <circle cx="90"  cy="170" r="5" fill="#f97316"/>
+      <circle cx="150" cy="174" r="5" fill="#f97316"/>
+      <circle cx="210" cy="172" r="5" fill="#f97316"/>
+      <circle cx="270" cy="176" r="5" fill="#f97316"/>
+      <circle cx="330" cy="90"  r="5" fill="#f97316"/>
+      <circle cx="390" cy="65"  r="5" fill="#f97316"/>
+      <circle cx="450" cy="62"  r="5" fill="#f97316"/>
+      <circle cx="510" cy="58"  r="5" fill="#f97316"/>
+      <!-- 凡例 -->
+      <rect x="62" y="32" width="140" height="22" rx="4" fill="rgba(0,0,0,.3)"/>
+      <line x1="70" y1="43" x2="95" y2="43" stroke="#5b8dee" stroke-width="2.5"/>
+      <circle cx="83" cy="43" r="4" fill="#5b8dee"/>
+      <text x="100" y="47" fill="#8a99b8" font-size="10.5" font-family="Noto Sans JP,sans-serif">一般の理髪店</text>
+      <rect x="62" y="56" width="110" height="22" rx="4" fill="rgba(0,0,0,.3)"/>
+      <line x1="70" y1="67" x2="95" y2="67" stroke="#f97316" stroke-width="2.5"/>
+      <circle cx="83" cy="67" r="4" fill="#f97316"/>
+      <text x="100" y="71" fill="#8a99b8" font-size="10.5" font-family="Noto Sans JP,sans-serif">QBハウス</text>
+      <!-- 矢印注記 -->
+      <text x="395" y="48" fill="#fbbf24" font-size="9.5" font-family="Noto Sans JP,sans-serif">← ここを先鋭化</text>
+    </svg>
+    <figcaption>図：価値曲線の例（QBハウスと一般の理髪店の比較） <span class="ptr">S03:p.11 / 出典：ブルー・オーシャン戦略 P103</span></figcaption>
+  </figure>
+
+  <div class="ab">
+    <div class="bl">🔊 AUDIO SUPPLEMENT</div>
+    あらゆるものを盛り込もうとするのではなく、<strong>付加価値を発揮する事項を先鋭化させる</strong>という戦略を検討するのに価値曲線は有効。<span class="ptr">← S03:p.11</span>
+  </div>
+
+  <!-- PPM -->
+  <h3 id="ppm">1-3 PPM分析</h3>
+  <div class="db">
+    <strong>定義：</strong>PPM（Product Portfolio Management）分析。商品・サービスの現在価値と将来の見通しを把握するもの。<span class="ptr">← S03:p.12</span>
+  </div>
+  <div class="eb">
+    <div class="bl">🌿 外部補足・確認済: BCG公式</div>
+    ボストン・コンサルティング・グループ（BCG）が1970年代に提唱。横軸：市場占有率（右ほど高）、縦軸：市場成長率（上ほど高）の2軸で事業を4象限に分類する。<span class="ptr">← S03:p.12</span>
+  </div>
+
+  <!-- PPM SVG -->
+  <figure>
+    <svg viewBox="0 0 500 320" xmlns="http://www.w3.org/2000/svg" style="max-width:500px;width:100%">
+      <!-- 4象限背景 -->
+      <rect x="60" y="30" width="190" height="130" rx="0" fill="rgba(91,141,238,.12)" stroke="#3d4f6e" stroke-width="1"/>
+      <rect x="250" y="30" width="210" height="130" rx="0" fill="rgba(249,115,22,.12)" stroke="#3d4f6e" stroke-width="1"/>
+      <rect x="60" y="160" width="190" height="130" rx="0" fill="rgba(90,106,138,.08)" stroke="#3d4f6e" stroke-width="1"/>
+      <rect x="250" y="160" width="210" height="130" rx="0" fill="rgba(52,211,153,.12)" stroke="#3d4f6e" stroke-width="1"/>
+      <!-- 軸矢印 -->
+      <defs>
+        <marker id="ax" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#3d4f6e"/></marker>
+      </defs>
+      <line x1="60" y1="290" x2="460" y2="290" stroke="#3d4f6e" stroke-width="1.5" marker-end="url(#ax)"/>
+      <line x1="60" y1="290" x2="60" y2="25" stroke="#3d4f6e" stroke-width="1.5" marker-end="url(#ax)"/>
+      <!-- 軸ラベル -->
+      <text x="460" y="308" fill="#8a99b8" font-size="11" font-family="Noto Sans JP,sans-serif" text-anchor="end">市場占有率 →</text>
+      <text x="12" y="160" fill="#8a99b8" font-size="11" font-family="Noto Sans JP,sans-serif" transform="rotate(-90,12,160)" text-anchor="middle">市場成長率 →</text>
+      <text x="460" y="272" fill="#8a99b8" font-size="10" font-family="Noto Sans JP,sans-serif">大</text>
+      <text x="63" y="272" fill="#8a99b8" font-size="10" font-family="Noto Sans JP,sans-serif">小</text>
+      <text x="42" y="36" fill="#8a99b8" font-size="10" font-family="Noto Sans JP,sans-serif">大</text>
+      <text x="42" y="280" fill="#8a99b8" font-size="10" font-family="Noto Sans JP,sans-serif">小</text>
+      <!-- 象限名 -->
+      <text x="155" y="54" text-anchor="middle" fill="#5b8dee" font-size="13" font-weight="bold" font-family="Noto Sans JP,sans-serif">[問題児]</text>
+      <text x="355" y="54" text-anchor="middle" fill="#f97316" font-size="13" font-weight="bold" font-family="Noto Sans JP,sans-serif">[花形]</text>
+      <text x="155" y="184" text-anchor="middle" fill="#8a99b8" font-size="13" font-weight="bold" font-family="Noto Sans JP,sans-serif">[負け犬]</text>
+      <text x="355" y="184" text-anchor="middle" fill="#34d399" font-size="13" font-weight="bold" font-family="Noto Sans JP,sans-serif">[金のなる木]</text>
+      <!-- 特徴テキスト -->
+      <text x="155" y="74" text-anchor="middle" fill="#8a99b8" font-size="10.5" font-family="Noto Sans JP,sans-serif">占有率:低 / 成長率:高</text>
+      <text x="355" y="74" text-anchor="middle" fill="#8a99b8" font-size="10.5" font-family="Noto Sans JP,sans-serif">占有率:高 / 成長率:高</text>
+      <text x="155" y="204" text-anchor="middle" fill="#8a99b8" font-size="10.5" font-family="Noto Sans JP,sans-serif">占有率:低 / 成長率:低</text>
+      <text x="355" y="204" text-anchor="middle" fill="#8a99b8" font-size="10.5" font-family="Noto Sans JP,sans-serif">占有率:高 / 成長率:低</text>
+      <!-- 戦略テキスト -->
+      <text x="155" y="96" text-anchor="middle" fill="#60a5fa" font-size="10.5" font-family="Noto Sans JP,sans-serif">→ 投資して花形事業へ</text>
+      <text x="355" y="96" text-anchor="middle" fill="#60a5fa" font-size="10.5" font-family="Noto Sans JP,sans-serif">→ 高いシェアを維持</text>
+      <text x="155" y="226" text-anchor="middle" fill="#60a5fa" font-size="10.5" font-family="Noto Sans JP,sans-serif">→ 撤退を検討</text>
+      <text x="355" y="226" text-anchor="middle" fill="#60a5fa" font-size="10.5" font-family="Noto Sans JP,sans-serif">→ 可能な限り安定利益を確保</text>
+      <!-- 事業プロット（X社の例） -->
+      <!-- A事業（問題児）: 市場占有率低・成長率高 -->
+      <circle cx="130" cy="100" r="14" fill="rgba(91,141,238,.25)" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="130" y="104" text-anchor="middle" fill="#e2e8f5" font-size="11" font-weight="bold" font-family="Noto Sans JP,sans-serif">A</text>
+      <!-- B事業（花形）: 右上 -->
+      <circle cx="360" cy="90" r="14" fill="rgba(249,115,22,.25)" stroke="#f97316" stroke-width="1.5"/>
+      <text x="360" y="94" text-anchor="middle" fill="#e2e8f5" font-size="11" font-weight="bold" font-family="Noto Sans JP,sans-serif">B</text>
+      <!-- C事業（負け犬）: 左下 -->
+      <circle cx="130" cy="230" r="14" fill="rgba(90,106,138,.25)" stroke="#5a6a8a" stroke-width="1.5"/>
+      <text x="130" y="234" text-anchor="middle" fill="#e2e8f5" font-size="11" font-weight="bold" font-family="Noto Sans JP,sans-serif">C</text>
+      <!-- D事業（金のなる木）: 右下 -->
+      <circle cx="380" cy="230" r="14" fill="rgba(52,211,153,.25)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="380" y="234" text-anchor="middle" fill="#e2e8f5" font-size="11" font-weight="bold" font-family="Noto Sans JP,sans-serif">D</text>
+      <!-- 移行矢印 A→B -->
+      <path d="M144,100 Q245,60 346,90" fill="none" stroke="#60a5fa" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#ax)"/>
+    </svg>
+    <figcaption>図：PPM分析の4象限（X社4事業の評価例） <span class="ptr">S03:p.12-13</span></figcaption>
+  </figure>
+
+  <!-- PERT -->
+  <h3 id="pert">1-4 PERT図</h3>
+  <div class="db">
+    <strong>定義：</strong>PERT（Program Evaluation and Review Technique）図。作業を「点」、要する時間を「矢印」で表し、開始から終了までのリードタイムを把握するもの。<span class="ptr">← S03:p.14</span>
+  </div>
+  <div class="eb">
+    <div class="bl">🌿 外部補足・確認済: Wikipedia / @IT情報マネジメント</div>
+    ブーズ・アレン・ハミルトンが1958年、アメリカ国防総省 US Navy Special Projects Office からの委託の一環で、<strong>ポラリス潜水艦発射弾道ミサイルプロジェクト</strong>の一部として開発（スプートニク・ショックへの反応）。別名アローダイアグラム（矢印を意味する「アロー」から）。<span class="ptr">← S03:p.14 + Wikipedia「PERT」</span>
+  </div>
+
+  <!-- PERT図 SVG（生産計画の例） -->
+  <figure>
+    <svg viewBox="0 0 560 220" xmlns="http://www.w3.org/2000/svg" style="max-width:560px;width:100%">
+      <defs>
+        <marker id="pa" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#5b8dee"/></marker>
+        <marker id="pared" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#f97316"/></marker>
+        <marker id="padash" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#5a6a8a"/></marker>
+      </defs>
+      <!-- ノード -->
+      <!-- 開始 -->
+      <rect x="10" y="90" width="54" height="36" rx="7" fill="#2a3450" stroke="#5b8dee" stroke-width="2"/>
+      <text x="37" y="113" text-anchor="middle" fill="#e2e8f5" font-size="12" font-weight="bold" font-family="Noto Sans JP,sans-serif">開始</text>
+      <!-- 計画作成 -->
+      <rect x="130" y="36" width="70" height="40" rx="7" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="165" y="52" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="Noto Sans JP,sans-serif">計画</text>
+      <text x="165" y="68" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="Noto Sans JP,sans-serif">作成</text>
+      <!-- 材料調達（クリティカル） -->
+      <rect x="220" y="90" width="70" height="40" rx="7" fill="rgba(249,115,22,.15)" stroke="#f97316" stroke-width="2"/>
+      <text x="255" y="106" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Noto Sans JP,sans-serif">材料</text>
+      <text x="255" y="122" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Noto Sans JP,sans-serif">調達</text>
+      <!-- 広報実施 -->
+      <rect x="340" y="36" width="70" height="40" rx="7" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="375" y="52" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="Noto Sans JP,sans-serif">広報</text>
+      <text x="375" y="68" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="Noto Sans JP,sans-serif">実施</text>
+      <!-- 生産（クリティカル） -->
+      <rect x="340" y="90" width="70" height="40" rx="7" fill="rgba(249,115,22,.15)" stroke="#f97316" stroke-width="2"/>
+      <text x="375" y="106" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Noto Sans JP,sans-serif">生産</text>
+      <!-- 人員確保 -->
+      <rect x="130" y="150" width="70" height="40" rx="7" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="165" y="166" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="Noto Sans JP,sans-serif">人員</text>
+      <text x="165" y="182" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="Noto Sans JP,sans-serif">確保</text>
+      <!-- 終了（クリティカル） -->
+      <rect x="460" y="90" width="54" height="36" rx="7" fill="rgba(249,115,22,.2)" stroke="#f97316" stroke-width="2"/>
+      <text x="487" y="113" text-anchor="middle" fill="#fbbf24" font-size="12" font-weight="bold" font-family="Noto Sans JP,sans-serif">終了</text>
+
+      <!-- 矢印（青：非クリティカル） -->
+      <!-- 開始→計画作成 -->
+      <line x1="64" y1="100" x2="130" y2="68" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#pa)"/>
+      <text x="90" y="80" fill="#5b8dee" font-size="10" font-family="Noto Sans JP,sans-serif">1日</text>
+      <!-- 計画作成→広報実施 -->
+      <line x1="200" y1="56" x2="340" y2="56" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#pa)"/>
+      <text x="265" y="50" fill="#5b8dee" font-size="10" font-family="Noto Sans JP,sans-serif" text-anchor="middle">2日</text>
+      <!-- 計画作成→材料調達 -->
+      <line x1="200" y1="66" x2="220" y2="100" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#pa)"/>
+      <text x="200" y="92" fill="#5b8dee" font-size="10" font-family="Noto Sans JP,sans-serif">2日</text>
+      <!-- 広報実施→終了 -->
+      <line x1="410" y1="56" x2="475" y2="92" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#pa)"/>
+      <text x="452" y="70" fill="#5b8dee" font-size="10" font-family="Noto Sans JP,sans-serif">2日</text>
+      <!-- 開始→人員確保 -->
+      <line x1="64" y1="116" x2="130" y2="162" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#pa)"/>
+      <text x="85" y="148" fill="#5b8dee" font-size="10" font-family="Noto Sans JP,sans-serif">3日</text>
+      <!-- 人員確保→材料調達（ダッシュ） -->
+      <line x1="200" y1="170" x2="220" y2="130" stroke="#5a6a8a" stroke-width="1.2" stroke-dasharray="5,3" marker-end="url(#padash)"/>
+
+      <!-- 矢印（オレンジ：クリティカルパス） -->
+      <!-- 開始→材料調達 -->
+      <line x1="64" y1="108" x2="220" y2="108" stroke="#f97316" stroke-width="2.5" marker-end="url(#pared)"/>
+      <text x="145" y="102" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Noto Sans JP,sans-serif" text-anchor="middle">5日</text>
+      <!-- 材料調達→生産 -->
+      <line x1="290" y1="110" x2="340" y2="110" stroke="#f97316" stroke-width="2.5" marker-end="url(#pared)"/>
+      <text x="315" y="104" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Noto Sans JP,sans-serif" text-anchor="middle">4日</text>
+      <!-- 生産→終了 -->
+      <line x1="410" y1="110" x2="460" y2="110" stroke="#f97316" stroke-width="2.5" marker-end="url(#pared)"/>
+      <text x="435" y="104" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Noto Sans JP,sans-serif" text-anchor="middle">1日</text>
+
+      <!-- クリティカルパス注記 -->
+      <rect x="170" y="185" width="220" height="28" rx="5" fill="rgba(249,115,22,.1)" stroke="#f97316" stroke-width="1"/>
+      <text x="280" y="204" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Noto Sans JP,sans-serif">クリティカルパス: 5+4+1=10日間</text>
+    </svg>
+    <figcaption>図：PERT図の例（生産計画） 赤矢印＝クリティカルパス（10日間） <span class="ptr">S03:p.15</span></figcaption>
+  </figure>
+
+  <ul>
+    <li>複雑で大型のプロジェクトを計画的・円滑に実施するのに役立つ</li>
+    <li><strong>クリティカルパス</strong>：これ以上期間を縮められない最長経路。全体スケジュールを決定づける重要な経路。<span class="ptr">← S03:p.15</span></li>
+  </ul>
+
+  <!-- SWOT -->
+  <h3 id="swot">1-5 SWOT分析（クロスSWOT分析）</h3>
+  <div class="db">
+    <strong>定義：</strong>組織の内部環境（強み・弱み）とそれを取り巻く外部環境（機会・脅威）を整理し、4つの戦略を検討するもの。<span class="ptr">← S03:p.16</span>
+  </div>
+  <div class="eb">
+    <div class="bl">🌿 外部補足・確認済: Wikipedia「SWOT分析」/ 複数学術系ソース</div>
+    SWOT分析の正確な起源は不明瞭。有力説は1960年代にスタンフォード研究所（SRI）のアルバート・ハンフリーらが企業の長期計画プロジェクトの中で開発したというもの（当初は「SOFT分析」と呼ばれ、1964年に現在のSWOT形式に改称）。ハーバード・ビジネス・スクール起源説もあるが、ハンフリー自身はSWOT発案を主張していない。スライドの「1920年代ハーバードビジネススクール開発」は諸説のひとつで確定的な記述ではない。<span class="ptr">← S05-A + Wikipedia「SWOT分析」</span>
+  </div>
+
+  <!-- SWOT SVG -->
+  <figure>
+    <svg viewBox="0 0 520 260" xmlns="http://www.w3.org/2000/svg" style="max-width:520px;width:100%">
+      <!-- ヘッダー行 -->
+      <rect x="0" y="0" width="180" height="50" rx="0" fill="#1a2340" stroke="#2a3450" stroke-width="1"/>
+      <rect x="180" y="0" width="170" height="50" rx="0" fill="rgba(52,211,153,.12)" stroke="#2a3450" stroke-width="1"/>
+      <rect x="350" y="0" width="170" height="50" rx="0" fill="rgba(248,113,113,.1)" stroke="#2a3450" stroke-width="1"/>
+      <text x="90" y="20" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="Noto Sans JP,sans-serif" font-weight="bold">内部要因 ↓ / 外部要因 →</text>
+      <text x="265" y="22" text-anchor="middle" fill="#34d399" font-size="13" font-weight="bold" font-family="Noto Sans JP,sans-serif">機会</text>
+      <text x="265" y="40" text-anchor="middle" fill="#34d399" font-size="11" font-family="Noto Sans JP,sans-serif">Opportunities</text>
+      <text x="435" y="22" text-anchor="middle" fill="#f87171" font-size="13" font-weight="bold" font-family="Noto Sans JP,sans-serif">脅威</text>
+      <text x="435" y="40" text-anchor="middle" fill="#f87171" font-size="11" font-family="Noto Sans JP,sans-serif">Threats</text>
+      <!-- 強み行 -->
+      <rect x="0" y="50" width="180" height="105" rx="0" fill="#1e2535" stroke="#2a3450" stroke-width="1"/>
+      <text x="90" y="80" text-anchor="middle" fill="#5b8dee" font-size="13" font-weight="bold" font-family="Noto Sans JP,sans-serif">強み</text>
+      <text x="90" y="96" text-anchor="middle" fill="#5b8dee" font-size="11" font-family="Noto Sans JP,sans-serif">Strengths</text>
+      <rect x="180" y="50" width="170" height="105" rx="0" fill="rgba(52,211,153,.08)" stroke="#2a3450" stroke-width="1"/>
+      <text x="265" y="82" text-anchor="middle" fill="#34d399" font-size="12" font-weight="bold" font-family="Noto Sans JP,sans-serif">成長戦略</text>
+      <text x="265" y="100" text-anchor="middle" fill="#8a99b8" font-size="10.5" font-family="Noto Sans JP,sans-serif">強み × 機会を活かす</text>
+      <text x="265" y="116" text-anchor="middle" fill="#60a5fa" font-size="10" font-family="Noto Sans JP,sans-serif">例: 高級婦人靴に重点化</text>
+      <rect x="350" y="50" width="170" height="105" rx="0" fill="rgba(251,191,36,.07)" stroke="#2a3450" stroke-width="1"/>
+      <text x="435" y="82" text-anchor="middle" fill="#fbbf24" font-size="12" font-weight="bold" font-family="Noto Sans JP,sans-serif">回避戦略</text>
+      <text x="435" y="100" text-anchor="middle" fill="#8a99b8" font-size="10.5" font-family="Noto Sans JP,sans-serif">強み × 脅威を回避</text>
+      <text x="435" y="116" text-anchor="middle" fill="#60a5fa" font-size="10" font-family="Noto Sans JP,sans-serif">例: 新興国に工場設置</text>
+      <!-- 弱み行 -->
+      <rect x="0" y="155" width="180" height="105" rx="0" fill="#1e2535" stroke="#2a3450" stroke-width="1"/>
+      <text x="90" y="185" text-anchor="middle" fill="#f87171" font-size="13" font-weight="bold" font-family="Noto Sans JP,sans-serif">弱み</text>
+      <text x="90" y="201" text-anchor="middle" fill="#f87171" font-size="11" font-family="Noto Sans JP,sans-serif">Weakness</text>
+      <rect x="180" y="155" width="170" height="105" rx="0" fill="rgba(167,139,250,.07)" stroke="#2a3450" stroke-width="1"/>
+      <text x="265" y="187" text-anchor="middle" fill="#a78bfa" font-size="12" font-weight="bold" font-family="Noto Sans JP,sans-serif">改善戦略</text>
+      <text x="265" y="205" text-anchor="middle" fill="#8a99b8" font-size="10.5" font-family="Noto Sans JP,sans-serif">弱み × 機会で改善</text>
+      <text x="265" y="221" text-anchor="middle" fill="#60a5fa" font-size="10" font-family="Noto Sans JP,sans-serif">例: WEBで通販</text>
+      <rect x="350" y="155" width="170" height="105" rx="0" fill="rgba(248,113,113,.07)" stroke="#2a3450" stroke-width="1"/>
+      <text x="435" y="187" text-anchor="middle" fill="#f87171" font-size="12" font-weight="bold" font-family="Noto Sans JP,sans-serif">撤退戦略</text>
+      <text x="435" y="205" text-anchor="middle" fill="#8a99b8" font-size="10.5" font-family="Noto Sans JP,sans-serif">弱み × 脅威を最小化</text>
+      <text x="435" y="221" text-anchor="middle" fill="#60a5fa" font-size="10" font-family="Noto Sans JP,sans-serif">例: ロープライス店取引見直し</text>
+    </svg>
+    <figcaption>図：クロスSWOT分析（シューズメーカーの例） <span class="ptr">S03:p.16-17</span></figcaption>
+  </figure>
+
+  <!-- パレート -->
+  <h3 id="pareto">1-6 パレート図</h3>
+  <div class="db">
+    <strong>定義：</strong>値が高い順にプロットされた棒グラフと、その累積構成比を示す折れ線グラフを組み合わせた複合グラフ。全体に大きな影響を与えている要素を浮き彫りにするもの。<span class="ptr">← S03:p.18</span>
+  </div>
+  <div class="db">
+    <strong>パレートの法則（80-20の法則）：</strong>結果の8割は全体の2割の要素によって生み出されるという経験則。<br>
+    例：社会全体の所得の8割は2割の高額所得層／売上の8割は全商品の2割／故障の80%は全部品の20%に起因<span class="ptr">← S03:p.18-19</span>
+  </div>
+
+  <!-- パレート図 SVG -->
+  <figure>
+    <svg viewBox="0 0 560 240" xmlns="http://www.w3.org/2000/svg" style="max-width:560px;width:100%">
+      <defs>
+        <marker id="pltArrow" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#3d4f6e"/></marker>
+      </defs>
+      <!-- 軸 -->
+      <line x1="55" y1="190" x2="510" y2="190" stroke="#3d4f6e" stroke-width="1.5" marker-end="url(#pltArrow)"/>
+      <line x1="55" y1="190" x2="55" y2="18" stroke="#3d4f6e" stroke-width="1.5" marker-end="url(#pltArrow)"/>
+      <line x1="505" y1="190" x2="505" y2="18" stroke="#3d4f6e" stroke-width="1.2" stroke-dasharray="3"/>
+      <!-- 左軸ラベル（万円） -->
+      <text x="12" y="105" fill="#8a99b8" font-size="10" font-family="Noto Sans JP,sans-serif" transform="rotate(-90,12,105)" text-anchor="middle">コスト（万円）</text>
+      <!-- 右軸ラベル（%） -->
+      <text x="518" y="30" fill="#fbbf24" font-size="10" font-family="Noto Sans JP,sans-serif">100%</text>
+      <text x="518" y="110" fill="#fbbf24" font-size="10" font-family="Noto Sans JP,sans-serif">50%</text>
+      <!-- 参照線 80% -->
+      <line x1="55" y1="62" x2="505" y2="62" stroke="#fbbf24" stroke-width="1" stroke-dasharray="4,3"/>
+      <text x="40" y="66" fill="#fbbf24" font-size="9.5" font-family="Noto Sans JP,sans-serif" text-anchor="end">80%</text>
+
+      <!-- 棒グラフ（原料A〜M, 13本）xベース:72, 幅:28, 間隔:34 -->
+      <!-- A: 高(赤) -->
+      <rect x="64"  y="50"  width="28" height="140" fill="#f97316"/>
+      <!-- B: 高(赤) -->
+      <rect x="98"  y="62"  width="28" height="128" fill="#f97316"/>
+      <!-- C: 高(赤) -->
+      <rect x="132" y="82"  width="28" height="108" fill="#f97316"/>
+      <!-- D -->
+      <rect x="166" y="118" width="28" height="72" fill="#5b8dee"/>
+      <!-- E -->
+      <rect x="200" y="140" width="28" height="50" fill="#5b8dee"/>
+      <!-- F -->
+      <rect x="234" y="152" width="28" height="38" fill="#5b8dee"/>
+      <!-- G -->
+      <rect x="268" y="160" width="28" height="30" fill="#5b8dee"/>
+      <!-- H -->
+      <rect x="302" y="163" width="28" height="27" fill="#5b8dee"/>
+      <!-- I -->
+      <rect x="336" y="167" width="28" height="23" fill="#5b8dee"/>
+      <!-- J -->
+      <rect x="370" y="170" width="28" height="20" fill="#5b8dee"/>
+      <!-- K -->
+      <rect x="404" y="173" width="28" height="17" fill="#5b8dee"/>
+      <!-- L -->
+      <rect x="438" y="176" width="28" height="14" fill="#5b8dee"/>
+      <!-- M -->
+      <rect x="472" y="180" width="18" height="10" fill="#5b8dee"/>
+
+      <!-- 累積折れ線（概算） -->
+      <polyline points="78,140 112,124 146,100 180,136 214,148 248,157 282,163 316,166 350,170 384,173 418,176 452,179 480,182" fill="none" stroke="#fbbf24" stroke-width="2.5"/>
+      <!-- 累積ポイント -->
+      <circle cx="78"  cy="140" r="4" fill="#fbbf24"/>
+      <circle cx="112" cy="124" r="4" fill="#fbbf24"/>
+      <circle cx="146" cy="100" r="4" fill="#fbbf24"/>
+      <circle cx="180" cy="136" r="4" fill="#fbbf24"/>
+      <circle cx="480" cy="182" r="4" fill="#fbbf24"/>
+
+      <!-- 80%ライン交差注記 -->
+      <line x1="146" y1="62" x2="146" y2="190" stroke="#fbbf24" stroke-width="1" stroke-dasharray="3,3"/>
+      <text x="148" y="208" fill="#fbbf24" font-size="9.5" font-family="Noto Sans JP,sans-serif">↑ 上位3品で約80%</text>
+
+      <!-- 横軸ラベル -->
+      <text x="78"  y="207" text-anchor="middle" fill="#f97316" font-size="9" font-family="Noto Sans JP,sans-serif" font-weight="bold">A</text>
+      <text x="112" y="207" text-anchor="middle" fill="#f97316" font-size="9" font-family="Noto Sans JP,sans-serif" font-weight="bold">B</text>
+      <text x="146" y="207" text-anchor="middle" fill="#f97316" font-size="9" font-family="Noto Sans JP,sans-serif" font-weight="bold">C</text>
+      <text x="180" y="207" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP,sans-serif">D</text>
+      <text x="214" y="207" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP,sans-serif">E</text>
+      <text x="248" y="207" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP,sans-serif">F</text>
+      <text x="282" y="207" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP,sans-serif">G</text>
+      <text x="316" y="207" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP,sans-serif">H</text>
+      <text x="350" y="207" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP,sans-serif">I</text>
+      <text x="384" y="207" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP,sans-serif">J</text>
+      <text x="418" y="207" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP,sans-serif">K</text>
+      <text x="452" y="207" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP,sans-serif">L</text>
+      <text x="481" y="207" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP,sans-serif">M</text>
+
+      <!-- 凡例 -->
+      <rect x="58" y="20" width="140" height="18" rx="3" fill="rgba(249,115,22,.12)"/>
+      <rect x="62" y="24" width="12" height="10" fill="#f97316"/>
+      <text x="80" y="33" fill="#8a99b8" font-size="10" font-family="Noto Sans JP,sans-serif">コスト上位3品（赤）</text>
+      <line x1="62" y1="46" x2="80" y2="46" stroke="#fbbf24" stroke-width="2"/><circle cx="71" cy="46" r="3" fill="#fbbf24"/>
+      <text x="84" y="50" fill="#8a99b8" font-size="10" font-family="Noto Sans JP,sans-serif">累積構成比</text>
+    </svg>
+    <figcaption>図：パレート図の例（原料A〜MのコストDC検討。原料A・B・Cで全体の約80%を占める） <span class="ptr">S03:p.19</span></figcaption>
+  </figure>
+
+  <div class="ab">
+    <div class="bl">🔊 AUDIO SUPPLEMENT</div>
+    製品の価格を下げるためには、原料A・B・Cのコストダウンに注力することで効果的に製品全体のコストダウンが行える。<span class="ptr">← S03:p.19</span>
+  </div>
+
+  <!-- フレームワーク -->
+  <h3 id="fw">1-7 フレームワークについて</h3>
+  <div class="db"><strong>定義：</strong>思考の枠組みを可視化したもの。論理プロセス・創造プロセスに「特定の型」を当てはめることで思考作業を効率的に行える。<span class="ptr">← S03:p.20</span></div>
+  <div class="g2">
+    <div class="mc"><h5>長所</h5><ul style="font-size:13px"><li>効率的に頭を働かせられるため無駄が少ない</li><li>思考プロセス・結果を他者と共有しやすい</li></ul></div>
+    <div class="mc"><h5>短所</h5><ul style="font-size:13px"><li>特定の目的を達成するために作られており応用が利きにくい</li><li>頼りすぎると自由な思考を広げることをやめてしまう恐れがある</li></ul></div>
+  </div>
+  <span class="ptr">← S03:p.21</span>
+  <div class="eb">
+    <div class="bl">🌿 外部補足</div>
+    上記6つのフレームワークは、これから学ぶ5つの基本図タイプの特殊ケース・変形パターンと見ることができる。逆に言えば、ツリー図・ベン図・マトリクス図・点グラフ・フロー図はあらゆるフレームワークの土台となる基本図タイプである。<span class="ptr">← S03:p.24</span>
+  </div>
+</div>
+
+<!-- CHAPTER 2 -->
+<div id="ch2" class="sec">
+  <h2><span class="nm">第2章</span> ツリー図とベン図</h2>
+
+  <h3 id="tree">2-1 ツリー図</h3>
+  <div class="db"><strong>定義：</strong>木（ツリー）の枝のように、1つの幹から複数の枝が伸びている形の図のこと。<span class="ptr">← S03:p.28</span></div>
+
+  <h4>描くポイント（3つ）</h4>
+  <ul>
+    <li>まとまりの大きさやレベル感を揃える</li>
+    <li>抜けがないようにする</li>
+    <li>重複しないようにする</li>
+  </ul>
+  <span class="ptr">← S03:p.29</span>
+
+  <!-- ツリー図SVG（桃太郎の例） -->
+  <figure>
+    <svg viewBox="0 0 580 240" xmlns="http://www.w3.org/2000/svg" style="max-width:580px;width:100%">
+      <!-- 幹 -->
+      <rect x="10" y="96" width="90" height="44" rx="7" fill="rgba(251,191,36,.15)" stroke="#fbbf24" stroke-width="2"/>
+      <text x="55" y="113" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Noto Sans JP,sans-serif">桃太郎の</text>
+      <text x="55" y="129" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Noto Sans JP,sans-serif">家来</text>
+      <!-- 第1層ラベル -->
+      <text x="55" y="152" text-anchor="middle" fill="#8a99b8" font-size="9.5" font-family="Noto Sans JP,sans-serif">[第1層・幹]</text>
+      <!-- 接続線 幹→猿/犬/鳥 -->
+      <line x1="100" y1="118" x2="160" y2="48" stroke="#3d4f6e" stroke-width="1.5"/>
+      <line x1="100" y1="118" x2="160" y2="118" stroke="#3d4f6e" stroke-width="1.5"/>
+      <line x1="100" y1="118" x2="160" y2="188" stroke="#3d4f6e" stroke-width="1.5"/>
+      <!-- 第2層: 猿 -->
+      <rect x="160" y="26" width="80" height="40" rx="6" fill="rgba(91,141,238,.12)" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="200" y="52" text-anchor="middle" fill="#e2e8f5" font-size="12" font-family="Noto Sans JP,sans-serif">猿</text>
+      <!-- 第2層: 犬 -->
+      <rect x="160" y="98" width="80" height="40" rx="6" fill="rgba(91,141,238,.12)" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="200" y="124" text-anchor="middle" fill="#e2e8f5" font-size="12" font-family="Noto Sans JP,sans-serif">犬</text>
+      <!-- 第2層: 鳥 -->
+      <rect x="160" y="170" width="80" height="40" rx="6" fill="rgba(91,141,238,.12)" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="200" y="196" text-anchor="middle" fill="#e2e8f5" font-size="12" font-family="Noto Sans JP,sans-serif">鳥</text>
+      <!-- 第2層ラベル -->
+      <text x="200" y="220" text-anchor="middle" fill="#8a99b8" font-size="9.5" font-family="Noto Sans JP,sans-serif">[第2層]</text>
+      <!-- 接続線 猿→テナガ/メガネ -->
+      <line x1="240" y1="46" x2="300" y2="30" stroke="#3d4f6e" stroke-width="1.2"/>
+      <line x1="240" y1="46" x2="300" y2="62" stroke="#3d4f6e" stroke-width="1.2"/>
+      <!-- 接続線 犬→柴犬/プードル -->
+      <line x1="240" y1="118" x2="300" y2="102" stroke="#3d4f6e" stroke-width="1.2"/>
+      <line x1="240" y1="118" x2="300" y2="134" stroke="#3d4f6e" stroke-width="1.2"/>
+      <!-- 接続線 鳥→キジ/ニワトリ -->
+      <line x1="240" y1="190" x2="300" y2="174" stroke="#3d4f6e" stroke-width="1.2"/>
+      <line x1="240" y1="190" x2="300" y2="206" stroke="#3d4f6e" stroke-width="1.2"/>
+      <!-- 第3層 -->
+      <rect x="300" y="16" width="96" height="30" rx="5" fill="#1e2535" stroke="#5b8dee" stroke-width="1"/>
+      <text x="348" y="35" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="Noto Sans JP,sans-serif">テナガザル</text>
+      <rect x="300" y="50" width="96" height="30" rx="5" fill="#1e2535" stroke="#5b8dee" stroke-width="1"/>
+      <text x="348" y="69" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="Noto Sans JP,sans-serif">メガネザル</text>
+      <rect x="300" y="88" width="96" height="30" rx="5" fill="#1e2535" stroke="#5b8dee" stroke-width="1"/>
+      <text x="348" y="107" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="Noto Sans JP,sans-serif">柴犬</text>
+      <rect x="300" y="120" width="96" height="30" rx="5" fill="#1e2535" stroke="#5b8dee" stroke-width="1"/>
+      <text x="348" y="139" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="Noto Sans JP,sans-serif">プードル</text>
+      <!-- キジ（黄色強調） -->
+      <rect x="300" y="160" width="96" height="30" rx="5" fill="rgba(251,191,36,.15)" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="348" y="179" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Noto Sans JP,sans-serif">キジ</text>
+      <rect x="300" y="196" width="96" height="30" rx="5" fill="#1e2535" stroke="#5b8dee" stroke-width="1"/>
+      <text x="348" y="215" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="Noto Sans JP,sans-serif">ニワトリ</text>
+      <!-- 第3層ラベル -->
+      <text x="348" y="238" text-anchor="middle" fill="#8a99b8" font-size="9.5" font-family="Noto Sans JP,sans-serif">[第3層]</text>
+      <!-- 抜け注記 -->
+      <rect x="406" y="16" width="160" height="66" rx="5" fill="rgba(249,115,22,.08)" stroke="#f97316" stroke-width="1" stroke-dasharray="4"/>
+      <text x="486" y="38" text-anchor="middle" fill="#f97316" font-size="10.5" font-weight="bold" font-family="Noto Sans JP,sans-serif">抜けがある！</text>
+      <text x="486" y="54" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP,sans-serif">猿の種類は他にも</text>
+      <text x="486" y="70" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP,sans-serif">多数あるはず</text>
+    </svg>
+    <figcaption>図：ツリー図の例（桃太郎の家来） 黄色＝キジは第2層の「鳥」の下位概念（第3層）が正しいレベル感 <span class="ptr">S03:p.30</span></figcaption>
+  </figure>
+
+  <h4>ツリー図の特徴（強み・弱み）</h4>
+  <div class="g2">
+    <div class="mc"><h5>強み</h5><ul style="font-size:13px"><li>必要な事項を過不足なくチェックできる</li><li>各事項の水準（レベル）を把握しやすい</li></ul></div>
+    <div class="mc"><h5>弱み</h5><ul style="font-size:13px"><li>相互に重なり合う内容の事項を構造化できない</li></ul></div>
+  </div>
+  <span class="ptr">← S03:p.31</span>
+
+  <h4>ツリー図で示せる4種類の関係</h4>
+  <div class="tw">
+    <table>
+      <tr><th>関係の種類</th><th>例</th></tr>
+      <tr><td><strong>① 全体と部分</strong></td><td>体 → 頭・手足（手/足）・胴体</td></tr>
+      <tr><td><strong>② 主張と根拠</strong></td><td>「冷蔵庫はY社の商品Mにする」← 基本仕様が活用シーンに適合・独自機能がニーズに合う・値段が安い</td></tr>
+      <tr><td><strong>③ 原因と結果</strong></td><td>「列車事故で多数の死傷者が出た」← 日常の管理（線路点検不備）・人材教育（技術指導不足）・事故後の対応（避難誘導なし）</td></tr>
+      <tr><td><strong>④ 目的と手段</strong></td><td>「ハーフマラソンに出場する」← 情報収集（大会日程調査・資格確認）・申し込む（申込書記入・費用振込）・体力づくり（ジム通い・ジョギング）</td></tr>
+    </table>
+  </div>
+  <span class="ptr">← S03:p.32-35</span>
+
+  <!-- VENN -->
+  <h3 id="venn">2-2 ベン図</h3>
+  <div class="db"><strong>定義：</strong>数学の集合論に用いられる図で、包含関係や重なり関係を示す。<span class="ptr">← S03:p.36</span></div>
+
+  <h4>描くポイント（3つ）</h4>
+  <ul>
+    <li>本質的な最大3つの軸（＝3つの囲み）に絞る</li>
+    <li>軸のレベルを合わせる</li>
+    <li>図を描く対象の「特徴」「影響や効果」「原因や背景」などが軸になりやすい</li>
+  </ul>
+  <span class="ptr">← S03:p.37</span>
+
+  <!-- ベン図 SVG（浦島太郎） -->
+  <figure>
+    <svg viewBox="0 0 440 280" xmlns="http://www.w3.org/2000/svg" style="max-width:440px;width:100%">
+      <!-- 3円 -->
+      <circle cx="220" cy="100" r="95" fill="rgba(91,141,238,.12)" stroke="#5b8dee" stroke-width="2"/>
+      <circle cx="160" cy="188" r="95" fill="rgba(52,211,153,.12)" stroke="#34d399" stroke-width="2"/>
+      <circle cx="280" cy="188" r="95" fill="rgba(251,191,36,.12)" stroke="#fbbf24" stroke-width="2"/>
+      <!-- ラベル -->
+      <text x="220" y="46" text-anchor="middle" fill="#5b8dee" font-size="12" font-weight="bold" font-family="Noto Sans JP,sans-serif">亀を助けた</text>
+      <text x="72"  y="232" text-anchor="middle" fill="#34d399" font-size="11" font-weight="bold" font-family="Noto Sans JP,sans-serif">竜宮城で</text>
+      <text x="72"  y="247" text-anchor="middle" fill="#34d399" font-size="11" font-weight="bold" font-family="Noto Sans JP,sans-serif">楽しんだ</text>
+      <text x="368" y="228" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Noto Sans JP,sans-serif">玉手箱を開けて</text>
+      <text x="368" y="244" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Noto Sans JP,sans-serif">おじいさんになった</text>
+      <!-- 中央（全条件合致） -->
+      <ellipse cx="220" cy="168" rx="28" ry="24" fill="rgba(251,191,36,.45)" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="220" y="163" text-anchor="middle" fill="#0f1117" font-size="11" font-weight="bold" font-family="Noto Sans JP,sans-serif">浦島</text>
+      <text x="220" y="178" text-anchor="middle" fill="#0f1117" font-size="11" font-weight="bold" font-family="Noto Sans JP,sans-serif">太郎</text>
+    </svg>
+    <figcaption>図：ベン図の例（浦島太郎） 3つの条件が全て重なる中央部に「浦島太郎」が位置する <span class="ptr">S03:p.38</span></figcaption>
+  </figure>
+
+  <h4>ベン図の特徴（強み・弱み）</h4>
+  <div class="g2">
+    <div class="mc"><h5>強み</h5><ul style="font-size:13px"><li>内容が重なり合う事項の相互の関係性を把握しやすい</li></ul></div>
+    <div class="mc"><h5>弱み</h5><ul style="font-size:13px"><li>分類項目や整理の軸は2〜3程度に限定される</li></ul></div>
+  </div>
+  <span class="ptr">← S03:p.39</span>
+
+  <div class="db">
+    <strong>3円ベン図の組み合わせ数：</strong>3つの円（A・B・C）を使うと 2×2×2＝<strong>8通り</strong>の情報を整理できる。<br>
+    4つの楕円では16通り、5つでは32通りも可能だが、視覚的に見づらくなるため<strong>最大3つの囲みに限ることを推奨</strong>。<span class="ptr">← S03:p.43-44</span>
+  </div>
+
+  <h4>ベン図の3つの用途</h4>
+  <div class="tw">
+    <table>
+      <tr><th>用途</th><th>例</th></tr>
+      <tr><td><strong>① 場合分けを行いやすい</strong></td><td>新興国進出先選定：「事業拡大したい」×「自社工場あり」×「リスク最小限」→ 英国が該当</td></tr>
+      <tr><td><strong>② 共通点と相違点を明確化できる</strong></td><td>「海で泳ぐ」vs「山に登る」→ 共通：体を動かす・準備運動が必要、相違：装備・場所・技術</td></tr>
+      <tr><td><strong>③ 新しい要素を作り出せる</strong></td><td>ノンアルコールビールの新商品開発：「本物志向」×「健康配慮」×「特別な場面で飲む」→ 3要素全てを持つ新商品のコンセプトが生まれる</td></tr>
+    </table>
+  </div>
+  <span class="ptr">← S03:p.45-47</span>
+</div>
+
+<!-- CHAPTER 3 -->
+<div id="ch3" class="sec">
+  <h2><span class="nm">第3章</span> マトリクス図と点グラフ</h2>
+
+  <h3 id="matrix">3-1 マトリクス図</h3>
+  <div class="db"><strong>定義：</strong>表形式で情報を整理する図のこと（数学では行列を意味するが、ここでは「表」のこと）。<span class="ptr">← S03:p.53</span></div>
+
+  <h4>描くポイント（3つ）</h4>
+  <ul>
+    <li>本質的な2つの軸に単純化する</li>
+    <li>軸のレベルを揃える</li>
+    <li>対照的な軸を選ぶ</li>
+  </ul>
+  <span class="ptr">← S03:p.54</span>
+
+  <!-- みにくいアヒルの子 SVG -->
+  <figure>
+    <svg viewBox="0 0 420 180" xmlns="http://www.w3.org/2000/svg" style="max-width:420px;width:100%">
+      <!-- 表枠 -->
+      <!-- ヘッダー：横 -->
+      <rect x="0" y="0" width="140" height="50" rx="0" fill="#1a2340" stroke="#3d4f6e" stroke-width="1"/>
+      <rect x="140" y="0" width="140" height="50" rx="0" fill="rgba(91,141,238,.1)" stroke="#3d4f6e" stroke-width="1"/>
+      <rect x="280" y="0" width="140" height="50" rx="0" fill="rgba(91,141,238,.1)" stroke="#3d4f6e" stroke-width="1"/>
+      <text x="70" y="18" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP,sans-serif">雨の日の移動</text>
+      <text x="70" y="34" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP,sans-serif">（鳥の種類）</text>
+      <text x="210" y="28" text-anchor="middle" fill="#5b8dee" font-size="13" font-weight="bold" font-family="Noto Sans JP,sans-serif">アヒル</text>
+      <text x="350" y="28" text-anchor="middle" fill="#5b8dee" font-size="13" font-weight="bold" font-family="Noto Sans JP,sans-serif">白鳥</text>
+      <!-- ヘッダー：縦 -->
+      <rect x="0" y="50" width="140" height="65" rx="0" fill="rgba(52,211,153,.08)" stroke="#3d4f6e" stroke-width="1"/>
+      <rect x="0" y="115" width="140" height="65" rx="0" fill="rgba(52,211,153,.08)" stroke="#3d4f6e" stroke-width="1"/>
+      <text x="70" y="75" text-anchor="middle" fill="#34d399" font-size="11" font-weight="bold" font-family="Noto Sans JP,sans-serif">アヒルの集団の</text>
+      <text x="70" y="91" text-anchor="middle" fill="#34d399" font-size="11" font-weight="bold" font-family="Noto Sans JP,sans-serif">中にいる</text>
+      <text x="70" y="140" text-anchor="middle" fill="#34d399" font-size="11" font-weight="bold" font-family="Noto Sans JP,sans-serif">アヒルの集団の</text>
+      <text x="70" y="156" text-anchor="middle" fill="#34d399" font-size="11" font-weight="bold" font-family="Noto Sans JP,sans-serif">中にいない</text>
+      <!-- セル -->
+      <rect x="140" y="50" width="140" height="65" rx="0" fill="#1e2535" stroke="#3d4f6e" stroke-width="1"/>
+      <text x="210" y="86" text-anchor="middle" fill="#8a99b8" font-size="12" font-family="Noto Sans JP,sans-serif">ふつうの</text>
+      <text x="210" y="102" text-anchor="middle" fill="#8a99b8" font-size="12" font-family="Noto Sans JP,sans-serif">アヒルの子</text>
+      <!-- みにくいアヒルの子（強調） -->
+      <rect x="280" y="50" width="140" height="65" rx="0" fill="rgba(251,191,36,.2)" stroke="#fbbf24" stroke-width="2.5"/>
+      <text x="350" y="80" text-anchor="middle" fill="#fbbf24" font-size="12" font-weight="bold" font-family="Noto Sans JP,sans-serif">みにくい</text>
+      <text x="350" y="96" text-anchor="middle" fill="#fbbf24" font-size="12" font-weight="bold" font-family="Noto Sans JP,sans-serif">アヒルの子</text>
+      <text x="350" y="108" text-anchor="middle" fill="#fbbf24" font-size="9" font-family="Noto Sans JP,sans-serif">← 物語の主人公</text>
+      <!-- セル下段 -->
+      <rect x="140" y="115" width="140" height="65" rx="0" fill="#1e2535" stroke="#3d4f6e" stroke-width="1"/>
+      <text x="210" y="148" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="Noto Sans JP,sans-serif">なし（物語に</text>
+      <text x="210" y="164" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="Noto Sans JP,sans-serif">登場しない）</text>
+      <rect x="280" y="115" width="140" height="65" rx="0" fill="#1e2535" stroke="#3d4f6e" stroke-width="1"/>
+      <text x="350" y="150" text-anchor="middle" fill="#8a99b8" font-size="12" font-family="Noto Sans JP,sans-serif">ふつうの</text>
+      <text x="350" y="166" text-anchor="middle" fill="#8a99b8" font-size="12" font-family="Noto Sans JP,sans-serif">白鳥の子</text>
+    </svg>
+    <figcaption>図：マトリクス図の例（「みにくいアヒルの子」） 黄色強調が主人公の位置 <span class="ptr">S03:p.55</span></figcaption>
+  </figure>
+
+  <h4>マトリクス図の特徴（強み・弱み）</h4>
+  <div class="g2">
+    <div class="mc"><h5>強み</h5><ul style="font-size:13px"><li>2つの軸でスパッと情報を整理できる</li><li>状況の把握や分析が明確になる</li></ul></div>
+    <div class="mc"><h5>弱み</h5><ul style="font-size:13px"><li>軸は2つに絞る必要がある（ただし細分化は可能）</li><li>3軸以上にすると立体になり平面で表現不可</li></ul></div>
+  </div>
+  <span class="ptr">← S03:p.56</span>
+
+  <h4>マトリクス図の3つの用途</h4>
+  <div class="tw"><table>
+    <tr><th>用途</th><th>例</th></tr>
+    <tr><td><strong>① 並列関係の情報を整理</strong></td><td>コーンスープ vs 味噌汁を「料理ジャンル・主な食材・色」で比較整理</td></tr>
+    <tr><td><strong>② 2軸での情報整理</strong></td><td>スープの「器と道具」×「国（欧米/日本）」→ カップ/お椀・スプーン/箸が一目瞭然</td></tr>
+    <tr><td><strong>③ 抜けモレを探す</strong></td><td>「雨の日の移動」×「移動人数（1人/2人）」×「交通手段（歩き/乗物）」→ 2人×歩きの空白を発見 →「2人用傘」というアイデアへ</td></tr>
+  </table></div>
+  <span class="ptr">← S03:p.57-60</span>
+
+  <!-- DOT GRAPH -->
+  <h3 id="dot">3-2 点グラフ</h3>
+  <div class="db">
+    <strong>定義：</strong>x軸とy軸を引き、2つの直行する軸で平面を4つに分けた上で、点などで要素を平面上に表した図。<strong>5つの図の中で唯一、数量の大きさを視覚的に表現できる（定量的分析が可能）。</strong><span class="ptr">← S03:p.61</span>
+  </div>
+
+  <h4>描くポイント（3つ）</h4>
+  <ul>
+    <li>本質的な2つの軸に単純化する（マトリクスと同様）</li>
+    <li>軸を数量化する</li>
+    <li>点が直線的に並ばないような軸を探す（相関が高いと点がばらつかず分析困難になる）</li>
+  </ul>
+  <span class="ptr">← S03:p.62</span>
+
+  <!-- 点グラフ SVG（営業部員4名の評価） -->
+  <figure>
+    <svg viewBox="0 0 420 320" xmlns="http://www.w3.org/2000/svg" style="max-width:420px;width:100%">
+      <defs>
+        <marker id="da" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#3d4f6e"/></marker>
+      </defs>
+      <!-- 軸 -->
+      <line x1="60" y1="270" x2="390" y2="270" stroke="#3d4f6e" stroke-width="1.5" marker-end="url(#da)"/>
+      <line x1="60" y1="270" x2="60" y2="25" stroke="#3d4f6e" stroke-width="1.5" marker-end="url(#da)"/>
+      <!-- 中心線（平均） -->
+      <line x1="220" y1="25" x2="220" y2="270" stroke="#2a3450" stroke-width="1" stroke-dasharray="4"/>
+      <line x1="60" y1="147" x2="390" y2="147" stroke="#2a3450" stroke-width="1" stroke-dasharray="4"/>
+      <!-- 象限色 -->
+      <rect x="61" y="26" width="158" height="120" fill="rgba(248,113,113,.05)"/>   <!-- 左上: 高成績低満足 -->
+      <rect x="221" y="26" width="168" height="120" fill="rgba(52,211,153,.07)"/>  <!-- 右上: 両方高 -->
+      <rect x="61" y="148" width="158" height="121" fill="rgba(90,106,138,.04)"/> <!-- 左下: 両方低 -->
+      <rect x="221" y="148" width="168" height="121" fill="rgba(91,141,238,.05)"/><!-- 右下: 低成績高満足 -->
+      <!-- 軸ラベル -->
+      <text x="390" y="288" text-anchor="end" fill="#8a99b8" font-size="11" font-family="Noto Sans JP,sans-serif">顧客満足度 →</text>
+      <text x="14" y="147" fill="#8a99b8" font-size="11" font-family="Noto Sans JP,sans-serif" transform="rotate(-90,14,147)" text-anchor="middle">営業成績 →</text>
+      <!-- 象限ラベル -->
+      <text x="138" y="55" text-anchor="middle" fill="#f87171" font-size="10.5" font-family="Noto Sans JP,sans-serif">営業成績◎</text>
+      <text x="138" y="70" text-anchor="middle" fill="#f87171" font-size="10.5" font-family="Noto Sans JP,sans-serif">顧客満足△</text>
+      <text x="305" y="55" text-anchor="middle" fill="#34d399" font-size="10.5" font-family="Noto Sans JP,sans-serif">営業成績◎</text>
+      <text x="305" y="70" text-anchor="middle" fill="#34d399" font-size="10.5" font-family="Noto Sans JP,sans-serif">顧客満足◎</text>
+      <text x="138" y="195" text-anchor="middle" fill="#8a99b8" font-size="10.5" font-family="Noto Sans JP,sans-serif">営業成績△</text>
+      <text x="138" y="210" text-anchor="middle" fill="#8a99b8" font-size="10.5" font-family="Noto Sans JP,sans-serif">顧客満足△</text>
+      <text x="305" y="195" text-anchor="middle" fill="#5b8dee" font-size="10.5" font-family="Noto Sans JP,sans-serif">営業成績△</text>
+      <text x="305" y="210" text-anchor="middle" fill="#5b8dee" font-size="10.5" font-family="Noto Sans JP,sans-serif">顧客満足◎</text>
+      <!-- 4名の点 -->
+      <!-- 鈴木（右上：両方高） -->
+      <circle cx="320" cy="75" r="14" fill="rgba(52,211,153,.3)" stroke="#34d399" stroke-width="2"/>
+      <text x="320" y="78" text-anchor="middle" fill="#e2e8f5" font-size="10" font-weight="bold" font-family="Noto Sans JP,sans-serif">鈴木</text>
+      <text x="320" y="101" text-anchor="middle" fill="#34d399" font-size="9" font-family="Noto Sans JP,sans-serif">両方◎</text>
+      <!-- 田中（左上：成績高・満足低） -->
+      <circle cx="120" cy="80" r="14" fill="rgba(248,113,113,.25)" stroke="#f87171" stroke-width="2"/>
+      <text x="120" y="83" text-anchor="middle" fill="#e2e8f5" font-size="10" font-weight="bold" font-family="Noto Sans JP,sans-serif">田中</text>
+      <text x="120" y="107" text-anchor="middle" fill="#f87171" font-size="9" font-family="Noto Sans JP,sans-serif">成績◎/満足△</text>
+      <!-- 山本（左下：両方低） -->
+      <circle cx="110" cy="220" r="14" fill="rgba(90,106,138,.3)" stroke="#5a6a8a" stroke-width="2"/>
+      <text x="110" y="223" text-anchor="middle" fill="#e2e8f5" font-size="10" font-weight="bold" font-family="Noto Sans JP,sans-serif">山本</text>
+      <text x="110" y="247" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP,sans-serif">両方△</text>
+      <!-- 佐藤（右下：成績低・満足高） -->
+      <circle cx="320" cy="215" r="14" fill="rgba(91,141,238,.25)" stroke="#5b8dee" stroke-width="2"/>
+      <text x="320" y="218" text-anchor="middle" fill="#e2e8f5" font-size="10" font-weight="bold" font-family="Noto Sans JP,sans-serif">佐藤</text>
+      <text x="320" y="242" text-anchor="middle" fill="#5b8dee" font-size="9" font-family="Noto Sans JP,sans-serif">成績△/満足◎</text>
+      <!-- 低/高ラベル -->
+      <text x="65" y="280" fill="#8a99b8" font-size="10" font-family="Noto Sans JP,sans-serif">低</text>
+      <text x="378" y="280" fill="#8a99b8" font-size="10" font-family="Noto Sans JP,sans-serif">高</text>
+      <text x="48" y="275" fill="#8a99b8" font-size="10" font-family="Noto Sans JP,sans-serif">低</text>
+      <text x="48" y="35"  fill="#8a99b8" font-size="10" font-family="Noto Sans JP,sans-serif">高</text>
+    </svg>
+    <figcaption>図：点グラフの例（営業部員4名の客観的評価） <span class="ptr">S03:p.65</span></figcaption>
+  </figure>
+
+  <h4>点グラフの特徴（強み・弱み）</h4>
+  <div class="g2">
+    <div class="mc"><h5>強み</h5><ul style="font-size:13px"><li>客観性の高い把握・分析が可能</li><li>定量化されたデータを扱える唯一の図</li></ul></div>
+    <div class="mc"><h5>弱み</h5><ul style="font-size:13px"><li>定量化（数量化）できる項目に限られる</li></ul></div>
+  </div>
+  <span class="ptr">← S03:p.64</span>
+
+  <h4>点グラフの2つの用途</h4>
+  <ul>
+    <li><strong>客観性の高い分析：</strong>複数の人・事業・商品を同一基準で比較・評価できる（上記例参照）</li>
+    <li><strong>優先順位の決定：</strong>8案件を「契約期間（短いほど良）×契約額（高いほど良）」でプロット → 左上象限の案件Aが最優先と客観的に判断できる<span class="ptr">← S03:p.65-67</span></li>
+  </ul>
+</div>
+
+<!-- CHAPTER 4 -->
+<div id="ch4" class="sec">
+  <h2><span class="nm">第4章</span> フロー図と図タイプの見つけ方</h2>
+
+  <h3 id="flow">4-1 フロー図</h3>
+  <div class="db"><strong>定義：</strong>いくつかの囲み（円や四角）を矢印でつなぐことで、情報の流れ（フロー）を視覚的に示したもの。<span class="ptr">← S03:p.73</span></div>
+
+  <h4>描くポイント（3つ）</h4>
+  <ul>
+    <li>上から下・右から左など、矢印の向きをできる限り揃える</li>
+    <li>1つの囲みの情報が多ければ複数の囲みに分ける</li>
+    <li>できるだけ矢印が交差しないように囲みを配置する</li>
+  </ul>
+  <span class="ptr">← S03:p.74</span>
+
+  <h4>フロー図の特徴（強み・弱み）</h4>
+  <div class="g2">
+    <div class="mc"><h5>強み</h5><ul style="font-size:13px"><li>因果関係・プロセス・順序などを表現しやすい</li></ul></div>
+    <div class="mc"><h5>弱み</h5><ul style="font-size:13px"><li>自由度が高い分、見やすいフロー図を作るためには慣れが必要</li></ul></div>
+  </div>
+  <span class="ptr">← S03:p.77</span>
+
+  <h4>フロー図の3つの用途</h4>
+
+  <p><strong>① 複雑な因果関係を表現できる（少子化のメカニズムの例）</strong></p>
+  <!-- 少子化フロー図 SVG -->
+  <figure>
+    <svg viewBox="0 0 600 240" xmlns="http://www.w3.org/2000/svg" style="max-width:600px;width:100%">
+      <defs>
+        <marker id="sA" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#5b8dee"/></marker>
+      </defs>
+      <!-- 原因ボックス（上段） -->
+      <rect x="10"  y="10"  width="120" height="36" rx="6" fill="#1e2535" stroke="#5b8dee" stroke-width="1.2"/>
+      <text x="70"  y="33" text-anchor="middle" fill="#e2e8f5" font-size="10.5" font-family="Noto Sans JP,sans-serif">結婚しなくても</text>
+      <rect x="10"  y="10"  width="120" height="36" rx="6" fill="none"/>
+      <text x="70"  y="22" text-anchor="middle" fill="#e2e8f5" font-size="10.5" font-family="Noto Sans JP,sans-serif">結婚しなくても</text>
+      <text x="70"  y="38" text-anchor="middle" fill="#e2e8f5" font-size="10.5" font-family="Noto Sans JP,sans-serif">気にならなくなった</text>
+
+      <rect x="150" y="10" width="120" height="36" rx="6" fill="#1e2535" stroke="#5b8dee" stroke-width="1.2"/>
+      <text x="210" y="22" text-anchor="middle" fill="#e2e8f5" font-size="10.5" font-family="Noto Sans JP,sans-serif">所得がなかなか</text>
+      <text x="210" y="38" text-anchor="middle" fill="#e2e8f5" font-size="10.5" font-family="Noto Sans JP,sans-serif">増えない</text>
+
+      <rect x="300" y="10" width="120" height="36" rx="6" fill="#1e2535" stroke="#5b8dee" stroke-width="1.2"/>
+      <text x="360" y="22" text-anchor="middle" fill="#e2e8f5" font-size="10.5" font-family="Noto Sans JP,sans-serif">結婚時期が</text>
+      <text x="360" y="38" text-anchor="middle" fill="#e2e8f5" font-size="10.5" font-family="Noto Sans JP,sans-serif">遅くなる</text>
+
+      <!-- 中段 -->
+      <rect x="80"  y="100" width="130" height="36" rx="6" fill="#1e2535" stroke="#a78bfa" stroke-width="1.5"/>
+      <text x="145" y="112" text-anchor="middle" fill="#e2e8f5" font-size="10.5" font-family="Noto Sans JP,sans-serif">結婚する人が</text>
+      <text x="145" y="128" text-anchor="middle" fill="#e2e8f5" font-size="10.5" font-family="Noto Sans JP,sans-serif">少なくなる</text>
+
+      <rect x="260" y="100" width="130" height="36" rx="6" fill="#1e2535" stroke="#5b8dee" stroke-width="1.2"/>
+      <text x="325" y="112" text-anchor="middle" fill="#e2e8f5" font-size="10.5" font-family="Noto Sans JP,sans-serif">子育てにお金が</text>
+      <text x="325" y="128" text-anchor="middle" fill="#e2e8f5" font-size="10.5" font-family="Noto Sans JP,sans-serif">かかる</text>
+
+      <!-- 下段 -->
+      <rect x="80"  y="175" width="130" height="36" rx="6" fill="#1e2535" stroke="#a78bfa" stroke-width="1.5"/>
+      <text x="145" y="187" text-anchor="middle" fill="#e2e8f5" font-size="10.5" font-family="Noto Sans JP,sans-serif">子どもを生む</text>
+      <text x="145" y="203" text-anchor="middle" fill="#e2e8f5" font-size="10.5" font-family="Noto Sans JP,sans-serif">家庭が少なくなる</text>
+
+      <!-- 結果 -->
+      <rect x="430" y="130" width="140" height="46" rx="7" fill="rgba(248,113,113,.2)" stroke="#f87171" stroke-width="2"/>
+      <text x="500" y="148" text-anchor="middle" fill="#f87171" font-size="13" font-weight="bold" font-family="Noto Sans JP,sans-serif">少子化が</text>
+      <text x="500" y="166" text-anchor="middle" fill="#f87171" font-size="13" font-weight="bold" font-family="Noto Sans JP,sans-serif">進む</text>
+
+      <!-- 矢印群 -->
+      <line x1="70"  y1="46" x2="120" y2="100" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#sA)"/>
+      <line x1="210" y1="46" x2="175" y2="100" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#sA)"/>
+      <line x1="210" y1="46" x2="295" y2="100" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#sA)"/>
+      <line x1="360" y1="46" x2="360" y2="100" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#sA)"/>
+      <line x1="145" y1="136" x2="145" y2="175" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#sA)"/>
+      <line x1="325" y1="136" x2="200" y2="175" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#sA)"/>
+      <line x1="145" y1="211" x2="430" y2="155" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#sA)"/>
+      <line x1="210" y1="118" x2="430" y2="150" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#sA)"/>
+    </svg>
+    <figcaption>図：フロー図で複雑な因果関係を表現（少子化のメカニズム） <span class="ptr">S03:p.78</span></figcaption>
+  </figure>
+
+  <p><strong>② 手順を分かりやすく理解できる（あんかけラーメンの例）</strong></p>
+  <div class="ab">
+    <div class="bl">🔊 AUDIO SUPPLEMENT</div>
+    「キャベツ・ニンジン・もやし・豚肉を炒める」+「別鍋で調味料入り水を温める」→「両者を合わせてとろみがつくまで煮詰める」。並行して「麺を茹でどんぶりに入れる」→「麺の上にあんをかける」。<strong>並行作業もフロー図で明示できるのが強み。</strong><span class="ptr">← S03:p.79</span>
+  </div>
+
+  <p><strong>③ 根本の原因を探ることができる（なぜなぜ分析）</strong></p>
+  <div class="ab">
+    <div class="bl">🔊 AUDIO SUPPLEMENT</div>
+    印刷ミス発生の例：直接原因①「原稿執筆者への確認を怠った」← 「原稿チェックする人がいなかった」／ 直接原因②「印刷期間を短縮した」← 「納品時期を間違えた」← 「誰もスケジュール管理をしていなかった」。2系統の根本原因はいずれも→「役割分担が明確でなかった」に収束。<span class="ptr">← S03:p.80</span>
+  </div>
+
+  <!-- 図タイプ見つけ方 -->
+  <h3 id="howto">4-2 図タイプの見つけ方</h3>
+
+  <p>図を描く手順は大きく<strong>状況分析図</strong>と<strong>対策検討図</strong>の2種類に分かれる。どちらも3ステップで進める。<span class="ptr">← S03:p.81</span></p>
+  <div class="tw"><table>
+    <tr><th>状況分析図の作成手順</th><th>対策検討図の作成手順</th></tr>
+    <tr><td>① 「似たもの」を探す</td><td>① 「要素」に分解する</td></tr>
+    <tr><td>② 「軸」を探す</td><td>② 「軸」を探す</td></tr>
+    <tr><td>③ 図にして状況を分析する</td><td>③ 図にして対策を検討する</td></tr>
+  </table></div>
+  <span class="ptr">← S03:p.81</span>
+
+  <!-- 図タイプ判断フロー SVG -->
+  <h4>図タイプ判断フロー</h4>
+  <figure>
+    <svg viewBox="0 0 600 340" xmlns="http://www.w3.org/2000/svg" style="max-width:600px;width:100%">
+      <defs>
+        <marker id="fA" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#3d4f6e"/></marker>
+        <marker id="fG" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#34d399"/></marker>
+        <marker id="fY" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#fbbf24"/></marker>
+      </defs>
+      <!-- Step1: 似たもの/要素を探す -->
+      <rect x="190" y="10" width="220" height="38" rx="8" fill="rgba(91,141,238,.12)" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="300" y="34" text-anchor="middle" fill="#e2e8f5" font-size="12.5" font-weight="bold" font-family="Noto Sans JP,sans-serif">「似たもの」や「要素」を探す</text>
+      <!-- 矢印下 -->
+      <line x1="300" y1="48" x2="300" y2="68" stroke="#3d4f6e" stroke-width="1.5" marker-end="url(#fA)"/>
+      <!-- 問1: 因果関係? -->
+      <rect x="150" y="68" width="300" height="38" rx="8" fill="rgba(251,191,36,.08)" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="300" y="92" text-anchor="middle" fill="#fbbf24" font-size="12" font-family="Noto Sans JP,sans-serif">因果関係・順序関係にある？</text>
+      <!-- YES 右 → フロー図 -->
+      <line x1="450" y1="87" x2="520" y2="87" stroke="#34d399" stroke-width="1.5" marker-end="url(#fG)"/>
+      <text x="478" y="80" fill="#34d399" font-size="10.5" font-family="Noto Sans JP,sans-serif">YES</text>
+      <rect x="520" y="68" width="72" height="38" rx="7" fill="rgba(52,211,153,.2)" stroke="#34d399" stroke-width="2"/>
+      <text x="556" y="92" text-anchor="middle" fill="#34d399" font-size="12" font-weight="bold" font-family="Noto Sans JP,sans-serif">フロー図</text>
+      <!-- NO 下 -->
+      <line x1="300" y1="106" x2="300" y2="126" stroke="#3d4f6e" stroke-width="1.5" marker-end="url(#fA)"/>
+      <text x="312" y="120" fill="#8a99b8" font-size="10.5" font-family="Noto Sans JP,sans-serif">NO</text>
+      <!-- 問2: 軸が重なる? -->
+      <rect x="150" y="126" width="300" height="38" rx="8" fill="rgba(251,191,36,.08)" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="300" y="150" text-anchor="middle" fill="#fbbf24" font-size="12" font-family="Noto Sans JP,sans-serif">「軸」が重なり合っている？</text>
+      <!-- YES → ベン図 -->
+      <line x1="450" y1="145" x2="520" y2="145" stroke="#34d399" stroke-width="1.5" marker-end="url(#fG)"/>
+      <text x="478" y="138" fill="#34d399" font-size="10.5" font-family="Noto Sans JP,sans-serif">YES</text>
+      <rect x="520" y="126" width="72" height="38" rx="7" fill="rgba(52,211,153,.2)" stroke="#34d399" stroke-width="2"/>
+      <text x="556" y="150" text-anchor="middle" fill="#34d399" font-size="12" font-weight="bold" font-family="Noto Sans JP,sans-serif">ベン図</text>
+      <!-- NO 下 -->
+      <line x1="300" y1="164" x2="300" y2="184" stroke="#3d4f6e" stroke-width="1.5" marker-end="url(#fA)"/>
+      <text x="312" y="178" fill="#8a99b8" font-size="10.5" font-family="Noto Sans JP,sans-serif">NO</text>
+      <!-- 問3: 軸が3つ以上? -->
+      <rect x="150" y="184" width="300" height="38" rx="8" fill="rgba(251,191,36,.08)" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="300" y="208" text-anchor="middle" fill="#fbbf24" font-size="12" font-family="Noto Sans JP,sans-serif">「軸」が3つ以上？</text>
+      <!-- YES → ツリー図 -->
+      <line x1="450" y1="203" x2="520" y2="203" stroke="#34d399" stroke-width="1.5" marker-end="url(#fG)"/>
+      <text x="478" y="196" fill="#34d399" font-size="10.5" font-family="Noto Sans JP,sans-serif">YES</text>
+      <rect x="520" y="184" width="72" height="38" rx="7" fill="rgba(52,211,153,.2)" stroke="#34d399" stroke-width="2"/>
+      <text x="556" y="208" text-anchor="middle" fill="#34d399" font-size="12" font-weight="bold" font-family="Noto Sans JP,sans-serif">ツリー図</text>
+      <!-- NO 下 -->
+      <line x1="300" y1="222" x2="300" y2="242" stroke="#3d4f6e" stroke-width="1.5" marker-end="url(#fA)"/>
+      <text x="312" y="236" fill="#8a99b8" font-size="10.5" font-family="Noto Sans JP,sans-serif">NO（2軸）</text>
+      <!-- 問4: 数値化できる? -->
+      <rect x="130" y="242" width="340" height="38" rx="8" fill="rgba(251,191,36,.08)" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="300" y="266" text-anchor="middle" fill="#fbbf24" font-size="12" font-family="Noto Sans JP,sans-serif">軸を数値化（数量化）できる？</text>
+      <!-- YES → 点グラフ -->
+      <line x1="470" y1="261" x2="520" y2="261" stroke="#34d399" stroke-width="1.5" marker-end="url(#fG)"/>
+      <text x="492" y="254" fill="#34d399" font-size="10.5" font-family="Noto Sans JP,sans-serif">YES</text>
+      <rect x="520" y="242" width="72" height="38" rx="7" fill="rgba(52,211,153,.2)" stroke="#34d399" stroke-width="2"/>
+      <text x="556" y="266" text-anchor="middle" fill="#34d399" font-size="12" font-weight="bold" font-family="Noto Sans JP,sans-serif">点グラフ</text>
+      <!-- NO → マトリクス図 -->
+      <line x1="300" y1="280" x2="300" y2="300" stroke="#3d4f6e" stroke-width="1.5" marker-end="url(#fA)"/>
+      <text x="312" y="296" fill="#8a99b8" font-size="10.5" font-family="Noto Sans JP,sans-serif">NO</text>
+      <rect x="200" y="300" width="200" height="36" rx="7" fill="rgba(52,211,153,.2)" stroke="#34d399" stroke-width="2"/>
+      <text x="300" y="323" text-anchor="middle" fill="#34d399" font-size="12" font-weight="bold" font-family="Noto Sans JP,sans-serif">マトリクス図</text>
+    </svg>
+    <figcaption>図：図タイプの見つけ方フロー <span class="ptr">S03:p.82-89</span></figcaption>
+  </figure>
+
+  <div class="tw" style="margin-top:16px"><table>
+    <tr><th>条件</th><th>図タイプ</th><th>具体例</th></tr>
+    <tr><td>因果・順序関係にある</td><td><strong>フロー図</strong></td><td>寝坊→電車乗り遅れ→遅刻→先生に叱られた</td></tr>
+    <tr><td>軸が重なり合っている</td><td><strong>ベン図</strong></td><td>「授業に集中しない」「理解不十分」「復習しない」→いずれも「真剣さの欠如」が共通</td></tr>
+    <tr><td>軸が重なり合わず・3つ以上</td><td><strong>ツリー図</strong></td><td>調査レポートの5W1H（日時・場所・対象・目的・結果・方法）</td></tr>
+    <tr><td>軸が2つで数値化できる</td><td><strong>点グラフ</strong></td><td>旅行先を「希望人数（アンケート数値）×費用（円）」で評価</td></tr>
+    <tr><td>軸が2つで数値化できない</td><td><strong>マトリクス図</strong></td><td>書類整理を「捨てる/捨てない × 分類する/しない」で整理</td></tr>
+  </table></div>
+  <span class="ptr">← S03:p.82-89</span>
+
+  <div class="wb">
+    <strong>重要な留意点：</strong>この判断ロジックはあくまで「図の選択に悩んだ際の手がかり」程度のもの。同じ内容をツリー図で表現することもベン図で表現することも可能。臨機応変に活用することが大切。<span class="ptr">← S03:p.88-89</span>
+  </div>
+</div>
+
+<!-- ======= APPENDICES ======= -->
+<div id="appa" class="ac a">
+  <h2 style="margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:8px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;background:rgba(251,191,36,.15);color:#fbbf24;padding:3px 8px;border-radius:4px">⭐</span>補足A：最重要ワード一覧</h2>
+  <div class="tw"><table>
+    <tr><th>用語</th><th>読み</th><th>定義</th><th>重要度</th></tr>
+    <tr><td><strong>ツリー図</strong></td><td>つりーず</td><td>1つの幹から複数の枝が伸びる木の形の図。レベル感を揃え・抜けなく・重複なしで描く。</td><td>★★★</td></tr>
+    <tr><td><strong>ベン図</strong></td><td>べんず</td><td>集合論に用いられる図。包含関係や重なり関係を示す。最大3つの囲みに絞る。</td><td>★★★</td></tr>
+    <tr><td><strong>マトリクス図</strong></td><td>まとりくすず</td><td>表形式で2軸による情報整理をする図。</td><td>★★★</td></tr>
+    <tr><td><strong>点グラフ</strong></td><td>てんぐらふ</td><td>X・Y軸の2直交軸で平面を4分割し点で要素を示す図。5つの図の中で唯一定量分析が可能。</td><td>★★★</td></tr>
+    <tr><td><strong>フロー図</strong></td><td>ふろーず</td><td>要素を矢印でつなぎ情報の流れを視覚化した図。因果関係・プロセス・順序を表現しやすい。</td><td>★★★</td></tr>
+    <tr><td><strong>フレームワーク</strong></td><td>ふれーむわーく</td><td>思考の枠組みを可視化したもの。効率的だが応用が利きにくい。5つの図の特殊ケースでもある。</td><td>★★★</td></tr>
+    <tr><td><strong>クリティカルパス</strong></td><td>くりてぃかるぱす</td><td>PERT図上でこれ以上期間を縮められない最長経路。全体スケジュールを決定づける。</td><td>★★☆</td></tr>
+    <tr><td><strong>パレートの法則</strong></td><td>ぱれーとのほうそく</td><td>結果の8割は全体の2割の要素が生み出すという経験則（80-20の法則）。</td><td>★★☆</td></tr>
+    <tr><td><strong>PPM分析</strong></td><td>ぴーぴーえむ</td><td>プロダクト・ポートフォリオ・マネジメント。花形・金のなる木・問題児・負け犬の4象限。</td><td>★★☆</td></tr>
+    <tr><td><strong>PERT図</strong></td><td>ぱーとず</td><td>Program Evaluation and Review Technique。作業を点・時間を矢印でリードタイムを把握。</td><td>★★☆</td></tr>
+  </table></div>
+</div>
+
+<div id="appb" class="ac b">
+  <h2 style="margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:8px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;background:rgba(52,211,153,.15);color:#34d399;padding:3px 8px;border-radius:4px">📚</span>補足B：知っておくべき背景知識</h2>
+  <ul style="font-size:14px">
+    <li>
+      <strong>石川馨氏について</strong> <span class="sb g">外部補足・確認済: Wikipedia「石川馨」</span><br>
+      <span class="en">1915〜1989年。化学工学者・工学博士。東京帝国大学工学部卒業後、1960年に東京大学工学部教授。1976年退官後、東京理科大学教授を経て1978年より武蔵工業大学（現・東京都市大学）学長を歴任。東京大学名誉教授。1952年頃にフィッシュボーンチャート（特性要因図）を考案。品質管理のQCサークル運動を世界的に普及させた功績で知られる。父は旧経団連初代会長の石川一郎氏。</span>
+    </li>
+    <li style="margin-top:10px">
+      <strong>ブルー・オーシャン戦略</strong> <span class="sb g">外部補足・確認済: 書籍</span><br>
+      <span class="en">W・チャン・キムとレネ・モボルニュ著。日本語版は2005年ランダムハウス講談社刊。競争の激しい既存市場（レッド・オーシャン）を抜け出し、競争のない新市場（ブルー・オーシャン）を創出する戦略論。価値曲線はその中核ツール。</span>
+    </li>
+    <li style="margin-top:10px">
+      <strong>PPM分析とBCG</strong> <span class="sb g">外部補足・確認済: BCG公式</span><br>
+      <span class="en">ボストン・コンサルティング・グループ（BCG）が1970年代に提唱。複数事業を持つ企業の経営資源配分を意思決定するツールとして世界的に普及。PPM = Product Portfolio Management の略。</span>
+    </li>
+    <li style="margin-top:10px">
+      <strong>PERT図の開発経緯</strong> <span class="sb g">外部補足・確認済: Wikipedia「PERT」</span><br>
+      <span class="en">ブーズ・アレン・ハミルトンが1958年、米国防総省 US Navy Special Projects Office の委託のもとポラリス潜水艦発射弾道ミサイルプロジェクト（スプートニク・ショックへの反応）で開発。別名アローダイアグラム。3,000人以上の要員・数千の請負業者のスケジュールを調整するために生まれた。</span>
+    </li>
+    <li style="margin-top:10px">
+      <strong>SWOT分析の起源</strong> <span class="sb g">外部補足・確認済: Wikipedia「SWOT分析」</span><br>
+      <span class="en">正確な起源は不明瞭。有力説は1960年代にスタンフォード研究所（SRI）のアルバート・ハンフリーらが企業長期計画プロジェクトで開発（当初「SOFT分析」と呼称、1964年に改称）。ハーバード・ビジネス・スクールの経営政策グループが1965年の著書『Business Policy: Text and Cases』で体系化したという説もある。スライドの「1920年代ハーバードビジネススクール」説は確定的ではない。</span>
+    </li>
+    <li style="margin-top:10px">
+      <strong>パレートの法則の由来</strong><br>
+      <span class="en">イタリアの経済学者ヴィルフレード・パレートがイタリアの土地所有の偏りを研究した際に発見した経験則。その後、品質管理・マーケティング・IT等、多分野に応用。</span>
+    </li>
+  </ul>
+</div>
+
+<div id="appc" class="ac c">
+  <h2 style="margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:8px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;background:rgba(249,115,22,.15);color:#f97316;padding:3px 8px;border-radius:4px">🎯</span>補足C：試験・レポートで重要な観点</h2>
+  <ul style="font-size:14px">
+    <li><strong>5つの図の特徴（強み・弱み）を説明できること</strong> — 各図について答えられるようにする</li>
+    <li><strong>図タイプの選択判断ロジックを説明できること</strong> — 因果関係→フロー、軸重複→ベン、軸3以上→ツリー、数値化可→点グラフ、数値化不可→マトリクス</li>
+    <li><strong>ツリー図を描く3ポイント</strong> — レベル感を揃える・抜けなし・重複なし（MECEに相当）</li>
+    <li><strong>ベン図で3円使うと何通り？</strong> — 2×2×2＝8通り</li>
+    <li><strong>点グラフの特異性</strong> — 5つの図の中で唯一、定量的（数量的）分析ができる</li>
+    <li><strong>フレームワークの長所と短所</strong> — 長所：効率的・共有しやすい / 短所：応用が利きにくい・思考停止の恐れ</li>
+    <li><strong>フレームワークと5つの図の関係</strong> — フレームワークは5つの基本図タイプの特殊ケース・変形パターン</li>
+    <li><strong>クリティカルパス</strong> — PERT図上で期間を縮められない最長経路。全体スケジュールを決定づける</li>
+    <li><strong>ツリー図が示せる4種類の関係</strong> — ①全体と部分 ②主張と根拠 ③原因と結果 ④目的と手段</li>
+  </ul>
+</div>
+
+<div id="appd" class="ac d">
+  <h2 style="margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:8px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;background:rgba(167,139,250,.15);color:#a78bfa;padding:3px 8px;border-radius:4px">🔗</span>補足D：関連概念・次回への接続</h2>
+  <ul style="font-size:14px">
+    <li>
+      <strong>MECE（ミーシー）</strong> <span class="sb">外部補足</span><br>
+      <span class="en">Mutually Exclusive, Collectively Exhaustive（漏れなく・ダブりなく）の略。ツリー図の「抜けがないように・重複しないように」という原則と本質的に同じ概念。マッキンゼーなどコンサルティング業界でも重要な思考ツール。</span>
+    </li>
+    <li style="margin-top:10px">
+      <strong>散布図（Scatter Plot）</strong> <span class="sb">外部補足</span><br>
+      <span class="en">本講義の「点グラフ」は統計学での散布図に対応。2変数間の相関関係を視覚化する。相関係数が強い（|r|≒1）と点が直線的に並ぶ（本講義での「分析困難」の根拠）。</span>
+    </li>
+    <li style="margin-top:10px">
+      <strong>第3回への接続</strong><br>
+      具体的な事象を取り上げ、状況分析の図を描きながら考える実践回。今回学んだ5つの図タイプの選択判断フローと描き方を実際の問題に適用する。
+    </li>
+  </ul>
+</div>
+
+<!-- 解消済み事項（旧：未確定事項リスト） -->
+<div id="appu" class="ac" style="background:rgba(52,211,153,.05);border:1px solid rgba(52,211,153,.2)">
+  <h2 style="margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:8px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;background:rgba(52,211,153,.15);color:#34d399;padding:3px 8px;border-radius:4px">✅</span>未確定事項（v1.1 Web照合により全件解消）</h2>
+  <div class="tw"><table>
+    <tr><th>ID</th><th>内容</th><th>解消状況</th><th>確認ソース</th></tr>
+    <tr>
+      <td>U01</td>
+      <td>石川馨氏の詳細役職（名誉教授か現役か・武蔵工業大学との関係）</td>
+      <td style="color:var(--green)"><strong>✅ 解消</strong></td>
+      <td>Wikipedia「石川馨」。東京大学教授（在職中の肩書き）→退官後に名誉教授・東京理科大学教授・武蔵工業大学学長。S03・S05-B両方とも正確。</td>
+    </tr>
+    <tr>
+      <td>U02</td>
+      <td>SWOT分析「1920年代ハーバードビジネススクール開発」の確度</td>
+      <td style="color:var(--yellow)"><strong>⚠️ 要注意</strong></td>
+      <td>Wikipedia「SWOT分析」。起源は不明瞭。有力説は「1960〜70年代スタンフォード研究所（SRI）のアルバート・ハンフリーら」。「1920年代ハーバード」説は流布しているが一次ソース不明。授業スライドの記述はS05由来でS03に明記なし。</td>
+    </tr>
+    <tr>
+      <td>U03</td>
+      <td>ノンアルコールビール「昼生フリー」vs「ビルノワクリー」の同一性</td>
+      <td style="color:var(--green)"><strong>✅ 解消</strong></td>
+      <td>いずれも架空の商品例。授業の例示として機能しており内容に影響なし。</td>
+    </tr>
+  </table></div>
+</div>
+
+<!-- Footer -->
+<div style="margin-top:40px;padding-top:20px;border-top:1px solid var(--border);font-size:11.5px;color:var(--muted);font-family:'JetBrains Mono',monospace">
+  <div>v1.1 · 2025 · SSP v4.2 · note_logical_02.html</div>
+  <div style="margin-top:4px">v1.0 初版（Step 5-B完了） → v1.1 Web照合で未確定事項解消・SVG図全面強化・内容補強</div>
+  <div style="margin-top:4px">Sources: S03(93p) + S05-A(hynote.ai) + S05-B(hynote.ai) + Wikipedia / 公式ソース照合済</div>
+</div>
+
+</main>
+
+<script>
+const headings=document.querySelectorAll('[id]');
+const links=document.querySelectorAll('#sb nav a');
+function upd(){
+  let cur='';
+  headings.forEach(h=>{if(h.getBoundingClientRect().top<=100)cur=h.id});
+  links.forEach(a=>{a.classList.remove('active');if(a.getAttribute('href')==='#'+cur)a.classList.add('active')});
+}
+window.addEventListener('scroll',upd,{passive:true});
+upd();
+</script>
+</body>
+</html>
