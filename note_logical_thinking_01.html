@@ -1,0 +1,1965 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ロジカルシンキング 第1回｜図を使って考えてみよう！</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-primary: #0f1117;
+    --bg-secondary: #1a1f2e;
+    --bg-card: #1e2535;
+    --bg-card-hover: #232a3d;
+    --text-main: #e2e8f5;
+    --text-sub: #8a99b8;
+    --text-accent: #c7d2ea;
+    --border-color: #2d3a52;
+    --accent-blue: #5b8dee;
+    --accent-green: #34d399;
+    --accent-yellow: #fbbf24;
+    --accent-purple: #a78bfa;
+    --accent-orange: #fb923c;
+    --accent-red: #f87171;
+    --sidebar-width: 260px;
+    --pointer-font: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg-primary);
+    color: var(--text-main);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 15px;
+    line-height: 1.8;
+  }
+
+  /* ── サイドバー ── */
+  .sidebar {
+    position: fixed;
+    left: 0; top: 0;
+    width: var(--sidebar-width);
+    height: 100vh;
+    background: var(--bg-secondary);
+    border-right: 1px solid var(--border-color);
+    overflow-y: auto;
+    padding: 24px 0;
+    z-index: 100;
+  }
+
+  .sidebar-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--text-sub);
+    text-transform: uppercase;
+    padding: 0 20px 12px;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 12px;
+  }
+
+  .toc-link {
+    display: block;
+    padding: 5px 20px;
+    color: var(--text-sub);
+    text-decoration: none;
+    font-size: 12.5px;
+    line-height: 1.5;
+    transition: all 0.15s;
+    border-left: 2px solid transparent;
+  }
+  .toc-link:hover { color: var(--text-main); background: var(--bg-card); border-left-color: var(--accent-blue); }
+  .toc-link.chapter { font-weight: 600; color: var(--text-accent); margin-top: 8px; font-size: 13px; }
+  .toc-link.section { padding-left: 32px; }
+  .toc-link.appendix { color: var(--accent-yellow); font-size: 12px; }
+
+  /* ── メインコンテンツ ── */
+  .main {
+    margin-left: var(--sidebar-width);
+    padding: 40px 48px 80px;
+    max-width: 960px;
+  }
+
+  /* ── ヘッダー ── */
+  .page-header {
+    background: linear-gradient(135deg, #1a2540 0%, #0f1525 100%);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 32px 36px;
+    margin-bottom: 36px;
+  }
+  .page-header .subject { font-size: 13px; color: var(--accent-blue); font-weight: 500; letter-spacing: 0.06em; margin-bottom: 8px; }
+  .page-header h1 { font-size: 26px; font-weight: 700; color: var(--text-main); margin-bottom: 16px; }
+  .meta-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    font-size: 12.5px;
+    color: var(--text-sub);
+  }
+  .meta-item span { color: var(--text-accent); font-weight: 500; }
+  .source-badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
+  .badge {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 11.5px;
+    font-family: var(--pointer-font);
+    color: var(--text-sub);
+  }
+  .badge.s03 { border-color: var(--accent-green); color: var(--accent-green); }
+  .badge.s05 { border-color: var(--accent-blue); color: var(--accent-blue); }
+
+  /* ── セクションカード ── */
+  .section-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 28px 32px;
+    margin-bottom: 24px;
+  }
+
+  h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--accent-blue);
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2::before { content: ''; display: inline-block; width: 4px; height: 22px; background: var(--accent-blue); border-radius: 2px; }
+
+  h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-accent);
+    margin: 22px 0 12px;
+  }
+
+  h4 {
+    font-size: 14.5px;
+    font-weight: 600;
+    color: var(--accent-yellow);
+    margin: 16px 0 8px;
+  }
+
+  p { margin-bottom: 12px; }
+
+  ul, ol { padding-left: 22px; margin-bottom: 12px; }
+  li { margin-bottom: 5px; }
+
+  strong { color: var(--accent-yellow); font-weight: 600; }
+
+  /* ── ソースポインター ── */
+  .src {
+    display: inline-block;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-family: var(--pointer-font);
+    font-size: 10.5px;
+    color: var(--text-sub);
+    margin-left: 4px;
+    vertical-align: middle;
+  }
+
+  /* ── ブロック種別 ── */
+  .block {
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 14px 0;
+    font-size: 14.5px;
+  }
+
+  .block-audio {
+    background: rgba(91, 141, 238, 0.08);
+    border-left: 4px solid var(--accent-blue);
+  }
+  .block-audio::before {
+    content: '🎤 音声補足';
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent-blue);
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+    font-family: var(--pointer-font);
+  }
+
+  .block-ext {
+    background: rgba(52, 211, 153, 0.07);
+    border-left: 4px solid var(--accent-green);
+  }
+  .block-ext::before {
+    content: '🌐 外部補足';
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent-green);
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+    font-family: var(--pointer-font);
+  }
+
+  .block-warn {
+    background: rgba(251, 159, 60, 0.08);
+    border-left: 4px solid var(--accent-orange);
+  }
+
+  .block-definition {
+    background: rgba(167, 139, 250, 0.08);
+    border-left: 4px solid var(--accent-purple);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 14px 0;
+  }
+  .block-definition::before {
+    content: '【定義】';
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent-purple);
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+    font-family: var(--pointer-font);
+  }
+
+  /* ── テーブル ── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  th {
+    background: var(--bg-secondary);
+    color: var(--accent-blue);
+    padding: 10px 14px;
+    text-align: left;
+    font-size: 12.5px;
+    font-weight: 600;
+    border: 1px solid var(--border-color);
+  }
+  td {
+    padding: 9px 14px;
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    vertical-align: top;
+  }
+  tr:nth-child(even) td { background: rgba(30, 37, 53, 0.5); }
+
+  /* ── SVG / フロー図 ── */
+  .svg-container {
+    margin: 20px 0;
+    text-align: center;
+  }
+  figcaption {
+    font-size: 11.5px;
+    color: var(--text-sub);
+    margin-top: 8px;
+    font-family: var(--pointer-font);
+  }
+
+  /* フロー図（div+flex） */
+  .flow-diagram {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    margin: 20px auto;
+    max-width: 340px;
+  }
+  .flow-box {
+    background: var(--bg-secondary);
+    border: 1.5px solid var(--accent-blue);
+    border-radius: 8px;
+    padding: 10px 24px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-main);
+    text-align: center;
+    min-width: 200px;
+  }
+  .flow-box.red { border-color: var(--accent-orange); }
+  .flow-box.blue { border-color: var(--accent-blue); background: rgba(91,141,238,0.1); color: var(--accent-blue); }
+  .flow-arrow {
+    font-size: 22px;
+    color: var(--accent-blue);
+    line-height: 1;
+    padding: 4px 0;
+  }
+
+  /* ── 末尾補足カード ── */
+  .appendix-card {
+    border-radius: 10px;
+    padding: 24px 28px;
+    margin-bottom: 20px;
+  }
+  .appendix-card h2 { font-size: 17px; margin-bottom: 16px; border-bottom-color: rgba(255,255,255,0.08); }
+
+  .appendix-a { background: rgba(91, 141, 238, 0.06); border: 1px solid rgba(91,141,238,0.25); }
+  .appendix-a h2 { color: var(--accent-blue); }
+  .appendix-a h2::before { background: var(--accent-blue); }
+
+  .appendix-b { background: rgba(52, 211, 153, 0.06); border: 1px solid rgba(52,211,153,0.25); }
+  .appendix-b h2 { color: var(--accent-green); }
+  .appendix-b h2::before { background: var(--accent-green); }
+
+  .appendix-c { background: rgba(251, 191, 36, 0.06); border: 1px solid rgba(251,191,36,0.25); }
+  .appendix-c h2 { color: var(--accent-yellow); }
+  .appendix-c h2::before { background: var(--accent-yellow); }
+
+  .appendix-d { background: rgba(167, 139, 250, 0.06); border: 1px solid rgba(167,139,250,0.25); }
+  .appendix-d h2 { color: var(--accent-purple); }
+  .appendix-d h2::before { background: var(--accent-purple); }
+
+  .appendix-unresolved { background: rgba(251, 146, 60, 0.06); border: 1px solid rgba(251,146,60,0.35); }
+  .appendix-unresolved h2 { color: var(--accent-orange); }
+  .appendix-unresolved h2::before { background: var(--accent-orange); }
+
+  .ext-small {
+    font-size: 12px;
+    color: var(--text-sub);
+  }
+
+  /* ── レスポンシブ ── */
+  @media (max-width: 900px) {
+    .sidebar { display: none; }
+    .main { margin-left: 0; padding: 24px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ━━━━━━━━ サイドバー目次 ━━━━━━━━ -->
+<nav class="sidebar">
+  <div class="sidebar-title">目次 (v1.2)</div>
+  <a class="toc-link chapter" href="#header">📋 ノート概要</a>
+  <a class="toc-link chapter" href="#ch1">第1章 オリエンテーション</a>
+  <a class="toc-link section" href="#ch1-1">1-1 科目の背景</a>
+  <a class="toc-link section" href="#ch1-2">1-2 講師紹介</a>
+  <a class="toc-link section" href="#ch1-3">1-3 科目概要・到達目標</a>
+  <a class="toc-link section" href="#ch1-4">1-4 全体スケジュール</a>
+  <a class="toc-link section" href="#ch1-5">1-5 ビジネスとロジカルシンキング</a>
+  <a class="toc-link chapter" href="#ch2">第2章 図とは何か？</a>
+  <a class="toc-link section" href="#ch2-1">2-1 図の起源</a>
+  <a class="toc-link section" href="#ch2-2">2-2 図の定義</a>
+  <a class="toc-link section" href="#ch2-3">2-3 文章と図の違い</a>
+  <a class="toc-link section" href="#ch2-4">2-4 図の特徴・図解思考</a>
+  <a class="toc-link chapter" href="#ch3">第3章 図と論理学との関係</a>
+  <a class="toc-link section" href="#ch3-1">3-1 ロジカルシンキングとは</a>
+  <a class="toc-link section" href="#ch3-2">3-2 論理的に考えるとは</a>
+  <a class="toc-link section" href="#ch3-3">3-3 代表的な論理（3種類）</a>
+  <a class="toc-link section" href="#ch3-4">3-4 図の論理的特徴</a>
+  <a class="toc-link section" href="#ch3-5">3-5 創造力を高める思考法</a>
+  <a class="toc-link chapter" href="#ch4">第4章 発散思考と収束思考</a>
+  <a class="toc-link section" href="#ch4-1">4-1 図を描くための基本姿勢</a>
+  <a class="toc-link section" href="#ch4-2">4-2 発散思考</a>
+  <a class="toc-link section" href="#ch4-3">4-3 収束思考</a>
+  <a class="toc-link section" href="#ch4-4">4-4 図で考えることの意義</a>
+  <a class="toc-link appendix" href="#appendix-a">⭐ 補足A 最重要ワード一覧</a>
+  <a class="toc-link appendix" href="#appendix-b">📚 補足B 背景知識</a>
+  <a class="toc-link appendix" href="#appendix-c">🎯 補足C 試験・レポート観点</a>
+  <a class="toc-link appendix" href="#appendix-d">🔗 補足D 関連概念</a>
+  <a class="toc-link appendix" href="#appendix-u">✅ 未確定事項（全件解消済み）</a>
+</nav>
+
+<!-- ━━━━━━━━ メインコンテンツ ━━━━━━━━ -->
+<main class="main">
+
+<div style="background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.2);border-radius:7px;padding:9px 16px;margin-bottom:18px;font-size:12px;color:#34d399;">
+  ✅ v1.3 更新済み（2026-04-14）— U01完全解消（主席研究員・著書・学歴確認）・未収録スライド図を全件追加・全未確定事項ゼロ
+</div>
+<!-- ページヘッダー -->
+<div class="page-header" id="header">
+  <div class="subject">サイバー大学 IT総合学部｜教養科目｜ロジカルシンキング</div>
+  <h1>第1回　図を使って考えてみよう！</h1>
+  <div class="meta-grid">
+    <div class="meta-item">担当教員: <span>奥村 隆一</span></div>
+    <div class="meta-item">所属: <span>三菱総合研究所 主席研究員</span></div>
+    <div class="meta-item">バージョン: <span>v1.3 (2026-04-14)</span></div>
+  </div>
+  <div class="source-badges">
+    <span class="badge s03">S03: スライドPDF</span>
+    <span class="badge s05">S05-A: AI文字起こし（hynote.ai）</span>
+    <span class="badge s05">S05-B: AI文字起こし（hynote.ai）</span>
+  </div>
+</div>
+
+<!-- ━━━ 第1章 ━━━ -->
+<div class="section-card" id="ch1">
+  <h2>第1章　オリエンテーション</h2>
+
+  <h3 id="ch1-1">1-1 なぜロジカルシンキングが重要か — ビジネス活動の変化</h3>
+  
+  
+  <p>
+    今日、生成AIに代表されるテクノロジーの急速な進化とグローバル化を背景に、
+    私たちを取り巻く情報の量は大幅に増えている。<span class="src">← S03:p.12</span>
+  </p>
+
+  <!-- ── ビジネス変化SVG ── -->
+  <div class="fig">
+    <svg viewBox="0 0 680 190" xmlns="http://www.w3.org/2000/svg" style="max-width:680px;">
+      <rect width="680" height="190" fill="#1e2535" rx="10"/>
+      <text x="340" y="24" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="#5b8dee" font-weight="700">ビジネス活動の2つの変化 ← S03:p.12-13</text>
+      <rect x="18" y="38" width="308" height="130" rx="9" fill="#1a2540" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="172" y="62" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#5b8dee" font-weight="600">変化① 情報量の爆発的増大</text>
+      <line x1="28" y1="70" x2="318" y2="70" stroke="#2d3a52" stroke-width="1"/>
+      <text x="172" y="93" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11.5" fill="#e2e8f5">デジタル化・グローバル化で情報収集が容易に</text>
+      <text x="172" y="115" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11.5" fill="#fbbf24">⇒「集めるだけ」では差別化できない</text>
+      <text x="172" y="135" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#8a99b8">既存の情報を組み合わせて新しい「知」を作る技術が重要</text>
+      <text x="172" y="155" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#34d399">（例: Amazonの協調フィルタリング = 購買データ→レコメンド）</text>
+      <rect x="354" y="38" width="308" height="130" rx="9" fill="#1a2540" stroke="#34d399" stroke-width="1.5"/>
+      <text x="508" y="62" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#34d399" font-weight="600">変化② 定型業務の省力化</text>
+      <line x1="364" y1="70" x2="654" y2="70" stroke="#2d3a52" stroke-width="1"/>
+      <text x="508" y="90" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8">これまで: RPA等で単純定型業務を自動化</text>
+      <text x="508" y="110" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8">今後: 生成AIで専門性の高い業務も省力化</text>
+      <text x="508" y="133" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11.5" fill="#fbbf24">⇒非定型・創造的な仕事の比重が急増</text>
+      <text x="508" y="155" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#34d399">深く思考して解決する仕事が求められる</text>
+    </svg>
+    <figcaption>図: ビジネス活動の2つの変化 ← S03:p.12-13</figcaption>
+  </div>
+
+  <p>
+    インターネットを使えば求める情報を簡単に手に入れられるようになった結果、
+    「単に情報を集めるだけでは差別化が図れない」状況が生まれている。<span class="src">← S03:p.12</span>
+  </p>
+  <p>
+    また、デジタル化を背景として<strong>定型的な業務の省力化</strong>が進行している
+    （例: RPA）。今後は生成AIにより、より高度な専門性が求められる業務でも省力化が進む見込みで、
+    結果として非定型・創造的な仕事の比重が急速に高まっている。<span class="src">← S03:p.13</span>
+  </p>
+  <div class="block block-audio">
+    現代の新聞1冊の情報量は、中世の時代に生きた人の一生分に相当すると言われている。
+    さらに現在ではそれを超える大量の情報が毎日スマートフォン等を通じて手に入るようになった。
+    情報収集の難易度が下がった分、「集めた情報をそのまま使うだけ」では差別化できなくなっている。
+    <span class="src">← S05-B</span>
+  </div>
+  <p>
+    その結果として重要視されるのが、「<strong>既存の情報を組み合わせて新しい知を作り出す技術</strong>」、
+    すなわち情報を加工・付加価値化して意味を作り出す思考技術である。<span class="src">← S03:p.13</span>
+  </p>
+  <div class="block block-audio">
+    Amazonのレコメンデーションシステム（協調フィルタリング）はビッグデータ活用の好例。
+    膨大な購買データを分析し、「誰が何を買ったか」のデータから関心商品を自動紹介する仕組み。
+    これは「購買情報というただの情報を、購買動機を高める値に高めた」価値創造の事例といえる。
+    <span class="src">← S05-B</span>
+  </div>
+
+  <h3 id="ch1-2">1-2 担当講師紹介</h3>
+  <p>
+    担当教員の奥村隆一氏は<strong>株式会社三菱総合研究所 キャリア・イノベーション本部 主席研究員</strong>。
+    <span class="src">← S03:p.6 / [外部補足・確認済: サイバー大学公式教員紹介]</span>
+  </p>
+  <p>
+    1968年神奈川県生まれ。1994年早稲田大学大学院理工学研究科修士課程修了後、同年三菱総合研究所入社。
+    2021年東京工業大学情報理工学院博士課程修了、<strong>博士（工学）</strong>取得。一級建築士の資格も保有。
+    <span class="src">← [外部補足・確認済: サイバー大学公式教員紹介・事業構想大学院大学]</span>
+  </p>
+  <p>
+    専門は<strong>労働政策・社会保障政策・少子高齢・人口減少問題・発想法</strong>。厚生労働省や経済産業省の調査研究・研究提言、
+    人材関連企業の課題解決ソリューション開発を担当。<span class="src">← S03:p.6</span>
+  </p>
+  <div class="block block-audio" style="margin:10px 0 6px;">
+    <strong>📚 主な著書（図解・発想法関連）</strong><br>
+    ・『仕事が速い人は図で考える』（2016年、KADOKAWA）<br>
+    ・『考えをまとめる・伝える図解の技術』（2011年、日経文庫）<br>
+    ・『考えを整理する技術・伝える方法』（2010年、PHP研究所）<br>
+    ・『スリーエックス 革新的テクノロジーとコミュニティがもたらす未来』（2021年、ダイヤモンド社・共著）<br>
+    <span class="src">← [外部補足・確認済: MRI著者紹介ページ]</span>
+  </div>
+
+  <!-- ── ロジカルシンキング活用3場面SVG ── -->
+  <div class="fig">
+    <svg viewBox="0 0 640 150" xmlns="http://www.w3.org/2000/svg" style="max-width:640px;">
+      <rect width="640" height="150" fill="#1e2535" rx="10"/>
+      <text x="320" y="22" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12.5" fill="#5b8dee" font-weight="600">シンクタンクでロジカルシンキングを使う3場面 ← S03:p.6</text>
+      <rect x="18" y="36" width="185" height="96" rx="8" fill="#1a2540" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="110" y="58" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="20" fill="#5b8dee">①</text>
+      <text x="110" y="80" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#e2e8f5" font-weight="600">企画提案の際</text>
+      <text x="110" y="100" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#8a99b8">誰も思いつかないエッジの</text>
+      <text x="110" y="116" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#8a99b8">効いた分析視点の提示</text>
+      <rect x="228" y="36" width="185" height="96" rx="8" fill="#1a2540" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="320" y="58" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="20" fill="#fbbf24">②</text>
+      <text x="320" y="80" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#e2e8f5" font-weight="600">調査の詳細を決める際</text>
+      <text x="320" y="100" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#8a99b8">調査設計・対象・</text>
+      <text x="320" y="116" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#8a99b8">方法の選択</text>
+      <rect x="438" y="36" width="185" height="96" rx="8" fill="#1a2540" stroke="#34d399" stroke-width="1.5"/>
+      <text x="530" y="58" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="20" fill="#34d399">③</text>
+      <text x="530" y="80" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#e2e8f5" font-weight="600">分析・考察の際</text>
+      <text x="530" y="100" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#8a99b8">調査結果の解釈と</text>
+      <text x="530" y="116" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#8a99b8">考察視点を固める</text>
+    </svg>
+    <figcaption>図: ロジカルシンキングを使う3場面 ← S03:p.6</figcaption>
+  </div>
+  <div class="block block-audio">
+    シンクタンク部門の研究員は専門分野を限定せず、どのようなテーマでも常に関心を持って情報収集・知見蓄積を行う。
+    理由は「社会課題に分野の境界はない」から。顧客からやってくる問いは、領域を横断してあらゆる知識を組み合わせないと
+    解決が難しいものばかり。このような状況で特にロジカルシンキングが役立つ。
+    具体的には①企画提案の際、②調査の詳細を決める際、③分析・考察の視点を固める際の3場面で活用。
+    <span class="src">← S03:p.6 / S05-B</span>
+  </div>
+  <div class="block block-audio">
+    シンクタンクの研究員は一般に数本〜数十本の調査研究・ソリューション提案を平行して進める。
+    案件1つ1つは全く別内容でも、ある案件の解決ヒントが別の案件に役立つこともある（マルチタスクのメリット）。
+    しかし頭の中を整理しないと1つも的確に進められない。図で頭を整理することで労働時間のコンパクト化・最短ルートでの研究推進に役立っている。
+    <span class="src">← S05-B</span>
+  </div>
+
+  <!-- ── p.15 ロジカルシンキングとは何か：5つの力 ── -->
+  <div class="fig" style="margin:18px 0;">
+    <svg viewBox="0 0 620 230" xmlns="http://www.w3.org/2000/svg" style="max-width:620px;width:100%;display:block;">
+      <rect width="620" height="230" fill="#1e2535" rx="10"/>
+      <text x="310" y="24" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="#5b8dee" font-weight="700">ロジカルシンキングとは何か？ ← S03:p.15</text>
+      <!-- 5つの力カード -->
+      <rect x="18" y="38" width="190" height="42" rx="7" fill="#1a2e4a" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="113" y="65" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13.5" fill="#e2e8f5" font-weight="600">■ 分析力</text>
+      <rect x="18" y="88" width="190" height="42" rx="7" fill="#1a2e4a" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="113" y="115" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13.5" fill="#e2e8f5" font-weight="600">■ 意思決定力</text>
+      <rect x="18" y="138" width="190" height="42" rx="7" fill="#1a2e4a" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="113" y="165" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13.5" fill="#e2e8f5" font-weight="600">■ 交渉力</text>
+      <rect x="18" y="188" width="190" height="34" rx="7" fill="#1a2e4a" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="113" y="211" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13.5" fill="#e2e8f5" font-weight="600">■ 問題解決力</text>
+      <!-- 発想力は別行扱い -->
+      <!-- 波括弧（右向き） -->
+      <path d="M215,59 Q240,59 240,109 Q240,159 265,159 Q240,159 240,184 Q240,205 215,205" fill="none" stroke="#94a3b8" stroke-width="2"/>
+      <line x1="265" y1="159" x2="295" y2="159" stroke="#5b8dee" stroke-width="2" marker-end="url(#arr)"/>
+      <!-- 発想力を括弧の上に -->
+      <rect x="18" y="43" width="190" height="0" rx="0" fill="none"/>
+      <!-- 実は5つ目は別の行 - 発想力 -->
+      <!-- 矢印マーカー -->
+      <defs>
+        <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#5b8dee"/>
+        </marker>
+      </defs>
+      <!-- ロジカルシンキングボックス -->
+      <rect x="300" y="110" width="305" height="98" rx="10" fill="#1a3a5c" stroke="#5b8dee" stroke-width="2"/>
+      <text x="452" y="150" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="15" fill="#5b8dee" font-weight="700">ロジカルシンキング</text>
+      <text x="452" y="172" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#94a3b8">これら</text>
+      <text x="452" y="190" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#94a3b8">すべてに役立つ思考法</text>
+    </svg>
+    <figcaption style="font-size:11px;color:#8a99b8;margin-top:6px;font-family:monospace;">図: 5つの力すべてに役立つ「ロジカルシンキング」← S03:p.15</figcaption>
+  </div>
+  <p>
+    「ロジカルシンキング」は一般に「論理的思考」と呼ばれ、主にビジネスの世界・コンサルティング業界を中心として実践的に用いられる用語。
+    <strong>分析力・意思決定力・交渉力・問題解決力・発想力</strong>——これら5つすべてに共通して役立つ思考法として位置づけられる。
+    <span class="src">← S03:p.15 / p.44</span>
+  </p>
+
+  <h3 id="ch1-3">1-3 科目概要・到達目標・スキルセット</h3>
+  <p>
+    論理的に物事を考えることは、状況を整理したり、課題を分析したり、
+    問題解決の糸口を見つけたりすることにつながる。本科目ではこれを広い意味で
+    <strong>ロジカルシンキング</strong>と捉えて学ぶ。<span class="src">← S03:p.7</span>
+  </p>
+  <p>
+    ただし、頭の中だけで論理的に情報を整理することは簡単ではない。
+    そこで本科目では<strong>「図」を活用して思考力を高める技術</strong>を習得する。<span class="src">← S03:p.7</span>
+  </p>
+
+  <h4>到達目標・履修目標（S03:p.8）</h4>
+  <!-- スライドp.8のテーブルを再現：左列=到達目標、右列=履修目標 -->
+  <div class="fig" style="margin:10px 0 16px;">
+    <svg viewBox="0 0 680 310" xmlns="http://www.w3.org/2000/svg" style="max-width:680px;width:100%;display:block;">
+      <rect width="680" height="310" fill="#1e2535" rx="8"/>
+      <!-- ヘッダー行 -->
+      <rect x="8" y="8" width="330" height="36" rx="5" fill="#2d4a8a"/>
+      <text x="173" y="31" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="white" font-weight="700">到達目標</text>
+      <rect x="342" y="8" width="330" height="36" rx="5" fill="#2d4a8a"/>
+      <text x="507" y="31" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="white" font-weight="700">履修目標</text>
+      <!-- 行1: 図の特性 -->
+      <rect x="8" y="48" width="664" height="42" rx="3" fill="#1a2e4a"/>
+      <text x="340" y="66" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11.5" fill="#f87171" font-weight="700">【図の特性】</text>
+      <text x="340" y="82" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">図の特性や長所・短所を説明できる（第1〜2回）</text>
+      <!-- 行2: 問題を分析 -->
+      <rect x="8" y="94" width="664" height="42" rx="3" fill="#1e2535"/>
+      <text x="340" y="112" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11.5" fill="#f87171" font-weight="700">【問題を分析】</text>
+      <text x="340" y="128" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">問題を分析する際に図を用いる手順と方法を説明できる（第3回）</text>
+      <!-- 行3: 対策を検討 -->
+      <rect x="8" y="140" width="664" height="42" rx="3" fill="#1a2e4a"/>
+      <text x="340" y="158" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11.5" fill="#f87171" font-weight="700">【対策を検討】</text>
+      <text x="340" y="174" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">対策を検討する際に図を用いる手順と方法を説明できる（第4回）</text>
+      <!-- 行4: 発想力・問題解決・意思決定・交渉（2列に分かれる） -->
+      <rect x="8" y="186" width="330" height="54" rx="3" fill="#1e2535"/>
+      <text x="173" y="205" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#f87171" font-weight="600">新しい発想 / 問題解決 / 意思決定 /</text>
+      <text x="173" y="221" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#f87171" font-weight="600">交渉の糸口</text>
+      <text x="173" y="236" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">を行う際の図の手順と方法を説明できる</text>
+      <rect x="342" y="186" width="330" height="54" rx="3" fill="#1e2535"/>
+      <text x="507" y="205" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#fbbf24" font-weight="600">実際に図を用いて実行するとともに</text>
+      <text x="507" y="221" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#fbbf24" font-weight="600">その思考過程を人に説明できる</text>
+      <text x="507" y="236" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">（第5〜8回）</text>
+      <!-- 区切り線 -->
+      <line x1="338" y1="48" x2="338" y2="244" stroke="#2d4a8a" stroke-width="1.5"/>
+      <!-- 凡例 -->
+      <text x="12" y="265" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#f87171">※到達目標</text>
+      <text x="100" y="265" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#8a99b8">：何を「説明できるか」を示す知識・技能目標</text>
+      <text x="12" y="282" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#fbbf24">※履修目標</text>
+      <text x="100" y="282" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#8a99b8">：実際に「行えるか」を示す実践的パフォーマンス目標</text>
+      <text x="340" y="302" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#5b8dee">← S03:p.8</text>
+    </svg>
+    <figcaption style="font-size:11px;color:#8a99b8;margin-top:6px;font-family:monospace;">図: 科目目標（到達目標×履修目標） ← S03:p.8</figcaption>
+  </div>
+
+  <h4>スキルセット（ディプロマポリシー対応）</h4>
+  <table>
+    <tr><th>#</th><th>スキル</th><th>対応するDP</th></tr>
+    <tr><td>1</td><td>各種の図を使い分けながら思考パターンを広げる意義について説明できる</td><td>課題解決力</td></tr>
+    <tr><td>2</td><td>図を用いて現状を分析して課題を明らかにするための論理的な筋道を説明できる</td><td>課題解決力</td></tr>
+    <tr><td>3</td><td>図を用いて新しい発想を引き出したり意思決定を行うための論理的な筋道を説明できる</td><td>批判的思考力</td></tr>
+    <tr><td>4</td><td>図を用いて問題解決や交渉の糸口を探るための論理的な筋道を説明できる</td><td>ビジネス基礎力</td></tr>
+  </table>
+  <span class="src" style="font-size:11px;">← S03:p.9</span>
+
+  <h3 id="ch1-4">1-4 全体スケジュール（8回構成）</h3>
+  <div class="fig" style="margin:10px 0 16px;">
+    <svg viewBox="0 0 680 390" xmlns="http://www.w3.org/2000/svg" style="max-width:680px;width:100%;display:block;">
+      <rect width="680" height="390" fill="#1e2535" rx="8"/>
+      <!-- ヘッダー -->
+      <rect x="8" y="8" width="60" height="34" rx="4" fill="#2d4a8a"/>
+      <text x="38" y="30" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="white" font-weight="700">回</text>
+      <rect x="72" y="8" width="190" height="34" rx="4" fill="#2d4a8a"/>
+      <text x="167" y="30" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="white" font-weight="700">回タイトル</text>
+      <rect x="266" y="8" width="406" height="34" rx="4" fill="#2d4a8a"/>
+      <text x="469" y="30" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="white" font-weight="700">章タイトル（主なトピック）</text>
+      <!-- 第1回（ハイライト：現在の回） -->
+      <rect x="8" y="46" width="60" height="42" rx="3" fill="#1a3a5c" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="38" y="73" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#fbbf24" font-weight="700">第1回</text>
+      <rect x="72" y="46" width="190" height="42" rx="3" fill="#1a3a5c" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="167" y="63" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11.5" fill="#e2e8f5" font-weight="600">図を使って</text>
+      <text x="167" y="79" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11.5" fill="#e2e8f5" font-weight="600">考えてみよう！</text>
+      <rect x="266" y="46" width="406" height="42" rx="3" fill="#1a3a5c" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="469" y="60" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#94a3b8">オリエンテーション／図とは何か？</text>
+      <text x="469" y="76" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#94a3b8">図と論理学との関係について／発散思考と収束思考</text>
+      <!-- 第2回 -->
+      <rect x="8" y="92" width="60" height="42" rx="3" fill="#1e2a40"/>
+      <text x="38" y="119" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#e2e8f5">第2回</text>
+      <rect x="72" y="92" width="190" height="42" rx="3" fill="#1e2a40"/>
+      <text x="167" y="109" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11.5" fill="#e2e8f5">考える際に役立つ</text>
+      <text x="167" y="125" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11.5" fill="#e2e8f5">5つの図</text>
+      <rect x="266" y="92" width="406" height="42" rx="3" fill="#1e2a40"/>
+      <text x="469" y="106" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#94a3b8">図にはいろいろな種類がある／ツリー図とベン図</text>
+      <text x="469" y="122" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#94a3b8">マトリクス図と点グラフ／フロー図と図タイプの見つけ方</text>
+      <!-- 第3回 -->
+      <rect x="8" y="138" width="60" height="42" rx="3" fill="#1a2e4a"/>
+      <text x="38" y="165" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#e2e8f5">第3回</text>
+      <rect x="72" y="138" width="190" height="42" rx="3" fill="#1a2e4a"/>
+      <text x="167" y="155" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11.5" fill="#e2e8f5">図を使って状況を</text>
+      <text x="167" y="171" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11.5" fill="#e2e8f5">分析してみよう</text>
+      <rect x="266" y="138" width="406" height="42" rx="3" fill="#1a2e4a"/>
+      <text x="469" y="152" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#94a3b8">状況を分析するとはどういうことか？</text>
+      <text x="469" y="168" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#94a3b8">状況分析図（ツリー図・マトリクス図・点グラフ）を描く</text>
+      <!-- 第4回 -->
+      <rect x="8" y="184" width="60" height="42" rx="3" fill="#1e2a40"/>
+      <text x="38" y="211" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#e2e8f5">第4回</text>
+      <rect x="72" y="184" width="190" height="42" rx="3" fill="#1e2a40"/>
+      <text x="167" y="201" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11.5" fill="#e2e8f5">図を使って対策を</text>
+      <text x="167" y="217" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11.5" fill="#e2e8f5">検討してみよう</text>
+      <rect x="266" y="184" width="406" height="42" rx="3" fill="#1e2a40"/>
+      <text x="469" y="198" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#94a3b8">「対策を検討する」とはどういうことか？</text>
+      <text x="469" y="214" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#94a3b8">対策検討図（ツリー・点グラフ・マトリクス・ベン・フロー）</text>
+      <!-- 第5回 -->
+      <rect x="8" y="230" width="60" height="42" rx="3" fill="#1a2e4a"/>
+      <text x="38" y="257" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#e2e8f5">第5回</text>
+      <rect x="72" y="230" width="190" height="42" rx="3" fill="#1a2e4a"/>
+      <text x="167" y="247" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11.5" fill="#e2e8f5">図を使って</text>
+      <text x="167" y="263" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11.5" fill="#e2e8f5">発想力を高めよう</text>
+      <rect x="266" y="230" width="406" height="42" rx="3" fill="#1a2e4a"/>
+      <text x="469" y="244" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#94a3b8">新しいアイディアはどこから生まれるのか？</text>
+      <text x="469" y="260" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#94a3b8">マトリクス図・ツリー図・フロー図を使って発想する</text>
+      <!-- 第6回 -->
+      <rect x="8" y="276" width="60" height="42" rx="3" fill="#1e2a40"/>
+      <text x="38" y="303" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#e2e8f5">第6回</text>
+      <rect x="72" y="276" width="190" height="42" rx="3" fill="#1e2a40"/>
+      <text x="167" y="293" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11.5" fill="#e2e8f5">図を使って問題</text>
+      <text x="167" y="309" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11.5" fill="#e2e8f5">解決力を高めよう</text>
+      <rect x="266" y="276" width="406" height="42" rx="3" fill="#1e2a40"/>
+      <text x="469" y="290" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#94a3b8">仕事とは「問題解決のプロセス」</text>
+      <text x="469" y="306" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#94a3b8">フロー図・ツリー図・ベン図を使って問題解決を図る</text>
+      <!-- 第7回 -->
+      <rect x="8" y="322" width="60" height="42" rx="3" fill="#1a2e4a"/>
+      <text x="38" y="349" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#e2e8f5">第7回</text>
+      <rect x="72" y="322" width="190" height="42" rx="3" fill="#1a2e4a"/>
+      <text x="167" y="339" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11.5" fill="#e2e8f5">図を使って意思</text>
+      <text x="167" y="355" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11.5" fill="#e2e8f5">決定力を高めよう</text>
+      <rect x="266" y="322" width="406" height="42" rx="3" fill="#1a2e4a"/>
+      <text x="469" y="336" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#94a3b8">複雑化する社会で求められる「意思決定」の能力</text>
+      <text x="469" y="352" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#94a3b8">マトリクス図・点グラフ図・ツリー図を使って意思決定を行う</text>
+      <!-- 第8回 -->
+      <rect x="8" y="368" width="60" height="16" rx="3" fill="#1e2a40"/>
+      <text x="38" y="380" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">第8回</text>
+      <rect x="72" y="368" width="190" height="16" rx="3" fill="#1e2a40"/>
+      <text x="167" y="380" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">図を使って交渉力を高めよう</text>
+      <rect x="266" y="368" width="406" height="16" rx="3" fill="#1e2a40"/>
+      <text x="469" y="380" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#94a3b8">フロー図・ベン図を使った交渉／まとめ</text>
+    </svg>
+    <figcaption style="font-size:11px;color:#8a99b8;margin-top:6px;font-family:monospace;">図: 全体スケジュール（8回構成） ← S03:p.10-11 ／ 黄色ハイライト＝本講義（第1回）</figcaption>
+  </div>
+  <div class="block block-audio">
+    ビジネスにおいて頭を使って考える必要がある局面（発想・分析・問題解決・意思決定・交渉）は
+    この8回の講義の中にほぼ網羅されている。図で考える方法（図解思考）をマスターすれば、
+    難度の高い業務も乗り越えやすくなる。
+    <span class="src">← S05-B</span>
+  </div>
+
+  <h3 id="ch1-5">1-5 ロジカルシンキングと"図"の関係</h3>
+  <p>
+    現代のビジネスパーソンには<strong>情報を収集・整理・構造化する頭の働かせ方</strong>が求められており、
+    本科目ではこれを「ロジカルシンキング」と呼ぶ。<span class="src">← S03:p.14</span>
+  </p>
+  <div class="block block-definition">
+    <strong>ロジカルシンキング（本科目での定義）</strong><br>
+    分析力・意思決定力・交渉力・問題解決力・発想力を高めるのに役立つ思考法。
+    論理的な思考をベースにしつつも、発想力や想像力も含む広義の思考として捉える。
+    <span class="src">← S03:p.15</span>
+  </div>
+  <p>
+    ビジネスの場ではPCが浸透した今日、プレゼンテーションで図を使う機会が増えた。
+    しかしこれは「<strong>プレゼンテーションツールとしての図</strong>」の側面にすぎない。
+    図にはもう一つの力——<strong>思考ツールとしての側面</strong>——がある。<span class="src">← S03:p.16-17</span>
+  </p>
+
+  <!-- ── 図の2つの側面SVG ── -->
+  <div class="fig">
+    <svg viewBox="0 0 620 165" xmlns="http://www.w3.org/2000/svg" style="max-width:620px;">
+      <rect width="620" height="165" fill="#1e2535" rx="10"/>
+      <text x="310" y="23" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="#5b8dee" font-weight="700">"図"の2つの使い方 ← S03:p.16-17</text>
+      <ellipse cx="310" cy="98" rx="52" ry="40" fill="rgba(91,141,238,0.2)" stroke="#5b8dee" stroke-width="2"/>
+      <text x="310" y="93" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="16" fill="#5b8dee" font-weight="700">"図"</text>
+      <text x="310" y="110" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9.5" fill="#8a99b8">KW+線/囲み/矢印</text>
+      <rect x="14" y="52" width="205" height="88" rx="8" fill="#1a2540" stroke="#8a99b8" stroke-width="1" stroke-dasharray="5,3"/>
+      <text x="116" y="76" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11.5" fill="#8a99b8" font-weight="600">プレゼンテーションツール</text>
+      <text x="116" y="94" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#8a99b8">（従来の一般的な使い方）</text>
+      <text x="116" y="112" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#8a99b8">顧客説明・社内合意</text>
+      <line x1="219" y1="98" x2="258" y2="98" stroke="#8a99b8" stroke-width="1.5" stroke-dasharray="4,2"/>
+      <rect x="401" y="52" width="205" height="88" rx="8" fill="rgba(91,141,238,0.1)" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="503" y="76" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#5b8dee" font-weight="700">★ 思考ツール</text>
+      <text x="503" y="94" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#e2e8f5">（本科目が重視する側面）</text>
+      <text x="503" y="112" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#e2e8f5">考えをまとめ・情報を構造化し知に変える</text>
+      <line x1="362" y1="98" x2="401" y2="98" stroke="#5b8dee" stroke-width="1.5"/>
+    </svg>
+    <figcaption>図: "図"の2つの側面（思考ツールとしての図が本科目の核心）← S03:p.16-17</figcaption>
+  </div>
+  <p>
+    思考ツールとして図を使う際、ビジュアルでカラフルな図を描く必要はなく、
+    図の上手・下手も関係ない。自分なりの図の描き方で頭を整理すれば良い。
+    やり方さえ身につけば誰でも描くことができる。<span class="src">← S03:p.18</span>
+  </p>
+  <div class="block block-audio">
+    例えば、いろいろな仕事を同時に抱えて何から手をつけて良いかわからない時に、
+    白紙のコピー用紙1枚を机の上に広げ、やらなければならないことを箇条書きで書き出す（ToDoリスト）。
+    これも図解思考の第一段階と捉えている。書き出した情報を関係づけるとさらに頭の整理が進む。
+    <span class="src">← S05-B</span>
+  </div>
+</div>
+
+<!-- ━━━ 第2章 ━━━ -->
+<div class="section-card" id="ch2">
+  <h2>第2章　図とは何か？</h2>
+  <p style="color:var(--text-sub); font-size:13px; margin-bottom:16px;">学習目標: "図"の特性を"文章"との違いを通して説明できる <span class="src">← S03:p.22</span></p>
+
+  <h3 id="ch2-1">2-1 図の起源</h3>
+  <p>
+    スペイン北部のアルタミラ洞窟に描かれた壁画は、今から約<strong>18,500年〜14,000年前</strong>（旧石器時代末期）に描かれたとされる。
+    中央に野牛・イノシシ・馬・鹿らしき動物が描かれており、世界遺産に登録されている。
+    人類はおよそ2万年前から自分の目に見える世界を記述し始めたと考えられる。
+    これは他の動物にはない人類特有の能力の一つ。<span class="src">← S03:p.23</span>
+  </p>
+  <div class="fig" style="margin:18px 0;">
+    <svg viewBox="0 0 680 190" xmlns="http://www.w3.org/2000/svg" style="max-width:680px;width:100%;display:block;">
+      <rect width="680" height="190" fill="#1e2535" rx="10"/>
+      <!-- タイトル -->
+      <text x="340" y="22" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12.5" fill="#5b8dee" font-weight="700">人類と「図」の歴史タイムライン ← S03:p.23-24</text>
+      <!-- 軸 y=90 -->
+      <line x1="40" y1="90" x2="630" y2="90" stroke="#2d3a52" stroke-width="2"/>
+      <polygon points="630,85 642,90 630,95" fill="#2d3a52"/>
+      <text x="652" y="94" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">現代</text>
+
+      <!-- アルタミラ：ラベルボックスは上（y=34〜64）、軸から上へ線、下テキストはy=106〜118 -->
+      <rect x="10" y="34" width="154" height="42" rx="5" fill="rgba(251,191,36,0.12)" stroke="#fbbf24" stroke-width="1"/>
+      <text x="87" y="51" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#fbbf24" font-weight="600">アルタミラ洞窟壁画</text>
+      <text x="87" y="65" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">約18,500〜14,000年前</text>
+      <line x1="87" y1="76" x2="87" y2="90" stroke="#fbbf24" stroke-width="1.5"/>
+      <circle cx="87" cy="90" r="5" fill="#fbbf24"/>
+      <text x="87" y="106" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9.5" fill="#8a99b8">旧石器時代末期</text>
+
+      <!-- ヒエログリフ：ラベルボックス上（y=34〜64）、下テキストy=106〜118 -->
+      <rect x="218" y="34" width="174" height="42" rx="5" fill="rgba(167,139,250,0.12)" stroke="#a78bfa" stroke-width="1"/>
+      <text x="305" y="51" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#a78bfa" font-weight="600">ヒエログリフ（象形文字）</text>
+      <text x="305" y="65" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">紀元前3,200年頃〜400年頃</text>
+      <line x1="305" y1="76" x2="305" y2="90" stroke="#a78bfa" stroke-width="1.5"/>
+      <circle cx="305" cy="90" r="5" fill="#a78bfa"/>
+      <text x="305" y="106" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9.5" fill="#8a99b8">絵→象形文字→文字へ</text>
+
+      <!-- 文章と絵の分離：ラベルボックス上（y=34〜64）、下テキストy=106〜118 -->
+      <rect x="440" y="34" width="158" height="42" rx="5" fill="rgba(52,211,153,0.12)" stroke="#34d399" stroke-width="1"/>
+      <text x="519" y="51" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#34d399" font-weight="600">文章と絵の分離</text>
+      <text x="519" y="65" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">絵が簡略化されて文字に</text>
+      <line x1="519" y1="76" x2="519" y2="90" stroke="#34d399" stroke-width="1.5"/>
+      <circle cx="519" cy="90" r="5" fill="#34d399"/>
+      <text x="519" y="106" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9.5" fill="#8a99b8">図は文字の「先輩」</text>
+
+      <!-- まとめ文：y=130〜145（下部に独立した領域） -->
+      <rect x="60" y="122" width="560" height="30" rx="6" fill="rgba(251,191,36,0.07)" stroke="rgba(251,191,36,0.3)" stroke-width="1"/>
+      <text x="340" y="141" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11.5" fill="#fbbf24" font-weight="600">人類と図の付き合いは文字よりはるかに古い ── 約2万年の歴史</text>
+
+      <!-- 補足（最下部） -->
+      <text x="340" y="172" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#5b8dee">← S03:p.23-24</text>
+    </svg>
+    <figcaption style="font-size:11px;color:#8a99b8;margin-top:6px;font-family:monospace;">図: 人類と「図」の歴史タイムライン ← S03:p.23-24</figcaption>
+  </div>
+
+  <p>
+    <strong>ヒエログリフ</strong>（象形文字）は古代エジプトで使われた文字の一種で、紀元前3200年頃〜400年頃に使われていた。
+    物の形をかたどった絵文字から発展して生まれたもの。アルタミラの絵のようなものから少しずつ簡略化され、絵が文字になっていった。
+    この頃から文章と絵が分かれ始める。<span class="src">← S03:p.24</span>
+  </p>
+  <p>
+    図は絵をより抽象化したものであり、広い意味では絵は図の一種。
+    人類と図の付き合いは文字よりも遥かに古く、「文字の先輩」ともいえる。<span class="src">← S03:p.24</span>
+  </p>
+
+  <h3 id="ch2-2">2-2 図の定義と構成要素</h3>
+  <div class="block block-definition">
+    <strong>「図」の定義（本科目）</strong><br>
+    言葉（通常キーワードかキーフレーズ）と、①線・②囲み・③矢印のいずれか、
+    あるいはすべてを使って表現されるもの。
+    <span class="src">← S03:p.25</span>
+  </div>
+  <div class="fig" style="margin:18px 0;">
+    <svg viewBox="0 0 680 252" xmlns="http://www.w3.org/2000/svg" style="max-width:680px;width:100%;display:block;">
+      <rect width="680" height="252" fill="#1e2535" rx="10"/>
+      <text x="340" y="22" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="#5b8dee" font-weight="700">線・囲み・矢印の働き ← S03:p.25-30</text>
+      <!-- 線 -->
+      <rect x="15" y="36" width="207" height="200" rx="9" fill="#1a2540" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="118" y="56" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#5b8dee" font-weight="700">① 線の働き</text>
+      <text x="118" y="76" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#8a99b8">「仕切る」— 2つを区別</text>
+      <text x="80" y="108" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="16" fill="#e2e8f5">山</text>
+      <line x1="118" y1="90" x2="118" y2="125" stroke="#5b8dee" stroke-width="2"/>
+      <text x="155" y="108" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="16" fill="#e2e8f5">谷</text>
+      <text x="118" y="146" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#8a99b8">「つなぐ」— 関係を示す</text>
+      <text x="70" y="178" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="14" fill="#e2e8f5">男</text>
+      <line x1="88" y1="171" x2="148" y2="171" stroke="#5b8dee" stroke-width="2"/>
+      <text x="163" y="178" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="14" fill="#e2e8f5">女</text>
+      <text x="118" y="218" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#34d399">2情報を「区別」または「接続」</text>
+      <!-- 囲み -->
+      <rect x="236" y="36" width="207" height="200" rx="9" fill="#1a2540" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="339" y="56" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#fbbf24" font-weight="700">② 囲みの働き</text>
+      <text x="339" y="75" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#8a99b8">「内と外を分ける」— 強調</text>
+      <ellipse cx="339" cy="128" rx="48" ry="35" fill="rgba(251,191,36,0.15)" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="339" y="123" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#fbbf24" font-weight="600">事件A</text>
+      <text x="339" y="138" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#fbbf24">（強調・注目）</text>
+      <text x="283" y="107" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8">事件X</text>
+      <text x="396" y="107" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8">事件B</text>
+      <text x="283" y="155" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8">事件θ</text>
+      <text x="396" y="155" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8">事件A'</text>
+      <text x="339" y="218" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#34d399">囲まれたものに注意を向けさせる</text>
+      <!-- 矢印 -->
+      <rect x="457" y="36" width="207" height="200" rx="9" fill="#1a2540" stroke="#a78bfa" stroke-width="1.5"/>
+      <text x="560" y="56" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#a78bfa" font-weight="700">③ 矢印の働き</text>
+      <text x="560" y="75" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#8a99b8">「変化・動き・因果」を示す</text>
+      <text x="478" y="102" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#e2e8f5">氷</text>
+      <text x="498" y="100" font-family="Noto Sans JP,sans-serif" font-size="14" fill="#a78bfa">→</text>
+      <text x="516" y="102" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#e2e8f5">水</text>
+      <text x="536" y="100" font-family="Noto Sans JP,sans-serif" font-size="14" fill="#a78bfa">→</text>
+      <text x="557" y="102" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">水蒸気</text>
+      <text x="560" y="126" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">（変化の表現）</text>
+      <rect x="468" y="140" width="78" height="26" rx="5" fill="rgba(167,139,250,0.1)" stroke="#a78bfa" stroke-width="1"/>
+      <text x="507" y="157" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#e2e8f5">体重計に乗った</text>
+      <text x="552" y="155" font-family="Noto Sans JP,sans-serif" font-size="14" fill="#a78bfa">→</text>
+      <rect x="563" y="140" width="88" height="26" rx="5" fill="rgba(167,139,250,0.1)" stroke="#a78bfa" stroke-width="1"/>
+      <text x="607" y="150" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#e2e8f5">太っている</text>
+      <text x="607" y="162" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9" fill="#e2e8f5">ことに気づく</text>
+      <text x="560" y="182" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#a78bfa">↓</text>
+      <rect x="492" y="188" width="135" height="26" rx="5" fill="rgba(167,139,250,0.1)" stroke="#a78bfa" stroke-width="1"/>
+      <text x="560" y="205" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#e2e8f5">ダイエットをする</text>
+      <text x="560" y="226" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#34d399">時系列・因果・手順を示す</text>
+    </svg>
+    <figcaption style="font-size:11px;color:#8a99b8;margin-top:6px;font-family:monospace;">図: 線・囲み・矢印の3つの働き ← S03:p.25-30</figcaption>
+  </div>
+
+
+  <h4>線・囲み・矢印の働き</h4>
+  <table>
+    <tr><th>要素</th><th>主な機能</th><th>例</th></tr>
+    <tr>
+      <td><strong>線</strong></td>
+      <td>① 仕切る（切り分ける）<br>② つなぐ（関係を示す）</td>
+      <td>縦線で「山｜谷」と区分する<br>横線で「男 ── 女」とつなぐ</td>
+    </tr>
+    <tr>
+      <td><strong>囲み</strong></td>
+      <td>内と外に分ける（強調・注目）</td>
+      <td>事件Aを囲んで他の事件と区別・強調する</td>
+    </tr>
+    <tr>
+      <td><strong>矢印</strong></td>
+      <td>① 変化をつくりだす<br>② 動き・手順・時系列をつくりだす</td>
+      <td>「氷 → 水 → 水蒸気」で状態変化を示す<br>「体重計に乗った→太っていると気づく→ダイエットする」</td>
+    </tr>
+  </table>
+  <span class="src" style="font-size:11px;">← S03:p.26-30</span>
+
+  <div class="block block-audio">
+    文章には「一定のルール（文法）」があり、私たちは学校でその文法を学んできた。
+    一方、図の描き方のルールを学んだ経験はほぼないと言っていい。この点が文章と図の大きな違いの一つ。
+    <span class="src">← S05-B</span>
+  </div>
+
+  <h3 id="ch2-3">2-3 文章と図の違い（3つの対比）</h3>
+  <table>
+    <tr><th>#</th><th>文章の特徴</th><th>⇔</th><th>図の特徴</th></tr>
+    <tr>
+      <td>①</td>
+      <td>時間軸に沿って情報を得る<br>（縦書き: 上→下 / 横書き: 左→右）</td>
+      <td>⇔</td>
+      <td><strong>瞬間的にイメージできる</strong><br>（どこから見るか決まっていない）</td>
+    </tr>
+    <tr>
+      <td>②</td>
+      <td>より的確かつ詳細に伝えられる<br>（ページをまたいで書ける）</td>
+      <td>⇔</td>
+      <td><strong>想像力を働かせる余地が大きい</strong><br>（1枚に収める必要があるため情報が絞られ、解釈の幅が広がる）</td>
+    </tr>
+    <tr>
+      <td>③</td>
+      <td>主体を明確化するのに適している<br>（「AはBと連携している」「AはCに委託している」）</td>
+      <td>⇔</td>
+      <td><strong>関係を理解するのに適している</strong><br>（主体を中心に据えなくてもA・B・C間の関係を示せる）</td>
+    </tr>
+  </table>
+  <span class="src" style="font-size:11px;">← S03:p.32-35</span>
+
+
+  <!-- ── 文章vs図 対比SVG ── -->
+  <div class="fig">
+    <svg viewBox="0 0 680 285" xmlns="http://www.w3.org/2000/svg" style="max-width:680px;">
+      <rect width="680" height="285" fill="#1e2535" rx="10"/>
+      <text x="340" y="24" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="#5b8dee" font-weight="700">文章と図の3つの違い ← S03:p.32-35</text>
+      <rect x="14" y="36" width="295" height="34" rx="5" fill="rgba(91,141,238,0.15)" stroke="#5b8dee" stroke-width="1"/>
+      <text x="161" y="57" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12.5" fill="#5b8dee" font-weight="700">文章の特徴</text>
+      <rect x="371" y="36" width="295" height="34" rx="5" fill="rgba(251,191,36,0.15)" stroke="#fbbf24" stroke-width="1"/>
+      <text x="518" y="57" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12.5" fill="#fbbf24" font-weight="700">図の特徴</text>
+      <text x="340" y="57" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="16" fill="#34d399">⇔</text>
+      <rect x="14" y="82" width="295" height="58" rx="5" fill="#1a2540" stroke="#2d3a52" stroke-width="1"/>
+      <text x="161" y="102" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8">① 時間軸に沿って情報を得る</text>
+      <text x="161" y="120" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">（縦書き:上→下 / 横書き:左→右）</text>
+      <rect x="371" y="82" width="295" height="58" rx="5" fill="rgba(251,191,36,0.07)" stroke="#fbbf24" stroke-width="1"/>
+      <text x="518" y="102" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#fbbf24" font-weight="600">① 瞬間的にイメージできる</text>
+      <text x="518" y="120" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">（読む順番は決まっていない）</text>
+      <text x="340" y="112" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="15" fill="#34d399">⇔</text>
+      <rect x="14" y="152" width="295" height="58" rx="5" fill="#1a2540" stroke="#2d3a52" stroke-width="1"/>
+      <text x="161" y="172" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8">② より的確かつ詳細に伝えられる</text>
+      <text x="161" y="190" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">（ページをまたいで書ける）</text>
+      <rect x="371" y="152" width="295" height="58" rx="5" fill="rgba(251,191,36,0.07)" stroke="#fbbf24" stroke-width="1"/>
+      <text x="518" y="172" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#fbbf24" font-weight="600">② 想像力を働かせる余地が大きい</text>
+      <text x="518" y="190" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">（1枚に絞るため解釈の幅が広がる）</text>
+      <text x="340" y="182" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="15" fill="#34d399">⇔</text>
+      <rect x="14" y="222" width="295" height="52" rx="5" fill="#1a2540" stroke="#2d3a52" stroke-width="1"/>
+      <text x="161" y="242" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8">③ 主体を明確化するのに適している</text>
+      <text x="161" y="260" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">（「AはBと連携している」等）</text>
+      <rect x="371" y="222" width="295" height="52" rx="5" fill="rgba(251,191,36,0.07)" stroke="#fbbf24" stroke-width="1"/>
+      <text x="518" y="242" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#fbbf24" font-weight="600">③ 関係を理解するのに適している</text>
+      <text x="518" y="260" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">（主体なしで要素間の関係を示せる）</text>
+      <text x="340" y="250" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="15" fill="#34d399">⇔</text>
+    </svg>
+    <figcaption>図: 文章と図の3つの違い ← S03:p.32-35</figcaption>
+  </div>
+  <div class="block block-audio">
+    「A⇒B」という図は「AがBに変化した」とも「AによってBが生じた」とも「AのあとにBがある」とも読める。
+    同じ1つの図でも人によって読み取り方にズレが生じる可能性がある。これが図の「想像力を働かせる余地」。
+    文章では同じ内容を日時・場所・時間まで詳細に記述できるが、図では1枚に収めるため情報を絞り込む必要がある。
+    これは欠点でもあり長所でもある。
+    <span class="src">← S05-B</span>
+  </div>
+
+  <h3 id="ch2-4">2-4 図の特徴と「図解思考」</h3>
+  <h4>特徴①: 思考を視覚化できる</h4>
+  <p>
+    頭に浮かぶイメージは多分に図と似た特徴を持つ。新発見の際に図のイメージとして思考が行われることがある。
+    <span class="src">← S03:p.36-37</span>
+  </p>
+  <div class="block block-audio">
+    【余談】ベンゼン環を発見した化学者ケクレは、夢の中で蛇が自分の尻尾を噛んで輪のようにぐるぐる回っている夢を見た。
+    そこからベンゼンの六員環構造を思いついたとされる。このように新たな発見・発明は図（イメージ）とセットで行われることがある。
+    筋道を立てて論理を組み立てるだけでなく、不連続に思考を飛ばす際にも図は効果を発揮する。
+    <span class="src">← S03:p.37 / S05-B</span>
+  </div>
+
+  <h4>特徴②: 思考を構造化できる</h4>
+  <p>
+    情報の要素がバラバラに存在するとき、人はその全体を理解するのが困難。
+    それを体系化・構造化していく際に図が効果を発揮する。
+    頭の中でぼんやり考えていた要素を図に落として視覚化することで、思考がすっきり整理される。
+    <span class="src">← S03:p.38</span>
+  </p>
+
+  <div class="block block-definition">
+    <strong>図解思考（本科目の定義）</strong><br>
+    図を描きながら、必要でない情報を捨て、必要な情報を構造化し、意味のあるものにしていく思考方法。
+    <span class="src">← S03:p.39</span>
+  </div>
+  <p>
+    図の中に全ての情報を盛り込むことは難しいため、表現しようとすると情報をそぎ落とす必要がある。
+    このことにより<strong>重要な情報とそうでない情報を仕分けようとする意識</strong>が働く。
+    さらに必要な情報を図の中に落としていく中で要素と要素の間を関係付けていくことが必要になり、
+    ここで思考が構造化される。<span class="src">← S03:p.39</span>
+  </p>
+</div>
+
+<!-- ━━━ 第3章 ━━━ -->
+<div class="section-card" id="ch3">
+  <h2>第3章　図と論理学との関係について</h2>
+  <p style="color:var(--text-sub); font-size:13px; margin-bottom:16px;">学習目標: 図と論理（演繹法・帰納法・三段論法）との関係を説明できる <span class="src">← S03:p.43</span></p>
+
+  <h3 id="ch3-1">3-1 「ロジカルシンキング」とは？</h3>
+  <p>
+    「ロジカルシンキング」は一般に「論理的思考」と呼ばれている。
+    学術的な用語というよりも、主にビジネスの世界で、とりわけ<strong>コンサルティング業界を中心として実践的に用いられる用語</strong>。
+    したがって厳密な定義は存在しない。<span class="src">← S03:p.44</span>
+  </p>
+  <div class="block block-audio">
+    本科目では「論理的・分析的に考えること」と大まかに捉えることにする。
+    <span class="src">← S05-B</span>
+  </div>
+
+  <h3 id="ch3-2">3-2 「論理」とは？「論理的に考える」とは？</h3>
+  <div class="block block-definition">
+    <strong>「論理」の定義（大辞林 第三版）</strong><br>
+    ① 思考の形式・法則。議論や思考を進める道筋・論法<br>
+    ② 認識対象の間に存在する脈絡・構造
+    <span class="src">← S03:p.45</span>
+  </div>
+  <div class="fig" style="margin:18px 0;">
+    <svg viewBox="0 0 620 146" xmlns="http://www.w3.org/2000/svg" style="max-width:620px;width:100%;display:block;">
+      <rect width="620" height="146" fill="#1e2535" rx="10"/>
+      <text x="310" y="22" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12.5" fill="#5b8dee" font-weight="700">「論理的に考える」の2つの効果 ← S03:p.46</text>
+      <rect x="18" y="36" width="272" height="96" rx="8" fill="#1a2540" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="154" y="58" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#5b8dee" font-weight="600">客観性がある</text>
+      <text x="154" y="78" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#e2e8f5">AさんもBさんも同じ道筋で考えれば</text>
+      <text x="154" y="96" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#fbbf24">→ 同じ結論にたどり着く</text>
+      <text x="154" y="116" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">（個人の感情・立場に左右されない）</text>
+      <rect x="330" y="36" width="272" height="96" rx="8" fill="#1a2540" stroke="#34d399" stroke-width="1.5"/>
+      <text x="466" y="58" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#34d399" font-weight="600">再現性がある</text>
+      <text x="466" y="78" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#e2e8f5">異なる場所・時間・感情でも</text>
+      <text x="466" y="96" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#fbbf24">→ 同じ道筋で同じ結論になる</text>
+      <text x="466" y="116" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">（堂々巡りの思考を避けられる）</text>
+    </svg>
+    <figcaption style="font-size:11px;color:#8a99b8;margin-top:6px;font-family:monospace;">図: 論理的に考えることの2つの効果 ← S03:p.46</figcaption>
+  </div>
+
+  <p>
+    「論理的に考える」とは、思考の道筋に<strong>客観性</strong>と<strong>再現性</strong>があるということ。<span class="src">← S03:p.46</span>
+  </p>
+  <table>
+    <tr><th>概念</th><th>意味</th></tr>
+    <tr><td><strong>客観性</strong></td><td>AさんとBさんが同じ道筋で考えると、同じ結論にたどり着く</td></tr>
+    <tr><td><strong>再現性</strong></td><td>異なる場所・異なる感情の状態でも同じ結論になる</td></tr>
+  </table>
+  <p>
+    論理的思考には「難しいものを単純にし、構造化する」働きもある。
+    その結果、<strong>堂々巡りの思考を避けることができる</strong>。<span class="src">← S03:p.46</span>
+  </p>
+
+  <h3 id="ch3-3">3-3 代表的な論理：演繹法・帰納法・弁証法</h3>
+  <div class="fig" style="margin:18px 0;">
+    <svg viewBox="0 0 680 82" xmlns="http://www.w3.org/2000/svg" style="max-width:680px;width:100%;display:block;">
+      <rect width="680" height="82" fill="#1e2535" rx="10"/>
+      <text x="340" y="22" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#5b8dee" font-weight="700">3種類の代表的論理 ← S03:p.47</text>
+      <rect x="14" y="32" width="205" height="38" rx="7" fill="rgba(251,191,36,0.12)" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="116" y="48" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#fbbf24" font-weight="600">帰納法</text>
+      <text x="116" y="63" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">個別 → 一般（経験から推論）</text>
+      <rect x="238" y="32" width="205" height="38" rx="7" fill="rgba(52,211,153,0.12)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="340" y="48" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#34d399" font-weight="600">演繹法</text>
+      <text x="340" y="63" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">一般 → 個別（論理・理論から推論）</text>
+      <rect x="462" y="32" width="205" height="38" rx="7" fill="rgba(167,139,250,0.12)" stroke="#a78bfa" stroke-width="1.5"/>
+      <text x="564" y="48" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#a78bfa" font-weight="600">弁証法</text>
+      <text x="564" y="63" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">正・反 → 合（発展的統合）</text>
+    </svg>
+    <figcaption style="font-size:11px;color:#8a99b8;margin-top:6px;font-family:monospace;">図: 3種類の代表的論理 ← S03:p.47</figcaption>
+  </div>
+
+
+  <h4>① 帰納法</h4>
+  <div class="block block-definition">
+    個々の特殊な事実や命題の集まりから、そこに共通で一般的な命題や法則を導き出すこと。
+    個々の事象から一般的な事象を探る。経験（確率）からの推論。
+    <span class="src">← S03:p.48</span>
+  </div>
+  <div class="fig" style="margin:18px 0;">
+    <svg viewBox="0 0 580 210" xmlns="http://www.w3.org/2000/svg" style="max-width:580px;width:100%;display:block;">
+      <rect width="580" height="210" fill="#1e2535" rx="10"/>
+      <text x="290" y="22" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12.5" fill="#fbbf24" font-weight="700">帰納法: 個別事象 → 一般命題 ← S03:p.49</text>
+      <rect x="14" y="38" width="160" height="50" rx="7" fill="#1a2540" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="94" y="58" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">仕事でミスが多い</text>
+      <text x="94" y="76" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9.5" fill="#8a99b8">← 事象①</text>
+      <rect x="210" y="38" width="160" height="50" rx="7" fill="#1a2540" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="290" y="55" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">仕事が終わると</text>
+      <text x="290" y="71" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">途端に元気になる</text>
+      <text x="290" y="84" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9.5" fill="#8a99b8">← 事象②</text>
+      <rect x="406" y="38" width="160" height="50" rx="7" fill="#1a2540" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="486" y="58" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">最近、遅刻をよくする</text>
+      <text x="486" y="74" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9.5" fill="#8a99b8">← 事象③</text>
+      <defs>
+        <marker id="ay_ind" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto">
+          <path d="M1,1 L5,3.5 L1,6" fill="none" stroke="#fbbf24" stroke-width="1.2"/>
+        </marker>
+      </defs>
+      <line x1="94" y1="88" x2="250" y2="148" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="5,2" marker-end="url(#ay_ind)"/>
+      <line x1="290" y1="88" x2="290" y2="148" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="5,2" marker-end="url(#ay_ind)"/>
+      <line x1="486" y1="88" x2="330" y2="148" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="5,2" marker-end="url(#ay_ind)"/>
+      <rect x="150" y="152" width="280" height="44" rx="8" fill="rgba(251,191,36,0.15)" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="290" y="170" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#fbbf24" font-weight="600">【推論・結論】</text>
+      <text x="290" y="188" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#e2e8f5">仕事がイヤなのでは？</text>
+    </svg>
+    <figcaption style="font-size:11px;color:#8a99b8;margin-top:6px;font-family:monospace;">図: 帰納的に考える図解の例 ← S03:p.49</figcaption>
+  </div>
+
+
+  <!-- 帰納法のSVG図 -->
+  <div class="svg-container">
+    
+    <figcaption>図: 帰納的に考える図解の例 ← S03:p.49</figcaption>
+  </div>
+
+  <h4>② 演繹法</h4>
+  <div class="block block-definition">
+    ある命題から論理の規則に従って結論を導くこと。一般的原理から特殊な原理や事実を導く。
+    帰納法と正反対の考え方。理論・論理からの推論。
+    代表: アリストテレスの三段論法。
+    <span class="src">← S03:p.50</span>
+  </div>
+  <div class="fig" style="margin:18px 0;">
+    <svg viewBox="0 0 500 210" xmlns="http://www.w3.org/2000/svg" style="max-width:500px;width:100%;display:block;">
+      <rect width="500" height="210" fill="#1e2535" rx="10"/>
+      <text x="250" y="22" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12.5" fill="#34d399" font-weight="700">演繹法（三段論法）← S03:p.51</text>
+      <rect x="18" y="38" width="198" height="50" rx="7" fill="#1a2540" stroke="#34d399" stroke-width="1.5"/>
+      <text x="117" y="55" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#8a99b8">【大前提】一般的原理</text>
+      <text x="117" y="74" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#e2e8f5">犬にはしっぽがある</text>
+      <rect x="284" y="38" width="198" height="50" rx="7" fill="#1a2540" stroke="#34d399" stroke-width="1.5"/>
+      <text x="383" y="55" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#8a99b8">【小前提】個別事実</text>
+      <text x="383" y="74" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#e2e8f5">「ポチ」は犬だ</text>
+      <defs>
+        <marker id="ag_ded" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto">
+          <path d="M1,1 L5,3.5 L1,6" fill="none" stroke="#34d399" stroke-width="1.2"/>
+        </marker>
+      </defs>
+      <line x1="117" y1="88" x2="220" y2="148" stroke="#34d399" stroke-width="1.5" marker-end="url(#ag_ded)"/>
+      <line x1="383" y1="88" x2="280" y2="148" stroke="#34d399" stroke-width="1.5" marker-end="url(#ag_ded)"/>
+      <rect x="130" y="152" width="240" height="44" rx="8" fill="rgba(52,211,153,0.14)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="250" y="170" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#34d399" font-weight="600">【結論】</text>
+      <text x="250" y="189" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#e2e8f5">「ポチ」にはしっぽがある</text>
+    </svg>
+    <figcaption style="font-size:11px;color:#8a99b8;margin-top:6px;font-family:monospace;">図: 演繹法（三段論法）の図解 ← S03:p.51</figcaption>
+  </div>
+
+
+  <!-- 演繹法SVG -->
+  <div class="svg-container">
+    
+    <figcaption>図: 演繹的に考える図解の例（アリストテレスの三段論法） ← S03:p.51</figcaption>
+  </div>
+  <div class="block block-ext">
+    演繹法の代表的な形式は<strong>三段論法</strong>（大前提・小前提・結論の3段構造）。
+    古代ギリシャの哲学者<strong>アリストテレス（前384〜前322）</strong>によって定式化されたとされる。
+    「すべての人間は死すべきものだ。ソクラテスは人間だ。ゆえにソクラテスは死すべきものだ」が古典的な例。
+    <span class="ext-small">[外部補足・確認済: Aristotle, Prior Analytics, c. 350 BCE]</span>
+  </div>
+
+  <h4>③ 弁証法（ヘーゲルの弁証法）</h4>
+  <div class="block block-definition">
+    ある命題（テーゼ＝正）と、それと矛盾するもしくは否定する反対の命題（アンチテーゼ＝反）、
+    そして、それらを本質的に統合した命題（ジンテーゼ＝合）の3つで構成される。
+    最初の命題と反の命題のどちらも否定することなく、新たな視点を得ていく発展的な思考法。
+    <span class="src">← S03:p.52</span>
+  </div>
+
+  <!-- 弁証法SVG -->
+  <div class="svg-container">
+    <svg viewBox="0 0 500 240" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:500px;">
+      <rect width="500" height="240" fill="#1e2535" rx="10"/>
+      <text x="250" y="26" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="#a78bfa" font-weight="600">弁証法（ヘーゲル）：正・反 → 合</text>
+      <!-- 正 -->
+      <ellipse cx="145" cy="110" rx="100" ry="65" fill="rgba(91,141,238,0.1)" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="108" y="105" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11.5" fill="#e2e8f5">ケーキを</text>
+      <text x="108" y="122" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11.5" fill="#e2e8f5">食べたい</text>
+      <text x="108" y="140" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#5b8dee">【正】テーゼ</text>
+      <!-- 反 -->
+      <ellipse cx="355" cy="110" rx="100" ry="65" fill="rgba(248,113,113,0.1)" stroke="#f87171" stroke-width="1.5"/>
+      <text x="390" y="105" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11.5" fill="#e2e8f5">太りたく</text>
+      <text x="390" y="122" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11.5" fill="#e2e8f5">ない</text>
+      <text x="390" y="140" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#f87171">【反】アンチテーゼ</text>
+      <!-- 合（楕円の交差部に配置） -->
+      <ellipse cx="250" cy="160" rx="95" ry="42" fill="rgba(52,211,153,0.15)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="250" y="155" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11.5" fill="#e2e8f5">低カロリー</text>
+      <text x="250" y="172" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11.5" fill="#e2e8f5">ケーキを食べる</text>
+      <text x="250" y="192" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#34d399" font-weight="600">【合】ジンテーゼ</text>
+    </svg>
+    <figcaption>図: 弁証法的に考える図解の例（ヘーゲルの弁証法） ← S03:p.53</figcaption>
+  </div>
+
+  <div class="block block-ext">
+    ヘーゲルの弁証法は<strong>ゲオルク・ヴィルヘルム・フリードリヒ・ヘーゲル（1770〜1831）</strong>が体系化した思想。
+    「テーゼ（正）」「アンチテーゼ（反）」「ジンテーゼ（合）」の3段階で発展する構造は、
+    「アウフヘーベン（止揚）」とも呼ばれる。
+    <span class="ext-small">[外部補足・確認済: Hegel, Phenomenology of Spirit, 1807]</span>
+  </div>
+
+  <h3 id="ch3-4">3-4 図の論理的特徴（因果関係・論理矛盾の確認）</h3>
+  <div class="fig" style="margin:18px 0;">
+    <svg viewBox="0 0 580 170" xmlns="http://www.w3.org/2000/svg" style="max-width:580px;width:100%;display:block;">
+      <rect width="580" height="170" fill="#1e2535" rx="10"/>
+      <text x="290" y="22" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12.5" fill="#5b8dee" font-weight="700">図で因果関係をチェックする ← S03:p.54</text>
+      <rect x="18" y="40" width="118" height="36" rx="7" fill="#1a2540" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="77" y="62" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#e2e8f5">雨が降る</text>
+      <defs>
+        <marker id="ab_caus" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto">
+          <path d="M1,1 L5,3.5 L1,6" fill="none" stroke="#5b8dee" stroke-width="1.2"/>
+        </marker>
+        <marker id="ay_caus" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto">
+          <path d="M1,1 L5,3.5 L1,6" fill="none" stroke="#fbbf24" stroke-width="1.2"/>
+        </marker>
+      </defs>
+      <line x1="136" y1="58" x2="174" y2="58" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#ab_caus)"/>
+      <rect x="177" y="40" width="130" height="36" rx="7" fill="#1a2540" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="242" y="62" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#e2e8f5">水がたまる</text>
+      <line x1="242" y1="76" x2="242" y2="106" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#ab_caus)"/>
+      <rect x="18" y="110" width="155" height="36" rx="7" fill="#1a2540" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="95" y="132" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11.5" fill="#e2e8f5">サンダルで外出</text>
+      <line x1="173" y1="128" x2="207" y2="122" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#ay_caus)"/>
+      <rect x="177" y="110" width="130" height="36" rx="7" fill="rgba(52,211,153,0.12)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="242" y="127" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11.5" fill="#34d399" font-weight="600">【結論】</text>
+      <text x="242" y="142" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#e2e8f5">足が濡れる</text>
+      <rect x="338" y="40" width="225" height="106" rx="8" fill="rgba(52,211,153,0.07)" stroke="#34d399" stroke-width="1"/>
+      <text x="450" y="62" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11.5" fill="#34d399" font-weight="600">図で表現すると…</text>
+      <text x="450" y="83" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#e2e8f5">・因果関係の正しさが確認しやすい</text>
+      <text x="450" y="101" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#e2e8f5">・論理のつながりが一目でわかる</text>
+      <text x="450" y="119" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#e2e8f5">・矛盾・飛躍を発見しやすくなる</text>
+    </svg>
+    <figcaption style="font-size:11px;color:#8a99b8;margin-top:6px;font-family:monospace;">図: 図で因果関係をチェックする ← S03:p.54</figcaption>
+  </div>
+
+  <div class="fig" style="margin:18px 0;">
+    <svg viewBox="0 0 640 168" xmlns="http://www.w3.org/2000/svg" style="max-width:640px;width:100%;display:block;">
+      <rect width="640" height="168" fill="#1e2535" rx="10"/>
+      <text x="320" y="22" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12.5" fill="#5b8dee" font-weight="700">図で論理矛盾を確認する ← S03:p.55-56</text>
+      <!-- 例1: 天気 -->
+      <text x="112" y="44" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8">例1: 「天気」の種類</text>
+      <rect x="74" y="50" width="70" height="26" rx="5" fill="#1a2540" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="109" y="67" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">天気</text>
+      <line x1="79" y1="76" x2="30" y2="94" stroke="#2d3a52" stroke-width="1.2"/>
+      <line x1="93" y1="76" x2="75" y2="94" stroke="#2d3a52" stroke-width="1.2"/>
+      <line x1="124" y1="76" x2="143" y2="94" stroke="#2d3a52" stroke-width="1.2"/>
+      <line x1="138" y1="76" x2="194" y2="94" stroke="#f87171" stroke-width="1.5" stroke-dasharray="4,2"/>
+      <rect x="13" y="95" width="38" height="24" rx="4" fill="#1a2540" stroke="#2d3a52" stroke-width="1"/>
+      <text x="32" y="111" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#e2e8f5">晴れ</text>
+      <rect x="57" y="95" width="38" height="24" rx="4" fill="#1a2540" stroke="#2d3a52" stroke-width="1"/>
+      <text x="76" y="111" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#e2e8f5">雨</text>
+      <rect x="124" y="95" width="38" height="24" rx="4" fill="#1a2540" stroke="#2d3a52" stroke-width="1"/>
+      <text x="143" y="111" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#e2e8f5">曇り</text>
+      <rect x="174" y="95" width="40" height="24" rx="4" fill="rgba(248,113,113,0.2)" stroke="#f87171" stroke-width="1.5"/>
+      <text x="194" y="111" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#f87171" font-weight="600">雲 ⚠</text>
+      <text x="112" y="146" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#f87171">「雲」は天気の状態ではない→仲間外れ</text>
+      <!-- 例2: 企業間経営戦略 -->
+      <text x="456" y="44" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#8a99b8">例2: 「企業間経営戦略」</text>
+      <rect x="396" y="50" width="120" height="26" rx="5" fill="#1a2540" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="456" y="67" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#e2e8f5">企業間経営戦略</text>
+      <line x1="416" y1="76" x2="356" y2="94" stroke="#2d3a52" stroke-width="1.2"/>
+      <line x1="432" y1="76" x2="412" y2="94" stroke="#2d3a52" stroke-width="1.2"/>
+      <line x1="472" y1="76" x2="488" y2="94" stroke="#f87171" stroke-width="1.5" stroke-dasharray="4,2"/>
+      <line x1="496" y1="76" x2="542" y2="94" stroke="#2d3a52" stroke-width="1.2"/>
+      <rect x="332" y="95" width="46" height="24" rx="4" fill="#1a2540" stroke="#2d3a52" stroke-width="1"/>
+      <text x="355" y="111" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9.5" fill="#e2e8f5">合併</text>
+      <rect x="387" y="95" width="46" height="24" rx="4" fill="#1a2540" stroke="#2d3a52" stroke-width="1"/>
+      <text x="410" y="111" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9.5" fill="#e2e8f5">買収</text>
+      <rect x="450" y="95" width="46" height="24" rx="4" fill="rgba(248,113,113,0.2)" stroke="#f87171" stroke-width="1.5"/>
+      <text x="473" y="111" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9.5" fill="#f87171" font-weight="600">撤退 ⚠</text>
+      <rect x="513" y="95" width="58" height="24" rx="4" fill="#1a2540" stroke="#2d3a52" stroke-width="1"/>
+      <text x="542" y="111" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9.5" fill="#e2e8f5">業務提携</text>
+      <text x="456" y="146" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#f87171">「撤退」は1社の行動→企業間ではない</text>
+    </svg>
+    <figcaption style="font-size:11px;color:#8a99b8;margin-top:6px;font-family:monospace;">図: 図で論理矛盾を確認する（ツリー構造で仲間外れが一目瞭然）← S03:p.55-56</figcaption>
+  </div>
+
+  <h4>因果関係のチェックに有効</h4>
+  <p>
+    「雨が降る → 水がたまる」「サンダルを履いて外に出る → 足が濡れる」のような因果関係を
+    図で表現することで、因果関係の正しさ・適切さをチェックしやすくなる。<span class="src">← S03:p.54</span>
+  </p>
+  <h4>論理矛盾の発見に有効</h4>
+  <p>
+    「天気の種類」として「晴れ・雨・曇り・雲」を並べると、「雲」だけが仲間外れ（天気の状態ではなく気象現象）であることが
+    図にすることで明確化される。また「企業間関係における経営戦略」として「合併・買収・撤退・資本提携・業務提携」を並べると、
+    「撤退」だけが二者関係ではなく一者の企業行動であることが、図にすることでわかりやすくなる。<span class="src">← S03:p.55-56</span>
+  </p>
+  <div class="block block-audio">
+    言葉だけでは見過ごしてしまうような論理矛盾も、図にすることで発見しやすくなる。
+    例の「天気」は単純で図にしなくてもわかるが、もっと複雑なケースでは言葉だけでは見落としが生じる可能性がある。
+    <span class="src">← S05-B</span>
+  </div>
+
+  <h3 id="ch3-5">3-5 創造力を高める思考法としての図：KJ法・マインドマップ</h3>
+  <p>
+    論理学（演繹・帰納・弁証）だけでは、高度情報社会の現代に多様な情報を整理・分析・加工するには十分ではない。
+    そこで本科目では「論理的な思考をベースにしつつも、<strong>発想力や想像力も含む思考</strong>」としてロジカルシンキングを広く捉える。
+    これにより応用範囲が広がり実用性が高まる。<span class="src">← S03:p.57</span>
+  </p>
+
+  <h4>KJ法</h4>
+  <div class="block block-definition">
+    文化人類学者の<strong>川喜田二郎（東京工業大学名誉教授）</strong>がデータをまとめるために考案した手法。
+    氏名（川喜田二郎）のローマ字から「KJ法」と名付けられた。
+    <span class="src">← S03:p.58</span>
+  </div>
+
+  <div class="fig" style="margin:18px 0;">
+    <svg viewBox="0 0 680 162" xmlns="http://www.w3.org/2000/svg" style="max-width:680px;width:100%;display:block;">
+      <rect width="680" height="162" fill="#1e2535" rx="10"/>
+      <text x="340" y="22" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12.5" fill="#34d399" font-weight="700">KJ法の4ステップ ← S03:p.58-59</text>
+      <rect x="14" y="36" width="128" height="110" rx="8" fill="#1a2540" stroke="#34d399" stroke-width="1.5"/>
+      <text x="78" y="56" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#34d399" font-weight="600">Step 1</text>
+      <text x="78" y="74" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">カードに記入</text>
+      <text x="78" y="93" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">KW・フレーズを</text>
+      <text x="78" y="108" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">ポストイット等に</text>
+      <text x="78" y="123" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">1枚1事項で書く</text>
+      <text x="148" y="96" font-family="Noto Sans JP,sans-serif" font-size="22" fill="#34d399">→</text>
+      <rect x="162" y="36" width="128" height="110" rx="8" fill="#1a2540" stroke="#34d399" stroke-width="1.5"/>
+      <text x="226" y="56" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#34d399" font-weight="600">Step 2</text>
+      <text x="226" y="74" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">グループ化</text>
+      <text x="226" y="93" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">似た概念のカードを</text>
+      <text x="226" y="108" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">感覚的に近くへ</text>
+      <text x="226" y="123" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">まとめる</text>
+      <text x="296" y="96" font-family="Noto Sans JP,sans-serif" font-size="22" fill="#34d399">→</text>
+      <rect x="310" y="36" width="128" height="110" rx="8" fill="#1a2540" stroke="#34d399" stroke-width="1.5"/>
+      <text x="374" y="56" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#34d399" font-weight="600">Step 3</text>
+      <text x="374" y="74" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">名札を付ける</text>
+      <text x="374" y="93" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">グループを囲み、</text>
+      <text x="374" y="108" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">代表KWを</text>
+      <text x="374" y="123" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">名札として付与</text>
+      <text x="444" y="96" font-family="Noto Sans JP,sans-serif" font-size="22" fill="#34d399">→</text>
+      <rect x="458" y="36" width="208" height="110" rx="8" fill="rgba(52,211,153,0.1)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="562" y="56" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#34d399" font-weight="600">Step 4（図解化）</text>
+      <text x="562" y="74" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">グループ間の関係を</text>
+      <text x="562" y="91" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">矢印・線で表現</text>
+      <text x="562" y="111" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#fbbf24">→ 体系化・構造化完成</text>
+      <text x="562" y="130" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">論文・発表資料へ展開</text>
+    </svg>
+    <figcaption style="font-size:11px;color:#8a99b8;margin-top:6px;font-family:monospace;">図: KJ法の4ステップ ← S03:p.58-59</figcaption>
+  </div>
+
+  <p>
+    元々は分類法の一種。データをカードに記述し、カードをグループごとにまとめて図解し、論文等にまとめていく。
+    現在はグループワークやアイディエーションなどビジネス現場の共同作業にも活用され、
+    「創造性開発（創造的問題解決）」に効果があるとされる。<span class="src">← S03:p.58</span>
+  </p>
+  <div class="block block-audio">
+    実際のグループワークでは、ポストイットにキーワード・キーフレーズを書いて壁などに貼り、
+    似た概念のポストイットをまとめてグループ化（囲みを描く）し、グループ名（名札）をつける。
+    さらに囲みと囲みの関係性を矢印・線で表現することで体系化する。これもKJ法（図解思考の一種）。
+    <span class="src">← S05-B</span>
+  </div>
+
+  <h4>マインドマップ</h4>
+  <div class="block block-definition">
+    <strong>トニー・ブザン（Tony Buzan）</strong>が提唱した創造的思考ツール。
+    表現したい概念の中心となるキーワードやイメージを中央に置き、そこから放射状にキーワードやイメージを広げつなげていく図。
+    <span class="src">← S03:p.60</span>
+  </div>
+  <div class="fig" style="margin:18px 0;">
+    <svg viewBox="0 0 520 258" xmlns="http://www.w3.org/2000/svg" style="max-width:520px;width:100%;display:block;">
+      <rect width="520" height="258" fill="#1e2535" rx="10"/>
+      <text x="260" y="22" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12.5" fill="#a78bfa" font-weight="700">マインドマップの構造 ← S03:p.61</text>
+      <!-- 中央ハブ -->
+      <ellipse cx="260" cy="136" rx="52" ry="36" fill="rgba(167,139,250,0.2)" stroke="#a78bfa" stroke-width="2"/>
+      <text x="260" y="130" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11.5" fill="#a78bfa" font-weight="600">主題</text>
+      <text x="260" y="146" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">＋イラスト</text>
+      <!-- 枝1: 左上 -->
+      <line x1="216" y1="114" x2="140" y2="76" stroke="#34d399" stroke-width="2"/>
+      <rect x="74" y="62" width="70" height="26" rx="5" fill="rgba(52,211,153,0.12)" stroke="#34d399" stroke-width="1.2"/>
+      <text x="109" y="78" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#e2e8f5">テーマA</text>
+      <line x1="109" y1="62" x2="88" y2="44" stroke="#34d399" stroke-width="1.2"/>
+      <text x="72" y="40" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9.5" fill="#8a99b8">サブA-1</text>
+      <!-- 枝2: 上 -->
+      <line x1="248" y1="100" x2="218" y2="55" stroke="#fbbf24" stroke-width="2"/>
+      <rect x="170" y="38" width="80" height="26" rx="5" fill="rgba(251,191,36,0.12)" stroke="#fbbf24" stroke-width="1.2"/>
+      <text x="210" y="54" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#e2e8f5">テーマB</text>
+      <!-- 枝3: 右上 -->
+      <line x1="300" y1="108" x2="368" y2="68" stroke="#5b8dee" stroke-width="2"/>
+      <rect x="366" y="54" width="76" height="26" rx="5" fill="rgba(91,141,238,0.12)" stroke="#5b8dee" stroke-width="1.2"/>
+      <text x="404" y="70" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#e2e8f5">テーマC</text>
+      <line x1="442" y1="67" x2="464" y2="48" stroke="#5b8dee" stroke-width="1.2"/>
+      <text x="474" y="44" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9.5" fill="#8a99b8">サブC-1</text>
+      <!-- 枝4: 右 -->
+      <line x1="312" y1="136" x2="376" y2="136" stroke="#f87171" stroke-width="2"/>
+      <rect x="378" y="122" width="80" height="26" rx="5" fill="rgba(248,113,113,0.12)" stroke="#f87171" stroke-width="1.2"/>
+      <text x="418" y="138" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#e2e8f5">テーマD</text>
+      <!-- 枝5: 右下 -->
+      <line x1="300" y1="163" x2="368" y2="192" stroke="#34d399" stroke-width="2"/>
+      <rect x="366" y="180" width="80" height="26" rx="5" fill="rgba(52,211,153,0.12)" stroke="#34d399" stroke-width="1.2"/>
+      <text x="406" y="196" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#e2e8f5">テーマE</text>
+      <!-- 枝6: 下 -->
+      <line x1="260" y1="172" x2="240" y2="212" stroke="#fbbf24" stroke-width="2"/>
+      <rect x="182" y="212" width="120" height="26" rx="5" fill="rgba(251,191,36,0.12)" stroke="#fbbf24" stroke-width="1.2"/>
+      <text x="242" y="228" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#e2e8f5">テーマF</text>
+      <!-- 枝7: 左下 -->
+      <line x1="216" y1="160" x2="146" y2="192" stroke="#a78bfa" stroke-width="2"/>
+      <rect x="62" y="182" width="88" height="26" rx="5" fill="rgba(167,139,250,0.12)" stroke="#a78bfa" stroke-width="1.2"/>
+      <text x="106" y="198" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#e2e8f5">テーマG</text>
+      <text x="260" y="248" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">中央から放射状に枝を伸ばし、色とイメージで脳のネットワークに近い構造を実現</text>
+    </svg>
+    <figcaption style="font-size:11px;color:#8a99b8;margin-top:6px;font-family:monospace;">図: マインドマップの構造イメージ ← S03:p.61</figcaption>
+  </div>
+
+  <p>
+    元々は記憶法として開発。人間の脳細胞（ニューロン）の意味ネットワークと構造が似ているとされ、
+    理解や記憶がしやすいと言われている。中央にタイトル（＋イラスト）を置き、放射状に枝を伸ばしてキーワードを書いていく。
+    <span class="src">← S03:p.60</span>
+  </p>
+  <div class="block block-ext">
+    <strong>Tony Buzan（1942〜2019）</strong>はイギリスの心理学者・教育家。
+    マインドマップは1970年代に考案され、著書 "Use Your Head"（1974）で広まった。
+    <span class="ext-small">[外部補足・確認済: Tony Buzan, "Use Your Head", BBC TV &amp; book, 1974; Wikipedia "Tony Buzan"]</span>
+  </div>
+</div>
+
+<!-- ━━━ 第4章 ━━━ -->
+<div class="section-card" id="ch4">
+  <h2>第4章　発散思考と収束思考</h2>
+  <p style="color:var(--text-sub); font-size:13px; margin-bottom:16px;">学習目標: 「図解思考」特有の"発想"を拡げたり、"考え"を精緻化する方法を説明できる <span class="src">← S03:p.66</span></p>
+
+  <h3 id="ch4-1">4-1 図を描くための基本姿勢</h3>
+  <p>
+    図を描く際には、対照的な2つの「頭の働かせ方」を交互に行う。<span class="src">← S03:p.67</span>
+  </p>
+  <table>
+    <tr><th>思考タイプ</th><th>役割</th><th>タイミング</th></tr>
+    <tr><td><strong>発散思考</strong></td><td>自由な発想で脳を全開放し、頭の中のあらゆる情報を出す</td><td>最初（情報を書き出す段階）</td></tr>
+    <tr><td><strong>収束思考</strong></td><td>情報を精査・整理・単純化して図を描く</td><td>次（図に落とし込む段階）</td></tr>
+  </table>
+
+  <!-- フロー図: 発散・収束ステップ -->
+  <div class="flow-diagram">
+    <div class="flow-box blue">💡 発散思考</div>
+    <div class="flow-arrow">▼</div>
+    <div class="flow-box">頭の中の情報を書き出す（箇条書きでOK）</div>
+    <div class="flow-arrow">▼</div>
+    <div class="flow-box blue" style="border-color:#34d399; color:#34d399; background:rgba(52,211,153,0.1);">🎯 収束思考</div>
+    <div class="flow-arrow">▼</div>
+    <div class="flow-box">図を描く</div>
+  </div>
+  <figcaption style="text-align:center; font-size:11.5px; color:var(--text-sub); margin-bottom:16px; font-family:var(--pointer-font);">図: 発散思考と収束思考を使うステップ ← S03:p.68</figcaption>
+
+
+  <!-- ── 発散・収束ステップSVG ── -->
+  <div class="fig">
+    <svg viewBox="0 0 420 198" xmlns="http://www.w3.org/2000/svg" style="max-width:420px;">
+      <rect width="420" height="198" fill="#1e2535" rx="10"/>
+      <text x="210" y="22" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12.5" fill="#5b8dee" font-weight="700">発散→収束→図を描く ← S03:p.68</text>
+      <rect x="115" y="34" width="190" height="38" rx="8" fill="rgba(91,141,238,0.15)" stroke="#5b8dee" stroke-width="2"/>
+      <text x="210" y="51" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12.5" fill="#5b8dee" font-weight="700">💡 発散思考</text>
+      <text x="210" y="65" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">脳を全開放・量を重視・評価しない</text>
+      <text x="210" y="84" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="20" fill="#5b8dee">↓</text>
+      <rect x="88" y="90" width="244" height="30" rx="6" fill="#1a2540" stroke="#2d3a52" stroke-width="1"/>
+      <text x="210" y="109" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11.5" fill="#e2e8f5">頭の中の情報を箇条書きで書き出す</text>
+      <text x="210" y="131" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="20" fill="#34d399">↓</text>
+      <rect x="115" y="140" width="190" height="44" rx="8" fill="rgba(52,211,153,0.15)" stroke="#34d399" stroke-width="2"/>
+      <text x="210" y="158" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12.5" fill="#34d399" font-weight="700">🎯 収束思考</text>
+      <text x="210" y="174" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">精査・削除・コンパクト化 → 図を描く</text>
+    </svg>
+    <figcaption>図: 発散思考と収束思考を使うステップ ← S03:p.68</figcaption>
+  </div>
+  <div class="block block-audio">
+    この2つの思考スタイルを組み合わせることが、ロジカルシンキングを効率的に行うミソ。
+    図を描くことは、この思考法をスムーズに行うためのきっかけとも言える。
+    <span class="src">← S05-B</span>
+  </div>
+
+  <h3 id="ch4-2">4-2 発散思考</h3>
+  <p>
+    発散思考とは、自由な発想の下で脳を全開放し、頭の中のあらゆる情報を出すようにすること。
+    いもづる式の「連想法」に似ている。<span class="src">← S03:p.69</span>
+  </p>
+
+  <h4>参考: ブレインストーミングの基本原則（オズボーン）</h4>
+  <p>
+    発散思考の頭の働かせ方は、<strong>アレックス・F・オズボーン</strong>が考案した
+    ブレインストーミング（ブレスト）の基本原則が参考になる。<span class="src">← S03:p.70</span>
+  </p>
+  <table>
+    <tr><th>#</th><th>原則</th><th>ねらい</th></tr>
+    <tr><td>①</td><td>評価をしない・結論を出さない</td><td>心理的安全性を担保し、尻込みを防ぐ。どんな意見も否定しない</td></tr>
+    <tr><td>②</td><td>粗野な考えを歓迎する</td><td>「こんなこと言って批判されないか」という気持ちを払拭する</td></tr>
+    <tr><td>③</td><td>量を重視する</td><td>磨けば光る可能性のある意見を最初から潰さない</td></tr>
+    <tr><td>④</td><td>アイディアを結合し発展させる</td><td>異なる意見の組み合わせから新しいアイディアを生む</td></tr>
+  </table>
+  <span class="src" style="font-size:11px;">← S03:p.70</span>
+
+  <div class="block block-audio">
+    ブレストは複数の人間が集まって議論する際のルールだが、図解思考における発散思考では
+    これを1人の頭の中で行っていく。
+    <span class="src">← S05-B</span>
+  </div>
+
+  <h4>発散思考の4つのポイント（個人での実践）</h4>
+  <ol>
+    <li>少しでも正しそうであれば思いつきでもよい</li>
+    <li>関連するものでもよい</li>
+    <li>書き出す量は多いほど良い</li>
+    <li>書き出した内容を見て新たに思いつくものも書き出す</li>
+  </ol>
+  <div class="fig" style="margin:18px 0;">
+    <svg viewBox="0 0 660 182" xmlns="http://www.w3.org/2000/svg" style="max-width:660px;width:100%;display:block;">
+      <rect width="660" height="182" fill="#1e2535" rx="10"/>
+      <text x="330" y="22" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12.5" fill="#fbbf24" font-weight="700">ブレインストーミングの4原則（オズボーン）← S03:p.70</text>
+      <rect x="14" y="36" width="148" height="128" rx="8" fill="#1a2540" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="88" y="58" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="14" fill="#fbbf24" font-weight="600">①</text>
+      <text x="88" y="76" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">評価をしない</text>
+      <text x="88" y="92" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">結論を出さない</text>
+      <text x="88" y="114" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9.5" fill="#8a99b8">どんな意見も</text>
+      <text x="88" y="129" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9.5" fill="#8a99b8">批判・否定しない</text>
+      <text x="88" y="152" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9.5" fill="#34d399">→心理的安全性確保</text>
+      <rect x="177" y="36" width="148" height="128" rx="8" fill="#1a2540" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="251" y="58" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="14" fill="#5b8dee" font-weight="600">②</text>
+      <text x="251" y="76" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">粗野な考えを</text>
+      <text x="251" y="92" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">歓迎する</text>
+      <text x="251" y="114" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9.5" fill="#8a99b8">奇抜・突飛なアイデア</text>
+      <text x="251" y="129" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9.5" fill="#8a99b8">ほど大歓迎</text>
+      <text x="251" y="152" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9.5" fill="#34d399">→発言ブレーキを外す</text>
+      <rect x="340" y="36" width="148" height="128" rx="8" fill="#1a2540" stroke="#34d399" stroke-width="1.5"/>
+      <text x="414" y="58" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="14" fill="#34d399" font-weight="600">③</text>
+      <text x="414" y="76" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">量を重視する</text>
+      <text x="414" y="114" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9.5" fill="#8a99b8">質より量。多いほど</text>
+      <text x="414" y="129" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9.5" fill="#8a99b8">良いアイデアが生まれ</text>
+      <text x="414" y="152" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9.5" fill="#34d399">→数が質を生む</text>
+      <rect x="503" y="36" width="148" height="128" rx="8" fill="#1a2540" stroke="#a78bfa" stroke-width="1.5"/>
+      <text x="577" y="58" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="14" fill="#a78bfa" font-weight="600">④</text>
+      <text x="577" y="76" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">アイデアを</text>
+      <text x="577" y="92" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">結合し発展させる</text>
+      <text x="577" y="114" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9.5" fill="#8a99b8">他者のアイデアに乗って</text>
+      <text x="577" y="129" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9.5" fill="#8a99b8">新アイデアへ発展</text>
+      <text x="577" y="152" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9.5" fill="#34d399">→相乗効果を生む</text>
+    </svg>
+    <figcaption style="font-size:11px;color:#8a99b8;margin-top:6px;font-family:monospace;">図: ブレインストーミングの4原則（オズボーン, 1953） ← S03:p.70</figcaption>
+  </div>
+
+  <p>⚠️ この段階で「精密さ・緻密さ」を求めると重要な情報を落としてしまう恐れがある。<span class="src">← S03:p.71</span></p>
+
+  <h4>発散思考の例</h4>
+  <p>「風邪をひいて学校にいけない」というキーフレーズから発散すると…</p>
+  <div class="block block-audio">
+    ⇒先生に連絡するか？ ⇒友達に伝えるか？ ⇒今日、休むと成績に響くのでは？
+    ⇒本当に風邪なのか？（悪い病気でなければ…）⇒生徒の多くが風邪で「学級閉鎖」になっているかも？
+    ⇒風邪の正式な疾患名は何なのか？ ⇒どの程度の風邪なら学校に行くべきか？
+    ⇒そもそもなぜ学校に行くのだろう…etc.
+    ここでは各事項がどんな意味を持つかは特に評価しない。とにかく書き出すことが目的。
+    <span class="src">← S03:p.72</span>
+  </div>
+
+  <h3 id="ch4-3">4-3 収束思考</h3>
+<div class="fig" style="margin:18px 0;">
+    <svg viewBox="0 0 660 122" xmlns="http://www.w3.org/2000/svg" style="max-width:660px;width:100%;display:block;">
+      <rect width="660" height="122" fill="#1e2535" rx="10"/>
+      <text x="330" y="22" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12.5" fill="#34d399" font-weight="700">収束思考の4つのポイント ← S03:p.73</text>
+      <rect x="14" y="34" width="148" height="76" rx="8" fill="#1a2540" stroke="#34d399" stroke-width="1.5"/>
+      <text x="88" y="52" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#34d399" font-weight="600">① 適切な表現に</text>
+      <text x="88" y="67" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#34d399" font-weight="600">変える</text>
+      <text x="88" y="85" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">図に描けるKW・</text>
+      <text x="88" y="99" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">フレーズに整える</text>
+      <rect x="177" y="34" width="148" height="76" rx="8" fill="#1a2540" stroke="#34d399" stroke-width="1.5"/>
+      <text x="251" y="52" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#34d399" font-weight="600">② 重要でない</text>
+      <text x="251" y="67" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#34d399" font-weight="600">事項を削除</text>
+      <text x="251" y="85" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">紙面スペースは</text>
+      <text x="251" y="99" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">有限のため精査</text>
+      <rect x="340" y="34" width="148" height="76" rx="8" fill="#1a2540" stroke="#34d399" stroke-width="1.5"/>
+      <text x="414" y="52" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#34d399" font-weight="600">③ 冗長な表現を省き</text>
+      <text x="414" y="67" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#34d399" font-weight="600">コンパクトに</text>
+      <text x="414" y="85" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">一覧性（パッと見て</text>
+      <text x="414" y="99" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">分かる）を確保</text>
+      <rect x="503" y="34" width="148" height="76" rx="8" fill="#1a2540" stroke="#34d399" stroke-width="1.5"/>
+      <text x="577" y="52" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#34d399" font-weight="600">④ 似た内容は</text>
+      <text x="577" y="67" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#34d399" font-weight="600">まとめるか一つに</text>
+      <text x="577" y="85" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">簡略化・単純化で</text>
+      <text x="577" y="99" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#8a99b8">思考を整理</text>
+    </svg>
+    <figcaption style="font-size:11px;color:#8a99b8;margin-top:6px;font-family:monospace;">図: 収束思考の4つのポイント（発散思考と真逆の頭の使い方）← S03:p.73</figcaption>
+  </div>
+
+  <p>
+    収束思考は発散思考と真逆の頭の働かせ方。
+    発散で書き出した情報を精査・整理・単純化して図に落とし込む。<span class="src">← S03:p.73</span>
+  </p>
+  <h4>収束思考の4つのポイント</h4>
+  <ol>
+    <li><strong>適切な表現に変える</strong>（図として描き起こせる表現に）</li>
+    <li><strong>重要でない事項は削除する</strong>（紙面に載せられる情報は限られる）</li>
+    <li><strong>冗長な表現を省きコンパクトにする</strong>（一覧性のために端的なキーワードへ）</li>
+    <li><strong>似た内容はまとめるか1つに絞る</strong>（簡略化・単純化）</li>
+  </ol>
+  <p>※ 発散思考と真逆の頭の働かせ方をするよう意識する。<span class="src">← S03:p.73</span></p>
+
+  <h4>収束思考の例（同じ事例を整理）</h4>
+  <div class="block block-audio">
+    「風邪をひいて学校にいけない」→
+    ①連絡方法: 電話を教務室にかけて担任に伝える
+    ②状況把握: 熱を測るなど、容体を正確に把握する
+    ③対応1: かかりつけ医に診てもらう
+    ④対応2: 栄養を摂る
+    ⑤対応3: 安静にする
+    発散で洗い出したものを、このように精査・整理・単純化していくのが収束思考。
+    <span class="src">← S03:p.74</span>
+  </div>
+
+  <h3 id="ch4-4">4-4 図で考えることの意義</h3>
+<div class="fig" style="margin:18px 0;">
+    <svg viewBox="0 0 500 210" xmlns="http://www.w3.org/2000/svg" style="max-width:500px;width:100%;display:block;">
+      <rect width="500" height="210" fill="#1e2535" rx="10"/>
+      <text x="250" y="22" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12.5" fill="#5b8dee" font-weight="700">図を使えば論理力×直感力で考えをまとめやすい ← S03:p.75</text>
+      <ellipse cx="175" cy="118" rx="112" ry="70" fill="rgba(91,141,238,0.1)" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="118" y="113" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="#5b8dee" font-weight="600">論理力</text>
+      <text x="118" y="131" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9.5" fill="#8a99b8">帰納・演繹・弁証</text>
+      <ellipse cx="325" cy="118" rx="112" ry="70" fill="rgba(251,191,36,0.1)" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="382" y="113" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="#fbbf24" font-weight="600">直感力</text>
+      <text x="382" y="131" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="9.5" fill="#8a99b8">発想・イメージ</text>
+      <ellipse cx="250" cy="122" rx="66" ry="50" fill="rgba(167,139,250,0.2)" stroke="#a78bfa" stroke-width="2"/>
+      <text x="250" y="111" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#a78bfa" font-weight="700">図を描く</text>
+      <text x="250" y="127" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#e2e8f5">考えをまとめ</text>
+      <text x="250" y="141" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#e2e8f5">構造化する</text>
+      <text x="250" y="192" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#fbbf24">両方の思考モードを同時に活用できる</text>
+    </svg>
+    <figcaption style="font-size:11px;color:#8a99b8;margin-top:6px;font-family:monospace;">図: 図を描くことで論理力と直感力を組み合わせられる ← S03:p.75</figcaption>
+  </div>
+
+
+  <!-- ── 4つの力ダイアグラムSVG（p.76-79完全再現） ── -->
+  <div class="fig" style="margin:16px 0;">
+    <svg viewBox="0 0 680 520" xmlns="http://www.w3.org/2000/svg" style="max-width:680px;width:100%;display:block;">
+      <rect width="680" height="520" fill="#1e2535" rx="10"/>
+      <text x="340" y="24" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="#5b8dee" font-weight="700">「図を描きつつ考える」で高まる4つの力 ← S03:p.76-79</text>
+
+      <!-- ① 発想力パネル（p.76）緑 -->
+      <rect x="12" y="36" width="320" height="116" rx="10" fill="#1a2e20" stroke="#4ade80" stroke-width="1.5"/>
+      <text x="172" y="58" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11.5" fill="#94a3b8">図を描きつつ、考える</text>
+      <line x1="120" y1="68" x2="155" y2="95" stroke="#4ade80" stroke-width="1.5"/>
+      <line x1="225" y1="68" x2="190" y2="95" stroke="#4ade80" stroke-width="1.5"/>
+      <text x="90" y="82" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">直感的に</text>
+      <text x="90" y="96" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">把握</text>
+      <text x="255" y="82" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">想像を</text>
+      <text x="255" y="96" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">膨らませる</text>
+      <ellipse cx="172" cy="105" rx="42" ry="20" fill="rgba(74,222,128,0.25)" stroke="#4ade80" stroke-width="1.5"/>
+      <text x="172" y="110" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="#4ade80" font-weight="700">発想力</text>
+      <text x="172" y="138" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#94a3b8">他人と異なる視点を見つける「発想力」を高める</text>
+
+      <!-- ② 問題解決力パネル（p.77）シアン -->
+      <rect x="348" y="36" width="320" height="116" rx="10" fill="#1a2e38" stroke="#22d3ee" stroke-width="1.5"/>
+      <text x="508" y="58" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11.5" fill="#94a3b8">図を描きつつ、考える</text>
+      <line x1="456" y1="68" x2="491" y2="95" stroke="#22d3ee" stroke-width="1.5"/>
+      <line x1="561" y1="68" x2="526" y2="95" stroke="#22d3ee" stroke-width="1.5"/>
+      <text x="425" y="82" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">問題を</text>
+      <text x="425" y="96" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">要素に分解</text>
+      <text x="592" y="82" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">根本問題の</text>
+      <text x="592" y="96" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">発見</text>
+      <ellipse cx="508" cy="105" rx="46" ry="20" fill="rgba(34,211,238,0.25)" stroke="#22d3ee" stroke-width="1.5"/>
+      <text x="508" y="110" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="#22d3ee" font-weight="700">問題解決力</text>
+      <text x="508" y="138" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#94a3b8">本質を見抜き解決策を導く「問題解決力」を高める</text>
+
+      <!-- ③ 意思決定力パネル（p.78）ピンク -->
+      <rect x="12" y="166" width="320" height="116" rx="10" fill="#2e1a2e" stroke="#f472b6" stroke-width="1.5"/>
+      <text x="172" y="188" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11.5" fill="#94a3b8">図を描きつつ、考える</text>
+      <line x1="120" y1="198" x2="155" y2="225" stroke="#f472b6" stroke-width="1.5"/>
+      <line x1="225" y1="198" x2="190" y2="225" stroke="#f472b6" stroke-width="1.5"/>
+      <text x="90" y="212" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">選択肢を</text>
+      <text x="90" y="226" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">抽出</text>
+      <text x="255" y="212" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">判断軸を</text>
+      <text x="255" y="226" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">設定</text>
+      <ellipse cx="172" cy="235" rx="46" ry="20" fill="rgba(244,114,182,0.25)" stroke="#f472b6" stroke-width="1.5"/>
+      <text x="172" y="240" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="#f472b6" font-weight="700">意思決定力</text>
+      <text x="172" y="268" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#94a3b8">論理的に判断する「意思決定力」を高める</text>
+
+      <!-- ④ 交渉力パネル（p.79）オレンジ -->
+      <rect x="348" y="166" width="320" height="116" rx="10" fill="#2e2010" stroke="#fb923c" stroke-width="1.5"/>
+      <text x="508" y="188" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11.5" fill="#94a3b8">図を描きつつ、考える</text>
+      <line x1="456" y1="198" x2="491" y2="225" stroke="#fb923c" stroke-width="1.5"/>
+      <line x1="561" y1="198" x2="526" y2="225" stroke="#fb923c" stroke-width="1.5"/>
+      <text x="425" y="212" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">自分と相手の</text>
+      <text x="425" y="226" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">主張のズレを</text>
+      <text x="425" y="240" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#e2e8f5">見える化</text>
+      <text x="592" y="212" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">相手の立場で</text>
+      <text x="592" y="226" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#e2e8f5">状況を判断</text>
+      <ellipse cx="508" cy="240" rx="40" ry="20" fill="rgba(251,146,60,0.25)" stroke="#fb923c" stroke-width="1.5"/>
+      <text x="508" y="245" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="13" fill="#fb923c" font-weight="700">交渉力</text>
+      <text x="508" y="268" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#94a3b8">相手と折り合いをつける「交渉力」を高める</text>
+
+      <!-- まとめ矢印と共通メッセージ -->
+      <text x="340" y="318" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="22" fill="#5b8dee">↓</text>
+      <rect x="60" y="335" width="560" height="60" rx="10" fill="#1a3a5c" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="340" y="360" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="14" fill="#e2e8f5" font-weight="700">「図を描きつつ考える」=「図解思考」</text>
+      <text x="340" y="382" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="12" fill="#94a3b8">これら4つの力の向上を同時に支援する統合的な思考技術</text>
+
+      <!-- ポイント注釈 -->
+      <text x="340" y="420" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#fbbf24">▶ 図を使えば「直感的な思考力」と「論理的な思考力」の2つをうまく組み合わせながら考えをまとめやすい</text>
+      <text x="340" y="438" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="11" fill="#94a3b8">（S03:p.75より）</text>
+
+      <!-- 凡例 -->
+      <rect x="60" y="455" width="12" height="12" rx="2" fill="#4ade80"/>
+      <text x="78" y="465" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#94a3b8">発想力（p.76）</text>
+      <rect x="185" y="455" width="12" height="12" rx="2" fill="#22d3ee"/>
+      <text x="203" y="465" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#94a3b8">問題解決力（p.77）</text>
+      <rect x="340" y="455" width="12" height="12" rx="2" fill="#f472b6"/>
+      <text x="358" y="465" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#94a3b8">意思決定力（p.78）</text>
+      <rect x="495" y="455" width="12" height="12" rx="2" fill="#fb923c"/>
+      <text x="513" y="465" font-family="Noto Sans JP,sans-serif" font-size="10.5" fill="#94a3b8">交渉力（p.79）</text>
+
+      <text x="340" y="506" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-size="10" fill="#5b8dee">← S03:p.76-79</text>
+    </svg>
+    <figcaption style="font-size:11px;color:#8a99b8;margin-top:6px;font-family:monospace;">図: 「図を描きつつ考える」で高まる4つの力（各パネルp.76-79完全再現） ← S03:p.76-79</figcaption>
+  </div>
+
+  <table>
+    <tr><th>高まる力</th><th>図を通じて行えること</th></tr>
+    <tr>
+      <td><strong>発想力</strong></td>
+      <td>直感的に把握・想像を膨らませやすくなる。ラフに図を描き、眺めて描き直すことを繰り返しながら他人と異なる視点を見つける</td>
+    </tr>
+    <tr>
+      <td><strong>問題解決力</strong></td>
+      <td>問題を体系化して要素に分解することで噛み砕いた対処が可能に。根本的・本質的な問題の発見もしやすくなる</td>
+    </tr>
+    <tr>
+      <td><strong>意思決定力</strong></td>
+      <td>選択肢を抽出し、より良い選択肢を選ぶための判断軸を設定しやすくなる。感覚ではなく論理的な判断が可能に</td>
+    </tr>
+    <tr>
+      <td><strong>交渉力</strong></td>
+      <td>自分と相手の主張のズレを見える化することで調整を図りやすくなる。相手の立場での状況判断も冷静に行える</td>
+    </tr>
+  </table>
+  <span class="src" style="font-size:11px;">← S03:p.76-79</span>
+</div>
+
+<!-- ━━━ 補足A ━━━ -->
+<div class="appendix-card appendix-a" id="appendix-a">
+  <h2>⭐ 補足A　最重要ワード一覧</h2>
+  <table>
+    <tr><th>用語</th><th>読み</th><th>定義（本講義より）</th><th>重要度</th></tr>
+    <tr>
+      <td><strong>ロジカルシンキング</strong></td>
+      <td>ろじかるしんきんぐ</td>
+      <td>分析力・意思決定力・交渉力・問題解決力・発想力を高めるのに役立つ思考法。本科目では論理的思考をベースにしつつ発想力・想像力も含む広義の思考として捉える</td>
+      <td>★★★</td>
+    </tr>
+    <tr>
+      <td><strong>図解思考</strong></td>
+      <td>ずかいしこう</td>
+      <td>図を描きながら、必要でない情報を捨て、必要な情報を構造化し、意味のあるものにしていく思考方法</td>
+      <td>★★★</td>
+    </tr>
+    <tr>
+      <td><strong>発散思考</strong></td>
+      <td>はっさんしこう</td>
+      <td>自由な発想の下で脳を全開放し、頭の中のあらゆる情報を出す思考法。いもづる式の連想法に近い</td>
+      <td>★★★</td>
+    </tr>
+    <tr>
+      <td><strong>収束思考</strong></td>
+      <td>しゅうそくしこう</td>
+      <td>発散で書き出した情報を精査・整理・単純化して図に落とし込む思考法。発散思考と真逆</td>
+      <td>★★★</td>
+    </tr>
+    <tr>
+      <td><strong>帰納法</strong></td>
+      <td>きのうほう</td>
+      <td>個々の特殊な事実・命題の集まりから、共通で一般的な命題・法則を導き出すこと。経験からの推論</td>
+      <td>★★★</td>
+    </tr>
+    <tr>
+      <td><strong>演繹法</strong></td>
+      <td>えんえきほう</td>
+      <td>ある命題から論理の規則に従って結論を導くこと。一般的原理から特殊な原理・事実を導く。帰納法と逆</td>
+      <td>★★★</td>
+    </tr>
+    <tr>
+      <td><strong>弁証法</strong></td>
+      <td>べんしょうほう</td>
+      <td>テーゼ（正）・アンチテーゼ（反）・ジンテーゼ（合）の3段階で発展する思考法。ヘーゲルの弁証法が代表的</td>
+      <td>★★☆</td>
+    </tr>
+    <tr>
+      <td><strong>KJ法</strong></td>
+      <td>けーじーほう</td>
+      <td>川喜田二郎が考案。データをカードに記述・グループ化・図解して論文等にまとめる手法。創造的問題解決に効果あり</td>
+      <td>★★☆</td>
+    </tr>
+    <tr>
+      <td><strong>マインドマップ</strong></td>
+      <td>まいんどまっぷ</td>
+      <td>トニー・ブザンが提唱。中央のキーワードから放射状にキーワードを広げ連結する創造的思考ツール</td>
+      <td>★★☆</td>
+    </tr>
+    <tr>
+      <td><strong>ブレインストーミング</strong></td>
+      <td>ぶれいんすとーみんぐ</td>
+      <td>A.F.オズボーンが考案。批判なし・粗野な考え歓迎・量重視・結合発展の4原則で多くのアイディアを出す集団思考法</td>
+      <td>★★☆</td>
+    </tr>
+    <tr>
+      <td><strong>三段論法</strong></td>
+      <td>さんだんろんぽう</td>
+      <td>演繹法の代表的な形式。大前提・小前提・結論の3段構造。アリストテレスが「分析論前書」で定式化（紀元前350年頃）</td>
+      <td>★★★</td>
+    </tr>
+    <tr>
+      <td><strong>アウフヘーベン（止揚）</strong></td>
+      <td>あうふへーべん</td>
+      <td>ヘーゲル弁証法の核心概念。正と反の対立を「廃棄しつつも高い次元で保存・統合」すること。ジンテーゼの本来の概念</td>
+      <td>★☆☆</td>
+    </tr>
+  </table>
+</div>
+
+<!-- ━━━ 補足B ━━━ -->
+<div class="appendix-card appendix-b" id="appendix-b">
+  <h2>📚 補足B　知っておくべき背景知識</h2>
+
+  <h3>三菱総合研究所（MRI）と奥村隆一氏について</h3>
+  <p class="ext-small">
+    [外部補足・確認済: MRI公式サイト / サイバー大学公式教員紹介] 三菱総合研究所（MRI）は1970年設立の総合シンクタンク。
+    シンクタンク部門・コンサルティング部門・ITソリューション部門を持ち、政府・官公庁の政策研究で実績を持つ。
+    五大シンクタンクの一つ（野村総研・日本総研・三菱UFJリサーチ&amp;コンサルティング・みずほリサーチ&amp;テクノロジーズと並ぶ）。
+  </p>
+  <p class="ext-small">
+    [外部補足・確認済: サイバー大学公式教員紹介 / 事業構想大学院大学] <strong>奥村隆一氏（本科目担当講師）プロフィール詳細：</strong><br>
+    職位：三菱総合研究所 キャリア・イノベーション本部 <strong>主席研究員</strong>（スライドには「研究員」と略記）<br>
+    1968年神奈川県生まれ。1994年早稲田大学大学院理工学研究科修士課程修了、同年三菱総合研究所入社。
+    2021年東京工業大学情報理工学院博士課程修了、<strong>博士（工学）</strong>。<strong>一級建築士</strong>。<br>
+    専門：労働政策・社会保障政策・少子高齢・人口減少問題・発想法。慈恵大学医療マネジメント講座講師、狛江市審議会会長なども兼務。<br>
+    主な著書：『仕事が速い人は図で考える』（KADOKAWA, 2016）、『考えをまとめる・伝える図解の技術』（日経文庫, 2011）、
+    『考えを整理する技術・伝える方法』（PHP研究所, 2010）ほか。<strong>本科目の内容（図解思考）は奥村氏の専門的著作・研究と直接連動している。</strong>
+  </p>
+
+  <h3>アルタミラ洞窟について</h3>
+  <p class="ext-small">
+    [外部補足・確認済: UNESCO世界遺産登録情報] スペイン北部カンタブリア州サンティジャーナ・デル・マルに位置する旧石器時代の洞窟遺跡。
+    1985年にユネスコ世界遺産に登録。1879年にマルセリノ・サウトゥオラが娘マリアと探検中に発見した。
+    約18,500〜14,000年前の後期旧石器時代（マドレーヌ文化）に描かれたとされる壁画が残る。
+  </p>
+
+  <h3>ヒエログリフについて</h3>
+  <p class="ext-small">
+    [外部補足・確認済: 古代エジプト史研究] ヒエログリフ（神聖文字）は紀元前3200年頃から紀元後394年頃まで使われた。
+    1822年にフランスの学者シャンポリオンがロゼッタストーンの解読に成功して以来、現代に解読が進んだ。
+    象形文字・表意文字・表音文字の要素を持つ複合的な文字体系。
+  </p>
+
+  <h3>アレックス・F・オズボーンとブレインストーミング</h3>
+  <p class="ext-small">
+    [外部補足・確認済: Osborn, "Applied Imagination", 1953] Alex Faickney Osborn（1888〜1966）は米国の広告業者・著述家。
+    ブレインストーミングは著書 "Applied Imagination"（1953）で提唱した。
+    現在は組織的問題解決・デザイン思考・アジャイル開発など幅広い分野で活用されている。
+  </p>
+
+  <h3>川喜田二郎とKJ法</h3>
+  <p class="ext-small">
+    [外部補足・確認済: 川喜田二郎著作情報] 川喜田二郎（1920〜2009）は日本の文化人類学者・東京工業大学名誉教授。
+    KJ法は著書「発想法」（中公新書, 1967）で体系的に紹介された。
+    フィールドワークで収集した膨大なデータを整理する手法として開発され、後にビジネス・教育分野に広まった。
+  </p>
+</div>
+
+<!-- ━━━ 補足C ━━━ -->
+<div class="appendix-card appendix-c" id="appendix-c">
+  <h2>🎯 補足C　試験・レポートで重要な観点</h2>
+
+  <h3>📌 定義・対比の整理（頻出問題タイプ）</h3>
+  <ol>
+    <li><strong>「図」の定義を答えよ</strong> → 「言葉（キーワード/キーフレーズ）と、線・囲み・矢印のいずれかまたはすべてを使って表現されるもの」</li>
+    <li><strong>文章と図の違いを3点説明せよ</strong> → ①時間軸/瞬間的 ②的確詳細/想像余地 ③主体明確化/関係理解に適す</li>
+    <li><strong>発散思考と収束思考の違いを説明せよ</strong> → 発散=全開放・量重視・評価しない ↔ 収束=精査・削除・コンパクト化</li>
+    <li><strong>帰納法と演繹法の違いを説明せよ</strong> → 帰納=個別→一般（経験から）/ 演繹=一般→個別（論理から）</li>
+    <li><strong>ヘーゲルの弁証法の3要素を答えよ</strong> → テーゼ（正）・アンチテーゼ（反）・ジンテーゼ（合）</li>
+  </ol>
+
+  <h3>📌 図が役立つ場面（4種類）</h3>
+  <p>図で考えることが「発想力・問題解決力・意思決定力・交渉力」のそれぞれにどう役立つか、各1〜2文で説明できるようにすること。</p>
+
+  <h3>📌 論理の3種類の使い方の違い</h3>
+  <p>帰納・演繹・弁証の使い分け（どんな場面でどれを使うか）も整理しておくこと。</p>
+
+  <h3>📌 図解思考 ≠ プレゼンツール</h3>
+  <p>「図はプレゼンツールとしてだけでなく、思考ツールとしても機能する」という本科目の核心を必ず押さえること。</p>
+</div>
+
+<!-- ━━━ 補足D ━━━ -->
+  <h3>📌 考案者・発表年の年表（試験頻出）</h3>
+  <table>
+    <tr><th>手法</th><th>考案者</th><th>発表年</th><th>出典</th></tr>
+    <tr><td>ブレインストーミング</td><td>Alex F. Osborn（米国・広告業者）</td><td>1953年</td><td>"Applied Imagination" Scribner's</td></tr>
+    <tr><td>KJ法</td><td>川喜田二郎（東工大名誉教授）</td><td>1967年</td><td>『発想法』中公新書</td></tr>
+    <tr><td>マインドマップ</td><td>Tony Buzan（英国・教育コンサルタント）</td><td>1974年</td><td>BBC "Use Your Head"</td></tr>
+    <tr style="background:rgba(91,141,238,0.08)"><td>図解思考（本科目）</td><td>奥村隆一（三菱総研 主席研究員、博士（工学））</td><td>2011〜</td><td>『考えをまとめる・伝える図解の技術』（日経文庫）ほか</td></tr>
+  </table>
+<div class="appendix-card appendix-d" id="appendix-d">
+  <h2>🔗 補足D　関連概念・次回への接続</h2>
+
+  <h3>次回（第2回）の予告</h3>
+  <p>考える際に役立つ5つの図のタイプを学ぶ: ツリー図・ベン図・マトリクス図・フロー図・点グラフの長所・短所を学ぶ。</p>
+
+  <h3>関連する思考フレームワーク</h3>
+  <p class="ext-small">
+    [外部補足] <strong>MECE（ミーシー: Mutually Exclusive, Collectively Exhaustive）</strong>:
+    「モレなく・ダブりなく」情報を整理する概念。ロジカルシンキングの基本原則の一つ。
+    本科目の図解思考と密接に関連し、特に第3〜4回（状況分析・対策検討）で活用される見込み。
+  </p>
+  <p class="ext-small">
+    [外部補足] <strong>デザイン思考（Design Thinking）</strong>:
+    共感→定義→概念化→プロトタイプ→テストの5段階プロセス。
+    発散思考と収束思考を交互に行う点で本科目のアプローチと共通点が多い。
+    Stanfordのd.schoolが普及に貢献。
+  </p>
+  <p class="ext-small">
+    [外部補足] <strong>システム思考（Systems Thinking）</strong>:
+    物事を個々の要素ではなく、要素間の関係性（フィードバックループ等）として捉える思考法。
+    本科目の「図は関係性を理解するのに適している」という特徴と深く関連する。
+  </p>
+
+  <h3>「図」が示すロジカルな構造への入り口</h3>
+  <p class="ext-small">
+    [外部補足] 今回学んだ「線・囲み・矢印」の3要素は、グラフ理論（Graph Theory）の基礎概念（ノード・エッジ）と対応する。
+    コンピュータサイエンスやデータサイエンスにおけるネットワーク分析・知識グラフ（Knowledge Graph）にも発展する。
+  </p>
+</div>
+
+<!-- ━━━ 未確定事項 ━━━ -->
+<div class="appendix-card" style="background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.3);" id="appendix-u">
+  <h2 style="color:#34d399;">✅ 未確定事項：全件解消済み</h2>
+  <table>
+    <tr>
+      <th>ID</th>
+      <th>内容</th>
+      <th>解消方法</th>
+      <th>確認済み情報</th>
+    </tr>
+    <tr>
+      <td>U01</td>
+      <td>奥村講師の正式な職位</td>
+      <td>[外部補足・確認済: サイバー大学公式教員紹介 / 事業構想大学院大学]</td>
+      <td><strong>主席研究員</strong>（キャリア・イノベーション本部）。1968年生、早稲田大修士・東工大博士（工学）、一級建築士。著書『仕事が速い人は図で考える』（KADOKAWA, 2016）ほか多数。</td>
+    </tr>
+  </table>
+  <p style="font-size:12px; color:var(--text-sub); margin-top:12px;">
+    ※ 本ノートの全未確定事項は v1.3 更新時に解消済み（2026-04-14）
+  </p>
+</div>
+
+<div style="height:40px;"></div>
+
+</main>
+</body>
+</html>
