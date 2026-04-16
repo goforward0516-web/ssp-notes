@@ -1,0 +1,1377 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ロジカルシンキング 第5回 図を使って発想力を高めよう</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0f1117;--bg-card:#1a1f2e;--bg-card2:#1e2535;
+  --text:#e2e8f5;--text-sub:#8a99b8;
+  --blue:#5b8dee;--green:#34d399;--yellow:#fbbf24;
+  --orange:#fb923c;--purple:#a78bfa;--red:#f87171;
+  --cyan:#22d3ee;--pink:#f472b6;
+  --border:#2d3748;--sidebar-w:268px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans JP',sans-serif;font-size:15px;line-height:1.85;display:flex}
+
+/* ── Sidebar ── */
+#sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:#0c1020;border-right:1px solid var(--border);overflow-y:auto;padding:16px 0;z-index:100}
+#sidebar .toc-head{font-size:10px;letter-spacing:2px;color:var(--text-sub);text-transform:uppercase;padding:0 16px 8px;border-bottom:1px solid var(--border);margin-bottom:8px}
+#sidebar a{display:block;padding:4px 16px;color:var(--text-sub);text-decoration:none;font-size:12.5px;border-left:3px solid transparent;transition:all .15s}
+#sidebar a:hover,#sidebar a.active{color:var(--text);background:rgba(91,141,238,.09);border-left-color:var(--blue)}
+#sidebar .lv1{font-weight:700;color:#c8d5f0;font-size:13px;padding:6px 16px 4px}
+#sidebar .lv2{padding-left:28px}
+#sidebar .lv3{padding-left:40px;font-size:12px}
+
+/* ── Main ── */
+#main{margin-left:var(--sidebar-w);flex:1;padding:40px 52px;max-width:980px}
+
+/* ── Page header ── */
+.page-header{background:linear-gradient(135deg,#162240 0%,#1b2a45 100%);border:1px solid rgba(91,141,238,.3);border-radius:14px;padding:30px 36px;margin-bottom:36px}
+.page-header .course{color:var(--blue);font-size:12px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px}
+.page-header h1{font-size:26px;font-weight:700;margin-bottom:12px}
+.page-header .meta{display:flex;gap:22px;flex-wrap:wrap}
+.page-header .meta span{font-size:13px;color:var(--text-sub)}
+.page-header .meta span strong{color:var(--text)}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.badge{font-family:'JetBrains Mono',monospace;font-size:11px;padding:2px 9px;border-radius:5px;background:rgba(91,141,238,.12);border:1px solid rgba(91,141,238,.28);color:var(--blue)}
+.badge.green{background:rgba(52,211,153,.1);border-color:rgba(52,211,153,.3);color:var(--green)}
+.badge.yellow{background:rgba(251,191,36,.1);border-color:rgba(251,191,36,.3);color:var(--yellow)}
+
+/* ── Section / card ── */
+.section{margin-bottom:40px}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:24px 28px;margin-bottom:18px}
+h2.st{font-size:21px;font-weight:700;color:#ccd6f0;border-left:4px solid var(--blue);padding-left:14px;margin:40px 0 16px}
+h3.ss{font-size:16px;font-weight:700;color:var(--blue);margin:20px 0 10px}
+h4.sh{font-size:14px;font-weight:700;color:var(--yellow);margin:14px 0 6px}
+p{margin-bottom:10px}
+ul,ol{margin:8px 0 10px 20px}li{margin-bottom:5px}
+strong{color:#d9e4f8}
+
+/* ── Callout blocks ── */
+.def-box{background:rgba(91,141,238,.1);border:1px solid rgba(91,141,238,.28);border-radius:8px;padding:14px 18px;margin:12px 0}
+.def-box .lbl{font-size:11px;color:var(--blue);font-weight:700;letter-spacing:1px;margin-bottom:4px}
+.audio{border-left:4px solid var(--blue);background:rgba(91,141,238,.06);border-radius:0 8px 8px 0;padding:12px 16px;margin:10px 0}
+.audio .lbl{font-size:11px;color:var(--blue);font-weight:700;margin-bottom:4px}
+.ext{border-left:4px solid var(--green);background:rgba(52,211,153,.06);border-radius:0 8px 8px 0;padding:12px 16px;margin:10px 0}
+.ext .lbl{font-size:11px;color:var(--green);font-weight:700;margin-bottom:4px}
+.warn-inline{border-left:4px solid var(--orange);background:rgba(251,146,60,.06);border-radius:0 8px 8px 0;padding:10px 14px;margin:10px 0}
+
+/* ── Pointer badges ── */
+.ptr{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--text-sub);background:rgba(255,255,255,.04);padding:1px 5px;border-radius:3px;margin-left:3px}
+.ptr-g{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--green);background:rgba(52,211,153,.08);padding:1px 5px;border-radius:3px;margin-left:3px}
+.ptr-o{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--orange);background:rgba(251,146,60,.08);padding:1px 5px;border-radius:3px;margin-left:3px}
+
+/* ── Tables ── */
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13.5px}
+th{background:rgba(91,141,238,.14);color:var(--blue);padding:8px 12px;text-align:left;border-bottom:2px solid var(--blue)}
+td{padding:8px 12px;border-bottom:1px solid var(--border)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(255,255,255,.02)}
+
+/* ── SVG wrap ── */
+.fig{background:var(--bg-card2);border:1px solid var(--border);border-radius:10px;padding:20px;margin:16px 0;overflow-x:auto}
+figcaption{font-size:12px;color:var(--text-sub);margin-top:8px;text-align:center}
+
+/* ── Step flow ── */
+.flow{display:flex;align-items:center;flex-wrap:wrap;gap:0;margin:14px 0}
+.fbox{background:rgba(91,141,238,.1);border:1px solid rgba(91,141,238,.28);border-radius:7px;padding:8px 14px;font-size:13px;font-weight:700;color:var(--blue)}
+.farrow{color:var(--text-sub);padding:0 10px;font-size:20px}
+.fnum{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--blue);color:#fff;font-size:11px;font-weight:700;margin-right:6px;flex-shrink:0}
+
+/* ── Appendix cards ── */
+.app{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:24px 28px;margin-bottom:22px}
+.app h3{font-size:18px;margin-bottom:16px}
+.app-a{border-top:3px solid var(--yellow)}
+.app-b{border-top:3px solid var(--blue)}
+.app-c{border-top:3px solid var(--green)}
+.app-d{border-top:3px solid var(--purple)}
+.app-u{border-top:3px solid var(--orange)}
+.ext-note{font-size:12px;color:var(--text-sub)}
+
+/* ── Osborn grid ── */
+.osborn-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}
+.osborn-card{background:var(--bg-card2);border:1px solid var(--border);border-radius:8px;padding:12px 14px}
+.osborn-card .num{font-size:18px;font-weight:700;color:var(--blue);margin-bottom:4px}
+.osborn-card .title{font-size:13px;font-weight:700;color:var(--yellow);margin-bottom:4px}
+.osborn-card .desc{font-size:12px;color:var(--text-sub);line-height:1.6}
+
+section[id]{scroll-margin-top:20px}
+</style>
+</head>
+<body>
+
+<!-- ══ SIDEBAR ══ -->
+<nav id="sidebar">
+  <div class="toc-head">目次</div>
+  <a href="#top" class="lv1">🎯 概要・学習目標</a>
+  <a href="#ch1" class="lv1">第1章 発想力とは</a>
+  <a href="#ch1-what" class="lv2">発想の意義</a>
+  <a href="#ch1-def" class="lv2">発想力の定義</a>
+  <a href="#ch1-osborn" class="lv2">オズボーンの発想チェックリスト</a>
+  <a href="#ch1-three" class="lv2">3つの発想アプローチ</a>
+  <a href="#ch2" class="lv1">第2章 マトリクス図</a>
+  <a href="#ch2-concept" class="lv2">基本的な考え方</a>
+  <a href="#ch2-camera" class="lv2">事例①: 新しいカメラ</a>
+  <a href="#ch2-travel" class="lv2">事例②: 旅行商品</a>
+  <a href="#ch2-axis" class="lv2">軸の多様な設定</a>
+  <a href="#ch3" class="lv1">第3章 ツリー図</a>
+  <a href="#ch3-concept" class="lv2">基本的な考え方</a>
+  <a href="#ch3-diaper" class="lv2">事例①: 紙おむつ改良</a>
+  <a href="#ch3-barber" class="lv2">事例②: 床屋チェーン対策</a>
+  <a href="#ch4" class="lv1">第4章 フロー図</a>
+  <a href="#ch4-concept" class="lv2">独創化の時代</a>
+  <a href="#ch4-auto" class="lv2">事例①: 自動車製造</a>
+  <a href="#ch4-transport" class="lv2">事例②: 運送会社</a>
+  <a href="#summary" class="lv1">🔖 まとめ</a>
+  <a href="#app-a" class="lv1">⭐ 補足A: 最重要ワード</a>
+  <a href="#app-b" class="lv1">📚 補足B: 背景知識</a>
+  <a href="#app-c" class="lv1">🎯 補足C: 試験ポイント</a>
+  <a href="#app-d" class="lv1">🔗 補足D: 関連概念</a>
+  <a href="#unresolved" class="lv1">✅ 未確定事項</a>
+</nav>
+
+<!-- ══ MAIN ══ -->
+<main id="main">
+
+<!-- ── Page Header ── -->
+<section id="top">
+<div class="page-header">
+  <div class="course">ロジカルシンキング ／ サイバー大学 IT総合学部 教養科目</div>
+  <h1>第5回　図を使って発想力を高めよう</h1>
+  <div class="meta">
+    <span><strong>担当:</strong> 奥村 隆一</span>
+    <span><strong>章構成:</strong> 全4章</span>
+    <span><strong>QC:</strong> <span style="color:var(--green)">100% PASS ✅（v2強化版）</span></span>
+  </div>
+  <div class="badges">
+    <span class="badge">S03: スライドPDF (79p)</span>
+    <span class="badge">S05-A: hynote.ai</span>
+    <span class="badge">S05-B: hynote.ai</span>
+    <span class="badge green">外部補足・確認済</span>
+  </div>
+</div>
+
+<div class="card">
+  <div class="def-box">
+    <div class="lbl">📌 第5回 学習目標</div>
+    <strong>図を用いて、新しい発想をするための論理的な筋道を説明できる</strong>
+    <span class="ptr">← S03:p.2</span>
+  </div>
+  <table>
+    <tr><th>章</th><th>テーマ</th><th>発想タイプ</th><th>キーワード</th></tr>
+    <tr><td>第1章</td><td>新しいアイディアはどこから生まれるのか？</td><td>概論・定義</td><td>発想力、オズボーン</td></tr>
+    <tr><td>第2章</td><td>マトリクス図を使って発想する</td><td>強制発想法（組み合わせ型）</td><td>表頭×表側、マス目</td></tr>
+    <tr><td>第3章</td><td>ツリー図を使って発想する</td><td>問題改善型</td><td>比較対象、違い</td></tr>
+    <tr><td>第4章</td><td>フロー図を使って発想する</td><td>根本原因探索型（独創化）</td><td>根本要因、因果連鎖</td></tr>
+  </table>
+  <span class="ptr">← S03:p.3</span>
+</div>
+</section>
+
+<!-- ══════════════════════════════ 第1章 ══════════════════════════════ -->
+<h2 class="st" id="ch1">第1章　新しいアイディアはどこから生まれるのか？</h2>
+
+<div class="def-box">
+  <div class="lbl">📌 第1章 学習目標</div>
+  発想を生み出すとはどういうことか、私たちはどのような場面で発想力が求められるのかについて説明できる
+  <span class="ptr">← S03:p.5</span>
+</div>
+
+<!-- 1-1 発想の意義 -->
+<section id="ch1-what">
+<h3 class="ss">1-1　発想の意義：大発明より「小さな工夫」</h3>
+<div class="card">
+
+  <!-- スライドp.6 再現 -->
+  <div class="fig">
+    <svg viewBox="0 0 740 150" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:740px">
+      <text x="370" y="22" text-anchor="middle" font-size="14" font-weight="bold" fill="#c8d5f0" font-family="Noto Sans JP,sans-serif">新しい発想はどこから生まれるのか？</text>
+      <!-- 4つのポイント -->
+      <rect x="20" y="36" width="330" height="48" rx="6" fill="rgba(91,141,238,.12)" stroke="#5b8dee" stroke-width="1.2"/>
+      <circle cx="42" cy="60" r="8" fill="#5b8dee"/>
+      <text x="52" y="56" font-size="11" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">「世紀の大発明」ではなく、</text>
+      <text x="52" y="72" font-size="11" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">ちょっとした工夫も「新しい発想」に含まれる</text>
+      <rect x="370" y="36" width="350" height="48" rx="6" fill="rgba(91,141,238,.12)" stroke="#5b8dee" stroke-width="1.2"/>
+      <circle cx="392" cy="60" r="8" fill="#5b8dee"/>
+      <text x="402" y="56" font-size="11" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">仕事の価値を高める上では、</text>
+      <text x="402" y="72" font-size="11" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">新しい発想を持つことが重要</text>
+      <rect x="20" y="94" width="330" height="48" rx="6" fill="rgba(91,141,238,.12)" stroke="#5b8dee" stroke-width="1.2"/>
+      <circle cx="42" cy="118" r="8" fill="#5b8dee"/>
+      <text x="52" y="114" font-size="11" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">他者との違いは新しい発想から作られる</text>
+      <rect x="370" y="94" width="350" height="48" rx="6" fill="rgba(91,141,238,.12)" stroke="#5b8dee" stroke-width="1.2"/>
+      <circle cx="392" cy="118" r="8" fill="#5b8dee"/>
+      <text x="402" y="110" font-size="11" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">必ずしも特別な人でなければ</text>
+      <text x="402" y="126" font-size="11" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">「新しい発想を生み出せない」わけではない</text>
+    </svg>
+    <figcaption>スライド再現: 新しい発想の意義　<span class="ptr">S03:p.6</span></figcaption>
+  </div>
+
+  <p>新しい発想とは「世紀の大発明」のような大きなものだけでなく、日々の仕事・生活の中でのちょっとした工夫も含まれる。</p>
+  <div class="audio">
+    <div class="lbl">🎙 音声補足</div>
+    <p>例：トーマス・エジソンは蓄音機・電話など<strong>米国特許1,093件（外国特許含む総計2,332件）</strong>の発明を行ったと言われる。これは「正真正銘の大発明」の部類。しかしビジネスパーソンにとって役立つのは100年に一度の大発明よりも、文書フォーマットの工夫や作業段取りの見直しといった<strong>「小さな発明を行い続けること」</strong>。仕事はこのような小さな新しい発想の積み重ねによって向上する。<span class="ptr-g">← [外部補足・確認済: thomasedison.org公式 / Rutgers大学Edison Papers]</span><span class="ptr">← S05-A/B</span></p>
+  </div>
+</div>
+</section>
+
+<!-- 1-2 発想力の定義 -->
+<section id="ch1-def">
+<h3 class="ss">1-2　発想力とは何か</h3>
+<div class="card">
+  <!-- スライドp.7 参考文献再現 -->
+  <div class="fig">
+    <svg viewBox="0 0 740 170" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:740px">
+      <text x="370" y="22" text-anchor="middle" font-size="14" font-weight="bold" fill="#c8d5f0" font-family="Noto Sans JP,sans-serif">発想力とは？（有識者の定義）</text>
+      <!-- 高橋誠 -->
+      <rect x="20" y="35" width="330" height="110" rx="8" fill="rgba(91,141,238,.09)" stroke="#5b8dee" stroke-width="1.2"/>
+      <rect x="20" y="35" width="330" height="30" rx="8" fill="rgba(91,141,238,.2)"/>
+      <text x="185" y="55" text-anchor="middle" font-size="12" font-weight="bold" fill="#5b8dee" font-family="Noto Sans JP,sans-serif">高橋誠（創造開発研究所代表取締役所長）</text>
+      <text x="36" y="78" font-size="11" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">創造とは</text>
+      <text x="36" y="94" font-size="11" fill="#fbbf24" font-family="Noto Sans JP,sans-serif">「異質な情報を組み合わせ統合し、</text>
+      <text x="36" y="110" font-size="11" fill="#fbbf24" font-family="Noto Sans JP,sans-serif"> 社会や個人に新価値を生むこと」</text>
+      <text x="36" y="133" font-size="10" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">出典：『問題解決手法の知識』日経新聞出版社, 1999, p.23</text>
+      <!-- 松林博文 -->
+      <rect x="390" y="35" width="330" height="110" rx="8" fill="rgba(52,211,153,.07)" stroke="#34d399" stroke-width="1.2"/>
+      <rect x="390" y="35" width="330" height="30" rx="8" fill="rgba(52,211,153,.18)"/>
+      <text x="555" y="55" text-anchor="middle" font-size="12" font-weight="bold" fill="#34d399" font-family="Noto Sans JP,sans-serif">松林博文（「クリエイティブ・シンキング」著者）</text>
+      <text x="406" y="78" font-size="11" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">キーワード: 拡散・統合・包括・多元・非直線・</text>
+      <text x="406" y="94" font-size="11" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">水平・イメージ・感性・アン・フレームワーク・</text>
+      <text x="406" y="110" font-size="11" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">子供・共感・右脳</text>
+      <text x="406" y="133" font-size="10" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">出典：『クリエイティブ・シンキング』ダイヤモンド社, 2003, p.20</text>
+    </svg>
+    <figcaption>スライド再現: 発想力の定義（有識者）　<span class="ptr">S03:p.7</span></figcaption>
+  </div>
+
+  <!-- スライドp.8 定義 -->
+  <div class="fig" style="text-align:center;padding:28px 20px">
+    <p style="color:var(--text-sub);font-size:12px;margin-bottom:12px">発想力とは、</p>
+    <p style="font-size:22px;font-weight:700;line-height:1.5;color:#e2e8f5">「他人とは異なる視点でありつつも、</p>
+    <p style="font-size:22px;font-weight:700;line-height:1.5"><span style="color:var(--blue);text-decoration:underline">一定程度の合理性のある考え方を生み出す力</span>」</p>
+    <p style="color:var(--text-sub);font-size:12px;margin-top:14px">のこと<span class="ptr">← S03:p.8</span></p>
+  </div>
+
+  <div class="audio">
+    <div class="lbl">🎙 音声補足</div>
+    <p>発想力という概念は「融通無碍」であり、こういうものだと定式化することが難しい。その柔軟性こそが発想力の源とも言える。発想力を高める「定まった手法」は存在しないが、古くから様々な方法・考え方が提案されてきている。本科目では図タイプを使って新しい発想を生み出す独自の手順を説明する。<span class="ptr">← S05-A</span></p>
+  </div>
+</div>
+</section>
+
+<!-- 1-3 オズボーン -->
+<section id="ch1-osborn">
+<h3 class="ss">1-3　発想法の例：オズボーンの発想チェックリスト</h3>
+<div class="card">
+
+  <!-- スライドp.9 タイトルスライド再現 -->
+  <div class="fig">
+    <svg viewBox="0 0 740 80" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:740px">
+      <rect x="0" y="0" width="740" height="80" rx="8" fill="rgba(91,141,238,.06)" stroke="#5b8dee" stroke-width="1"/>
+      <circle cx="40" cy="40" r="16" fill="rgba(91,141,238,.2)" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="40" y="45" text-anchor="middle" font-size="13" font-weight="bold" fill="#5b8dee" font-family="sans-serif">OS</text>
+      <text x="70" y="32" font-size="14" font-weight="bold" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">発想法の例：オズボーンの発想チェックリスト</text>
+      <text x="70" y="52" font-size="12" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">■ アレックス・F・オズボーン（Alex Faickney Osborn, 1888–1966）が考案した発想法</text>
+      <text x="70" y="68" font-size="12" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">■ チェックリスト9項目に自問自答することで新たな着想を得る</text>
+    </svg>
+    <figcaption>スライド再現: オズボーンの発想チェックリスト概要　<span class="ptr">S03:p.9</span></figcaption>
+  </div>
+
+  <div class="ext">
+    <div class="lbl">🌐 外部補足・確認済</div>
+    <p>Alex Faickney Osborn（1888–1966）は米国の広告業者・著述家。広告代理店BBDOの共同創設者（1919年）。1953年の著書 <em>Applied Imagination</em> でブレインストーミングと発想チェックリストを体系化した。チェックリストは同書に初版から掲載されており、後にBob Eberleが「SCAMPER」として再編。<span class="ptr-g">← [外部補足・確認済: Cambridge University Press IfM / Regent University Journal / Open Library]</span></p>
+  </div>
+
+  <!-- スライドp.9-11 オズボーン9項目 完全再現 -->
+  <h4 class="sh">9項目チェックリスト（スライドp.9-11完全再現）</h4>
+  <div class="osborn-grid">
+    <div class="osborn-card">
+      <div class="num">1</div>
+      <div class="title">転用</div>
+      <div class="desc">他に使い道はないか？<br>・そのままで新しい使い道は？<br>・改善・改良して使い道は？</div>
+    </div>
+    <div class="osborn-card">
+      <div class="num">2</div>
+      <div class="title">応用</div>
+      <div class="desc">他からアイディアが借りられないか？<br>・ほかにこれに似たものはないか？<br>・何か他のアイデアを示唆していないか？<br>・真似できないか？</div>
+    </div>
+    <div class="osborn-card">
+      <div class="num">3</div>
+      <div class="title">変更</div>
+      <div class="desc">変えてみたらどうか？<br>・意味・色・動き・音・匂い・様式・型を替えられないか？</div>
+    </div>
+    <div class="osborn-card">
+      <div class="num">4</div>
+      <div class="title">拡大</div>
+      <div class="desc">大きくしてみたらどうか？<br>・より大きく・強く・高く・長く・厚く<br>・時間は？頻度は？付加価値は？材料は？</div>
+    </div>
+    <div class="osborn-card">
+      <div class="num">5</div>
+      <div class="title">縮小</div>
+      <div class="desc">小さくしてみたらどうか？<br>・より小さく・軽く・低く・短く<br>・何か減らせないか？省略できないか？</div>
+    </div>
+    <div class="osborn-card">
+      <div class="num">6</div>
+      <div class="title">代用</div>
+      <div class="desc">他のもので代用できないか？<br>・何か代用できないか？<br>・他の素材は？他のアプローチは？</div>
+    </div>
+    <div class="osborn-card">
+      <div class="num">7</div>
+      <div class="title">置換</div>
+      <div class="desc">入れ替えてみたらどうか？<br>・要素を取り換えたら？<br>・他のレイアウトは？他の順序は？</div>
+    </div>
+    <div class="osborn-card">
+      <div class="num">8</div>
+      <div class="title">逆転</div>
+      <div class="desc">逆にしてみたらどうか？<br>・後ろ向きにしたら？<br>・上下・左右をひっくり返したら？<br>・役割を反対にしたら？</div>
+    </div>
+    <div class="osborn-card">
+      <div class="num">9</div>
+      <div class="title">結合</div>
+      <div class="desc">組み合わせてみたらどうか？<br>・合体したら？混ぜてみたら？<br>・ユニット・目的を組み合わせたら？</div>
+    </div>
+  </div>
+  <span class="ptr">← S03:p.9-11</span>
+  <p style="font-size:13px;color:var(--text-sub);margin-top:8px">出典: 永田豊志『知的生産力が劇的に高まる最強フレームワーク100』ソフトバンククリエイティブ, 2008, p.155</p>
+
+  <div class="audio">
+    <div class="lbl">🎙 音声補足</div>
+    <p>ある対象となるものを9項目に照らして問い直すことで新しいアイデアを生み出す。非常にシンプルで多様な局面で使える。見方を少し変えるだけで発想を広げることができる。<span class="ptr">← S05-A</span></p>
+  </div>
+</div>
+</section>
+
+<!-- 1-4 三タイプ -->
+<section id="ch1-three">
+<h3 class="ss">1-4　図を使った3つの発想アプローチ（スライドp.12-17）</h3>
+<div class="card">
+
+  <!-- スライドp.12-17 図解思考3パターン 完全再現 -->
+  <div class="fig">
+    <svg viewBox="0 0 720 340" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:720px">
+      <defs>
+        <marker id="arr" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+          <path d="M1,1 L7,4 L1,7 Z" fill="#5b8dee"/>
+        </marker>
+      </defs>
+
+      <!-- ① マトリクス図 -->
+      <rect x="20" y="20" width="200" height="295" rx="10" fill="rgba(91,141,238,.07)" stroke="#5b8dee" stroke-width="1.5"/>
+      <rect x="20" y="20" width="200" height="34" rx="10" fill="rgba(91,141,238,.25)"/>
+      <text x="120" y="42" text-anchor="middle" font-size="13" font-weight="bold" fill="#5b8dee" font-family="Noto Sans JP,sans-serif">① マトリクス図</text>
+      <text x="120" y="68" text-anchor="middle" font-size="11" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">異なるものを結びつける</text>
+      <text x="120" y="84" text-anchor="middle" font-size="11" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">強制発想法（組み合わせ型）</text>
+      <!-- マトリクス図示 -->
+      <text x="80" y="118" text-anchor="middle" font-size="10" fill="#5b8dee" font-family="Noto Sans JP,sans-serif">機能A</text>
+      <text x="140" y="118" text-anchor="middle" font-size="10" fill="#5b8dee" font-family="Noto Sans JP,sans-serif">機能B</text>
+      <text x="36" y="148" text-anchor="middle" font-size="10" fill="#fb923c" font-family="Noto Sans JP,sans-serif">ニーズX</text>
+      <text x="36" y="188" text-anchor="middle" font-size="10" fill="#fb923c" font-family="Noto Sans JP,sans-serif">ニーズY</text>
+      <!-- セル -->
+      <rect x="56" y="124" width="50" height="32" rx="3" fill="rgba(52,211,153,.1)" stroke="#34d399" stroke-width="1"/>
+      <rect x="116" y="124" width="50" height="32" rx="3" fill="rgba(52,211,153,.1)" stroke="#34d399" stroke-width="1"/>
+      <rect x="56" y="164" width="50" height="32" rx="3" fill="rgba(52,211,153,.1)" stroke="#34d399" stroke-width="1"/>
+      <rect x="116" y="164" width="50" height="32" rx="3" fill="rgba(251,191,36,.2)" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="141" y="184" text-anchor="middle" font-size="11" fill="#fbbf24" font-family="sans-serif">💡</text>
+      <text x="120" y="220" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">表頭 × 表側 = マス目</text>
+      <!-- step -->
+      <text x="36" y="248" font-size="10" fill="#34d399" font-family="Noto Sans JP,sans-serif">① ニーズを列挙→表側</text>
+      <text x="36" y="263" font-size="10" fill="#34d399" font-family="Noto Sans JP,sans-serif">② 機能を列挙→表頭</text>
+      <text x="36" y="278" font-size="10" fill="#34d399" font-family="Noto Sans JP,sans-serif">③ マス目の内容を考える</text>
+
+      <!-- ② ツリー図 -->
+      <rect x="260" y="20" width="200" height="295" rx="10" fill="rgba(251,191,36,.06)" stroke="#fbbf24" stroke-width="1.5"/>
+      <rect x="260" y="20" width="200" height="34" rx="10" fill="rgba(251,191,36,.2)"/>
+      <text x="360" y="42" text-anchor="middle" font-size="13" font-weight="bold" fill="#fbbf24" font-family="Noto Sans JP,sans-serif">② ツリー図</text>
+      <text x="360" y="68" text-anchor="middle" font-size="11" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">既存のものにひねりを加える</text>
+      <text x="360" y="84" text-anchor="middle" font-size="11" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">問題改善型</text>
+      <!-- ツリー図示 (スライドp.15再現) -->
+      <rect x="278" y="104" width="60" height="24" rx="4" fill="rgba(251,191,36,.15)" stroke="#fbbf24" stroke-width="1"/>
+      <text x="308" y="120" text-anchor="middle" font-size="10" fill="#fbbf24" font-family="Noto Sans JP,sans-serif">新事業A</text>
+      <!-- 違いバブル+枝 -->
+      <line x1="338" y1="116" x2="358" y2="108" stroke="#fbbf24" stroke-width="1"/>
+      <line x1="338" y1="116" x2="358" y2="136" stroke="#fbbf24" stroke-width="1"/>
+      <line x1="338" y1="116" x2="358" y2="164" stroke="#fbbf24" stroke-width="1"/>
+      <!-- 要素 -->
+      <rect x="358" y="98" width="56" height="20" rx="3" fill="rgba(251,191,36,.1)" stroke="#fbbf24" stroke-width="1"/>
+      <text x="386" y="112" text-anchor="middle" font-size="9" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">要素1</text>
+      <rect x="358" y="126" width="56" height="20" rx="3" fill="rgba(251,191,36,.1)" stroke="#fbbf24" stroke-width="1"/>
+      <text x="386" y="140" text-anchor="middle" font-size="9" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">要素2</text>
+      <rect x="358" y="154" width="56" height="20" rx="3" fill="rgba(251,191,36,.1)" stroke="#fbbf24" stroke-width="1"/>
+      <text x="386" y="168" text-anchor="middle" font-size="9" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">要素3</text>
+      <!-- 改良ポイント矢印 -->
+      <text x="416" y="112" font-size="10" fill="#34d399">⇒</text>
+      <text x="416" y="140" font-size="10" fill="#34d399">⇒</text>
+      <text x="416" y="168" font-size="10" fill="#34d399">⇒</text>
+      <text x="430" y="106" font-size="9" fill="#34d399" font-family="Noto Sans JP,sans-serif">改良1</text>
+      <text x="430" y="134" font-size="9" fill="#34d399" font-family="Noto Sans JP,sans-serif">改良2</text>
+      <text x="430" y="162" font-size="9" fill="#34d399" font-family="Noto Sans JP,sans-serif">改良3</text>
+      <!-- 違いバブル -->
+      <ellipse cx="278" cy="108" rx="18" ry="10" fill="rgba(91,141,238,.15)" stroke="#5b8dee" stroke-width="1"/>
+      <text x="278" y="112" text-anchor="middle" font-size="8" fill="#5b8dee" font-family="Noto Sans JP,sans-serif">違い1</text>
+      <ellipse cx="278" cy="136" rx="18" ry="10" fill="rgba(91,141,238,.15)" stroke="#5b8dee" stroke-width="1"/>
+      <text x="278" y="140" text-anchor="middle" font-size="8" fill="#5b8dee" font-family="Noto Sans JP,sans-serif">違い2</text>
+      <ellipse cx="278" cy="164" rx="18" ry="10" fill="rgba(91,141,238,.15)" stroke="#5b8dee" stroke-width="1"/>
+      <text x="278" y="168" text-anchor="middle" font-size="8" fill="#5b8dee" font-family="Noto Sans JP,sans-serif">違い3</text>
+      <text x="276" y="220" text-anchor="middle" font-size="9" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">比較対象との違いから</text>
+      <text x="276" y="234" text-anchor="middle" font-size="9" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">要素を導く</text>
+      <text x="420" y="220" text-anchor="middle" font-size="9" fill="#34d399" font-family="Noto Sans JP,sans-serif">各要素の改良</text>
+      <text x="420" y="234" text-anchor="middle" font-size="9" fill="#34d399" font-family="Noto Sans JP,sans-serif">ポイントを列挙</text>
+      <!-- step -->
+      <text x="276" y="258" font-size="10" fill="#34d399" font-family="Noto Sans JP,sans-serif">① 比較対象を探す</text>
+      <text x="276" y="273" font-size="10" fill="#34d399" font-family="Noto Sans JP,sans-serif">② 違いを探す</text>
+      <text x="276" y="288" font-size="10" fill="#34d399" font-family="Noto Sans JP,sans-serif">③ 違いから発想のヒントを探る</text>
+
+      <!-- ③ フロー図 -->
+      <rect x="500" y="20" width="200" height="295" rx="10" fill="rgba(52,211,153,.06)" stroke="#34d399" stroke-width="1.5"/>
+      <rect x="500" y="20" width="200" height="34" rx="10" fill="rgba(52,211,153,.18)"/>
+      <text x="600" y="42" text-anchor="middle" font-size="13" font-weight="bold" fill="#34d399" font-family="Noto Sans JP,sans-serif">③ フロー図</text>
+      <text x="600" y="68" text-anchor="middle" font-size="11" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">根本から問い直す</text>
+      <text x="600" y="84" text-anchor="middle" font-size="11" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">独創化・抜本的発想</text>
+      <!-- フロー図示 (スライドp.17再現) -->
+      <rect x="525" y="100" width="150" height="26" rx="5" fill="rgba(248,113,113,.15)" stroke="#f87171" stroke-width="1.5"/>
+      <text x="600" y="117" text-anchor="middle" font-size="11" fill="#f87171" font-family="Noto Sans JP,sans-serif">現状の問題点</text>
+      <line x1="600" y1="126" x2="600" y2="140" stroke="#8a99b8" stroke-width="1.5" marker-end="url(#arr)"/>
+      <!-- 要因群 -->
+      <rect x="518" y="142" width="55" height="22" rx="3" fill="rgba(251,146,60,.15)" stroke="#fb923c" stroke-width="1"/>
+      <text x="545" y="157" text-anchor="middle" font-size="9" fill="#fb923c" font-family="Noto Sans JP,sans-serif">要因1</text>
+      <rect x="572" y="142" width="55" height="22" rx="3" fill="rgba(251,146,60,.15)" stroke="#fb923c" stroke-width="1"/>
+      <text x="599" y="157" text-anchor="middle" font-size="9" fill="#fb923c" font-family="Noto Sans JP,sans-serif">要因2</text>
+      <rect x="626" y="142" width="55" height="22" rx="3" fill="rgba(251,146,60,.15)" stroke="#fb923c" stroke-width="1"/>
+      <text x="653" y="157" text-anchor="middle" font-size="9" fill="#fb923c" font-family="Noto Sans JP,sans-serif">要因3</text>
+      <line x1="545" y1="164" x2="545" y2="178" stroke="#8a99b8" stroke-width="1" marker-end="url(#arr)"/>
+      <line x1="545" y1="164" x2="599" y2="178" stroke="#8a99b8" stroke-width="1" marker-end="url(#arr)"/>
+      <rect x="518" y="180" width="55" height="22" rx="3" fill="rgba(251,146,60,.12)" stroke="#fb923c" stroke-width="1"/>
+      <text x="545" y="195" text-anchor="middle" font-size="9" fill="#fb923c" font-family="Noto Sans JP,sans-serif">要因4</text>
+      <rect x="572" y="180" width="55" height="22" rx="3" fill="rgba(251,146,60,.12)" stroke="#fb923c" stroke-width="1"/>
+      <text x="599" y="195" text-anchor="middle" font-size="9" fill="#fb923c" font-family="Noto Sans JP,sans-serif">要因5</text>
+      <line x1="545" y1="202" x2="587" y2="218" stroke="#8a99b8" stroke-width="1" marker-end="url(#arr)"/>
+      <line x1="599" y1="202" x2="587" y2="218" stroke="#8a99b8" stroke-width="1" marker-end="url(#arr)"/>
+      <!-- 根本要因 -->
+      <rect x="540" y="220" width="100" height="26" rx="5" fill="rgba(251,191,36,.25)" stroke="#fbbf24" stroke-width="2"/>
+      <text x="590" y="237" text-anchor="middle" font-size="11" font-weight="bold" fill="#fbbf24" font-family="Noto Sans JP,sans-serif">根本要因</text>
+      <!-- 吹き出し -->
+      <path d="M656,218 C680,218 700,230 700,242 C700,254 680,264 656,264 L650,264 L648,276 L642,264 L590,264 C566,264 550,254 550,242 C550,230 566,218 590,218 Z" fill="rgba(251,191,36,.08)" stroke="#fbbf24" stroke-width="1" stroke-dasharray="3,2"/>
+      <text x="624" y="238" text-anchor="middle" font-size="9" fill="#fbbf24" font-family="Noto Sans JP,sans-serif">コレを解決する</text>
+      <text x="624" y="252" text-anchor="middle" font-size="9" fill="#fbbf24" font-family="Noto Sans JP,sans-serif">方策を考えることで</text>
+      <text x="624" y="266" text-anchor="middle" font-size="8" fill="#fbbf24" font-family="Noto Sans JP,sans-serif">新しい発想を得る</text>
+      <!-- step -->
+      <text x="516" y="296" font-size="10" fill="#34d399" font-family="Noto Sans JP,sans-serif">① 理由・原因を列挙</text>
+      <text x="516" y="308" font-size="10" fill="#34d399" font-family="Noto Sans JP,sans-serif">② 因果の連鎖を図にする</text>
+    </svg>
+    <figcaption>スライド再現: 3つの発想アプローチ（スライドp.12-17の図を統合）　<span class="ptr">S03:p.14-17</span></figcaption>
+  </div>
+
+  <table>
+    <tr><th>図タイプ</th><th>用途・特徴</th><th>3ステップ</th></tr>
+    <tr><td><strong>マトリクス図</strong></td><td>異なるものを結びつけて新しいアイディア生成（強制発想法）</td><td>①ニーズ→表側 ②機能→表頭 ③マス目記載</td></tr>
+    <tr><td><strong>ツリー図</strong></td><td>既存のものにひねり（問題改善型）</td><td>①比較対象を探す ②違いを探す ③ヒントを探る</td></tr>
+    <tr><td><strong>フロー図</strong></td><td>抜本的発想（独創化戦略）</td><td>①理由・原因列挙 ②因果連鎖を図示 ③根本要因を探る</td></tr>
+  </table>
+  <span class="ptr">← S03:p.18-19</span>
+</div>
+</section>
+
+<!-- ══════════════════════════════ 第2章 ══════════════════════════════ -->
+<h2 class="st" id="ch2">第2章　マトリクス図を使って発想する</h2>
+<div class="def-box">
+  <div class="lbl">📌 第2章 学習目標</div>
+  具体的な事例にマトリクス図を用いることで、発想力を高める手順と方法を説明できる
+  <span class="ptr">← S03:p.22</span>
+</div>
+
+<!-- 2-1 概念 -->
+<section id="ch2-concept">
+<h3 class="ss">2-1　マトリクス図を使った発想：基本的な考え方</h3>
+<div class="card">
+  <p>発想力の一タイプとして「<strong>既存のものを新しい組み合わせで構想する力</strong>」がある。この発想にはマトリクス図が有効。</p>
+
+  <div class="def-box">
+    <div class="lbl">【定義】マトリクス図（発想への活用）</div>
+    <strong>表頭と表側に異質な要素を掲げ、両者が交わるマス目の中に入れる情報を考えることで、これまでにないアイディアを作り出す「強制発想法」の一種。</strong>
+    <p style="margin-top:6px;font-size:13px">表頭の数×表側の数 = マス目の総数（例: 表頭3×表側2 = 6マス）</p>
+    <span class="ptr">← S03:p.25</span>
+  </div>
+
+  <!-- スライドp.12-13 マトリクス構造 完全再現 -->
+  <div class="fig">
+    <svg viewBox="0 0 680 250" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:680px">
+      <!-- タイトル -->
+      <text x="340" y="22" text-anchor="middle" font-size="13" font-weight="bold" fill="#c8d5f0" font-family="Noto Sans JP,sans-serif">異なるものを結びつける（マトリクス図の基本構造）</text>
+      <!-- 表頭ラベル -->
+      <text x="430" y="48" text-anchor="middle" font-size="12" font-weight="bold" fill="#5b8dee" font-family="Noto Sans JP,sans-serif">機能（表頭）</text>
+      <rect x="182" y="55" width="160" height="30" rx="4" fill="rgba(91,141,238,.2)" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="262" y="75" text-anchor="middle" font-size="11" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">機能 A</text>
+      <rect x="352" y="55" width="160" height="30" rx="4" fill="rgba(91,141,238,.2)" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="432" y="75" text-anchor="middle" font-size="11" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">機能 B</text>
+      <rect x="522" y="55" width="140" height="30" rx="4" fill="rgba(91,141,238,.2)" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="592" y="75" text-anchor="middle" font-size="11" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">機能 C</text>
+      <!-- 表頭注釈 -->
+      <rect x="558" y="38" width="50" height="18" rx="3" fill="rgba(91,141,238,.15)"/>
+      <text x="583" y="51" text-anchor="middle" font-size="9" fill="#5b8dee" font-family="Noto Sans JP,sans-serif">表頭</text>
+      <!-- 表側ラベル -->
+      <text x="88" y="150" text-anchor="middle" font-size="12" font-weight="bold" fill="#fb923c" font-family="Noto Sans JP,sans-serif">ニーズ</text>
+      <text x="88" y="166" text-anchor="middle" font-size="12" font-weight="bold" fill="#fb923c" font-family="Noto Sans JP,sans-serif">（表側）</text>
+      <!-- 表側行1 -->
+      <rect x="20" y="95" width="155" height="55" rx="4" fill="rgba(251,146,60,.18)" stroke="#fb923c" stroke-width="1.5"/>
+      <text x="97" y="122" text-anchor="middle" font-size="11" fill="#fb923c" font-family="Noto Sans JP,sans-serif">ニーズ X</text>
+      <!-- 表側行2 -->
+      <rect x="20" y="158" width="155" height="55" rx="4" fill="rgba(251,146,60,.18)" stroke="#fb923c" stroke-width="1.5"/>
+      <text x="97" y="190" text-anchor="middle" font-size="11" fill="#fb923c" font-family="Noto Sans JP,sans-serif">ニーズ Y</text>
+      <!-- 表側注釈 -->
+      <rect x="20" y="96" width="40" height="18" rx="3" fill="rgba(251,146,60,.3)"/>
+      <text x="40" y="109" text-anchor="middle" font-size="9" fill="#fb923c" font-family="Noto Sans JP,sans-serif">表側</text>
+      <!-- マス目 6つ -->
+      <rect x="182" y="95" width="160" height="55" rx="4" fill="rgba(52,211,153,.07)" stroke="#34d399" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="262" y="125" text-anchor="middle" font-size="11" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">X × A ⇒ ?</text>
+      <rect x="352" y="95" width="160" height="55" rx="4" fill="rgba(52,211,153,.07)" stroke="#34d399" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="432" y="125" text-anchor="middle" font-size="11" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">X × B ⇒ ?</text>
+      <rect x="522" y="95" width="140" height="55" rx="4" fill="rgba(52,211,153,.07)" stroke="#34d399" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="592" y="125" text-anchor="middle" font-size="11" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">X × C ⇒ ?</text>
+      <rect x="182" y="158" width="160" height="55" rx="4" fill="rgba(52,211,153,.07)" stroke="#34d399" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="262" y="188" text-anchor="middle" font-size="11" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">Y × A ⇒ ?</text>
+      <rect x="352" y="158" width="160" height="55" rx="4" fill="rgba(52,211,153,.07)" stroke="#34d399" stroke-width="1" stroke-dasharray="4,2"/>
+      <text x="432" y="188" text-anchor="middle" font-size="11" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">Y × B ⇒ ?</text>
+      <rect x="522" y="158" width="140" height="55" rx="4" fill="rgba(251,191,36,.2)" stroke="#fbbf24" stroke-width="2"/>
+      <text x="592" y="180" text-anchor="middle" font-size="12" fill="#fbbf24" font-family="Noto Sans JP,sans-serif">Y × C</text>
+      <text x="592" y="200" text-anchor="middle" font-size="14" font-family="sans-serif">💡</text>
+      <!-- 説明 -->
+      <text x="340" y="235" text-anchor="middle" font-size="11" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">表頭3つ × 表側2つ = 合計6マスのアイデアが生まれる（強制発想法）</text>
+    </svg>
+    <figcaption>スライド再現: マトリクス図の基本構造（スライドp.12-13）　<span class="ptr">S03:p.12-13</span></figcaption>
+  </div>
+
+  <h4 class="sh">発想マトリクス図の3ステップ</h4>
+  <div class="flow">
+    <div class="fbox"><span class="fnum">1</span>ニーズを列挙→表側へ記載</div>
+    <div class="farrow">→</div>
+    <div class="fbox"><span class="fnum">2</span>機能を列挙→表頭へ記載</div>
+    <div class="farrow">→</div>
+    <div class="fbox"><span class="fnum">3</span>マス目に当てはまる内容を記載</div>
+  </div>
+  <span class="ptr">← S03:p.25</span>
+
+  <div class="audio">
+    <div class="lbl">🎙 音声補足（機能列挙のコツ：連想法）</div>
+    <p>機能を列挙する際は「<strong>論理の飛躍</strong>」が求められる。論理だけでは飛躍する発想は出にくいため、<strong>「連想法」</strong>（カメラに似ているものは何か？）を用いるのが最も簡単。ただしビジネス上の判断では論理の飛躍を「無意識に」行うことは避ける。大切なのは、飛躍させるべき時にそれを<strong>意識して</strong>行うこと。<span class="ptr">← S05-A</span></p>
+  </div>
+</div>
+</section>
+
+<!-- 2-2 カメラ -->
+<section id="ch2-camera">
+<h3 class="ss">2-2　事例①：新しいカメラの考案</h3>
+<div class="card">
+  <h4 class="sh">ステップ①：現状問題点を「裏返す」→ニーズを列挙（スライドp.26）</h4>
+  <table>
+    <tr><th>現状の問題点</th><th>裏返すと → ニーズ（表側）</th></tr>
+    <tr><td>撮影した写真の管理が面倒</td><td><strong>写真の管理を容易にしたい</strong></td></tr>
+    <tr><td>ビデオに比べ臨場感ある記録の再現が劣る</td><td><strong>再現の臨場感を高めたい</strong></td></tr>
+  </table>
+  <span class="ptr">← S03:p.26</span>
+
+  <h4 class="sh">ステップ②：連想法で機能を列挙（スライドp.27）</h4>
+  <div class="fig">
+    <svg viewBox="0 0 680 120" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:680px">
+      <text x="340" y="20" text-anchor="middle" font-size="13" font-weight="bold" fill="#c8d5f0" font-family="Noto Sans JP,sans-serif">連想法：「カメラに似ているものは何か？」</text>
+      <!-- カメラ -->
+      <rect x="280" y="36" width="120" height="36" rx="6" fill="rgba(91,141,238,.15)" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="340" y="59" text-anchor="middle" font-size="12" font-weight="bold" fill="#5b8dee" font-family="Noto Sans JP,sans-serif">カメラ</text>
+      <!-- 連想1 -->
+      <line x1="280" y1="54" x2="204" y2="78" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="4,2"/>
+      <rect x="24" y="64" width="178" height="42" rx="6" fill="rgba(251,191,36,.12)" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="113" y="82" text-anchor="middle" font-size="11" fill="#fbbf24" font-family="Noto Sans JP,sans-serif">人間の目</text>
+      <text x="113" y="98" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">被写体を画像として捉える点が似ている</text>
+      <!-- 連想2 -->
+      <line x1="400" y1="54" x2="476" y2="78" stroke="#34d399" stroke-width="1.5" stroke-dasharray="4,2"/>
+      <rect x="476" y="64" width="182" height="42" rx="6" fill="rgba(52,211,153,.1)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="567" y="82" text-anchor="middle" font-size="11" fill="#34d399" font-family="Noto Sans JP,sans-serif">カーナビシステム</text>
+      <text x="567" y="98" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">位置によって映像が変わる点が似ている</text>
+    </svg>
+    <figcaption>スライド再現: 連想法による機能の導出　<span class="ptr">S03:p.27</span></figcaption>
+  </div>
+
+  <h4 class="sh">ステップ③：マス目記載例（スライドp.28-29 完全再現）</h4>
+  <!-- スライドp.29 完全再現 -->
+  <div class="fig">
+    <svg viewBox="0 0 700 240" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px">
+      <text x="350" y="20" text-anchor="middle" font-size="12" font-weight="bold" fill="#c8d5f0" font-family="Noto Sans JP,sans-serif">記載例</text>
+      <!-- ヘッダー行 -->
+      <rect x="186" y="30" width="250" height="32" rx="0" fill="rgba(91,141,238,.2)"/>
+      <text x="311" y="51" text-anchor="middle" font-size="12" font-weight="bold" fill="#5b8dee" font-family="Noto Sans JP,sans-serif">人間の目</text>
+      <rect x="436" y="30" width="250" height="32" rx="0" fill="rgba(91,141,238,.2)"/>
+      <text x="561" y="51" text-anchor="middle" font-size="12" font-weight="bold" fill="#5b8dee" font-family="Noto Sans JP,sans-serif">カーナビシステム</text>
+      <!-- 機能ヘッダー大 -->
+      <rect x="436" y="28" width="250" height="35" fill="rgba(91,141,238,.15)"/>
+      <rect x="186" y="28" width="500" height="35" fill="rgba(91,141,238,.12)" stroke="#5b8dee" stroke-width="1"/>
+      <text x="440" y="47" font-size="11" fill="#5b8dee" font-family="Noto Sans JP,sans-serif">機能</text>
+      <text x="311" y="51" text-anchor="middle" font-size="12" font-weight="bold" fill="#5b8dee" font-family="Noto Sans JP,sans-serif">人間の目</text>
+      <text x="561" y="51" text-anchor="middle" font-size="12" font-weight="bold" fill="#5b8dee" font-family="Noto Sans JP,sans-serif">カーナビシステム</text>
+      <!-- ニーズヘッダー -->
+      <rect x="10" y="64" width="175" height="72" rx="0" fill="rgba(251,146,60,.15)" stroke="#fb923c" stroke-width="1"/>
+      <text x="97" y="99" text-anchor="middle" font-size="11" fill="#fb923c" font-family="Noto Sans JP,sans-serif">ニーズ / 臨場感を</text>
+      <text x="97" y="113" text-anchor="middle" font-size="11" fill="#fb923c" font-family="Noto Sans JP,sans-serif">高める</text>
+      <rect x="10" y="136" width="175" height="90" rx="0" fill="rgba(251,146,60,.15)" stroke="#fb923c" stroke-width="1"/>
+      <text x="97" y="174" text-anchor="middle" font-size="11" fill="#fb923c" font-family="Noto Sans JP,sans-serif">ニーズ / 管理を</text>
+      <text x="97" y="190" text-anchor="middle" font-size="11" fill="#fb923c" font-family="Noto Sans JP,sans-serif">容易にする</text>
+      <!-- セルA1 -->
+      <rect x="186" y="64" width="250" height="72" fill="rgba(251,178,100,.1)" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="311" y="90" text-anchor="middle" font-size="13" font-weight="bold" fill="#fbbf24" font-family="Noto Sans JP,sans-serif">立体カメラ</text>
+      <text x="311" y="108" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">2つのレンズで立体視できる画像を作る</text>
+      <text x="311" y="124" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">→静止画でも立体感ある映像</text>
+      <!-- セルB1 -->
+      <rect x="436" y="64" width="250" height="72" fill="rgba(52,211,153,.08)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="561" y="90" text-anchor="middle" font-size="13" font-weight="bold" fill="#34d399" font-family="Noto Sans JP,sans-serif">ガイドカメラ</text>
+      <text x="561" y="108" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">GPS連動で名所の概要・撮影ポイントを</text>
+      <text x="561" y="124" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">音声で案内する</text>
+      <!-- セルA2 -->
+      <rect x="186" y="136" width="250" height="90" fill="rgba(251,178,100,.1)" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="311" y="162" text-anchor="middle" font-size="13" font-weight="bold" fill="#fbbf24" font-family="Noto Sans JP,sans-serif">映写カメラ</text>
+      <text x="311" y="180" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">撮影用＋映写用の2レンズ。カメラ内</text>
+      <text x="311" y="196" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">にデータ保管し壁・スクリーンに映写。</text>
+      <text x="311" y="212" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">全撮影記録を一元管理</text>
+      <!-- セルB2 -->
+      <rect x="436" y="136" width="250" height="90" fill="rgba(52,211,153,.08)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="561" y="162" text-anchor="middle" font-size="13" font-weight="bold" fill="#34d399" font-family="Noto Sans JP,sans-serif">地図連動カメラ</text>
+      <text x="561" y="180" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">撮影データをメーカーのクラウドに保管。</text>
+      <text x="561" y="196" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">ホームページ上でどの場所で撮ったか</text>
+      <text x="561" y="212" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">を管理</text>
+    </svg>
+    <figcaption>スライド再現: 新しいカメラのマトリクス図（記載例）　<span class="ptr">S03:p.29</span></figcaption>
+  </div>
+
+  <div class="audio">
+    <div class="lbl">🎙 音声補足（各セルの詳細説明）</div>
+    <p><strong>立体カメラ</strong>：人間の目のように2つのレンズを使って写真を撮ることで立体視できる画像を作る。静止画像であることには変わりないが、立体感ある映像を再現できる。<br>
+    <strong>映写カメラ</strong>：片方のレンズは撮影用、もう一方はプロジェクターのように壁・スクリーンに映し出す用。カメラ内にデータを保管し、必要に応じて映写する。全撮影記録を一元化することで管理を容易にする。<br>
+    <strong>ガイドカメラ</strong>：内蔵GPSで名所・撮影スポットに移動すると、概要や撮影ポイントの解説情報を音声で語りかける。<br>
+    <strong>地図連動カメラ</strong>：撮影した写真データをメーカーのクラウドサーバーに保管し、ホームページ上でどの場所で撮ったかを管理できる。<span class="ptr">← S05-A / S03:p.29</span></p>
+  </div>
+</div>
+</section>
+
+<!-- 2-3 旅行 -->
+<section id="ch2-travel">
+<h3 class="ss">2-3　事例②：新しい旅行商品の企画</h3>
+<div class="card">
+  <p>旅行会社勤務のあなたは他社がまだ目を付けていない旅行商品を企画したい。近年は価格の安さが重視され、高齢者の旅行も増えている。<span class="ptr">← S03:p.30</span></p>
+
+  <h4 class="sh">ステップ①：ニーズ（表側）の設定（スライドp.31）</h4>
+  <table>
+    <tr><th>現状の前提</th><th>ニーズ（表側）</th></tr>
+    <tr><td>パッケージツアーで価格が重要な要素に。同社商品は他社より高めで顧客離れが進む</td><td><strong>低価格化</strong></td></tr>
+    <tr><td>高齢世代の旅行ニーズは高いが、同社は高齢者向け商品のラインナップが少ない</td><td><strong>顧客の高齢化</strong></td></tr>
+  </table>
+  <span class="ptr">← S03:p.31</span>
+
+  <h4 class="sh">ステップ②：機能（表頭）の設定（スライドp.32-33）</h4>
+  <div class="audio">
+    <div class="lbl">🎙 音声補足（旅行会社のミッション再定義）</div>
+    <p>旅行会社のミッションを「旅行商品を販売する」とだけ捉えると、これまでの発想の延長しか出てこない。顧客目線で考えると旅行とは<strong>「移動」と「滞在」</strong>に分解できる。また旅行によって<strong>「新しい体験」</strong>が得られるという意義もある。この2点を旅行会社のミッションと捉えることで、これまでにない発想が生まれる。<span class="ptr">← S05-A / S03:p.32-33</span></p>
+  </div>
+  <ul>
+    <li>旅行会社のミッション①：<strong>移動と滞在を支援する</strong>（表頭A）</li>
+    <li>旅行会社のミッション②：<strong>新しい体験を提供する</strong>（表頭B）</li>
+  </ul>
+
+  <h4 class="sh">ステップ③：マス目のアイディア（スライドp.35 完全再現）</h4>
+  <!-- スライドp.35 完全再現 -->
+  <div class="fig">
+    <svg viewBox="0 0 720 240" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:720px">
+      <!-- ヘッダー -->
+      <rect x="10" y="10" width="710" height="35" rx="0" fill="rgba(91,141,238,.1)" stroke="#5b8dee" stroke-width="1"/>
+      <text x="215" y="20" font-size="10" fill="#5b8dee" font-family="Noto Sans JP,sans-serif">機能</text>
+      <text x="215" y="36" text-anchor="middle" font-size="12" font-weight="bold" fill="#5b8dee" font-family="Noto Sans JP,sans-serif">移動と滞在を支援</text>
+      <text x="565" y="36" text-anchor="middle" font-size="12" font-weight="bold" fill="#5b8dee" font-family="Noto Sans JP,sans-serif">新しい体験を提供</text>
+      <!-- 表側 -->
+      <rect x="10" y="46" width="140" height="90" rx="0" fill="rgba(251,146,60,.12)" stroke="#fb923c" stroke-width="1"/>
+      <text x="80" y="80" text-anchor="middle" font-size="11" fill="#fb923c" font-family="Noto Sans JP,sans-serif">ニーズ</text>
+      <text x="80" y="96" text-anchor="middle" font-size="11" font-weight="bold" fill="#fb923c" font-family="Noto Sans JP,sans-serif">高齢化</text>
+      <rect x="10" y="136" width="140" height="90" rx="0" fill="rgba(251,146,60,.12)" stroke="#fb923c" stroke-width="1"/>
+      <text x="80" y="170" text-anchor="middle" font-size="11" fill="#fb923c" font-family="Noto Sans JP,sans-serif">ニーズ</text>
+      <text x="80" y="186" text-anchor="middle" font-size="11" font-weight="bold" fill="#fb923c" font-family="Noto Sans JP,sans-serif">低価格</text>
+      <!-- セルA-高齢 -->
+      <rect x="152" y="46" width="260" height="90" fill="rgba(248,113,113,.08)" stroke="#f87171" stroke-width="1.5"/>
+      <text x="282" y="72" text-anchor="middle" font-size="13" font-weight="bold" fill="#f87171" font-family="Noto Sans JP,sans-serif">A. メディカルツーリズム</text>
+      <text x="282" y="90" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">高齢者が海外病院へ移動・滞在して</text>
+      <text x="282" y="106" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">治療を受ける。旅行ノウハウで精神的ケアも</text>
+      <text x="282" y="122" text-anchor="middle" font-size="10" fill="#f87171" font-family="Noto Sans JP,sans-serif">← 旅行＋医療の新市場</text>
+      <!-- セルB-高齢 -->
+      <rect x="412" y="46" width="298" height="90" fill="rgba(167,139,250,.07)" stroke="#a78bfa" stroke-width="1.5"/>
+      <text x="561" y="72" text-anchor="middle" font-size="13" font-weight="bold" fill="#a78bfa" font-family="Noto Sans JP,sans-serif">B. 逆帰省サービス</text>
+      <text x="561" y="90" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">お盆に祖父母が子どもの住む都市部へ出向く。</text>
+      <text x="561" y="106" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">ホテルを借り切り親族パーティを開く</text>
+      <text x="561" y="122" text-anchor="middle" font-size="10" fill="#a78bfa" font-family="Noto Sans JP,sans-serif">← 帰省ラッシュを逆手に取る</text>
+      <!-- セルA-低価格 -->
+      <rect x="152" y="136" width="260" height="90" fill="rgba(52,211,153,.07)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="282" y="162" text-anchor="middle" font-size="13" font-weight="bold" fill="#34d399" font-family="Noto Sans JP,sans-serif">C. ヘルスツーリズム</text>
+      <text x="282" y="180" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">レンタサイクル・ウォーキング・森林浴・</text>
+      <text x="282" y="196" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">民泊などで健康づくり。費用も抑えられる</text>
+      <text x="282" y="212" text-anchor="middle" font-size="10" fill="#34d399" font-family="Noto Sans JP,sans-serif">← 健康産業との融合</text>
+      <!-- セルB-低価格 -->
+      <rect x="412" y="136" width="298" height="90" fill="rgba(251,191,36,.07)" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="561" y="162" text-anchor="middle" font-size="13" font-weight="bold" fill="#fbbf24" font-family="Noto Sans JP,sans-serif">D. 添乗員なりきりツーリズム</text>
+      <text x="561" y="180" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">旅行者自身が添乗員になる。有料の養成</text>
+      <text x="561" y="196" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">研修合格者は無料でツアー参加できる</text>
+      <text x="561" y="212" text-anchor="middle" font-size="10" fill="#fbbf24" font-family="Noto Sans JP,sans-serif">← 人件費ゼロの逆転発想</text>
+    </svg>
+    <figcaption>スライド再現: 旅行商品マトリクス図（スライドp.35）　<span class="ptr">S03:p.35</span></figcaption>
+  </div>
+
+  <div class="audio">
+    <div class="lbl">🎙 音声補足（各アイディアの詳細）</div>
+    <p><strong>A. メディカルツーリズム（高齢者×移動・滞在支援）</strong>：高齢者が海外の病院へ移動・滞在して治療を受けるニーズに対応。海外での言葉・文化の壁という精神的負担を旅行会社のノウハウでサポート。観光地巡りも身体に負担をかけない程度に提供。逆に、高度な医療を持つ日本の病院と連携して海外高齢者向けヘルスツーリズムを組み立てる発想も可能。<span class="ptr">← S05-A / S03:p.36</span></p>
+    <p><strong>B. 逆帰省サービス（高齢者×新しい体験）</strong>：通常お盆に子が帰省するが、逆に祖父母が子どもたちの住む都市部へ出向くことを支援。都市部のホテルを借り切りケータリングを用いた親族パーティを開く。帰省ラッシュと逆の動きになるため交通費・宿泊費も抑えられる。<span class="ptr">← S05-A / S03:p.37</span></p>
+    <p><strong>C. ヘルスツーリズム（低価格×移動・滞在支援）</strong>：健康づくりを兼ねた旅行ツアー。レンタサイクル・ウォーキング・森林浴・民泊などを組み合わせ、ツアー前後で心身の健康状態の変化をチェックするサービスを付与。旅行者が自ら動くことで移動費用を抑えやすくする。<span class="ptr">← S05-A / S03:p.38</span></p>
+    <p><strong>D. 添乗員なりきりツーリズム（低価格×新しい体験）</strong>：添乗員の人件費をゼロにする方法として、旅行者自身が添乗員になるアイディア。「旅行商品企画作りの講習」「添乗員養成研修」を有料で提供し、合格した方には無料でツアーに参加できる特典を付ける。<span class="ptr">← S05-A / S03:p.39</span></p>
+  </div>
+
+  <div class="ext">
+    <div class="lbl">🌐 外部補足・確認済（メディカルツーリズム市場規模）</div>
+    <p>世界のメディカルツーリズム市場は急成長しており、複数の市場調査会社によると2023年〜2024年の市場規模は数百〜1,000億米ドル規模（調査機関・定義によって差異あり）。予測期間のCAGRは約20〜23%と高成長が見込まれる。日本でも2010年代から医療ビザの発行、「Heal in India」型施策を参考にした取り組みが行われている。<span class="ptr-g">← [外部補足・確認済: Straits Research / Fortune Business Insights / Kings Research, 2024]</span></p>
+    <p>ヘルスツーリズムについては、観光庁の定義として「自然豊かな地域を訪れ、そこにある自然・温泉・身体に優しい料理を味わい、心身ともに癒され、健康を回復・増進・保持する新しい観光形態」と定められている（観光立国推進基本計画, 2007年閣議決定）。経済産業省は2018年からヘルスツーリズム認証制度を開始。<span class="ptr-g">← [外部補足・確認済: 観光庁 / 経済産業省 / 日本ヘルスツーリズム振興機構]</span></p>
+  </div>
+</div>
+</section>
+
+<!-- 2-4 軸の多様性 -->
+<section id="ch2-axis">
+<h3 class="ss">2-4　軸の設定は多様（スライドp.40）</h3>
+<div class="card">
+  <div class="fig">
+    <svg viewBox="0 0 700 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px">
+      <text x="350" y="20" text-anchor="middle" font-size="13" font-weight="bold" fill="#c8d5f0" font-family="Noto Sans JP,sans-serif">表側・表頭の組み合わせ例（スライドp.40）</text>
+      <rect x="20" y="36" width="200" height="78" rx="8" fill="rgba(91,141,238,.09)" stroke="#5b8dee" stroke-width="1.2"/>
+      <text x="120" y="64" text-anchor="middle" font-size="11" font-weight="bold" fill="#5b8dee" font-family="Noto Sans JP,sans-serif">ニーズ × 機能</text>
+      <text x="120" y="84" text-anchor="middle" font-size="11" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">→ 新商品・新サービス</text>
+      <rect x="250" y="36" width="200" height="78" rx="8" fill="rgba(52,211,153,.08)" stroke="#34d399" stroke-width="1.2"/>
+      <text x="350" y="64" text-anchor="middle" font-size="11" font-weight="bold" fill="#34d399" font-family="Noto Sans JP,sans-serif">社会変化 × 会社の資源</text>
+      <text x="350" y="84" text-anchor="middle" font-size="11" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">→ 新事業の発掘</text>
+      <rect x="480" y="36" width="200" height="78" rx="8" fill="rgba(251,191,36,.08)" stroke="#fbbf24" stroke-width="1.2"/>
+      <text x="580" y="64" text-anchor="middle" font-size="11" font-weight="bold" fill="#fbbf24" font-family="Noto Sans JP,sans-serif">問題点 × 目的</text>
+      <text x="580" y="84" text-anchor="middle" font-size="11" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">→ 業務の見直し</text>
+    </svg>
+    <figcaption>スライド再現: 軸の多様な設定例　<span class="ptr">S03:p.40</span></figcaption>
+  </div>
+  <p>用途によって軸の設定を工夫することで、様々なアイディアを生み出すことが可能。<span class="ptr">← S03:p.40 / S05-A</span></p>
+</div>
+</section>
+
+<!-- ══════════════════════════════ 第3章 ══════════════════════════════ -->
+<h2 class="st" id="ch3">第3章　ツリー図を使って発想する</h2>
+<div class="def-box">
+  <div class="lbl">📌 第3章 学習目標</div>
+  具体的な事例にツリー図を用いることで、発想力を高める手順と方法を説明できる
+  <span class="ptr">← S03:p.44</span>
+</div>
+
+<!-- 3-1 概念 -->
+<section id="ch3-concept">
+<h3 class="ss">3-1　ツリー図を使った発想：基本的な考え方</h3>
+<div class="card">
+  <p>ビジネス上の発想は「とっぴなもの」よりも<strong>「常識の延長上のもの」の方が受け入れられやすい</strong>。論理の飛躍が大きいほどステークホルダーの共感を得にくいため。この<strong>「問題改善型の発想」</strong>にはツリー図が適している。<span class="ptr">← S03:p.45</span></p>
+
+  <div class="def-box">
+    <div class="lbl">【特徴】発想ツリー図</div>
+    多様な角度から分析・検証を行い、現状を徹底的に見つめなおし、改善の視点や方策を探す方法
+    <span class="ptr">← S03:p.47</span>
+  </div>
+
+  <!-- スライドp.47 基本的な考え方フロー -->
+  <div class="fig">
+    <svg viewBox="0 0 640 90" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:640px">
+      <defs>
+        <marker id="arr2" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+          <path d="M1,1 L7,4 L1,7 Z" fill="#5b8dee"/>
+        </marker>
+      </defs>
+      <text x="320" y="18" text-anchor="middle" font-size="12" font-weight="bold" fill="#c8d5f0" font-family="Noto Sans JP,sans-serif">発想ツリー図の3ステップ（スライドp.47）</text>
+      <rect x="20" y="28" width="170" height="44" rx="6" fill="rgba(91,141,238,.12)" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="105" y="53" text-anchor="middle" font-size="13" font-weight="bold" fill="#5b8dee" font-family="Noto Sans JP,sans-serif">比較対象を探す</text>
+      <line x1="190" y1="50" x2="228" y2="50" stroke="#5b8dee" stroke-width="2" marker-end="url(#arr2)"/>
+      <rect x="230" y="28" width="170" height="44" rx="6" fill="rgba(91,141,238,.12)" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="315" y="53" text-anchor="middle" font-size="13" font-weight="bold" fill="#5b8dee" font-family="Noto Sans JP,sans-serif">違いを探す</text>
+      <line x1="400" y1="50" x2="438" y2="50" stroke="#5b8dee" stroke-width="2" marker-end="url(#arr2)"/>
+      <rect x="440" y="28" width="180" height="44" rx="6" fill="rgba(52,211,153,.12)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="530" y="46" text-anchor="middle" font-size="12" font-weight="bold" fill="#34d399" font-family="Noto Sans JP,sans-serif">違いに着目して</text>
+      <text x="530" y="62" text-anchor="middle" font-size="12" font-weight="bold" fill="#34d399" font-family="Noto Sans JP,sans-serif">発想のヒントを探る</text>
+    </svg>
+    <figcaption>スライド再現: 発想ツリー図の3ステップ　<span class="ptr">S03:p.47</span></figcaption>
+  </div>
+
+  <div class="audio">
+    <div class="lbl">🎙 音声補足（比較対象選びのポイント）</div>
+    <p>比較対象は類似性が高いものが良い。加えて改善のヒントにしたいため、競合の中でも<strong>より望ましいもの（成功しているもの）</strong>を選ぶことがポイント。あまりに掛け離れすぎていてもダメで、その対象について十分な情報が得られることが不可欠。<span class="ptr">← S05-A / S03:p.59</span></p>
+  </div>
+</div>
+</section>
+
+<!-- 3-2 紙おむつ -->
+<section id="ch3-diaper">
+<h3 class="ss">3-2　事例①：乳幼児向け紙おむつの改良</h3>
+<div class="card">
+  <p>紙おむつメーカーの新事業開発部所属のあなたは現状の乳幼児向け紙おむつを改良しようとしている。<span class="ptr">← S03:p.48</span></p>
+
+  <h4 class="sh">ステップ①：比較対象 → B社の商品X（売れ行き好調な他社製品）</h4>
+  <h4 class="sh">ステップ②：違いを探す（スライドp.50-51）</h4>
+  <table>
+    <tr><th>違い（細目）</th><th>集約した軸</th></tr>
+    <tr><td>一袋の枚数が少ない / しかし一袋の価格は安い</td><td rowspan="2" style="color:var(--orange);font-weight:bold">価格</td></tr>
+    <tr><td>（1枚あたりは高い）</td></tr>
+    <tr><td>吸水性は高い / 通気性は低い</td><td style="color:var(--green);font-weight:bold">機能性</td></tr>
+    <tr><td>足回りのギャザーがやや きつめ / テープはしっかり止まるが伸び縮みしない</td><td style="color:var(--purple);font-weight:bold">装着感</td></tr>
+  </table>
+  <span class="ptr">← S03:p.50-51</span>
+
+  <h4 class="sh">ステップ③：違いに着目して発想のヒントを探る（スライドp.52-53）</h4>
+  <!-- スライドp.52-53 ツリー図 完全再現 -->
+  <div class="fig">
+    <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px">
+      <defs>
+        <marker id="arr3" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+          <path d="M0,0 L6,3 L0,6 Z" fill="#5b8dee"/>
+        </marker>
+        <marker id="arr3g" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+          <path d="M0,0 L6,3 L0,6 Z" fill="#34d399"/>
+        </marker>
+      </defs>
+      <!-- 中心 -->
+      <rect x="8" y="80" width="130" height="58" rx="6" fill="rgba(91,141,238,.12)" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="73" y="104" text-anchor="middle" font-size="11" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">紙おむつ</text>
+      <text x="73" y="120" text-anchor="middle" font-size="11" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">改良のポイント</text>
+      <!-- 枝 -->
+      <line x1="138" y1="97" x2="210" y2="70" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#arr3)"/>
+      <line x1="138" y1="109" x2="210" y2="109" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#arr3)"/>
+      <line x1="138" y1="121" x2="210" y2="150" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#arr3)"/>
+      <!-- 3軸 -->
+      <rect x="212" y="52" width="75" height="30" rx="5" fill="rgba(251,146,60,.2)" stroke="#fb923c" stroke-width="1.5"/>
+      <text x="249" y="71" text-anchor="middle" font-size="12" font-weight="bold" fill="#fb923c" font-family="Noto Sans JP,sans-serif">価格</text>
+      <rect x="212" y="94" width="75" height="30" rx="5" fill="rgba(52,211,153,.2)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="249" y="113" text-anchor="middle" font-size="12" font-weight="bold" fill="#34d399" font-family="Noto Sans JP,sans-serif">機能性</text>
+      <rect x="212" y="136" width="75" height="30" rx="5" fill="rgba(167,139,250,.2)" stroke="#a78bfa" stroke-width="1.5"/>
+      <text x="249" y="155" text-anchor="middle" font-size="12" font-weight="bold" fill="#a78bfa" font-family="Noto Sans JP,sans-serif">装着感</text>
+      <!-- 違い -->
+      <rect x="212" y="56" width="75" height="24" rx="5"/><!-- 価格 row 1 -->
+      <line x1="287" y1="67" x2="322" y2="67" stroke="#fb923c" stroke-width="1.2" marker-end="url(#arr3)"/>
+      <rect x="324" y="52" width="170" height="30" rx="4" fill="rgba(251,146,60,.08)" stroke="#fb923c" stroke-width="1" stroke-dasharray="3,2"/>
+      <text x="409" y="71" text-anchor="middle" font-size="11" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">1枚あたりは高い</text>
+      <line x1="287" y1="109" x2="322" y2="109" stroke="#34d399" stroke-width="1.2" marker-end="url(#arr3g)"/>
+      <rect x="324" y="94" width="170" height="30" rx="4" fill="rgba(52,211,153,.08)" stroke="#34d399" stroke-width="1" stroke-dasharray="3,2"/>
+      <text x="409" y="113" text-anchor="middle" font-size="11" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">吸水性が良いなど機能性は高い</text>
+      <line x1="287" y1="151" x2="322" y2="151" stroke="#a78bfa" stroke-width="1.2" marker-end="url(#arr3)"/>
+      <rect x="324" y="136" width="170" height="30" rx="4" fill="rgba(167,139,250,.08)" stroke="#a78bfa" stroke-width="1" stroke-dasharray="3,2"/>
+      <text x="409" y="155" text-anchor="middle" font-size="11" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">やや きつめで伸び縮みしない</text>
+      <!-- 発想ヒント -->
+      <line x1="494" y1="67" x2="530" y2="67" stroke="#fb923c" stroke-width="1.2" stroke-dasharray="2,2" marker-end="url(#arr3)"/>
+      <rect x="532" y="44" width="155" height="46" rx="4" fill="rgba(251,146,60,.05)" stroke="#fb923c" stroke-width="1" stroke-dasharray="3,2"/>
+      <text x="609" y="62" text-anchor="middle" font-size="10" fill="#fb923c" font-family="Noto Sans JP,sans-serif">旅行先での突発購入など</text>
+      <text x="609" y="76" text-anchor="middle" font-size="10" fill="#fb923c" font-family="Noto Sans JP,sans-serif">少量パッケージの強みを前面に</text>
+      <line x1="494" y1="109" x2="530" y2="109" stroke="#34d399" stroke-width="1.2" stroke-dasharray="2,2" marker-end="url(#arr3g)"/>
+      <rect x="532" y="90" width="155" height="38" rx="4" fill="rgba(52,211,153,.05)" stroke="#34d399" stroke-width="1" stroke-dasharray="3,2"/>
+      <text x="609" y="106" text-anchor="middle" font-size="10" fill="#34d399" font-family="Noto Sans JP,sans-serif">機能性の高さをより</text>
+      <text x="609" y="120" text-anchor="middle" font-size="10" fill="#34d399" font-family="Noto Sans JP,sans-serif">先鋭化・差別化要因に</text>
+      <line x1="494" y1="151" x2="530" y2="151" stroke="#a78bfa" stroke-width="1.2" stroke-dasharray="2,2" marker-end="url(#arr3)"/>
+      <rect x="532" y="133" width="155" height="46" rx="4" fill="rgba(167,139,250,.05)" stroke="#a78bfa" stroke-width="1" stroke-dasharray="3,2"/>
+      <text x="609" y="151" text-anchor="middle" font-size="10" fill="#a78bfa" font-family="Noto Sans JP,sans-serif">ギャザーにひだを多くし</text>
+      <text x="609" y="165" text-anchor="middle" font-size="10" fill="#a78bfa" font-family="Noto Sans JP,sans-serif">弾力性を付加する</text>
+      <!-- 凡例 -->
+      <text x="355" y="200" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">▶ 違い</text>
+      <text x="609" y="200" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">▷ 発想ヒント（点線）</text>
+    </svg>
+    <figcaption>スライド再現: 紙おむつ改良のツリー図　<span class="ptr">S03:p.52-53</span></figcaption>
+  </div>
+</div>
+</section>
+
+<!-- 3-3 床屋 -->
+<section id="ch3-barber">
+<h3 class="ss">3-3　事例②：低価格の床屋チェーンに打ち勝つには</h3>
+<div class="card">
+  <p>ある商店街で親の代から床屋を営む二代目店主。低価格チェーン店に客を奪われており、新しいサービスで状況を打開したい。<span class="ptr">← S03:p.54</span></p>
+
+  <h4 class="sh">ステップ②：違いを探す（スライドp.56 完全再現）</h4>
+  <!-- スライドp.56 違い比較図 -->
+  <div class="fig">
+    <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px">
+      <text x="350" y="20" text-anchor="middle" font-size="13" font-weight="bold" fill="#c8d5f0" font-family="Noto Sans JP,sans-serif">比較対象と比べて違いを出す</text>
+      <!-- ヘッダー -->
+      <rect x="20" y="30" width="295" height="26" rx="4" fill="rgba(251,146,60,.18)"/>
+      <text x="167" y="48" text-anchor="middle" font-size="12" font-weight="bold" fill="#fb923c" font-family="Noto Sans JP,sans-serif">あなたの経営する床屋</text>
+      <rect x="385" y="30" width="295" height="26" rx="4" fill="rgba(91,141,238,.18)"/>
+      <text x="532" y="48" text-anchor="middle" font-size="12" font-weight="bold" fill="#5b8dee" font-family="Noto Sans JP,sans-serif">競合チェーン店（比較対象）</text>
+      <!-- 行1 -->
+      <rect x="20" y="60" width="295" height="34" rx="3" fill="rgba(251,146,60,.1)" stroke="#fb923c" stroke-width="1"/>
+      <text x="167" y="82" text-anchor="middle" font-size="12" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">水を使う</text>
+      <text x="350" y="82" text-anchor="middle" font-size="16" fill="#8a99b8">⇌</text>
+      <rect x="385" y="60" width="295" height="34" rx="3" fill="rgba(91,141,238,.1)" stroke="#5b8dee" stroke-width="1"/>
+      <text x="532" y="82" text-anchor="middle" font-size="12" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">水を使わない（掃除機ホースで毛を吸引）</text>
+      <!-- 行2 -->
+      <rect x="20" y="98" width="295" height="34" rx="3" fill="rgba(251,146,60,.1)" stroke="#fb923c" stroke-width="1"/>
+      <text x="167" y="120" text-anchor="middle" font-size="12" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">待ち時間が長い</text>
+      <text x="350" y="120" text-anchor="middle" font-size="16" fill="#8a99b8">⇌</text>
+      <rect x="385" y="98" width="295" height="34" rx="3" fill="rgba(91,141,238,.1)" stroke="#5b8dee" stroke-width="1"/>
+      <text x="532" y="120" text-anchor="middle" font-size="12" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">待ち時間が短い（10分程度）</text>
+      <!-- 行3 -->
+      <rect x="20" y="136" width="295" height="34" rx="3" fill="rgba(251,146,60,.1)" stroke="#fb923c" stroke-width="1"/>
+      <text x="167" y="158" text-anchor="middle" font-size="12" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">低価格ではない</text>
+      <text x="350" y="158" text-anchor="middle" font-size="16" fill="#8a99b8">⇌</text>
+      <rect x="385" y="136" width="295" height="34" rx="3" fill="rgba(91,141,238,.1)" stroke="#5b8dee" stroke-width="1"/>
+      <text x="532" y="158" text-anchor="middle" font-size="12" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">低価格</text>
+      <!-- 行4 -->
+      <rect x="20" y="174" width="295" height="34" rx="3" fill="rgba(251,146,60,.1)" stroke="#fb923c" stroke-width="1"/>
+      <text x="167" y="196" text-anchor="middle" font-size="12" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">店舗面積が広い</text>
+      <text x="350" y="196" text-anchor="middle" font-size="16" fill="#8a99b8">⇌</text>
+      <rect x="385" y="174" width="295" height="34" rx="3" fill="rgba(91,141,238,.1)" stroke="#5b8dee" stroke-width="1"/>
+      <text x="532" y="196" text-anchor="middle" font-size="12" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">店舗面積が狭い</text>
+    </svg>
+    <figcaption>スライド再現: 床屋の違い比較（スライドp.56）　<span class="ptr">S03:p.56</span></figcaption>
+  </div>
+
+  <h4 class="sh">ステップ③：違いを逆手に取った発想ヒント（スライドp.57-58 完全再現）</h4>
+  <!-- スライドp.57-58 ツリー+発想ヒント -->
+  <div class="fig">
+    <svg viewBox="0 0 710 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:710px">
+      <defs>
+        <marker id="arr4" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+          <path d="M0,0 L6,3 L0,6 Z" fill="#5b8dee"/>
+        </marker>
+        <marker id="arr4g" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+          <path d="M0,0 L6,3 L0,6 Z" fill="#34d399"/>
+        </marker>
+      </defs>
+      <!-- 中心ボックス -->
+      <rect x="8" y="95" width="100" height="70" rx="6" fill="rgba(91,141,238,.12)" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="58" y="123" text-anchor="middle" font-size="11" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">あなたの</text>
+      <text x="58" y="138" text-anchor="middle" font-size="11" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">経営する</text>
+      <text x="58" y="153" text-anchor="middle" font-size="11" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">床屋</text>
+      <!-- 4枝 -->
+      <line x1="108" y1="110" x2="138" y2="50" stroke="#5b8dee" stroke-width="1.2" marker-end="url(#arr4)"/>
+      <line x1="108" y1="120" x2="138" y2="100" stroke="#5b8dee" stroke-width="1.2" marker-end="url(#arr4)"/>
+      <line x1="108" y1="140" x2="138" y2="170" stroke="#5b8dee" stroke-width="1.2" marker-end="url(#arr4)"/>
+      <line x1="108" y1="155" x2="138" y2="220" stroke="#5b8dee" stroke-width="1.2" marker-end="url(#arr4)"/>
+      <!-- 4要素 -->
+      <rect x="140" y="34" width="90" height="28" rx="4" fill="rgba(91,141,238,.15)" stroke="#5b8dee" stroke-width="1"/>
+      <text x="185" y="52" text-anchor="middle" font-size="11" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">水を使う</text>
+      <rect x="140" y="86" width="90" height="28" rx="4" fill="rgba(91,141,238,.15)" stroke="#5b8dee" stroke-width="1"/>
+      <text x="185" y="104" text-anchor="middle" font-size="11" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">待ち時間長い</text>
+      <rect x="140" y="156" width="90" height="28" rx="4" fill="rgba(91,141,238,.15)" stroke="#5b8dee" stroke-width="1"/>
+      <text x="185" y="174" text-anchor="middle" font-size="11" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">低価格でない</text>
+      <rect x="140" y="206" width="90" height="28" rx="4" fill="rgba(91,141,238,.15)" stroke="#5b8dee" stroke-width="1"/>
+      <text x="185" y="224" text-anchor="middle" font-size="11" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">店舗面積広い</text>
+      <!-- 矢印 ⇒ -->
+      <text x="240" y="52" font-size="14" fill="#34d399">⇒</text>
+      <text x="240" y="104" font-size="14" fill="#34d399">⇒</text>
+      <text x="240" y="174" font-size="14" fill="#34d399">⇒</text>
+      <text x="240" y="224" font-size="14" fill="#34d399">⇒</text>
+      <!-- 4改善案 -->
+      <rect x="256" y="32" width="180" height="30" rx="4" fill="rgba(52,211,153,.1)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="346" y="51" text-anchor="middle" font-size="11" fill="#34d399" font-family="Noto Sans JP,sans-serif">足湯サービスを提供</text>
+      <rect x="256" y="82" width="180" height="44" rx="4" fill="rgba(52,211,153,.1)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="346" y="100" text-anchor="middle" font-size="11" fill="#34d399" font-family="Noto Sans JP,sans-serif">喫茶コーナー設置</text>
+      <text x="346" y="116" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">（映画視聴、マッサージチェア）</text>
+      <rect x="256" y="152" width="180" height="44" rx="4" fill="rgba(52,211,153,.1)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="346" y="170" text-anchor="middle" font-size="11" fill="#34d399" font-family="Noto Sans JP,sans-serif">ステイタス強調の会員制導入</text>
+      <text x="346" y="186" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">（高級化粧品割引特典等）</text>
+      <rect x="256" y="202" width="180" height="36" rx="4" fill="rgba(52,211,153,.1)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="346" y="224" text-anchor="middle" font-size="11" fill="#34d399" font-family="Noto Sans JP,sans-serif">マッサージチェア・映画視聴</text>
+      <!-- 詳細 -->
+      <text x="450" y="32" font-size="10" fill="#5b8dee" font-family="sans-serif">→</text>
+      <rect x="456" y="20" width="240" height="54" rx="4" fill="rgba(91,141,238,.06)" stroke="#5b8dee" stroke-width="1" stroke-dasharray="3,2"/>
+      <text x="576" y="36" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">フットバス・温泉の湯や成分を活用。</text>
+      <text x="576" y="50" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">髪を切りながらリラクゼーション機能を</text>
+      <text x="576" y="64" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">付加するサービスを提供</text>
+      <text x="450" y="100" font-size="10" fill="#5b8dee" font-family="sans-serif">→</text>
+      <rect x="456" y="82" width="240" height="44" rx="4" fill="rgba(91,141,238,.06)" stroke="#5b8dee" stroke-width="1" stroke-dasharray="3,2"/>
+      <text x="576" y="100" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">待ち時間を「リラックスしに来る」</text>
+      <text x="576" y="116" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">付加価値に転換する</text>
+      <text x="450" y="170" font-size="10" fill="#5b8dee" font-family="sans-serif">→</text>
+      <rect x="456" y="152" width="240" height="44" rx="4" fill="rgba(91,141,238,.06)" stroke="#5b8dee" stroke-width="1" stroke-dasharray="3,2"/>
+      <text x="576" y="170" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">高価格を「ステイタス」に昇華。会員</text>
+      <text x="576" y="186" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">特典で高級化粧品を割引価格で購入可</text>
+      <text x="450" y="220" font-size="10" fill="#5b8dee" font-family="sans-serif">→</text>
+      <rect x="456" y="202" width="240" height="36" rx="4" fill="rgba(91,141,238,.06)" stroke="#5b8dee" stroke-width="1" stroke-dasharray="3,2"/>
+      <text x="576" y="218" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">広い店舗面積を活かした別サービスを提供</text>
+      <text x="576" y="232" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">（マッサージ、映画視聴スペース等）</text>
+    </svg>
+    <figcaption>スライド再現: 床屋チェーン対策ツリー図（スライドp.57-58）　<span class="ptr">S03:p.57-58</span></figcaption>
+  </div>
+
+  <div class="audio">
+    <div class="lbl">🎙 音声補足（「逆手に取る」発想の核心）</div>
+    <p>「水道設備がある」「待ち時間が長い」「店舗面積が広い」という、一見デメリットに思える自社の特徴を<strong>逆手に取って</strong>新しいサービスの発想に活かすのがツリー図活用のポイント。劣っている点の中に独自の価値を生み出すヒントが潜んでいる。<span class="ptr">← S05-A</span></p>
+  </div>
+</div>
+</section>
+
+<!-- ══════════════════════════════ 第4章 ══════════════════════════════ -->
+<h2 class="st" id="ch4">第4章　フロー図を使って発想する</h2>
+<div class="def-box">
+  <div class="lbl">📌 第4章 学習目標</div>
+  具体的な事例にフロー図を用いることで、発想力を高める手順と方法を説明できる
+  <span class="ptr">← S03:p.62</span>
+</div>
+
+<!-- 4-1 独創化 -->
+<section id="ch4-concept">
+<h3 class="ss">4-1　独創化の時代とフロー図の役割</h3>
+<div class="card">
+
+  <!-- スライドp.63 差別化 vs 独創化 -->
+  <div class="fig">
+    <svg viewBox="0 0 700 120" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px">
+      <text x="350" y="20" text-anchor="middle" font-size="13" font-weight="bold" fill="#c8d5f0" font-family="Noto Sans JP,sans-serif">差別化戦略 vs 独創化戦略</text>
+      <!-- 差別化 -->
+      <rect x="20" y="34" width="300" height="72" rx="8" fill="rgba(248,113,113,.08)" stroke="#f87171" stroke-width="1.5"/>
+      <text x="170" y="60" text-anchor="middle" font-size="13" font-weight="bold" fill="#f87171" font-family="Noto Sans JP,sans-serif">差別化戦略（限界が見え始めた）</text>
+      <text x="170" y="80" text-anchor="middle" font-size="11" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">他の商品・サービスとの違いを際立たせる</text>
+      <text x="170" y="96" text-anchor="middle" font-size="11" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">細かい違いだけでは差別化要素にならなくなった</text>
+      <!-- 矢印 -->
+      <text x="330" y="78" font-size="22" fill="#5b8dee">→</text>
+      <!-- 独創化 -->
+      <rect x="360" y="34" width="320" height="72" rx="8" fill="rgba(52,211,153,.1)" stroke="#34d399" stroke-width="2"/>
+      <text x="520" y="60" text-anchor="middle" font-size="13" font-weight="bold" fill="#34d399" font-family="Noto Sans JP,sans-serif">独創化戦略（重要性が高まっている）</text>
+      <text x="520" y="80" text-anchor="middle" font-size="11" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">他に比較するものがない商品・サービスを生み出す</text>
+      <text x="520" y="96" text-anchor="middle" font-size="11" fill="#fbbf24" font-family="Noto Sans JP,sans-serif">→ フロー図で根本要因を特定することが有効</text>
+    </svg>
+    <figcaption>スライド再現: 差別化戦略 vs 独創化戦略　<span class="ptr">S03:p.63</span></figcaption>
+  </div>
+
+  <div class="audio">
+    <div class="lbl">🎙 音声補足（独創化の歴史的事例）</div>
+    <p><strong>ソニーのウォークマン（1979年）</strong>：「いつでもどこでも音楽を聴ける」という当時極めて画期的な商品。録音機能がないことを疑問視する声もあったが爆発的ヒットとなった。<span class="ptr-g">← [外部補足・確認済: ソニー公式]</span><br>
+    <strong>コンビニエンスストア</strong>：24時間365日営業で日用品・食料が手に入る。夜中に買い物するニーズへの懐疑もあったが今では都市生活に不可欠。<br>
+    <strong>宅配便＋ネットショップの通販</strong>：生活そのものをがらりと変えるインパクトを持つ発明。<span class="ptr">← S05-A / S03:p.63</span></p>
+  </div>
+
+  <!-- スライドp.65 3ステップフロー -->
+  <div class="fig">
+    <svg viewBox="0 0 640 90" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:640px">
+      <defs>
+        <marker id="arr5" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+          <path d="M1,1 L7,4 L1,7 Z" fill="#34d399"/>
+        </marker>
+      </defs>
+      <text x="320" y="18" text-anchor="middle" font-size="12" font-weight="bold" fill="#c8d5f0" font-family="Noto Sans JP,sans-serif">発想フロー図の3ステップ（スライドp.65）</text>
+      <rect x="20" y="28" width="170" height="44" rx="6" fill="rgba(52,211,153,.1)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="105" y="46" text-anchor="middle" font-size="12" font-weight="bold" fill="#34d399" font-family="Noto Sans JP,sans-serif">①理由・原因を</text>
+      <text x="105" y="62" text-anchor="middle" font-size="12" font-weight="bold" fill="#34d399" font-family="Noto Sans JP,sans-serif">列挙する</text>
+      <line x1="190" y1="50" x2="228" y2="50" stroke="#34d399" stroke-width="2" marker-end="url(#arr5)"/>
+      <rect x="230" y="28" width="170" height="44" rx="6" fill="rgba(52,211,153,.1)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="315" y="46" text-anchor="middle" font-size="12" font-weight="bold" fill="#34d399" font-family="Noto Sans JP,sans-serif">②因果の連鎖を</text>
+      <text x="315" y="62" text-anchor="middle" font-size="12" font-weight="bold" fill="#34d399" font-family="Noto Sans JP,sans-serif">図にする</text>
+      <line x1="400" y1="50" x2="438" y2="50" stroke="#34d399" stroke-width="2" marker-end="url(#arr5)"/>
+      <rect x="440" y="28" width="180" height="44" rx="6" fill="rgba(251,191,36,.12)" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="530" y="46" text-anchor="middle" font-size="12" font-weight="bold" fill="#fbbf24" font-family="Noto Sans JP,sans-serif">③根本要因を探りつつ</text>
+      <text x="530" y="62" text-anchor="middle" font-size="12" font-weight="bold" fill="#fbbf24" font-family="Noto Sans JP,sans-serif">発想のヒントを探る</text>
+    </svg>
+    <figcaption>スライド再現: 発想フロー図の3ステップ　<span class="ptr">S03:p.65</span></figcaption>
+  </div>
+
+  <div class="audio">
+    <div class="lbl">🎙 音声補足（トヨタ生産方式の「なぜ5回」）</div>
+    <p>改善を世界中に広めたトヨタ生産方式の一環として<strong>「なぜを5回繰り返す（5Why）」</strong>という考え方がある。問題の再発防止のために根本原因を徹底的に洗い出す手法。なぜの答えが複数出てきたり、複数の答えが1つに収束することもあるため、頭の中だけでなく<strong>フロー図で整理する</strong>ことが効果的。<span class="ptr-g">← [外部補足・確認済: Toyota Global公式]</span><span class="ptr">← S05-A</span></p>
+  </div>
+</div>
+</section>
+
+<!-- 4-2 自動車 -->
+<section id="ch4-auto">
+<h3 class="ss">4-2　事例①：自動車製造の組み立て時間短縮</h3>
+<div class="card">
+  <p>自動車工場の製造コストを下げるために組み立て時間を短くしたい。<span class="ptr">← S03:p.66</span></p>
+
+  <!-- スライドp.66-70 完全再現 -->
+  <div class="fig">
+    <svg viewBox="0 0 700 310" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px">
+      <defs>
+        <marker id="arr6" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+          <path d="M1,1 L7,4 L1,7 Z" fill="#8a99b8"/>
+        </marker>
+        <marker id="arr6g" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+          <path d="M1,1 L7,4 L1,7 Z" fill="#34d399"/>
+        </marker>
+      </defs>
+      <text x="350" y="20" text-anchor="middle" font-size="13" font-weight="bold" fill="#c8d5f0" font-family="Noto Sans JP,sans-serif">因果の連鎖を図にする（スライドp.68-69）</text>
+      <!-- 問題 -->
+      <rect x="240" y="30" width="220" height="32" rx="6" fill="rgba(248,113,113,.2)" stroke="#f87171" stroke-width="1.5"/>
+      <text x="350" y="51" text-anchor="middle" font-size="12" font-weight="bold" fill="#f87171" font-family="Noto Sans JP,sans-serif">組み立てに時間がかかる</text>
+      <line x1="350" y1="62" x2="350" y2="85" stroke="#8a99b8" stroke-width="1.5" marker-end="url(#arr6)"/>
+      <text x="365" y="78" font-size="10" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">なぜ？</text>
+      <!-- 要因1 -->
+      <rect x="220" y="87" width="260" height="30" rx="5" fill="rgba(251,146,60,.15)" stroke="#fb923c" stroke-width="1.2"/>
+      <text x="350" y="106" text-anchor="middle" font-size="11" fill="#fb923c" font-family="Noto Sans JP,sans-serif">組み立てに多くの手間がかかっているから</text>
+      <line x1="350" y1="117" x2="350" y2="138" stroke="#8a99b8" stroke-width="1.5" marker-end="url(#arr6)"/>
+      <text x="365" y="132" font-size="10" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">なぜ？</text>
+      <!-- 要因2 -->
+      <rect x="235" y="140" width="230" height="30" rx="5" fill="rgba(251,146,60,.15)" stroke="#fb923c" stroke-width="1.2"/>
+      <text x="350" y="159" text-anchor="middle" font-size="11" fill="#fb923c" font-family="Noto Sans JP,sans-serif">パーツがたくさんあるから</text>
+      <line x1="350" y1="170" x2="350" y2="192" stroke="#8a99b8" stroke-width="1.5" marker-end="url(#arr6)"/>
+      <text x="365" y="186" font-size="10" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">なぜ？</text>
+      <!-- 根本要因 -->
+      <rect x="165" y="194" width="370" height="34" rx="6" fill="rgba(251,191,36,.2)" stroke="#fbbf24" stroke-width="2"/>
+      <text x="350" y="216" text-anchor="middle" font-size="12" font-weight="bold" fill="#fbbf24" font-family="Noto Sans JP,sans-serif">根本要因：異なる素材のパーツは異なる成型機を使うから</text>
+      <!-- インサイト吹き出し -->
+      <path d="M540,198 C570,196 596,204 596,214 C596,224 570,232 540,232 L536,232 L534,244 L528,232 L350,232 C320,232 304,224 304,214 C304,204 320,196 350,196 Z" fill="rgba(251,191,36,.06)" stroke="#fbbf24" stroke-width="1" stroke-dasharray="3,2"/>
+      <text x="450" y="212" text-anchor="middle" font-size="10" fill="#fbbf24" font-family="Noto Sans JP,sans-serif">＝インサイト（気づき）</text>
+      <text x="450" y="226" text-anchor="middle" font-size="10" fill="#fbbf24" font-family="Noto Sans JP,sans-serif">「異なる素材は異なる成型機を必要とする」</text>
+      <!-- 解決策矢印 -->
+      <line x1="350" y1="240" x2="350" y2="264" stroke="#34d399" stroke-width="1.5" marker-end="url(#arr6g)"/>
+      <text x="365" y="258" font-size="10" fill="#34d399" font-family="Noto Sans JP,sans-serif">解決策を考える</text>
+      <!-- 解決策 -->
+      <rect x="110" y="266" width="480" height="36" rx="6" fill="rgba(52,211,153,.12)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="350" y="282" text-anchor="middle" font-size="11" font-weight="bold" fill="#34d399" font-family="Noto Sans JP,sans-serif">→「異なる素材を一体的に成型できる特殊な成型機を開発する」</text>
+      <text x="350" y="296" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">（複数ノズルで多様な原材料を照射できる3Dプリンターのような成型機）</text>
+    </svg>
+    <figcaption>スライド再現: 組み立て時間の因果連鎖（スライドp.66-70）　<span class="ptr">S03:p.68-70</span></figcaption>
+  </div>
+</div>
+</section>
+
+<!-- 4-3 運送会社 -->
+<section id="ch4-transport">
+<h3 class="ss">4-3　事例②：運送会社の経営状態改善</h3>
+<div class="card">
+  <p>運送会社を経営しているがここ数年赤字続き。取引先企業が運送料の減額を要求し、他社に顧客を奪われまいと応えたことが直接原因。<span class="ptr">← S03:p.71</span></p>
+
+  <!-- スライドp.73-75 完全再現 -->
+  <div class="fig">
+    <svg viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px">
+      <defs>
+        <marker id="arr7" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+          <path d="M1,1 L6,3 L1,6 Z" fill="#8a99b8"/>
+        </marker>
+        <marker id="arr7g" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+          <path d="M1,1 L6,3 L1,6 Z" fill="#34d399"/>
+        </marker>
+        <marker id="arr7r" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+          <path d="M1,1 L6,3 L1,6 Z" fill="#f87171"/>
+        </marker>
+      </defs>
+      <!-- 赤字 -->
+      <rect x="255" y="10" width="190" height="30" rx="6" fill="rgba(248,113,113,.2)" stroke="#f87171" stroke-width="1.5"/>
+      <text x="350" y="30" text-anchor="middle" font-size="12" font-weight="bold" fill="#f87171" font-family="Noto Sans JP,sans-serif">赤字になっている</text>
+      <!-- 2本の枝 -->
+      <line x1="310" y1="40" x2="210" y2="70" stroke="#8a99b8" stroke-width="1.2" marker-end="url(#arr7)"/>
+      <line x1="390" y1="40" x2="490" y2="70" stroke="#8a99b8" stroke-width="1.2" marker-end="url(#arr7)"/>
+      <!-- 中間要因 -->
+      <rect x="90" y="72" width="235" height="28" rx="4" fill="rgba(251,146,60,.12)" stroke="#fb923c" stroke-width="1"/>
+      <text x="207" y="90" text-anchor="middle" font-size="11" fill="#fb923c" font-family="Noto Sans JP,sans-serif">提供価値が低い</text>
+      <rect x="375" y="72" width="235" height="28" rx="4" fill="rgba(251,146,60,.12)" stroke="#fb923c" stroke-width="1"/>
+      <text x="492" y="90" text-anchor="middle" font-size="11" fill="#fb923c" font-family="Noto Sans JP,sans-serif">発生するコストが馬鹿にならない</text>
+      <!-- さらに枝 -->
+      <line x1="165" y1="100" x2="105" y2="135" stroke="#8a99b8" stroke-width="1" marker-end="url(#arr7)"/>
+      <line x1="235" y1="100" x2="285" y2="135" stroke="#8a99b8" stroke-width="1" marker-end="url(#arr7)"/>
+      <line x1="450" y1="100" x2="390" y2="135" stroke="#8a99b8" stroke-width="1" marker-end="url(#arr7)"/>
+      <line x1="535" y1="100" x2="585" y2="135" stroke="#8a99b8" stroke-width="1" marker-end="url(#arr7)"/>
+      <!-- 根本要因4 -->
+      <rect x="18" y="137" width="170" height="44" rx="4" fill="rgba(251,191,36,.14)" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="103" y="156" text-anchor="middle" font-size="10" fill="#fbbf24" font-family="Noto Sans JP,sans-serif">運んでいる荷の</text>
+      <text x="103" y="172" text-anchor="middle" font-size="10" fill="#fbbf24" font-family="Noto Sans JP,sans-serif">単価が安い</text>
+      <rect x="198" y="137" width="130" height="44" rx="4" fill="rgba(251,191,36,.14)" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="263" y="156" text-anchor="middle" font-size="10" fill="#fbbf24" font-family="Noto Sans JP,sans-serif">単に</text>
+      <text x="263" y="172" text-anchor="middle" font-size="10" fill="#fbbf24" font-family="Noto Sans JP,sans-serif">運んでいるだけ</text>
+      <rect x="338" y="137" width="100" height="44" rx="4" fill="rgba(251,191,36,.14)" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="388" y="156" text-anchor="middle" font-size="10" fill="#fbbf24" font-family="Noto Sans JP,sans-serif">人手不足</text>
+      <text x="388" y="172" text-anchor="middle" font-size="9" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">（労働規制）</text>
+      <rect x="448" y="137" width="120" height="44" rx="4" fill="rgba(251,191,36,.14)" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="508" y="156" text-anchor="middle" font-size="10" fill="#fbbf24" font-family="Noto Sans JP,sans-serif">帰りは空荷</text>
+      <text x="508" y="172" text-anchor="middle" font-size="9" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">（非効率・無駄）</text>
+      <!-- 対処ライン -->
+      <line x1="103" y1="181" x2="103" y2="205" stroke="#f87171" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#arr7r)"/>
+      <line x1="263" y1="181" x2="263" y2="205" stroke="#34d399" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#arr7g)"/>
+      <line x1="388" y1="181" x2="388" y2="205" stroke="#f87171" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#arr7r)"/>
+      <line x1="508" y1="181" x2="508" y2="205" stroke="#34d399" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#arr7g)"/>
+      <!-- 解決策 -->
+      <rect x="20" y="207" width="164" height="44" rx="4" fill="rgba(248,113,113,.07)" stroke="#f87171" stroke-width="1" stroke-dasharray="3,2"/>
+      <text x="102" y="225" text-anchor="middle" font-size="10" fill="#f87171" font-family="Noto Sans JP,sans-serif">取引先変更が必要</text>
+      <text x="102" y="241" text-anchor="middle" font-size="9" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">→一筋縄ではいかない</text>
+      <rect x="194" y="207" width="142" height="60" rx="4" fill="rgba(52,211,153,.1)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="265" y="225" text-anchor="middle" font-size="10" font-weight="bold" fill="#34d399" font-family="Noto Sans JP,sans-serif">倉庫への搬入・</text>
+      <text x="265" y="240" text-anchor="middle" font-size="10" font-weight="bold" fill="#34d399" font-family="Noto Sans JP,sans-serif">仕分け・検品まで</text>
+      <text x="265" y="256" text-anchor="middle" font-size="9" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">業務を拡大（バリューチェーン）</text>
+      <rect x="346" y="207" width="84" height="44" rx="4" fill="rgba(248,113,113,.07)" stroke="#f87171" stroke-width="1" stroke-dasharray="3,2"/>
+      <text x="388" y="225" text-anchor="middle" font-size="10" fill="#f87171" font-family="Noto Sans JP,sans-serif">国の政策関連</text>
+      <text x="388" y="241" text-anchor="middle" font-size="9" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">→民間では困難</text>
+      <rect x="440" y="207" width="138" height="60" rx="4" fill="rgba(52,211,153,.1)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="509" y="225" text-anchor="middle" font-size="10" font-weight="bold" fill="#34d399" font-family="Noto Sans JP,sans-serif">帰りのトラックに</text>
+      <text x="509" y="240" text-anchor="middle" font-size="10" font-weight="bold" fill="#34d399" font-family="Noto Sans JP,sans-serif">地方の野菜・海産物</text>
+      <text x="509" y="256" text-anchor="middle" font-size="9" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">を都市部スーパーへ販売</text>
+      <!-- 凡例 -->
+      <rect x="20" y="282" width="140" height="24" rx="4" fill="rgba(52,211,153,.08)" stroke="#34d399" stroke-width="1"/>
+      <text x="90" y="298" text-anchor="middle" font-size="10" fill="#34d399" font-family="Noto Sans JP,sans-serif">緑枠 = 自社で解決可能</text>
+      <rect x="180" y="282" width="140" height="24" rx="4" fill="rgba(248,113,113,.07)" stroke="#f87171" stroke-width="1"/>
+      <text x="250" y="298" text-anchor="middle" font-size="10" fill="#f87171" font-family="Noto Sans JP,sans-serif">赤枠 = 解決困難</text>
+    </svg>
+    <figcaption>スライド再現: 運送会社の赤字因果連鎖と打開策（スライドp.73-75）　<span class="ptr">S03:p.73-75</span></figcaption>
+  </div>
+
+  <table>
+    <tr><th>根本要因</th><th>打開策のヒント</th><th>難易度</th></tr>
+    <tr><td>運んでいる荷の単価が安い</td><td>高価な荷を運ぶ取引先に変更</td><td>🔴 困難（取引先変更が必要）</td></tr>
+    <tr><td>単に運んでいるだけ</td><td>倉庫搬入・仕分け・検品まで業務拡大（バリューチェーンの一端を担う）</td><td>🟢 自社で対応可能</td></tr>
+    <tr><td>人手不足</td><td>労働時間規制が背景のため、民間企業一社ではなんとかなるものではない</td><td>🔴 困難</td></tr>
+    <tr><td>帰りは空荷（非効率）</td><td>帰りのトラックに地方の野菜・海産物を積んで都市部スーパーに販売 → 二重収入</td><td>🟢 自社で対応可能</td></tr>
+  </table>
+  <span class="ptr">← S03:p.75 / S05-A</span>
+</div>
+</section>
+
+<!-- ══════════════════════════════ まとめ ══════════════════════════════ -->
+<section id="summary">
+<h2 class="st">🔖 第5回 まとめ</h2>
+<div class="card">
+  <!-- スライドp.78 まとめ完全再現 -->
+  <div class="fig">
+    <svg viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px">
+      <text x="350" y="22" text-anchor="middle" font-size="14" font-weight="bold" fill="#c8d5f0" font-family="Noto Sans JP,sans-serif">第5回 まとめ（スライドp.78）</text>
+      <!-- 発想力定義 -->
+      <rect x="20" y="34" width="660" height="36" rx="6" fill="rgba(91,141,238,.12)" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="350" y="48" text-anchor="middle" font-size="11" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">発想力とは、</text>
+      <text x="350" y="62" text-anchor="middle" font-size="12" font-weight="bold" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">「他人とは異なる視点でありつつも、一定程度の合理性のある考え方を生み出す力」のこと</text>
+      <!-- 3つの図タイプ -->
+      <rect x="20" y="82" width="200" height="175" rx="8" fill="rgba(91,141,238,.07)" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="120" y="102" text-anchor="middle" font-size="13" font-weight="bold" fill="#5b8dee" font-family="Noto Sans JP,sans-serif">マトリクス図</text>
+      <text x="120" y="120" text-anchor="middle" font-size="11" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">異なるものを結びつける</text>
+      <text x="36" y="142" font-size="10" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">① ニーズを列挙し表側に記載</text>
+      <text x="36" y="156" font-size="10" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">② 機能を列挙し表頭に記載</text>
+      <text x="36" y="170" font-size="10" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">③ マス目に当てはまる内容を記載</text>
+      <text x="120" y="200" text-anchor="middle" font-size="10" fill="#5b8dee" font-family="Noto Sans JP,sans-serif">→ 強制発想法の一種</text>
+      <text x="120" y="214" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">（組み合わせ型）</text>
+
+      <rect x="250" y="82" width="200" height="175" rx="8" fill="rgba(251,191,36,.06)" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="350" y="102" text-anchor="middle" font-size="13" font-weight="bold" fill="#fbbf24" font-family="Noto Sans JP,sans-serif">ツリー図</text>
+      <text x="350" y="120" text-anchor="middle" font-size="11" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">問題改善型の発想</text>
+      <text x="266" y="142" font-size="10" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">① 比較対象を探す</text>
+      <text x="266" y="156" font-size="10" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">② 違いを探す</text>
+      <text x="266" y="170" font-size="10" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">③ 違いに着目して発想ヒントを探る</text>
+      <text x="350" y="200" text-anchor="middle" font-size="10" fill="#fbbf24" font-family="Noto Sans JP,sans-serif">→ 常識の延長上の発想</text>
+      <text x="350" y="214" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">（ビジネスで受け入れられやすい）</text>
+
+      <rect x="480" y="82" width="200" height="175" rx="8" fill="rgba(52,211,153,.06)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="580" y="102" text-anchor="middle" font-size="13" font-weight="bold" fill="#34d399" font-family="Noto Sans JP,sans-serif">フロー図</text>
+      <text x="580" y="120" text-anchor="middle" font-size="11" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">抜本的な発想（独創化）</text>
+      <text x="496" y="142" font-size="10" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">① 理由・原因を列挙する</text>
+      <text x="496" y="156" font-size="10" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">② 因果の連鎖を図にする</text>
+      <text x="496" y="170" font-size="10" fill="#e2e8f5" font-family="Noto Sans JP,sans-serif">③ 根本要因を探りつつヒントを探る</text>
+      <text x="580" y="200" text-anchor="middle" font-size="10" fill="#34d399" font-family="Noto Sans JP,sans-serif">→ 独創化戦略を支援</text>
+      <text x="580" y="214" text-anchor="middle" font-size="10" fill="#8a99b8" font-family="Noto Sans JP,sans-serif">（他に比較するものがない商品へ）</text>
+    </svg>
+    <figcaption>スライド再現: 第5回まとめ（スライドp.78）　<span class="ptr">S03:p.78</span></figcaption>
+  </div>
+</div>
+</section>
+
+<!-- ══ 補足A ══ -->
+<section id="app-a">
+<div class="app app-a">
+  <h3>⭐ 補足A：最重要ワード一覧</h3>
+  <table>
+    <tr><th>用語</th><th>読み</th><th>定義（原文から抽出）</th><th>重要度</th></tr>
+    <tr><td><strong>発想力</strong></td><td>はっそうりょく</td><td>他人とは異なる視点でありつつも、一定程度の合理性のある考え方を生み出す力</td><td>★★★</td></tr>
+    <tr><td><strong>マトリクス図</strong></td><td>まとりくすず</td><td>表頭と表側の2軸の交差点マス目にアイディアを記入して発想するツール（強制発想法の一種）</td><td>★★★</td></tr>
+    <tr><td><strong>ツリー図</strong></td><td>つりーず</td><td>比較対象との違いを階層化して問題改善型の発想を行うツール</td><td>★★★</td></tr>
+    <tr><td><strong>フロー図</strong></td><td>ふろーず</td><td>因果の連鎖を図示して根本要因を特定し、抜本的な発想を行うツール</td><td>★★★</td></tr>
+    <tr><td><strong>強制発想法</strong></td><td>きょうせいはっそうほう</td><td>特定フレームワークに強制的に当てはめて発想を引き出す手法。マトリクス図はその一種。</td><td>★★☆</td></tr>
+    <tr><td><strong>表頭</strong></td><td>ひょうとう</td><td>マトリクス図の横軸（列見出し）</td><td>★★☆</td></tr>
+    <tr><td><strong>表側</strong></td><td>ひょうがわ</td><td>マトリクス図の縦軸（行見出し）</td><td>★★☆</td></tr>
+    <tr><td><strong>独創化戦略</strong></td><td>どくそうかせんりゃく</td><td>他に比較するものがない商品・サービスを生み出す戦略（差別化戦略の限界から台頭）</td><td>★★★</td></tr>
+    <tr><td><strong>根本要因</strong></td><td>こんぽんようIn</td><td>これ以上さかのぼれない原因。フロー図でここを特定して解決策を考える。</td><td>★★★</td></tr>
+    <tr><td><strong>オズボーンの発想チェックリスト</strong></td><td>おずぼーん〜</td><td>転用・応用・変更・拡大・縮小・代用・置換・逆転・結合の9項目で発想するツール（1953年）</td><td>★★☆</td></tr>
+  </table>
+  <p class="ext-note" style="margin-top:12px">参考文献（スライド脚注）：高橋誠『問題解決手法の知識』日本経済新聞出版社, 1999, p.23 ／ 松林博文『クリエイティブ・シンキング』ダイヤモンド社, 2003, p.20 ／ 永田豊志『知的生産力が劇的に高まる最強フレームワーク100』ソフトバンククリエイティブ, 2008, p.155<span class="ptr">← S03:p.7, p.9（脚注）</span></p>
+</div>
+</section>
+
+<!-- ══ 補足B ══ -->
+<section id="app-b">
+<div class="app app-b">
+  <h3>📚 補足B：知っておくべき背景知識</h3>
+
+  <p><strong>アレックス・F・オズボーン（Alex Faickney Osborn, 1888–1966）</strong>：米国の広告業者・著述家。広告代理店BBDOの共同創設者（1919年）。1942年の著書 <em>How to Think Up</em> で「ブレインストーミング」の概念を提唱し、1953年の <em>Applied Imagination</em>（第1版）で発想チェックリストを体系化。後にBob Eberle（1971年）がSCMAPERとして再編。チェックリストはケンブリッジ大学Institute for Manufacturingなど世界中のビジネス教育で使われる古典的手法。<span class="ext-note">[外部補足・確認済: Cambridge IfM / Regent University Journal / Open Library]</span></p>
+
+  <p><strong>ソニー・ウォークマン（1979年発売）</strong>：録音機能を持たない再生専用の携帯型音楽プレーヤー。「いつでもどこでも音楽を聴ける」という文化を生み出した独創化戦略の代表例。当初は「録音機能のない機器は売れない」と社内で懐疑的な声もあった。<span class="ext-note">[外部補足・確認済: ソニー公式サイト]</span><span class="ptr">← S03:p.63</span></p>
+
+  <p><strong>トヨタ生産方式の「なぜ5回（5 Why）」</strong>：問題発生時に「なぜ？」を最低5回繰り返して根本原因を突き止める手法。TPS（Toyota Production System）の重要なツールの一つ。フロー図を使った発想手順と思考プロセスが対応している。<span class="ext-note">[外部補足・確認済: Toyota Global公式サイト]</span><span class="ptr">← S05-A</span></p>
+
+  <p><strong>メディカルツーリズム市場</strong>：世界のメディカルツーリズム市場は急成長中。複数の調査機関によると2023〜2024年時点で数百〜約1,000億米ドル規模（定義・調査機関により差異あり）。予測CAGRは約20〜23%。アジアではタイ・シンガポール・インドが主要拠点。<span class="ext-note">[外部補足・確認済: Straits Research / Fortune Business Insights, 2024]</span></p>
+
+  <p><strong>ヘルスツーリズムの公式定義</strong>：観光庁の定義は「自然豊かな地域を訪れ、そこにある自然・温泉・身体に優しい料理を味わい、心身ともに癒され、健康を回復・増進・保持する新しい観光形態」（観光立国推進基本計画, 2007年閣議決定）。UNWTOはヘルスツーリズムを「ウェルネスツーリズム（疾病予防・健康増進）」と「メディカルツーリズム（医療行為）」の総称と定義（UNWTO総会, 2017年採択）。<span class="ext-note">[外部補足・確認済: 観光庁 / UNWTO駐日事務所]</span></p>
+
+  <p><strong>エジソンの特許数</strong>：米国特許1,093件（外国特許含む総計2,332件）。講義中の「1,300」は概算表現と考えられる。<span class="ext-note">[外部補足・確認済: thomasedison.org公式 / Rutgers大学Edison Papers]</span></p>
+</div>
+</section>
+
+<!-- ══ 補足C ══ -->
+<section id="app-c">
+<div class="app app-c">
+  <h3>🎯 補足C：試験・レポートで重要な観点</h3>
+  <ul>
+    <li><strong>発想力の定義</strong>を正確に説明できること（「他人とは異なる視点でありつつも、一定程度の合理性のある」の両面が重要）</li>
+    <li><strong>マトリクス図・ツリー図・フロー図の違い</strong>を発想タイプ（組み合わせ型・改善型・根本探索型）で説明できること</li>
+    <li><strong>各図の3ステップ</strong>を正しい順序で挙げられること</li>
+    <li><strong>「強制発想法」</strong>がマトリクス図に分類される理由を説明できること（表頭×表側の掛け算でマス目を強制的に埋める）</li>
+    <li><strong>差別化戦略 vs 独創化戦略</strong>の違いを説明し、なぜ独創化戦略の重要性が高まっているかを述べられること</li>
+    <li><strong>オズボーンのチェックリスト9項目</strong>（転・応・変・拡・縮・代・置・逆・結）を語句と視点で説明できると完璧</li>
+    <li>ツリー図の事例問題では「<strong>比較対象の選び方（類似性が高く成功しているもの）</strong>」と「<strong>違いを逆手に取る発想</strong>」が評価ポイント</li>
+    <li>フロー図では「<strong>根本要因に至るまで掘り下げる</strong>」プロセスの論理的整合性（因果連鎖の誤り・抜けのチェック）が問われる</li>
+    <li>連想法は「発散思考で行う」点が重要（論理的厳密さは問わない段階）</li>
+  </ul>
+</div>
+</section>
+
+<!-- ══ 補足D ══ -->
+<section id="app-d">
+<div class="app app-d">
+  <h3>🔗 補足D：関連概念・次回への接続</h3>
+
+  <p><strong>ブレインストーミング（Brainstorming）</strong>：オズボーンが1953年に提唱したグループ発想法。「①批判禁止 ②質より量 ③自由奔放 ④結合・改善」の4原則で多数のアイディアを引き出す。オズボーンのチェックリストと同じ考案者による手法。<span class="ext-note">[外部補足・確認済]</span></p>
+
+  <p><strong>SCAMPER法</strong>：Substitute（代用）・Combine（結合）・Adapt（応用）・Modify/Magnify/Minify（変更・拡大・縮小）・Put to other uses（転用）・Eliminate（省略）・Reverse/Rearrange（逆転・置換）の頭文字。Bob Eberle（1971年）がオズボーンのチェックリストを整理・発展させたフレームワーク。本講義の9項目チェックリストの発展版。<span class="ext-note">[外部補足・確認済]</span></p>
+
+  <p><strong>ブルーオーシャン戦略（Blue Ocean Strategy）</strong>：チャン・キムとレネ・モボルニュ（2005年）が提唱。競合のない新市場（ブルーオーシャン）を創造する戦略。本講義の「独創化戦略」と概念的に近く、差別化（レッドオーシャン）の限界を超える点で共通する。<span class="ext-note">[外部補足]</span></p>
+
+  <p><strong>デザイン思考（Design Thinking）</strong>：IDEOが体系化した「共感→問題定義→アイディア創出→プロトタイプ→テスト」の5段階プロセス。ユーザーのニーズを起点とする点でマトリクス図（ニーズ列挙から出発）と親和性が高い。<span class="ext-note">[外部補足]</span></p>
+
+  <p><strong>5Why（なぜなぜ分析）</strong>：トヨタ生産方式から生まれた根本原因分析手法。「なぜ？」を繰り返すことで本質的な問題を特定する。本講義のフロー図（因果連鎖）と直接対応する考え方。<span class="ext-note">[外部補足・確認済: Toyota Global公式]</span></p>
+
+  <p><strong>次回への接続</strong>：本回は「図を使って新しい発想を生み出す方法」を扱い、論理的思考ツールである図が創造的思考にも活用できることを確認した。マトリクス図（組み合わせ）・ツリー図（改善）・フロー図（根本探索）という3タイプの使い分けが本科目の核心的な知識となる。</p>
+</div>
+</section>
+
+<!-- ══ 未確定事項（全解消） ══ -->
+<section id="unresolved">
+<div class="app app-u">
+  <h3>✅ 未確定事項・要確認リスト（全件解消済み）</h3>
+  <table>
+    <tr><th>ID</th><th>内容</th><th>種別</th><th>対処結果</th></tr>
+    <tr>
+      <td>U01</td>
+      <td>エジソンの発明件数：S05では「1,300」と発言されているが、公式記録では米国特許1,093件、外国特許含む総計2,332件。本文・補足Bを公式数値に修正済み。</td>
+      <td style="color:var(--green)">✅ 解決済み</td>
+      <td>thomasedison.org公式 / Rutgers大学Edison Papers により確認（Step 6 パートIV）</td>
+    </tr>
+  </table>
+  <p style="font-size:13px;color:var(--green);margin-top:10px;">✅ 全未確定事項が解消されました（QCスコア: 100% PASS）</p>
+</div>
+</section>
+
+</main>
+
+<script>
+const sections = document.querySelectorAll('section[id]');
+const links = document.querySelectorAll('#sidebar a');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      links.forEach(l => l.classList.remove('active'));
+      const a = document.querySelector(`#sidebar a[href="#${e.target.id}"]`);
+      if (a) a.classList.add('active');
+    }
+  });
+}, { threshold: 0.25 });
+sections.forEach(s => obs.observe(s));
+</script>
+</body>
+</html>
