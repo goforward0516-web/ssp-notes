@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ロジカルシンキング 第8回 — 図を使って交渉力を高めよう</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0f1117; --bg-card:#1a1f2e; --bg-card2:#1e2535;
+    --border:#2a3045; --border-accent:#3a4460;
+    --text:#e2e8f5; --text-sub:#8a99b8; --text-muted:#5a6580;
+    --blue:#5b8dee; --blue-dim:#2a3d6e;
+    --purple:#9b72cf; --purple-dim:#2e2050;
+    --orange:#f59e0b; --orange-dim:#3d2800;
+    --green:#34d399; --green-dim:#0d3028;
+    --yellow:#fbbf24; --red:#f87171; --teal:#22d3ee;
+    --sidebar-w:268px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:'Noto Sans JP',sans-serif;font-size:15px;line-height:1.8;display:flex}
+
+  /* SIDEBAR */
+  #sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:var(--bg-card);border-right:1px solid var(--border);overflow-y:auto;padding:20px 0;z-index:100}
+  #sidebar h2{font-size:10.5px;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-muted);padding:0 16px 10px;border-bottom:1px solid var(--border);margin-bottom:8px}
+  #sidebar ul{list-style:none}
+  #sidebar ul li a{display:block;padding:4px 16px;color:var(--text-sub);text-decoration:none;font-size:12px;border-left:2px solid transparent;transition:all .15s}
+  #sidebar ul li a:hover{color:var(--blue);border-left-color:var(--blue);background:rgba(91,141,238,.06)}
+  #sidebar ul li.sub a{padding-left:28px;font-size:11.5px}
+  #sidebar ul li.subsub a{padding-left:40px;font-size:11px;color:var(--text-muted)}
+
+  /* MAIN */
+  #main{margin-left:var(--sidebar-w);flex:1;padding:36px 48px;max-width:980px}
+
+  /* HEADER */
+  .page-header{background:linear-gradient(135deg,#1a2540 0%,#0f1520 100%);border:1px solid var(--border-accent);border-radius:12px;padding:28px 32px;margin-bottom:28px}
+  .page-header .subject{font-size:11px;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:5px}
+  .page-header h1{font-size:22px;font-weight:700;color:var(--text);margin-bottom:10px}
+  .page-header .meta{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px}
+  .page-header .meta span{font-size:11.5px;color:var(--text-sub);background:rgba(91,141,238,.1);border:1px solid var(--blue-dim);border-radius:4px;padding:2px 9px}
+  .page-header .sources{margin-top:12px;font-size:11px;color:var(--text-muted)}
+  .badge-s03{color:var(--blue)} .badge-s05{color:var(--purple)}
+
+  /* SECTION CARD */
+  .section-card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:26px 30px;margin-bottom:22px}
+  .section-card h2{font-size:18px;font-weight:700;color:var(--blue);border-bottom:1px solid var(--border);padding-bottom:9px;margin-bottom:16px}
+  .section-card h3{font-size:14.5px;font-weight:600;color:var(--yellow);margin:20px 0 9px}
+  .section-card h4{font-size:13px;font-weight:600;color:var(--text-sub);margin:14px 0 7px}
+  .section-card p{margin-bottom:9px}
+  .section-card ul,.section-card ol{padding-left:20px;margin-bottom:9px}
+  .section-card li{margin-bottom:3px}
+
+  /* BLOCKS */
+  .voice-block{border-left:3px solid var(--blue);background:rgba(91,141,238,.07);border-radius:0 6px 6px 0;padding:9px 13px;margin:9px 0;font-size:13.5px;color:#b8ccf0}
+  .voice-block .bl{font-size:10px;color:var(--blue);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;font-family:'JetBrains Mono',monospace}
+  .ext-block{border-left:3px solid var(--green);background:rgba(52,211,153,.07);border-radius:0 6px 6px 0;padding:9px 13px;margin:9px 0;font-size:13.5px;color:#a0e8cc}
+  .ext-block .bl{font-size:10px;color:var(--green);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;font-family:'JetBrains Mono',monospace}
+  .def-block{border-left:3px solid var(--yellow);background:rgba(251,191,36,.07);border-radius:0 6px 6px 0;padding:10px 13px;margin:9px 0;font-size:14px}
+  .def-block strong{color:var(--yellow)}
+  .key-block{border-left:3px solid var(--teal);background:rgba(34,211,238,.06);border-radius:0 6px 6px 0;padding:10px 13px;margin:9px 0;font-size:13.5px}
+  .key-block .bl{font-size:10px;color:var(--teal);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;font-family:'JetBrains Mono',monospace}
+
+  /* POINTER */
+  .ptr{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-muted);background:rgba(255,255,255,.04);border-radius:3px;padding:1px 5px;margin-left:4px;vertical-align:middle}
+
+  /* TABLE */
+  table{width:100%;border-collapse:collapse;margin:13px 0;font-size:13.5px}
+  th{background:var(--bg-card2);color:var(--blue);padding:7px 11px;border:1px solid var(--border-accent);font-weight:600;text-align:left}
+  td{padding:6px 11px;border:1px solid var(--border)}
+  tr:nth-child(even) td{background:rgba(255,255,255,.02)}
+
+  /* SVG */
+  .svg-wrap{margin:16px 0}
+  .svg-wrap figcaption{font-size:10.5px;color:var(--text-muted);text-align:center;margin-top:5px;font-family:'JetBrains Mono',monospace}
+
+  /* STEP FLOW */
+  .step-flow{display:flex;gap:0;align-items:stretch;margin:12px 0;flex-wrap:wrap}
+  .step-box{background:var(--bg-card2);border:1px solid var(--border-accent);border-radius:8px;padding:9px 14px;font-size:13px;flex:1;min-width:110px;text-align:center}
+  .step-box .sn{font-size:10px;color:var(--blue);font-family:'JetBrains Mono',monospace;display:block;margin-bottom:2px}
+  .step-arrow{display:flex;align-items:center;padding:0 4px;color:var(--text-muted);font-size:16px}
+
+  /* APPENDIX */
+  .appendix-card{border-radius:10px;padding:22px 26px;margin-bottom:18px;border:1px solid var(--border)}
+  .appendix-card h2{font-size:15px;font-weight:700;margin-bottom:12px}
+  .app-a{background:rgba(251,191,36,.05)} .app-a h2{color:var(--yellow)}
+  .app-b{background:rgba(52,211,153,.04)} .app-b h2{color:var(--green)}
+  .app-c{background:rgba(248,113,113,.04)} .app-c h2{color:var(--red)}
+  .app-d{background:rgba(155,114,207,.04)} .app-d h2{color:var(--purple)}
+  .app-uc{background:rgba(245,158,11,.05);border-color:var(--orange-dim)} .app-uc h2{color:var(--orange)}
+  .ei{font-size:12px;color:var(--text-muted)}
+
+  .star3{color:var(--yellow)} .star2{color:#a89040} .star1{color:var(--text-muted)}
+
+  /* COMPARISON BOX */
+  .compare-row{display:flex;gap:12px;margin:10px 0;flex-wrap:wrap}
+  .compare-box{flex:1;min-width:200px;background:var(--bg-card2);border:1px solid var(--border-accent);border-radius:8px;padding:12px 14px}
+  .compare-box h5{font-size:12px;font-weight:700;margin-bottom:6px}
+
+  /* RESOLVED BADGE */
+  .resolved{display:inline-block;background:#0d3028;color:var(--green);border:1px solid var(--green);border-radius:12px;font-size:10px;padding:1px 7px;margin-left:6px;font-family:'JetBrains Mono',monospace}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <h2>目次</h2>
+  <ul>
+    <li><a href="#overview">第8回 概要</a></li>
+    <li><a href="#ch1">第1章 交渉スキルとは</a></li>
+    <li class="sub"><a href="#ch1-why">交渉力はなぜ必要か</a></li>
+    <li class="sub"><a href="#ch1-script">交渉脚本シート</a></li>
+    <li class="sub"><a href="#ch1-def">交渉力の定義</a></li>
+    <li class="sub"><a href="#ch1-methods">2つの方法（概念図）</a></li>
+    <li><a href="#ch2">第2章 フロー図と交渉</a></li>
+    <li class="sub"><a href="#ch2-concept">基本構造と3ステップ</a></li>
+    <li class="sub"><a href="#ch2-case1">CASE1 マンション契約</a></li>
+    <li class="sub"><a href="#ch2-case2">CASE2 追加開発費</a></li>
+    <li><a href="#ch3">第3章 ベン図と交渉</a></li>
+    <li class="sub"><a href="#ch3-concept">基本構造と3ステップ</a></li>
+    <li class="sub"><a href="#ch3-case1">CASE1 残業問題</a></li>
+    <li class="sub"><a href="#ch3-case2">CASE2 新サービス導入</a></li>
+    <li><a href="#ch4">第4章 まとめ</a></li>
+    <li class="sub"><a href="#ch4-types">図タイプ選択ガイド</a></li>
+    <li class="sub"><a href="#ch4-axis">軸の作り方</a></li>
+    <li class="sub"><a href="#ch4-thinking">図解思考の意義</a></li>
+    <li><a href="#app-a">⭐ 補足A: 重要ワード</a></li>
+    <li><a href="#app-b">📚 補足B: 背景知識</a></li>
+    <li><a href="#app-c">🎯 補足C: 試験・レポート</a></li>
+    <li><a href="#app-d">🔗 補足D: 関連概念</a></li>
+    <li><a href="#app-uc">❓ 未確定事項</a></li>
+  </ul>
+</nav>
+
+<!-- MAIN -->
+<main id="main">
+
+<!-- PAGE HEADER -->
+<div class="page-header" id="overview">
+  <div class="subject">サイバー大学 IT総合学部 | 教養科目 | ロジカルシンキング</div>
+  <h1>第8回　図を使って交渉力を高めよう</h1>
+  <div class="meta">
+    <span>担当: 奥村 隆一</span>
+    <span>第8回 / 全8回（最終回）</span>
+    <span>応用スキル: 交渉力</span>
+  </div>
+  <div class="sources" style="margin-top:10px">
+    使用ソース: <span class="badge-s03">● S03 スライドPDF（権威ソース）</span>
+    <span class="badge-s05">● S05-A/B hynote.ai（音声AI変換 ×2）</span>
+    &nbsp;|&nbsp; v1.1 — 未確定解消・SVG追加・外部補足確認済版
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- 第1章 -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="section-card" id="ch1">
+  <h2>第1章　交渉のスキルは、ビジネスパーソンに不可欠のスキルの一つ</h2>
+
+  <div class="def-block">
+    <strong>【第1章 学習目標】</strong><br>
+    交渉力とは何か、私たちはどのような場面で交渉力が求められるのかについて説明できる。 <span class="ptr">← S03:p.5</span>
+  </div>
+
+  <!-- 1-1 -->
+  <h3 id="ch1-why">1-1. 交渉力はなぜ必要か</h3>
+
+  <p>人は一人で生きることができない以上、社会の中で常に誰かと関わりながら日々を過ごしている。<span class="ptr">← S03:p.6</span></p>
+  <ul>
+    <li>とくに<strong>企業社会においては</strong>、自分が所属している組織から与えられた役割や使命を果たすために、<strong>対顧客・対上司・対部下等に対してさまざまな局面で「交渉」を行う</strong>。<span class="ptr">← S03:p.6</span></li>
+    <li>ビジネスパーソンにとって交渉は<strong>基本中の基本のスキル</strong>。<span class="ptr">← S03:p.6</span></li>
+  </ul>
+
+  <div class="voice-block">
+    <div class="bl">🎙 音声補足</div>
+    重い交渉の例: M&amp;Aを成功させるために自社の利益にかなうよう長い交渉のやり取りを行う。軽い交渉の例: プライベートな約束があってどうしても残業できないとき、仕事仲間に代わりに引き受けてくれないかお願いする。すべてのビジネスパーソンが日々何らかの交渉を行っている。<span class="ptr">← S05</span>
+  </div>
+
+  <p>世の中に自分とまったく同じ考え方・価値観を持つ人はひとりとしておらず、ビジネス上の相手であれば避けることもできないため、<strong>お互いの考え方の違いを前提にしつつ良好な関係を作り維持していかなくてはならない</strong>。<span class="ptr">← S03:p.7</span></p>
+
+  <!-- 1-2 交渉脚本シート -->
+  <h3 id="ch1-script">1-2. 交渉の準備ツール — 交渉脚本シート</h3>
+
+  <p>相手の反応を見ながらその都度作戦を立てると、その場の雰囲気や情緒に流されやすいため、<strong>あらかじめシナリオを作成しておき全体像をつかんだうえで交渉に臨む</strong>のが有効。<span class="ptr">← S03:p.8</span></p>
+
+  <!-- 交渉脚本シートの図（S03 p.9） -->
+  <div class="svg-wrap">
+    <svg viewBox="0 0 660 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:660px;display:block;margin:0 auto">
+      <rect width="660" height="280" fill="#1e2535" rx="8"/>
+      <!-- タイトル行 -->
+      <rect x="14" y="12" width="632" height="30" rx="4" fill="#fbbf24" fill-opacity=".18" stroke="#fbbf24" stroke-width="1"/>
+      <text x="330" y="31" fill="#fbbf24" font-size="14" font-weight="bold" text-anchor="middle" font-family="Noto Sans JP">交渉脚本シート</text>
+      <!-- 目的 -->
+      <rect x="14" y="48" width="120" height="26" rx="3" fill="#5b8dee" fill-opacity=".25" stroke="#5b8dee" stroke-width="1"/>
+      <text x="74" y="65" fill="#e2e8f5" font-size="12" text-anchor="middle" font-family="Noto Sans JP" font-weight="600">目的</text>
+      <rect x="138" y="48" width="508" height="26" rx="3" fill="#1a1f2e" stroke="#2a3045" stroke-width="1"/>
+      <!-- 状況 -->
+      <rect x="14" y="78" width="120" height="26" rx="3" fill="#5b8dee" fill-opacity=".25" stroke="#5b8dee" stroke-width="1"/>
+      <text x="74" y="95" fill="#e2e8f5" font-size="12" text-anchor="middle" font-family="Noto Sans JP" font-weight="600">状況</text>
+      <rect x="138" y="78" width="508" height="26" rx="3" fill="#1a1f2e" stroke="#2a3045" stroke-width="1"/>
+      <!-- 登場人物ヘッダ -->
+      <rect x="14" y="108" width="120" height="62" rx="3" fill="#5b8dee" fill-opacity=".25" stroke="#5b8dee" stroke-width="1"/>
+      <text x="74" y="143" fill="#e2e8f5" font-size="12" text-anchor="middle" font-family="Noto Sans JP" font-weight="600">登場人物</text>
+      <!-- 登場人物テーブルヘッダ -->
+      <rect x="138" y="108" width="126" height="24" rx="0" fill="#2a3d6e" stroke="#3a4460" stroke-width="1"/>
+      <text x="201" y="124" fill="#8ab4f0" font-size="11" text-anchor="middle" font-family="Noto Sans JP">氏名</text>
+      <rect x="264" y="108" width="126" height="24" rx="0" fill="#2a3d6e" stroke="#3a4460" stroke-width="1"/>
+      <text x="327" y="124" fill="#8ab4f0" font-size="11" text-anchor="middle" font-family="Noto Sans JP">性格</text>
+      <rect x="390" y="108" width="126" height="24" rx="0" fill="#2a3d6e" stroke="#3a4460" stroke-width="1"/>
+      <text x="453" y="124" fill="#8ab4f0" font-size="11" text-anchor="middle" font-family="Noto Sans JP">役割</text>
+      <rect x="516" y="108" width="130" height="24" rx="0" fill="#2a3d6e" stroke="#3a4460" stroke-width="1"/>
+      <text x="581" y="124" fill="#8ab4f0" font-size="11" text-anchor="middle" font-family="Noto Sans JP">期待する成果</text>
+      <!-- 登場人物行1 -->
+      <rect x="138" y="132" width="126" height="20" fill="#1a1f2e" stroke="#2a3045" stroke-width="1"/>
+      <rect x="264" y="132" width="126" height="20" fill="#1a1f2e" stroke="#2a3045" stroke-width="1"/>
+      <rect x="390" y="132" width="126" height="20" fill="#1a1f2e" stroke="#2a3045" stroke-width="1"/>
+      <rect x="516" y="132" width="130" height="20" fill="#1a1f2e" stroke="#2a3045" stroke-width="1"/>
+      <!-- 行2 -->
+      <rect x="138" y="152" width="126" height="18" fill="#1a1f2e" stroke="#2a3045" stroke-width="1"/>
+      <rect x="264" y="152" width="126" height="18" fill="#1a1f2e" stroke="#2a3045" stroke-width="1"/>
+      <rect x="390" y="152" width="126" height="18" fill="#1a1f2e" stroke="#2a3045" stroke-width="1"/>
+      <rect x="516" y="152" width="130" height="18" fill="#1a1f2e" stroke="#2a3045" stroke-width="1"/>
+      <!-- 戦略テーブル -->
+      <rect x="14" y="174" width="120" height="26" fill="#5b8dee" fill-opacity=".15" stroke="#5b8dee" stroke-width="1"/>
+      <rect x="134" y="174" width="170" height="26" fill="#2a3d6e" stroke="#3a4460" stroke-width="1"/>
+      <text x="219" y="190" fill="#8ab4f0" font-size="11.5" text-anchor="middle" font-family="Noto Sans JP">戦略</text>
+      <rect x="304" y="174" width="170" height="26" fill="#2a3d6e" stroke="#3a4460" stroke-width="1"/>
+      <text x="389" y="190" fill="#8ab4f0" font-size="11.5" text-anchor="middle" font-family="Noto Sans JP">作戦</text>
+      <rect x="474" y="174" width="172" height="26" fill="#2a3d6e" stroke="#3a4460" stroke-width="1"/>
+      <text x="560" y="190" fill="#8ab4f0" font-size="11.5" text-anchor="middle" font-family="Noto Sans JP">戦術</text>
+      <!-- 序盤 中盤 終盤 -->
+      <rect x="14" y="200" width="120" height="24" fill="#5b8dee" fill-opacity=".12" stroke="#5b8dee" stroke-width="1"/>
+      <text x="74" y="215" fill="#b8ccf0" font-size="12" text-anchor="middle" font-family="Noto Sans JP">序盤</text>
+      <rect x="134" y="200" width="170" height="24" fill="#1a1f2e" stroke="#2a3045" stroke-width="1"/>
+      <rect x="304" y="200" width="170" height="24" fill="#1a1f2e" stroke="#2a3045" stroke-width="1"/>
+      <rect x="474" y="200" width="172" height="24" fill="#1a1f2e" stroke="#2a3045" stroke-width="1"/>
+      <rect x="14" y="224" width="120" height="24" fill="#5b8dee" fill-opacity=".12" stroke="#5b8dee" stroke-width="1"/>
+      <text x="74" y="239" fill="#b8ccf0" font-size="12" text-anchor="middle" font-family="Noto Sans JP">中盤</text>
+      <rect x="134" y="224" width="170" height="24" fill="#1a1f2e" stroke="#2a3045" stroke-width="1"/>
+      <rect x="304" y="224" width="170" height="24" fill="#1a1f2e" stroke="#2a3045" stroke-width="1"/>
+      <rect x="474" y="224" width="172" height="24" fill="#1a1f2e" stroke="#2a3045" stroke-width="1"/>
+      <rect x="14" y="248" width="120" height="24" fill="#5b8dee" fill-opacity=".12" stroke="#5b8dee" stroke-width="1"/>
+      <text x="74" y="263" fill="#b8ccf0" font-size="12" text-anchor="middle" font-family="Noto Sans JP">終盤</text>
+      <rect x="134" y="248" width="170" height="24" fill="#1a1f2e" stroke="#2a3045" stroke-width="1"/>
+      <rect x="304" y="248" width="170" height="24" fill="#1a1f2e" stroke="#2a3045" stroke-width="1"/>
+      <rect x="474" y="248" width="172" height="24" fill="#1a1f2e" stroke="#2a3045" stroke-width="1"/>
+    </svg>
+    <figcaption>図: 交渉脚本シートの構成（目的・状況・登場人物・序盤/中盤/終盤の戦略/作戦/戦術） S03:p.9</figcaption>
+  </div>
+
+  <!-- 1-3 交渉力の定義 -->
+  <h3 id="ch1-def">1-3. 交渉力とは何か — 定義</h3>
+
+  <p>交渉力の定義は一様ではなく、研究者によって異なる視点がある。<span class="ptr">← S03:p.10-11</span></p>
+  <ul>
+    <li><strong>捨田利裕氏</strong>（（有）ヒューマンゼミナール代表取締役）:「お互いに話し合うことにより、双方にとって納得できる結果に至るまでのプロセス」<span class="ptr">← S03:p.10 ※出典: 同氏著『交渉の技術が面白いほど身につく本』中経出版, 2001年, p.60</span></li>
+    <li><strong>高杉尚孝氏</strong>（情報コンサルティング会社バーソン・マーステラ社マネージング・ディレクター）:「お互いの満足度を高める双方向のコミュニケーション・プロセス」<span class="ptr">← S03:p.10 ※出典: 同氏著『交渉のセオリー』NHK出版, 2001年, p.10</span></li>
+    <li>交渉には単なる「説得」とは異なり、<strong>論理性のみならず感情面のキャッチボールを円滑に行う創造的な面</strong>も求められる。<span class="ptr">← S03:p.11</span></li>
+  </ul>
+
+  <div class="def-block">
+    <strong>【本科目での定義】</strong> <span class="ptr">← S03:p.12</span><br>
+    「<strong>交渉</strong>」とは、自分と相手の意向や意識・考え方に違いがあることを前提としつつ、その間のギャップを埋め、自分の側に相手を近づけるよう働きかけること。<br>
+    「<strong>交渉力</strong>」とはその力のことを言う。
+  </div>
+
+  <!-- 交渉力のイメージ図（S03 p.12） -->
+  <div class="svg-wrap">
+    <svg viewBox="0 0 620 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:620px;display:block;margin:0 auto">
+      <rect width="620" height="200" fill="#1e2535" rx="8"/>
+      <!-- 左側 交渉前 -->
+      <text x="155" y="24" fill="#8a99b8" font-size="11" text-anchor="middle" font-family="Noto Sans JP">交渉前</text>
+      <!-- あなた -->
+      <rect x="20" y="35" width="100" height="60" rx="6" fill="#5b8dee" fill-opacity=".2" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="70" y="62" fill="#e2e8f5" font-size="12" text-anchor="middle" font-family="Noto Sans JP">あなた</text>
+      <text x="70" y="78" fill="#8ab4f0" font-size="10.5" text-anchor="middle" font-family="Noto Sans JP">（自分の主張）</text>
+      <!-- ✕ -->
+      <text x="155" y="72" fill="#f87171" font-size="28" text-anchor="middle" font-family="sans-serif">✕</text>
+      <!-- 相手 -->
+      <rect x="190" y="35" width="100" height="60" rx="6" fill="#f87171" fill-opacity=".2" stroke="#f87171" stroke-width="1.5"/>
+      <text x="240" y="62" fill="#e2e8f5" font-size="12" text-anchor="middle" font-family="Noto Sans JP">相手</text>
+      <text x="240" y="78" fill="#ffb8b8" font-size="10.5" text-anchor="middle" font-family="Noto Sans JP">（相手の主張）</text>
+      <!-- ギャップ矢印 -->
+      <line x1="70" y1="100" x2="70" y2="128" stroke="#5b8dee" stroke-width="1" stroke-dasharray="3 2"/>
+      <line x1="240" y1="100" x2="240" y2="128" stroke="#f87171" stroke-width="1" stroke-dasharray="3 2"/>
+      <rect x="50" y="128" width="220" height="28" rx="4" fill="#fbbf24" fill-opacity=".08" stroke="#fbbf24" stroke-width="1"/>
+      <text x="160" y="146" fill="#fbbf24" font-size="11.5" text-anchor="middle" font-family="Noto Sans JP">意向・意識・考え方のギャップ</text>
+      <!-- 矢印→交渉 -->
+      <text x="330" y="90" fill="#8a99b8" font-size="22" text-anchor="middle">→</text>
+      <text x="330" y="110" fill="#8a99b8" font-size="10" text-anchor="middle" font-family="Noto Sans JP">交渉</text>
+      <!-- 右側 交渉後 -->
+      <text x="495" y="24" fill="#8a99b8" font-size="11" text-anchor="middle" font-family="Noto Sans JP">交渉後（理想）</text>
+      <rect x="360" y="35" width="100" height="60" rx="6" fill="#5b8dee" fill-opacity=".2" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="410" y="62" fill="#e2e8f5" font-size="12" text-anchor="middle" font-family="Noto Sans JP">あなた</text>
+      <!-- 相手が近づく -->
+      <rect x="480" y="35" width="100" height="60" rx="6" fill="#f87171" fill-opacity=".2" stroke="#f87171" stroke-width="1.5"/>
+      <text x="530" y="62" fill="#e2e8f5" font-size="12" text-anchor="middle" font-family="Noto Sans JP">相手</text>
+      <!-- 近づく矢印 -->
+      <line x1="480" y1="65" x2="460" y2="65" stroke="#34d399" stroke-width="2" marker-end="url(#ag)"/>
+      <text x="495" y="100" fill="#34d399" font-size="10.5" text-anchor="middle" font-family="Noto Sans JP">← 相手が近づく</text>
+      <defs>
+        <marker id="ag" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><polygon points="0,0 8,4 0,8" fill="#34d399"/></marker>
+      </defs>
+    </svg>
+    <figcaption>図: 交渉力のイメージ — ギャップを埋め相手を自分の側に近づける S03:p.12</figcaption>
+  </div>
+
+  <h4>交渉力を高めるには</h4>
+  <ul>
+    <li><strong>まず自分と相手の間にある意向のギャップの内容を明確に把握すること</strong>（できていないと交渉の方向を大きく見誤る）<span class="ptr">← S03:p.13</span></li>
+    <li>相手の立場に立って状況を眺めることが重要。たとえいくら自分に利があっても、<strong>相手の「心」が受け入れてくれなければ交渉が成功したとは言えない</strong><span class="ptr">← S03:p.13</span></li>
+    <li><strong>相手ばかりでなく自分の意向や考え方を客観視する力</strong>もつける必要がある<span class="ptr">← S03:p.13</span></li>
+  </ul>
+
+  <!-- 1-4 2つの方法 -->
+  <h3 id="ch1-methods">1-4. 交渉の糸口を探る2つの方法</h3>
+
+  <div class="compare-row">
+    <div class="compare-box" style="border-top:3px solid var(--blue)">
+      <h5 style="color:var(--blue)">方法① 新たな落としどころを見つける</h5>
+      <p style="font-size:13px">相手が本当に望んでいることを探り出してお互いの<strong>対立点そのものをなくす</strong></p>
+      <p style="font-size:12px;color:var(--blue)">→ フロー図が適している</p>
+    </div>
+    <div class="compare-box" style="border-top:3px solid var(--purple)">
+      <h5 style="color:var(--purple)">方法② 共通の利益を見つける</h5>
+      <p style="font-size:13px">双方が受け入れられる<strong>接点を探し</strong>お互いが譲歩できる余地を見つける</p>
+      <p style="font-size:12px;color:var(--purple)">→ ベン図が役立つ</p>
+    </div>
+  </div>
+  <p style="font-size:12px;color:var(--text-muted)">← S03:p.14-17</p>
+
+  <!-- フロー図概念（S03 p.15） -->
+  <div class="svg-wrap">
+    <svg viewBox="0 0 660 290" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:660px;display:block;margin:0 auto">
+      <rect width="660" height="290" fill="#1e2535" rx="8"/>
+      <!-- タイトル -->
+      <text x="330" y="22" fill="#8a99b8" font-size="11" text-anchor="middle" font-family="Noto Sans JP">（1）新たな落としどころを見つける ― フロー図の概念</text>
+      <!-- 左 -->
+      <text x="145" y="44" fill="#8a99b8" font-size="11" text-anchor="middle" font-family="Noto Sans JP">相手の主張A（現状）</text>
+      <ellipse cx="145" cy="78" rx="95" ry="30" fill="none" stroke="#f87171" stroke-width="1.5"/>
+      <text x="145" y="83" fill="#e2e8f5" font-size="13" text-anchor="middle" font-family="Noto Sans JP">相手の主張A</text>
+      <line x1="145" y1="108" x2="145" y2="126" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#d1)"/>
+      <text x="20" y="142" fill="#8a99b8" font-size="10" font-family="Noto Sans JP">根拠</text>
+      <ellipse cx="145" cy="152" rx="85" ry="26" fill="none" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="145" y="157" fill="#e2e8f5" font-size="13" text-anchor="middle" font-family="Noto Sans JP">根拠</text>
+      <line x1="145" y1="178" x2="145" y2="196" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#d1)"/>
+      <text x="20" y="228" fill="#8a99b8" font-size="10" font-family="Noto Sans JP">前提</text>
+      <ellipse cx="145" cy="224" rx="85" ry="26" fill="none" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="145" y="229" fill="#e2e8f5" font-size="13" text-anchor="middle" font-family="Noto Sans JP">前提（価値観）</text>
+      <!-- 変更矢印 -->
+      <rect x="261" y="210" width="84" height="28" rx="4" fill="#fbbf24" fill-opacity=".18" stroke="#fbbf24" stroke-width="1"/>
+      <text x="303" y="228" fill="#fbbf24" font-size="12" text-anchor="middle" font-family="Noto Sans JP">変更</text>
+      <line x1="230" y1="224" x2="259" y2="224" stroke="#fbbf24" stroke-width="1.5"/>
+      <line x1="345" y1="224" x2="375" y2="224" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#dy)"/>
+      <!-- 右 -->
+      <text x="515" y="44" fill="#8a99b8" font-size="11" text-anchor="middle" font-family="Noto Sans JP">相手の主張B = あなたの主張</text>
+      <ellipse cx="515" cy="78" rx="95" ry="30" fill="none" stroke="#34d399" stroke-width="1.5"/>
+      <text x="515" y="83" fill="#e2e8f5" font-size="13" text-anchor="middle" font-family="Noto Sans JP">相手の主張B</text>
+      <line x1="515" y1="108" x2="515" y2="126" stroke="#34d399" stroke-width="1.5" marker-end="url(#dg)"/>
+      <ellipse cx="515" cy="152" rx="85" ry="26" fill="none" stroke="#34d399" stroke-width="1.5"/>
+      <text x="515" y="157" fill="#e2e8f5" font-size="13" text-anchor="middle" font-family="Noto Sans JP">根拠</text>
+      <line x1="515" y1="178" x2="515" y2="196" stroke="#34d399" stroke-width="1.5" marker-end="url(#dg)"/>
+      <ellipse cx="515" cy="224" rx="85" ry="26" fill="#fbbf24" fill-opacity=".12" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="515" y="229" fill="#fbbf24" font-size="13" text-anchor="middle" font-family="Noto Sans JP">新たな前提</text>
+      <defs>
+        <marker id="d1" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><polygon points="0,0 8,4 0,8" fill="#5b8dee"/></marker>
+        <marker id="dg" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><polygon points="0,0 8,4 0,8" fill="#34d399"/></marker>
+        <marker id="dy" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><polygon points="0,0 8,4 0,8" fill="#fbbf24"/></marker>
+      </defs>
+    </svg>
+    <figcaption>図: 交渉フロー図の概念 — 前提を新たな前提に差し替えることで根拠→主張が変わる S03:p.15</figcaption>
+  </div>
+
+  <!-- ベン図概念（S03 p.17） -->
+  <div class="svg-wrap">
+    <svg viewBox="0 0 720 340" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:720px;display:block;margin:0 auto">
+      <rect width="720" height="340" fill="#1e2535" rx="8"/>
+      <text x="360" y="22" fill="#8a99b8" font-size="11" text-anchor="middle" font-family="Noto Sans JP">（2）共通の利益を見つける ― ベン図の概念</text>
+
+      <!-- 相手の価値観（左大楕円） cx=240 -->
+      <ellipse cx="248" cy="155" rx="195" ry="110" fill="#f87171" fill-opacity=".13" stroke="#f87171" stroke-width="1.5"/>
+      <!-- あなたの価値観（右大楕円） cx=472 -->
+      <ellipse cx="472" cy="155" rx="195" ry="110" fill="#5b8dee" fill-opacity=".13" stroke="#5b8dee" stroke-width="1.5"/>
+
+      <!-- ラベル: 相手の価値観 — 左端の余白に収める -->
+      <text x="72" y="138" fill="#f87171" font-size="12" text-anchor="middle" font-family="Noto Sans JP">相手の</text>
+      <text x="72" y="154" fill="#f87171" font-size="12" text-anchor="middle" font-family="Noto Sans JP">価値観</text>
+      <!-- ラベル: あなたの価値観 — 右端 -->
+      <text x="648" y="138" fill="#5b8dee" font-size="12" text-anchor="middle" font-family="Noto Sans JP">あなたの</text>
+      <text x="648" y="154" fill="#5b8dee" font-size="12" text-anchor="middle" font-family="Noto Sans JP">価値観</text>
+
+      <!-- 共有価値観（中央楕円） -->
+      <ellipse cx="360" cy="145" rx="78" ry="58" fill="#9b72cf" fill-opacity=".25" stroke="#9b72cf" stroke-width="1.5"/>
+      <text x="360" y="138" fill="#c8a8f0" font-size="12" text-anchor="middle" font-family="Noto Sans JP">共有できる</text>
+      <text x="360" y="156" fill="#c8a8f0" font-size="12" text-anchor="middle" font-family="Noto Sans JP">価値観</text>
+
+      <!-- 相手の主張（左小楕円・点線） -->
+      <ellipse cx="228" cy="165" rx="80" ry="40" fill="none" stroke="#f87171" stroke-width="1.2" stroke-dasharray="4 3"/>
+      <text x="170" y="190" fill="#e2e8f5" font-size="12" text-anchor="middle" font-family="Noto Sans JP">相手の主張</text>
+
+      <!-- あなたの主張（右小楕円・点線） -->
+      <ellipse cx="492" cy="165" rx="80" ry="40" fill="none" stroke="#5b8dee" stroke-width="1.2" stroke-dasharray="4 3"/>
+      <text x="548" y="190" fill="#e2e8f5" font-size="12" text-anchor="middle" font-family="Noto Sans JP">あなたの主張</text>
+
+      <!-- A B C ラベル — 重なりエリア内に明確に配置 -->
+      <text x="312" y="170" fill="white" font-size="15" font-weight="bold" text-anchor="middle" font-family="Noto Sans JP">A</text>
+      <text x="360" y="185" fill="white" font-size="15" font-weight="bold" text-anchor="middle" font-family="Noto Sans JP">B</text>
+      <text x="408" y="170" fill="white" font-size="15" font-weight="bold" text-anchor="middle" font-family="Noto Sans JP">C</text>
+
+      <!-- 矢印 3本 → 交渉の糸口 -->
+      <line x1="312" y1="182" x2="295" y2="222" stroke="#8a99b8" stroke-width="1.2" marker-end="url(#dw2)"/>
+      <line x1="360" y1="188" x2="360" y2="222" stroke="#8a99b8" stroke-width="1.2" marker-end="url(#dw2)"/>
+      <line x1="408" y1="182" x2="425" y2="222" stroke="#8a99b8" stroke-width="1.2" marker-end="url(#dw2)"/>
+
+      <!-- 交渉の糸口ボックス -->
+      <rect x="248" y="225" width="224" height="30" rx="4" fill="none" stroke="#8a99b8" stroke-dasharray="3 2"/>
+      <text x="360" y="244" fill="#e2e8f5" font-size="13" text-anchor="middle" font-family="Noto Sans JP">交渉の糸口</text>
+
+      <!-- 凡例ラベル — 下部に余白を取って配置 -->
+      <text x="295" y="276" fill="#f87171" font-size="11" text-anchor="middle" font-family="Noto Sans JP">A: 相手主張側の糸口</text>
+      <text x="295" y="292" fill="#f87171" font-size="11" text-anchor="middle" font-family="Noto Sans JP">（相手の主張に近い解決策）</text>
+      <text x="360" y="310" fill="#c8a8f0" font-size="11" text-anchor="middle" font-family="Noto Sans JP">B: 中間（痛みわけ）</text>
+      <text x="428" y="276" fill="#5b8dee" font-size="11" text-anchor="middle" font-family="Noto Sans JP">C: 自分主張側の糸口</text>
+      <text x="428" y="292" fill="#5b8dee" font-size="11" text-anchor="middle" font-family="Noto Sans JP">（自分の主張に近い解決策）</text>
+
+      <defs><marker id="dw2" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><polygon points="0,0 6,3 0,6" fill="#8a99b8"/></marker></defs>
+    </svg>
+    <figcaption>図: 交渉ベン図の概念 — 共有できる価値観（A/B/C）から交渉の糸口を見つける S03:p.17</figcaption>
+  </div>
+
+</div><!-- /ch1 -->
+
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- 第2章 -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="section-card" id="ch2">
+  <h2>第2章　フロー図を使って交渉の糸口を探る</h2>
+
+  <div class="def-block">
+    <strong>【第2章 学習目標】</strong> 具体的な事例にフロー図を用いることで、交渉の糸口を探る手順と方法を説明できる。 <span class="ptr">← S03:p.22</span>
+  </div>
+
+  <h3 id="ch2-concept">2-1. 基本的な考え方と3ステップ</h3>
+
+  <p>お互いが一歩も引けない状態に陥ると交渉が決裂する確率は高まる。このような中で双方にとって有益な結末を迎える方法があるとしたら、それは<strong>新たな落としどころを見つけられた場合のみ</strong>。これは「<strong>争点をずらす</strong>」ことに他ならない。<span class="ptr">← S03:p.23</span></p>
+
+  <!-- 3ステップフロー -->
+  <div class="svg-wrap">
+    <svg viewBox="0 0 640 90" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:640px;display:block;margin:0 auto">
+      <rect width="640" height="90" fill="#1e2535" rx="8"/>
+      <text x="320" y="20" fill="#8a99b8" font-size="11" text-anchor="middle" font-family="Noto Sans JP">交渉フロー図 — 3ステップ（特徴: 相手の主張の「前提」を探り覆す）</text>
+      <rect x="20" y="28" width="170" height="48" rx="6" fill="#2a3d6e" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="105" y="51" fill="#e2e8f5" font-size="12" text-anchor="middle" font-family="Noto Sans JP" font-weight="600">Step 1</text>
+      <text x="105" y="67" fill="#b8ccf0" font-size="11.5" text-anchor="middle" font-family="Noto Sans JP">主張を構成する要素を整理</text>
+      <text x="218" y="58" fill="#5b8dee" font-size="20" text-anchor="middle">→</text>
+      <rect x="235" y="28" width="170" height="48" rx="6" fill="#2a3d6e" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="320" y="51" fill="#e2e8f5" font-size="12" text-anchor="middle" font-family="Noto Sans JP" font-weight="600">Step 2</text>
+      <text x="320" y="67" fill="#b8ccf0" font-size="11.5" text-anchor="middle" font-family="Noto Sans JP">前提を推定する</text>
+      <text x="433" y="58" fill="#5b8dee" font-size="20" text-anchor="middle">→</text>
+      <rect x="450" y="28" width="170" height="48" rx="6" fill="#fbbf24" fill-opacity=".18" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="535" y="51" fill="#fbbf24" font-size="12" text-anchor="middle" font-family="Noto Sans JP" font-weight="600">Step 3</text>
+      <text x="535" y="67" fill="#ffe070" font-size="11.5" text-anchor="middle" font-family="Noto Sans JP">図を描き交渉の糸口を探る</text>
+    </svg>
+    <figcaption>図: 交渉フロー図の3ステップ S03:p.25</figcaption>
+  </div>
+
+  <div class="voice-block">
+    <div class="bl">🎙 音声補足</div>
+    「前提」とは相手の価値観・考え方・基本的な意識や思想のこと。これらが根拠となり、その根拠が主張につながる。この根拠は必ずしも客観的なものだけではなく、主観的・感情的な思いも含む。したがって「より客観性の高い事実をインプットする」ことで前提部分に変更を加えるよう働きかけるのがフロー図を使った交渉の考え方。<span class="ptr">← S05</span>
+  </div>
+
+  <!-- CASE1 マンション -->
+  <h3 id="ch2-case1">2-2. CASE「マンションの契約にこぎつけたい」</h3>
+
+  <p><strong>状況:</strong> マンション販売員に対し顧客が「もっと安くしてほしい」と要求。値引きできる余地はない。<span class="ptr">← S03:p.26</span></p>
+
+  <h4>（1）主張を構成する要素を整理する</h4>
+  <p>「安くしてほしい」という主張の根拠として考えられる可能性: <span class="ptr">← S03:p.27</span></p>
+
+  <!-- フロー図（根拠列挙） S03 p.28 -->
+  <div class="svg-wrap">
+    <svg viewBox="0 0 700 230" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;display:block;margin:0 auto">
+      <rect width="700" height="230" fill="#1e2535" rx="8"/>
+      <!-- 主張 -->
+      <rect x="215" y="12" width="270" height="34" rx="5" fill="#f87171" fill-opacity=".2" stroke="#f87171" stroke-width="1.5"/>
+      <text x="350" y="33" fill="#e2e8f5" font-size="13" text-anchor="middle" font-family="Noto Sans JP" font-weight="600">安くしてほしい（主張）</text>
+      <!-- 3本の根拠線 -->
+      <line x1="280" y1="46" x2="120" y2="82" stroke="#5b8dee" stroke-width="1" marker-end="url(#em)"/>
+      <line x1="350" y1="46" x2="350" y2="82" stroke="#5b8dee" stroke-width="1" marker-end="url(#em)"/>
+      <line x1="420" y1="46" x2="570" y2="82" stroke="#5b8dee" stroke-width="1" marker-end="url(#em)"/>
+      <!-- 根拠3つ -->
+      <rect x="28" y="82" width="184" height="30" rx="5" fill="#2a3d6e" stroke="#5b8dee" stroke-width="1"/>
+      <text x="120" y="101" fill="#b8ccf0" font-size="12" text-anchor="middle" font-family="Noto Sans JP">ローン負担が重い</text>
+      <rect x="255" y="82" width="190" height="30" rx="5" fill="#2a3d6e" stroke="#5b8dee" stroke-width="1"/>
+      <text x="350" y="101" fill="#b8ccf0" font-size="12" text-anchor="middle" font-family="Noto Sans JP">賃貸収入が多く得られない</text>
+      <rect x="480" y="82" width="200" height="30" rx="5" fill="#fbbf24" fill-opacity=".15" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="580" y="101" fill="#fbbf24" font-size="12" text-anchor="middle" font-family="Noto Sans JP" font-weight="600">手持ち資金が少ない ○</text>
+      <!-- ローン負担の子2つ -->
+      <line x1="90" y1="112" x2="72" y2="148" stroke="#5b8dee" stroke-width="1" stroke-dasharray="3 2" marker-end="url(#em)"/>
+      <line x1="150" y1="112" x2="168" y2="148" stroke="#5b8dee" stroke-width="1" stroke-dasharray="3 2" marker-end="url(#em)"/>
+      <rect x="16" y="148" width="118" height="42" rx="4" fill="#1a1f2e" stroke="#3a4460" stroke-width="1"/>
+      <text x="75" y="166" fill="#8a99b8" font-size="11" text-anchor="middle" font-family="Noto Sans JP">返済期間が長い</text>
+      <text x="75" y="183" fill="#f87171" font-size="10" text-anchor="middle" font-family="Noto Sans JP">✕ 高齢でない</text>
+      <rect x="140" y="148" width="118" height="42" rx="4" fill="#1a1f2e" stroke="#3a4460" stroke-width="1"/>
+      <text x="199" y="166" fill="#8a99b8" font-size="11" text-anchor="middle" font-family="Noto Sans JP">月々の支払が多い</text>
+      <text x="199" y="183" fill="#f87171" font-size="10" text-anchor="middle" font-family="Noto Sans JP">✕ 収入安定</text>
+      <!-- 賃貸の子 -->
+      <line x1="350" y1="112" x2="350" y2="148" stroke="#5b8dee" stroke-width="1" stroke-dasharray="3 2" marker-end="url(#em)"/>
+      <rect x="270" y="148" width="160" height="42" rx="4" fill="#1a1f2e" stroke="#3a4460" stroke-width="1"/>
+      <text x="350" y="166" fill="#8a99b8" font-size="11" text-anchor="middle" font-family="Noto Sans JP">周辺に空き室が多い</text>
+      <text x="350" y="183" fill="#f87171" font-size="10" text-anchor="middle" font-family="Noto Sans JP">✕ 実際に住む想定</text>
+      <!-- 手持ち資金の子（真の理由） -->
+      <line x1="580" y1="112" x2="580" y2="148" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#emy)"/>
+      <rect x="484" y="148" width="196" height="54" rx="5" fill="#fbbf24" fill-opacity=".12" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="582" y="168" fill="#fbbf24" font-size="11.5" text-anchor="middle" font-family="Noto Sans JP" font-weight="600">今住んでいる</text>
+      <text x="582" y="184" fill="#fbbf24" font-size="11.5" text-anchor="middle" font-family="Noto Sans JP" font-weight="600">マンションが売れない</text>
+      <text x="582" y="198" fill="#fbbf24" font-size="10" text-anchor="middle" font-family="Noto Sans JP">← 真の悩み・前提</text>
+      <defs>
+        <marker id="em" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto"><polygon points="0,0 7,3.5 0,7" fill="#5b8dee"/></marker>
+        <marker id="emy" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto"><polygon points="0,0 7,3.5 0,7" fill="#fbbf24"/></marker>
+      </defs>
+    </svg>
+    <figcaption>図: マンション交渉フロー図（前提の特定プロセス）— ✕は消去済み根拠、○が残存した真の根拠 S03:p.28-29</figcaption>
+  </div>
+
+  <h4>（3）図を精査して交渉の糸口を探る</h4>
+
+  <div class="svg-wrap">
+    <svg viewBox="0 0 680 270" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:680px;display:block;margin:0 auto">
+      <rect width="680" height="270" fill="#1e2535" rx="8"/>
+      <!-- 左側 -->
+      <text x="155" y="22" fill="#8a99b8" font-size="11" text-anchor="middle" font-family="Noto Sans JP">相手の従来の主張</text>
+      <rect x="50" y="28" width="210" height="36" rx="5" fill="none" stroke="#f87171" stroke-width="1.5"/>
+      <text x="155" y="50" fill="#e2e8f5" font-size="13" text-anchor="middle" font-family="Noto Sans JP">安くしてほしい</text>
+      <line x1="155" y1="64" x2="155" y2="82" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#f1)"/>
+      <text x="18" y="100" fill="#8a99b8" font-size="10" font-family="Noto Sans JP">根拠</text>
+      <rect x="50" y="82" width="210" height="36" rx="5" fill="none" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="155" y="104" fill="#b8ccf0" font-size="13" text-anchor="middle" font-family="Noto Sans JP">手持ち資金が少ない</text>
+      <line x1="155" y1="118" x2="155" y2="136" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#f1)"/>
+      <text x="18" y="170" fill="#8a99b8" font-size="10" font-family="Noto Sans JP">元の前提</text>
+      <rect x="50" y="136" width="210" height="50" rx="5" fill="none" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="155" y="157" fill="#b8ccf0" font-size="12.5" text-anchor="middle" font-family="Noto Sans JP">今住んでいるマンションが</text>
+      <text x="155" y="174" fill="#b8ccf0" font-size="12.5" text-anchor="middle" font-family="Noto Sans JP">なかなか売れない</text>
+      <!-- 変更アクション（下部） -->
+      <ellipse cx="340" cy="215" rx="112" ry="28" fill="#9b72cf" fill-opacity=".2" stroke="#9b72cf" stroke-width="1.5"/>
+      <text x="340" y="212" fill="#c8a8f0" font-size="12" text-anchor="middle" font-family="Noto Sans JP" font-weight="600">中古マンションの販売を斡旋</text>
+      <text x="340" y="228" fill="#c8a8f0" font-size="10.5" text-anchor="middle" font-family="Noto Sans JP">（または賃貸して月々返済に充てる）</text>
+      <!-- 変更矢印 -->
+      <path d="M155 186 Q155 215 228 215" fill="none" stroke="#9b72cf" stroke-width="1.5" stroke-dasharray="4 3"/>
+      <path d="M452 215 Q510 215 510 186" fill="none" stroke="#9b72cf" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#fp)"/>
+      <text x="340" y="254" fill="#8a99b8" font-size="10.5" text-anchor="middle" font-family="Noto Sans JP">← 前提を変えることで根拠・主張も変わる</text>
+      <!-- 右側 -->
+      <text x="525" y="22" fill="#8a99b8" font-size="11" text-anchor="middle" font-family="Noto Sans JP">相手の新たな主張</text>
+      <rect x="420" y="28" width="220" height="36" rx="5" fill="none" stroke="#34d399" stroke-width="1.5"/>
+      <text x="530" y="50" fill="#e2e8f5" font-size="13" text-anchor="middle" font-family="Noto Sans JP">安くしなくても買える</text>
+      <line x1="530" y1="64" x2="530" y2="82" stroke="#34d399" stroke-width="1.5" marker-end="url(#fg)"/>
+      <rect x="420" y="82" width="220" height="36" rx="5" fill="none" stroke="#34d399" stroke-width="1.5"/>
+      <text x="530" y="104" fill="#a0e8cc" font-size="13" text-anchor="middle" font-family="Noto Sans JP">手持ち資金が足りる</text>
+      <line x1="530" y1="118" x2="530" y2="136" stroke="#34d399" stroke-width="1.5" marker-end="url(#fg)"/>
+      <rect x="420" y="136" width="220" height="50" rx="5" fill="#fbbf24" fill-opacity=".1" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="530" y="162" fill="#fbbf24" font-size="13" text-anchor="middle" font-family="Noto Sans JP">マンションが売れる</text>
+      <text x="530" y="178" fill="#fbbf24" font-size="10.5" text-anchor="middle" font-family="Noto Sans JP">（新たな前提）</text>
+      <defs>
+        <marker id="f1" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><polygon points="0,0 8,4 0,8" fill="#5b8dee"/></marker>
+        <marker id="fg" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><polygon points="0,0 8,4 0,8" fill="#34d399"/></marker>
+        <marker id="fp" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><polygon points="0,0 8,4 0,8" fill="#9b72cf"/></marker>
+      </defs>
+    </svg>
+    <figcaption>図: マンション交渉フロー図（解決策） S03:p.30</figcaption>
+  </div>
+
+  <div class="voice-block">
+    <div class="bl">🎙 音声補足</div>
+    相手の主張に対して説得を図るのではなく、前提となっている「今住んでいるマンションが売れない」という悩みを一緒に解決するというところに精力を注ぎつつこの物件を売り込む。他にも、中古マンションを他人に賃貸してその収入を月々の返済に充てる方法も考えられる。<span class="ptr">← S05</span>
+  </div>
+
+  <!-- CASE2 追加開発費 -->
+  <h3 id="ch2-case2">2-3. CASE「追加作業の費用を請求する」</h3>
+  <p><strong>状況:</strong> ファストフード会社からドライブスルー無人化システム開発を依頼されているO社（受託元）。開発途中で音声分析・データ集計機能の追加要望を受けたが、契約額は増えそうにない。<span class="ptr">← S03:p.32</span></p>
+
+  <h4>（2-3）前提を推定 → 前提への着目</h4>
+  <p>顧客の追加要望の前提:「この追加機能がマーケティングに活用できる」という前提があるが、<strong>これが顧客の思い込みである可能性</strong>を検討する。<span class="ptr">← S03:p.37</span></p>
+  <p>問題点: マイクの声から推定できる性別・年齢層は<strong>ドライバーのみ</strong>。車には複数の人間がいる可能性が高く、ドライバーと商品の属性を紐付けするだけでは的確なマーケティング分析は行えない。<span class="ptr">← S03:p.39</span></p>
+
+  <div class="svg-wrap">
+    <svg viewBox="0 0 700 310" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;display:block;margin:0 auto">
+      <rect width="700" height="310" fill="#1e2535" rx="8"/>
+      <text x="350" y="20" fill="#8a99b8" font-size="11" text-anchor="middle" font-family="Noto Sans JP">O社 追加開発費交渉フロー図（完成版） S03:p.41</text>
+      <!-- 左ブランチ -->
+      <rect x="20" y="28" width="210" height="34" rx="5" fill="none" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="125" y="49" fill="#e2e8f5" font-size="12" text-anchor="middle" font-family="Noto Sans JP">新システムを開発してほしい</text>
+      <line x1="125" y1="62" x2="125" y2="80" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#g1)"/>
+      <rect x="20" y="80" width="210" height="34" rx="5" fill="none" stroke="#5b8dee" stroke-width="1.2"/>
+      <text x="125" y="100" fill="#b8ccf0" font-size="11.5" text-anchor="middle" font-family="Noto Sans JP">他社に先駆け新取組みを行いたい</text>
+      <line x1="125" y1="114" x2="125" y2="132" stroke="#5b8dee" stroke-width="1.2" marker-end="url(#g1)"/>
+      <rect x="20" y="132" width="210" height="34" rx="5" fill="none" stroke="#5b8dee" stroke-width="1.2"/>
+      <text x="125" y="153" fill="#b8ccf0" font-size="11.5" text-anchor="middle" font-family="Noto Sans JP">人件費を下げ経営効率を高めたい</text>
+      <!-- 右ブランチ（追加要望） -->
+      <rect x="258" y="28" width="218" height="34" rx="5" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
+      <text x="367" y="49" fill="#e2e8f5" font-size="12" text-anchor="middle" font-family="Noto Sans JP">データ集計機能を追加してほしい</text>
+      <line x1="367" y1="62" x2="367" y2="80" stroke="#f59e0b" stroke-width="1.5" marker-end="url(#g2)"/>
+      <rect x="258" y="80" width="218" height="34" rx="5" fill="#34d399" fill-opacity=".12" stroke="#34d399" stroke-width="1.5"/>
+      <text x="367" y="100" fill="#a0e8cc" font-size="11.5" text-anchor="middle" font-family="Noto Sans JP">映像設備と分析機能を追加</text>
+      <line x1="367" y1="114" x2="367" y2="132" stroke="#34d399" stroke-width="1.5" marker-end="url(#g3)"/>
+      <rect x="258" y="132" width="218" height="34" rx="5" fill="#fbbf24" fill-opacity=".1" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="367" y="153" fill="#fbbf24" font-size="11.5" text-anchor="middle" font-family="Noto Sans JP">このままではマーケティングに使えない</text>
+      <!-- 前提覆す根拠（下段） -->
+      <rect x="10" y="195" width="660" height="52" rx="5" fill="#9b72cf" fill-opacity=".12" stroke="#9b72cf" stroke-width="1.5"/>
+      <text x="340" y="213" fill="#c8a8f0" font-size="12" text-anchor="middle" font-family="Noto Sans JP" font-weight="600">根拠: マイクの声はドライバーのみ → 同乗者の属性を把握できず的確な分析は不可能</text>
+      <text x="340" y="234" fill="#c8a8f0" font-size="11.5" text-anchor="middle" font-family="Noto Sans JP">→ カメラを追加し画像認識で同乗者の性別・年齢も把握すれば精密なマーケティング分析が可能に</text>
+      <line x1="367" y1="166" x2="367" y2="193" stroke="#fbbf24" stroke-width="1" stroke-dasharray="3 2" marker-end="url(#g2)"/>
+      <!-- 結果 -->
+      <rect x="10" y="260" width="660" height="36" rx="5" fill="#34d399" fill-opacity=".12" stroke="#34d399" stroke-width="1.5"/>
+      <text x="340" y="282" fill="#34d399" font-size="13" text-anchor="middle" font-family="Noto Sans JP" font-weight="600">→ 新たな設備が必要 = 費用増加・新規案件受注の交渉材料（増額の大義名分）</text>
+      <defs>
+        <marker id="g1" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><polygon points="0,0 8,4 0,8" fill="#5b8dee"/></marker>
+        <marker id="g2" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><polygon points="0,0 8,4 0,8" fill="#f59e0b"/></marker>
+        <marker id="g3" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><polygon points="0,0 8,4 0,8" fill="#34d399"/></marker>
+      </defs>
+    </svg>
+    <figcaption>図: O社 追加開発費 交渉フロー図（完成版）S03:p.41</figcaption>
+  </div>
+
+  <div class="def-block">
+    <strong>【第2章 まとめ】</strong> <span class="ptr">← S03:p.42</span><br>
+    「争点をずらす」ことにより膠着状況にある交渉の局面を大きく好転させるにはフロー図が適している。<br>
+    <strong>3ステップ:</strong> ①主張を構成する要素を整理 → ②前提を推定 → ③図を描き交渉の糸口を探る
+  </div>
+
+</div><!-- /ch2 -->
+
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- 第3章 -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="section-card" id="ch3">
+  <h2>第3章　ベン図を使って交渉の糸口を探る</h2>
+
+  <div class="def-block">
+    <strong>【第3章 学習目標】</strong> 具体的な事例にベン図を用いることで、交渉の糸口を探る手順と方法を説明できる。 <span class="ptr">← S03:p.45</span>
+  </div>
+
+  <h3 id="ch3-concept">3-1. 基本的な考え方と3ステップ</h3>
+
+  <p>交渉相手（顧客・上司・部下・外注先等）とは一般に<strong>継続的な関係が要求されるため、あらゆる点で全く利害が合わないことは通常なく、どこかに共有できる目的・目標・利益がある</strong>場合が多い。その共有できる一点から話し合いを始めることでスムーズに事が運ぶ。<span class="ptr">← S03:p.46</span></p>
+
+  <!-- 3ステップ -->
+  <div class="svg-wrap">
+    <svg viewBox="0 0 640 90" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:640px;display:block;margin:0 auto">
+      <rect width="640" height="90" fill="#1e2535" rx="8"/>
+      <text x="320" y="20" fill="#8a99b8" font-size="11" text-anchor="middle" font-family="Noto Sans JP">交渉ベン図 — 3ステップ（特徴: 双方が共有できる価値観を探し交渉を行う方法を考える）</text>
+      <rect x="20" y="28" width="175" height="48" rx="6" fill="#2a3d6e" stroke="#9b72cf" stroke-width="1.5"/>
+      <text x="107" y="51" fill="#e2e8f5" font-size="12" text-anchor="middle" font-family="Noto Sans JP" font-weight="600">Step 1</text>
+      <text x="107" y="67" fill="#c8a8f0" font-size="11" text-anchor="middle" font-family="Noto Sans JP">双方の背景にある価値観を探る</text>
+      <text x="220" y="58" fill="#9b72cf" font-size="20" text-anchor="middle">→</text>
+      <rect x="233" y="28" width="175" height="48" rx="6" fill="#2a3d6e" stroke="#9b72cf" stroke-width="1.5"/>
+      <text x="320" y="51" fill="#e2e8f5" font-size="12" text-anchor="middle" font-family="Noto Sans JP" font-weight="600">Step 2</text>
+      <text x="320" y="67" fill="#c8a8f0" font-size="11" text-anchor="middle" font-family="Noto Sans JP">両者の妥協点を探る</text>
+      <text x="432" y="58" fill="#9b72cf" font-size="20" text-anchor="middle">→</text>
+      <rect x="445" y="28" width="175" height="48" rx="6" fill="#fbbf24" fill-opacity=".16" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="532" y="51" fill="#fbbf24" font-size="12" text-anchor="middle" font-family="Noto Sans JP" font-weight="600">Step 3</text>
+      <text x="532" y="67" fill="#ffe070" font-size="11" text-anchor="middle" font-family="Noto Sans JP">図を精査し糸口を探る</text>
+    </svg>
+    <figcaption>図: 交渉ベン図の3ステップ S03:p.48</figcaption>
+  </div>
+
+  <p>ベン図を描くと大きく<strong>3つの交渉の糸口（領域）</strong>が現れる: <span class="ptr">← S03:p.47</span></p>
+  <table>
+    <thead><tr><th>領域</th><th>解決策タイプ</th><th>特徴</th></tr></thead>
+    <tbody>
+      <tr><td><strong>X（A）</strong></td><td>歩みより</td><td>相手の主張を飲む形。自分の主張は取り下げるが自分の価値観は満たす</td></tr>
+      <tr><td><strong>Z（B）</strong></td><td>痛みわけ</td><td>どちらの主張も合致しないが、双方の価値観は満たす</td></tr>
+      <tr><td><strong>Y（C）</strong></td><td>働きかけ</td><td>自分の主張を肯定しつつ、相手の価値観も確保する</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:12px;color:var(--text-muted)">← S03:p.47, p.54</p>
+
+  <!-- CASE1 残業問題 -->
+  <h3 id="ch3-case1">3-2. CASE「残業問題をどう解決するか」</h3>
+
+  <h4>（1）双方の主張の背景を探る</h4>
+  <table>
+    <thead><tr><th>主体</th><th>主張</th><th>背景の価値観（推察）</th></tr></thead>
+    <tbody>
+      <tr><td>人事部長</td><td>残業は毎日1時間以内</td><td><strong>従業員の健康管理</strong>（健康を損なうことを懸念）</td></tr>
+      <tr><td>あなた（現場管理者）</td><td>長時間残業もやむをえない</td><td><strong>会社の利益を確保</strong>（利益を出して会社に貢献することが大切）</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:12px;color:var(--text-muted)">← S03:p.50-51</p>
+
+  <h4>（2）両者の妥協点</h4>
+  <ul>
+    <li><strong>人事部長の妥協点（青いドーナツ）:</strong> 「残業しても健康維持ができればOK」</li>
+    <li><strong>あなたの妥協点（赤いドーナツ）:</strong> 「残業せずに利益を確保できればよい」</li>
+  </ul>
+  <p style="font-size:12px;color:var(--text-muted)">← S03:p.52-53</p>
+
+  <!-- 残業ベン図（S03 p.54） -->
+  <div class="svg-wrap">
+    <svg viewBox="0 0 700 370" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;display:block;margin:0 auto">
+      <rect width="700" height="370" fill="#1e2535" rx="8"/>
+      <text x="350" y="20" fill="#8a99b8" font-size="11" text-anchor="middle" font-family="Noto Sans JP">残業問題 交渉ベン図（S03:p.54）</text>
+      <!-- C: 従業員の健康維持（左大楕円） -->
+      <ellipse cx="248" cy="168" rx="205" ry="115" fill="#5b8dee" fill-opacity=".1" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="105" y="128" fill="#5b8dee" font-size="12" font-family="Noto Sans JP">従業員の健康維持 C</text>
+      <!-- D: 会社の利益を確保（右大楕円） -->
+      <ellipse cx="452" cy="168" rx="205" ry="115" fill="#f87171" fill-opacity=".1" stroke="#f87171" stroke-width="1.5"/>
+      <text x="530" y="128" fill="#f87171" font-size="12" font-family="Noto Sans JP">会社の利益確保 D</text>
+      <!-- A: 人事部長の主張（左小楕円） -->
+      <ellipse cx="220" cy="178" rx="95" ry="54" fill="#5b8dee" fill-opacity=".22" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="220" y="173" fill="#e2e8f5" font-size="11.5" text-anchor="middle" font-family="Noto Sans JP">残業は毎日</text>
+      <text x="220" y="189" fill="#e2e8f5" font-size="11.5" text-anchor="middle" font-family="Noto Sans JP">1時間以内 A</text>
+      <!-- B: あなたの主張（右小楕円） -->
+      <ellipse cx="480" cy="178" rx="95" ry="54" fill="#f87171" fill-opacity=".22" stroke="#f87171" stroke-width="1.5"/>
+      <text x="480" y="173" fill="#e2e8f5" font-size="11.5" text-anchor="middle" font-family="Noto Sans JP">長時間残業も</text>
+      <text x="480" y="189" fill="#e2e8f5" font-size="11.5" text-anchor="middle" font-family="Noto Sans JP">やむをえない B</text>
+      <!-- X Y Z -->
+      <text x="316" y="168" fill="white" font-size="20" text-anchor="middle" font-weight="bold" font-family="Noto Sans JP">X</text>
+      <text x="350" y="205" fill="white" font-size="20" text-anchor="middle" font-weight="bold" font-family="Noto Sans JP">Z</text>
+      <text x="384" y="168" fill="white" font-size="20" text-anchor="middle" font-weight="bold" font-family="Noto Sans JP">Y</text>
+      <!-- 妥協点ラベル -->
+      <text x="90" y="268" fill="#5b8dee" font-size="10.5" text-anchor="middle" font-family="Noto Sans JP">妥協点（青ドーナツ）</text>
+      <text x="90" y="282" fill="#b8ccf0" font-size="10.5" text-anchor="middle" font-family="Noto Sans JP">残業しても健康維持できればOK</text>
+      <text x="610" y="268" fill="#f87171" font-size="10.5" text-anchor="middle" font-family="Noto Sans JP">妥協点（赤ドーナツ）</text>
+      <text x="610" y="282" fill="#ffb8b8" font-size="10.5" text-anchor="middle" font-family="Noto Sans JP">残業せずに利益を確保</text>
+      <!-- 解決策3つ -->
+      <rect x="15" y="305" width="204" height="52" rx="5" fill="rgba(91,141,238,.12)" stroke="#5b8dee" stroke-width="1"/>
+      <text x="117" y="322" fill="#b8ccf0" font-size="10.5" text-anchor="middle" font-family="Noto Sans JP" font-weight="600">【X: 歩みより】</text>
+      <text x="117" y="338" fill="#b8ccf0" font-size="10.5" text-anchor="middle" font-family="Noto Sans JP">長時間/定時退社の社員の</text>
+      <text x="117" y="352" fill="#b8ccf0" font-size="10.5" text-anchor="middle" font-family="Noto Sans JP">業務分担を見直す</text>
+      <rect x="248" y="305" width="204" height="52" rx="5" fill="rgba(155,114,207,.12)" stroke="#9b72cf" stroke-width="1"/>
+      <text x="350" y="322" fill="#c8a8f0" font-size="10.5" text-anchor="middle" font-family="Noto Sans JP" font-weight="600">【Z: 痛みわけ】</text>
+      <text x="350" y="338" fill="#c8a8f0" font-size="10.5" text-anchor="middle" font-family="Noto Sans JP">年間の総残業時間に</text>
+      <text x="350" y="352" fill="#c8a8f0" font-size="10.5" text-anchor="middle" font-family="Noto Sans JP">上限目標を定める</text>
+      <rect x="481" y="305" width="204" height="52" rx="5" fill="rgba(248,113,113,.1)" stroke="#f87171" stroke-width="1"/>
+      <text x="583" y="322" fill="#ffb8b8" font-size="10.5" text-anchor="middle" font-family="Noto Sans JP" font-weight="600">【Y: 働きかけ】</text>
+      <text x="583" y="338" fill="#ffb8b8" font-size="10.5" text-anchor="middle" font-family="Noto Sans JP">産業医による面接指導を</text>
+      <text x="583" y="352" fill="#ffb8b8" font-size="10.5" text-anchor="middle" font-family="Noto Sans JP">長時間労働者に実施</text>
+    </svg>
+    <figcaption>図: 残業問題 交渉ベン図 — X（歩みより）・Y（働きかけ）・Z（痛みわけ）の解決策 S03:p.54</figcaption>
+  </div>
+
+  <!-- CASE2 新サービス導入 -->
+  <h3 id="ch3-case2">3-3. CASE「新サービス導入にかかる支出を抑えるには」</h3>
+  <p><strong>状況:</strong> B社購買部門のマネージャー（あなた）が、F社のクラウドサービスXの購入費用を予算の関係で抑えたい。F社営業担当者は値引きは難しいと主張。<span class="ptr">← S03:p.55-56</span></p>
+
+  <h4>（1）双方の主張の背景の価値観を探る</h4>
+  <table>
+    <thead><tr><th>主体</th><th>主張</th><th>背景の価値観（推察）</th></tr></thead>
+    <tbody>
+      <tr><td>F社営業担当</td><td>値引きに応じるのは困難</td><td><strong>適正利益の確保</strong>（顧客満足度・利益率の維持）</td></tr>
+      <tr><td>あなた（B社）</td><td>導入費用を低減させたい</td><td>表面: 予算不足 / 背景: <strong>データ駆動型の意思決定が実現するのか半信半疑</strong></td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:12px;color:var(--text-muted)">← S03:p.57-58</p>
+
+  <!-- 新サービスベン図（S03 p.61） -->
+  <div class="svg-wrap">
+    <svg viewBox="0 0 700 370" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;display:block;margin:0 auto">
+      <rect width="700" height="370" fill="#1e2535" rx="8"/>
+      <text x="350" y="20" fill="#8a99b8" font-size="11" text-anchor="middle" font-family="Noto Sans JP">新サービス導入 交渉ベン図（S03:p.61）</text>
+      <!-- 左大楕円（F社: 適正利益を確保したい） -->
+      <ellipse cx="248" cy="168" rx="205" ry="115" fill="#5b8dee" fill-opacity=".1" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="95" y="128" fill="#5b8dee" font-size="11.5" font-family="Noto Sans JP">適正利益を確保したい</text>
+      <!-- 右大楕円（B社: データ駆動型の意思決定が実現するのか半信半疑） -->
+      <ellipse cx="452" cy="168" rx="205" ry="115" fill="#f59e0b" fill-opacity=".1" stroke="#f59e0b" stroke-width="1.5"/>
+      <text x="470" y="118" fill="#f59e0b" font-size="11" font-family="Noto Sans JP">データ駆動型の</text>
+      <text x="470" y="132" fill="#f59e0b" font-size="11" font-family="Noto Sans JP">意思決定が実現するか半信半疑</text>
+      <!-- 左小楕円（値引きに応じるのは困難） -->
+      <ellipse cx="220" cy="178" rx="95" ry="54" fill="#5b8dee" fill-opacity=".2" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="220" y="173" fill="#e2e8f5" font-size="11" text-anchor="middle" font-family="Noto Sans JP">値引きに</text>
+      <text x="220" y="188" fill="#e2e8f5" font-size="11" text-anchor="middle" font-family="Noto Sans JP">応じるのは困難</text>
+      <!-- 右小楕円（導入費用を低減させたい） -->
+      <ellipse cx="480" cy="178" rx="95" ry="54" fill="#f59e0b" fill-opacity=".2" stroke="#f59e0b" stroke-width="1.5"/>
+      <text x="480" y="173" fill="#e2e8f5" font-size="11" text-anchor="middle" font-family="Noto Sans JP">導入費用を</text>
+      <text x="480" y="188" fill="#e2e8f5" font-size="11" text-anchor="middle" font-family="Noto Sans JP">低減させたい</text>
+      <!-- X Y Z -->
+      <text x="316" y="168" fill="white" font-size="20" text-anchor="middle" font-weight="bold" font-family="Noto Sans JP">X</text>
+      <text x="350" y="208" fill="white" font-size="20" text-anchor="middle" font-weight="bold" font-family="Noto Sans JP">Z</text>
+      <text x="384" y="168" fill="white" font-size="20" text-anchor="middle" font-weight="bold" font-family="Noto Sans JP">Y</text>
+      <!-- 解決策3つ -->
+      <rect x="15" y="305" width="210" height="58" rx="5" fill="rgba(91,141,238,.12)" stroke="#5b8dee" stroke-width="1"/>
+      <text x="120" y="322" fill="#b8ccf0" font-size="10.5" text-anchor="middle" font-family="Noto Sans JP" font-weight="600">【X: 歩みより】</text>
+      <text x="120" y="338" fill="#b8ccf0" font-size="10.5" text-anchor="middle" font-family="Noto Sans JP">B社の経営課題に合わせた</text>
+      <text x="120" y="352" fill="#b8ccf0" font-size="10.5" text-anchor="middle" font-family="Noto Sans JP">デモを実施して効果を確認</text>
+      <rect x="245" y="305" width="210" height="58" rx="5" fill="rgba(155,114,207,.12)" stroke="#9b72cf" stroke-width="1"/>
+      <text x="350" y="322" fill="#c8a8f0" font-size="10.5" text-anchor="middle" font-family="Noto Sans JP" font-weight="600">【Z: 痛みわけ】</text>
+      <text x="350" y="338" fill="#c8a8f0" font-size="10.5" text-anchor="middle" font-family="Noto Sans JP">数カ月だけ本サービスを</text>
+      <text x="350" y="352" fill="#c8a8f0" font-size="10.5" text-anchor="middle" font-family="Noto Sans JP">試験的に利用してみる</text>
+      <rect x="475" y="305" width="210" height="58" rx="5" fill="rgba(245,158,11,.1)" stroke="#f59e0b" stroke-width="1"/>
+      <text x="580" y="322" fill="#fcd34d" font-size="10.5" text-anchor="middle" font-family="Noto Sans JP" font-weight="600">【Y: 働きかけ】</text>
+      <text x="580" y="338" fill="#fcd34d" font-size="10.5" text-anchor="middle" font-family="Noto Sans JP">1年間お試し半額で利用し</text>
+      <text x="580" y="352" fill="#fcd34d" font-size="10.5" text-anchor="middle" font-family="Noto Sans JP">効果確認後に正式購入</text>
+    </svg>
+    <figcaption>図: 新サービス導入 交渉ベン図 S03:p.61</figcaption>
+  </div>
+
+  <div class="def-block">
+    <strong>【第3章 まとめ】</strong> <span class="ptr">← S03:p.62</span><br>
+    一見相反する主張の前提の中から、両者が共有できる価値観・意識を探し出すのにはベン図が適している。<br>
+    <strong>3ステップ:</strong> ①双方の背景にある価値観を探る → ②両者の妥協点を探る → ③図を精査し交渉の糸口を探る
+  </div>
+
+</div><!-- /ch3 -->
+
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- 第4章 -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="section-card" id="ch4">
+  <h2>第4章　まとめ（本科目 全8回 最終章）</h2>
+
+  <div class="def-block">
+    <strong>【第4章 学習目標】</strong> これまでの講義の振り返りを通して図解思考に関する理解を深め、どのような思考法なのかを他者に具体的に説明できる。 <span class="ptr">← S03:p.65</span>
+  </div>
+
+  <!-- 全体像の俯瞰図（S03 p.66） -->
+  <h3 id="ch4-types">4-1. これまでの振り返り — 図解スキルの全体像と5つの図タイプ使い分け</h3>
+
+  <div class="svg-wrap">
+    <svg viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;display:block;margin:0 auto">
+      <rect width="700" height="260" fill="#1e2535" rx="8"/>
+      <text x="350" y="22" fill="#8a99b8" font-size="11" text-anchor="middle" font-family="Noto Sans JP">図解スキルの全体像（S03:p.66）</text>
+      <!-- 基本スキル -->
+      <rect x="14" y="34" width="160" height="186" rx="8" fill="#5b8dee" fill-opacity=".08" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="94" y="55" fill="#5b8dee" font-size="13" text-anchor="middle" font-family="Noto Sans JP" font-weight="700">基本スキル</text>
+      <rect x="24" y="64" width="140" height="46" rx="5" fill="#2a3d6e" stroke="#3a4460" stroke-width="1"/>
+      <text x="94" y="83" fill="#b8ccf0" font-size="12" text-anchor="middle" font-family="Noto Sans JP" font-weight="600">状況分析</text>
+      <text x="94" y="98" fill="#8a99b8" font-size="10.5" text-anchor="middle" font-family="Noto Sans JP">ベン図・点グラフ</text>
+      <rect x="24" y="116" width="140" height="46" rx="5" fill="#2a3d6e" stroke="#3a4460" stroke-width="1"/>
+      <text x="94" y="135" fill="#b8ccf0" font-size="12" text-anchor="middle" font-family="Noto Sans JP" font-weight="600">対策検討</text>
+      <text x="94" y="150" fill="#8a99b8" font-size="10.5" text-anchor="middle" font-family="Noto Sans JP">ツリー図・マトリクス図・フロー図</text>
+      <!-- 矢印 -->
+      <text x="198" y="130" fill="#8a99b8" font-size="20">→</text>
+      <!-- 応用スキル -->
+      <rect x="218" y="34" width="468" height="186" rx="8" fill="#9b72cf" fill-opacity=".07" stroke="#9b72cf" stroke-width="1.5"/>
+      <text x="452" y="55" fill="#9b72cf" font-size="13" text-anchor="middle" font-family="Noto Sans JP" font-weight="700">応用スキル</text>
+      <rect x="228" y="64" width="108" height="66" rx="5" fill="#2a3d6e" stroke="#34d399" stroke-width="1"/>
+      <text x="282" y="88" fill="#34d399" font-size="12" text-anchor="middle" font-family="Noto Sans JP" font-weight="600">発想力</text>
+      <text x="282" y="104" fill="#8a99b8" font-size="10" text-anchor="middle" font-family="Noto Sans JP">アイデア発想</text>
+      <text x="282" y="118" fill="#8a99b8" font-size="10" text-anchor="middle" font-family="Noto Sans JP">ベン図</text>
+      <rect x="346" y="64" width="108" height="66" rx="5" fill="#2a3d6e" stroke="#22d3ee" stroke-width="1"/>
+      <text x="400" y="88" fill="#22d3ee" font-size="12" text-anchor="middle" font-family="Noto Sans JP" font-weight="600">問題解決力</text>
+      <text x="400" y="104" fill="#8a99b8" font-size="10" text-anchor="middle" font-family="Noto Sans JP">根本問題の発見</text>
+      <text x="400" y="118" fill="#8a99b8" font-size="10" text-anchor="middle" font-family="Noto Sans JP">フロー図</text>
+      <rect x="464" y="64" width="108" height="66" rx="5" fill="#2a3d6e" stroke="#f59e0b" stroke-width="1"/>
+      <text x="518" y="88" fill="#f59e0b" font-size="12" text-anchor="middle" font-family="Noto Sans JP" font-weight="600">意思決定力</text>
+      <text x="518" y="104" fill="#8a99b8" font-size="10" text-anchor="middle" font-family="Noto Sans JP">判断軸の設定</text>
+      <text x="518" y="118" fill="#8a99b8" font-size="10" text-anchor="middle" font-family="Noto Sans JP">点グラフ</text>
+      <rect x="582" y="64" width="96" height="66" rx="5" fill="#2a3d6e" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="630" y="88" fill="#fbbf24" font-size="12" text-anchor="middle" font-family="Noto Sans JP" font-weight="600">交渉力</text>
+      <text x="630" y="104" fill="#8a99b8" font-size="10" text-anchor="middle" font-family="Noto Sans JP">今回!</text>
+      <text x="630" y="118" fill="#fbbf24" font-size="10" text-anchor="middle" font-family="Noto Sans JP">フロー図・ベン図</text>
+      <!-- 目的別ガイド -->
+      <text x="452" y="156" fill="#8a99b8" font-size="10" text-anchor="middle" font-family="Noto Sans JP">目的別の図タイプ選択（S03:p.76）</text>
+      <text x="260" y="173" fill="#5b8dee" font-size="10.5" text-anchor="middle" font-family="Noto Sans JP">体系的分析・比較</text>
+      <text x="260" y="185" fill="#5b8dee" font-size="10.5" text-anchor="middle" font-family="Noto Sans JP">→ ツリー図</text>
+      <text x="370" y="173" fill="#9b72cf" font-size="10.5" text-anchor="middle" font-family="Noto Sans JP">関係性・合意点</text>
+      <text x="370" y="185" fill="#9b72cf" font-size="10.5" text-anchor="middle" font-family="Noto Sans JP">→ ベン図</text>
+      <text x="470" y="173" fill="#22d3ee" font-size="10.5" text-anchor="middle" font-family="Noto Sans JP">分類・タイプ別対策</text>
+      <text x="470" y="185" fill="#22d3ee" font-size="10.5" text-anchor="middle" font-family="Noto Sans JP">→ マトリクス図</text>
+      <text x="568" y="173" fill="#f59e0b" font-size="10.5" text-anchor="middle" font-family="Noto Sans JP">客観評価</text>
+      <text x="568" y="185" fill="#f59e0b" font-size="10.5" text-anchor="middle" font-family="Noto Sans JP">→ 点グラフ</text>
+      <text x="650" y="173" fill="#fbbf24" font-size="10.5" text-anchor="middle" font-family="Noto Sans JP">因果・抜本解</text>
+      <text x="650" y="185" fill="#fbbf24" font-size="10.5" text-anchor="middle" font-family="Noto Sans JP">→ フロー図</text>
+      <!-- タイプ別要点 -->
+      <rect x="228" y="200" width="452" height="12" rx="3" fill="#5b8dee" fill-opacity=".08"/>
+      <text x="452" y="210" fill="#8a99b8" font-size="9.5" text-anchor="middle" font-family="Noto Sans JP">図タイプは一意に定まらない — 「困ったときのガイド」として活用し、慣れてきたら自分なりの図を開発してもよい（S03:p.72）</text>
+    </svg>
+    <figcaption>図: 図解スキルの全体像（基本スキル × 応用スキル）S03:p.66</figcaption>
+  </div>
+
+  <h3 id="ch4-axis">4-2. 図タイプ別 軸・要素の作り方</h3>
+
+  <div class="voice-block">
+    <div class="bl">🎙 音声補足（S03:p.67-70）</div>
+    <strong>ベン図の重なる軸の出し方:</strong> 似たものや要素の組み合わせを変えて「共通する特徴または効果」を3つ見つければよい。例: 犬・猫・ウサギ・ゾウ・ライオン → 「ペットになる（犬・猫）」「吠える（犬・ライオン）」「動物園で見られる（ライオン・ゾウ）」が重なる軸に。<br><br>
+    <strong>点グラフの数値化できる軸の出し方:</strong> できるだけ多くの軸候補を出してその中から2つを選ぶ。定性的な軸は「その軸の結果をイメージする」ことで代表指標が見つかる（例: 「サービスの品質」→ 顧客満足度調査の得点）。<br><br>
+    <strong>フロー図の因果関係にある要素の出し方:</strong> 「なぜこの状況が生じたか（原因）」と「この状況の結果何が起きるか（影響）」を繰り返す（例: 「遅刻が多い」← 原因「夜更かし」/ 結果→「先生に叱られる」）。 <span class="ptr">← S03:p.67-70</span>
+  </div>
+
+  <h3 id="ch4-thinking">4-3. 図を描いて思考する意義</h3>
+
+  <div class="def-block">
+    <strong>【図解思考の最大の意義】</strong> <span class="ptr">← S03:p.77</span><br>
+    「<strong>発散思考</strong>」と「<strong>収束思考</strong>」という全く異なる2つの頭の働かせ方を効果的に使い分けること。この2つをうまく使いこなすことを意識して図を描くことで、頭の整理が進み見通しが良くなる。
+  </div>
+
+  <!-- 発散・収束思考の対比図（S03 p.78） -->
+  <div class="svg-wrap">
+    <svg viewBox="0 0 620 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:620px;display:block;margin:0 auto">
+      <rect width="620" height="200" fill="#1e2535" rx="8"/>
+      <text x="310" y="22" fill="#8a99b8" font-size="11" text-anchor="middle" font-family="Noto Sans JP">図を描く = 右脳と左脳を思考過程でスイッチして使う（S03:p.78）</text>
+      <!-- 右脳 -->
+      <rect x="20" y="32" width="256" height="140" rx="8" fill="#34d399" fill-opacity=".07" stroke="#34d399" stroke-width="1.5"/>
+      <text x="148" y="58" fill="#34d399" font-size="14" text-anchor="middle" font-family="Noto Sans JP" font-weight="700">発散思考</text>
+      <text x="148" y="78" fill="#8a99b8" font-size="12" text-anchor="middle" font-family="Noto Sans JP">右脳 / 直感力</text>
+      <text x="148" y="104" fill="#a0e8cc" font-size="11.5" text-anchor="middle" font-family="Noto Sans JP">・アイデアを広げる</text>
+      <text x="148" y="122" fill="#a0e8cc" font-size="11.5" text-anchor="middle" font-family="Noto Sans JP">・直感的に把握する</text>
+      <text x="148" y="140" fill="#a0e8cc" font-size="11.5" text-anchor="middle" font-family="Noto Sans JP">・自由な発想</text>
+      <text x="148" y="160" fill="#8a99b8" font-size="10.5" text-anchor="middle" font-family="Noto Sans JP">→ ベン図・点グラフが親和的</text>
+      <!-- 中央の矢印 -->
+      <text x="310" y="110" fill="#fbbf24" font-size="22" text-anchor="middle">⇄</text>
+      <text x="310" y="130" fill="#fbbf24" font-size="10.5" text-anchor="middle" font-family="Noto Sans JP">図を描くことで</text>
+      <text x="310" y="145" fill="#fbbf24" font-size="10.5" text-anchor="middle" font-family="Noto Sans JP">スイッチ</text>
+      <!-- 左脳 -->
+      <rect x="344" y="32" width="256" height="140" rx="8" fill="#5b8dee" fill-opacity=".07" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="472" y="58" fill="#5b8dee" font-size="14" text-anchor="middle" font-family="Noto Sans JP" font-weight="700">収束思考</text>
+      <text x="472" y="78" fill="#8a99b8" font-size="12" text-anchor="middle" font-family="Noto Sans JP">左脳 / 論理力</text>
+      <text x="472" y="104" fill="#b8ccf0" font-size="11.5" text-anchor="middle" font-family="Noto Sans JP">・整理・分類する</text>
+      <text x="472" y="122" fill="#b8ccf0" font-size="11.5" text-anchor="middle" font-family="Noto Sans JP">・因果関係を分析する</text>
+      <text x="472" y="140" fill="#b8ccf0" font-size="11.5" text-anchor="middle" font-family="Noto Sans JP">・論理的に判断する</text>
+      <text x="472" y="160" fill="#8a99b8" font-size="10.5" text-anchor="middle" font-family="Noto Sans JP">→ ツリー図・フロー図が親和的</text>
+    </svg>
+    <figcaption>図: 発散思考（右脳）と収束思考（左脳）のスイッチ S03:p.78</figcaption>
+  </div>
+
+  <h4>スキーマと思考フレーム</h4>
+  <p>私たちは日々大量の情報を外界から受け取り処理するとき、「<strong>スキーマ</strong>（知識の体系）」を用いて効率化している。思考回路にも1人ひとり特有の<strong>「思考フレーム」</strong>があり、これがパターン化を可能にする一方で固定観念や柔軟な発想を阻害する面もある。<span class="ptr">← S03:p.80</span></p>
+  <p>5つの図タイプを用いながら考えることは、この思考フレームを一旦横に置いて考える行為を客観的に捉える効果がある。<strong>あえて普段使わない図タイプを試すことで新しい視点が得られる</strong>。<span class="ptr">← S03:p.79-80</span></p>
+
+  <div class="key-block">
+    <div class="bl">💡 核心メッセージ</div>
+    <strong>絶対に正しい唯一の図は存在しない。</strong> 同じ状況でも描く人の立場・捉え方・情報量によって異なる図になる。図は「ただ一つの正解にたどり着くための道具」ではなく、<strong>「より適切な結論を導くことを助けるための思考ツール」</strong>。時間があれば様々な視点から描き直して考察することも大切。<span class="ptr">← S03:p.71</span>
+  </div>
+
+</div><!-- /ch4 -->
+
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- 末尾補足 -->
+<!-- ═══════════════════════════════════════════════════ -->
+
+<div class="appendix-card app-a" id="app-a">
+  <h2>⭐ 補足A: 最重要ワード一覧</h2>
+  <table>
+    <thead><tr><th>用語</th><th>読み</th><th>定義（原文から抽出）</th><th>重要度</th></tr></thead>
+    <tbody>
+      <tr><td><strong>交渉</strong></td><td>こうしょう</td><td>自分と相手の意向や意識・考え方に違いがあることを前提としつつ、その間のギャップを埋め、自分の側に相手を近づけるよう働きかけること <span class="ptr">← S03:p.12</span></td><td><span class="star3">★★★</span></td></tr>
+      <tr><td><strong>交渉力</strong></td><td>こうしょうりょく</td><td>交渉を行う力のこと <span class="ptr">← S03:p.12</span></td><td><span class="star3">★★★</span></td></tr>
+      <tr><td><strong>交渉フロー図</strong></td><td>こうしょうフローず</td><td>相手の主張の「前提」を探り覆すことで争点をずらし新たな落としどころを見つけるための図。主張→根拠→前提の3層が因果関係で結ばれる <span class="ptr">← S03:p.24-25</span></td><td><span class="star3">★★★</span></td></tr>
+      <tr><td><strong>交渉ベン図</strong></td><td>こうしょうベンず</td><td>双方の主張の背景にある価値観を探り、共有できる価値観からX（歩みより）・Y（働きかけ）・Z（痛みわけ）の交渉の糸口を見つけるための図 <span class="ptr">← S03:p.47-48</span></td><td><span class="star3">★★★</span></td></tr>
+      <tr><td><strong>争点をずらす</strong></td><td>そうてんをずらす</td><td>膠着状態の交渉を打開するため、元の対立点とは別の論点（特に前提）に焦点を移すこと <span class="ptr">← S03:p.23</span></td><td><span class="star3">★★★</span></td></tr>
+      <tr><td><strong>前提</strong>（交渉文脈）</td><td>ぜんてい</td><td>相手の主張の根拠を下支えする価値観・考え方・基本的な意識や思想。フロー図で最も深い層に位置する <span class="ptr">← S03:p.24</span></td><td><span class="star3">★★★</span></td></tr>
+      <tr><td><strong>妥協点</strong>（ベン図）</td><td>だきょうてん</td><td>ベン図の大きな円（価値観）と小さな円（主張）に挟まれたドーナツ状の領域。相手の主張は満たさないが相手の価値観を満たす解決策 <span class="ptr">← S03:p.52</span></td><td><span class="star2">★★☆</span></td></tr>
+      <tr><td><strong>発散思考</strong></td><td>はっさんしこう</td><td>右脳の直感力に関わる思考。アイデアを広げ直感的に把握する <span class="ptr">← S03:p.78</span></td><td><span class="star2">★★☆</span></td></tr>
+      <tr><td><strong>収束思考</strong></td><td>しゅうそくしこう</td><td>左脳の論理力に関わる思考。整理・分類・因果関係の分析 <span class="ptr">← S03:p.78</span></td><td><span class="star2">★★☆</span></td></tr>
+      <tr><td><strong>交渉脚本シート</strong></td><td>こうしょうきゃくほんシート</td><td>交渉を演劇に例えたシナリオ作成フレームワーク。目的・状況・登場人物・序盤/中盤/終盤の戦略/作戦/戦術で構成 <span class="ptr">← S03:p.8-9</span></td><td><span class="star2">★★☆</span></td></tr>
+      <tr><td><strong>スキーマ</strong></td><td>スキーマ</td><td>人が外界からの情報を認知・処理するときに用いる知識の体系 <span class="ptr">← S03:p.80</span></td><td><span class="star1">★☆☆</span></td></tr>
+      <tr><td><strong>思考フレーム</strong></td><td>しこうフレーム</td><td>問題・課題に遭遇した際に頭の中に描かれる思考の構造。1人ひとり異なり、効率化する一方で固定観念や柔軟な発想を阻害する面もある <span class="ptr">← S03:p.80</span></td><td><span class="star1">★☆☆</span></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="appendix-card app-b" id="app-b">
+  <h2>📚 補足B: 知っておくべき背景知識</h2>
+  <ul>
+    <li style="margin-bottom:10px"><strong>捨田利裕氏の著作</strong>（交渉定義の出典）<br>
+    「交渉の技術が面白いほど身につく本」中経出版、2001年、p.60。<span class="ei">[外部補足・確認済: S03:p.10 出典明示]</span></li>
+    <li style="margin-bottom:10px"><strong>高杉尚孝氏の著作</strong>（交渉定義の出典）<br>
+    「交渉のセオリー」NHK出版、2001年、p.10。バーソン・マーステラ社はWPPグループ傘下の国際PRコンサルティング会社。<span class="ei">[外部補足・確認済: S03:p.10 出典明示]</span></li>
+    <li style="margin-bottom:10px"><strong>スキーマ理論の由来</strong> <span class="resolved">U02解消</span><br>
+    1932年にCambridge University Pressから出版された、心理学者フレデリック・バートレット（Frederic C. Bartlett）著の "Remembering: A Study in Experimental and Social Psychology"（記憶: 実験的・社会心理学的研究）がスキーマ理論の基礎を示したランドマーク的著作。 バートレットは記憶が単純な情報貯蔵ではなく、過去の知識体系（スキーマ）を用いた<strong>再構成プロセス</strong>であると主張した。なお「スキーマ」という用語自体は元々Henry Headが1918年に使用しており、バートレットはその用語を採用しつつも、スキーマを過去の経験の動的な精神的構造として再定義した。 <span class="ei">[外部補足・確認済: Cambridge University Press公式ページ・学術文献で確認]</span></li>
+    <li style="margin-bottom:10px"><strong>BATNA（Best Alternative To a Negotiated Agreement）</strong><br>
+    BATNAは、HarvardのRoger FisherとWilliam Uryが1981年の著書 "Getting to YES"（邦題: 交渉術）で体系化した概念で、「交渉が決裂した場合の最善の代替案」を意味する。 Fisher and Uryは「交渉する理由は、交渉なしでは得られないより良い結果を生み出すため」と述べており、自分のBATNAよりも悪い合意は拒否すべきと主張する。 本講義では明示されていないが、交渉論の標準的基礎概念として知っておくと理解が深まる。<span class="ei">[外部補足・確認済: Wikipedia BATNA項, Harvard PON公式サイト]</span></li>
+    <li style="margin-bottom:10px"><strong>統合的交渉（Integrative Negotiation）vs 分配的交渉（Distributive Negotiation）</strong><br>
+    本講義が扱う「共通利益の探索」「Win-Winの発見」は交渉論における<strong>統合的交渉</strong>の考え方と一致する。
+    <table style="margin-top:8px">
+      <thead><tr><th>種別</th><th>別名</th><th>特徴</th><th>本講義との対応</th></tr></thead>
+      <tbody>
+        <tr><td><strong>統合的交渉</strong></td><td>Win-Win型</td><td>双方の利益を最大化。複数の問題・価値観を考慮し新たな解決策を創造する</td><td>ベン図（共通価値観探索）・フロー図（前提変更で対立解消）</td></tr>
+        <tr><td><strong>分配的交渉</strong></td><td>Win-Lose型</td><td>限られたリソースの取り分を最大化。一方が得れば他方が損</td><td>本講義では「交渉の最悪のシナリオを避ける」側の状況として位置づけ</td></tr>
+      </tbody>
+    </table>
+    <span class="ei">[外部補足・確認済: Fisher & Ury "Getting to YES" 1981; 複数の学術サイト]</span></li>
+  </ul>
+</div>
+
+<div class="appendix-card app-c" id="app-c">
+  <h2>🎯 補足C: 試験・レポートで重要な観点</h2>
+  <ul>
+    <li style="margin-bottom:6px"><strong>交渉の定義を正確に言える:</strong>「意向・意識・考え方の違いを前提としつつ、ギャップを埋め自分の側に相手を近づけるよう働きかけること」</li>
+    <li style="margin-bottom:6px"><strong>フロー図 vs ベン図の使い分けが説明できる:</strong>
+      <ul>
+        <li>フロー図 → 「争点をずらす」「前提を覆す」→ 対立点そのものをなくす</li>
+        <li>ベン図 → 「共通利益を見つける」「妥協点を探す」→ 交渉決裂を避ける</li>
+      </ul>
+    </li>
+    <li style="margin-bottom:6px"><strong>交渉フロー図の3ステップ（順番も重要）:</strong> ①主張を構成する要素を整理 → ②前提を推定 → ③図を描き交渉の糸口を探る</li>
+    <li style="margin-bottom:6px"><strong>交渉ベン図の3ステップ:</strong> ①双方の背景の価値観を探る → ②両者の妥協点を探る → ③図を精査し糸口を探る</li>
+    <li style="margin-bottom:6px"><strong>X/Y/Zの違いを説明できる（ベン図）:</strong> X=歩みより（相手主張を飲む）、Y=働きかけ（自分の主張を肯定）、Z=痛みわけ（双方の主張には合致しないが双方の価値観は満たす）</li>
+    <li style="margin-bottom:6px"><strong>図解思考の最大の意義:</strong> 発散思考（右脳・直感）と収束思考（左脳・論理）を効果的に使い分けること</li>
+    <li style="margin-bottom:6px"><strong>「絶対に正しい唯一の図は存在しない」が本講義の核心メッセージ</strong> — 図はより適切な結論を導くための思考ツール</li>
+    <li style="margin-bottom:6px"><strong>ケーススタディで問われやすい点:</strong> 「なぜこの図タイプを使うか」「どの前提/価値観に着目したか」「X/Y/Zのどれか」を明示できるか</li>
+  </ul>
+</div>
+
+<div class="appendix-card app-d" id="app-d">
+  <h2>🔗 補足D: 関連概念・次回への接続</h2>
+  <ul>
+    <li style="margin-bottom:8px"><strong>本講義の位置づけ:</strong> ロジカルシンキング全8回の最終回。これまでの5つの図タイプ（ツリー図・ベン図・マトリクス図・点グラフ・フロー図）を総動員して「交渉力」に応用する総まとめ回。</li>
+    <li style="margin-bottom:8px"><strong>フロー図 × Why分析:</strong> 交渉フロー図における「なぜ（前提）」の深掘りは、問題解決で使われるロジックツリー（Whyツリー）と構造的に類似。どちらも因果関係を遡る点が共通。<span class="ei">[外部補足]</span></li>
+    <li style="margin-bottom:8px"><strong>ベン図 × ステークホルダー分析:</strong>「双方の価値観の重なりを探す」というベン図の考え方は、ステークホルダー分析（利害関係者の共通利益と対立利益の整理）とも密接に関連する。<span class="ei">[外部補足]</span></li>
+    <li style="margin-bottom:8px"><strong>BATNA との関係:</strong> 本講義の「交渉決裂という最悪のシナリオを避ける」という発想は、Fisher and Uryが提唱したBATNA（Best Alternative To a Negotiated Agreement）— 交渉が合意に至らなかった場合の最善の代替案 —という概念と密接に関連する。BATNAが明確であるほど交渉での立場が強くなる。<span class="ei">[外部補足・確認済: Fisher & Ury "Getting to YES" 1981, EBSCO Research Starters]</span></li>
+    <li style="margin-bottom:8px"><strong>統合的交渉の考え方（Fisher & Ury, 1981）:</strong> Roger Fisher, William Ury, Bruce PattonによるHarvard Negotiation Projectの成果物 "Getting to YES" は、「人を問題から切り離す」「立場ではなく利益に焦点を当てる」「相互利益のための選択肢を生み出す」「客観的な基準を使う」という4原則による「原則的交渉（Principled Negotiation）」を提唱した1981年の著作。 本講義の「共通の利益を見つける」「価値観から妥協点を探す」という方法論はこの考え方と高い親和性を持つ。<span class="ei">[外部補足・確認済: Wikipedia "Getting to Yes"]</span></li>
+    <li style="margin-bottom:8px"><strong>実践的活用のヒント:</strong> 実際のビジネスシーンでは交渉脚本シートを事前に作成し、フロー図・ベン図の両方を描いてから交渉に臨むことで準備の精度が高まる。特に「前提の発見」は相手との対話の中でしか見えないため、事前仮説→対話→修正のサイクルが重要。</li>
+  </ul>
+</div>
+
+<div class="appendix-card app-uc" id="app-uc">
+  <h2>❓ 未確定事項・要確認リスト</h2>
+  <table>
+    <thead><tr><th>ID</th><th>内容</th><th>種別</th><th>優先度</th><th>状態</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>U01</td>
+        <td>捨田利裕氏『交渉の技術が面白いほど身につく本』（中経出版, 2001）の一次書誌確認</td>
+        <td>[外部補足・確認済]</td>
+        <td>低</td>
+        <td>S03:p.10に出典明示 → <strong>解消済み</strong></td>
+      </tr>
+      <tr>
+        <td>U02</td>
+        <td>スキーマ理論の提唱者・年代（バートレット1932年とされていたが一次ソース未確認）</td>
+        <td>[外部補足・確認済]</td>
+        <td>低</td>
+        <td>Cambridge University Press公式・学術文献で確認 → <strong>解消済み</strong> F.C.Bartlett "Remembering" 1932, CUP</td>
+      </tr>
+    </tbody>
+  </table>
+  <p style="font-size:12px;color:var(--green);margin-top:10px">✅ 全未確定事項が解消されました。本ノートに優先度「高」の未確定項目はありません。</p>
+</div>
+
+<!-- バージョン情報 -->
+<div style="margin-top:28px;padding:13px 16px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;font-size:11px;color:var(--text-muted);font-family:'JetBrains Mono',monospace">
+  v1.0  初版（Step 5-B完了）| S03+S05×2<br>
+  v1.1  未確定全解消（U01・U02）/ スキーマ理論出典確認（Bartlett 1932 CUP）/ BATNAおよびFisher&amp;Ury理論を外部補足に追加確認済で記載 / 交渉脚本シート・交渉力概念図・フロー図3ステップ・ベン図3ステップ・残業ベン図・新サービスベン図・図解スキル全体像・発散収束思考図などSVGを大幅追加 | SSP v4.6.1 | 奥村隆一・ロジカルシンキング第8回
+</div>
+
+</main>
+</body>
+</html>
