@@ -1,0 +1,1324 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>スタディスキル入門 第4回 | 効果的な学習方法</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0f1117; --bg-card:#161b27; --bg-side:#0d1020;
+  --text:#e2e8f5; --sub:#8a99b8; --muted:#5a6a8a; --border:#252d42;
+  --blue:#5b8dee; --green:#34d399; --yellow:#fbbf24; --orange:#f97316;
+  --purple:#a78bfa; --pink:#f472b6; --red:#f87171; --lime:#a3e635;
+  --sw:260px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans JP',sans-serif;font-size:15px;line-height:1.85}
+
+/* SIDEBAR */
+#sb{position:fixed;top:0;left:0;width:var(--sw);height:100vh;background:var(--bg-side);border-right:1px solid var(--border);overflow-y:auto;z-index:100;padding:0 0 40px}
+.sb-hd{padding:18px 16px 14px;border-bottom:1px solid var(--border)}
+.sb-sub{font-size:10px;color:var(--blue);font-family:'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;margin-bottom:3px}
+.sb-title{font-size:13px;font-weight:700}
+#sb a{display:block;padding:5px 16px;color:var(--sub);text-decoration:none;font-size:12px;line-height:1.5;border-left:2px solid transparent;transition:all .15s}
+#sb a:hover,#sb a.active{color:var(--text);background:rgba(91,141,238,.08);border-left-color:var(--blue)}
+.tl2{padding-left:16px;font-weight:600;color:var(--text);font-size:12.5px}
+.tl3{padding-left:28px;font-size:11.5px}
+.tla{padding-left:16px;font-size:11.5px;color:var(--yellow)}
+
+/* MAIN */
+#main{margin-left:var(--sw);padding:40px 48px 80px;max-width:920px}
+
+/* PAGE HEADER */
+.ph{margin-bottom:36px;padding-bottom:24px;border-bottom:1px solid var(--border)}
+.ph-meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.badge{font-family:'JetBrains Mono',monospace;font-size:11px;padding:3px 10px;border-radius:4px;background:rgba(91,141,238,.12);color:var(--blue);border:1px solid rgba(91,141,238,.25)}
+.badge.g{background:rgba(52,211,153,.1);color:var(--green);border-color:rgba(52,211,153,.25)}
+.badge.y{background:rgba(251,191,36,.1);color:var(--yellow);border-color:rgba(251,191,36,.25)}
+h1{font-family:'Noto Serif JP',serif;font-size:28px;font-weight:700;margin-bottom:6px}
+.ph-note{font-size:12px;color:var(--muted);font-family:'JetBrains Mono',monospace}
+
+/* GOAL BOX */
+.goal{background:rgba(52,211,153,.07);border:1px solid rgba(52,211,153,.2);border-radius:8px;padding:14px 18px;margin:14px 0}
+.goal-lbl{font-size:10px;color:var(--green);font-family:'JetBrains Mono',monospace;letter-spacing:.1em;margin-bottom:6px}
+
+/* SECTION */
+.sec{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:28px 32px;margin-bottom:22px}
+.sec-title{font-family:'Noto Serif JP',serif;font-size:20px;font-weight:700;color:var(--blue);margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.sec-title .n{font-family:'JetBrains Mono',monospace;font-size:12px;background:rgba(91,141,238,.15);color:var(--blue);padding:2px 8px;border-radius:4px}
+h3{font-size:16px;font-weight:700;color:var(--yellow);margin:24px 0 12px;display:flex;align-items:center;gap:8px}
+h3::before{content:'';display:inline-block;width:3px;height:16px;background:var(--yellow);border-radius:2px}
+h4{font-size:14px;font-weight:700;color:var(--green);margin:16px 0 8px}
+p{margin-bottom:11px}
+ul,ol{padding-left:20px;margin-bottom:11px}
+li{margin-bottom:5px}
+
+/* BLOCKS */
+.ab{border-left:3px solid var(--blue);background:rgba(91,141,238,.06);padding:11px 15px;margin:11px 0;border-radius:0 6px 6px 0}
+.ab .lbl,.eb .lbl,.wb .lbl{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;margin-bottom:5px}
+.ab .lbl{color:var(--blue)}
+.eb{border-left:3px solid var(--green);background:rgba(52,211,153,.06);padding:11px 15px;margin:11px 0;border-radius:0 6px 6px 0}
+.eb .lbl{color:var(--green)}
+.wb{border-left:3px solid var(--orange);background:rgba(249,115,22,.06);padding:11px 15px;margin:11px 0;border-radius:0 6px 6px 0}
+.wb .lbl{color:var(--orange)}
+.kb{background:rgba(91,141,238,.1);border:1px solid rgba(91,141,238,.3);border-radius:8px;padding:14px 18px;margin:14px 0}
+.kb .lbl{font-size:10px;color:var(--blue);font-family:'JetBrains Mono',monospace;letter-spacing:.1em;margin-bottom:6px}
+
+/* POINTER */
+.ptr{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);background:rgba(255,255,255,.04);padding:1px 5px;border-radius:3px;margin-left:5px;vertical-align:middle}
+
+/* TABLES */
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13.5px}
+th{background:rgba(91,141,238,.15);color:var(--blue);font-weight:600;padding:9px 13px;text-align:left;border-bottom:1px solid var(--border);font-size:13px}
+td{padding:8px 13px;border-bottom:1px solid rgba(255,255,255,.05);vertical-align:top}
+tr:hover td{background:rgba(255,255,255,.02)}
+.s3{color:var(--yellow)} .s2{color:var(--blue)} .s1{color:var(--muted)}
+
+/* FIGURES */
+.fig{margin:18px 0;text-align:center}
+.fig figcaption{font-size:11.5px;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-top:7px}
+
+/* APPENDIX CARDS */
+.ac{border-radius:10px;padding:22px 26px;margin-bottom:18px;border:1px solid}
+.ac-a{background:rgba(251,191,36,.06);border-color:rgba(251,191,36,.25)}
+.ac-b{background:rgba(52,211,153,.05);border-color:rgba(52,211,153,.2)}
+.ac-c{background:rgba(244,114,182,.05);border-color:rgba(244,114,182,.2)}
+.ac-d{background:rgba(167,139,250,.05);border-color:rgba(167,139,250,.2)}
+.ac-u{background:rgba(249,115,22,.06);border-color:rgba(249,115,22,.3)}
+.ac h2{font-size:17px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.ac-a h2{color:var(--yellow)} .ac-b h2{color:var(--green)} .ac-c h2{color:var(--pink)} .ac-d h2{color:var(--purple)} .ac-u h2{color:var(--orange)}
+.acn{font-size:12px;color:var(--sub);font-style:italic}
+.ac h3{color:inherit;font-size:14px;margin:16px 0 8px}
+.ac h3::before{background:currentColor}
+
+@media(max-width:768px){#sb{display:none}#main{margin-left:0;padding:18px}}
+</style>
+</head>
+<body>
+
+<nav id="sb">
+  <div class="sb-hd">
+    <div class="sb-sub">スタディスキル入門</div>
+    <div class="sb-title">第4回 効果的な学習方法</div>
+  </div>
+  <a href="#top" class="tl2">概要・学習目標</a>
+  <a href="#ch1" class="tl2">第1章 学習意欲の維持</a>
+  <a href="#ch1-sw" class="tl3">やる気のスイッチ</a>
+  <a href="#ch1-arcs" class="tl3">ARCSモデル</a>
+  <a href="#ch1-maslow" class="tl3">マズローの欲求段階説</a>
+  <a href="#ch1-mot" class="tl3">2つの動機づけ</a>
+  <a href="#ch1-sdt" class="tl3">自己決定の段階性</a>
+  <a href="#ch2" class="tl2">第2章 効果的学習方法の見つけ方</a>
+  <a href="#ch2-gpdca" class="tl3">GPDCA サイクル</a>
+  <a href="#ch2-cap" class="tl3">CAP得点</a>
+  <a href="#ch2-kolb" class="tl3">コルブの経験学習モデル</a>
+  <a href="#ch2-ref" class="tl3">内省をしよう</a>
+  <a href="#ch3" class="tl2">第3章 受講の際のポイント</a>
+  <a href="#ch3-note" class="tl3">ノートを取る理由と方法</a>
+  <a href="#ch3-app" class="tl3">視聴専用アプリ</a>
+  <a href="#ch4" class="tl2">第4章 期末試験と成績評価</a>
+  <a href="#ch4-rules" class="tl3">試験のルールと注意事項</a>
+  <a href="#ch4-types" class="tl3">試験の種類</a>
+  <a href="#ch4-grade" class="tl3">成績評価とGPA</a>
+  <a href="#ap-a" class="tla">⭐ 補足A: 重要ワード</a>
+  <a href="#ap-b" class="tla">📚 補足B: 背景知識</a>
+  <a href="#ap-c" class="tla">🎯 補足C: 試験観点</a>
+  <a href="#ap-d" class="tla">🔗 補足D: 関連概念</a>
+  <a href="#ap-u" class="tla">❓ 未確定事項</a>
+</nav>
+
+<main id="main">
+
+<!-- PAGE HEADER -->
+<div class="ph" id="top">
+  <div class="ph-meta">
+    <span class="badge">スタディスキル入門</span>
+    <span class="badge">第4回</span>
+    <span class="badge g">菊地梓</span>
+    <span class="badge y">S03 + S05×2 | QC 100% PASS</span>
+  </div>
+  <h1>第4回　効果的な学習方法</h1>
+  <div class="ph-note">note_studyskill_04.html | v2.0 | SSP v4.2</div>
+  <div class="goal" style="margin-top:16px">
+    <div class="goal-lbl">LEARNING GOALS</div>
+    <ol>
+      <li>本学での学習をより効率的・効果的にするためのポイントについて理解し、説明することができる。</li>
+      <li>本学の期末試験・成績評価について理解し、説明することができる。</li>
+    </ol>
+  </div>
+  <p style="margin:10px 0 0;font-size:13px;color:var(--sub)">授業構成：第1章 学習意欲の維持 ／ 第2章 効果的学習方法の見つけ方 ／ 第3章 受講の際のポイント ／ 第4章 期末試験と成績評価について <span class="ptr">← S03:p.3</span></p>
+</div>
+
+<!-- ======================== 第1章 ======================== -->
+<section class="sec" id="ch1">
+<div class="sec-title"><span class="n">第1章</span>学習意欲の維持</div>
+<div class="goal"><div class="goal-lbl">CHAPTER GOAL</div><p style="margin:0">学習意欲を維持するためのポイントについて理解し、説明できる。</p></div>
+
+<h3 id="ch1-sw">やる気のスイッチ：作業興奮</h3>
+<p>脳のほぼ中央にある<strong>側坐核（そくざかく）</strong>が働き出すと脳内物質が分泌されてやる気が出る。<br>重要な点は、<strong>側坐核は「行動すること」で初めて働きだす</strong>という点。これを<strong>作業興奮</strong>と呼ぶ。 <span class="ptr">← S03:p.6</span></p>
+
+<!-- 側坐核 図 (脳のシルエット+赤点) -->
+<div class="fig">
+<!-- viewBox 320×180. Brain silhouette simplified, red dot at center -->
+<svg viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg" style="max-width:300px;width:100%">
+  <rect width="320" height="180" fill="#1e2535" rx="8"/>
+  <!-- Brain outline (simplified path) -->
+  <path d="M100,140 Q60,130 50,100 Q40,70 65,50 Q85,30 115,35 Q130,15 160,20 Q195,10 215,35 Q250,30 265,55 Q280,80 270,110 Q260,140 230,148 Q200,160 160,155 Q130,160 100,140Z"
+        fill="none" stroke="#5b8dee" stroke-width="1.5" opacity="0.7"/>
+  <!-- Brain folds (simplified lines) -->
+  <path d="M115,35 Q120,55 110,70 Q105,85 115,95" fill="none" stroke="#5b8dee" stroke-width="1" opacity="0.4"/>
+  <path d="M160,20 Q165,45 155,60 Q150,80 165,100" fill="none" stroke="#5b8dee" stroke-width="1" opacity="0.4"/>
+  <path d="M215,35 Q210,60 220,75 Q225,90 210,105" fill="none" stroke="#5b8dee" stroke-width="1" opacity="0.4"/>
+  <!-- 側坐核 red dot at center (160, 95) -->
+  <circle cx="162" cy="95" r="8" fill="#f87171" opacity="0.9"/>
+  <circle cx="162" cy="95" r="14" fill="none" stroke="#f87171" stroke-width="1.5" opacity="0.5"/>
+  <!-- Label line -->
+  <line x1="176" y1="88" x2="220" y2="65" stroke="#f87171" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="225" y="62" fill="#f87171" font-size="12" font-weight="bold">側坐核</text>
+  <text x="225" y="76" fill="#8a99b8" font-size="10">行動で活性化</text>
+  <!-- 作業興奮 label -->
+  <rect x="30" y="150" width="260" height="22" rx="4" fill="rgba(91,141,238,0.12)"/>
+  <text x="160" y="165" text-anchor="middle" fill="#5b8dee" font-size="11.5" font-weight="bold">作業興奮：行動が脳を活性化し行動を持続させる</text>
+</svg>
+<figcaption>図: 側坐核と作業興奮 <span class="ptr">S03:p.6</span></figcaption>
+</div>
+
+<div class="ab"><div class="lbl">AUDIO SUPPLEMENT ← S05</div>
+<p>具体例：「ゲームをやめようと思ったのに数時間経っていた」「面倒な掃除を始めたらどんどんしたくなる」。一度始めると脳がどんどん活性化して行動を持続させる。</p>
+<p><strong>学習への応用</strong>：やる気がないときでも、まずパソコンを立ち上げてクラウドキャンパスを開き、TA・教員からのメールをチェックするところから始める。そうすると自然に学習に入りやすくなる。</p>
+</div>
+
+<div class="kb">
+<div class="lbl">孔子『大学』より <span class="ptr">← S03:p.7</span></div>
+<p style="margin:0;font-style:italic">「心不在焉、視而不見、聴而不聞」<br>（心ここにあらざれば、視れども見えず、聴けども聞こえず）</p>
+<p style="margin:8px 0 0;font-size:13.5px;color:var(--sub)">精神を集中していなければ何事を見ても道理はわからず、師の立派な教えを聴いても真実の意味を理解できない。→ いやいやパソコンに向かいぼんやり授業を見ていても、しっかり見ていることにはならない。<strong>しっかりした「心の姿勢」が必要。</strong></p>
+</div>
+
+<!-- ───── ARCSモデル ───── -->
+<h3 id="ch1-arcs">ARCSモデル（学習意欲デザインのモデル）</h3>
+<p>J. M. Keller（フロリダ州立大学教授）が1987年に提唱した学習意欲デザインのモデル。4要素のサイクルを意識することで学習意欲を維持・向上させる。 <span class="ptr">← S03:p.8</span> <span class="eb" style="display:inline;padding:1px 6px;border-radius:3px;font-size:11px;color:var(--green)">[外部補足・確認済: Keller, 1987a, Journal of Instructional Development, 10(3), 2–10]</span></p>
+
+<!-- ARCS図 4円+ライン -->
+<div class="fig">
+<!--
+  viewBox: 820 x 260
+  Circles: A(120,185,r60) R(300,145,r60) C(480,105,r60) S(660,65,r60)
+  Line from (120,185-60=125)…actually diagonal from (60,220) to (750,30)
+  Labels below each circle
+-->
+<svg viewBox="0 0 820 270" xmlns="http://www.w3.org/2000/svg" style="max-width:800px;width:100%">
+  <defs>
+    <marker id="arr1" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#5b8dee"/></marker>
+  </defs>
+  <rect width="820" height="270" fill="#1e2535" rx="8"/>
+  <!-- Diagonal arrow from bottom-left to top-right -->
+  <!-- Start: below A circle (120,245), End: above S label area (720,30) -->
+  <line x1="68" y1="235" x2="735" y2="28" stroke="#5b8dee" stroke-width="2.5" marker-end="url(#arr1)"/>
+
+  <!-- A circle: cx=120, cy=185, r=60 -->
+  <circle cx="120" cy="180" r="62" fill="rgba(91,141,238,0.15)" stroke="#5b8dee" stroke-width="1.8"/>
+  <text x="120" y="168" text-anchor="middle" fill="#5b8dee" font-size="26" font-weight="bold" font-family="serif">A</text>
+  <text x="120" y="187" text-anchor="middle" fill="#e2e8f5" font-size="11.5">Attention</text>
+  <text x="120" y="201" text-anchor="middle" fill="#8a99b8" font-size="10.5">注意</text>
+  <text x="120" y="258" text-anchor="middle" fill="#8a99b8" font-size="11">おもしろそう</text>
+
+  <!-- R circle: cx=300, cy=145 -->
+  <circle cx="300" cy="145" r="62" fill="rgba(52,211,153,0.12)" stroke="#34d399" stroke-width="1.8"/>
+  <text x="300" y="133" text-anchor="middle" fill="#34d399" font-size="26" font-weight="bold" font-family="serif">R</text>
+  <text x="300" y="152" text-anchor="middle" fill="#e2e8f5" font-size="11.5">Relevance</text>
+  <text x="300" y="166" text-anchor="middle" fill="#8a99b8" font-size="10.5">関連性</text>
+  <text x="300" y="225" text-anchor="middle" fill="#8a99b8" font-size="11">やりがいがありそう</text>
+
+  <!-- C circle: cx=480, cy=105 -->
+  <circle cx="480" cy="105" r="62" fill="rgba(251,191,36,0.12)" stroke="#fbbf24" stroke-width="1.8"/>
+  <text x="480" y="93" text-anchor="middle" fill="#fbbf24" font-size="26" font-weight="bold" font-family="serif">C</text>
+  <text x="480" y="112" text-anchor="middle" fill="#e2e8f5" font-size="11.5">Confidence</text>
+  <text x="480" y="126" text-anchor="middle" fill="#8a99b8" font-size="10.5">自信</text>
+  <text x="480" y="185" text-anchor="middle" fill="#8a99b8" font-size="11">やればできそう</text>
+
+  <!-- S circle: cx=660, cy=65 -->
+  <circle cx="660" cy="65" r="62" fill="rgba(244,114,182,0.13)" stroke="#f472b6" stroke-width="1.8"/>
+  <text x="660" y="53" text-anchor="middle" fill="#f472b6" font-size="26" font-weight="bold" font-family="serif">S</text>
+  <text x="660" y="72" text-anchor="middle" fill="#e2e8f5" font-size="11.5">Satisfaction</text>
+  <text x="660" y="86" text-anchor="middle" fill="#8a99b8" font-size="10.5">満足感</text>
+  <text x="660" y="145" text-anchor="middle" fill="#8a99b8" font-size="11">やってよかった</text>
+</svg>
+<figcaption>図: ARCSモデル（Keller, 1987）― 4要素のサイクルで学習意欲を高める <span class="ptr">S03:p.13</span></figcaption>
+</div>
+
+<h4>A（Attention：注意） <span class="ptr">← S03:p.9</span></h4>
+<ul>
+  <li><strong>知覚的喚起（構えを作る）</strong>：集中できる環境を整える（自分に合った場所：自室・図書館・カフェ・公園など）</li>
+  <li><strong>探求心の喚起</strong>：疑問や驚きを大切にし、自分なりに調べてみる。「あ、そんなことがあるんだ」と驚きに変える</li>
+  <li><strong>マンネリを避けるバラエティ性</strong>：飽きる前に気分転換。ストップウォッチで時間を区切る。だらだら続けるのは逆効果</li>
+</ul>
+
+<h4>R（Relevance：関連性） <span class="ptr">← S03:p.10</span></h4>
+<ul>
+  <li><strong>親しみやすさ（自分に引きつける）</strong>：教員の説明を自分の言葉で言い換えてみる。すでに知っていることとの関連を確認する</li>
+  <li><strong>目的の方向性</strong>：やり遂げる効用を考える。資格試験・就職・友達への説明など、自分なりの目標を設定する</li>
+  <li><strong>動機との一致（プロセスを楽しむ）</strong>：ゲーム感覚で取り組む。オープンバッジ収集など</li>
+</ul>
+
+<h4>C（Confidence：自信） <span class="ptr">← S03:p.11</span></h4>
+<ul>
+  <li><strong>成功の機会</strong>：他人との比較ではなく、<strong>過去の自分と比較して成長を確認する</strong></li>
+  <li><strong>自己コントロール</strong>：失敗したら自分のやり方の問題点を考え、自分で成功に導く</li>
+</ul>
+<div class="ab"><div class="lbl">AUDIO SUPPLEMENT ← S05</div>
+<p>自信を持つことが苦手な人は他の人や平均点と比較しているケースが多い。昨日の自分より今の自分が成長できていれば、それが学習の成功。成功体験を一つずつ積み上げていくことが確固たる自信につながる。</p>
+</div>
+
+<h4>S（Satisfaction：満足感） <span class="ptr">← S03:p.12</span></h4>
+<ul>
+  <li><strong>成果を無駄にしない</strong>：一度身についたことは使う・活かすチャンスを作る（例：朝礼で学んだことを社員に披露する）</li>
+  <li><strong>ほめて認めてもらう</strong>：他者からの褒め・自分で自分を褒めること、両方有効。完了後に自分へのプレゼントを考えるのも◎</li>
+</ul>
+
+<!-- ───── マズロー ───── -->
+<h3 id="ch1-maslow">マズローの欲求段階説</h3>
+<p>Abraham Maslow（1943）が提唱した人間の欲求を5段階のピラミッドで整理したモデル。 <span class="ptr">← S03:p.14</span></p>
+
+<div class="fig">
+<!--
+  viewBox: 760 x 400
+  Pyramid center x=380.
+  Apex: (380,30). Base: (30,300)(730,300). Height=270, half-base=350.
+  lx(y)=380-350*(y-30)/270, rx(y)=380+350*(y-30)/270
+  5 equal-height tiers (54px each): dividers at y=84,138,192,246,300
+  Calculated:
+    y=84:  lx=310, rx=450 → width=140  ← 自己実現(最上段は幅狭いので左側ラベル)
+    y=138: lx=240, rx=520 → width=280
+    y=192: lx=170, rx=590 → width=420
+    y=246: lx=100, rx=660 → width=560
+    y=300: lx= 30, rx=730 → width=700
+  Tier center y: 57,111,165,219,273
+  Left-side labels for narrow top tier. Right side annotation brackets.
+  Extra space: y=300-400 for bottom annotation.
+-->
+<svg viewBox="0 0 880 410" xmlns="http://www.w3.org/2000/svg" style="max-width:820px;width:100%">
+  <!--
+    viewBox: 880 x 410
+    Pyramid center x=380, apex(380,30), base(30,300)(730,300)
+    Right annotations: x=750-875 (125px wide → 余裕あり)
+    lx(y)=380-350*(y-30)/270, rx(y)=380+350*(y-30)/270
+    Tiers: y=30-84, 84-138, 138-192, 192-246, 246-300 (各54px)
+    成長欲求ボックス: x=752-875, y=34-86 → center x=813
+    欠乏欲求ボックス: x=752-875, y=102-262 → center x=813
+  -->
+  <rect width="880" height="410" fill="#1e2535" rx="8"/>
+
+  <!-- ── Tier color fills ── -->
+  <polygon points="100,246 660,246 730,300 30,300" fill="rgba(91,141,238,0.25)"/>
+  <polygon points="170,192 590,192 660,246 100,246" fill="rgba(52,211,153,0.2)"/>
+  <polygon points="240,138 520,138 590,192 170,192" fill="rgba(251,191,36,0.18)"/>
+  <polygon points="310,84 450,84 520,138 240,138" fill="rgba(167,139,250,0.22)"/>
+  <polygon points="380,30 380,30 450,84 310,84" fill="rgba(244,114,182,0.28)"/>
+
+  <!-- ── Pyramid outline ── -->
+  <polygon points="380,30 730,300 30,300" fill="none" stroke="#5b8dee" stroke-width="1.8"/>
+
+  <!-- ── Tier divider lines ── -->
+  <line x1="310" y1="84"  x2="450" y2="84"  stroke="rgba(255,255,255,0.25)" stroke-width="1.2"/>
+  <line x1="240" y1="138" x2="520" y2="138" stroke="rgba(255,255,255,0.25)" stroke-width="1.2"/>
+  <line x1="170" y1="192" x2="590" y2="192" stroke="rgba(255,255,255,0.25)" stroke-width="1.2"/>
+  <line x1="100" y1="246" x2="660" y2="246" stroke="rgba(255,255,255,0.25)" stroke-width="1.2"/>
+
+  <!-- ── Tier labels ── -->
+  <text x="380" y="54" text-anchor="middle" fill="#f472b6" font-size="11" font-weight="bold">自己実現欲求</text>
+  <text x="380" y="68" text-anchor="middle" fill="#f9a8d4" font-size="9">（成長欲求）</text>
+  <text x="380" y="108" text-anchor="middle" fill="#e2e8f5" font-size="13" font-weight="bold">承認欲求</text>
+  <text x="380" y="162" text-anchor="middle" fill="#e2e8f5" font-size="13" font-weight="bold">所属と愛の欲求</text>
+  <text x="380" y="216" text-anchor="middle" fill="#e2e8f5" font-size="13" font-weight="bold">安全欲求</text>
+  <text x="380" y="270" text-anchor="middle" fill="#e2e8f5" font-size="13" font-weight="bold">生理的欲求</text>
+
+  <!-- ── RIGHT: 成長欲求ボックス (上段) ── -->
+  <!-- 接続線: ピラミッド右端(450,57) → ボックス左端(750,57) -->
+  <line x1="450" y1="57" x2="750" y2="57" stroke="#f472b6" stroke-width="1.2" stroke-dasharray="4,3"/>
+  <rect x="752" y="34" width="118" height="52" rx="6" fill="rgba(244,114,182,0.15)" stroke="#f472b6" stroke-width="1.5"/>
+  <text x="811" y="52" text-anchor="middle" fill="#f472b6" font-size="12" font-weight="bold">成長欲求</text>
+  <text x="811" y="66" text-anchor="middle" fill="#fda4af" font-size="10">充足されず</text>
+  <text x="811" y="78" text-anchor="middle" fill="#fda4af" font-size="10">上限なく働く</text>
+
+  <!-- ── RIGHT: 欠乏欲求ボックス (下段4層) ── -->
+  <!-- 接続線: ピラミッド右端(660,192) → ボックス左端(750,192) -->
+  <line x1="660" y1="192" x2="750" y2="192" stroke="#fbbf24" stroke-width="1.2" stroke-dasharray="4,3"/>
+  <!-- ブラケット縦線: y=90〜294 at x=738 -->
+  <line x1="738" y1="90"  x2="750" y2="90"  stroke="#fbbf24" stroke-width="1"/>
+  <line x1="738" y1="294" x2="750" y2="294" stroke="#fbbf24" stroke-width="1"/>
+  <line x1="738" y1="90"  x2="738" y2="294" stroke="#fbbf24" stroke-width="1.5"/>
+  <rect x="752" y="156" width="118" height="72" rx="6" fill="rgba(251,191,36,0.12)" stroke="#fbbf24" stroke-width="1.5"/>
+  <text x="811" y="176" text-anchor="middle" fill="#fbbf24" font-size="12" font-weight="bold">欠乏欲求</text>
+  <text x="811" y="192" text-anchor="middle" fill="#fde68a" font-size="10">充足されると</text>
+  <text x="811" y="206" text-anchor="middle" fill="#fde68a" font-size="10">動かす力を失う</text>
+  <text x="811" y="220" text-anchor="middle" fill="#8a99b8" font-size="9">（下位4層すべて）</text>
+
+  <!-- ── BOTTOM: Key message ── -->
+  <rect x="40" y="315" width="680" height="34" rx="6" fill="rgba(251,191,36,0.1)" stroke="rgba(251,191,36,0.3)" stroke-width="1"/>
+  <text x="380" y="330" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold">💡 モチベーションUPの切り札 ＝ 自己実現欲求（成長欲求）</text>
+  <text x="380" y="344" text-anchor="middle" fill="#8a99b8" font-size="10">不都合な現実を「成長機会・ギフト」と捉えなおす</text>
+</svg>
+<figcaption>図: マズローの欲求段階説 <span class="ptr">S03:p.14</span> <span class="acn">[外部補足・確認済: Maslow, A.H. (1943). A theory of human motivation. Psychological Review, 50(4), 370–396.]</span></figcaption>
+</div>
+
+<table>
+  <tr><th>欲求の種類</th><th>詳細</th><th>動機づけ効果</th></tr>
+  <tr><td><strong>自己実現欲求</strong>（成長欲求）</td><td>もっと成長したい・高みへ向かいたいという欲求</td><td>充足されない → 持続的・無限に働く</td></tr>
+  <tr><td>承認・所属・安全・生理的欲求（欠乏欲求）</td><td>食事・安全・承認など不足を補う欲求</td><td>充足されると → 動かす力を失う</td></tr>
+</table>
+<div class="kb"><div class="lbl">KEY INSIGHT</div>
+<p style="margin:0"><strong>モチベーションUPの切り札は「成長欲求（自己実現欲求）」</strong><br>
+自分にとって不都合な現実を「成長機会」と捉えなおす。すべては成長するためのGIFT（贈り物）だと考える。 <span class="ptr">← S03:p.14</span></p>
+</div>
+
+<!-- ───── 動機づけ ───── -->
+<h3 id="ch1-mot">2つの動機づけ</h3>
+<div class="fig">
+<!--
+  viewBox: 700 x 240
+  Left side: heart icon with 4 words (内発的)
+  Right side: person with 6 external forces arrows (外発的)
+  divider at x=350
+-->
+<svg viewBox="0 0 700 240" xmlns="http://www.w3.org/2000/svg" style="max-width:680px;width:100%">
+  <defs>
+    <marker id="arri" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#34d399"/></marker>
+    <marker id="arro" markerWidth="7" markerHeight="5" refX="0" refY="2.5" orient="auto-start-reverse"><polygon points="7 0,0 2.5,7 5" fill="#fbbf24"/></marker>
+  </defs>
+  <rect width="700" height="240" fill="#1e2535" rx="8"/>
+
+  <!-- LEFT: 内発的動機づけ -->
+  <!-- heart shape centered at (175,115) -->
+  <path d="M175,155 Q115,120 115,90 Q115,60 145,60 Q165,60 175,80 Q185,60 205,60 Q235,60 235,90 Q235,120 175,155Z"
+        fill="rgba(244,114,182,0.2)" stroke="#f472b6" stroke-width="1.5"/>
+  <!-- person at center of heart -->
+  <circle cx="175" cy="95" r="10" fill="rgba(244,114,182,0.3)" stroke="#f472b6" stroke-width="1.2"/>
+  <line x1="175" y1="105" x2="175" y2="130" stroke="#f472b6" stroke-width="1.5"/>
+  <line x1="155" y1="115" x2="195" y2="115" stroke="#f472b6" stroke-width="1.5"/>
+  <line x1="175" y1="130" x2="160" y2="150" stroke="#f472b6" stroke-width="1.5"/>
+  <line x1="175" y1="130" x2="190" y2="150" stroke="#f472b6" stroke-width="1.5"/>
+  <!-- Arrows radiating outward from heart -->
+  <line x1="115" y1="90" x2="65" y2="75" stroke="#34d399" stroke-width="1.5" marker-end="url(#arri)"/>
+  <line x1="115" y1="110" x2="62" y2="118" stroke="#34d399" stroke-width="1.5" marker-end="url(#arri)"/>
+  <line x1="235" y1="90" x2="285" y2="75" stroke="#34d399" stroke-width="1.5" marker-end="url(#arri)"/>
+  <line x1="235" y1="110" x2="285" y2="118" stroke="#34d399" stroke-width="1.5" marker-end="url(#arri)"/>
+  <line x1="175" y1="155" x2="175" y2="195" stroke="#34d399" stroke-width="1.5" marker-end="url(#arri)"/>
+  <!-- Keyword words in heart -->
+  <text x="136" y="98" fill="#f472b6" font-size="10" font-weight="bold">好奇心</text>
+  <text x="192" y="98" fill="#f472b6" font-size="10" font-weight="bold">達成感</text>
+  <text x="148" y="128" fill="#f472b6" font-size="10" font-weight="bold">充実感</text>
+  <text x="178" y="128" fill="#f472b6" font-size="10" font-weight="bold"> 興味</text>
+  <!-- Label box -->
+  <rect x="60" y="200" width="230" height="30" rx="5" fill="rgba(244,114,182,0.15)" stroke="#f472b6" stroke-width="1"/>
+  <text x="175" y="219" text-anchor="middle" fill="#f472b6" font-size="12" font-weight="bold">内発的動機づけ</text>
+
+  <!-- divider -->
+  <line x1="350" y1="20" x2="350" y2="220" stroke="#252d42" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- RIGHT: 外発的動機づけ -->
+  <!-- Person at (530,110) -->
+  <circle cx="530" cy="75" r="18" fill="rgba(91,141,238,0.2)" stroke="#5b8dee" stroke-width="1.5"/>
+  <line x1="530" y1="93" x2="530" y2="135" stroke="#5b8dee" stroke-width="1.8"/>
+  <line x1="505" y1="110" x2="555" y2="110" stroke="#5b8dee" stroke-width="1.8"/>
+  <line x1="530" y1="135" x2="510" y2="160" stroke="#5b8dee" stroke-width="1.8"/>
+  <line x1="530" y1="135" x2="550" y2="160" stroke="#5b8dee" stroke-width="1.8"/>
+  <!-- 6 external forces: arrows pointing toward person -->
+  <!-- 報酬 top-left -->
+  <ellipse cx="420" cy="50" rx="32" ry="18" fill="rgba(251,191,36,0.15)" stroke="#fbbf24" stroke-width="1"/>
+  <text x="420" y="54" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold">報酬</text>
+  <line x1="452" y1="60" x2="512" y2="90" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#arro)"/>
+  <!-- 罰 top-right -->
+  <ellipse cx="640" cy="50" rx="28" ry="18" fill="rgba(248,113,113,0.15)" stroke="#f87171" stroke-width="1"/>
+  <text x="640" y="54" text-anchor="middle" fill="#f87171" font-size="11" font-weight="bold">罰</text>
+  <line x1="612" y1="60" x2="550" y2="88" stroke="#f87171" stroke-width="1.5" marker-end="url(#arro)"/>
+  <!-- 賞賛 left -->
+  <ellipse cx="390" cy="110" rx="32" ry="18" fill="rgba(52,211,153,0.12)" stroke="#34d399" stroke-width="1"/>
+  <text x="390" y="114" text-anchor="middle" fill="#34d399" font-size="11" font-weight="bold">賞賛</text>
+  <line x1="422" y1="110" x2="510" y2="110" stroke="#34d399" stroke-width="1.5" marker-end="url(#arro)"/>
+  <!-- 叱責 right -->
+  <ellipse cx="670" cy="110" rx="32" ry="18" fill="rgba(248,113,113,0.15)" stroke="#f87171" stroke-width="1"/>
+  <text x="670" y="114" text-anchor="middle" fill="#f87171" font-size="11" font-weight="bold">叱責</text>
+  <line x1="638" y1="110" x2="550" y2="110" stroke="#f87171" stroke-width="1.5" marker-end="url(#arro)"/>
+  <!-- 義務感 bottom-left -->
+  <ellipse cx="420" cy="168" rx="32" ry="18" fill="rgba(167,139,250,0.12)" stroke="#a78bfa" stroke-width="1"/>
+  <text x="420" y="172" text-anchor="middle" fill="#a78bfa" font-size="11" font-weight="bold">義務感</text>
+  <line x1="452" y1="158" x2="510" y2="132" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#arro)"/>
+  <!-- 強制 bottom-right -->
+  <ellipse cx="640" cy="168" rx="32" ry="18" fill="rgba(167,139,250,0.12)" stroke="#a78bfa" stroke-width="1"/>
+  <text x="640" y="172" text-anchor="middle" fill="#a78bfa" font-size="11" font-weight="bold">強制</text>
+  <line x1="608" y1="158" x2="552" y2="132" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#arro)"/>
+  <!-- Label box -->
+  <rect x="410" y="200" width="230" height="30" rx="5" fill="rgba(91,141,238,0.12)" stroke="#5b8dee" stroke-width="1"/>
+  <text x="525" y="219" text-anchor="middle" fill="#5b8dee" font-size="12" font-weight="bold">外発的動機づけ</text>
+</svg>
+<figcaption>図: 2つの動機づけ <span class="ptr">S03:p.15</span></figcaption>
+</div>
+
+<table>
+  <tr><th>種類</th><th>定義</th><th>源泉</th><th>特徴</th></tr>
+  <tr><td><strong>内発的動機づけ</strong></td><td>行動が自律的で自分の興味から生じている状態</td><td>好奇心・興味・達成感・充実感</td><td>質が高い・持続が長い・満足度が高い</td></tr>
+  <tr><td><strong>外発的動機づけ</strong></td><td>外からの報酬や要請によって行動が生じている状態</td><td>報酬・賞賛・義務感・罰・強制</td><td>賞罰がある間のみ持続</td></tr>
+</table>
+
+<!-- ───── 自己決定 ───── -->
+<h3 id="ch1-sdt">自己決定の段階性</h3>
+<p>行動の価値を自分の中に内面化していくにつれて、自律的な行動へと段階的に変化する。 <span class="ptr">← S03:p.16</span></p>
+
+<div class="fig">
+<!--
+  viewBox: 860 x 175
+  Arrow top: x=20 to x=840, y=22
+  6 boxes: see coordinate calc above
+  box_y=38, box_h=80
+  x positions: 20(130) 160(130) 300(120) 430(115) 555(105) 670(180)
+-->
+<svg viewBox="0 0 860 175" xmlns="http://www.w3.org/2000/svg" style="max-width:840px;width:100%">
+  <defs>
+    <marker id="arr2" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#5b8dee"/></marker>
+    <marker id="arr3" markerWidth="8" markerHeight="6" refX="0" refY="3" orient="auto"><polygon points="8 0,0 3,8 6" fill="#5b8dee"/></marker>
+  </defs>
+  <rect width="860" height="175" fill="#1e2535" rx="8"/>
+
+  <!-- Top axis arrow -->
+  <line x1="20" y1="22" x2="840" y2="22" stroke="#5b8dee" stroke-width="1.5" marker-start="url(#arr3)" marker-end="url(#arr2)"/>
+  <text x="20" y="16" fill="#8a99b8" font-size="9.5">非自己決定的</text>
+  <text x="770" y="16" fill="#5b8dee" font-size="9.5">自己決定的</text>
+
+  <!-- Row header: 動機づけなし / 外発的 / 内発的 -->
+  <text x="85" y="35" text-anchor="middle" fill="#f87171" font-size="9">動機づけなし</text>
+  <rect x="145" y="27" width="400" height="13" rx="3" fill="rgba(251,191,36,0.08)"/>
+  <text x="345" y="36" text-anchor="middle" fill="#fbbf24" font-size="9">外発的動機づけ</text>
+  <rect x="655" y="27" width="195" height="13" rx="3" fill="rgba(52,211,153,0.08)"/>
+  <text x="752" y="36" text-anchor="middle" fill="#34d399" font-size="9">内発的動機づけ</text>
+
+  <!-- 無力状態 x=20,w=130 -->
+  <rect x="20" y="43" width="130" height="88" rx="6" fill="rgba(248,113,113,0.12)" stroke="rgba(248,113,113,0.4)" stroke-width="1"/>
+  <text x="85" y="65" text-anchor="middle" fill="#f87171" font-size="12" font-weight="bold">無力状態</text>
+  <text x="85" y="81" text-anchor="middle" fill="#8a99b8" font-size="9.5">学習しない</text>
+  <text x="85" y="95" text-anchor="middle" fill="#5a6a8a" font-size="8.5">（動機づけなし）</text>
+
+  <!-- 外的 x=160,w=130 -->
+  <rect x="160" y="43" width="130" height="88" rx="6" fill="rgba(251,191,36,0.08)" stroke="rgba(251,191,36,0.3)" stroke-width="1"/>
+  <text x="225" y="65" text-anchor="middle" fill="#fbbf24" font-size="12" font-weight="bold">外的</text>
+  <text x="225" y="80" text-anchor="middle" fill="#8a99b8" font-size="9">勉強させられる</text>
+  <text x="225" y="93" text-anchor="middle" fill="#8a99b8" font-size="9">怒られる</text>
+  <text x="225" y="106" text-anchor="middle" fill="#8a99b8" font-size="9">非難される</text>
+
+  <!-- 取り入れ的 x=300,w=120 -->
+  <rect x="300" y="43" width="120" height="88" rx="6" fill="rgba(251,191,36,0.1)" stroke="rgba(251,191,36,0.35)" stroke-width="1"/>
+  <text x="360" y="65" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold">取り入れ的</text>
+  <text x="360" y="80" text-anchor="middle" fill="#8a99b8" font-size="9">勉強しなくては</text>
+  <text x="360" y="93" text-anchor="middle" fill="#8a99b8" font-size="9">ならない</text>
+  <text x="360" y="106" text-anchor="middle" fill="#8a99b8" font-size="9">不安から行動</text>
+
+  <!-- 同一視的 x=430,w=115 -->
+  <rect x="430" y="43" width="115" height="88" rx="6" fill="rgba(251,191,36,0.13)" stroke="rgba(251,191,36,0.4)" stroke-width="1"/>
+  <text x="487" y="65" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold">同一視的</text>
+  <text x="487" y="80" text-anchor="middle" fill="#8a99b8" font-size="9">勉強は大切</text>
+  <text x="487" y="93" text-anchor="middle" fill="#8a99b8" font-size="9">職につくため</text>
+  <text x="487" y="106" text-anchor="middle" fill="#8a99b8" font-size="9">欠かせない</text>
+
+  <!-- 統合的 x=555,w=105 -->
+  <rect x="555" y="43" width="105" height="88" rx="6" fill="rgba(52,211,153,0.1)" stroke="rgba(52,211,153,0.35)" stroke-width="1"/>
+  <text x="607" y="65" text-anchor="middle" fill="#34d399" font-size="11" font-weight="bold">統合的</text>
+  <text x="607" y="80" text-anchor="middle" fill="#8a99b8" font-size="9">勉強したい</text>
+  <text x="607" y="93" text-anchor="middle" fill="#8a99b8" font-size="9">（目標のため）</text>
+  <text x="607" y="106" text-anchor="middle" fill="#8a99b8" font-size="9">昇進のため等</text>
+
+  <!-- 内発的 x=670,w=180 -->
+  <rect x="670" y="43" width="175" height="88" rx="6" fill="rgba(52,211,153,0.18)" stroke="#34d399" stroke-width="1.8"/>
+  <text x="757" y="65" text-anchor="middle" fill="#34d399" font-size="12" font-weight="bold">内発的</text>
+  <text x="757" y="81" text-anchor="middle" fill="#e2e8f5" font-size="9.5">勉強したい</text>
+  <text x="757" y="95" text-anchor="middle" fill="#e2e8f5" font-size="9.5">勉強が好きで楽しい</text>
+  <text x="757" y="109" text-anchor="middle" fill="#34d399" font-size="9">← 自己決定感が強い</text>
+  <text x="757" y="122" text-anchor="middle" fill="#34d399" font-size="8.5">好奇心・達成感が源泉</text>
+
+  <!-- Bottom label -->
+  <text x="430" y="163" text-anchor="middle" fill="#5a6a8a" font-size="10">行動の価値を自分の中に内面化していくにつれて、自律的な行動へと段階的に変化する</text>
+</svg>
+<figcaption>図: 自己決定の段階性 <span class="ptr">S03:p.16</span></figcaption>
+</div>
+
+<div class="ab"><div class="lbl">AUDIO SUPPLEMENT ← S05</div>
+<p>目標は純粋に楽しいから好奇心や達成感から行動が向いている「内発的動機づけ」の段階。誰でも最初は外発的動機からスタートしてよく、行動の価値を内面化していくことで段階的に自律的な行動へと変化する。</p>
+</div>
+</section>
+
+<!-- ======================== 第2章 ======================== -->
+<section class="sec" id="ch2">
+<div class="sec-title"><span class="n">第2章</span>効果的学習方法の見つけ方</div>
+<div class="goal"><div class="goal-lbl">CHAPTER GOAL</div><p style="margin:0">効果的学習方法を見つける上でのポイントについて理解する。</p></div>
+<p>最も効果的な学習方法は一概には言えない。人それぞれ。<strong>自分に合っているもの、必要なものを選ぶことが大切。</strong> <span class="ptr">← S03:p.21</span></p>
+
+<h3 id="ch2-gpdca">GPDCA サイクルで学習方法を見つける</h3>
+<p>第3回でも扱ったGPDCAの考え方を適用する。 <span class="ptr">← S03:p.22</span></p>
+<table>
+  <tr><th>ステップ</th><th>内容</th></tr>
+  <tr><td><strong>G</strong>（Goal）</td><td>ゴールを設定する：自分に合った方法を見つける</td></tr>
+  <tr><td><strong>P</strong>（Plan）</td><td>自分の状態・タイプを理解した上で戦略を立てる</td></tr>
+  <tr><td><strong>D</strong>（Do）</td><td>実際に試してみる</td></tr>
+  <tr><td><strong>C</strong>（Check）</td><td>うまくいったかを評価・自分の学びを多様な視点から分析する</td></tr>
+  <tr><td><strong>A</strong>（Action）</td><td>改善方法を考える</td></tr>
+</table>
+
+<h3 id="ch2-cap">CAP得点：現在の学習状態を把握する</h3>
+<p>「よ～く考えてごらん」= <em>"put on your thinking cap"</em>（思考の帽子をかぶりなさい）。 <span class="ptr">← S03:p.23</span></p>
+
+<div class="fig">
+<!--
+  CAP得点: 3カード式レイアウト (C/A/P それぞれ独立カード)
+  viewBox: 700 x 310
+  3 cards stacked vertically, each h=78, gap=10
+  Card y positions: 30, 118, 206
+  Each card:
+    - Left badge (x=16-100, w=84): letter + 日本語
+    - Center scale bar (x=110-580): 1 to 10 gradient track + descriptions
+    - Right score hint (x=590-680)
+  Bottom formula bar: y=295-310
+-->
+<svg viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg" style="max-width:680px;width:100%">
+  <rect width="700" height="320" fill="#1e2535" rx="8"/>
+
+  <!-- ── Title ── -->
+  <text x="350" y="22" text-anchor="middle" fill="#e2e8f5" font-size="13" font-weight="bold">CAP得点 ― 各項目を 1〜10 で評価して掛け合わせる（満点 1000 点）</text>
+
+  <!-- ══════════════════════════════════
+       Card 1: C – 好奇心 (Curiosity)
+       Card y=30, h=78
+       ══════════════════════════════════ -->
+  <rect x="10" y="30" width="680" height="78" rx="7" fill="rgba(52,211,153,0.07)" stroke="#34d399" stroke-width="1.2"/>
+  <!-- Badge -->
+  <rect x="18" y="40" width="76" height="58" rx="6" fill="rgba(52,211,153,0.18)" stroke="#34d399" stroke-width="1"/>
+  <text x="56" y="63"  text-anchor="middle" fill="#34d399" font-size="22" font-weight="bold" font-family="serif">C</text>
+  <text x="56" y="79"  text-anchor="middle" fill="#34d399" font-size="10" font-weight="bold">好奇心</text>
+  <text x="56" y="90"  text-anchor="middle" fill="#8a99b8" font-size="8.5">Curiosity</text>
+  <!-- Scale track -->
+  <!-- Track: x=104 to x=568, y=67 (center of card = 30+39=69) -->
+  <rect x="104" y="62" width="464" height="12" rx="6" fill="#1c2740"/>
+  <!-- Gradient fill: low=dark, high=bright green -->
+  <defs>
+    <linearGradient id="gC" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"   stop-color="#1c3a2a"/>
+      <stop offset="100%" stop-color="#34d399" stop-opacity="0.8"/>
+    </linearGradient>
+  </defs>
+  <rect x="104" y="62" width="464" height="12" rx="6" fill="url(#gC)"/>
+  <!-- Tick marks at 1 and 10 -->
+  <line x1="104" y1="58" x2="104" y2="77" stroke="#34d399" stroke-width="1.5"/>
+  <line x1="568" y1="58" x2="568" y2="77" stroke="#34d399" stroke-width="1.5"/>
+  <text x="104" y="56" text-anchor="middle" fill="#8a99b8" font-size="9">1</text>
+  <text x="568" y="56" text-anchor="middle" fill="#8a99b8" font-size="9">10</text>
+  <!-- Endpoint descriptions -->
+  <text x="104" y="90" text-anchor="middle" fill="#6b7a96" font-size="9.5">すでに知っていることを</text>
+  <text x="104" y="101" text-anchor="middle" fill="#6b7a96" font-size="9.5">さらに知りたいとは思わない</text>
+  <text x="568" y="90" text-anchor="middle" fill="#34d399" font-size="9.5">新しいアイデアについて</text>
+  <text x="568" y="101" text-anchor="middle" fill="#34d399" font-size="9.5">強い好奇心を持っている</text>
+  <!-- Example dot (teacher's score: 10) -->
+  <circle cx="568" cy="68" r="6" fill="#34d399" opacity="0.9"/>
+  <text x="617" y="66" fill="#34d399" font-size="10" font-weight="bold">例:10点</text>
+
+  <!-- ══════════════════════════════════
+       Card 2: A – 覚醒 (Alertness)
+       Card y=118, h=78
+       ══════════════════════════════════ -->
+  <rect x="10" y="118" width="680" height="78" rx="7" fill="rgba(91,141,238,0.07)" stroke="#5b8dee" stroke-width="1.2"/>
+  <!-- Badge -->
+  <rect x="18" y="128" width="76" height="58" rx="6" fill="rgba(91,141,238,0.18)" stroke="#5b8dee" stroke-width="1"/>
+  <text x="56" y="151" text-anchor="middle" fill="#5b8dee" font-size="22" font-weight="bold" font-family="serif">A</text>
+  <text x="56" y="167" text-anchor="middle" fill="#5b8dee" font-size="10" font-weight="bold">覚醒</text>
+  <text x="56" y="178" text-anchor="middle" fill="#8a99b8" font-size="8.5">Alertness</text>
+  <!-- Scale track -->
+  <defs>
+    <linearGradient id="gA" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"   stop-color="#1a2240"/>
+      <stop offset="100%" stop-color="#5b8dee" stop-opacity="0.8"/>
+    </linearGradient>
+  </defs>
+  <rect x="104" y="150" width="464" height="12" rx="6" fill="url(#gA)"/>
+  <line x1="104" y1="146" x2="104" y2="165" stroke="#5b8dee" stroke-width="1.5"/>
+  <line x1="568" y1="146" x2="568" y2="165" stroke="#5b8dee" stroke-width="1.5"/>
+  <text x="104" y="144" text-anchor="middle" fill="#8a99b8" font-size="9">1</text>
+  <text x="568" y="144" text-anchor="middle" fill="#8a99b8" font-size="9">10</text>
+  <text x="104" y="178" text-anchor="middle" fill="#6b7a96" font-size="9.5">ひどく疲れていて</text>
+  <text x="104" y="189" text-anchor="middle" fill="#6b7a96" font-size="9.5">起きているのがつらい</text>
+  <text x="568" y="178" text-anchor="middle" fill="#5b8dee" font-size="9.5">とても元気で</text>
+  <text x="568" y="189" text-anchor="middle" fill="#5b8dee" font-size="9.5">パワーに満ちあふれている</text>
+  <!-- Example dot: 8 → x = 104 + (8-1)/(10-1) * 464 = 104 + 7/9*464 = 104+361=465 -->
+  <circle cx="465" cy="156" r="6" fill="#5b8dee" opacity="0.9"/>
+  <text x="617" y="154" fill="#5b8dee" font-size="10" font-weight="bold">例: 8点</text>
+
+  <!-- ══════════════════════════════════
+       Card 3: P – こころにあるもの (Present)
+       Card y=206, h=78
+       ══════════════════════════════════ -->
+  <rect x="10" y="206" width="680" height="78" rx="7" fill="rgba(244,114,182,0.07)" stroke="#f472b6" stroke-width="1.2"/>
+  <!-- Badge -->
+  <rect x="18" y="216" width="76" height="58" rx="6" fill="rgba(244,114,182,0.18)" stroke="#f472b6" stroke-width="1"/>
+  <text x="56" y="239" text-anchor="middle" fill="#f472b6" font-size="22" font-weight="bold" font-family="serif">P</text>
+  <text x="56" y="255" text-anchor="middle" fill="#f472b6" font-size="9.5" font-weight="bold">こころに</text>
+  <text x="56" y="266" text-anchor="middle" fill="#f472b6" font-size="9.5" font-weight="bold">あるもの</text>
+  <text x="56" y="278" text-anchor="middle" fill="#8a99b8" font-size="8.5">Present</text>
+  <!-- Scale track -->
+  <defs>
+    <linearGradient id="gP" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"   stop-color="#2a1a30"/>
+      <stop offset="100%" stop-color="#f472b6" stop-opacity="0.8"/>
+    </linearGradient>
+  </defs>
+  <rect x="104" y="238" width="464" height="12" rx="6" fill="url(#gP)"/>
+  <line x1="104" y1="234" x2="104" y2="253" stroke="#f472b6" stroke-width="1.5"/>
+  <line x1="568" y1="234" x2="568" y2="253" stroke="#f472b6" stroke-width="1.5"/>
+  <text x="104" y="232" text-anchor="middle" fill="#8a99b8" font-size="9">1</text>
+  <text x="568" y="232" text-anchor="middle" fill="#8a99b8" font-size="9">10</text>
+  <text x="104" y="266" text-anchor="middle" fill="#6b7a96" font-size="9.5">「こころここにあらず」</text>
+  <text x="104" y="277" text-anchor="middle" fill="#6b7a96" font-size="9.5">である</text>
+  <text x="568" y="266" text-anchor="middle" fill="#f472b6" font-size="9.5">すべてのことに集中できる</text>
+  <text x="568" y="277" text-anchor="middle" fill="#f472b6" font-size="9.5">余計なことを外においている</text>
+  <!-- Example dot: 7 → x = 104 + 6/9*464 = 104+309=413 -->
+  <circle cx="413" cy="244" r="6" fill="#f472b6" opacity="0.9"/>
+  <text x="617" y="242" fill="#f472b6" font-size="10" font-weight="bold">例: 7点</text>
+
+  <!-- ── Bottom formula ── -->
+  <rect x="10" y="294" width="680" height="20" rx="5" fill="rgba(251,191,36,0.12)"/>
+  <text x="350" y="307" text-anchor="middle" fill="#fbbf24" font-size="11.5" font-weight="bold" font-family="'JetBrains Mono',monospace">CAP得点 = C × A × P　→　例: 10 × 8 × 7 = 560点 ／ 満点 1000点</text>
+</svg>
+<figcaption>図: CAP得点の3要素 <span class="ptr">S03:p.24</span> <span class="acn">[外部補足・確認済: L.タンブリン, P.ウォード（植野真臣監訳）(2009)『大学生のための学習マニュアル』培風館, p.25. 原著: Tamblin, L. & Ward, P. (2006). The smart study guide. Blackwell Publishing.]</span></figcaption>
+</div>
+
+<div class="kb"><div class="lbl">計算式 <span class="ptr">← S03:p.25</span></div>
+<p style="margin:0;font-family:'JetBrains Mono',monospace;font-size:14px">CAP得点 = 好奇心(C) × 覚醒(A) × こころにあるもの(P)</p>
+<p style="margin:8px 0 0;font-size:13px;color:var(--sub)">例：10 × 8 × 7 = 560点（満点1000点）。担当教員の例。「良い数値だと思ったが満点が1000点であることを考えると予想外に低かった」</p>
+</div>
+
+<h4>CAP得点改善のポイント <span class="ptr">← S03:p.26-27</span></h4>
+<table>
+  <tr><th colspan="2">環境に関する要素（10項目）</th></tr>
+  <tr><td>①明るさ</td><td>明るい・暗い・ソフトな明るさ・蛍光灯・自然光・ろうそく</td></tr>
+  <tr><td>②温度</td><td>温かい・涼しい・風通し・窓の開閉・暖房オン/オフ</td></tr>
+  <tr><td>③音</td><td>静か・鳥のさえずり・車の騒音・子どもの声・雑談</td></tr>
+  <tr><td>④装飾</td><td>気持ちがよい・感激する・軽視されている</td></tr>
+  <tr><td>⑤姿勢</td><td>机（大/小）・椅子（硬い/やわらかい）・床・ベッド・ソファー・座布団</td></tr>
+  <tr><td>⑥音楽</td><td>なし・モーツァルト・インストゥルメンタル・癒し系</td></tr>
+  <tr><td>⑦作業空間</td><td>大きい・オープンスペース・小さい・個人専用・まとまった/散らかった</td></tr>
+  <tr><td>⑧香り</td><td>お気に入り（花・香水・食べ物）・気にさわる（排気ガス）</td></tr>
+  <tr><td>⑨プライバシー</td><td>絶え間なく邪魔が入る</td></tr>
+  <tr><td>⑩必需品</td><td>教科書・ノート・学習資料・イヤホン・マウス・キーボード・PC・タブレット・ブラウザ設定・ディスプレイサイズ</td></tr>
+</table>
+<table>
+  <tr><th colspan="2">身体的要素（4項目）</th></tr>
+  <tr><td>⑪動きやすさ</td><td>じっと座る・歩き回る</td></tr>
+  <tr><td>⑫食料の摂取と成果</td><td>適宜食べたり飲んだりする・休憩のときだけ</td></tr>
+  <tr><td>⑬一日の時間</td><td>習慣化されている・習慣化されていない</td></tr>
+  <tr><td>⑭睡眠</td><td>疲れがとれる・疲れがとれない</td></tr>
+</table>
+<div class="ab"><div class="lbl">AUDIO SUPPLEMENT ← S05</div>
+<p>学習内容によって環境を使い分けることが有効。例：予習は出勤中の電車で視聴、復習は運動しながら視聴、小テスト受験時は落ち着いてパソコンを使用、苦手科目・演習科目は落ち着いた環境でパソコンを使用。どの科目のどういった課題のときにどの環境で取り組むか、戦略的に考える。いきなり全ポイントで理想形にすることは難しいので、できることから一つずつ整えていく。</p>
+</div>
+
+<!-- ───── コルブ ───── -->
+<h3 id="ch2-kolb">コルブの経験学習モデル</h3>
+<p>David A. Kolb（1939-）がCase Western Reserve大学の著書（1984）で提唱した経験学習モデル。何かを学ぶためには4段階サイクルを繰り返すことが大切。 <span class="ptr">← S03:p.28</span> <span class="acn">[外部補足・確認済: Kolb, D.A. (1984). Experiential Learning: Experience as the Source of Learning and Development. Prentice Hall.]</span></p>
+
+<div class="fig">
+<!--
+  Kolb cycle: viewBox 640 x 540
+  Center: (320, 270), r_track=160
+  4 nodes:
+    ①具体的経験:   top  (320, 110) r=58
+    ②省察的観察:   right(480, 270) r=58
+    ③抽象的概念化: bottom(320,430) r=58
+    ④能動的実験:   left (160, 270) r=58
+  Quadrant labels:
+    A発散型: between ①-②: upper-right (~430,168)
+    B同化型: between ②-③: lower-right (~430,372)
+    C収束型: between ③-④: lower-left  (~210,372)
+    D適応型: between ④-①: upper-left  (~210,168)
+  2 axis lines: vertical (320,30)-(320,510) and horizontal (40,270)-(600,270)
+-->
+<svg viewBox="0 0 640 545" xmlns="http://www.w3.org/2000/svg" style="max-width:620px;width:100%">
+  <defs>
+    <marker id="kArr" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#8a99b8"/></marker>
+  </defs>
+  <rect width="640" height="545" fill="#1e2535" rx="8"/>
+
+  <!-- Axis labels -->
+  <text x="320" y="20" text-anchor="middle" fill="#5a6a8a" font-size="10.5">（感じる）</text>
+  <text x="320" y="535" text-anchor="middle" fill="#5a6a8a" font-size="10.5">（考える）</text>
+  <text x="22" y="275" text-anchor="middle" fill="#5a6a8a" font-size="10" transform="rotate(-90,22,275)">（受け取る）</text>
+  <text x="620" y="275" text-anchor="middle" fill="#5a6a8a" font-size="10" transform="rotate(90,620,275)">（やってみる）</text>
+  <!-- Axis header -->
+  <text x="320" y="12" text-anchor="middle" fill="#8a99b8" font-size="9">情報認識軸</text>
+  <text x="320" y="542" text-anchor="middle" fill="#8a99b8" font-size="9">情報認識軸</text>
+
+  <!-- Axis lines (dashed) -->
+  <line x1="320" y1="28" x2="320" y2="515" stroke="#252d42" stroke-width="1.2" stroke-dasharray="5,4"/>
+  <line x1="45" y1="270" x2="595" y2="270" stroke="#252d42" stroke-width="1.2" stroke-dasharray="5,4"/>
+
+  <!-- Dotted circle -->
+  <circle cx="320" cy="270" r="160" fill="none" stroke="#2a3248" stroke-width="1.5" stroke-dasharray="5,4"/>
+
+  <!-- Quadrant style boxes -->
+  <!-- A発散型: upper-right between ①②: center ~(420,172) -->
+  <rect x="360" y="140" width="118" height="50" rx="5" fill="rgba(251,191,36,0.1)" stroke="rgba(251,191,36,0.3)" stroke-width="1"/>
+  <text x="419" y="160" text-anchor="middle" fill="#fbbf24" font-size="11.5" font-weight="bold">A. 発散型</text>
+  <text x="419" y="175" text-anchor="middle" fill="#8a99b8" font-size="9.5">感じる・観察する</text>
+
+  <!-- B同化型: lower-right between ②③: center ~(420,368) -->
+  <rect x="360" y="346" width="118" height="50" rx="5" fill="rgba(91,141,238,0.1)" stroke="rgba(91,141,238,0.3)" stroke-width="1"/>
+  <text x="419" y="366" text-anchor="middle" fill="#5b8dee" font-size="11.5" font-weight="bold">B. 同化型</text>
+  <text x="419" y="381" text-anchor="middle" fill="#8a99b8" font-size="9.5">観察する・考える</text>
+
+  <!-- C収束型: lower-left between ③④: center ~(210,368) -->
+  <rect x="162" y="346" width="118" height="50" rx="5" fill="rgba(52,211,153,0.1)" stroke="rgba(52,211,153,0.3)" stroke-width="1"/>
+  <text x="221" y="366" text-anchor="middle" fill="#34d399" font-size="11.5" font-weight="bold">C. 収束型</text>
+  <text x="221" y="381" text-anchor="middle" fill="#8a99b8" font-size="9.5">考える・試す</text>
+
+  <!-- D適応型: upper-left between ④①: center ~(210,172) -->
+  <rect x="162" y="140" width="118" height="50" rx="5" fill="rgba(244,114,182,0.1)" stroke="rgba(244,114,182,0.3)" stroke-width="1"/>
+  <text x="221" y="160" text-anchor="middle" fill="#f472b6" font-size="11.5" font-weight="bold">D. 適応型</text>
+  <text x="221" y="175" text-anchor="middle" fill="#8a99b8" font-size="9.5">試す・感じる</text>
+
+  <!-- 4 Node circles -->
+  <!-- ①具体的経験 top (320,110) r=58 -->
+  <circle cx="320" cy="110" r="60" fill="rgba(244,114,182,0.15)" stroke="#f472b6" stroke-width="1.8"/>
+  <text x="320" y="103" text-anchor="middle" fill="#f472b6" font-size="12" font-weight="bold">①具体的経験</text>
+  <text x="320" y="120" text-anchor="middle" fill="#e2e8f5" font-size="10.5">（感じる）</text>
+
+  <!-- ②省察的観察 right (480,270) -->
+  <circle cx="480" cy="270" r="60" fill="rgba(91,141,238,0.15)" stroke="#5b8dee" stroke-width="1.8"/>
+  <text x="480" y="263" text-anchor="middle" fill="#5b8dee" font-size="11.5" font-weight="bold">②省察的観察</text>
+  <text x="480" y="280" text-anchor="middle" fill="#e2e8f5" font-size="10.5">（観察する）</text>
+
+  <!-- ③抽象的概念化 bottom (320,430) -->
+  <circle cx="320" cy="430" r="60" fill="rgba(251,191,36,0.15)" stroke="#fbbf24" stroke-width="1.8"/>
+  <text x="320" y="424" text-anchor="middle" fill="#fbbf24" font-size="10.5" font-weight="bold">③抽象的概念化</text>
+  <text x="320" y="440" text-anchor="middle" fill="#e2e8f5" font-size="10.5">（考える）</text>
+
+  <!-- ④能動的実験 left (160,270) -->
+  <circle cx="160" cy="270" r="60" fill="rgba(52,211,153,0.15)" stroke="#34d399" stroke-width="1.8"/>
+  <text x="160" y="263" text-anchor="middle" fill="#34d399" font-size="11.5" font-weight="bold">④能動的実験</text>
+  <text x="160" y="280" text-anchor="middle" fill="#e2e8f5" font-size="10.5">（試してみる）</text>
+
+  <!-- Curved arrows between nodes (polylines along the circle) -->
+  <!-- ①→②: from (360,140) toward (448,215) -->
+  <polyline points="364,145 400,178 445,215" fill="none" stroke="#8a99b8" stroke-width="1.8" stroke-dasharray="4,3" marker-end="url(#kArr)"/>
+  <!-- ②→③: from (455,315) toward (365,395) -->
+  <polyline points="455,315 420,348 368,394" fill="none" stroke="#8a99b8" stroke-width="1.8" stroke-dasharray="4,3" marker-end="url(#kArr)"/>
+  <!-- ③→④: from (275,412) toward (192,345) -->
+  <polyline points="275,412 240,378 196,343" fill="none" stroke="#8a99b8" stroke-width="1.8" stroke-dasharray="4,3" marker-end="url(#kArr)"/>
+  <!-- ④→①: from (194,225) toward (278,145) -->
+  <polyline points="195,226 232,188 278,148" fill="none" stroke="#8a99b8" stroke-width="1.8" stroke-dasharray="4,3" marker-end="url(#kArr)"/>
+
+  <!-- Center label -->
+  <text x="320" y="263" text-anchor="middle" fill="#5a6a8a" font-size="9">情報</text>
+  <text x="320" y="275" text-anchor="middle" fill="#5a6a8a" font-size="9">認識</text>
+  <text x="320" y="285" text-anchor="middle" fill="#5a6a8a" font-size="9">処理軸</text>
+</svg>
+<figcaption>図: コルブの経験学習サイクルと学習スタイル <span class="ptr">S03:p.29</span> <span class="acn">[外部補足・確認済: 鈴木克明・美馬のゆり(2018)『学習設計マニュアル』北大路書房, p.185]</span></figcaption>
+</div>
+
+<h4>コルブの4つの学習スタイル <span class="ptr">← S03:p.30</span></h4>
+<table>
+  <tr><th>スタイル</th><th>得意な段階</th><th>特徴</th><th>向いている分野例</th></tr>
+  <tr><td><strong style="color:var(--yellow)">A. 発散型</strong><br><small>(Diverging)</small></td><td>感じる・観察する</td><td>想像力旺盛。価値・意義を重視。多角的視点からアイデアを出す。人との関わりを好み感情を重視</td><td>接客業</td></tr>
+  <tr><td><strong style="color:var(--blue)">B. 同化型</strong><br><small>(Assimilating)</small></td><td>観察する・考える</td><td>帰納的思考・理論モデル構築が得意。人より抽象概念・理論に興味。実践より理論を重視</td><td>研究・学術</td></tr>
+  <tr><td><strong style="color:var(--green)">C. 収束型</strong><br><small>(Converging)</small></td><td>考える・試す</td><td>問題解決・意思決定・アイデア実践に優れる。感情表現は少なく技術的問題を好む</td><td>技術職・工学</td></tr>
+  <tr><td><strong style="color:var(--pink)">D. 適応型</strong><br><small>(Accommodating)</small></td><td>試す・感じる</td><td>計画実行・新しいことへの着手を好む。適応力が強く直感的試行錯誤で問題解決</td><td>営業・起業</td></tr>
+</table>
+<div class="kb"><div class="lbl">重要ポイント <span class="ptr">← S03:p.31</span></div>
+<ul style="margin:0">
+  <li>専門分野や職業によって求められる学習スタイルは異なる</li>
+  <li>学習スタイルは個人の特性や経験によるが、<strong>固定的ではない</strong></li>
+  <li>経験学習サイクルを回して学習スタイルを<strong>拡張</strong>することが重要。苦手なスタイルを意識的に補完することが成長につながる</li>
+</ul>
+</div>
+
+<!-- ───── 内省 ───── -->
+<h3 id="ch2-ref">内省をしよう（自己モニタリング）</h3>
+<p>コルブの経験学習モデルの核心は「振り返り（内省）」。 <span class="ptr">← S03:p.32</span></p>
+<ul>
+  <li><strong>記録をとる</strong>：日記でなくて構わない。1週間ごとの簡単なメモからスタートが継続しやすい</li>
+  <li><strong>何によりうまくいき、何によりうまくいかなかったか</strong>を振り返る</li>
+  <li><strong>転位行動</strong>に注意：本来すべき行動を回避して別の行動をしてしまうこと（例：テスト前に部屋掃除）</li>
+  <li><strong>失敗の経験は次に活かす</strong>：くよくよは禁物。うまくいった経験を想像してポジティブに進む</li>
+  <li><strong>自己モニタリング ⇔ コントロール</strong>のサイクルで望ましい方向へ</li>
+</ul>
+<div class="ab"><div class="lbl">AUDIO SUPPLEMENT ← S05</div>
+<p>担当教員の経験：テスト前に机の周りを無性に片付けたくなること（= 転位行動）。失敗の経験に対してうまくいかなかった理由を追求しすぎて自己否定を始めてはいけない。ポジティブに学習を進めていくことが大切。</p>
+</div>
+</section>
+
+<!-- ======================== 第3章 ======================== -->
+<section class="sec" id="ch3">
+<div class="sec-title"><span class="n">第3章</span>受講の際のポイント</div>
+<div class="goal"><div class="goal-lbl">CHAPTER GOALS</div><ol><li>学習資料の活用方法やノートの取り方について理解し、実践できる</li><li>視聴専用アプリを利用した学習方法について理解する</li></ol></div>
+
+<h3 id="ch3-note">なぜノート（メモ）を取るのか</h3>
+<h4>ノートを取る本質的な目的 <span class="ptr">← S03:p.37</span></h4>
+<p>教員の言葉やスライドをそのまま書き写すことではなく、<strong>重要ポイントは何かを考え、自分なりの言葉で書きなおし、整理すること（＝構造化）</strong>が目的。</p>
+<ul>
+  <li>構造化の作業によって<strong>理解を深め、記憶の定着を図る</strong></li>
+  <li>自分なりの言葉で書き直せること ＝ 教員の内容を本当に理解している証拠</li>
+  <li>ポイントを絞り補足説明を追加することで、<strong>課題・試験対策の有効な資料</strong>になる</li>
+  <li>ノートは<strong>忙しいとき</strong>（試験前・課題前）に確認するもの → 忙しい時に見てわかるように書く</li>
+  <li>ノートは自分の<strong>かけがえのない資産</strong></li>
+</ul>
+<div class="wb"><div class="lbl">CAUTION ← S03:p.38</div>
+<p><strong>頭を使わず書くだけではNG</strong>：ノートを取ることそのものが目的化する。話を聞くことに集中できない分、効果が低下する。<strong>能動的に、集中して頭を使うことが大切。</strong></p>
+</div>
+
+<h4>ノートを取る方法①：印刷資料への書き込み <span class="ptr">← S03:p.40-41</span></h4>
+
+<div class="fig">
+<svg viewBox="0 0 720 330" xmlns="http://www.w3.org/2000/svg" style="max-width:700px;width:100%">
+  <rect width="720" height="330" fill="#1e2535" rx="8"/>
+  <!-- ─── STEP 1: 印刷設定 ─── -->
+  <text x="18" y="22" fill="#fbbf24" font-size="12" font-weight="bold">① 印刷設定（スライド割付）</text>
+  <!-- Pattern A: 縦2枚 -->
+  <rect x="18" y="30" width="96" height="120" rx="4" fill="rgba(255,255,255,0.03)" stroke="#3a4560" stroke-width="1"/>
+  <rect x="25" y="36" width="82" height="50" rx="2" fill="rgba(91,141,238,0.12)" stroke="#252d42" stroke-width="0.8"/>
+  <rect x="25" y="93" width="82" height="50" rx="2" fill="rgba(91,141,238,0.12)" stroke="#252d42" stroke-width="0.8"/>
+  <line x1="31" y1="46" x2="100" y2="46" stroke="#3a4560" stroke-width="1.5"/>
+  <line x1="31" y1="54" x2="95"  y2="54" stroke="#2a3248" stroke-width="1"/>
+  <line x1="31" y1="62" x2="98"  y2="62" stroke="#2a3248" stroke-width="1"/>
+  <line x1="31" y1="103" x2="100" y2="103" stroke="#3a4560" stroke-width="1.5"/>
+  <line x1="31" y1="111" x2="90"  y2="111" stroke="#2a3248" stroke-width="1"/>
+  <text x="66" y="162" text-anchor="middle" fill="#5b8dee" font-size="10" font-weight="bold">縦 2枚割付</text>
+  <text x="66" y="174" text-anchor="middle" fill="#8a99b8" font-size="9">文字数が多い</text>
+  <!-- Pattern B: 横4枚 -->
+  <rect x="124" y="30" width="140" height="120" rx="4" fill="rgba(255,255,255,0.03)" stroke="#3a4560" stroke-width="1"/>
+  <rect x="130" y="36"  width="60" height="50" rx="2" fill="rgba(52,211,153,0.1)"  stroke="#252d42" stroke-width="0.8"/>
+  <rect x="198" y="36"  width="60" height="50" rx="2" fill="rgba(52,211,153,0.1)"  stroke="#252d42" stroke-width="0.8"/>
+  <rect x="130" y="93"  width="60" height="50" rx="2" fill="rgba(52,211,153,0.1)"  stroke="#252d42" stroke-width="0.8"/>
+  <rect x="198" y="93"  width="60" height="50" rx="2" fill="rgba(52,211,153,0.1)"  stroke="#252d42" stroke-width="0.8"/>
+  <line x1="136" y1="46" x2="184" y2="46" stroke="#3a4560" stroke-width="1"/>
+  <line x1="136" y1="54" x2="180" y2="54" stroke="#2a3248" stroke-width="0.8"/>
+  <text x="194" y="162" text-anchor="middle" fill="#34d399" font-size="10" font-weight="bold">横 4枚割付</text>
+  <text x="194" y="174" text-anchor="middle" fill="#8a99b8" font-size="9">文字数が中程度</text>
+  <!-- Pattern C: 縦6枚 -->
+  <rect x="274" y="30" width="96" height="120" rx="4" fill="rgba(255,255,255,0.03)" stroke="#3a4560" stroke-width="1"/>
+  <rect x="280" y="35"  width="38" height="30" rx="1" fill="rgba(251,191,36,0.1)" stroke="#252d42" stroke-width="0.8"/>
+  <rect x="324" y="35"  width="38" height="30" rx="1" fill="rgba(251,191,36,0.1)" stroke="#252d42" stroke-width="0.8"/>
+  <rect x="280" y="70"  width="38" height="30" rx="1" fill="rgba(251,191,36,0.1)" stroke="#252d42" stroke-width="0.8"/>
+  <rect x="324" y="70"  width="38" height="30" rx="1" fill="rgba(251,191,36,0.1)" stroke="#252d42" stroke-width="0.8"/>
+  <rect x="280" y="105" width="38" height="30" rx="1" fill="rgba(251,191,36,0.1)" stroke="#252d42" stroke-width="0.8"/>
+  <rect x="324" y="105" width="38" height="30" rx="1" fill="rgba(251,191,36,0.1)" stroke="#252d42" stroke-width="0.8"/>
+  <text x="322" y="162" text-anchor="middle" fill="#fbbf24" font-size="10" font-weight="bold">縦 6枚割付</text>
+  <text x="322" y="174" text-anchor="middle" fill="#8a99b8" font-size="9">文字数が少ない</text>
+  <!-- ─── DIVIDER ─── -->
+  <line x1="395" y1="20" x2="395" y2="310" stroke="#252d42" stroke-width="1.2" stroke-dasharray="5,4"/>
+  <!-- ─── STEP 2: 書き込み方法 ─── -->
+  <text x="410" y="22" fill="#fbbf24" font-size="12" font-weight="bold">② 書き込み方法</text>
+  <!-- Mock printed page -->
+  <rect x="410" y="30" width="210" height="185" rx="4" fill="rgba(255,255,255,0.04)" stroke="#3a4560" stroke-width="1"/>
+  <rect x="416" y="35"  width="93" height="83" rx="2" fill="rgba(91,141,238,0.08)" stroke="#252d42" stroke-width="0.8"/>
+  <rect x="515" y="35"  width="98" height="83" rx="2" fill="rgba(91,141,238,0.08)" stroke="#252d42" stroke-width="0.8"/>
+  <rect x="416" y="124" width="93" height="84" rx="2" fill="rgba(91,141,238,0.08)" stroke="#252d42" stroke-width="0.8"/>
+  <rect x="515" y="124" width="98" height="84" rx="2" fill="rgba(91,141,238,0.08)" stroke="#252d42" stroke-width="0.8"/>
+  <line x1="422" y1="48" x2="503" y2="48" stroke="#3a4560" stroke-width="1.5"/>
+  <line x1="422" y1="57" x2="498" y2="57" stroke="#2a3248" stroke-width="1"/>
+  <line x1="422" y1="66" x2="501" y2="66" stroke="#2a3248" stroke-width="1"/>
+  <line x1="422" y1="75" x2="493" y2="75" stroke="#2a3248" stroke-width="1"/>
+  <!-- ① ハイライト -->
+  <rect x="422" y="62" width="60" height="9" rx="2" fill="rgba(251,191,36,0.55)"/>
+  <line x1="452" y1="54" x2="452" y2="40" stroke="#fbbf24" stroke-width="1.2"/>
+  <polygon points="448,40 456,40 452,33" fill="#fbbf24"/>
+  <rect x="415" y="14" width="74" height="18" rx="3" fill="rgba(251,191,36,0.15)" stroke="#fbbf24" stroke-width="0.8"/>
+  <text x="452" y="26" text-anchor="middle" fill="#fbbf24" font-size="9.5" font-weight="bold">ハイライト</text>
+  <!-- ② コメントバルーン -->
+  <ellipse cx="580" cy="58" rx="44" ry="16" fill="rgba(52,211,153,0.15)" stroke="#34d399" stroke-width="1"/>
+  <text x="580" y="54" text-anchor="middle" fill="#34d399" font-size="9" font-weight="bold">💬 コメント</text>
+  <text x="580" y="65" text-anchor="middle" fill="#8a99b8" font-size="8.5">口頭説明メモ</text>
+  <line x1="545" y1="63" x2="530" y2="72" stroke="#34d399" stroke-width="1" stroke-dasharray="2,2"/>
+  <!-- ③ スライド間余白メモ -->
+  <rect x="416" y="115" width="195" height="8" rx="2" fill="rgba(244,114,182,0.15)" stroke="#f472b6" stroke-width="0.8"/>
+  <text x="513" y="122" text-anchor="middle" fill="#f472b6" font-size="8.5" font-weight="bold">← スライド間の余白にメモを記入 →</text>
+  <!-- ルール統一 note -->
+  <rect x="410" y="224" width="210" height="28" rx="4" fill="rgba(167,139,250,0.1)" stroke="#a78bfa" stroke-width="1"/>
+  <text x="515" y="236" text-anchor="middle" fill="#a78bfa" font-size="10" font-weight="bold">⚠️ 色・記号のルールを統一する</text>
+  <text x="515" y="248" text-anchor="middle" fill="#8a99b8" font-size="9">例：赤=重要定義 / 青=試験頻出 / □=要確認</text>
+  <!-- ─── BOTTOM SUMMARY ─── -->
+  <rect x="10" y="258" width="700" height="62" rx="6" fill="rgba(255,255,255,0.02)" stroke="#252d42" stroke-width="1"/>
+  <text x="360" y="274" text-anchor="middle" fill="#e2e8f5" font-size="11" font-weight="bold">書き込み内容 3種</text>
+  <rect x="18"  y="280" width="218" height="32" rx="4" fill="rgba(251,191,36,0.1)"/>
+  <text x="127" y="294" text-anchor="middle" fill="#fbbf24" font-size="10.5" font-weight="bold">① ハイライト・チェック</text>
+  <text x="127" y="306" text-anchor="middle" fill="#8a99b8" font-size="9">重要箇所に色マーク（ルール統一）</text>
+  <rect x="245" y="280" width="218" height="32" rx="4" fill="rgba(52,211,153,0.1)"/>
+  <text x="354" y="294" text-anchor="middle" fill="#34d399" font-size="10.5" font-weight="bold">② 口頭説明のメモ</text>
+  <text x="354" y="306" text-anchor="middle" fill="#8a99b8" font-size="9">スライド間余白・コメント欄に記入</text>
+  <rect x="472" y="280" width="238" height="32" rx="4" fill="rgba(244,114,182,0.1)"/>
+  <text x="591" y="294" text-anchor="middle" fill="#f472b6" font-size="10.5" font-weight="bold">③ 調べた内容・URLメモ</text>
+  <text x="591" y="306" text-anchor="middle" fill="#8a99b8" font-size="9">補足情報・疑問の解答を追記</text>
+</svg>
+<figcaption>図: 学習資料を印刷して書き込む方法 <span class="ptr">S03:p.40-41</span></figcaption>
+</div>
+
+<h4>ノートを取る方法②：PDFファイルへの書き込み（Adobe Acrobat Reader） <span class="ptr">← S03:p.42-44</span></h4>
+<ul>
+  <li><strong>コメントを追加</strong>：専門用語・重要なキーワードについて口頭説明の内容をメモ</li>
+  <li><strong>ハイライト</strong>：重要と考える箇所に蛍光ペン的にマーク</li>
+  <li><strong>テキスト入力</strong>：空きスペースに調べたことや参考サイトのURLをメモ</li>
+  <li><strong>手書き・丸・折れ線などのツールで図解</strong>：概念を自分なりに図示して理解を深める</li>
+</ul>
+<div class="eb"><div class="lbl">外部補足・確認済</div>
+<p>Adobe Acrobat Reader は無料版で上記機能（コメント・ハイライト・テキスト入力・手書き）が利用可能。受講のノートを取るレベルには無料版で十分。 URL: <code>https://www.adobe.com/jp/acrobat/pdf-reader.html</code></p>
+</div>
+
+<h4>ノートを取る方法③：手書きのノート <span class="ptr">← S03:p.45</span></h4>
+
+<div class="fig">
+<!--
+  手書きノート構成図: コーネルノート式レイアウト
+  viewBox: 660 x 400
+  Zone 1 (ヘッダー): y=0-52, full width → 科目・日付
+  Zone 2 (左カラム): x=0-190, y=52-300 → キーワード・見出し
+  Zone 3 (右カラム): x=190-520, y=52-300 → 内容箇条書き
+  Zone 4 (右サイド): x=520-660, y=52-300 → 疑問・確認・回答
+  Zone 5 (フッター): y=300-400, full width → サマリ
+  Total: 660 x 400
+-->
+<svg viewBox="0 0 660 410" xmlns="http://www.w3.org/2000/svg" style="max-width:640px;width:100%">
+  <rect width="660" height="410" fill="#1e2535" rx="8"/>
+
+  <!-- ─── Zone 1: ヘッダー (y=10-62) ─── -->
+  <rect x="10" y="10" width="640" height="52" rx="5" fill="rgba(91,141,238,0.15)" stroke="#5b8dee" stroke-width="1.5"/>
+  <text x="330" y="30" text-anchor="middle" fill="#5b8dee" font-size="11.5" font-weight="bold">科目名・教員名・回・章などの情報　日付</text>
+  <text x="330" y="46" text-anchor="middle" fill="#8a99b8" font-size="9.5">← どの部分のメモかが一目でわかるようにする（インデックスの代わり）</text>
+
+  <!-- ─── Zone 2: 左カラム「キーワード・見出し」(x=10-195, y=62-298) ─── -->
+  <rect x="10" y="62" width="185" height="236" rx="4" fill="rgba(52,211,153,0.06)" stroke="#34d399" stroke-width="1.2"/>
+  <!-- Zone label -->
+  <rect x="10" y="62" width="185" height="26" rx="4" fill="rgba(52,211,153,0.18)"/>
+  <text x="102" y="79" text-anchor="middle" fill="#34d399" font-size="11" font-weight="bold">キーワード・見出し</text>
+  <!-- Sample content lines (bullet items) -->
+  <text x="22" y="105" fill="#34d399" font-size="10" font-weight="bold">▸ ARCSモデル</text>
+  <text x="22" y="121" fill="#8a99b8" font-size="9">（学習意欲のモデル）</text>
+  <line x1="22" y1="130" x2="187" y2="130" stroke="#252d42" stroke-width="0.8" stroke-dasharray="3,3"/>
+  <text x="22" y="148" fill="#34d399" font-size="10" font-weight="bold">▸ 内発的動機づけ</text>
+  <text x="22" y="163" fill="#8a99b8" font-size="9">（質・持続・満足度高）</text>
+  <line x1="22" y1="172" x2="187" y2="172" stroke="#252d42" stroke-width="0.8" stroke-dasharray="3,3"/>
+  <text x="22" y="190" fill="#34d399" font-size="10" font-weight="bold">▸ コルブの経験</text>
+  <text x="22" y="205" fill="#34d399" font-size="10" font-weight="bold">   学習モデル</text>
+  <text x="22" y="220" fill="#8a99b8" font-size="9">（4段階サイクル）</text>
+  <!-- Instruction callout -->
+  <rect x="14" y="255" width="177" height="36" rx="3" fill="rgba(52,211,153,0.08)" stroke="rgba(52,211,153,0.3)" stroke-width="0.8"/>
+  <text x="102" y="269" text-anchor="middle" fill="#6dddaa" font-size="9">重要ポイントを</text>
+  <text x="102" y="281" text-anchor="middle" fill="#6dddaa" font-size="9">なるべく簡潔に見出し化</text>
+
+  <!-- ─── Zone 3: 中央「内容」(x=195-518, y=62-298) ─── -->
+  <rect x="195" y="62" width="323" height="236" rx="4" fill="rgba(255,255,255,0.02)" stroke="#252d42" stroke-width="1.2"/>
+  <rect x="195" y="62" width="323" height="26" rx="4" fill="rgba(255,255,255,0.06)"/>
+  <text x="356" y="79" text-anchor="middle" fill="#e2e8f5" font-size="11" font-weight="bold">内容（箇条書き）</text>
+  <!-- Sample notes -->
+  <text x="205" y="104" fill="#e2e8f5" font-size="10">• ケラーが1987年に提唱した4要素モデル</text>
+  <text x="205" y="119" fill="#8a99b8" font-size="9.5">  A=注意 R=関連性 C=自信 S=満足感</text>
+  <text x="205" y="136" fill="#e2e8f5" font-size="10">• 「おもしろそう→やりがいがありそう</text>
+  <text x="205" y="151" fill="#8a99b8" font-size="9.5">  →やればできそう→やってよかった」</text>
+  <text x="205" y="168" fill="#8a99b8" font-size="9.5">  のサイクルで学習意欲を維持</text>
+  <line x1="205" y1="177" x2="510" y2="177" stroke="#252d42" stroke-width="0.8" stroke-dasharray="3,3"/>
+  <!-- Highlight example -->
+  <rect x="205" y="182" width="310" height="13" rx="2" fill="rgba(251,191,36,0.3)"/>
+  <text x="205" y="193" fill="#e2e8f5" font-size="10">• 内発的動機づけ ＞ 外発的動機づけ（質・持続）</text>
+  <text x="510" y="193" fill="#fbbf24" font-size="9.5">★重要</text>
+  <line x1="205" y1="202" x2="510" y2="202" stroke="#252d42" stroke-width="0.8" stroke-dasharray="3,3"/>
+  <text x="205" y="220" fill="#e2e8f5" font-size="10">• ①経験→②省察→③概念化→④実験</text>
+  <text x="205" y="235" fill="#8a99b8" font-size="9.5">  このサイクルを繰り返すことで成長</text>
+  <!-- Instruction callout -->
+  <rect x="199" y="255" width="309" height="36" rx="3" fill="rgba(255,255,255,0.04)" stroke="#3a4560" stroke-width="0.8"/>
+  <text x="353" y="269" text-anchor="middle" fill="#8a99b8" font-size="9">自分の言葉で書き直す = 理解の証拠</text>
+  <text x="353" y="281" text-anchor="middle" fill="#8a99b8" font-size="9">そのまま書き写さない・能動的に頭を使う</text>
+
+  <!-- ─── Zone 4: 右「疑問・回答」(x=518-650, y=62-298) ─── -->
+  <rect x="518" y="62" width="132" height="236" rx="4" fill="rgba(167,139,250,0.06)" stroke="#a78bfa" stroke-width="1.2"/>
+  <rect x="518" y="62" width="132" height="26" rx="4" fill="rgba(167,139,250,0.2)"/>
+  <text x="584" y="72" text-anchor="middle" fill="#a78bfa" font-size="10" font-weight="bold">疑問・確認事項</text>
+  <text x="584" y="82" text-anchor="middle" fill="#a78bfa" font-size="8.5">（スライド番号も）</text>
+  <!-- Sample Q -->
+  <text x="526" y="102" fill="#c4b5fd" font-size="9" font-weight="bold">❓ p.8</text>
+  <text x="526" y="114" fill="#8a99b8" font-size="9">R（関連性）の</text>
+  <text x="526" y="126" fill="#8a99b8" font-size="9">具体例は？</text>
+  <line x1="522" y1="133" x2="646" y2="133" stroke="#252d42" stroke-width="0.8" stroke-dasharray="2,2"/>
+  <text x="526" y="148" fill="#c4b5fd" font-size="9" font-weight="bold">✅ 回答</text>
+  <text x="526" y="160" fill="#8a99b8" font-size="9">目標との関連</text>
+  <text x="526" y="172" fill="#8a99b8" font-size="9">を意識する</text>
+  <line x1="522" y1="178" x2="646" y2="178" stroke="#252d42" stroke-width="0.8" stroke-dasharray="2,2"/>
+  <text x="526" y="196" fill="#c4b5fd" font-size="9" font-weight="bold">❓ p.16</text>
+  <text x="526" y="208" fill="#8a99b8" font-size="9">6段階の順序</text>
+  <text x="526" y="220" fill="#8a99b8" font-size="9">を確認</text>
+  <!-- Instruction callout -->
+  <rect x="522" y="255" width="124" height="36" rx="3" fill="rgba(167,139,250,0.08)" stroke="rgba(167,139,250,0.3)" stroke-width="0.8"/>
+  <text x="584" y="269" text-anchor="middle" fill="#b4a8e0" font-size="8.5">疑問は後で</text>
+  <text x="584" y="281" text-anchor="middle" fill="#b4a8e0" font-size="8.5">調べて追記</text>
+
+  <!-- ─── Zone 5: サマリ (y=298-390) ─── -->
+  <rect x="10" y="298" width="640" height="104" rx="5" fill="rgba(251,191,36,0.08)" stroke="#fbbf24" stroke-width="1.5"/>
+  <rect x="10" y="298" width="640" height="26" rx="5" fill="rgba(251,191,36,0.2)"/>
+  <text x="330" y="315" text-anchor="middle" fill="#fbbf24" font-size="12" font-weight="bold">サマリ（要約）― 回の重要ポイントを自分なりにまとめる</text>
+  <!-- Sample summary text -->
+  <text x="22" y="340" fill="#e2e8f5" font-size="10">• ARCSモデル：A注意→R関連性→C自信→S満足感 のサイクルで学習意欲を維持する（Keller, 1987）</text>
+  <text x="22" y="357" fill="#e2e8f5" font-size="10">• 内発的動機づけ（好奇心・達成感が源泉）は外発的より質・持続性が高い。自己決定段階で内面化を目指す</text>
+  <text x="22" y="374" fill="#8a99b8" font-size="9.5">  → 小テストの解説で重要箇所を確認してから追記するのも有効</text>
+  <!-- Corner note -->
+  <text x="648" y="390" text-anchor="end" fill="#5a6a8a" font-size="8.5">忙しい時に見てわかるように書くこと</text>
+</svg>
+<figcaption>図: 手書きノートの構成（コーネルノート式）<span class="ptr">S03:p.45</span></figcaption>
+</div>
+
+
+<h3 id="ch3-app">視聴専用アプリを使った受講</h3>
+<p>隙間時間の活用・気分転換・ながら受講に便利。 <span class="ptr">← S03:p.46</span></p>
+<table>
+  <tr><th>ポイント</th><th>詳細</th></tr>
+  <tr><td>① オンラインでDL</td><td>必ずオンライン環境で授業動画をダウンロードする</td></tr>
+  <tr><td>② オフライン視聴可</td><td>ダウンロード後はオフライン環境でも視聴できる</td></tr>
+  <tr><td>③ 視聴後は同期</td><td>視聴後は必ずオンライン環境でホーム画面のオレンジの更新マーク（矢印）を押して同期</td></tr>
+  <tr><td>④ 課題はブラウザで</td><td>小テスト等の課題は視聴専用アプリではなくブラウザで実施 <span class="ptr">← S03:p.51</span></td></tr>
+</table>
+</section>
+
+<!-- ======================== 第4章 ======================== -->
+<section class="sec" id="ch4">
+<div class="sec-title"><span class="n">第4章</span>期末試験と成績評価について</div>
+<div class="goal"><div class="goal-lbl">CHAPTER GOALS</div><ol><li>本学の期末試験を受験する際のポイントについて理解する</li><li>本学の成績評価について理解する</li></ol></div>
+
+<h3 id="ch4-rules">期末試験のルールと注意事項</h3>
+<div class="wb"><div class="lbl">⚠️ 絶対に覚えること <span class="ptr">← S03:p.56</span></div>
+<ul style="margin: 8px 0 0">
+  <li><strong>期末試験を受験しないと単位修得できない</strong>（それまでの成績がよくても不可）</li>
+  <li><strong>受験には出席2/3以上が必要</strong>：8回授業=6回以上、15回授業=10回以上</li>
+</ul>
+</div>
+
+<h4>受験時の注意事項 <span class="ptr">← S03:p.57</span></h4>
+<ul>
+  <li><strong>Cloud Campus を複数タブ/ウィンドウで表示しない</strong>（Cloud Campus以外のページを別タブで開くのはOK）</li>
+  <li>受験者の事情によるトラブル（周囲の環境・ネットワーク接続・機器の設定）で支障が出ても、<strong>再受験などの救済措置は原則行わない</strong></li>
+  <li>受験前に「Webオリエンテーション」コースのサンプルテストで顔監視・マイク・カメラが正常に動作するか必ず確認する</li>
+</ul>
+
+<h3 id="ch4-types">期末試験の種類 <span class="ptr">← S03:p.58</span></h3>
+
+<div class="fig">
+<svg viewBox="0 0 680 200" xmlns="http://www.w3.org/2000/svg" style="max-width:660px;width:100%">
+  <rect width="680" height="200" fill="#1e2535" rx="8"/>
+  <!-- Webテスト -->
+  <rect x="20" y="20" width="300" height="160" rx="8" fill="rgba(91,141,238,0.1)" stroke="#5b8dee" stroke-width="1.5"/>
+  <text x="170" y="48" text-anchor="middle" fill="#5b8dee" font-size="15" font-weight="bold">Webテスト形式</text>
+  <line x1="35" y1="55" x2="305" y2="55" stroke="rgba(91,141,238,0.3)" stroke-width="0.8"/>
+  <text x="170" y="75" text-anchor="middle" fill="#8a99b8" font-size="10.5">受験時に顔認証が入る</text>
+  <text x="170" y="91" text-anchor="middle" fill="#8a99b8" font-size="10.5">受験中は監視画面が表示</text>
+  <text x="170" y="107" text-anchor="middle" fill="#8a99b8" font-size="10.5">マイク・カメラをONにして受験</text>
+  <text x="170" y="127" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold">⚠️ 1度しか受験できない</text>
+  <rect x="45" y="140" width="250" height="26" rx="4" fill="rgba(52,211,153,0.1)" stroke="rgba(52,211,153,0.3)" stroke-width="1"/>
+  <text x="170" y="157" text-anchor="middle" fill="#34d399" font-size="10.5">資料持ち込み可（Web検索も可）</text>
+  <!-- レポート -->
+  <rect x="360" y="20" width="300" height="160" rx="8" fill="rgba(52,211,153,0.08)" stroke="#34d399" stroke-width="1.5"/>
+  <text x="510" y="48" text-anchor="middle" fill="#34d399" font-size="15" font-weight="bold">レポート形式</text>
+  <line x1="375" y1="55" x2="645" y2="55" stroke="rgba(52,211,153,0.3)" stroke-width="0.8"/>
+  <text x="510" y="75" text-anchor="middle" fill="#8a99b8" font-size="10.5">ファイルをアップロードして提出</text>
+  <text x="510" y="91" text-anchor="middle" fill="#8a99b8" font-size="10.5">提出時に顔認証が入る</text>
+  <text x="510" y="107" text-anchor="middle" fill="#8a99b8" font-size="10.5">期間内に提出すれば時間をかけて作成可</text>
+  <text x="510" y="127" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold">⚠️ 再提出不可・差戻し確認必須</text>
+  <rect x="385" y="140" width="250" height="26" rx="4" fill="rgba(91,141,238,0.08)" stroke="rgba(91,141,238,0.3)" stroke-width="1"/>
+  <text x="510" y="157" text-anchor="middle" fill="#5b8dee" font-size="10.5">提出後は必ずメールで差戻しを確認</text>
+</svg>
+<figcaption>図: 期末試験の2形式 ― シラバスでどちらか確認する <span class="ptr">S03:p.58</span></figcaption>
+</div>
+
+<div class="wb"><div class="lbl">⚠️ Webテスト：不正行為について <span class="ptr">← S03:p.59</span></div>
+<p><strong>他者から回答を得る行為は不正行為</strong>。受験中に他者と連絡を取ることが確認された場合、成績の取り消し・停学・退学を含む厳正な懲戒処分の可能性あり。自分で調べるのはOK。</p>
+</div>
+
+<h3 id="ch4-grade">成績評価とGPA</h3>
+<h4>成績評価点数の算出 <span class="ptr">← S03:p.62</span></h4>
+<div class="kb"><div class="lbl">計算式</div>
+<p style="margin:0;font-family:'JetBrains Mono',monospace;font-size:13px">成績評価点数 = (獲得点数 ÷ 課題配点満点) × 比重(%)</p>
+</div>
+
+<p>スライドの例（評価配分：ディベート20%・レポート10%・小テスト50%・期末試験20%）：</p>
+<table>
+  <tr><th>課題</th><th>比重</th><th>配点満点</th><th>獲得点数</th><th>成績評価点数</th></tr>
+  <tr><td>ディベート</td><td>20%</td><td>50点</td><td>40点</td><td>40/50 × 20 = <strong>16点</strong></td></tr>
+  <tr><td>レポート</td><td>10%</td><td>100点</td><td>80点</td><td>80/100 × 10 = <strong>8点</strong></td></tr>
+  <tr><td>小テスト</td><td>50%</td><td>80点</td><td>64点</td><td>64/80 × 50 = <strong>40点</strong></td></tr>
+  <tr><td>期末試験</td><td>20%</td><td>100点</td><td>90点</td><td>90/100 × 20 = <strong>18点</strong></td></tr>
+  <tr style="background:rgba(52,211,153,0.08)"><td colspan="4"><strong>合計</strong></td><td><strong>82点 → グレードB</strong></td></tr>
+</table>
+
+<div class="fig">
+<!-- Grade chart: horizontal bars -->
+<svg viewBox="0 0 640 200" xmlns="http://www.w3.org/2000/svg" style="max-width:620px;width:100%">
+  <rect width="640" height="200" fill="#1e2535" rx="8"/>
+  <text x="320" y="22" text-anchor="middle" fill="#e2e8f5" font-size="13" font-weight="bold">グレード一覧</text>
+  <!-- Scale bar: x=120 to 580, width=460 (for 0-100) -->
+  <!-- Background -->
+  <rect x="120" y="35" width="460" height="145" rx="4" fill="rgba(255,255,255,0.02)"/>
+  <!-- Grade bars -->
+  <!-- A: 90-100 → x=120+460*0.9=534, width=460*0.1=46 -->
+  <rect x="534" y="42" width="46" height="22" rx="2" fill="rgba(244,114,182,0.5)"/>
+  <text x="120" y="57" fill="#f472b6" font-size="11" font-weight="bold">A</text>
+  <text x="66" y="57" fill="#8a99b8" font-size="9.5" text-anchor="middle">90〜100点</text>
+  <!-- B: 80-90 -->
+  <rect x="488" y="68" width="46" height="22" rx="2" fill="rgba(167,139,250,0.5)"/>
+  <text x="120" y="83" fill="#a78bfa" font-size="11" font-weight="bold">B</text>
+  <text x="66" y="83" fill="#8a99b8" font-size="9.5" text-anchor="middle">80〜90点</text>
+  <!-- C: 70-80 -->
+  <rect x="442" y="94" width="46" height="22" rx="2" fill="rgba(91,141,238,0.5)"/>
+  <text x="120" y="109" fill="#5b8dee" font-size="11" font-weight="bold">C</text>
+  <text x="66" y="109" fill="#8a99b8" font-size="9.5" text-anchor="middle">70〜80点</text>
+  <!-- D: 60-70 -->
+  <rect x="396" y="120" width="46" height="22" rx="2" fill="rgba(52,211,153,0.4)"/>
+  <text x="120" y="135" fill="#34d399" font-size="11" font-weight="bold">D</text>
+  <text x="66" y="135" fill="#8a99b8" font-size="9.5" text-anchor="middle">60〜70点</text>
+  <!-- F: 0-60 -->
+  <rect x="120" y="146" width="276" height="22" rx="2" fill="rgba(248,113,113,0.4)"/>
+  <text x="120" y="161" fill="#f87171" font-size="11" font-weight="bold">F</text>
+  <text x="66" y="161" fill="#f87171" font-size="9.5" text-anchor="middle">60点未満</text>
+  <!-- Annotations -->
+  <text x="458" y="175" text-anchor="middle" fill="#34d399" font-size="9.5">A-D: 合格</text>
+  <text x="258" y="175" text-anchor="middle" fill="#f87171" font-size="9.5">F: 不合格（翌学期以降に再履修可）</text>
+  <!-- 60 point line -->
+  <line x1="396" y1="35" x2="396" y2="170" stroke="rgba(248,113,113,0.5)" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="396" y="183" text-anchor="middle" fill="#f87171" font-size="9">60点</text>
+</svg>
+<figcaption>図: 成績グレード一覧 <span class="ptr">S03:p.63</span></figcaption>
+</div>
+
+<table>
+  <tr><th>点数</th><th>グレード</th><th>合否</th><th>GPA換算</th></tr>
+  <tr><td>90〜100点</td><td>A</td><td style="color:var(--green)">合格</td><td>4pt</td></tr>
+  <tr><td>80〜90点未満</td><td>B</td><td style="color:var(--green)">合格</td><td>3pt</td></tr>
+  <tr><td>70〜80点未満</td><td>C</td><td style="color:var(--green)">合格</td><td>2pt</td></tr>
+  <tr><td>60〜70点未満</td><td>D</td><td style="color:var(--green)">合格</td><td>1pt</td></tr>
+  <tr><td>60点未満</td><td>F</td><td style="color:var(--red)">不合格（再履修可）</td><td>0pt（分母に含む）</td></tr>
+  <tr><td>単位認定</td><td>P</td><td style="color:var(--sub)">—</td><td>GPA対象外</td></tr>
+  <tr><td>履修放棄</td><td>K</td><td style="color:var(--sub)">—</td><td>GPA対象外</td></tr>
+</table>
+
+<h4>GPA（Grade Point Average） <span class="ptr">← S03:p.64</span></h4>
+<p>学生表彰・早期卒業・就活インターン・ゼミナール配属等の判断材料。</p>
+<div class="kb"><div class="lbl">GPA計算式</div>
+<p style="margin:0;font-family:'JetBrains Mono',monospace;font-size:12.5px">GPA = (A×4 + B×3 + C×2 + D×1) ÷ 総履修単位数（F含む）</p>
+<p style="margin:6px 0 0;font-size:12.5px;color:var(--sub)">P（単位認定）・K（履修放棄）はGPA計算から除外</p>
+</div>
+</section>
+
+<!-- ======================== APPENDIX ======================== -->
+
+<!-- 補足A -->
+<div class="ac ac-a" id="ap-a">
+<h2>⭐ 補足A: 最重要ワード一覧</h2>
+<table>
+  <tr><th>用語</th><th>読み</th><th>定義</th><th>重要度</th></tr>
+  <tr><td>側坐核</td><td>そくざかく</td><td>脳のほぼ中央にある部位。行動することで働きだし、脳内物質を分泌してやる気（作業興奮）を生む</td><td class="s3">★★★</td></tr>
+  <tr><td>作業興奮</td><td>さぎょうこうふん</td><td>側坐核が行動で活性化し、脳がどんどん活性化して行動を持続させる状態</td><td class="s2">★★☆</td></tr>
+  <tr><td>ARCSモデル</td><td>アークスモデル</td><td>Keller(1987)が提唱した学習意欲デザインモデル。Attention・Relevance・Confidence・Satisfactionの4要素</td><td class="s3">★★★</td></tr>
+  <tr><td>内発的動機づけ</td><td>ないはつてきどうきづけ</td><td>行動が自律的で自分の興味から生じている状態。好奇心・興味・達成感が源泉。質・持続性・満足度が高い</td><td class="s3">★★★</td></tr>
+  <tr><td>外発的動機づけ</td><td>がいはつてきどうきづけ</td><td>外からの報酬や要請によって行動が生じている状態。賞罰がある間のみ持続</td><td class="s3">★★★</td></tr>
+  <tr><td>自己決定の段階性</td><td>じこけっていのだんかいせい</td><td>無力状態→外的→取り入れ的→同一視的→統合的→内発的。行動の価値を内面化するにつれ自律的行動へ変化</td><td class="s3">★★★</td></tr>
+  <tr><td>CAP得点</td><td>キャップとくてん</td><td>好奇心(C)×覚醒(A)×こころにあるもの(P)の積。現在の学習状態を1〜1000点で表す指標（タンブリン・ウォード, 2006）</td><td class="s2">★★☆</td></tr>
+  <tr><td>コルブの経験学習モデル</td><td>コルブのけいけんがくしゅうモデル</td><td>①具体的経験→②省察的観察→③抽象的概念化→④能動的実験の4段階サイクル（Kolb, 1984）</td><td class="s3">★★★</td></tr>
+  <tr><td>省察的観察</td><td>せいさつてきかんさつ</td><td>コルブモデルの第2段階。経験を振り返り内省すること。じっくり観察して情報を受け取る</td><td class="s2">★★☆</td></tr>
+  <tr><td>転位行動</td><td>てんいこうどう</td><td>本来すべき行動を回避して別の行動をしてしまうこと（例：テスト前に部屋掃除）</td><td class="s2">★★☆</td></tr>
+  <tr><td>GPA</td><td>ジーピーエー</td><td>Grade Point Average。A=4pt/B=3pt/C=2pt/D=1pt/F=0ptの合計÷総履修単位数。学生表彰・早期卒業等の判断材料</td><td class="s3">★★★</td></tr>
+</table>
+</div>
+
+<!-- 補足B -->
+<div class="ac ac-b" id="ap-b">
+<h2>📚 補足B: 知っておくべき背景知識</h2>
+
+<h3>ARCSモデルの提唱者・出典</h3>
+<p>John M. Keller（フロリダ州立大学教授）は教育工学・インストラクショナルデザインの研究者。ARCSモデルは1987年の学術論文で正式発表。スライドに「1984」とある記載は、1984年の書籍章（Keller, 1984）における初期発表を指す。 <span class="acn">[外部補足・確認済: Keller, J.M. (1987a). Development and use of the ARCS model of motivational design. Journal of Instructional Development, 10(3), 2–10. / Keller, J.M. (1984). The use of the ARCS model of motivation in teacher training. In K. Shaw & A.J. Trott (Eds.), Aspects of Educational Technology Vol. XVII. Kogan Page.]</span></p>
+
+<h3>マズローの欲求段階説の詳細</h3>
+<p>Abraham Maslow（1908-1970）が1943年の論文で提唱した5段階モデル。「欠乏欲求」は充足されると動機づけ力を失うが、「自己実現欲求（成長欲求）」は充足されることなく上限なく人を動かし続ける。 <span class="acn">[外部補足・確認済: Maslow, A.H. (1943). A theory of human motivation. Psychological Review, 50(4), 370–396.]</span></p>
+
+<h3>コルブの経験学習モデルの出典</h3>
+<p>David A. Kolb（1939-）がCase Western Reserve大学（現ウェザーヘッド経営大学院）の著書（1984）で提唱。4段階サイクルと4つの学習スタイル分類を提示した。授業引用出典は鈴木克明・美馬のゆり(2018)『学習設計マニュアル』北大路書房, pp.183-185。 <span class="acn">[外部補足・確認済: Kolb, D.A. (1984). Experiential Learning: Experience as the Source of Learning and Development. Prentice Hall.]</span></p>
+
+<h3>CAP得点の出典（U01解決）</h3>
+<p>L.タンブリン（Louise Tamblin）・P.ウォード（Pat Ward）共著、植野真臣（ほか）訳(2009)『大学生のための学習マニュアル』培風館, p.25。ISBN: 9784563057206。原著: Tamblin, L. &amp; Ward, P. (2006). The Smart Study Guide: Psychological Techniques for Student Success. Blackwell Publishing. <span class="acn">[外部補足・確認済: CiNii Research CRID 1971993809744488353]</span></p>
+</div>
+
+<!-- 補足C -->
+<div class="ac ac-c" id="ap-c">
+<h2>🎯 補足C: 試験・レポートで重要な観点</h2>
+
+<h3>第1章 学習意欲の維持</h3>
+<ul>
+  <li><strong>ARCSモデルの4要素を答えられること</strong>：A=Attention（注意）、R=Relevance（関連性）、C=Confidence（自信）、S=Satisfaction（満足感）</li>
+  <li>各要素の具体的な工夫方法（知覚的喚起・目的の方向性・自己コントロール等）</li>
+  <li><strong>内発的動機づけと外発的動機づけの違い</strong>（質・持続性・満足度の違い）</li>
+  <li>自己決定の段階性：6段階の順序と各段階の特徴</li>
+  <li>マズローの欲求段階説：5層の名称と「成長欲求」vs「欠乏欲求」の区別</li>
+</ul>
+
+<h3>第2章 効果的学習方法</h3>
+<ul>
+  <li><strong>CAP得点の計算式</strong>（C×A×P、最高1000点）と各項目の意味</li>
+  <li>コルブの経験学習モデル：4段階の名称・順序と2軸（情報認識軸・情報処理軸）</li>
+  <li>4つの学習スタイルの名称と特徴（A発散型・B同化型・C収束型・D適応型）</li>
+  <li>学習スタイルは固定的でなく拡張すべきという点</li>
+</ul>
+
+<h3>第3章 受講の際のポイント</h3>
+<ul>
+  <li>ノートを取る目的（構造化・理解の深化・記憶の定着）</li>
+  <li>能動的に集中して頭を使うことの重要性</li>
+</ul>
+
+<h3>第4章 期末試験と成績評価（最重要）</h3>
+<ul>
+  <li><strong>試験のルール：①受験しないと単位修得不可、②受験には出席2/3以上</strong></li>
+  <li>Webテスト形式とレポート形式の違い（顔認証・再提出可否・持ち込み）</li>
+  <li>成績評価点数の計算式：(獲得点数÷配点満点)×比重%</li>
+  <li>グレード一覧：A(90-100)・B(80-90)・C(70-80)・D(60-70)・F(60未満=不合格)</li>
+  <li>GPA計算式と対象外グレード（P・K）</li>
+</ul>
+</div>
+
+<!-- 補足D -->
+<div class="ac ac-d" id="ap-d">
+<h2>🔗 補足D: 関連概念・次回への接続</h2>
+
+<h3>自己決定理論（SDT）との関連</h3>
+<p>授業で扱った自己決定の段階性はデシ（Deci）とライアン（Ryan）が提唱した<strong>自己決定理論（Self-Determination Theory）</strong>に基づく。SDTでは「自律性・有能感・関係性」の3つの基本的心理欲求が内発的動機づけを支えると言われている。 <span class="acn">[外部補足]</span></p>
+
+<h3>ポモドーロ・テクニック（時間区切りの実践手法）</h3>
+<p>授業でも「時間を区切る」ことが推奨されたが、代表的な実践手法として<strong>ポモドーロ・テクニック</strong>がある。25分集中→5分休憩を1サイクルとして繰り返す。4サイクル後は長めの休憩を取る。脳科学的にも集中の維持に限界があり、定期的な休憩が記憶定着に効果的とされる。 <span class="acn">[外部補足]</span></p>
+
+<h3>コルブとGPDCAの関連</h3>
+<p>第3回で扱ったGPDCAと今回のコルブの経験学習モデルはいずれも「試行錯誤→振り返り→改善」のサイクルという共通の考え方を持つ。コルブの「②省察的観察→③抽象的概念化」がGPDCAの「C（Check）→A（Action）」に対応する。</p>
+
+<h3>ARCSモデルの拡張（ARCS-V）</h3>
+<p>近年KellerはARCSモデルに<strong>V（Volition: 意志力）</strong>を加えた<strong>ARCS-Vモデル</strong>を提唱。意志力（やり遂げる力・先延ばし防止）を5番目の要素として位置づけた。転位行動の防止にも関連する概念。 <span class="acn">[外部補足]</span></p>
+</div>
+
+<!-- 未確定事項 -->
+<div class="ac ac-u" id="ap-u">
+<h2>❓ 未確定事項・要確認リスト</h2>
+<p style="color:var(--green);font-size:13px;margin-bottom:10px">✅ 前バージョンの未確定事項U01（タンブリン・ウォード書誌情報）は外部補完により解決済み。現在の未確定事項: <strong>0件</strong></p>
+<table>
+  <tr><th>ID</th><th>内容</th><th>状態</th></tr>
+  <tr style="opacity:0.6"><td>U01</td><td>タンブリン・ウォード(2009)の正確な書誌情報</td><td style="color:var(--green)">✅ 解決済み（補足B参照）</td></tr>
+</table>
+</div>
+
+</main>
+
+<script>
+const secs=document.querySelectorAll('[id]');
+const links=document.querySelectorAll('#sb a');
+function upd(){
+  let cur='';
+  secs.forEach(s=>{if(s.getBoundingClientRect().top<=90)cur=s.id});
+  links.forEach(l=>{l.classList.remove('active');if(l.getAttribute('href')==='#'+cur)l.classList.add('active')});
+}
+window.addEventListener('scroll',upd,{passive:true});
+upd();
+</script>
+</body>
+</html>
