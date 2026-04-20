@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>スタディスキル入門 第3回 タイムマネジメントスキルを身に付ける</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f1117;--card:#1a1f2e;--card2:#1e2535;--txt:#e2e8f5;--sub:#8a99b8;--acc:#c3d1f0;--bdr:#2a3350;--blue:#5b8dee;--blue2:#7aa3f5;--green:#34d399;--yellow:#fbbf24;--orange:#fb923c;--purple:#a78bfa;--pink:#f472b6;--sw:280px;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--txt);font-family:"Noto Sans JP",sans-serif;font-size:15px;line-height:1.85;display:flex;}
+#sb{width:var(--sw);min-height:100vh;background:var(--card);border-right:1px solid var(--bdr);position:fixed;top:0;left:0;overflow-y:auto;padding:20px 12px 60px;z-index:100;}
+#sb .tit{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--sub);margin-bottom:12px;padding-bottom:7px;border-bottom:1px solid var(--bdr);}
+#sb ul{list-style:none;}
+#sb ul li a{display:block;color:var(--sub);text-decoration:none;font-size:11.5px;padding:3px 7px;border-radius:4px;transition:all .2s;line-height:1.4;}
+#sb ul li a:hover{background:var(--card2);color:var(--txt);}
+#sb ul li.h2>a{font-weight:700;color:var(--blue2);font-size:12px;margin-top:8px;}
+#sb ul li.h3>a{padding-left:16px;}
+#mn{margin-left:var(--sw);padding:32px 38px 80px;max-width:960px;width:100%;}
+.ph{background:linear-gradient(135deg,#1a2540,#0f1117);border:1px solid var(--bdr);border-radius:12px;padding:24px 28px;margin-bottom:26px;}
+.ph .subj{font-size:11px;color:var(--yellow);letter-spacing:1px;margin-bottom:5px;}
+.ph h1{font-size:22px;font-weight:700;color:#fff;line-height:1.4;margin-bottom:12px;}
+.ph .mg{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:4px;font-size:12.5px;}
+.ph .mi{display:flex;gap:7px;}
+.ph .ml{color:var(--sub);}
+.ph .mv{color:var(--acc);}
+.ph .sl{margin-top:11px;padding-top:9px;border-top:1px solid var(--bdr);font-size:11.5px;color:var(--sub);}
+.ph .sl span{display:inline-block;margin-right:10px;}
+.card{background:var(--card);border:1px solid var(--bdr);border-radius:10px;padding:22px 26px;margin-bottom:18px;}
+.card h2{font-size:17px;font-weight:700;color:#fff;padding-bottom:9px;border-bottom:2px solid var(--blue);margin-bottom:15px;display:flex;align-items:center;gap:9px;}
+.card h2 .num{background:var(--blue);color:#fff;font-size:10px;padding:2px 7px;border-radius:4px;font-weight:500;white-space:nowrap;}
+.card h3{font-size:14px;font-weight:700;color:var(--blue2);margin:16px 0 7px;padding-left:10px;border-left:3px solid var(--blue);}
+.card h4{font-size:13px;font-weight:600;color:var(--yellow);margin:13px 0 5px;}
+.card p{margin-bottom:9px;}
+.card ul,.card ol{padding-left:20px;margin-bottom:9px;}
+.card li{margin-bottom:4px;}
+.vb{border-left:4px solid var(--blue);background:rgba(91,141,238,.08);border-radius:0 6px 6px 0;padding:9px 13px;margin:9px 0;font-size:13.5px;color:var(--acc);}
+.vb .bl{font-size:10px;font-weight:700;color:var(--blue);letter-spacing:.5px;margin-bottom:3px;}
+.eb{border-left:4px solid var(--green);background:rgba(52,211,153,.07);border-radius:0 6px 6px 0;padding:9px 13px;margin:9px 0;font-size:13px;}
+.eb .bl{font-size:10px;font-weight:700;color:var(--green);letter-spacing:.5px;margin-bottom:3px;}
+.kb{border-left:4px solid var(--yellow);background:rgba(251,191,36,.07);border-radius:0 6px 6px 0;padding:9px 13px;margin:11px 0;font-size:13.5px;}
+.kb strong{color:var(--yellow);}
+.sp{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--sub);background:rgba(255,255,255,.05);padding:1px 4px;border-radius:3px;margin-left:4px;white-space:nowrap;}
+.st{width:100%;border-collapse:collapse;margin:11px 0;font-size:13px;}
+.st th{background:var(--card2);color:var(--blue2);padding:8px 11px;border:1px solid var(--bdr);font-weight:600;text-align:left;}
+.st td{padding:7px 11px;border:1px solid var(--bdr);vertical-align:top;}
+.st tr:nth-child(even) td{background:rgba(255,255,255,.02);}
+.sw{background:var(--card2);border:1px solid var(--bdr);border-radius:8px;padding:15px;margin:11px 0;text-align:center;}
+.sw figcaption{font-size:11px;color:var(--sub);margin-top:6px;font-family:"JetBrains Mono",monospace;}
+.fr{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:9px 0;}
+.fb{background:var(--card2);border:1px solid var(--blue);border-radius:6px;padding:6px 11px;font-size:12px;text-align:center;min-width:68px;}
+.fa{color:var(--blue);font-size:15px;}
+.dq{background:linear-gradient(135deg,#1a2035,#1e2535);border:1px solid var(--blue);border-radius:8px;padding:16px 20px;margin:11px 0;}
+.dq .dqt{font-size:14px;font-style:italic;color:#fff;line-height:1.95;margin-bottom:6px;}
+.dq .dqs{font-size:11px;color:var(--sub);}
+.sc{border-radius:10px;padding:18px 22px;margin-bottom:15px;}
+.sc h2{font-size:15px;font-weight:700;margin-bottom:11px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.08);}
+.sc h3{font-size:13px;font-weight:700;margin:11px 0 5px;padding-left:9px;}
+.sa{background:#1a2035;border:1px solid #2a3a6a;}.sa h2{color:var(--blue2);}.sa h3{border-left:2px solid var(--blue2);color:var(--blue2);}
+.sb2{background:#1a2520;border:1px solid #2a4a35;}.sb2 h2{color:var(--green);}.sb2 h3{border-left:2px solid var(--green);color:var(--green);}
+.sc2{background:#1f2020;border:1px solid #3a3a2a;}.sc2 h2{color:var(--yellow);}
+.sd{background:#1f1a28;border:1px solid #3a2a4a;}.sd h2{color:var(--purple);}.sd h3{border-left:2px solid var(--purple);color:var(--purple);}
+@media(max-width:900px){#sb{display:none;}#mn{margin-left:0;padding:14px 12px 60px;}}
+</style>
+</head>
+<body>
+<nav id="sb">
+  <div class="tit">目次</div>
+  <ul>
+    <li class="h2"><a href="#top">概要・学習目標</a></li>
+    <li class="h2"><a href="#ch1">第1章 時間管理の重要性</a></li>
+    <li class="h3"><a href="#c1s1">時間の定義（広辞苑）</a></li>
+    <li class="h3"><a href="#c1s2">2種類の時間</a></li>
+    <li class="h3"><a href="#c1s3">通信制と自己管理</a></li>
+    <li class="h3"><a href="#c1s4">卒業生アンケート（全15項目）</a></li>
+    <li class="h3"><a href="#c1s5">時間を味方につける</a></li>
+    <li class="h3"><a href="#c1s6">管理の鉄則</a></li>
+    <li class="h3"><a href="#c1s7">習慣化・積み重ね</a></li>
+    <li class="h2"><a href="#ch2">第2章 ドラッカー流時間管理術</a></li>
+    <li class="h3"><a href="#c2s1">ドラッカーとは</a></li>
+    <li class="h3"><a href="#c2s2">時間管理3ステップ</a></li>
+    <li class="h3"><a href="#c2s3">Step1 記録する</a></li>
+    <li class="h3"><a href="#c2s4">Step2 診断する</a></li>
+    <li class="h3"><a href="#c2s5">Step3 作る</a></li>
+    <li class="h3"><a href="#c2s6">効果的な学修時間</a></li>
+    <li class="h2"><a href="#ch3">第3章 計画の立て方</a></li>
+    <li class="h3"><a href="#c3s1">卒業までの履修計画</a></li>
+    <li class="h3"><a href="#c3s2">全体履修計画4ステップ</a></li>
+    <li class="h3"><a href="#c3s3">受講日程への落とし込み</a></li>
+    <li class="h3"><a href="#c3s4">G-PDCAサイクル</a></li>
+    <li class="h3"><a href="#c3s5">計画→実行→快感→習慣化</a></li>
+    <li class="h3"><a href="#c3s6">ゆとりの法則</a></li>
+    <li class="h3"><a href="#c3s7">変更管理・朝活・リカバリー</a></li>
+    <li class="h2"><a href="#ch4">第4章 学修環境を整える</a></li>
+    <li class="h3"><a href="#c4s1">段取りの概念</a></li>
+    <li class="h3"><a href="#c4s2">サポート体制3種</a></li>
+    <li class="h3"><a href="#c4s3">不安感を課題化して解決</a></li>
+    <li class="h3"><a href="#c4s4">手帳で3度楽しむ</a></li>
+    <li class="h3"><a href="#c4s5">在学生の一日（Aさん・Bさん）</a></li>
+    <li class="h2"><a href="#sa">⭐ 補足A 最重要ワード</a></li>
+    <li class="h2"><a href="#sb3">📚 補足B 背景知識</a></li>
+    <li class="h2"><a href="#sc3">🎯 補足C 試験・レポート観点</a></li>
+    <li class="h2"><a href="#sd3">🔗 補足D 関連概念</a></li>
+  </ul>
+</nav>
+<main id="mn">
+
+<!-- ─── PAGE HEADER ─── -->
+<div class="ph" id="top">
+  <div class="subj">サイバー大学 IT総合学部 教養科目 ｜ スタディスキル入門</div>
+  <h1>第3回　タイムマネジメントスキルを身に付ける</h1>
+  <div class="mg">
+    <div class="mi"><span class="ml">主担当:</span><span class="mv">勝 眞一郎</span></div>
+    <div class="mi"><span class="ml">第5章担当:</span><span class="mv">菊地 梓</span></div>
+    <div class="mi"><span class="ml">v1.1（2026-04-20）スライド原本全ページ確認済</span></div>
+  </div>
+  <div class="sl">
+    ソース:
+    <span>S03: スライドPDF 87p（権威ソース）</span>
+    <span>S05-A/B: hynote.ai×2バリアント</span>
+    <span>外部補足: Web検索（ドラッカー・デマルコ・広辞苑書誌情報確認済）</span>
+  </div>
+</div>
+
+<!-- ─── OVERVIEW ─── -->
+<div class="card">
+  <h2>概要・学習目標</h2>
+  <p>サイバー大学の通信制では時間管理が学習継続の最大の鍵。本回では<strong>ドラッカー流タイムマネジメント（3ステップ）</strong>と<strong>G-PDCAによる計画実行</strong>、<strong>習慣化の仕組み</strong>を体系的に学ぶ。</p>
+  <h3>学習目標</h3>
+  <ul>
+    <li>タイムマネジメントの基本的な考え方、学修プランのG-PDCAサイクルをまわすことの大切さ、環境を整えることの大切さについて理解し、説明できる <span class="sp">S03:p.3</span></li>
+    <li>自己の目標・サイバー大学で学び続けるための攻略法のうちいずれかを深堀りして考え、提示できる <span class="sp">S03:p.3</span></li>
+  </ul>
+  <h3>授業構成</h3>
+  <div class="fr">
+    <div class="fb">第1章<br>時間管理の<br>重要性</div><span class="fa">→</span>
+    <div class="fb">第2章<br>ドラッカー流<br>時間管理術</div><span class="fa">→</span>
+    <div class="fb">第3章<br>計画の<br>立て方</div><span class="fa">→</span>
+    <div class="fb">第4章<br>学修環境を<br>整える</div><span class="fa">→</span>
+    <div class="fb">第5章<br>第3回<br>課題について</div>
+  </div>
+  <span class="sp" style="display:inline-block;margin-top:3px">S03:p.4</span>
+</div>
+
+<!-- ═══════════ CH1 ═══════════ -->
+<div class="card" id="ch1">
+  <h2><span class="num">第1章</span> 時間管理の重要性</h2>
+
+  <h3 id="c1s1">時間とは何か ── 広辞苑（第六版）の定義</h3>
+  <p>「時間」の辞書的定義。広辞苑 第六版（2008, 岩波書店, p.1203）による。 <span class="sp">S03:p.7</span></p>
+  <table class="st">
+    <thead><tr><th>義</th><th>定義</th><th>用例</th></tr></thead>
+    <tbody>
+      <tr><td>①</td><td>時の流れの二点間の長さ。時の長さ。</td><td>「2時間かかった」</td></tr>
+      <tr><td>②</td><td>時刻。</td><td>「今何時ですか」</td></tr>
+      <tr><td>③</td><td>空間と共に人間の認識の基礎を成すもの（哲学・物理学的概念）。</td><td>アインシュタインの相対性理論など</td></tr>
+    </tbody>
+  </table>
+  <div class="vb"><div class="bl">🎤 音声補足</div>タイムマネジメントで扱う「時間」は主に①の意味。「何時から何時まで」という二点間の長さとして捉え、数値で管理する。 <span class="sp">S05-A</span></div>
+
+  <h3 id="c1s2">2種類の時間</h3>
+  <div class="sw">
+    <svg viewBox="0 0 620 160" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;">
+      <rect x="10" y="10" width="280" height="140" rx="9" fill="#1e2535" stroke="#5b8dee" stroke-width="2"/>
+      <text x="150" y="44" text-anchor="middle" fill="#7aa3f5" font-size="15" font-weight="700" font-family="sans-serif">フィールタイム</text>
+      <text x="150" y="62" text-anchor="middle" fill="#8a99b8" font-size="11.5" font-family="sans-serif">feel time</text>
+      <line x1="30" y1="72" x2="270" y2="72" stroke="#2a3350" stroke-width="1"/>
+      <text x="150" y="92" text-anchor="middle" fill="#e2e8f5" font-size="12.5" font-family="sans-serif">感覚的な時間の長さ</text>
+      <text x="150" y="111" text-anchor="middle" fill="#8a99b8" font-size="12" font-family="sans-serif">例：テスト中「あっという間」</text>
+      <text x="150" y="130" text-anchor="middle" fill="#8a99b8" font-size="12" font-family="sans-serif">我慢中「異常に長く感じた」</text>
+      <rect x="330" y="10" width="280" height="140" rx="9" fill="#1e2535" stroke="#34d399" stroke-width="2"/>
+      <text x="470" y="44" text-anchor="middle" fill="#34d399" font-size="15" font-weight="700" font-family="sans-serif">クロックタイム</text>
+      <text x="470" y="62" text-anchor="middle" fill="#8a99b8" font-size="11.5" font-family="sans-serif">clock time</text>
+      <line x1="350" y1="72" x2="590" y2="72" stroke="#2a3350" stroke-width="1"/>
+      <text x="470" y="92" text-anchor="middle" fill="#e2e8f5" font-size="12.5" font-family="sans-serif">計測される時の流れの二点間の長さ</text>
+      <text x="470" y="111" text-anchor="middle" fill="#e2e8f5" font-size="12.5" font-family="sans-serif">1日 ＝ 24時間（万人共通・固定）</text>
+      <text x="470" y="130" text-anchor="middle" fill="#fbbf24" font-size="12.5" font-weight="600" font-family="sans-serif">★ これをいかに使うかが鍵</text>
+    </svg>
+    <figcaption>2種類の時間（スライドp.8再現）← S03:p.8</figcaption>
+  </div>
+
+  <h3 id="c1s3">学修における時間管理の重要性</h3>
+  <div class="sw">
+    <svg viewBox="0 0 620 150" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;">
+      <defs><marker id="a1" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3z" fill="#fbbf24"/></marker></defs>
+      <rect x="10" y="18" width="225" height="100" rx="8" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="122" y="46" text-anchor="middle" fill="#7aa3f5" font-size="13.5" font-weight="700" font-family="sans-serif">通学制</text>
+      <text x="122" y="68" text-anchor="middle" fill="#e2e8f5" font-size="12" font-family="sans-serif">授業の時間・場所が決められている</text>
+      <text x="122" y="88" text-anchor="middle" fill="#fb923c" font-size="12.5" font-weight="600" font-family="sans-serif">→ 物理的に制約される</text>
+      <text x="122" y="106" text-anchor="middle" fill="#8a99b8" font-size="11.5" font-family="sans-serif">その場所に行けば自動的に学習</text>
+      <line x1="235" y1="68" x2="260" y2="68" stroke="#fbbf24" stroke-width="2" marker-end="url(#a1)"/>
+      <text x="315" y="16" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="sans-serif">VS</text>
+      <rect x="260" y="18" width="245" height="100" rx="8" fill="#1e2535" stroke="#34d399" stroke-width="1.5"/>
+      <text x="382" y="46" text-anchor="middle" fill="#34d399" font-size="13.5" font-weight="700" font-family="sans-serif">通信制（サイバー大学）</text>
+      <text x="382" y="66" text-anchor="middle" fill="#e2e8f5" font-size="12" font-family="sans-serif">場所に制約されず自由に受講できる</text>
+      <text x="382" y="84" text-anchor="middle" fill="#fbbf24" font-size="12.5" font-weight="600" font-family="sans-serif">→ 自分で時間を管理する必要</text>
+      <text x="382" y="102" text-anchor="middle" fill="#8a99b8" font-size="11.5" font-family="sans-serif">計画なしではズルズルと期限超過</text>
+      <text x="310" y="138" text-anchor="middle" fill="#34d399" font-size="12.5" font-weight="600" font-family="sans-serif">卒業要件: 124単位 ← 自己管理で取り切る</text>
+    </svg>
+    <figcaption>通学制 vs 通信制（スライドp.9参照）← S03:p.9</figcaption>
+  </div>
+
+  <h3 id="c1s4">卒業生のアンケート結果（全15項目）</h3>
+  <p>「卒業まで受講を続けられた理由」（複数回答 / 有効回答数：32） <span class="sp">S03:p.10</span></p>
+  <div class="sw">
+    <svg viewBox="0 0 820 430" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;">
+      <!-- バー基準線x=500, 1票=15px, 最大20票=300px, 数値x=810 -->
+      <line x1="500" y1="16" x2="500" y2="396" stroke="#3a4a6a" stroke-width="1.5"/>
+      <line x1="575" y1="16" x2="575" y2="396" stroke="#2a3350" stroke-width="0.5" stroke-dasharray="3,3"/>
+      <line x1="650" y1="16" x2="650" y2="396" stroke="#2a3350" stroke-width="0.5" stroke-dasharray="3,3"/>
+      <line x1="725" y1="16" x2="725" y2="396" stroke="#2a3350" stroke-width="0.5" stroke-dasharray="3,3"/>
+      <line x1="800" y1="16" x2="800" y2="396" stroke="#2a3350" stroke-width="0.5" stroke-dasharray="3,3"/>
+      <text x="500" y="410" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="monospace">0</text>
+      <text x="575" y="410" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="monospace">5</text>
+      <text x="650" y="410" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="monospace">10</text>
+      <text x="725" y="410" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="monospace">15</text>
+      <text x="800" y="410" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="monospace">20</text>
+      <!-- TOP2 枠 -->
+      <rect x="4" y="20" width="812" height="55" rx="5" fill="none" stroke="#fb923c" stroke-width="1.5" stroke-dasharray="6,3"/>
+      <text x="808" y="34" text-anchor="end" fill="#fb923c" font-size="11" font-weight="700" font-family="sans-serif">TOP2</text>
+      <!-- 各行: y間隔28px, テキストy=ラベル、バーy=ラベル-16, バー高さ20 -->
+      <!-- ① 20票 -->
+      <text x="492" y="42" text-anchor="end" fill="#e2e8f5" font-size="12" font-family="sans-serif">① 自分で期日を決めて学習に取り組んだ</text>
+      <rect x="500" y="26" width="300" height="20" rx="3" fill="#5b8dee" opacity=".9"/>
+      <text x="808" y="42" text-anchor="end" fill="#fbbf24" font-size="13" font-weight="700" font-family="monospace">20</text>
+      <!-- ② 18票 -->
+      <text x="492" y="70" text-anchor="end" fill="#e2e8f5" font-size="12" font-family="sans-serif">② 決まった曜日や時間帯に学習時間を確保した</text>
+      <rect x="500" y="54" width="270" height="20" rx="3" fill="#34d399" opacity=".85"/>
+      <text x="778" y="70" text-anchor="end" fill="#fbbf24" font-size="13" font-weight="700" font-family="monospace">18</text>
+      <!-- ③ 11票 -->
+      <text x="492" y="100" text-anchor="end" fill="#e2e8f5" font-size="12" font-family="sans-serif">③ 家族や友人の協力・励ましがあった</text>
+      <rect x="500" y="84" width="165" height="20" rx="3" fill="#a78bfa" opacity=".7"/>
+      <text x="673" y="100" text-anchor="end" fill="#c3d1f0" font-size="12" font-weight="700" font-family="monospace">11</text>
+      <!-- ④ 11票 -->
+      <text x="492" y="128" text-anchor="end" fill="#e2e8f5" font-size="12" font-family="sans-serif">④ 教員やメンター（TA/LA）とのコミュニケーションが役立った</text>
+      <rect x="500" y="112" width="165" height="20" rx="3" fill="#a78bfa" opacity=".6"/>
+      <text x="673" y="128" text-anchor="end" fill="#c3d1f0" font-size="12" font-weight="700" font-family="monospace">11</text>
+      <!-- ⑤ 11票 -->
+      <text x="492" y="156" text-anchor="end" fill="#e2e8f5" font-size="12" font-family="sans-serif">⑤ 学習内容について興味を高めるよう自分でも努力・工夫した</text>
+      <rect x="500" y="140" width="165" height="20" rx="3" fill="#a78bfa" opacity=".55"/>
+      <text x="673" y="156" text-anchor="end" fill="#c3d1f0" font-size="12" font-weight="700" font-family="monospace">11</text>
+      <!-- ⑥ 10票 -->
+      <text x="492" y="184" text-anchor="end" fill="#e2e8f5" font-size="12" font-family="sans-serif">⑥ 卒業後の目標やイメージを持っていた</text>
+      <rect x="500" y="168" width="150" height="20" rx="3" fill="#fb923c" opacity=".65"/>
+      <text x="658" y="184" text-anchor="end" fill="#c3d1f0" font-size="12" font-weight="700" font-family="monospace">10</text>
+      <!-- ⑦ 8票 -->
+      <text x="492" y="212" text-anchor="end" fill="#e2e8f5" font-size="12" font-family="sans-serif">⑦ 受講や課題について評価面での目標を立てた</text>
+      <rect x="500" y="196" width="120" height="20" rx="3" fill="#fb923c" opacity=".5"/>
+      <text x="628" y="212" text-anchor="end" fill="#c3d1f0" font-size="12" font-weight="700" font-family="monospace">8</text>
+      <!-- ⑧ 8票 -->
+      <text x="492" y="240" text-anchor="end" fill="#e2e8f5" font-size="12" font-family="sans-serif">⑧ 一学期間に多くの授業を取りすぎないよう注意した</text>
+      <rect x="500" y="224" width="120" height="20" rx="3" fill="#fb923c" opacity=".45"/>
+      <text x="628" y="240" text-anchor="end" fill="#c3d1f0" font-size="12" font-weight="700" font-family="monospace">8</text>
+      <!-- ⑨ 6票 -->
+      <text x="492" y="268" text-anchor="end" fill="#8a99b8" font-size="12" font-family="sans-serif">⑨ 悩んだ時は一人で考えず、誰かに相談するようにした</text>
+      <rect x="500" y="252" width="90" height="20" rx="3" fill="#fbbf24" opacity=".5"/>
+      <text x="598" y="268" text-anchor="end" fill="#8a99b8" font-size="12" font-weight="700" font-family="monospace">6</text>
+      <!-- ⑩ 6票 -->
+      <text x="492" y="296" text-anchor="end" fill="#8a99b8" font-size="12" font-family="sans-serif">⑩ サイバー大学の各種サポートセンターによる支援が役立った</text>
+      <rect x="500" y="280" width="90" height="20" rx="3" fill="#fbbf24" opacity=".45"/>
+      <text x="598" y="296" text-anchor="end" fill="#8a99b8" font-size="12" font-weight="700" font-family="monospace">6</text>
+      <!-- ⑪ 5票 -->
+      <text x="492" y="324" text-anchor="end" fill="#8a99b8" font-size="12" font-family="sans-serif">⑪ 他の学生とのコミュニケーションが役立った</text>
+      <rect x="500" y="308" width="75" height="20" rx="3" fill="#fbbf24" opacity=".4"/>
+      <text x="583" y="324" text-anchor="end" fill="#8a99b8" font-size="12" font-weight="700" font-family="monospace">5</text>
+      <!-- ⑫ 3票 -->
+      <text x="492" y="352" text-anchor="end" fill="#8a99b8" font-size="12" font-family="sans-serif">⑫ 授業内で積極的に発言や質問をするよう心掛けた</text>
+      <rect x="500" y="336" width="45" height="20" rx="3" fill="#fbbf24" opacity=".35"/>
+      <text x="553" y="352" text-anchor="end" fill="#8a99b8" font-size="12" font-weight="700" font-family="monospace">3</text>
+      <!-- ⑬ 0票 -->
+      <text x="492" y="378" text-anchor="end" fill="#8a99b8" font-size="12" font-family="sans-serif">⑬ 自分へのご褒美を用意した</text>
+      <text x="508" y="378" fill="#8a99b8" font-size="12" font-family="monospace">0</text>
+      <!-- ⑭ 0票 -->
+      <text x="492" y="400" text-anchor="end" fill="#8a99b8" font-size="12" font-family="sans-serif">⑭ その他</text>
+      <text x="508" y="400" fill="#8a99b8" font-size="12" font-family="monospace">0</text>
+    </svg>
+    <figcaption>卒業生アンケート結果 全15項目（スライドp.10完全再現）← S03:p.10</figcaption>
+  </div>
+  <div class="kb"><strong>TOP2は両方とも「自分で時間を制御すること」に直結。</strong>①は自律的なデッドライン設定、②は週次ルーティン化。どちらも<strong>習慣化</strong>の観点から重要。 <span class="sp">S03:p.10, S05-A</span></div>
+  <p>教員からのアドバイス（スライドp.11-12より） <span class="sp">S03:p.11-12</span></p>
+  <ul>
+    <li>① 毎日決まった時間に受講を進める（自主性・自律）</li>
+    <li>② 1週間単位で学習時間を上手に配分する（難易度・種別に応じて）</li>
+    <li>土日を<strong>リカバリー予備日</strong>として残しておく（平日に終わらなかった分をカバー）</li>
+  </ul>
+
+  <h3 id="c1s5">時間を味方につける</h3>
+  <div class="sw">
+    <svg viewBox="0 0 620 195" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;">
+      <!-- 敵 -->
+      <rect x="8" y="8" width="285" height="178" rx="9" fill="#1e0f1a" stroke="#f472b6" stroke-width="1.5"/>
+      <text x="150" y="38" text-anchor="middle" fill="#f472b6" font-size="14" font-weight="700" font-family="sans-serif">🔴 時間が「敵」の状態</text>
+      <text x="150" y="62" text-anchor="middle" fill="#e2e8f5" font-size="13" font-family="sans-serif">「やっておけば良かった」</text>
+      <text x="150" y="80" text-anchor="middle" fill="#8a99b8" font-size="12" font-family="sans-serif">↓ 後悔</text>
+      <text x="150" y="100" text-anchor="middle" fill="#e2e8f5" font-size="13" font-family="sans-serif">「あれもやらなくては」</text>
+      <text x="150" y="118" text-anchor="middle" fill="#8a99b8" font-size="12" font-family="sans-serif">↓</text>
+      <text x="150" y="138" text-anchor="middle" fill="#e2e8f5" font-size="13" font-family="sans-serif">「またできなかった」</text>
+      <text x="150" y="156" text-anchor="middle" fill="#8a99b8" font-size="12" font-family="sans-serif">↓</text>
+      <text x="150" y="176" text-anchor="middle" fill="#f472b6" font-size="13" font-weight="600" font-family="sans-serif">後悔（繰り返し）</text>
+      <!-- 味方 -->
+      <rect x="328" y="8" width="285" height="178" rx="9" fill="#0e1f16" stroke="#34d399" stroke-width="1.5"/>
+      <text x="470" y="38" text-anchor="middle" fill="#34d399" font-size="14" font-weight="700" font-family="sans-serif">🟢 時間が「味方」の状態</text>
+      <text x="470" y="62" text-anchor="middle" fill="#e2e8f5" font-size="13" font-family="sans-serif">「できた！」</text>
+      <text x="470" y="80" text-anchor="middle" fill="#fbbf24" font-size="12.5" font-weight="600" font-family="sans-serif">↓ 達成感（快感）</text>
+      <text x="470" y="100" text-anchor="middle" fill="#e2e8f5" font-size="13" font-family="sans-serif">「次はこれもやろう」</text>
+      <text x="470" y="118" text-anchor="middle" fill="#8a99b8" font-size="12" font-family="sans-serif">↓</text>
+      <text x="470" y="138" text-anchor="middle" fill="#fbbf24" font-size="13" font-weight="600" font-family="sans-serif">達成感（また！）</text>
+      <text x="470" y="156" text-anchor="middle" fill="#8a99b8" font-size="12" font-family="sans-serif">↓</text>
+      <text x="470" y="176" text-anchor="middle" fill="#34d399" font-size="13" font-weight="600" font-family="sans-serif">「もう少し早くやろう！」</text>
+    </svg>
+    <figcaption>時間が「敵」vs「味方」（スライドp.13-14再現）← S03:p.13-14</figcaption>
+  </div>
+
+  <h3 id="c1s6">時間は管理できるのか ── 管理の鉄則</h3>
+  <div class="sw">
+    <svg viewBox="0 0 580 180" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;">
+      <defs><marker id="a2" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3z" fill="#fbbf24"/></marker></defs>
+      <!-- 点線ボックス（スライドの点線枠を再現） -->
+      <rect x="10" y="10" width="480" height="148" rx="7" fill="#1a1f2e" stroke="#5b8dee" stroke-width="1.5" stroke-dasharray="6,3"/>
+      <text x="250" y="46" text-anchor="middle" fill="#e2e8f5" font-size="14" font-family="sans-serif">数値で測れないものは、<tspan fill="#fb923c" font-weight="700">管理できない。</tspan></text>
+      <line x1="250" y1="58" x2="250" y2="78" stroke="#fbbf24" stroke-width="2.5" marker-end="url(#a2)"/>
+      <text x="250" y="96" text-anchor="middle" fill="#e2e8f5" font-size="14" font-family="sans-serif">管理できないものは、<tspan fill="#fb923c" font-weight="700">制御できない。</tspan></text>
+      <line x1="250" y1="108" x2="250" y2="126" stroke="#fbbf24" stroke-width="2.5" marker-end="url(#a2)"/>
+      <text x="250" y="144" text-anchor="middle" fill="#e2e8f5" font-size="14" font-family="sans-serif">制御できないものは、<tspan fill="#fb923c" font-weight="700">なされるがままの状態。</tspan></text>
+      <!-- 結論 -->
+      <text x="290" y="170" text-anchor="middle" fill="#34d399" font-size="14.5" font-weight="700" font-family="sans-serif">∴ 時間は数値で測れる！ ＝ 管理できる！</text>
+    </svg>
+    <figcaption>管理の鉄則（スライドp.15完全再現）← S03:p.15</figcaption>
+  </div>
+
+  <h3 id="c1s7">習慣化へ ── 一日一日の積み重ね</h3>
+  <div class="sw">
+    <svg viewBox="0 0 560 110" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;">
+      <defs><marker id="a3" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3z" fill="#34d399"/></marker></defs>
+      <rect x="10" y="18" width="148" height="74" rx="7" fill="#201015" stroke="#fb923c" stroke-width="1.5" stroke-dasharray="5,2"/>
+      <text x="84" y="44" text-anchor="middle" fill="#fb923c" font-size="12.5" font-weight="700" font-family="sans-serif">できていないこと</text>
+      <text x="84" y="63" text-anchor="middle" fill="#8a99b8" font-size="11.5" font-family="sans-serif">無意識にはできない</text>
+      <text x="84" y="80" text-anchor="middle" fill="#8a99b8" font-size="11.5" font-family="sans-serif">意志・自制心が必要</text>
+      <line x1="158" y1="55" x2="185" y2="55" stroke="#34d399" stroke-width="2" marker-end="url(#a3)"/>
+      <text x="210" y="43" text-anchor="middle" fill="#fbbf24" font-size="12.5" font-weight="700" font-family="sans-serif">癖にする</text>
+      <text x="210" y="60" text-anchor="middle" fill="#fbbf24" font-size="12.5" font-family="sans-serif">日課にする</text>
+      <text x="210" y="77" text-anchor="middle" fill="#fbbf24" font-size="12.5" font-family="sans-serif">習慣化する</text>
+      <line x1="240" y1="55" x2="267" y2="55" stroke="#34d399" stroke-width="2" marker-end="url(#a3)"/>
+      <rect x="272" y="18" width="148" height="74" rx="7" fill="#0f2018" stroke="#34d399" stroke-width="1.5"/>
+      <text x="346" y="44" text-anchor="middle" fill="#34d399" font-size="12.5" font-weight="700" font-family="sans-serif">必ずできること</text>
+      <text x="346" y="63" text-anchor="middle" fill="#8a99b8" font-size="11.5" font-family="sans-serif">例：朝の歯磨き</text>
+      <text x="346" y="80" text-anchor="middle" fill="#8a99b8" font-size="11.5" font-family="sans-serif">当たり前・無意識</text>
+      <rect x="435" y="26" width="118" height="62" rx="7" fill="#1a2535" stroke="#5b8dee" stroke-width="1"/>
+      <text x="494" y="46" text-anchor="middle" fill="#7aa3f5" font-size="11.5" font-weight="700" font-family="sans-serif">目標：</text>
+      <text x="494" y="62" text-anchor="middle" fill="#acc4f0" font-size="11" font-family="sans-serif">「平日○時〜○時は</text>
+      <text x="494" y="78" text-anchor="middle" fill="#acc4f0" font-size="11" font-family="sans-serif">大学の学習」を習慣化</text>
+    </svg>
+    <figcaption>習慣化の仕組み（スライドp.16参照）← S03:p.16</figcaption>
+  </div>
+  <div class="kb"><strong>名言（トム・デマルコ『デッドライン』1999, 日経BP社）：</strong><span class="sp">S03:p.17</span><br>
+  「一日を無駄にする方法はいくらでもある…しかし、一日を取り戻す方法は一つもない。」</div>
+</div>
+
+<!-- ═══════════ CH2 ═══════════ -->
+<div class="card" id="ch2">
+  <h2><span class="num">第2章</span> ドラッカー流時間管理術</h2>
+
+  <h3 id="c2s1">ドラッカーとは</h3>
+  <div class="sw">
+    <svg viewBox="0 0 560 90" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;">
+      <rect x="10" y="10" width="540" height="70" rx="8" fill="#1e2535" stroke="#5b8dee" stroke-width="1.2"/>
+      <text x="280" y="36" text-anchor="middle" fill="#7aa3f5" font-size="14.5" font-weight="700" font-family="sans-serif">Peter F. Drucker（ピーター・F・ドラッカー） 1909〜2005</text>
+      <text x="280" y="56" text-anchor="middle" fill="#fbbf24" font-size="13" font-weight="600" font-family="sans-serif">「マネジメントの神様」「管理の神様」</text>
+      <text x="280" y="73" text-anchor="middle" fill="#8a99b8" font-size="12" font-family="sans-serif">オーストリア・ウィーン生まれ。現代経営学・マネジメント概念の確立者。</text>
+    </svg>
+    <figcaption>ドラッカー紹介（スライドp.22再現）← S03:p.22</figcaption>
+  </div>
+  <p>主著：『経営者の条件』（原題: "The Effective Executive" 1964年 / 邦訳1966年、上田惇生訳、ダイヤモンド社）第2章「汝の時間を知れ（Know thy time）」 <span class="sp">S03:p.23 / [外部補足・確認済]</span></p>
+  <div class="dq">
+    <div class="dqt">「私の観察では、成果をあげる者は仕事からスタートしない。時間からスタートする。計画からもスタートしない。時間が何にとられているかを明らかにすることからスタートする。」</div>
+    <div class="dqs">── P.F.ドラッカー『経営者の条件』第2章（上田惇生訳、ダイヤモンド社）<br><span style="color:#34d399">[外部補足・確認済: リクナビNEXTジャーナル・drucker-studies.com等複数資料で同文確認]</span></div>
+  </div>
+
+  <h3 id="c2s2">時間管理の3ステップ</h3>
+  <div class="sw">
+    <svg viewBox="0 0 540 95" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;">
+      <defs><marker id="as1" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3z" fill="#fbbf24"/></marker></defs>
+      <rect x="10" y="14" width="148" height="64" rx="8" fill="#1e2535" stroke="#fbbf24" stroke-width="2"/>
+      <text x="84" y="40" text-anchor="middle" fill="#fbbf24" font-size="11.5" font-weight="700" font-family="sans-serif">ステップ１</text>
+      <text x="84" y="62" text-anchor="middle" fill="#e2e8f5" font-size="13" font-weight="700" font-family="sans-serif">時間を記録する</text>
+      <text x="84" y="88" text-anchor="middle" fill="#8a99b8" font-size="10.5" font-family="sans-serif">現状把握</text>
+      <line x1="158" y1="46" x2="182" y2="46" stroke="#fbbf24" stroke-width="2" marker-end="url(#as1)"/>
+      <rect x="196" y="14" width="148" height="64" rx="8" fill="#1e2535" stroke="#fb923c" stroke-width="2"/>
+      <text x="270" y="40" text-anchor="middle" fill="#fb923c" font-size="11.5" font-weight="700" font-family="sans-serif">ステップ２</text>
+      <text x="270" y="62" text-anchor="middle" fill="#e2e8f5" font-size="13" font-weight="700" font-family="sans-serif">時間を診断する</text>
+      <text x="270" y="88" text-anchor="middle" fill="#8a99b8" font-size="10.5" font-family="sans-serif">分析・削減</text>
+      <line x1="344" y1="46" x2="368" y2="46" stroke="#fbbf24" stroke-width="2" marker-end="url(#as1)"/>
+      <rect x="382" y="14" width="148" height="64" rx="8" fill="#1e2535" stroke="#34d399" stroke-width="2"/>
+      <text x="456" y="40" text-anchor="middle" fill="#34d399" font-size="11.5" font-weight="700" font-family="sans-serif">ステップ３</text>
+      <text x="456" y="62" text-anchor="middle" fill="#e2e8f5" font-size="13" font-weight="700" font-family="sans-serif">時間を作る</text>
+      <text x="456" y="88" text-anchor="middle" fill="#8a99b8" font-size="10.5" font-family="sans-serif">学習枠の確保</text>
+    </svg>
+    <figcaption>時間管理の3ステップ（スライドp.24完全再現）← S03:p.24</figcaption>
+  </div>
+  <div class="eb"><div class="bl">📚 外部補足・確認済</div>ドラッカー原著では「記録する→整理する（非生産的活動の排除）→まとめる（自由時間を大きくまとめる）」と表現。本講義ではStep2を「診断する」と言い換えており、意味は同じ。<br><span style="font-size:11.5px;color:var(--sub)">出典: sunny-soul.net / d-lab.management / sweeep.ai 等複数資料で確認</span></div>
+
+  <h3 id="c2s3">ステップ1: 時間を記録する</h3>
+  <p>「自分が使っている時間を記録してみる」 <span class="sp">S03:p.25</span></p>
+  <!-- 円グラフ：スライドp.25の凡例を完全再現（朝食・テレビ・通勤・仕事・通勤・夕食・テレビ・ゲーム・入浴・ゲーム・学習・睡眠） -->
+  <div class="sw">
+    <svg viewBox="0 0 580 300" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;">
+      <text x="155" y="20" text-anchor="middle" fill="#e2e8f5" font-size="13.5" font-weight="700" font-family="sans-serif">平日の過ごし方</text>
+            <path d="M155,170 L155.0,40.0 A130,130 0 0,1 280.6,203.6 Z" fill="#9a9a9a" stroke="#0f1117" stroke-width="1.2"/>
+      <path d="M155,170 L280.6,203.6 A130,130 0 0,1 274.7,220.8 Z" fill="#d4c800" stroke="#0f1117" stroke-width="1.2"/>
+      <path d="M155,170 L274.7,220.8 A130,130 0 0,1 257.4,250.0 Z" fill="#8ab880" stroke="#0f1117" stroke-width="1.2"/>
+      <path d="M155,170 L257.4,250.0 A130,130 0 0,1 26.3,188.1 Z" fill="#22a85e" stroke="#0f1117" stroke-width="1.2"/>
+      <path d="M155,170 L26.3,188.1 A130,130 0 0,1 26.0,154.2 Z" fill="#8ab880" stroke="#0f1117" stroke-width="1.2"/>
+      <path d="M155,170 L26.0,154.2 A130,130 0 0,1 29.4,136.4 Z" fill="#d4c468" stroke="#0f1117" stroke-width="1.2"/>
+      <path d="M155,170 L29.4,136.4 A130,130 0 0,1 42.4,105.0 Z" fill="#e0893a" stroke="#0f1117" stroke-width="1.2"/>
+      <path d="M155,170 L42.4,105.0 A130,130 0 0,1 66.3,74.9 Z" fill="#d46a9a" stroke="#0f1117" stroke-width="1.2"/>
+      <path d="M155,170 L66.3,74.9 A130,130 0 0,1 80.4,63.5 Z" fill="#d4d468" stroke="#0f1117" stroke-width="1.2"/>
+      <path d="M155,170 L80.4,63.5 A130,130 0 0,1 100.1,52.2 Z" fill="#d46a9a" stroke="#0f1117" stroke-width="1.2"/>
+      <path d="M155,170 L100.1,52.2 A130,130 0 0,1 155.0,40.0 Z" fill="#2980d4" stroke="#0f1117" stroke-width="2"/>
+
+            <rect x="312" y="28" width="13" height="13" rx="2" fill="#d4c800"/><text x="330" y="39" fill="#e2e8f5" font-size="12"  font-family="sans-serif">朝食</text>
+      <rect x="312" y="50" width="13" height="13" rx="2" fill="#e0893a"/><text x="330" y="61" fill="#e2e8f5" font-size="12"  font-family="sans-serif">テレビ</text>
+      <rect x="312" y="72" width="13" height="13" rx="2" fill="#8ab880"/><text x="330" y="83" fill="#e2e8f5" font-size="12"  font-family="sans-serif">通勤（往）</text>
+      <rect x="312" y="94" width="13" height="13" rx="2" fill="#22a85e"/><text x="330" y="105" fill="#e2e8f5" font-size="12"  font-family="sans-serif">仕事</text>
+      <rect x="312" y="116" width="13" height="13" rx="2" fill="#8ab880"/><text x="330" y="127" fill="#e2e8f5" font-size="12"  font-family="sans-serif">通勤（帰）</text>
+      <rect x="312" y="138" width="13" height="13" rx="2" fill="#d4c468"/><text x="330" y="149" fill="#e2e8f5" font-size="12"  font-family="sans-serif">夕食</text>
+      <rect x="312" y="160" width="13" height="13" rx="2" fill="#e0893a"/><text x="330" y="171" fill="#e2e8f5" font-size="12"  font-family="sans-serif">テレビ</text>
+      <rect x="312" y="182" width="13" height="13" rx="2" fill="#d46a9a"/><text x="330" y="193" fill="#e2e8f5" font-size="12"  font-family="sans-serif">ゲーム</text>
+      <rect x="312" y="204" width="13" height="13" rx="2" fill="#d4d468"/><text x="330" y="215" fill="#e2e8f5" font-size="12"  font-family="sans-serif">入浴</text>
+      <rect x="312" y="226" width="13" height="13" rx="2" fill="#d46a9a"/><text x="330" y="237" fill="#e2e8f5" font-size="12"  font-family="sans-serif">ゲーム</text>
+      <rect x="312" y="248" width="13" height="13" rx="2" fill="#2980d4"/><text x="330" y="259" fill="#7aa3f5" font-size="12" font-weight="600" font-family="sans-serif">学習 ← ここを増やす</text>
+      <rect x="312" y="270" width="13" height="13" rx="2" fill="#9a9a9a"/><text x="330" y="281" fill="#e2e8f5" font-size="12"  font-family="sans-serif">睡眠</text>
+
+      <text x="155" y="288" text-anchor="middle" fill="#fbbf24" font-size="12" font-weight="600" font-family="sans-serif">まず現状を「見える化」する</text>
+    </svg>
+    <figcaption>ステップ1: 平日の時間使用円グラフ（スライドp.25完全再現）← S03:p.25</figcaption>
+  </div>
+
+  <h3 id="c2s4">ステップ2: 時間を診断する</h3>
+  <p>「やる必要のないことを止める」 <span class="sp">S03:p.27</span></p>
+  <div class="sw">
+    <svg viewBox="0 0 580 300" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;">
+      <text x="155" y="20" text-anchor="middle" fill="#e2e8f5" font-size="13.5" font-weight="700" font-family="sans-serif">平日の過ごし方（診断後：ゲーム削除）</text>
+            <path d="M155,170 L155.0,40.0 A130,130 0 0,1 280.6,203.6 Z" fill="#9a9a9a" stroke="#0f1117" stroke-width="1.2"/>
+      <path d="M155,170 L280.6,203.6 A130,130 0 0,1 274.7,220.8 Z" fill="#d4c800" stroke="#0f1117" stroke-width="1.2"/>
+      <path d="M155,170 L274.7,220.8 A130,130 0 0,1 257.4,250.0 Z" fill="#8ab880" stroke="#0f1117" stroke-width="1.2"/>
+      <path d="M155,170 L257.4,250.0 A130,130 0 0,1 26.3,188.1 Z" fill="#22a85e" stroke="#0f1117" stroke-width="1.2"/>
+      <path d="M155,170 L26.3,188.1 A130,130 0 0,1 26.0,154.2 Z" fill="#8ab880" stroke="#0f1117" stroke-width="1.2"/>
+      <path d="M155,170 L26.0,154.2 A130,130 0 0,1 29.4,136.4 Z" fill="#d4c468" stroke="#0f1117" stroke-width="1.2"/>
+      <path d="M155,170 L29.4,136.4 A130,130 0 0,1 42.4,105.0 Z" fill="#e0893a" stroke="#0f1117" stroke-width="1.2"/>
+      <path d="M155,170 L42.4,105.0 A130,130 0 0,1 68.0,73.4 Z" fill="#d4d468" stroke="#0f1117" stroke-width="1.2"/>
+      <path d="M155,170 L68.0,73.4 A130,130 0 0,1 155.0,40.0 Z" fill="#2980d4" stroke="#0f1117" stroke-width="2"/>
+
+      <text x="38" y="76" text-anchor="middle" fill="#fb923c" font-size="14" font-weight="700" font-family="sans-serif">×</text>
+            <rect x="312" y="28" width="13" height="13" rx="2" fill="#d4c800"/><text x="330" y="39" fill="#e2e8f5" font-size="12"  font-family="sans-serif">朝食</text>
+      <rect x="312" y="50" width="13" height="13" rx="2" fill="#e0893a"/><text x="330" y="61" fill="#e2e8f5" font-size="12"  font-family="sans-serif">テレビ</text>
+      <rect x="312" y="72" width="13" height="13" rx="2" fill="#8ab880"/><text x="330" y="83" fill="#e2e8f5" font-size="12"  font-family="sans-serif">通勤</text>
+      <rect x="312" y="94" width="13" height="13" rx="2" fill="#22a85e"/><text x="330" y="105" fill="#e2e8f5" font-size="12"  font-family="sans-serif">仕事</text>
+      <rect x="312" y="116" width="13" height="13" rx="2" fill="#d4c468"/><text x="330" y="127" fill="#e2e8f5" font-size="12"  font-family="sans-serif">夕食</text>
+      <rect x="312" y="138" width="13" height="13" rx="2" fill="#2980d4"/><text x="330" y="149" fill="#7aa3f5" font-size="12" font-weight="600" font-family="sans-serif">学習（拡大）</text>
+      <rect x="312" y="160" width="13" height="13" rx="2" fill="#9a9a9a"/><text x="330" y="171" fill="#e2e8f5" font-size="12"  font-family="sans-serif">睡眠</text>
+      <rect x="312" y="182" width="13" height="13" rx="2" fill="#1e0f0f" stroke="#fb923c" stroke-width="1"/><text x="330" y="193" fill="#fb923c" font-size="12"  font-family="sans-serif">ゲーム（削除）</text>
+
+      <rect x="308" y="220" width="262" height="56" rx="7" fill="#152030" stroke="#5b8dee" stroke-width="1"/>
+      <text x="439" y="240" text-anchor="middle" fill="#7aa3f5" font-size="12" font-weight="700" font-family="sans-serif">診断の3つの問い</text>
+      <text x="316" y="258" fill="#e2e8f5" font-size="11.5" font-family="sans-serif">① やる必要のないことをやめる</text>
+      <text x="316" y="272" fill="#e2e8f5" font-size="11.5" font-family="sans-serif">② もっと短くできるものは？</text>
+    </svg>
+    <figcaption>ステップ2: 診断後の時間配分（スライドp.27完全再現）← S03:p.27</figcaption>
+  </div>
+  <div class="kb"><strong>1日は24時間。何かをやるには、何かをやめるか短くするしかない。</strong> <span class="sp">S03:p.28</span><br>
+  新たに「大学学習」を加えるには：①やめる ②短くする ③同時並行でやる ── この3択のみ。</div>
+
+  <h3 id="c2s5">ステップ3: 時間を作る</h3>
+  <p>「まとまった時間を作る」 <span class="sp">S03:p.29</span></p>
+  <div class="sw">
+    <svg viewBox="0 0 580 300" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;">
+      <text x="155" y="20" text-anchor="middle" fill="#e2e8f5" font-size="13.5" font-weight="700" font-family="sans-serif">平日の過ごし方（学習枠確保後）</text>
+            <path d="M155,170 L155.0,40.0 A130,130 0 0,1 280.6,203.6 Z" fill="#9a9a9a" stroke="#0f1117" stroke-width="1.2"/>
+      <path d="M155,170 L280.6,203.6 A130,130 0 0,1 274.7,220.8 Z" fill="#d4c800" stroke="#0f1117" stroke-width="1.2"/>
+      <path d="M155,170 L274.7,220.8 A130,130 0 0,1 257.4,250.0 Z" fill="#8ab880" stroke="#0f1117" stroke-width="2.5"/>
+      <path d="M155,170 L257.4,250.0 A130,130 0 0,1 26.3,188.1 Z" fill="#22a85e" stroke="#0f1117" stroke-width="1.2"/>
+      <path d="M155,170 L26.3,188.1 A130,130 0 0,1 25.1,174.5 Z" fill="#8ab880" stroke="#0f1117" stroke-width="1.2"/>
+      <path d="M155,170 L25.1,174.5 A130,130 0 0,1 155.0,40.0 Z" fill="#2980d4" stroke="#0f1117" stroke-width="2.5"/>
+
+            <rect x="312" y="28" width="13" height="13" rx="2" fill="#9a9a9a"/><text x="330" y="39" fill="#e2e8f5" font-size="12"  font-family="sans-serif">睡眠</text>
+      <rect x="312" y="50" width="13" height="13" rx="2" fill="#22a85e"/><text x="330" y="61" fill="#e2e8f5" font-size="12"  font-family="sans-serif">仕事</text>
+      <rect x="312" y="72" width="13" height="13" rx="2" fill="#2980d4"/><text x="330" y="83" fill="#7aa3f5" font-size="12" font-weight="700" font-family="sans-serif">学習（まとまった時間）</text>
+      <rect x="312" y="94" width="13" height="13" rx="2" fill="#8ab880"/><text x="330" y="105" fill="#7aa3f5" font-size="12" font-weight="700" font-family="sans-serif">通勤（並行学習）</text>
+      <rect x="312" y="116" width="13" height="13" rx="2" fill="#d4c800"/><text x="330" y="127" fill="#e2e8f5" font-size="12"  font-family="sans-serif">朝食</text>
+
+      <rect x="308" y="148" width="262" height="90" rx="7" fill="#152030" stroke="#5b8dee" stroke-width="1"/>
+      <text x="439" y="168" text-anchor="middle" fill="#7aa3f5" font-size="12" font-weight="700" font-family="sans-serif">時間を作る2つの方法</text>
+      <text x="316" y="188" fill="#e2e8f5" font-size="11.5" font-family="sans-serif">① まとまった時間を確保する</text>
+      <text x="322" y="204" fill="#8a99b8" font-size="11" font-family="sans-serif">帰宅後〇時〜〇時を学習固定枠に</text>
+      <text x="316" y="222" fill="#e2e8f5" font-size="11.5" font-family="sans-serif">② 並行してできる時間を作る</text>
+      <text x="322" y="237" fill="#8a99b8" font-size="11" font-family="sans-serif">通勤中にiPhoneで授業視聴</text>
+    </svg>
+    <figcaption>ステップ3: まとまった時間を作る（スライドp.29完全再現）← S03:p.29</figcaption>
+  </div>
+  <div class="vb"><div class="bl">🎤 音声補足</div>10分勉強してまた何かやってというやり方は立ち上がりまでの時間がかかって非効率。できるだけまとまった60分の時間を確保する。通勤時間にiPhoneで授業を見るのも有効。速度変更して2回聞くなどの工夫をしている学生もいる。 <span class="sp">S05-A</span></div>
+
+  <h3 id="c2s6">効果的な学修時間 ── 集中力の科学</h3>
+  <div class="sw">
+    <svg viewBox="0 0 560 140" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;">
+      <text x="280" y="20" text-anchor="middle" fill="#e2e8f5" font-size="13.5" font-weight="700" font-family="sans-serif">集中力の目安</text>
+      <!-- 超集中 -->
+      <rect x="20" y="32" width="80" height="44" rx="5" fill="#1e2535" stroke="#fbbf24" stroke-width="2"/>
+      <text x="60" y="52" text-anchor="middle" fill="#fbbf24" font-size="11.5" font-weight="700" font-family="sans-serif">超集中</text>
+      <text x="60" y="68" text-anchor="middle" fill="#fbbf24" font-size="13.5" font-weight="700" font-family="monospace">15分</text>
+      <text x="108" y="57" fill="#fbbf24" font-size="14">←</text>
+      <rect x="118" y="47" width="380" height="16" rx="3" fill="#2a3350"/>
+      <rect x="118" y="47" width="95" height="16" rx="3" fill="#fbbf24" opacity=".8"/>
+      <text x="118" y="80" fill="#8a99b8" font-size="10" font-family="monospace">0　　　　15分　　　30分　　　45分　　　60分</text>
+      <!-- 軽い集中 -->
+      <rect x="20" y="88" width="80" height="44" rx="5" fill="#1e2535" stroke="#34d399" stroke-width="2"/>
+      <text x="60" y="108" text-anchor="middle" fill="#34d399" font-size="11.5" font-weight="700" font-family="sans-serif">軽い集中</text>
+      <text x="60" y="124" text-anchor="middle" fill="#34d399" font-size="13.5" font-weight="700" font-family="monospace">60分</text>
+      <text x="108" y="113" fill="#34d399" font-size="14">←</text>
+      <rect x="118" y="100" width="380" height="16" rx="3" fill="#2a3350"/>
+      <rect x="118" y="100" width="380" height="16" rx="3" fill="#34d399" opacity=".5"/>
+    </svg>
+    <figcaption>集中力の科学（スライドp.30再現）← S03:p.30</figcaption>
+  </div>
+  <table class="st">
+    <thead><tr><th>活動</th><th>目安時間</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td>授業視聴（メモしながら）</td><td><strong>約90分</strong></td><td>60分授業だが振り返り込みで実質90分を想定</td></tr>
+      <tr><td>小テスト（振り返りながら）</td><td><strong>約20分</strong></td><td>計算式があれば超過する場合あり</td></tr>
+      <tr><td><strong>1回あたり合計</strong></td><td><strong>約110分</strong></td><td>演習・レポートはこれより長く見積もる</td></tr>
+    </tbody>
+  </table>
+  <span class="sp" style="display:inline-block;margin-top:3px">S03:p.30</span>
+</div>
+
+<!-- ═══════════ CH3 ═══════════ -->
+<div class="card" id="ch3">
+  <h2><span class="num">第3章</span> 計画の立て方</h2>
+
+  <h3 id="c3s1">卒業までの履修科目を考える</h3>
+  <div class="vb"><div class="bl">🎤 音声補足</div>「卒業証書を受け取ってどんな気持ちか」をシミュレーション（※「シュミレーション」は誤記。正しくはシミュレーション）してみる。卒業後に何をしたいか、どの分野を学修したいか、何年で卒業したいかを考えてからカリキュラム・マップを参照して計画を書く。 <span class="sp">S05-A</span></div>
+  <div class="eb"><div class="bl">📖 語注</div><strong>シミュレーション（simulation）</strong> — 「シュミレーション」は誤り。英語 simulate から派生。「趣味（シュミ）」とは無関係。 <span class="sp">S03:p.37</span></div>
+
+  <h3 id="c3s2">全体の履修計画を立てる ── 4ステップ</h3>
+  <div class="sw">
+    <svg viewBox="0 0 560 190" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;">
+      <defs><marker id="ap1" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3z" fill="#fbbf24"/></marker></defs>
+      <!-- Step boxes -->
+      <rect x="10" y="16" width="114" height="72" rx="7" fill="#1e2535" stroke="#fbbf24" stroke-width="1.8"/>
+      <text x="67" y="40" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="700" font-family="sans-serif">ステップ1</text>
+      <text x="67" y="58" text-anchor="middle" fill="#e2e8f5" font-size="12" font-family="sans-serif">今期履修する</text>
+      <text x="67" y="75" text-anchor="middle" fill="#e2e8f5" font-size="12" font-family="sans-serif">科目を紙に書く</text>
+      <text x="67" y="104" text-anchor="middle" fill="#8a99b8" font-size="10.5" font-family="sans-serif">Excelも便利</text>
+      <line x1="124" y1="52" x2="148" y2="52" stroke="#fbbf24" stroke-width="1.8" marker-end="url(#ap1)"/>
+      <rect x="148" y="16" width="114" height="72" rx="7" fill="#1e2535" stroke="#fb923c" stroke-width="1.8"/>
+      <text x="205" y="40" text-anchor="middle" fill="#fb923c" font-size="11" font-weight="700" font-family="sans-serif">ステップ2</text>
+      <text x="205" y="57" text-anchor="middle" fill="#e2e8f5" font-size="12" font-family="sans-serif">科目ごとの</text>
+      <text x="205" y="74" text-anchor="middle" fill="#e2e8f5" font-size="12" font-family="sans-serif">学修時間を書く</text>
+      <text x="205" y="104" text-anchor="middle" fill="#8a99b8" font-size="10.5" font-family="sans-serif">難易度で見積もる</text>
+      <line x1="262" y1="52" x2="286" y2="52" stroke="#fbbf24" stroke-width="1.8" marker-end="url(#ap1)"/>
+      <rect x="286" y="16" width="114" height="72" rx="7" fill="#1e2535" stroke="#34d399" stroke-width="1.8"/>
+      <text x="343" y="38" text-anchor="middle" fill="#34d399" font-size="11" font-weight="700" font-family="sans-serif">ステップ3</text>
+      <text x="343" y="55" text-anchor="middle" fill="#e2e8f5" font-size="12" font-family="sans-serif">何曜日の何時に</text>
+      <text x="343" y="71" text-anchor="middle" fill="#e2e8f5" font-size="12" font-family="sans-serif">勉強するか書く</text>
+      <text x="343" y="104" text-anchor="middle" fill="#8a99b8" font-size="10.5" font-family="sans-serif">月曜9PM-11PMなど</text>
+      <line x1="400" y1="52" x2="424" y2="52" stroke="#fbbf24" stroke-width="1.8" marker-end="url(#ap1)"/>
+      <rect x="424" y="16" width="126" height="72" rx="7" fill="#1e2535" stroke="#a78bfa" stroke-width="1.8"/>
+      <text x="487" y="38" text-anchor="middle" fill="#a78bfa" font-size="11" font-weight="700" font-family="sans-serif">ステップ4</text>
+      <text x="487" y="55" text-anchor="middle" fill="#e2e8f5" font-size="12" font-family="sans-serif">机の前に</text>
+      <text x="487" y="72" text-anchor="middle" fill="#e2e8f5" font-size="12" font-family="sans-serif">書いた紙を貼る</text>
+      <text x="487" y="104" text-anchor="middle" fill="#8a99b8" font-size="10.5" font-family="sans-serif">目に触れることが重要</text>
+      <!-- Example box（スライドp.38の貼り紙イメージ再現） -->
+      <rect x="176" y="122" width="338" height="62" rx="7" fill="#1a2535" stroke="#fbbf24" stroke-width="1.5"/>
+      <!-- ピンどめアイコン -->
+      <text x="184" y="140" fill="#fbbf24" font-size="13">📌</text>
+      <text x="498" y="140" fill="#fbbf24" font-size="13">📌</text>
+      <text x="345" y="140" text-anchor="middle" fill="#fbbf24" font-size="12" font-weight="700" font-family="sans-serif">202x年〇学期</text>
+      <text x="192" y="157" fill="#e2e8f5" font-size="11.5" font-family="monospace">英語Ⅰ　2時間　月曜 9PM-11PM</text>
+      <text x="192" y="173" fill="#e2e8f5" font-size="11.5" font-family="monospace">X入門　2時間　水曜 9PM-11PM</text>
+    </svg>
+    <figcaption>全体の履修計画4ステップ（スライドp.38完全再現）← S03:p.38</figcaption>
+  </div>
+  <div class="vb"><div class="bl">🎤 音声補足</div>スマホのメモは見返す機会が少ない。<strong>壁に貼っておくアナログな方法</strong>が効果的で、目に触れることで頭の中に定着する。大学の「履修計画ツール」も活用を。 <span class="sp">S05-A</span></div>
+
+  <h3 id="c3s3">受講日程に落とし込む</h3>
+  <div class="sw">
+    <svg viewBox="0 0 620 125" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;">
+      <text x="310" y="16" text-anchor="middle" fill="#e2e8f5" font-size="12.5" font-weight="700" font-family="sans-serif">カレンダー落とし込みイメージ</text>
+      <!-- 曜日ヘッダー -->
+      <rect x="8" y="22" width="74" height="22" rx="3" fill="#2a3a6a"/>
+      <text x="45" y="37" text-anchor="middle" fill="#7aa3f5" font-size="11.5" font-weight="700" font-family="sans-serif">月</text>
+      <rect x="85" y="22" width="74" height="22" rx="3" fill="#2a3a6a"/>
+      <text x="122" y="37" text-anchor="middle" fill="#7aa3f5" font-size="11.5" font-weight="700" font-family="sans-serif">火</text>
+      <rect x="162" y="22" width="74" height="22" rx="3" fill="#2a3a6a"/>
+      <text x="199" y="37" text-anchor="middle" fill="#7aa3f5" font-size="11.5" font-weight="700" font-family="sans-serif">水</text>
+      <rect x="239" y="22" width="74" height="22" rx="3" fill="#2a3a6a"/>
+      <text x="276" y="37" text-anchor="middle" fill="#7aa3f5" font-size="11.5" font-weight="700" font-family="sans-serif">木（締切）</text>
+      <rect x="316" y="22" width="74" height="22" rx="3" fill="#2a3a6a"/>
+      <text x="353" y="37" text-anchor="middle" fill="#7aa3f5" font-size="11.5" font-weight="700" font-family="sans-serif">金</text>
+      <rect x="393" y="22" width="74" height="22" rx="3" fill="#1a3a2a"/>
+      <text x="430" y="37" text-anchor="middle" fill="#34d399" font-size="11.5" font-weight="700" font-family="sans-serif">土（予備）</text>
+      <rect x="470" y="22" width="74" height="22" rx="3" fill="#1a3a2a"/>
+      <text x="507" y="37" text-anchor="middle" fill="#34d399" font-size="11.5" font-weight="700" font-family="sans-serif">日（予備）</text>
+      <!-- ─ Row 1 ─ -->
+      <rect x="8" y="47" width="74" height="42" rx="3" fill="#1e2535" stroke="#5b8dee" stroke-width="1"/>
+      <text x="45" y="64" text-anchor="middle" fill="#e2e8f5" font-size="10.5" font-family="sans-serif">□英語Ⅰ</text>
+      <text x="45" y="80" text-anchor="middle" fill="#8a99b8" font-size="10.5" font-family="monospace">#3</text>
+      <rect x="85" y="47" width="74" height="42" rx="3" fill="#1e2535" stroke="#2a3350" stroke-width="1"/>
+      <rect x="162" y="47" width="74" height="42" rx="3" fill="#152520" stroke="#34d399" stroke-width="1.5"/>
+      <text x="199" y="64" text-anchor="middle" fill="#34d399" font-size="10.5" font-weight="700" font-family="sans-serif">☑英語Ⅰ</text>
+      <text x="199" y="80" text-anchor="middle" fill="#34d399" font-size="10.5" font-family="monospace">#3 完了</text>
+      <rect x="239" y="47" width="74" height="42" rx="3" fill="#1e2535" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="276" y="64" text-anchor="middle" fill="#fbbf24" font-size="10.5" font-weight="600" font-family="sans-serif">★提出目標日</text>
+      <text x="276" y="79" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="sans-serif">締切3日前</text>
+      <rect x="316" y="47" width="74" height="42" rx="3" fill="#1e2535" stroke="#2a3350" stroke-width="1"/>
+      <rect x="393" y="47" width="74" height="42" rx="3" fill="#152520" stroke="#34d399" stroke-width="1"/>
+      <text x="430" y="68" text-anchor="middle" fill="#34d399" font-size="10.5" font-family="sans-serif">リカバリー</text>
+      <text x="430" y="81" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="sans-serif">予備</text>
+      <rect x="470" y="47" width="74" height="42" rx="3" fill="#152520" stroke="#34d399" stroke-width="1"/>
+      <text x="507" y="68" text-anchor="middle" fill="#34d399" font-size="10.5" font-family="sans-serif">リカバリー</text>
+      <text x="507" y="81" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="sans-serif">予備</text>
+      <!-- caption -->
+      <text x="310" y="106" text-anchor="middle" fill="#fbbf24" font-size="11.5" font-weight="600" font-family="sans-serif">□=計画  ☑=完了  ★=提出目標日（締切3日前が目安）</text>
+      <text x="310" y="120" text-anchor="middle" fill="#34d399" font-size="11" font-family="sans-serif">土日はリカバリー（予備）として確保しておくことが重要！</text>
+    </svg>
+    <figcaption>カレンダー落とし込みイメージ（スライドp.39-40参照）← S03:p.39-40</figcaption>
+  </div>
+
+  <h3 id="c3s4">G-PDCAサイクル</h3>
+  <div class="sw">
+    <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;">
+    <defs>
+      <marker id="arw" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+        <path d="M0,0 L0,6 L9,3 z" fill="#fbbf24"/>
+      </marker>
+    </defs>
+    <path d="M360.0,45.0 Q428.8,70.3 474.1,127.9" stroke="#fbbf24" fill="none" stroke-width="2.5" marker-end="url(#arw)"/>
+    <path d="M474.1,127.9 Q471.4,201.2 430.5,262.1" stroke="#fbbf24" fill="none" stroke-width="2.5" marker-end="url(#arw)"/>
+    <path d="M430.5,262.1 Q360.0,282.1 289.5,262.1" stroke="#fbbf24" fill="none" stroke-width="2.5" marker-end="url(#arw)"/>
+    <path d="M289.5,262.1 Q248.6,201.2 245.9,127.9" stroke="#fbbf24" fill="none" stroke-width="2.5" marker-end="url(#arw)"/>
+    <path d="M245.9,127.9 Q291.2,70.3 360.0,45.0" stroke="#fbbf24" fill="none" stroke-width="2.5" marker-end="url(#arw)"/>
+    <rect x="306.0" y="19.0" width="108" height="52" rx="8" fill="#1e2535" stroke="#5b8dee" stroke-width="2.2"/>
+    <text x="360.0" y="38.0" text-anchor="middle" fill="#5b8dee" font-size="12" font-weight="700" font-family="sans-serif">目標</text>
+    <text x="360.0" y="56.0" text-anchor="middle" fill="#8a99b8" font-size="11.5" font-family="sans-serif">(Goal)</text>
+    <rect x="420.1" y="101.9" width="108" height="52" rx="8" fill="#1e2535" stroke="#34d399" stroke-width="2.2"/>
+    <text x="474.1" y="120.9" text-anchor="middle" fill="#34d399" font-size="12" font-weight="700" font-family="sans-serif">計画</text>
+    <text x="474.1" y="138.9" text-anchor="middle" fill="#8a99b8" font-size="11.5" font-family="sans-serif">(Plan)</text>
+    <rect x="376.5" y="236.1" width="108" height="52" rx="8" fill="#1e2535" stroke="#fbbf24" stroke-width="2.2"/>
+    <text x="430.5" y="255.1" text-anchor="middle" fill="#fbbf24" font-size="12" font-weight="700" font-family="sans-serif">実行</text>
+    <text x="430.5" y="273.1" text-anchor="middle" fill="#8a99b8" font-size="11.5" font-family="sans-serif">(Do)</text>
+    <rect x="235.5" y="236.1" width="108" height="52" rx="8" fill="#1e2535" stroke="#fb923c" stroke-width="2.2"/>
+    <text x="289.5" y="255.1" text-anchor="middle" fill="#fb923c" font-size="12" font-weight="700" font-family="sans-serif">確認</text>
+    <text x="289.5" y="273.1" text-anchor="middle" fill="#8a99b8" font-size="11.5" font-family="sans-serif">(Check)</text>
+    <rect x="191.9" y="101.9" width="108" height="52" rx="8" fill="#1e2535" stroke="#a78bfa" stroke-width="2.2"/>
+    <text x="245.9" y="120.9" text-anchor="middle" fill="#a78bfa" font-size="12" font-weight="700" font-family="sans-serif">改善</text>
+    <text x="245.9" y="138.9" text-anchor="middle" fill="#8a99b8" font-size="11.5" font-family="sans-serif">(Action)</text>
+    <rect x="535" y="30" width="168" height="118" rx="8" fill="#1a2535" stroke="#fbbf24" stroke-width="1.5"/>
+    <text x="619" y="56" text-anchor="middle" fill="#e2e8f5" font-size="13" font-weight="700" font-family="monospace">6月15日</text>
+    <text x="619" y="78" text-anchor="middle" fill="#fbbf24" font-size="14" font-weight="700" font-family="monospace">□英語Ⅰ ＃3</text>
+    <text x="545" y="96" fill="#8a99b8" font-size="11.5" font-family="sans-serif">やり終えたら↓</text>
+    <text x="619" y="114" text-anchor="middle" fill="#34d399" font-size="13.5" font-weight="700" font-family="monospace">☑英語Ⅰ ＃3</text>
+    <text x="619" y="134" text-anchor="middle" fill="#8a99b8" font-size="12" font-family="monospace" text-decoration="line-through">□英語Ⅰ ＃3</text>
+    </svg>
+    <figcaption>G-PDCAサイクル（スライドp.41完全再現）← S03:p.41</figcaption>
+  </div>
+  <table class="st">
+    <thead><tr><th>文字</th><th>意味</th><th>内容</th></tr></thead>
+    <tbody>
+      <tr><td><strong>G</strong></td><td>Goal（目標）</td><td>今学期の科目を全て完了する、など</td></tr>
+      <tr><td><strong>P</strong></td><td>Plan（計画）</td><td>各科目を何曜日・何時に受講するか計画を立てる</td></tr>
+      <tr><td><strong>D</strong></td><td>Do（実行）</td><td>計画に沿って学習を進める</td></tr>
+      <tr><td><strong>C</strong></td><td>Check（確認）</td><td>終わったら☑チェックまたは取消線を入れる</td></tr>
+      <tr><td><strong>A</strong></td><td>Action（改善）</td><td>遅れがあればリカバリー計画を立てて改善する</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="c3s5">計画 → 実行 → 快感！ → 習慣化</h3>
+  <div class="sw">
+    <svg viewBox="0 0 560 155" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;">
+      <defs><marker id="ah1" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3z" fill="#fbbf24"/></marker></defs>
+      <!-- スライドp.42の「□宿題をする → 達成できた！気持ちイイ！これはいいことなんだ！ → 快感 → ドーパミン分泌 → 習慣化」を再現 -->
+      <rect x="8" y="28" width="118" height="80" rx="7" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="67" y="52" text-anchor="middle" fill="#7aa3f5" font-size="12" font-weight="700" font-family="sans-serif">計画</text>
+      <text x="67" y="71" text-anchor="middle" fill="#e2e8f5" font-size="11.5" font-family="monospace">□宿題をする</text>
+      <text x="67" y="87" text-anchor="middle" fill="#fbbf24" font-size="11.5" font-family="monospace">　☑数学</text>
+      <text x="67" y="102" text-anchor="middle" fill="#8a99b8" font-size="11.5" font-family="monospace">　□英語</text>
+      <line x1="126" y1="68" x2="152" y2="68" stroke="#fbbf24" stroke-width="2" marker-end="url(#ah1)"/>
+      <rect x="156" y="28" width="144" height="80" rx="7" fill="#152520" stroke="#34d399" stroke-width="1.5"/>
+      <text x="228" y="52" text-anchor="middle" fill="#34d399" font-size="12" font-weight="700" font-family="sans-serif">達成できた！</text>
+      <text x="228" y="68" text-anchor="middle" fill="#e2e8f5" font-size="11.5" font-family="sans-serif">気持ちイイ！</text>
+      <text x="228" y="84" text-anchor="middle" fill="#e2e8f5" font-size="11.5" font-family="sans-serif">これはいいことなんだ！</text>
+      <line x1="300" y1="68" x2="326" y2="68" stroke="#fbbf24" stroke-width="2" marker-end="url(#ah1)"/>
+      <!-- 快感（脳のイメージ） -->
+      <rect x="330" y="28" width="100" height="80" rx="7" fill="#1a1a30" stroke="#a78bfa" stroke-width="1.5"/>
+      <text x="380" y="58" text-anchor="middle" fill="#a78bfa" font-size="15">🧠</text>
+      <text x="380" y="76" text-anchor="middle" fill="#fbbf24" font-size="11.5" font-weight="700" font-family="sans-serif">快感！</text>
+      <text x="380" y="99" text-anchor="middle" fill="#8a99b8" font-size="10.5" font-family="sans-serif">ドーパミン分泌</text>
+      <line x1="430" y1="68" x2="452" y2="68" stroke="#fbbf24" stroke-width="2" marker-end="url(#ah1)"/>
+      <rect x="456" y="28" width="96" height="80" rx="7" fill="#201520" stroke="#a78bfa" stroke-width="1.8"/>
+      <text x="504" y="52" text-anchor="middle" fill="#a78bfa" font-size="12" font-weight="700" font-family="sans-serif">習慣化</text>
+      <text x="504" y="70" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="sans-serif">繰り返しが</text>
+      <text x="504" y="85" text-anchor="middle" fill="#e2e8f5" font-size="11" font-family="sans-serif">当然に</text>
+      <text x="504" y="99" text-anchor="middle" fill="#34d399" font-size="10.5" font-family="sans-serif">苦痛→快感へ</text>
+      <text x="280" y="140" text-anchor="middle" fill="#fbbf24" font-size="12" font-weight="600" font-family="sans-serif">チェック・取消線の1アクションが習慣化を生む</text>
+      <text x="280" y="154" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="sans-serif">快感をもたらす脳内ホルモンのドーパミンが分泌される（スライドp.42より）</text>
+    </svg>
+    <figcaption>計画→実行→快感→習慣化（スライドp.42完全再現）← S03:p.42</figcaption>
+  </div>
+
+  <h3 id="c3s6">ゆとりの法則（トム・デマルコ）</h3>
+  <div class="sw">
+    <svg viewBox="0 0 660 250" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;">
+    <!-- タイトル -->
+    <text x="20" y="20" fill="#e2e8f5" font-size="14" font-weight="700" font-family="sans-serif">トム・デマルコ氏提唱：ゆとり（あそび）がないと、変化に対応できない</text>
+    <text x="135" y="30" text-anchor="middle" fill="#34d399" font-size="13.5" font-weight="700" font-family="sans-serif">ゆとりあり（空きマスあり）</text>
+    <text x="135" y="278" text-anchor="middle" fill="#34d399" font-size="12" font-family="sans-serif">変化に対応できる ✓</text>
+    <rect x="28" y="42" width="68" height="68" rx="5" fill="#6a9fd8" stroke="#3a6aaa" stroke-width="2"/><rect x="30" y="44" width="64" height="5" rx="2" fill="#9abfe8" opacity=".6"/><text x="62" y="84" text-anchor="middle" fill="#1a3a6a" font-size="28" font-weight="700" font-family="sans-serif">7</text>
+    <rect x="101" y="42" width="68" height="68" rx="5" fill="#6a9fd8" stroke="#3a6aaa" stroke-width="2"/><rect x="103" y="44" width="64" height="5" rx="2" fill="#9abfe8" opacity=".6"/><text x="135" y="84" text-anchor="middle" fill="#1a3a6a" font-size="28" font-weight="700" font-family="sans-serif">1</text>
+    <rect x="174" y="42" width="68" height="68" rx="5" fill="#6a9fd8" stroke="#3a6aaa" stroke-width="2"/><rect x="176" y="44" width="64" height="5" rx="2" fill="#9abfe8" opacity=".6"/><text x="208" y="84" text-anchor="middle" fill="#1a3a6a" font-size="28" font-weight="700" font-family="sans-serif">6</text>
+    <rect x="28" y="115" width="68" height="68" rx="5" fill="#6a9fd8" stroke="#3a6aaa" stroke-width="2"/><rect x="30" y="117" width="64" height="5" rx="2" fill="#9abfe8" opacity=".6"/><text x="62" y="157" text-anchor="middle" fill="#1a3a6a" font-size="28" font-weight="700" font-family="sans-serif">4</text>
+    <rect x="101" y="115" width="68" height="68" rx="5" fill="#6a9fd8" stroke="#3a6aaa" stroke-width="2"/><rect x="103" y="117" width="64" height="5" rx="2" fill="#9abfe8" opacity=".6"/><text x="135" y="157" text-anchor="middle" fill="#1a3a6a" font-size="28" font-weight="700" font-family="sans-serif">8</text>
+    <rect x="174" y="115" width="68" height="68" rx="4" fill="#2a2a2a" stroke="#1a1a1a" stroke-width="1.5"/>
+    <rect x="28" y="188" width="68" height="68" rx="5" fill="#6a9fd8" stroke="#3a6aaa" stroke-width="2"/><rect x="30" y="190" width="64" height="5" rx="2" fill="#9abfe8" opacity=".6"/><text x="62" y="230" text-anchor="middle" fill="#1a3a6a" font-size="28" font-weight="700" font-family="sans-serif">2</text>
+    <rect x="101" y="188" width="68" height="68" rx="5" fill="#6a9fd8" stroke="#3a6aaa" stroke-width="2"/><rect x="103" y="190" width="64" height="5" rx="2" fill="#9abfe8" opacity=".6"/><text x="135" y="230" text-anchor="middle" fill="#1a3a6a" font-size="28" font-weight="700" font-family="sans-serif">5</text>
+    <rect x="174" y="188" width="68" height="68" rx="5" fill="#6a9fd8" stroke="#3a6aaa" stroke-width="2"/><rect x="176" y="190" width="64" height="5" rx="2" fill="#9abfe8" opacity=".6"/><text x="208" y="230" text-anchor="middle" fill="#1a3a6a" font-size="28" font-weight="700" font-family="sans-serif">3</text>
+    <text x="525" y="30" text-anchor="middle" fill="#f472b6" font-size="13.5" font-weight="700" font-family="sans-serif">ゆとりなし（全マス埋まり）</text>
+    <text x="525" y="278" text-anchor="middle" fill="#f472b6" font-size="12" font-family="sans-serif">何も動けない ✗</text>
+    <rect x="418" y="42" width="68" height="68" rx="5" fill="#6a9fd8" stroke="#3a6aaa" stroke-width="2"/><rect x="420" y="44" width="64" height="5" rx="2" fill="#9abfe8" opacity=".6"/><text x="452" y="84" text-anchor="middle" fill="#1a3a6a" font-size="28" font-weight="700" font-family="sans-serif">7</text>
+    <rect x="491" y="42" width="68" height="68" rx="5" fill="#6a9fd8" stroke="#3a6aaa" stroke-width="2"/><rect x="493" y="44" width="64" height="5" rx="2" fill="#9abfe8" opacity=".6"/><text x="525" y="84" text-anchor="middle" fill="#1a3a6a" font-size="28" font-weight="700" font-family="sans-serif">1</text>
+    <rect x="564" y="42" width="68" height="68" rx="5" fill="#6a9fd8" stroke="#3a6aaa" stroke-width="2"/><rect x="566" y="44" width="64" height="5" rx="2" fill="#9abfe8" opacity=".6"/><text x="598" y="84" text-anchor="middle" fill="#1a3a6a" font-size="28" font-weight="700" font-family="sans-serif">6</text>
+    <rect x="418" y="115" width="68" height="68" rx="5" fill="#6a9fd8" stroke="#3a6aaa" stroke-width="2"/><rect x="420" y="117" width="64" height="5" rx="2" fill="#9abfe8" opacity=".6"/><text x="452" y="157" text-anchor="middle" fill="#1a3a6a" font-size="28" font-weight="700" font-family="sans-serif">4</text>
+    <rect x="491" y="115" width="68" height="68" rx="5" fill="#6a9fd8" stroke="#3a6aaa" stroke-width="2"/><rect x="493" y="117" width="64" height="5" rx="2" fill="#9abfe8" opacity=".6"/><text x="525" y="157" text-anchor="middle" fill="#1a3a6a" font-size="28" font-weight="700" font-family="sans-serif">8</text>
+    <rect x="564" y="115" width="68" height="68" rx="5" fill="#6a9fd8" stroke="#3a6aaa" stroke-width="2"/><rect x="566" y="117" width="64" height="5" rx="2" fill="#9abfe8" opacity=".6"/><text x="598" y="157" text-anchor="middle" fill="#1a3a6a" font-size="28" font-weight="700" font-family="sans-serif">3</text>
+    <rect x="418" y="188" width="68" height="68" rx="5" fill="#6a9fd8" stroke="#3a6aaa" stroke-width="2"/><rect x="420" y="190" width="64" height="5" rx="2" fill="#9abfe8" opacity=".6"/><text x="452" y="230" text-anchor="middle" fill="#1a3a6a" font-size="28" font-weight="700" font-family="sans-serif">2</text>
+    <rect x="491" y="188" width="68" height="68" rx="5" fill="#6a9fd8" stroke="#3a6aaa" stroke-width="2"/><rect x="493" y="190" width="64" height="5" rx="2" fill="#9abfe8" opacity=".6"/><text x="525" y="230" text-anchor="middle" fill="#1a3a6a" font-size="28" font-weight="700" font-family="sans-serif">5</text>
+    <rect x="564" y="188" width="68" height="68" rx="5" fill="#6a9fd8" stroke="#3a6aaa" stroke-width="2"/><rect x="566" y="190" width="64" height="5" rx="2" fill="#9abfe8" opacity=".6"/><text x="598" y="230" text-anchor="middle" fill="#1a3a6a" font-size="28" font-weight="700" font-family="sans-serif">9</text>
+    <text x="330" y="141" text-anchor="middle" fill="#fbbf24" font-size="13.5" font-weight="700" font-family="sans-serif">変化に対応</text>
+    <!-- 左向き矢印 -->
+    <polygon points="258,159 296,133 296,185" fill="#fbbf24"/>
+    <!-- 右向き矢印 -->
+    <polygon points="402,159 364,133 364,185" fill="#fbbf24"/>
+    </svg>
+    <figcaption>ゆとりの法則スライドパズル（スライドp.43完全再現）← S03:p.43</figcaption>
+  </div>
+  <div class="kb"><strong>「ゆとり（あそび）がないと、変化に対応できない」</strong> ── トム・デマルコ <span class="sp">S03:p.43</span><br>スケジュールを詰め込みすぎると、バス遅延・体調不良などの小さな変化でも計画全体が崩れる。バッファを意図的に設けることで全体が回る。</div>
+  <div class="eb"><div class="bl">📚 外部補足・確認済</div>出典: トム・デマルコ著『ゆとりの法則 ─誰も書かなかったプロジェクト管理の誤解─』（原題: "Slack: Getting Past Burnout, Busywork, and the Myth of Total Efficiency"、2001年、伊豆原弓訳、日経BP社）<br><span style="font-size:11.5px;color:var(--sub)">Amazon・pmaj.or.jp等複数資料で書誌情報確認済</span></div>
+
+  <h3 id="c3s7">変更管理・朝活のススメ・リカバリー</h3>
+  <div class="kb"><strong>鉄則: 「計画は悲観的に、実行は楽観的に」</strong> <span class="sp">S03:p.44</span><br>
+  予想外は必ず起きる（起きないことはない）。計画にバッファを組み込む。計画に時間を取りすぎても失敗。</div>
+
+  <div class="sw">
+    <svg viewBox="0 0 560 110" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;">
+      <!-- 朝活のススメ（スライドp.45完全再現） -->
+      <text x="280" y="18" text-anchor="middle" fill="#fbbf24" font-size="14" font-weight="700" font-family="sans-serif">朝活のススメ</text>
+      <rect x="8" y="28" width="248" height="72" rx="8" fill="#1e1525" stroke="#f472b6" stroke-width="1.5"/>
+      <text x="132" y="51" text-anchor="middle" fill="#f472b6" font-size="13" font-weight="700" font-family="sans-serif">夜の時間（コントロール困難）</text>
+      <text x="132" y="70" text-anchor="middle" fill="#8a99b8" font-size="12" font-family="sans-serif">残業・飲み会・突発予定に侵食される</text>
+      <text x="132" y="89" text-anchor="middle" fill="#8a99b8" font-size="12" font-family="sans-serif">自分の意図しない予定が入りやすい</text>
+      <rect x="304" y="28" width="248" height="72" rx="8" fill="#142018" stroke="#34d399" stroke-width="2"/>
+      <text x="428" y="51" text-anchor="middle" fill="#34d399" font-size="13" font-weight="700" font-family="sans-serif">朝の時間（コントロール可能）</text>
+      <text x="428" y="70" text-anchor="middle" fill="#e2e8f5" font-size="12" font-family="sans-serif">自分で確保しやすい時間帯</text>
+      <text x="428" y="89" text-anchor="middle" fill="#fbbf24" font-size="12" font-weight="600" font-family="sans-serif">★ まず1時間からやってみる</text>
+    </svg>
+    <figcaption>朝活のススメ（スライドp.45完全再現）← S03:p.45</figcaption>
+  </div>
+  <div class="vb"><div class="bl">🎤 音声補足</div>早期卒業生は全員朝型が多い（スライドp.45より）。夜は残業・飲み会など自分でコントロールできないことが多い。朝は誰にも邪魔されにくい。まず1時間だけ試してみる。 <span class="sp">S03:p.45</span></div>
+
+  <div class="sw">
+    <svg viewBox="0 0 540 88" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;">
+      <text x="270" y="17" text-anchor="middle" fill="#e2e8f5" font-size="13" font-weight="700" font-family="sans-serif">リカバリーの目安</text>
+      <rect x="10" y="26" width="152" height="56" rx="7" fill="#142018" stroke="#34d399" stroke-width="2"/>
+      <text x="86" y="48" text-anchor="middle" fill="#34d399" font-size="13" font-weight="700" font-family="sans-serif">その週のうちに</text>
+      <text x="86" y="66" text-anchor="middle" fill="#34d399" font-size="12" font-family="sans-serif">理想的（ベスト）</text>
+      <rect x="174" y="26" width="192" height="56" rx="7" fill="#1e2818" stroke="#fbbf24" stroke-width="1.8"/>
+      <text x="270" y="48" text-anchor="middle" fill="#fbbf24" font-size="13" font-weight="700" font-family="sans-serif">2週間までに</text>
+      <text x="270" y="66" text-anchor="middle" fill="#fbbf24" font-size="12" font-family="sans-serif">なんとかできる</text>
+      <rect x="378" y="26" width="152" height="56" rx="7" fill="#1e1015" stroke="#f472b6" stroke-width="1.8"/>
+      <text x="454" y="48" text-anchor="middle" fill="#f472b6" font-size="13" font-weight="700" font-family="sans-serif">3週間となると</text>
+      <text x="454" y="66" text-anchor="middle" fill="#f472b6" font-size="12" font-family="sans-serif">実質難しい</text>
+    </svg>
+    <figcaption>リカバリーの目安（スライドp.46完全再現）← S03:p.46</figcaption>
+  </div>
+</div>
+
+<!-- ═══════════ CH4 ═══════════ -->
+<div class="card" id="ch4">
+  <h2><span class="num">第4章</span> 学修環境を整える</h2>
+
+  <h3 id="c4s1">計画を段取りへ</h3>
+  <div class="sw">
+    <svg viewBox="0 0 700 140" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;">
+      <defs><marker id="adg2" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3z" fill="#fbbf24"/></marker></defs>
+      <!-- 左ボックス: 計画 -->
+      <rect x="10" y="20" width="200" height="90" rx="8" fill="#1e2535" stroke="#5b8dee" stroke-width="1.8"/>
+      <text x="110" y="52" text-anchor="middle" fill="#7aa3f5" font-size="14" font-weight="700" font-family="sans-serif">計画</text>
+      <text x="110" y="74" text-anchor="middle" fill="#8a99b8" font-size="12" font-family="sans-serif">実現可能性の高い計画</text>
+      <text x="110" y="92" text-anchor="middle" fill="#8a99b8" font-size="12" font-family="sans-serif">＋ 人的なサポート</text>
+      <!-- 矢印 -->
+      <line x1="210" y1="65" x2="238" y2="65" stroke="#fbbf24" stroke-width="2.5" marker-end="url(#adg2)"/>
+      <!-- 中央ラベル -->
+      <text x="282" y="62" text-anchor="middle" fill="#fbbf24" font-size="15" font-weight="700" font-family="sans-serif">段取り</text>
+      <!-- 矢印 -->
+      <line x1="322" y1="65" x2="350" y2="65" stroke="#fbbf24" stroke-width="2.5" marker-end="url(#adg2)"/>
+      <!-- 右ボックス: 裏付けのある計画 -->
+      <rect x="354" y="20" width="336" height="90" rx="8" fill="#142018" stroke="#34d399" stroke-width="1.8"/>
+      <text x="522" y="48" text-anchor="middle" fill="#34d399" font-size="14" font-weight="700" font-family="sans-serif">裏付けのある計画</text>
+      <text x="522" y="68" text-anchor="middle" fill="#e2e8f5" font-size="12.5" font-family="sans-serif">実現可能性が高く</text>
+      <text x="522" y="88" text-anchor="middle" fill="#e2e8f5" font-size="12.5" font-family="sans-serif">周りの人の約束（賛同）がある</text>
+      <!-- 下注釈 -->
+      <text x="350" y="128" text-anchor="middle" fill="#fbbf24" font-size="12.5" font-family="sans-serif">「プロジェクトマネジメント」を日本語にすると「段取り」</text>
+    </svg>
+    <figcaption>計画を段取りへ（スライドp.51完全再現）← S03:p.51</figcaption>
+  </div>
+  <div class="kb"><strong>段取りの定義:</strong> 計画を立て、それが実行できるように「約束」を取り付けるまでの行為。<br>
+  「約束」とは自分だけの誓いでなく、<strong>周りの人（家族・職場・友人）も計画を知っていて応援してくれる状況</strong>を作ること。 <span class="sp">S03:p.51</span></div>
+
+  <h3 id="c4s2">サポート体制を作ろう</h3>
+  <div class="sw">
+    <svg viewBox="0 0 560 155" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;">
+      <text x="280" y="18" text-anchor="middle" fill="#e2e8f5" font-size="13" font-weight="700" font-family="sans-serif">サポート体制の3要素</text>
+      <rect x="10" y="30" width="166" height="118" rx="8" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="93" y="54" text-anchor="middle" fill="#7aa3f5" font-size="12.5" font-weight="700" font-family="sans-serif">① 人的サポート</text>
+      <text x="93" y="71" text-anchor="middle" fill="#7aa3f5" font-size="11" font-family="sans-serif">（家庭・職場）</text>
+      <text x="93" y="92" text-anchor="middle" fill="#e2e8f5" font-size="11.5" font-family="sans-serif">家族・友人・職場に</text>
+      <text x="93" y="109" text-anchor="middle" fill="#e2e8f5" font-size="11.5" font-family="sans-serif">大学のことを話す</text>
+      <text x="93" y="126" text-anchor="middle" fill="#fbbf24" font-size="11" font-family="sans-serif">「ただいま勉強中！」</text>
+      <text x="93" y="141" text-anchor="middle" fill="#fbbf24" font-size="11" font-family="sans-serif">を机の前に貼る</text>
+      <rect x="197" y="30" width="166" height="118" rx="8" fill="#1e2535" stroke="#34d399" stroke-width="1.5"/>
+      <text x="280" y="54" text-anchor="middle" fill="#34d399" font-size="12.5" font-weight="700" font-family="sans-serif">② 大学のサポート</text>
+      <text x="280" y="76" text-anchor="middle" fill="#e2e8f5" font-size="11.5" font-family="sans-serif">・公式コミュニティ</text>
+      <text x="280" y="94" text-anchor="middle" fill="#e2e8f5" font-size="11.5" font-family="sans-serif">・クラス内ディベート</text>
+      <text x="280" y="112" text-anchor="middle" fill="#e2e8f5" font-size="11.5" font-family="sans-serif">・TA/LA に相談</text>
+      <text x="280" y="130" text-anchor="middle" fill="#e2e8f5" font-size="11.5" font-family="sans-serif">・教員に相談</text>
+      <rect x="384" y="30" width="168" height="118" rx="8" fill="#1e2535" stroke="#a78bfa" stroke-width="1.5"/>
+      <text x="468" y="54" text-anchor="middle" fill="#a78bfa" font-size="12.5" font-weight="700" font-family="sans-serif">③ 場所・ツール</text>
+      <text x="468" y="76" text-anchor="middle" fill="#e2e8f5" font-size="11.5" font-family="sans-serif">勉強空間の確保</text>
+      <text x="468" y="94" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="sans-serif">（静か・適度な広さ）</text>
+      <text x="468" y="112" text-anchor="middle" fill="#e2e8f5" font-size="11.5" font-family="sans-serif">PC/iPad/スマホ</text>
+      <text x="468" y="130" text-anchor="middle" fill="#e2e8f5" font-size="11.5" font-family="sans-serif">Google Apps/手帳</text>
+    </svg>
+    <figcaption>サポート体制3要素（スライドp.52-54再現）← S03:p.52-54</figcaption>
+  </div>
+
+  <h3 id="c4s3">不安感を課題にして解決へ</h3>
+  <div class="sw">
+    <svg viewBox="0 0 680 200" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;">
+      <defs>
+        <marker id="ar_g" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3z" fill="#34d399"/></marker>
+        <marker id="ar_p" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3z" fill="#f472b6"/></marker>
+      </defs>
+      <!-- 不安ボックス（左） -->
+      <rect x="10" y="76" width="110" height="54" rx="8" fill="#1e1015" stroke="#fb923c" stroke-width="2"/>
+      <text x="65" y="100" text-anchor="middle" fill="#fb923c" font-size="16" font-weight="700" font-family="sans-serif">不安</text>
+      <text x="65" y="119" text-anchor="middle" fill="#8a99b8" font-size="11.5" font-family="sans-serif">どうしよう…</text>
+      <!-- 上ルート（書き出す → 課題認識 → 解決） -->
+      <line x1="120" y1="90" x2="158" y2="58" stroke="#34d399" stroke-width="2" marker-end="url(#ar_g)"/>
+      <text x="148" y="60" fill="#34d399" font-size="12" font-weight="600" font-family="sans-serif">書き出す</text>
+      <!-- 課題認識ボックス -->
+      <rect x="168" y="26" width="160" height="50" rx="7" fill="#142018" stroke="#34d399" stroke-width="1.8"/>
+      <text x="248" y="48" text-anchor="middle" fill="#34d399" font-size="13" font-weight="700" font-family="sans-serif">課題として認識</text>
+      <text x="248" y="65" text-anchor="middle" fill="#8a99b8" font-size="11.5" font-family="sans-serif">（言語化・メモ）</text>
+      <!-- → 解決 -->
+      <line x1="328" y1="51" x2="364" y2="51" stroke="#34d399" stroke-width="2" marker-end="url(#ar_g)"/>
+      <!-- 解決ボックス -->
+      <rect x="368" y="26" width="160" height="50" rx="7" fill="#142018" stroke="#34d399" stroke-width="1.8"/>
+      <text x="448" y="48" text-anchor="middle" fill="#34d399" font-size="13" font-weight="700" font-family="sans-serif">解決！</text>
+      <text x="448" y="65" text-anchor="middle" fill="#8a99b8" font-size="11.5" font-family="sans-serif">（リカバリー計画等）</text>
+      <!-- 下ルート（放置 → ますます不安） -->
+      <line x1="120" y1="116" x2="158" y2="148" stroke="#f472b6" stroke-width="1.8" stroke-dasharray="5,2" marker-end="url(#ar_p)"/>
+      <text x="148" y="168" fill="#f472b6" font-size="12" font-family="sans-serif">放置</text>
+      <!-- ますます不安ボックス -->
+      <rect x="168" y="128" width="160" height="50" rx="7" fill="#1e0f18" stroke="#f472b6" stroke-width="1.2" stroke-dasharray="5,2"/>
+      <text x="248" y="150" text-anchor="middle" fill="#f472b6" font-size="13" font-weight="600" font-family="sans-serif">ますます不安…</text>
+      <text x="248" y="168" text-anchor="middle" fill="#8a99b8" font-size="11.5" font-family="sans-serif">不安が不安を増殖</text>
+      <!-- 吹き出し群 -->
+      <ellipse cx="540" cy="100" rx="68" ry="28" fill="#1a1a2a" stroke="#8a99b8" stroke-width="1"/>
+      <text x="540" y="96" text-anchor="middle" fill="#8a99b8" font-size="12" font-family="sans-serif">どうしよう…</text>
+      <ellipse cx="610" cy="158" rx="60" ry="24" fill="#1a1a2a" stroke="#8a99b8" stroke-width="1"/>
+      <text x="610" y="162" text-anchor="middle" fill="#8a99b8" font-size="12" font-family="sans-serif">どうしよう…</text>
+    </svg>
+    <figcaption>不安感を課題にして解決へ（スライドp.55再現）← S03:p.55</figcaption>
+  </div>
+  <div class="kb"><strong>頭の中で思っているだけだと不安は不安を呼んで大きくなっていく。</strong><br>書き出して<strong>言語化・明示化</strong>することで解決への道が開ける。スマホのメモに書き落とすだけでも心理的負荷が軽減される。 <span class="sp">S03:p.55</span></div>
+
+  <h3 id="c4s4">手帳で3度楽しむ</h3>
+  <div class="sw">
+    <svg viewBox="0 0 700 165" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;">
+      <!-- ① 計画で楽しむ -->
+      <rect x="10" y="14" width="208" height="136" rx="8" fill="#1e2535" stroke="#5b8dee" stroke-width="2"/>
+      <text x="114" y="44" text-anchor="middle" fill="#7aa3f5" font-size="14" font-weight="700" font-family="sans-serif">①計画で楽しむ</text>
+      <line x1="22" y1="54" x2="206" y2="54" stroke="#2a3350" stroke-width="1"/>
+      <text x="114" y="74" text-anchor="middle" fill="#e2e8f5" font-size="12.5" font-family="sans-serif">⇒ 計画で仮想実行</text>
+      <text x="114" y="94" text-anchor="middle" fill="#8a99b8" font-size="12" font-family="sans-serif">カレンダー上でシミュレーション</text>
+      <text x="114" y="114" text-anchor="middle" fill="#8a99b8" font-size="12" font-family="sans-serif">「春学期が組めた！」</text>
+      <!-- ② 実行で楽しむ -->
+      <rect x="246" y="14" width="208" height="136" rx="8" fill="#1e2535" stroke="#fbbf24" stroke-width="2"/>
+      <text x="350" y="44" text-anchor="middle" fill="#fbbf24" font-size="14" font-weight="700" font-family="sans-serif">②実行で楽しむ</text>
+      <line x1="258" y1="54" x2="442" y2="54" stroke="#2a3350" stroke-width="1"/>
+      <text x="350" y="74" text-anchor="middle" fill="#e2e8f5" font-size="12.5" font-family="sans-serif">⇒ 実行したらチェックで達成感</text>
+      <text x="350" y="96" text-anchor="middle" fill="#34d399" font-size="13" font-weight="600" font-family="monospace">☑完了 → ドーパミン</text>
+      <text x="350" y="116" text-anchor="middle" fill="#8a99b8" font-size="12" font-family="sans-serif">「できた！」の積み重ね</text>
+      <!-- ③ 振返りで楽しむ -->
+      <rect x="482" y="14" width="208" height="136" rx="8" fill="#1e2535" stroke="#a78bfa" stroke-width="2"/>
+      <text x="586" y="44" text-anchor="middle" fill="#a78bfa" font-size="14" font-weight="700" font-family="sans-serif">③振返りで楽しむ</text>
+      <line x1="494" y1="54" x2="678" y2="54" stroke="#2a3350" stroke-width="1"/>
+      <text x="586" y="74" text-anchor="middle" fill="#e2e8f5" font-size="12.5" font-family="sans-serif">⇒ アウトプットは？</text>
+      <text x="586" y="94" text-anchor="middle" fill="#8a99b8" font-size="12.5" font-family="sans-serif">満足できるか？</text>
+      <text x="586" y="114" text-anchor="middle" fill="#8a99b8" font-size="12.5" font-family="sans-serif">改善点は何か？</text>
+    </svg>
+    <figcaption>手帳で3度楽しむ（スライドp.57完全再現）← S03:p.57</figcaption>
+  </div>
+  <table class="st">
+    <thead><tr><th>#</th><th>手帳活用のコツ</th><th>理由・詳細</th></tr></thead>
+    <tbody>
+      <tr><td>①</td><td>予定を立てる習慣 / <strong>手帳は1冊</strong></td><td>複数冊はダブルブッキング・空き時間ムダが発生。デジタルも1ツールで完結させる。</td></tr>
+      <tr><td>②</td><td>計画にあることだけをやる</td><td>突発事項も必ず計画に入れてから対処する。</td></tr>
+      <tr><td>③</td><td>予定は1時間単位で</td><td>集中力の限界（60分）を意識してメリハリをつける。</td></tr>
+      <tr><td>④</td><td>長期プランは一覧性重視</td><td>半年・1年を一覧できるページで進捗把握を容易に。</td></tr>
+      <tr><td>⑤</td><td>気づいたことをメモする</td><td>デジタルカレンダーは手書きメモが不得意。アナログ手帳との併用も効果的。</td></tr>
+    </tbody>
+  </table>
+  <span class="sp" style="display:inline-block;margin-top:3px">S03:p.56</span>
+
+  <h3 id="c4s5">在学生の一日 ── ペースの目安</h3>
+  <div class="kb">4年間で卒業: <strong>124単位</strong> ÷ 4年 ＝ 年間31単位 ÷ 2学期 ＝ <strong>半期約16単位</strong>（2単位科目8科目履修）<br>
+  基本目安: <strong>1科目あたり1.5〜2時間</strong> ／ 休日集中より<strong>平日コツコツ</strong>が継続のコツ <span class="sp">S03:p.60</span></div>
+
+  <h4>社会人Aさん（27歳）── 平日スケジュール</h4>
+  <div class="sw">
+    <svg viewBox="0 0 590 380" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;">
+    <path d="M165,190 L165.0,70.0 A120,120 0 0,1 285.0,190.0 Z" fill="#7a7a9a" stroke="#0f1117" stroke-width="1"/>
+    <path d="M165,190 L285.0,190.0 A120,120 0 0,1 275.9,235.9 Z" fill="#8aaa70" stroke="#0f1117" stroke-width="1"/>
+    <path d="M165,190 L275.9,235.9 A120,120 0 0,1 260.2,263.1 Z" fill="#1a70d4" stroke="#0f1117" stroke-width="1"/>
+    <path d="M165,190 L260.2,263.1 A120,120 0 0,1 249.9,274.9 Z" fill="#5a8a50" stroke="#0f1117" stroke-width="1"/>
+    <path d="M165,190 L249.9,274.9 A120,120 0 0,1 49.1,158.9 Z" fill="#22a85e" stroke="#0f1117" stroke-width="1"/>
+    <path d="M165,190 L49.1,158.9 A120,120 0 0,1 80.1,105.1 Z" fill="#b86820" stroke="#0f1117" stroke-width="1"/>
+    <path d="M165,190 L80.1,105.1 A120,120 0 0,1 133.9,74.1 Z" fill="#1a70d4" stroke="#0f1117" stroke-width="1"/>
+    <path d="M165,190 L133.9,74.1 A120,120 0 0,1 165.0,70.0 Z" fill="#2a1f38" stroke="#0f1117" stroke-width="1"/>
+    <circle cx="165" cy="190" r="134" fill="none" stroke="#3a4a6a" stroke-width="1.8"/>
+    <line x1="165.0" y1="70.0" x2="165.0" y2="56.0" stroke="#4a5a7a" stroke-width="1.2"/>
+    <line x1="197.6" y1="68.3" x2="199.7" y2="60.6" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="228.0" y1="80.9" x2="232.0" y2="74.0" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="254.1" y1="100.9" x2="259.8" y2="95.2" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="274.1" y1="127.0" x2="281.0" y2="123.0" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="286.7" y1="157.4" x2="294.4" y2="155.3" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="285.0" y1="190.0" x2="299.0" y2="190.0" stroke="#4a5a7a" stroke-width="1.2"/>
+    <line x1="286.7" y1="222.6" x2="294.4" y2="224.7" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="274.1" y1="253.0" x2="281.0" y2="257.0" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="254.1" y1="279.1" x2="259.8" y2="284.8" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="228.0" y1="299.1" x2="232.0" y2="306.0" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="197.6" y1="311.7" x2="199.7" y2="319.4" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="165.0" y1="310.0" x2="165.0" y2="324.0" stroke="#4a5a7a" stroke-width="1.2"/>
+    <line x1="132.4" y1="311.7" x2="130.3" y2="319.4" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="102.0" y1="299.1" x2="98.0" y2="306.0" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="75.9" y1="279.1" x2="70.2" y2="284.8" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="55.9" y1="253.0" x2="49.0" y2="257.0" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="43.3" y1="222.6" x2="35.6" y2="224.7" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="45.0" y1="190.0" x2="31.0" y2="190.0" stroke="#4a5a7a" stroke-width="1.2"/>
+    <line x1="43.3" y1="157.4" x2="35.6" y2="155.3" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="55.9" y1="127.0" x2="49.0" y2="123.0" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="75.9" y1="100.9" x2="70.2" y2="95.2" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="102.0" y1="80.9" x2="98.0" y2="74.0" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="132.4" y1="68.3" x2="130.3" y2="60.6" stroke="#4a5a7a" stroke-width="0.5"/>
+    <text x="165.0" y="40.0" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="monospace">0</text>
+    <text x="240.0" y="60.1" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="monospace">2</text>
+    <text x="294.9" y="115.0" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="monospace">4</text>
+    <text x="315.0" y="190.0" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="monospace">6</text>
+    <text x="294.9" y="265.0" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="monospace">8</text>
+    <text x="240.0" y="319.9" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="monospace">10</text>
+    <text x="165.0" y="340.0" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="monospace">12</text>
+    <text x="90.0" y="319.9" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="monospace">14</text>
+    <text x="35.1" y="265.0" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="monospace">16</text>
+    <text x="15.0" y="190.0" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="monospace">18</text>
+    <text x="35.1" y="115.0" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="monospace">20</text>
+    <text x="90.0" y="60.1" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="monospace">22</text>
+    <text x="165" y="184" text-anchor="middle" fill="#e2e8f5" font-size="12" font-weight="700" font-family="sans-serif">Aさん</text>
+    <text x="165" y="200" text-anchor="middle" fill="#8a99b8" font-size="11" font-family="sans-serif">【平日】</text>
+    <rect x="345" y="16" width="235" height="52" rx="6" fill="#1e2535" stroke="#fbbf24" stroke-width="1.5"/>
+    <text x="355" y="36" fill="#fbbf24" font-size="11.5" font-weight="700" font-family="sans-serif">Point</text>
+    <text x="355" y="57" fill="#e2e8f5" font-size="12" font-family="sans-serif">通勤時間にiPhoneで勉強</text>
+    <text x="345" y="80" fill="#7aa3f5" font-size="12.5" font-weight="700" font-family="sans-serif">1日の学習時間</text>
+    <text x="345" y="102" fill="#fbbf24" font-size="12.5"  font-family="sans-serif">1科目 7:30〜8:30</text>
+    <text x="345" y="124" fill="#fbbf24" font-size="12.5"  font-family="sans-serif">2科目 19:00〜21:00</text>
+    <text x="345" y="146" fill="#34d399" font-size="12.5" font-weight="700" font-family="sans-serif">合計 3時間</text>
+    <rect x="345" y="176" width="13" height="13" rx="3" fill="#7a7a9a"/>
+    <text x="363" y="187" fill="#c3d1f0" font-size="12" font-family="sans-serif">睡眠</text>
+    <text x="582" y="187" text-anchor="end" fill="#8a99b8" font-size="11" font-family="sans-serif">0:00〜6:00</text>
+    <rect x="345" y="198" width="13" height="13" rx="3" fill="#8aaa70"/>
+    <text x="363" y="209" fill="#c3d1f0" font-size="12" font-family="sans-serif">準備</text>
+    <text x="582" y="209" text-anchor="end" fill="#8a99b8" font-size="11" font-family="sans-serif">6:00〜7:30</text>
+    <rect x="345" y="220" width="13" height="13" rx="3" fill="#1a70d4"/>
+    <text x="363" y="231" fill="#c3d1f0" font-size="12" font-family="sans-serif">学習①</text>
+    <text x="582" y="231" text-anchor="end" fill="#8a99b8" font-size="11" font-family="sans-serif">7:30〜8:30 ★</text>
+    <rect x="345" y="242" width="13" height="13" rx="3" fill="#5a8a50"/>
+    <text x="363" y="253" fill="#c3d1f0" font-size="12" font-family="sans-serif">通勤</text>
+    <text x="582" y="253" text-anchor="end" fill="#8a99b8" font-size="11" font-family="sans-serif">8:30〜9:00</text>
+    <rect x="345" y="264" width="13" height="13" rx="3" fill="#22a85e"/>
+    <text x="363" y="275" fill="#c3d1f0" font-size="12" font-family="sans-serif">仕事</text>
+    <text x="582" y="275" text-anchor="end" fill="#8a99b8" font-size="11" font-family="sans-serif">9:00〜19:00</text>
+    <rect x="345" y="286" width="13" height="13" rx="3" fill="#b86820"/>
+    <text x="363" y="297" fill="#c3d1f0" font-size="12" font-family="sans-serif">夕飯・入浴</text>
+    <text x="582" y="297" text-anchor="end" fill="#8a99b8" font-size="11" font-family="sans-serif">19:00〜21:00</text>
+    <rect x="345" y="308" width="13" height="13" rx="3" fill="#1a70d4"/>
+    <text x="363" y="319" fill="#c3d1f0" font-size="12" font-family="sans-serif">学習②</text>
+    <text x="582" y="319" text-anchor="end" fill="#8a99b8" font-size="11" font-family="sans-serif">19:00〜21:00 ★</text>
+    <rect x="345" y="330" width="13" height="13" rx="3" fill="#2a1f38"/>
+    <text x="363" y="341" fill="#c3d1f0" font-size="12" font-family="sans-serif">就寝前</text>
+    <text x="582" y="341" text-anchor="end" fill="#8a99b8" font-size="11" font-family="sans-serif">23:00〜24:00</text>
+    </svg>
+    <figcaption>Aさん【平日】1日のスケジュール（スライドp.62完全再現）← S03:p.62</figcaption>
+  </div>
+
+  <h4>社会人Aさん（27歳）── 休日スケジュール</h4>
+  <div class="sw">
+    <svg viewBox="0 0 580 330" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;">
+    <path d="M158,165 L158.00,47.00 A118,118 0 0,1 271.98,195.54 Z" fill="#7a7a9a" stroke="#0f1117" stroke-width="1.0"/>
+    <path d="M158,165 L271.98,195.54 A118,118 0 0,1 267.02,210.16 Z" fill="#8aaa70" stroke="#0f1117" stroke-width="1.0"/>
+    <path d="M158,165 L267.02,210.16 A118,118 0 0,1 188.54,278.98 Z" fill="#6a4a2a" stroke="#0f1117" stroke-width="1.0"/>
+    <path d="M158,165 L188.54,278.98 A118,118 0 0,1 158.00,283.00 Z" fill="#9a8a30" stroke="#0f1117" stroke-width="1.0"/>
+    <path d="M158,165 L158.00,283.00 A118,118 0 0,1 44.02,195.54 Z" fill="#c080a0" stroke="#0f1117" stroke-width="1.0"/>
+    <path d="M158,165 L44.02,195.54 A118,118 0 0,1 74.56,81.56 Z" fill="#b86820" stroke="#0f1117" stroke-width="1.0"/>
+    <path d="M158,165 L74.56,81.56 A118,118 0 0,1 158.00,47.00 Z" fill="#1a70d4" stroke="#0f1117" stroke-width="1.0"/>
+    <circle cx="158" cy="165" r="130" fill="none" stroke="#3a4a6a" stroke-width="1.8"/>
+    <line x1="158.00" y1="47.00" x2="158.00" y2="35.00" stroke="#4a5a7a" stroke-width="1.2"/>
+    <line x1="189.58" y1="47.16" x2="191.65" y2="39.43" stroke="#4a5a7a" stroke-width="0.6"/>
+    <line x1="219.00" y1="59.34" x2="223.00" y2="52.42" stroke="#4a5a7a" stroke-width="0.6"/>
+    <line x1="244.27" y1="78.73" x2="249.92" y2="73.08" stroke="#4a5a7a" stroke-width="0.6"/>
+    <line x1="263.66" y1="104.00" x2="270.58" y2="100.00" stroke="#4a5a7a" stroke-width="0.6"/>
+    <line x1="275.84" y1="133.42" x2="283.57" y2="131.35" stroke="#4a5a7a" stroke-width="0.6"/>
+    <line x1="276.00" y1="165.00" x2="288.00" y2="165.00" stroke="#4a5a7a" stroke-width="1.2"/>
+    <line x1="275.84" y1="196.58" x2="283.57" y2="198.65" stroke="#4a5a7a" stroke-width="0.6"/>
+    <line x1="263.66" y1="226.00" x2="270.58" y2="230.00" stroke="#4a5a7a" stroke-width="0.6"/>
+    <line x1="244.27" y1="251.27" x2="249.92" y2="256.92" stroke="#4a5a7a" stroke-width="0.6"/>
+    <line x1="219.00" y1="270.66" x2="223.00" y2="277.58" stroke="#4a5a7a" stroke-width="0.6"/>
+    <line x1="189.58" y1="282.84" x2="191.65" y2="290.57" stroke="#4a5a7a" stroke-width="0.6"/>
+    <line x1="158.00" y1="283.00" x2="158.00" y2="295.00" stroke="#4a5a7a" stroke-width="1.2"/>
+    <line x1="126.42" y1="282.84" x2="124.35" y2="290.57" stroke="#4a5a7a" stroke-width="0.6"/>
+    <line x1="97.00" y1="270.66" x2="93.00" y2="277.58" stroke="#4a5a7a" stroke-width="0.6"/>
+    <line x1="71.73" y1="251.27" x2="66.08" y2="256.92" stroke="#4a5a7a" stroke-width="0.6"/>
+    <line x1="52.34" y1="226.00" x2="45.42" y2="230.00" stroke="#4a5a7a" stroke-width="0.6"/>
+    <line x1="40.16" y1="196.58" x2="32.43" y2="198.65" stroke="#4a5a7a" stroke-width="0.6"/>
+    <line x1="40.00" y1="165.00" x2="28.00" y2="165.00" stroke="#4a5a7a" stroke-width="1.2"/>
+    <line x1="40.16" y1="133.42" x2="32.43" y2="131.35" stroke="#4a5a7a" stroke-width="0.6"/>
+    <line x1="52.34" y1="104.00" x2="45.42" y2="100.00" stroke="#4a5a7a" stroke-width="0.6"/>
+    <line x1="71.73" y1="78.73" x2="66.08" y2="73.08" stroke="#4a5a7a" stroke-width="0.6"/>
+    <line x1="97.00" y1="59.34" x2="93.00" y2="52.42" stroke="#4a5a7a" stroke-width="0.6"/>
+    <line x1="126.42" y1="47.16" x2="124.35" y2="39.43" stroke="#4a5a7a" stroke-width="0.6"/>
+    <text x="158.0" y="25.0" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="monospace">0</text>
+    <text x="230.0" y="44.3" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="monospace">2</text>
+    <text x="282.7" y="97.0" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="monospace">4</text>
+    <text x="302.0" y="169.0" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="monospace">6</text>
+    <text x="282.7" y="241.0" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="monospace">8</text>
+    <text x="230.0" y="293.7" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="monospace">10</text>
+    <text x="158.0" y="313.0" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="monospace">12</text>
+    <text x="86.0" y="293.7" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="monospace">14</text>
+    <text x="33.3" y="241.0" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="monospace">16</text>
+    <text x="14.0" y="169.0" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="monospace">18</text>
+    <text x="33.3" y="97.0" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="monospace">20</text>
+    <text x="86.0" y="44.3" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="monospace">22</text>
+    <text x="158" y="170" text-anchor="middle" fill="#e2e8f5" font-size="12" font-weight="700" font-family="sans-serif">Aさん
+【休日】</text>
+    <rect x="318" y="14" width="250" height="64" rx="6" fill="#1e2535" stroke="#fbbf24" stroke-width="1.5"/>
+    <text x="328" y="34" fill="#fbbf24" font-size="11.5" font-weight="700" font-family="sans-serif">Point</text>
+    <text x="328" y="56" fill="#e2e8f5" font-size="12" font-family="sans-serif">休日は予習・復習中心</text>
+    <text x="328" y="76" fill="#e2e8f5" font-size="12" font-family="sans-serif">趣味（フットサル）で息抜き！</text>
+    <text x="318" y="94" fill="#7aa3f5" font-size="12.5" font-weight="700" font-family="sans-serif">1日の学習時間</text>
+    <text x="318" y="116" fill="#fbbf24" font-size="12.5"  font-family="sans-serif">21:00〜24:00</text>
+    <text x="318" y="138" fill="#34d399" font-size="12.5" font-weight="700" font-family="sans-serif">合計 3時間</text>
+    <rect x="318" y="172" width="14" height="14" rx="3" fill="#7a7a9a"/>
+    <text x="338" y="183" fill="#c3d1f0" font-size="12" font-family="sans-serif">睡眠</text>
+    <text x="566" y="183" text-anchor="end" fill="#8a99b8" font-size="11" font-family="sans-serif">0:00〜7:00</text>
+    <rect x="318" y="194" width="14" height="14" rx="3" fill="#8aaa70"/>
+    <text x="338" y="205" fill="#c3d1f0" font-size="12" font-family="sans-serif">準備</text>
+    <text x="566" y="205" text-anchor="end" fill="#8a99b8" font-size="11" font-family="sans-serif">7:00〜7:30</text>
+    <rect x="318" y="216" width="14" height="14" rx="3" fill="#6a4a2a"/>
+    <text x="338" y="227" fill="#c3d1f0" font-size="12" font-family="sans-serif">自由</text>
+    <text x="566" y="227" text-anchor="end" fill="#8a99b8" font-size="11" font-family="sans-serif">7:30〜11:00</text>
+    <rect x="318" y="238" width="14" height="14" rx="3" fill="#9a8a30"/>
+    <text x="338" y="249" fill="#c3d1f0" font-size="12" font-family="sans-serif">昼食</text>
+    <text x="566" y="249" text-anchor="end" fill="#8a99b8" font-size="11" font-family="sans-serif">11:00〜12:00</text>
+    <rect x="318" y="260" width="14" height="14" rx="3" fill="#c080a0"/>
+    <text x="338" y="271" fill="#c3d1f0" font-size="12" font-family="sans-serif">趣味（フットサル）</text>
+    <text x="566" y="271" text-anchor="end" fill="#8a99b8" font-size="11" font-family="sans-serif">12:00〜17:00</text>
+    <rect x="318" y="282" width="14" height="14" rx="3" fill="#b86820"/>
+    <text x="338" y="293" fill="#c3d1f0" font-size="12" font-family="sans-serif">夕飯・入浴</text>
+    <text x="566" y="293" text-anchor="end" fill="#8a99b8" font-size="11" font-family="sans-serif">17:00〜21:00</text>
+    <rect x="318" y="304" width="14" height="14" rx="3" fill="#1a70d4"/>
+    <text x="338" y="315" fill="#c3d1f0" font-size="12" font-family="sans-serif">学習</text>
+    <text x="566" y="315" text-anchor="end" fill="#8a99b8" font-size="11" font-family="sans-serif">21:00〜24:00 ★</text>
+    </svg>
+    <figcaption>Aさん【休日】1日のスケジュール（スライドp.63完全再現）← S03:p.63</figcaption>
+  </div>
+
+  <h4>社会人Bさん（25歳）── 平日・休日スケジュール</h4>
+  <div class="sw">
+    <svg viewBox="0 0 640 620" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;">
+    <!-- 平日 -->
+    <path d="M140,148 L140.00,48.00 A100,100 0 0,1 153.05,48.86 Z" fill="#2a1f38" stroke="#0f1117" stroke-width="1"/>
+    <path d="M140,148 L153.05,48.86 A100,100 0 0,1 236.59,173.88 Z" fill="#7a7a9a" stroke="#0f1117" stroke-width="1"/>
+    <path d="M140,148 L236.59,173.88 A100,100 0 0,1 226.60,198.00 Z" fill="#8aaa70" stroke="#0f1117" stroke-width="1"/>
+    <path d="M140,148 L226.60,198.00 A100,100 0 0,1 53.40,98.00 Z" fill="#22a85e" stroke="#0f1117" stroke-width="1"/>
+    <path d="M140,148 L53.40,98.00 A100,100 0 0,1 114.12,51.41 Z" fill="#b86820" stroke="#0f1117" stroke-width="1"/>
+    <path d="M140,148 L114.12,51.41 A100,100 0 0,1 140.00,48.00 Z" fill="#1a70d4" stroke="#0f1117" stroke-width="1"/>
+    <circle cx="140" cy="148" r="112" fill="none" stroke="#3a4a6a" stroke-width="1.5"/>
+    <line x1="140.00" y1="48.00" x2="140.00" y2="36.00" stroke="#4a5a7a" stroke-width="1.2"/>
+    <line x1="167.18" y1="46.58" x2="168.99" y2="39.82" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="192.50" y1="57.07" x2="196.00" y2="51.01" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="214.25" y1="73.75" x2="219.20" y2="68.80" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="230.93" y1="95.50" x2="236.99" y2="92.00" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="241.42" y1="120.82" x2="248.18" y2="119.01" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="240.00" y1="148.00" x2="252.00" y2="148.00" stroke="#4a5a7a" stroke-width="1.2"/>
+    <line x1="241.42" y1="175.18" x2="248.18" y2="176.99" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="230.93" y1="200.50" x2="236.99" y2="204.00" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="214.25" y1="222.25" x2="219.20" y2="227.20" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="192.50" y1="238.93" x2="196.00" y2="244.99" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="167.18" y1="249.42" x2="168.99" y2="256.18" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="140.00" y1="248.00" x2="140.00" y2="260.00" stroke="#4a5a7a" stroke-width="1.2"/>
+    <line x1="112.82" y1="249.42" x2="111.01" y2="256.18" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="87.50" y1="238.93" x2="84.00" y2="244.99" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="65.75" y1="222.25" x2="60.80" y2="227.20" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="49.07" y1="200.50" x2="43.01" y2="204.00" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="38.58" y1="175.18" x2="31.82" y2="176.99" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="40.00" y1="148.00" x2="28.00" y2="148.00" stroke="#4a5a7a" stroke-width="1.2"/>
+    <line x1="38.58" y1="120.82" x2="31.82" y2="119.01" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="49.07" y1="95.50" x2="43.01" y2="92.00" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="65.75" y1="73.75" x2="60.80" y2="68.80" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="87.50" y1="57.07" x2="84.00" y2="51.01" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="112.82" y1="46.58" x2="111.01" y2="39.82" stroke="#4a5a7a" stroke-width="0.5"/>
+    <text x="140.0" y="27.0" text-anchor="middle" fill="#8a99b8" font-size="10.5" font-family="monospace">0</text>
+    <text x="265.0" y="152.0" text-anchor="middle" fill="#8a99b8" font-size="10.5" font-family="monospace">6</text>
+    <text x="140.0" y="277.0" text-anchor="middle" fill="#8a99b8" font-size="10.5" font-family="monospace">12</text>
+    <text x="15.0" y="152.0" text-anchor="middle" fill="#8a99b8" font-size="10.5" font-family="monospace">18</text>
+    <text x="140" y="145.0" text-anchor="middle" fill="#e2e8f5" font-size="11.5" font-weight="700" font-family="sans-serif">Bさん</text>
+    <text x="140" y="159.0" text-anchor="middle" fill="#8a99b8" font-size="11.5"  font-family="sans-serif">【平日】</text>
+    <rect x="302" y="14" width="326" height="42" rx="6" fill="#1e2535" stroke="#fbbf24" stroke-width="1.5"/>
+    <text x="312" y="32" fill="#fbbf24" font-size="11.5" font-weight="700" font-family="sans-serif">Point</text>
+    <text x="312" y="48" fill="#e2e8f5" font-size="12" font-family="sans-serif">一息ついたらさっそく勉強</text>
+    <text x="302" y="76" fill="#7aa3f5" font-size="12.5" font-weight="700" font-family="sans-serif">1日の学習時間</text>
+    <text x="302" y="98" fill="#fbbf24" font-size="13" font-family="sans-serif">23:00〜0:30（1.5時間）</text>
+    <rect x="302" y="122" width="13" height="13" rx="3" fill="#7a7a9a"/>
+    <text x="321" y="133" fill="#c3d1f0" font-size="12" font-family="sans-serif">睡眠</text>
+    <text x="612" y="133" text-anchor="end" fill="#8a99b8" font-size="11" font-family="sans-serif">0:30〜7:00</text>
+    <rect x="302" y="145" width="13" height="13" rx="3" fill="#8aaa70"/>
+    <text x="321" y="156" fill="#c3d1f0" font-size="12" font-family="sans-serif">準備</text>
+    <text x="612" y="156" text-anchor="end" fill="#8a99b8" font-size="11" font-family="sans-serif">7:00〜8:00</text>
+    <rect x="302" y="168" width="13" height="13" rx="3" fill="#22a85e"/>
+    <text x="321" y="179" fill="#c3d1f0" font-size="12" font-family="sans-serif">仕事</text>
+    <text x="612" y="179" text-anchor="end" fill="#8a99b8" font-size="11" font-family="sans-serif">8:00〜20:00</text>
+    <rect x="302" y="191" width="13" height="13" rx="3" fill="#b86820"/>
+    <text x="321" y="202" fill="#c3d1f0" font-size="12" font-family="sans-serif">夕飯・入浴</text>
+    <text x="612" y="202" text-anchor="end" fill="#8a99b8" font-size="11" font-family="sans-serif">20:00〜23:00</text>
+    <rect x="302" y="214" width="13" height="13" rx="3" fill="#1a70d4"/>
+    <text x="321" y="225" fill="#c3d1f0" font-size="12" font-family="sans-serif">学習</text>
+    <text x="612" y="225" text-anchor="end" fill="#8a99b8" font-size="11" font-family="sans-serif">23:00〜0:30 ★</text>
+    <line x1="10" y1="310" x2="630" y2="310" stroke="#2a3350" stroke-width="1.5" stroke-dasharray="6,4"/>
+    <text x="320" y="304" text-anchor="middle" fill="#2a3350" font-size="10" font-family="sans-serif">─────────────────────────────────────────</text>
+    <!-- 休日 -->
+    <path d="M140,468 L140.00,368.00 A100,100 0 0,1 236.59,493.88 Z" fill="#7a7a9a" stroke="#0f1117" stroke-width="1"/>
+    <path d="M140,468 L236.59,493.88 A100,100 0 0,1 226.60,518.00 Z" fill="#8aaa70" stroke="#0f1117" stroke-width="1"/>
+    <path d="M140,468 L226.60,518.00 A100,100 0 0,1 190.00,554.60 Z" fill="#5a3a28" stroke="#0f1117" stroke-width="1"/>
+    <path d="M140,468 L190.00,554.60 A100,100 0 0,1 126.95,567.14 Z" fill="#1a70d4" stroke="#0f1117" stroke-width="1"/>
+    <path d="M140,468 L126.95,567.14 A100,100 0 0,1 101.73,560.39 Z" fill="#9a8a30" stroke="#0f1117" stroke-width="1"/>
+    <path d="M140,468 L101.73,560.39 A100,100 0 0,1 60.66,528.88 Z" fill="#5a3a28" stroke="#0f1117" stroke-width="1"/>
+    <path d="M140,468 L60.66,528.88 A100,100 0 0,1 43.41,442.12 Z" fill="#c080a0" stroke="#0f1117" stroke-width="1"/>
+    <path d="M140,468 L43.41,442.12 A100,100 0 0,1 114.12,371.41 Z" fill="#b86820" stroke="#0f1117" stroke-width="1"/>
+    <path d="M140,468 L114.12,371.41 A100,100 0 0,1 140.00,368.00 Z" fill="#2a1f38" stroke="#0f1117" stroke-width="1"/>
+    <circle cx="140" cy="468" r="112" fill="none" stroke="#3a4a6a" stroke-width="1.5"/>
+    <line x1="140.00" y1="368.00" x2="140.00" y2="356.00" stroke="#4a5a7a" stroke-width="1.2"/>
+    <line x1="167.18" y1="366.58" x2="168.99" y2="359.82" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="192.50" y1="377.07" x2="196.00" y2="371.01" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="214.25" y1="393.75" x2="219.20" y2="388.80" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="230.93" y1="415.50" x2="236.99" y2="412.00" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="241.42" y1="440.82" x2="248.18" y2="439.01" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="240.00" y1="468.00" x2="252.00" y2="468.00" stroke="#4a5a7a" stroke-width="1.2"/>
+    <line x1="241.42" y1="495.18" x2="248.18" y2="496.99" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="230.93" y1="520.50" x2="236.99" y2="524.00" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="214.25" y1="542.25" x2="219.20" y2="547.20" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="192.50" y1="558.93" x2="196.00" y2="564.99" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="167.18" y1="569.42" x2="168.99" y2="576.18" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="140.00" y1="568.00" x2="140.00" y2="580.00" stroke="#4a5a7a" stroke-width="1.2"/>
+    <line x1="112.82" y1="569.42" x2="111.01" y2="576.18" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="87.50" y1="558.93" x2="84.00" y2="564.99" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="65.75" y1="542.25" x2="60.80" y2="547.20" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="49.07" y1="520.50" x2="43.01" y2="524.00" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="38.58" y1="495.18" x2="31.82" y2="496.99" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="40.00" y1="468.00" x2="28.00" y2="468.00" stroke="#4a5a7a" stroke-width="1.2"/>
+    <line x1="38.58" y1="440.82" x2="31.82" y2="439.01" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="49.07" y1="415.50" x2="43.01" y2="412.00" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="65.75" y1="393.75" x2="60.80" y2="388.80" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="87.50" y1="377.07" x2="84.00" y2="371.01" stroke="#4a5a7a" stroke-width="0.5"/>
+    <line x1="112.82" y1="366.58" x2="111.01" y2="359.82" stroke="#4a5a7a" stroke-width="0.5"/>
+    <text x="140.0" y="347.0" text-anchor="middle" fill="#8a99b8" font-size="10.5" font-family="monospace">0</text>
+    <text x="265.0" y="472.0" text-anchor="middle" fill="#8a99b8" font-size="10.5" font-family="monospace">6</text>
+    <text x="140.0" y="597.0" text-anchor="middle" fill="#8a99b8" font-size="10.5" font-family="monospace">12</text>
+    <text x="15.0" y="472.0" text-anchor="middle" fill="#8a99b8" font-size="10.5" font-family="monospace">18</text>
+    <text x="140" y="465.0" text-anchor="middle" fill="#e2e8f5" font-size="11.5" font-weight="700" font-family="sans-serif">Bさん</text>
+    <text x="140" y="479.0" text-anchor="middle" fill="#8a99b8" font-size="11.5"  font-family="sans-serif">【休日】</text>
+    <rect x="302" y="324" width="326" height="52" rx="6" fill="#1e2535" stroke="#fbbf24" stroke-width="1.5"/>
+    <text x="312" y="344" fill="#fbbf24" font-size="11.5" font-weight="700" font-family="sans-serif">Point</text>
+    <text x="312" y="360" fill="#e2e8f5" font-size="12" font-family="sans-serif">習い事で気分転換</text>
+    <text x="312" y="376" fill="#e2e8f5" font-size="12" font-family="sans-serif">休日は朝晩どちらかでまとまった時間を確保</text>
+    <text x="302" y="404" fill="#7aa3f5" font-size="12.5" font-weight="700" font-family="sans-serif">1日の学習時間</text>
+    <text x="302" y="426" fill="#fbbf24" font-size="13" font-family="sans-serif">10:00〜12:30（2.5時間）</text>
+    <rect x="302" y="448" width="13" height="13" rx="3" fill="#7a7a9a"/>
+    <text x="321" y="459" fill="#c3d1f0" font-size="12" font-family="sans-serif">睡眠</text>
+    <text x="612" y="459" text-anchor="end" fill="#8a99b8" font-size="11" font-family="sans-serif">0:00〜7:00</text>
+    <rect x="302" y="471" width="13" height="13" rx="3" fill="#8aaa70"/>
+    <text x="321" y="482" fill="#c3d1f0" font-size="12" font-family="sans-serif">準備</text>
+    <text x="612" y="482" text-anchor="end" fill="#8a99b8" font-size="11" font-family="sans-serif">7:00〜8:00</text>
+    <rect x="302" y="494" width="13" height="13" rx="3" fill="#5a3a28"/>
+    <text x="321" y="505" fill="#c3d1f0" font-size="12" font-family="sans-serif">自由</text>
+    <text x="612" y="505" text-anchor="end" fill="#8a99b8" font-size="11" font-family="sans-serif">8:00〜10:00 / 13:30〜15:30</text>
+    <rect x="302" y="517" width="13" height="13" rx="3" fill="#1a70d4"/>
+    <text x="321" y="528" fill="#c3d1f0" font-size="12" font-family="sans-serif">学習</text>
+    <text x="612" y="528" text-anchor="end" fill="#8a99b8" font-size="11" font-family="sans-serif">10:00〜12:30 ★</text>
+    <rect x="302" y="540" width="13" height="13" rx="3" fill="#9a8a30"/>
+    <text x="321" y="551" fill="#c3d1f0" font-size="12" font-family="sans-serif">昼食</text>
+    <text x="612" y="551" text-anchor="end" fill="#8a99b8" font-size="11" font-family="sans-serif">12:30〜13:30</text>
+    <rect x="302" y="563" width="13" height="13" rx="3" fill="#c080a0"/>
+    <text x="321" y="574" fill="#c3d1f0" font-size="12" font-family="sans-serif">習い事</text>
+    <text x="612" y="574" text-anchor="end" fill="#8a99b8" font-size="11" font-family="sans-serif">15:30〜19:00</text>
+    <rect x="302" y="586" width="13" height="13" rx="3" fill="#b86820"/>
+    <text x="321" y="597" fill="#c3d1f0" font-size="12" font-family="sans-serif">夕飯・入浴</text>
+    <text x="612" y="597" text-anchor="end" fill="#8a99b8" font-size="11" font-family="sans-serif">19:00〜23:00</text>
+    </svg>
+    <figcaption>Bさん【平日・休日】スケジュール（スライドp.65-66完全再現）← S03:p.65-66</figcaption>
+  </div>
+  <table class="st">
+    <thead><tr><th>項目</th><th>Aさん（27歳・4年卒業目標）</th><th>Bさん（25歳・6年卒業目標）</th></tr></thead>
+    <tbody>
+      <tr><td>平日学習</td><td>7:30-8:30（通勤）＋19:00-21:00 ＝ <strong>計3時間</strong></td><td>23:00-0:30 ＝ <strong>計1.5時間</strong></td></tr>
+      <tr><td>休日学習</td><td>21:00-24:00 ＝ <strong>計3時間</strong>（予習・復習中心）</td><td>10:00-12:30 ＝ <strong>計2.5時間</strong></td></tr>
+      <tr><td>特徴・Point</td><td>通勤時間のiPhone活用 / 趣味（フットサル）も確保</td><td>習い事で気分転換 / 朝晩どちらかでまとまった時間を確保</td></tr>
+    </tbody>
+  </table>
+  <span class="sp" style="display:inline-block;margin-top:3px">S03:p.61-66</span>
+  <div class="kb"><strong>学修の習慣化が秘訣。</strong> 時間管理は社会人の必須テクニック。習慣化で苦痛を快感に変え、<strong>卒業後も学び続ける</strong>基盤を作る。 <span class="sp">S03:p.67</span></div>
+</div>
+
+<!-- ─── 補足A ─── -->
+<div class="sc sa" id="sa">
+  <h2>⭐ 補足A: 最重要ワード一覧</h2>
+  <table class="st">
+    <thead><tr><th>用語</th><th>定義（S03準拠）</th><th>重要度</th></tr></thead>
+    <tbody>
+      <tr><td><strong>フィールタイム</strong></td><td>感覚的な時間の長さ。「あっという間」「異常に長く感じた」など主観的な時間。 <span class="sp">S03:p.8</span></td><td>★★★</td></tr>
+      <tr><td><strong>クロックタイム</strong></td><td>計測される時の流れの二点間の長さ。時計で測定、誰にとっても1日＝24時間。 <span class="sp">S03:p.8</span></td><td>★★★</td></tr>
+      <tr><td><strong>G-PDCAサイクル</strong></td><td>Goal-Plan-Do-Check-Actionの循環サイクル。目標設定を先頭に加えた管理サイクル。 <span class="sp">S03:p.41</span></td><td>★★★</td></tr>
+      <tr><td><strong>段取り</strong></td><td>計画を立て、それが実行できるように「約束」を取り付けるまでの行為。プロジェクトマネジメントの日本語訳。 <span class="sp">S03:p.51</span></td><td>★★★</td></tr>
+      <tr><td><strong>ゆとりの法則</strong></td><td>トム・デマルコが提唱。ゆとり（あそび）がないと変化に対応できない。バッファを設けることで全体が回る。 <span class="sp">S03:p.43</span></td><td>★★★</td></tr>
+      <tr><td><strong>習慣化</strong></td><td>行動を繰り返すことで無意識・自動的に行えるようになること。チェック→ドーパミン→達成感→繰り返しのサイクルで形成。 <span class="sp">S03:p.42</span></td><td>★★★</td></tr>
+      <tr><td><strong>シミュレーション</strong></td><td>（simulation）「シュミレーション」は誤り。英語 simulate から派生した正しい読み方。 <span class="sp">S03:p.37</span></td><td>★★☆</td></tr>
+      <tr><td><strong>超集中</strong></td><td>ものすごく集中できる時間の目安：約15分。テレビ番組が15分単位の根拠。 <span class="sp">S03:p.30</span></td><td>★★☆</td></tr>
+      <tr><td><strong>軽い集中</strong></td><td>比較的集中できる時間の目安：約60分。授業視聴1回分の基本単位。 <span class="sp">S03:p.30</span></td><td>★★☆</td></tr>
+      <tr><td><strong>ドーパミン</strong></td><td>快感をもたらす脳内ホルモン（神経伝達物質）。目標達成・チェック時に分泌され習慣化を促進。 <span class="sp">S03:p.42</span></td><td>★★☆</td></tr>
+      <tr><td><strong>バッファ（予備時間）</strong></td><td>計画にあらかじめ設ける余裕・予備の時間。ゆとりの法則の実践的応用。 <span class="sp">S03:p.43-44</span></td><td>★★☆</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ─── 補足B ─── -->
+<div class="sc sb2" id="sb3">
+  <h2>📚 補足B: 知っておくべき背景知識</h2>
+  <h3>ピーター・F・ドラッカー（1909-2005）</h3>
+  <ul>
+    <li>オーストリア・ウィーン生まれの経営学者・社会思想家。「現代経営学」「マネジメント」概念の確立者。 <span class="sp">[外部補足・確認済]</span></li>
+    <li>主著：『経営者の条件』（原題 "The Effective Executive"、1964年原著 / 1966年邦訳、上田惇生訳、ダイヤモンド社）第2章「汝の時間を知れ（Know thy time）」が本講義の直接的出典。 <span class="sp">[外部補足・確認済: S03:p.23 + web複数資料]</span></li>
+    <li>ドラッカー原著の3ステップは「記録する→整理する（非生産的活動の排除）→まとめる（自由時間を大きくまとめる）」。本講義ではStep2を「診断する」と表現（意味は同じ）。 <span class="sp">[外部補足・確認済: sunny-soul.net / sweeep.ai等]</span></li>
+    <li>名言：「成果をあげる者は仕事からスタートしない。時間からスタートする。」（上田惇生訳） <span class="sp">[外部補足・確認済: 複数資料で同文確認]</span></li>
+  </ul>
+  <h3>トム・デマルコ（Tom DeMarco, 1940-）</h3>
+  <ul>
+    <li>ソフトウェアエンジニア・著作家。コーネル大学BSEE、コロンビア大学修士。 <span class="sp">[外部補足・確認済]</span></li>
+    <li>本講義で引用される著作2冊：
+      <ul>
+        <li>『デッドライン ─ソフト開発を成功に導く101の法則─』（1999, 日経BP社）: 「一日を無駄にする方法はいくらでもある…」の名言の出典 <span class="sp">[外部補足・確認済: S03:p.17]</span></li>
+        <li>『ゆとりの法則 ─誰も書かなかったプロジェクト管理の誤解─』（原題 "Slack: Getting Past Burnout, Busywork, and the Myth of Total Efficiency"、2001年 / 伊豆原弓訳, 日経BP社）: 「ゆとりの法則」の出典 <span class="sp">[外部補足・確認済: Amazon / pmaj.or.jp等]</span></li>
+      </ul>
+    </li>
+  </ul>
+  <h3>広辞苑 第六版（2008, 岩波書店）</h3>
+  <ul>
+    <li>「時間」の定義の出典（p.1203）はスライドに明示されている。最新版は第七版（2018年）。本講義では第六版を使用。 <span class="sp">[外部補足・確認済: S03:p.7]</span></li>
+  </ul>
+  <h3>ドーパミンと習慣形成の神経科学</h3>
+  <ul>
+    <li>ドーパミンは報酬系（腹側被蓋野→側坐核等の経路）において快感・動機づけに関与する神経伝達物質。</li>
+    <li>「目標達成→ドーパミン分泌→快感→また同じ行動を取りたい」という正の強化学習が習慣化の神経生物学的メカニズム。B.F.スキナーのオペラント条件づけの神経実装とも言える。 <span class="sp">[外部補足・確認済: 神経科学基礎知識]</span></li>
+  </ul>
+</div>
+
+<!-- ─── 補足C ─── -->
+<div class="sc sc2" id="sc3">
+  <h2>🎯 補足C: 試験・レポートで重要な観点（10項目）</h2>
+  <ul>
+    <li><strong>フィールタイムとクロックタイムの違いを定義付きで説明できること。</strong>例を挙げて具体化すると加点。</li>
+    <li><strong>時間管理の3ステップを順序込みで言えること。</strong> ①記録する → ②診断する → ③作る</li>
+    <li><strong>G-PDCAの各文字の意味を言えること。</strong> G=Goal / P=Plan / D=Do / C=Check / A=Action</li>
+    <li><strong>「ゆとりの法則」をスライドパズルの例で説明できること。</strong>提唱者（トム・デマルコ）も押さえる。</li>
+    <li><strong>ドラッカーの「成果を上げる人は時間から考え始める」を具体的に説明できること。</strong>時間の有限性・制約条件としての時間管理。</li>
+    <li><strong>卒業生アンケートのトップ2を具体的に挙げられること。</strong>①自分で期日を決めて学習（20票）/ ②決まった曜日・時間帯を確保（18票）（有効回答32）</li>
+    <li><strong>集中力の数値（超集中15分・軽い集中60分）と授業目安（90+20＝110分）を言えること。</strong></li>
+    <li><strong>段取りの定義を正確に言えること。</strong>「計画を立て、それが実行できるように約束を取り付けるまでの行為」</li>
+    <li><strong>習慣化にドーパミンが関与することを説明できること。</strong>チェック→達成感→ドーパミン分泌→習慣化</li>
+    <li><strong>リカバリーの目安を言えること。</strong>その週のうち（理想）→2週間まではなんとか→3週間では実質難しい</li>
+  </ul>
+</div>
+
+<!-- ─── 補足D ─── -->
+<div class="sc sd" id="sd3">
+  <h2>🔗 補足D: 関連概念・次回への接続</h2>
+  <h3>GTD（Getting Things Done）との関係</h3>
+  <p style="font-size:13.5px;color:var(--txt)">David Allen が提唱するタスク管理手法。「頭の中の気になること（Open Loop）を全て書き出す」原則は、本講義の「不安を書き出して課題化する」アプローチと共通する。GTDでは「収集→処理→整理→レビュー→実行」の5ステップを循環させる。 <span class="sp">[外部補足]</span></p>
+  <h3>ポモドーロ・テクニック（Pomodoro Technique）</h3>
+  <p style="font-size:13.5px;color:var(--txt)">Francesco Cirillo が考案。25分集中→5分休憩のサイクルを繰り返す。本講義の「超集中15分」「軽い集中60分」の科学的根拠と合わせて参照すると、授業視聴（60〜90分枠）への応用が考えやすい。 <span class="sp">[外部補足]</span></p>
+  <h3>第3回課題（ディベート課題）について</h3>
+  <ul style="font-size:13.5px;color:var(--txt)">
+    <li>A「自分なりの攻略法」または B「卒業後の目標」を<strong>200字以上</strong>で投稿し、他学生の投稿に<strong>120字以上</strong>でコメントする <span class="sp">S03:p.80</span></li>
+    <li>課題1投稿後<strong>30分経つと</strong>他の人の投稿が見える（それまでは非表示が正常動作）</li>
+  </ul>
+</div>
+
+<!-- footer -->
+<div style="margin-top:26px;padding-top:12px;border-top:1px solid var(--bdr);font-size:11px;color:var(--sub);">
+  <p>note_studyskills_03.html　v1.1（2026-04-20）スライド原本87ページ全ページ直接確認・SVG完全再現版</p>
+  <p style="margin-top:2px;">SSP v4.2 ／ 実行プロンプト v4.6.1　ソース: S03（87p）+ S05-A/B（hynote.ai×2）+ Web確認（ドラッカー・デマルコ・広辞苑書誌情報）</p>
+</div>
+
+</main>
+</body>
+</html>
