@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>スタディスキル入門 第6回｜未来を創るための情報リテラシー</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f1117;--bg2:#161b27;--bg3:#1e2535;--card:#1a2030;--border:#2a3448;--blue:#5b8dee;--green:#34d399;--orange:#fbbf24;--purple:#a78bfa;--red:#f87171;--text:#e2e8f5;--text-sub:#8a99b8;--text-dim:#556080;--sidebar-w:260px;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans JP',sans-serif;font-size:15px;line-height:1.8;display:flex;}
+#sidebar{width:var(--sidebar-w);min-height:100vh;background:var(--bg2);border-right:1px solid var(--border);position:fixed;top:0;left:0;overflow-y:auto;padding:20px 0;z-index:100;}
+.sidebar-title{font-size:11px;font-weight:700;letter-spacing:.12em;color:var(--text-dim);text-transform:uppercase;padding:0 18px 12px;border-bottom:1px solid var(--border);margin-bottom:12px;}
+.toc-h2{display:block;padding:6px 18px;font-size:12px;font-weight:500;color:var(--text-sub);text-decoration:none;border-left:3px solid transparent;transition:all .2s;}
+.toc-h2:hover,.toc-h2.active{color:var(--blue);border-left-color:var(--blue);background:rgba(91,141,238,.07);}
+.toc-h3{display:block;padding:4px 18px 4px 30px;font-size:11px;color:var(--text-dim);text-decoration:none;}
+.toc-h3:hover{color:var(--text-sub);}
+#main{margin-left:var(--sidebar-w);flex:1;padding:40px 48px;max-width:960px;}
+.page-header{background:linear-gradient(135deg,#1a2540,#0f1822);border:1px solid var(--border);border-radius:12px;padding:32px 36px;margin-bottom:32px;position:relative;overflow:hidden;}
+.page-header::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(circle,rgba(91,141,238,.15),transparent 70%);pointer-events:none;}
+.subject-label{font-size:11px;font-weight:700;letter-spacing:.14em;color:var(--blue);text-transform:uppercase;margin-bottom:8px;}
+.page-title{font-size:24px;font-weight:700;margin-bottom:16px;line-height:1.4;}
+.meta-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin-top:16px;}
+.meta-item{background:rgba(255,255,255,.04);border-radius:6px;padding:8px 12px;font-size:12px;}
+.meta-label{color:var(--text-dim);font-size:10px;letter-spacing:.1em;text-transform:uppercase;}
+.meta-val{color:var(--text-sub);margin-top:2px;}
+.goals-box{background:var(--bg3);border:1px solid var(--border);border-left:4px solid var(--blue);border-radius:8px;padding:20px 24px;margin-bottom:32px;}
+.goals-box h3{font-size:13px;color:var(--blue);letter-spacing:.08em;margin-bottom:12px;}
+.goals-box ol{padding-left:20px;}
+.goals-box li{font-size:13px;color:var(--text-sub);margin-bottom:6px;}
+.chapter{margin-bottom:40px;scroll-margin-top:20px;}
+.chapter-title{font-size:19px;font-weight:700;border-bottom:2px solid var(--blue);padding-bottom:8px;margin-bottom:20px;display:flex;align-items:center;gap:10px;}
+.chapter-num{background:var(--blue);color:#fff;font-size:11px;font-weight:700;padding:2px 8px;border-radius:4px;}
+.section{margin-bottom:28px;scroll-margin-top:20px;}
+.section-title{font-size:15px;font-weight:700;color:var(--green);margin-bottom:12px;padding-left:10px;border-left:3px solid var(--green);}
+p{margin-bottom:12px;}
+.audio-block{background:rgba(91,141,238,.06);border-left:4px solid var(--blue);border-radius:0 8px 8px 0;padding:14px 18px;margin:12px 0;font-size:13.5px;}
+.ext-block{background:rgba(52,211,153,.06);border-left:4px solid var(--green);border-radius:0 8px 8px 0;padding:14px 18px;margin:12px 0;font-size:13.5px;}
+.def-block{background:rgba(251,191,36,.06);border-left:4px solid var(--orange);border-radius:0 8px 8px 0;padding:14px 18px;margin:12px 0;font-size:13.5px;}
+.block-label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;}
+.audio-block .block-label{color:var(--blue);}
+.ext-block .block-label{color:var(--green);}
+.def-block .block-label{color:var(--orange);}
+.ptr{font-family:'JetBrains Mono',monospace;font-size:10px;background:var(--bg3);border:1px solid var(--border);color:var(--text-dim);padding:1px 5px;border-radius:3px;margin-left:6px;}
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px;}
+th{background:var(--bg3);color:var(--blue);font-weight:600;padding:10px 14px;text-align:left;border:1px solid var(--border);font-size:12px;letter-spacing:.05em;}
+td{padding:9px 14px;border:1px solid var(--border);color:var(--text-sub);vertical-align:top;}
+tr:nth-child(even) td{background:rgba(255,255,255,.02);}
+ul,ol{padding-left:22px;margin-bottom:12px;}
+li{margin-bottom:6px;color:var(--text-sub);}
+li strong{color:var(--text);}
+.appendix-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:24px 28px;margin-bottom:24px;}
+.appendix-card h2{font-size:16px;font-weight:700;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+.appendix-card.star h2{color:var(--orange);}
+.appendix-card.book h2{color:var(--blue);}
+.appendix-card.target h2{color:var(--green);}
+.appendix-card.link h2{color:var(--purple);}
+.ext-sub{font-size:12px;color:var(--text-dim);margin-top:6px;margin-bottom:14px;}
+.star-rank{color:var(--orange);font-size:13px;}
+hr{border:none;border-top:1px solid var(--border);margin:28px 0;}
+code{font-family:'JetBrains Mono',monospace;font-size:13px;background:var(--bg3);padding:2px 6px;border-radius:3px;color:var(--green);}
+@media(max-width:900px){#sidebar{display:none;}#main{margin-left:0;padding:20px;}}
+</style>
+</head>
+<body>
+<nav id="sidebar">
+<div class="sidebar-title">スタディスキル入門 第6回</div>
+<a class="toc-h2" href="#overview">📋 概要・学習目標</a>
+<a class="toc-h2" href="#ch1">第1章 私たちを取り巻く情報</a>
+<a class="toc-h3" href="#ch1-1">情報リテラシーとは</a>
+<a class="toc-h3" href="#ch1-2">情報の現状と増加</a>
+<a class="toc-h3" href="#ch1-3">インターネットのメリットとリスク</a>
+<a class="toc-h3" href="#ch1-4">人間の認知特性</a>
+<a class="toc-h3" href="#ch1-5">目標を定めて情報と向き合う</a>
+<a class="toc-h2" href="#ch2">第2章 情報を探し見極める</a>
+<a class="toc-h3" href="#ch2-1">情報の種類と信頼性</a>
+<a class="toc-h3" href="#ch2-2">図書館・オンラインサービス</a>
+<a class="toc-h3" href="#ch2-3">サーチエンジン</a>
+<a class="toc-h3" href="#ch2-4">ファクトチェック</a>
+<a class="toc-h3" href="#ch2-5">フェイクニュース・ディープフェイク</a>
+<a class="toc-h3" href="#ch2-6">データリテラシー</a>
+<a class="toc-h2" href="#ch3">第3章 情報発信とコラボレーション</a>
+<a class="toc-h3" href="#ch3-1">発信ツールの種類</a>
+<a class="toc-h3" href="#ch3-2">サイバー大学のコミュニケーション</a>
+<a class="toc-h3" href="#ch3-3">発信マナーと注意点</a>
+<a class="toc-h2" href="#ch4">第4章 新しい技術と法律</a>
+<a class="toc-h3" href="#ch4-1">AIの発展と生成系AI</a>
+<a class="toc-h3" href="#ch4-2">著作権と生成系AI</a>
+<a class="toc-h3" href="#ch4-3">個人情報保護法</a>
+<a class="toc-h3" href="#ch4-4">デジタル社会形成基本法</a>
+<a class="toc-h2" href="#appendix-a">⭐ 補足A: 重要ワード</a>
+<a class="toc-h2" href="#appendix-b">📚 補足B: 背景知識</a>
+<a class="toc-h2" href="#appendix-c">🎯 補足C: 試験・レポート</a>
+<a class="toc-h2" href="#appendix-d">🔗 補足D: 関連概念</a>
+</nav>
+
+<main id="main">
+
+<header class="page-header" id="overview">
+<div class="subject-label">スタディスキル入門 ｜ 教養科目</div>
+<div class="page-title">第6回 未来を創るための情報リテラシー</div>
+<div class="meta-grid">
+<div class="meta-item"><div class="meta-label">担当教員</div><div class="meta-val">藤澤 弘美子（博士・情報学）</div></div>
+<div class="meta-item"><div class="meta-label">専門</div><div class="meta-val">データ解析・視覚化・HCI・知識獲得支援</div></div>
+<div class="meta-item"><div class="meta-label">ソース</div><div class="meta-val">S03（スライドPDF）+ S05（hynote.ai ×2）</div></div>
+<div class="meta-item"><div class="meta-label">QC信頼性</div><div class="meta-val">high（未解決フラグ0件）</div></div>
+</div>
+</header>
+
+<div class="goals-box">
+<h3>🎯 第6回 学習目標</h3>
+<ol>
+<li>身の周りの情報と人間の認知特性について説明できる</li>
+<li>情報のリスクと正しい情報を見極める方法を説明できる</li>
+<li>情報発信とコラボレーションの重要性を説明できる</li>
+<li>情報技術の進化とルールを理解し、情報を活用する方法について説明できる</li>
+</ol>
+</div>
+
+<!-- 第1章 -->
+<section class="chapter" id="ch1">
+<h2 class="chapter-title"><span class="chapter-num">第1章</span>私たちを取り巻く情報</h2>
+
+<div class="section" id="ch1-1">
+<h3 class="section-title">情報リテラシーとは</h3>
+<div class="def-block">
+<div class="block-label">定義</div>
+<strong>情報リテラシー（情報活用力）</strong>：情報を探し、適切に読み取り、正しく使う力 <span class="ptr">← S03:p.7</span>
+</div>
+<p>「リテラシー」とは読み書きの能力・識字能力を意味し、特定分野の知識やそれを活用する能力の総称である。<span class="ptr">← S03:p.7</span></p>
+<table>
+<thead><tr><th>リテラシーの種類</th><th>内容</th></tr></thead>
+<tbody>
+<tr><td><strong>コンピュータリテラシー</strong></td><td>パソコンやソフトウェアの操作を行う能力</td></tr>
+<tr><td><strong>ネットワークリテラシー</strong></td><td>インターネットにおける情報の収集・発信に関する能力</td></tr>
+<tr><td><strong>メディアリテラシー</strong></td><td>情報の評価・識別・クリティカルな読み取りを行う能力</td></tr>
+</tbody>
+</table>
+<span class="ptr">← S03:p.7</span>
+</div>
+
+<div class="section" id="ch1-2">
+<h3 class="section-title">情報の現状と急激な増加</h3>
+<div class="def-block">
+<div class="block-label">重要データ</div>
+2008年調査で人間の1日の情報処理量は<strong>34GB</strong>と試算された。これは<strong>500年前の人が一生を通じて消費する情報量に相当</strong>し、映画に換算するとおよそ<strong>16本分</strong>である。情報量は<strong>毎年5%ずつ増加</strong>しており、この計算では<strong>2029年には100GBに達する</strong>見込み。<span class="ptr">← S03:p.8</span>
+</div>
+<div class="audio-block">
+<div class="block-label">音声補足</div>
+この試算はコロナによって生活が変化する前の調査に基づく計算であり、現在では情報量・接触時間ともに増加が加速している可能性がある。<span class="ptr">← S05</span>
+</div>
+
+<p><strong>スマートフォン普及率の推移</strong>（日本国内の携帯電話所有者のうちスマートフォンが占める割合）<span class="ptr">← S03:p.9</span></p>
+<figure>
+<svg viewBox="0 0 680 230" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:680px;display:block;margin:0 auto;">
+  <line x1="55" y1="15" x2="55" y2="192" stroke="#2a3448" stroke-width="1.5"/>
+  <line x1="55" y1="192" x2="645" y2="192" stroke="#2a3448" stroke-width="1.5"/>
+  <text x="48" y="195" text-anchor="end" fill="#556080" font-size="10" font-family="JetBrains Mono,monospace">0</text>
+  <text x="48" y="155" text-anchor="end" fill="#556080" font-size="10" font-family="JetBrains Mono,monospace">20</text>
+  <text x="48" y="118" text-anchor="end" fill="#556080" font-size="10" font-family="JetBrains Mono,monospace">40</text>
+  <text x="48" y="80" text-anchor="end" fill="#556080" font-size="10" font-family="JetBrains Mono,monospace">60</text>
+  <text x="48" y="43" text-anchor="end" fill="#556080" font-size="10" font-family="JetBrains Mono,monospace">80</text>
+  <text x="48" y="15" text-anchor="end" fill="#556080" font-size="10" font-family="JetBrains Mono,monospace">100%</text>
+  <line x1="55" y1="155" x2="645" y2="155" stroke="#1e2535" stroke-width="1" stroke-dasharray="3,4"/>
+  <line x1="55" y1="118" x2="645" y2="118" stroke="#1e2535" stroke-width="1" stroke-dasharray="3,4"/>
+  <line x1="55" y1="80" x2="645" y2="80" stroke="#1e2535" stroke-width="1" stroke-dasharray="3,4"/>
+  <line x1="55" y1="43" x2="645" y2="43" stroke="#1e2535" stroke-width="1" stroke-dasharray="3,4"/>
+  <!-- y = 192 - val/100*177: 4.4->184, 21.1->155, 22.9->152, 36.8->127, 46.7->109, 51.1->101, 59.8->86, 71.7->65, 74.3->61, 85->42, 88.9->35, 92.8->28, 94->21, 96.3->22 -->
+  <polyline points="55,184 100,155 145,152 190,127 235,109 280,101 325,86 370,65 415,61 460,42 505,35 550,28 595,21 640,18"
+    fill="none" stroke="#5b8dee" stroke-width="2.5"/>
+  <polygon points="55,184 100,155 145,152 190,127 235,109 280,101 325,86 370,65 415,61 460,42 505,35 550,28 595,21 640,18 640,192 55,192"
+    fill="rgba(91,141,238,0.1)"/>
+  <circle cx="55" cy="184" r="3.5" fill="#5b8dee"/><text x="55" y="175" text-anchor="middle" fill="#e2e8f5" font-size="9" font-family="JetBrains Mono,monospace">4.4</text>
+  <circle cx="100" cy="155" r="3.5" fill="#5b8dee"/><text x="100" y="146" text-anchor="middle" fill="#e2e8f5" font-size="9" font-family="JetBrains Mono,monospace">21.1</text>
+  <circle cx="145" cy="152" r="3.5" fill="#5b8dee"/><text x="145" y="143" text-anchor="middle" fill="#e2e8f5" font-size="9" font-family="JetBrains Mono,monospace">22.9</text>
+  <circle cx="190" cy="127" r="3.5" fill="#5b8dee"/><text x="190" y="118" text-anchor="middle" fill="#e2e8f5" font-size="9" font-family="JetBrains Mono,monospace">36.8</text>
+  <circle cx="235" cy="109" r="3.5" fill="#5b8dee"/><text x="235" y="100" text-anchor="middle" fill="#e2e8f5" font-size="9" font-family="JetBrains Mono,monospace">46.7</text>
+  <circle cx="280" cy="101" r="3.5" fill="#5b8dee"/><text x="280" y="92" text-anchor="middle" fill="#e2e8f5" font-size="9" font-family="JetBrains Mono,monospace">51.1</text>
+  <circle cx="325" cy="86" r="3.5" fill="#5b8dee"/><text x="325" y="77" text-anchor="middle" fill="#e2e8f5" font-size="9" font-family="JetBrains Mono,monospace">59.8</text>
+  <circle cx="370" cy="65" r="3.5" fill="#5b8dee"/><text x="370" y="56" text-anchor="middle" fill="#e2e8f5" font-size="9" font-family="JetBrains Mono,monospace">71.7</text>
+  <circle cx="415" cy="61" r="3.5" fill="#5b8dee"/><text x="415" y="52" text-anchor="middle" fill="#e2e8f5" font-size="9" font-family="JetBrains Mono,monospace">74.3</text>
+  <circle cx="460" cy="42" r="3.5" fill="#5b8dee"/><text x="460" y="33" text-anchor="middle" fill="#e2e8f5" font-size="9" font-family="JetBrains Mono,monospace">85.0</text>
+  <circle cx="505" cy="35" r="3.5" fill="#5b8dee"/><text x="505" y="26" text-anchor="middle" fill="#e2e8f5" font-size="9" font-family="JetBrains Mono,monospace">88.9</text>
+  <circle cx="550" cy="28" r="3.5" fill="#5b8dee"/><text x="550" y="18" text-anchor="middle" fill="#e2e8f5" font-size="9" font-family="JetBrains Mono,monospace">92.8</text>
+  <circle cx="595" cy="21" r="3.5" fill="#5b8dee"/><text x="595" y="11" text-anchor="middle" fill="#e2e8f5" font-size="9" font-family="JetBrains Mono,monospace">94.0</text>
+  <circle cx="640" cy="18" r="5" fill="#fbbf24"/><text x="640" y="8" text-anchor="middle" fill="#fbbf24" font-size="10" font-weight="bold" font-family="JetBrains Mono,monospace">96.3%</text>
+  <text x="55" y="208" text-anchor="middle" fill="#556080" font-size="9" font-family="JetBrains Mono,monospace">2010</text>
+  <text x="190" y="208" text-anchor="middle" fill="#556080" font-size="9" font-family="JetBrains Mono,monospace">2013</text>
+  <text x="280" y="208" text-anchor="middle" fill="#556080" font-size="9" font-family="JetBrains Mono,monospace">2015</text>
+  <text x="370" y="208" text-anchor="middle" fill="#556080" font-size="9" font-family="JetBrains Mono,monospace">2017</text>
+  <text x="460" y="208" text-anchor="middle" fill="#556080" font-size="9" font-family="JetBrains Mono,monospace">2019</text>
+  <text x="550" y="208" text-anchor="middle" fill="#556080" font-size="9" font-family="JetBrains Mono,monospace">2022</text>
+  <text x="640" y="208" text-anchor="middle" fill="#556080" font-size="9" font-family="JetBrains Mono,monospace">2023</text>
+  <text x="13" y="106" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP,sans-serif" transform="rotate(-90,13,106)">スマートフォン比率（%）</text>
+</svg>
+<figcaption>図：日本国内スマートフォン比率の推移（2010〜2023年）　出典: モバイル社会研究所 <span class="ptr">&#8592; S03:p.9</span></figcaption>
+</figure>
+<table>
+<thead><tr><th>年</th><th>スマートフォン比率</th><th>年</th><th>スマートフォン比率</th></tr></thead>
+<tbody>
+<tr><td>2010年</td><td>4.4%</td><td>2015年</td><td>51.1%</td></tr>
+<tr><td>2011年</td><td>21.1%</td><td>2019年</td><td>約80%（8割）</td></tr>
+<tr><td>2012年</td><td>22.9%</td><td>2021年</td><td>9割超</td></tr>
+<tr><td>2013年</td><td>36.8%</td><td>2022年</td><td>94.0%</td></tr>
+<tr><td>2014年</td><td>46.7%</td><td>2023年</td><td><strong>96.3%</strong></td></tr>
+</tbody>
+</table>
+<p style="font-size:12px;color:var(--text-dim)">出典: モバイル社会研究所 <span class="ptr">← S03:p.9</span></p>
+
+<p>通信システムは2000年代の<strong>3G</strong>→2010年代の<strong>4G</strong>→2020年代の<strong>5G</strong>と進化し、総務省統計によると令和4年時点で5Gの人口カバー率は<strong>96.6%</strong>（整備計画を前倒し達成）。<span class="ptr">← S03:p.9 + S05</span></p>
+
+<p>情報増加の背景には<strong>SNS（ソーシャルネットワーキングサービス）</strong>の普及もある。代表例：Facebook・Instagram・Pinterest・X（旧Twitter）・YouTube。2023年時点の世界のSNSシェアはFacebook 63.64%・Instagram 11.42%・Pinterest 10.01%・Twitter 8.44%・YouTube 5%。<span class="ptr">← S03:p.10</span></p>
+</div>
+
+<div class="section" id="ch1-3">
+<h3 class="section-title">インターネットのメリットとリスク</h3>
+<table>
+<thead><tr><th>メリット</th><th>リスク</th></tr></thead>
+<tbody>
+<tr><td>世界中の情報にいつでもアクセスできる</td><td>誤情報を本当と信じてしまう</td></tr>
+<tr><td>自分の意見・作品を世界に公開できる</td><td>自身が誤った情報を意図せず発信してしまう</td></tr>
+<tr><td>物理的・言語的壁を越えてコラボレーションできる</td><td>相手が直接見えないことを悪用した犯罪被害</td></tr>
+</tbody>
+</table>
+<span class="ptr">← S03:p.11</span>
+<ul>
+<li>総務省の調査では1日平均<strong>180分（3時間）</strong>をメディア情報に接している <span class="ptr">← S03:p.12</span></li>
+<li>アメリカでは50歳未満の<strong>44%</strong>が常時オンライン状態 <span class="ptr">← S05</span></li>
+<li>ネット依存リスク例：移動中のスマートフォン事故・長時間サーフィンによる健康被害・課金・架空請求</li>
+</ul>
+<div class="audio-block">
+<div class="block-label">音声補足（講師のエピソード）</div>
+講師の家族が帰宅時にメールを確認しながら駅の階段を歩いて骨折したエピソードを紹介。「歩いているときは携帯電話をしまう」という基本行動の重要性と、情報に接する場を考えることの大切さが強調された。<span class="ptr">← S05</span>
+</div>
+</div>
+
+<div class="section" id="ch1-4">
+<h3 class="section-title">人間の認知特性</h3>
+<p>大量の情報に対して私たちは<strong>選択的に注意を向けること</strong>で処理している。一見同時処理しているように見えるが、実際は<strong>細かな時間単位で注意を切り替えながら処理</strong>しており、この切り替えには時間と認知的負荷がかかる。<span class="ptr">← S03:p.13</span></p>
+<div class="def-block">
+<div class="block-label">重要概念</div>
+<strong>カクテルパーティー効果</strong>：音楽が鳴り大勢の人が話している中でも特定の人の話を聞いて理解できる現象。1953年にイギリスの認知科学者<strong>Colin Cherry（コリン・チェリー）</strong>が提唱。人々がカクテルパーティーで談笑している中でも、自分が興味を持っている対象の会話は聞き取ることができるという現象を表した名称。<span class="ptr">← S03:p.14 + S05</span>
+</div>
+<figure>
+<svg viewBox="0 0 680 240" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:680px;display:block;margin:0 auto;">
+  <defs><marker id="ams" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 z" fill="#fbbf24"/></marker></defs>
+  <rect x="0" y="0" width="680" height="240" rx="10" fill="#161b27"/>
+  <circle cx="340" cy="120" r="35" fill="#1e2535" stroke="#fbbf24" stroke-width="2.5"/>
+  <text x="340" y="112" text-anchor="middle" fill="#fbbf24" font-size="24">&#128105;</text>
+  <text x="340" y="136" text-anchor="middle" fill="#fbbf24" font-size="9.5" font-weight="bold" font-family="Noto Sans JP,sans-serif">選択的注意</text>
+  <circle cx="340" cy="30" r="22" fill="#1e2535" stroke="#fbbf24" stroke-width="2"/>
+  <text x="340" y="38" text-anchor="middle" fill="#fbbf24" font-size="18">&#128250;</text>
+  <line x1="340" y1="52" x2="340" y2="85" stroke="#fbbf24" stroke-width="2.5" marker-end="url(#ams)"/>
+  <circle cx="192" cy="46" r="20" fill="#1e2535" stroke="#556080" stroke-width="1"/>
+  <text x="192" y="54" text-anchor="middle" fill="#556080" font-size="17">&#127902;</text>
+  <line x1="208" y1="60" x2="308" y2="98" stroke="#556080" stroke-width="1" stroke-dasharray="4,3"/>
+  <circle cx="488" cy="46" r="20" fill="#1e2535" stroke="#556080" stroke-width="1"/>
+  <text x="488" y="54" text-anchor="middle" fill="#556080" font-size="17">&#128187;</text>
+  <line x1="470" y1="60" x2="372" y2="98" stroke="#556080" stroke-width="1" stroke-dasharray="4,3"/>
+  <circle cx="580" cy="65" r="20" fill="#1e2535" stroke="#556080" stroke-width="1"/>
+  <text x="580" y="73" text-anchor="middle" fill="#556080" font-size="17">&#128657;</text>
+  <line x1="562" y1="77" x2="374" y2="108" stroke="#556080" stroke-width="1" stroke-dasharray="4,3"/>
+  <circle cx="168" cy="120" r="20" fill="#1e2535" stroke="#556080" stroke-width="1"/>
+  <text x="168" y="128" text-anchor="middle" fill="#556080" font-size="17">&#128241;</text>
+  <line x1="188" y1="120" x2="305" y2="120" stroke="#556080" stroke-width="1" stroke-dasharray="4,3"/>
+  <circle cx="512" cy="120" r="20" fill="#1e2535" stroke="#556080" stroke-width="1"/>
+  <text x="512" y="128" text-anchor="middle" fill="#556080" font-size="17">&#128214;</text>
+  <line x1="492" y1="120" x2="375" y2="120" stroke="#556080" stroke-width="1" stroke-dasharray="4,3"/>
+  <circle cx="192" cy="194" r="20" fill="#1e2535" stroke="#556080" stroke-width="1"/>
+  <text x="192" y="202" text-anchor="middle" fill="#556080" font-size="17">&#128054;</text>
+  <line x1="208" y1="181" x2="308" y2="144" stroke="#556080" stroke-width="1" stroke-dasharray="4,3"/>
+  <circle cx="340" cy="210" r="20" fill="#1e2535" stroke="#556080" stroke-width="1"/>
+  <text x="340" y="218" text-anchor="middle" fill="#556080" font-size="17">&#9200;</text>
+  <line x1="340" y1="190" x2="340" y2="155" stroke="#556080" stroke-width="1" stroke-dasharray="4,3"/>
+  <circle cx="488" cy="194" r="20" fill="#1e2535" stroke="#556080" stroke-width="1"/>
+  <text x="488" y="202" text-anchor="middle" fill="#556080" font-size="17">&#127836;</text>
+  <line x1="470" y1="181" x2="372" y2="144" stroke="#556080" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="18" y1="228" x2="42" y2="228" stroke="#fbbf24" stroke-width="2.5"/>
+  <text x="48" y="232" fill="#8a99b8" font-size="9.5" font-family="Noto Sans JP,sans-serif">注意を向けた情報（テレビ）</text>
+  <line x1="225" y1="228" x2="249" y2="228" stroke="#556080" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="255" y="232" fill="#8a99b8" font-size="9.5" font-family="Noto Sans JP,sans-serif">注意が向いていない情報</text>
+</svg>
+<figcaption>図：選択的注意 — 人間は同時並行処理ではなく注意の切り替えで情報を処理している <span class="ptr">&#8592; S03:p.13</span></figcaption>
+</figure>
+<figure>
+<svg viewBox="0 0 680 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:680px;display:block;margin:0 auto;">
+  <rect x="0" y="0" width="680" height="200" rx="10" fill="#161b27"/>
+  <text x="56" y="62" text-anchor="middle" fill="#556080" font-size="26">&#127925;</text>
+  <text x="56" y="112" text-anchor="middle" fill="#556080" font-size="26">&#129345;</text>
+  <text x="126" y="104" text-anchor="middle" fill="#556080" font-size="26">&#128378;</text>
+  <text x="66" y="158" text-anchor="middle" fill="#556080" font-size="24">&#127900;</text>
+  <line x1="90" y1="64" x2="238" y2="96" stroke="#556080" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
+  <line x1="90" y1="112" x2="238" y2="106" stroke="#556080" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
+  <line x1="92" y1="154" x2="238" y2="115" stroke="#556080" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
+  <circle cx="275" cy="103" r="38" fill="#1a2d20" stroke="#34d399" stroke-width="2.5"/>
+  <text x="275" y="95" text-anchor="middle" fill="#34d399" font-size="30">&#128066;</text>
+  <text x="275" y="124" text-anchor="middle" fill="#34d399" font-size="9.5" font-weight="bold" font-family="Noto Sans JP,sans-serif">選択的に聞く</text>
+  <line x1="430" y1="103" x2="313" y2="103" stroke="#fbbf24" stroke-width="2.5"/>
+  <polygon points="315,97 303,103 315,109" fill="#fbbf24"/>
+  <circle cx="478" cy="103" r="50" fill="rgba(251,191,36,0.12)" stroke="#fbbf24" stroke-width="2"/>
+  <text x="478" y="95" text-anchor="middle" fill="#fbbf24" font-size="28">&#128483;</text>
+  <text x="478" y="122" text-anchor="middle" fill="#fbbf24" font-size="9.5" font-weight="bold" font-family="Noto Sans JP,sans-serif">特定の話者（ターゲット）</text>
+  <text x="602" y="72" text-anchor="middle" fill="#556080" font-size="22">&#128101;</text>
+  <text x="606" y="148" text-anchor="middle" fill="#556080" font-size="22">&#128101;</text>
+  <line x1="580" y1="76" x2="530" y2="96" stroke="#556080" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
+  <line x1="580" y1="142" x2="530" y2="112" stroke="#556080" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
+  <line x1="18" y1="188" x2="42" y2="188" stroke="#fbbf24" stroke-width="2.5"/>
+  <text x="48" y="192" fill="#8a99b8" font-size="9.5" font-family="Noto Sans JP,sans-serif">注意を向けた声（ターゲット）</text>
+  <line x1="270" y1="188" x2="294" y2="188" stroke="#556080" stroke-width="1" stroke-dasharray="4,3" opacity="0.8"/>
+  <text x="300" y="192" fill="#8a99b8" font-size="9.5" font-family="Noto Sans JP,sans-serif">無視された音（ノイズ）</text>
+</svg>
+<figcaption>図：カクテルパーティー効果 — 騒がしい環境でも特定の人の声を聞き取れる（Colin Cherry, 1953） <span class="ptr">&#8592; S03:p.14</span></figcaption>
+</figure>
+<p>この<strong>選択的注意</strong>の機能により、レポートを書いている最中にLINEの通知に気を取られてしまうように、意図しない方向に注意が持っていかれることもある。<span class="ptr">← S03:p.15</span></p>
+</div>
+
+<div class="section" id="ch1-5">
+<h3 class="section-title">目標を定めて情報と向き合う</h3>
+<ul>
+<li>インターネット・ソーシャルメディアから離れ、自分の考えに集中する時間を作る</li>
+<li>こなすべきタスクをあらかじめリスト化する（短いリスト・その日のことだけ）</li>
+<li>情報検索は自分の目的達成のために行う（流される情報に注意）</li>
+<li>自分の注意が今どこに向いているかを意識しコントロールする</li>
+</ul>
+<span class="ptr">← S03:p.16</span>
+<div class="def-block">
+<div class="block-label">名言</div>
+"It's only by saying no that you can concentrate on the things that are really important." — <strong>Steve Jobs</strong>（Apple共同創業者）<span class="ptr">← S03:p.17</span>
+<div style="margin-top:6px;font-size:13px;color:var(--text-sub)">「集中するということはNOということでもある」：情報は自分で選択する必要があり、見ないと自分で決める情報もあることを示す名言。</div>
+</div>
+<p>豊富な情報は「集合知」であるとともに「玉石混交」でもある。目的をもって情報に接し、必要な情報に注意を向けることが重要。<span class="ptr">← S03:p.17</span></p>
+</div>
+</section>
+
+<!-- 第2章 -->
+<section class="chapter" id="ch2">
+<h2 class="chapter-title"><span class="chapter-num">第2章</span>情報を探し、見極める！</h2>
+
+<div class="section" id="ch2-1">
+<h3 class="section-title">情報の種類と信頼性</h3>
+<table>
+<thead><tr><th>情報の種類</th><th>特徴・信頼性</th></tr></thead>
+<tbody>
+<tr><td><strong>学術書・研究論文</strong></td><td>先行研究をふまえた論述、データの根拠あり。<strong>信頼性が最も高い</strong></td></tr>
+<tr><td><strong>政府等各種団体の公開情報</strong></td><td>立場がはっきりしている（偏っている可能性はある）</td></tr>
+<tr><td><strong>一般書・一般雑誌記事</strong></td><td>複数人のチェックが入ることが多いが、立場不明確・根拠なし・論理的飛躍を含む場合も多い</td></tr>
+</tbody>
+</table>
+<span class="ptr">← S03:p.23</span>
+</div>
+
+<div class="section" id="ch2-2">
+<h3 class="section-title">図書館・オンラインサービスの活用</h3>
+<ul>
+<li><strong>サイバー大学附属図書館</strong>（福岡）：図書郵送貸出サービスあり。月水金 10:00〜17:00、事前予約制（1週間前まで）、3週間・10冊/1回 <span class="ptr">← S03:p.25</span></li>
+<li><strong>他大学図書館</strong>：CiNii Books（ci.nii.ac.jp/books/）で検索可。一般利用者は閲覧のみが多い</li>
+<li><strong>公共図書館</strong>：地域外でも閲覧可。専門的な学術文献は少ない場合も</li>
+<li><strong>国立国会図書館（NDL ONLINE）</strong>：インターネットで複写申込可（有料）</li>
+</ul>
+<p><strong>オンラインサービス</strong>（Cloud Campus → 付属図書館 → 図書館利用ガイダンス）<span class="ptr">← S03:p.26</span></p>
+<table>
+<thead><tr><th>サービス</th><th>内容</th></tr></thead>
+<tbody>
+<tr><td><strong>Maruzen eBooks Library</strong></td><td>丸善の学術書籍電子書籍配信サービス</td></tr>
+<tr><td><strong>KinoDen</strong></td><td>紀伊國屋書店の学術書・専門書電子図書館</td></tr>
+<tr><td><strong>日経BP記事検索</strong></td><td>主要50誌の記事検索・本文閲覧</td></tr>
+<tr><td><strong>ジャパンナレッジLib</strong></td><td>国内最大級の辞書・事典（60種以上）</td></tr>
+<tr><td><strong>日経テレコン21</strong></td><td>日経新聞等の記事検索、企業・人物データ</td></tr>
+<tr><td><strong>CiNii Research</strong></td><td>文献・研究データ・KAKENの研究プロジェクト情報</td></tr>
+</tbody>
+</table>
+<div class="audio-block">
+<div class="block-label">音声補足（注意）</div>
+各オンラインサービスには利用マニュアル・利用規約がある。例えばMaruzen eBooks Libraryでは1タイトルあたり許可ページ数の上限を超えたダウンロードが禁止。利用前に必ず注意事項・禁止事項を確認すること。<span class="ptr">← S03:p.27 + S05</span>
+</div>
+</div>
+
+<div class="section" id="ch2-3">
+<h3 class="section-title">サーチエンジン</h3>
+<table>
+<thead><tr><th>サーチエンジン</th><th>特徴</th></tr></thead>
+<tbody>
+<tr><td><strong>Google</strong></td><td>世界シェアNo.1（2023年現在）。世界中の情報を整理・アクセス可能にすることがミッション</td></tr>
+<tr><td><strong>Bing</strong></td><td>Microsoft社提供</td></tr>
+<tr><td><strong>YANDEX</strong></td><td>ロシアのサーチエンジン・ポータルサイト</td></tr>
+<tr><td><strong>Baidu（百度）</strong></td><td>中国のサーチエンジン</td></tr>
+<tr><td><strong>Yahoo!</strong></td><td>アメリカIT企業提供。日本ではGoogleに次ぐ人気</td></tr>
+<tr><td><strong>DuckDuckGo</strong></td><td>プライバシー保護をポリシーとするサーチエンジン</td></tr>
+</tbody>
+</table>
+<span class="ptr">← S03:p.28</span>
+<p><strong>サーチエンジンの仕組み</strong>：ウェブサイト情報を収集し<strong>インデックス</strong>（目印）をつける→検索クエリに対して関連情報を表示→検索者のコンテキスト（位置情報等）を参考にパーソナライズ。<span class="ptr">← S03:p.30</span></p>
+
+<div class="def-block">
+<div class="block-label">重要概念：フィルターバブル</div>
+サーチエンジンが検索履歴に基づき好みの情報を優先表示する機能により、<strong>自分の好みの情報のみが見えて異なる情報が見えなくなるリスク</strong>がある。<span class="ptr">← S03:p.31</span>
+</div>
+<figure>
+<svg viewBox="0 0 680 215" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:680px;display:block;margin:0 auto;">
+  <rect x="0" y="0" width="680" height="215" rx="10" fill="#161b27"/>
+  <text x="340" y="22" text-anchor="middle" fill="#e2e8f5" font-size="12" font-weight="bold" font-family="Noto Sans JP,sans-serif">サーチエンジンの高度化が私たちの世界を狭めてしまう？</text>
+  <circle cx="115" cy="130" r="50" fill="rgba(150,150,150,0.08)" stroke="#556080" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <circle cx="115" cy="130" r="26" fill="rgba(120,120,120,0.12)" stroke="#556080" stroke-width="1"/>
+  <text x="115" y="122" text-anchor="middle" fill="#8a99b8" font-size="22">&#128100;</text>
+  <text x="115" y="145" text-anchor="middle" fill="#556080" font-size="9" font-family="Noto Sans JP,sans-serif">見える情報が少ない</text>
+  <circle cx="94" cy="100" r="7" fill="#5b8dee" opacity="0.5"/>
+  <circle cx="340" cy="122" r="88" fill="rgba(205,130,50,0.1)" stroke="#fbbf24" stroke-width="2"/>
+  <circle cx="340" cy="122" r="54" fill="rgba(205,130,50,0.08)" stroke="#fbbf24" stroke-width="1.5"/>
+  <circle cx="340" cy="122" r="26" fill="rgba(205,130,50,0.12)" stroke="#fbbf24" stroke-width="1"/>
+  <text x="340" y="114" text-anchor="middle" fill="#fbbf24" font-size="24">&#128100;</text>
+  <text x="340" y="138" text-anchor="middle" fill="#fbbf24" font-size="9" font-weight="bold" font-family="Noto Sans JP,sans-serif">多くの情報が見えている</text>
+  <circle cx="285" cy="74" r="9" fill="#f87171" opacity="0.7"/>
+  <circle cx="400" cy="80" r="11" fill="#34d399" opacity="0.7"/>
+  <circle cx="275" cy="154" r="8" fill="#a78bfa" opacity="0.7"/>
+  <circle cx="408" cy="157" r="10" fill="#5b8dee" opacity="0.7"/>
+  <circle cx="340" cy="58" r="7" fill="#fbbf24" opacity="0.6"/>
+  <circle cx="565" cy="130" r="68" fill="rgba(91,141,238,0.07)" stroke="#8a99b8" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <circle cx="565" cy="130" r="36" fill="rgba(91,141,238,0.07)" stroke="#8a99b8" stroke-width="1"/>
+  <text x="565" y="122" text-anchor="middle" fill="#8a99b8" font-size="22">&#128100;</text>
+  <text x="565" y="145" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP,sans-serif">中程度の情報が見える</text>
+  <circle cx="538" cy="98" r="8" fill="#5b8dee" opacity="0.5"/>
+  <text x="340" y="202" text-anchor="middle" fill="#556080" font-size="9.5" font-family="Noto Sans JP,sans-serif">閲覧履歴に応じてアルゴリズムが絞り込む &#8594; 同じ検索でも人によって見える情報が異なる</text>
+</svg>
+<figcaption>図：フィルターバブル — 各人が「情報の泡」の中に閉じ込められる（Eli Pariser, 2011） <span class="ptr">&#8592; S03:p.31</span></figcaption>
+</figure>
+<div class="audio-block">
+<div class="block-label">音声補足（講師の体験）</div>
+講師がInstagram・Pinterestを使っていると最初は紅葉の写真・氷河の映像が表示されていたのが、いつしか外国人が部屋を掃除する動画（絨毯・食洗機）ばかりになった。フィルターバブルに陥っていることに気づかず「みんな丁寧に掃除している」と感心していた、という体験談。<span class="ptr">← S05</span>
+</div>
+
+<figure>
+<svg viewBox="0 0 680 125" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:680px;display:block;margin:0 auto;">
+  <rect x="10" y="10" width="660" height="38" rx="6" fill="#1e2535" stroke="#2a3448" stroke-width="1"/>
+  <text x="26" y="35" fill="#34d399" font-size="13" font-family="JetBrains Mono,monospace">https://</text>
+  <text x="102" y="35" fill="#5b8dee" font-size="13" font-family="JetBrains Mono,monospace">www.</text>
+  <text x="136" y="35" fill="#fbbf24" font-size="13" font-family="JetBrains Mono,monospace">cyber-u.</text>
+  <text x="212" y="35" fill="#a78bfa" font-size="13" font-family="JetBrains Mono,monospace">ac.</text>
+  <text x="238" y="35" fill="#f87171" font-size="13" font-family="JetBrains Mono,monospace">jp</text>
+  <text x="262" y="35" fill="#8a99b8" font-size="13" font-family="JetBrains Mono,monospace">/students/index.html</text>
+  <line x1="64" y1="48" x2="64" y2="68" stroke="#34d399" stroke-width="1.2"/>
+  <text x="64" y="80" text-anchor="middle" fill="#34d399" font-size="10" font-family="Noto Sans JP,sans-serif">スキーム</text>
+  <text x="64" y="93" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP,sans-serif">（プロトコル）</text>
+  <line x1="118" y1="48" x2="118" y2="68" stroke="#5b8dee" stroke-width="1.2"/>
+  <text x="118" y="80" text-anchor="middle" fill="#5b8dee" font-size="10" font-family="Noto Sans JP,sans-serif">Webサーバー</text>
+  <line x1="174" y1="48" x2="174" y2="68" stroke="#fbbf24" stroke-width="1.2"/>
+  <text x="174" y="80" text-anchor="middle" fill="#fbbf24" font-size="10" font-family="Noto Sans JP,sans-serif">ドメイン名</text>
+  <line x1="224" y1="48" x2="224" y2="68" stroke="#a78bfa" stroke-width="1.2"/>
+  <text x="224" y="80" text-anchor="middle" fill="#a78bfa" font-size="10" font-family="Noto Sans JP,sans-serif">ac=高等教育機関</text>
+  <line x1="246" y1="48" x2="246" y2="68" stroke="#f87171" stroke-width="1.2"/>
+  <text x="246" y="80" text-anchor="middle" fill="#f87171" font-size="10" font-family="Noto Sans JP,sans-serif">jp=日本</text>
+  <line x1="430" y1="48" x2="430" y2="68" stroke="#8a99b8" stroke-width="1.2"/>
+  <text x="430" y="80" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP,sans-serif">パス（ページの場所）</text>
+  <text x="10" y="115" fill="#556080" font-size="10" font-family="Noto Sans JP,sans-serif">国別: jp=日本  us=アメリカ  cn=中国  fr=フランス　&#160;&#160;&#160;用途別: go=政府機関  ac=高等教育機関・学校法人</text>
+</svg>
+<figcaption>図：URLの構造と読み解き方 <span class="ptr">&#8592; S03:p.36</span></figcaption>
+</figure>
+<p><strong>URLの読み解き方</strong>（例：<code>https://www.cyber-u.ac.jp/students/index.html</code>）<span class="ptr">← S03:p.36</span></p>
+<ul>
+<li><strong>スキーム</strong>：<code>https</code></li>
+<li><strong>サーバー名</strong>：<code>www.cyber-u.ac.jp</code>（www＝ウェブサーバー、cyber-u.ac.jp＝サイバー大学のドメイン）</li>
+<li><strong>ドメイン情報</strong>：<code>ac</code>＝高等教育機関（アカデミック）、<code>jp</code>＝日本（他にus・cn・fr等）</li>
+<li><strong>パス</strong>：<code>/students/index.html</code></li>
+</ul>
+<div class="audio-block">
+<div class="block-label">音声補足</div>
+ドメインの所有者はWhois（whois.jprs.jp）で検索可能。銀行の情報であればその銀行のサーバーから提供されているかを確認できる。<span class="ptr">← S05</span>
+</div>
+</div>
+
+<div class="section" id="ch2-4">
+<h3 class="section-title">情報を見極める「ファクトチェック」</h3>
+<div class="def-block">
+<div class="block-label">定義</div>
+<strong>ファクトチェック</strong>：ある事実について述べられた内容が真実か・正確かを判断するために、事実に関する情報であることを検証すること。<span class="ptr">← S03:p.33</span>
+</div>
+<p><strong>ファクトチェックの6つの方法</strong><span class="ptr">← S03:p.33-34</span></p>
+<ol>
+<li><strong>情報源を確かめる</strong>：発信元が公開されているか確認し、信頼できるか判断する</li>
+<li><strong>「事実」と「意見」を区別する</strong>：事実＝実際にあったこと・第三者が確認できること。意見＝ある人が考えたこと</li>
+<li><strong>何をもとに書かれたか確認する</strong>：一次情報（情報源）をたどる</li>
+<li><strong>複数の情報源で確認する</strong>：ジャーナリストは記事作成時に3つの異なる情報源で確認するといわれている</li>
+<li><strong>いつの情報かを確認する</strong>：時間経過により内容が変化している場合がある</li>
+<li><strong>発信目的を考える</strong>：何のためにその情報が発信されているかを考える</li>
+</ol>
+</div>
+
+<div class="section" id="ch2-5">
+<h3 class="section-title">フェイクニュースとディープフェイク</h3>
+<div class="def-block">
+<div class="block-label">定義</div>
+<strong>フェイクニュース</strong>：人を騙すことを目的に作られた嘘の情報、または誤りと知らずに広まってしまった情報。悪意がなくても拡散に加担することがあり、罪に問われる場合もある。<span class="ptr">← S03:p.37</span>
+</div>
+<div class="audio-block">
+<div class="block-label">音声補足（具体例）</div>
+<strong>コロナ禍のトイレットペーパー不足騒動</strong>：1つの投稿が拡散し実際の品切れを引き起こした社会現象。また1938年のラジオドラマ「宇宙戦争」で人々がパニックを起こしたとされる事例も古い例として紹介（近年の調査ではこのパニック自体が誇張だった可能性も指摘）。<strong>不安を煽る情報は広まりやすく信じやすい</strong>ことを常に意識すること。<span class="ptr">← S03:p.37 + S05</span>
+</div>
+<div class="def-block">
+<div class="block-label">定義</div>
+<strong>ディープフェイク</strong>：AI技術を用いて動画・音声等を人工的に合成する技術。エンターテイメントでは表現の可能性が広がる一方、個人の権利侵害や偽情報拡散につながるリスクがある（政治家のスピーチ映像合成・偽の災害情報拡散等）。<span class="ptr">← S03:p.38</span>
+</div>
+<p>見分けるには：背景・服装・装飾品も含め<strong>不自然な点</strong>がないか確認する + <strong>発信元を確認</strong>する。<span class="ptr">← S03:p.38</span></p>
+</div>
+
+<div class="section" id="ch2-6">
+<h3 class="section-title">データリテラシー</h3>
+<div class="def-block">
+<div class="block-label">定義</div>
+<strong>データリテラシー</strong>：データを理解し、評価し、適切に使用する能力。データの収集・管理・分析・解釈に関する知識のこと。<strong>データ駆動型社会</strong>（デジタル化されたデータが知的財産として活用される社会）では不可欠な能力。<span class="ptr">← S03:p.39</span>
+</div>
+<p>データを集め・俯瞰し・分析することで、目の前の姿や自分の経験を超えた情報の姿が見えるようになる。<span class="ptr">← S03:p.39</span></p>
+<div class="audio-block">
+<div class="block-label">音声補足（映画『マネーボール』）</div>
+従来の野球スカウトが目と経験のみでチームを作っていたところから、<strong>セイバーメトリクス</strong>（野球統計の理論）を用いデータを分析・活用することで球団の危機を救った実話。「勘や経験は重要な能力だが、これにデータの客観性を加えることでより正確に目標を達成できる」というデータリテラシーの本質を示す好例。<span class="ptr">← S05</span>
+</div>
+</div>
+</section>
+
+<!-- 第3章 -->
+<section class="chapter" id="ch3">
+<h2 class="chapter-title"><span class="chapter-num">第3章</span>情報を発信しコラボレーションしよう</h2>
+
+<div class="section" id="ch3-1">
+<h3 class="section-title">発信・コミュニケーション・コラボレーションの種類</h3>
+<table>
+<thead><tr><th>種類</th><th>内容</th></tr></thead>
+<tbody>
+<tr><td><strong>メール</strong></td><td>SNSよりも手紙のやり取りに近い。宛名・挨拶から始め、名前・所属組織を終わりに記載するのが一般的</td></tr>
+<tr><td><strong>SNS投稿・ソーシャルブックマーク</strong></td><td>コンテンツ・ブックマークをインターネット上に公開し、独自の視点で集めた情報を共有</td></tr>
+<tr><td><strong>タグ付け・リツイート（リポスト）</strong></td><td>自身のコンテンツに対して他者のアカウントや投稿を紐付けする機能</td></tr>
+<tr><td><strong>リアクション・コメント</strong></td><td>他者の投稿に対し「参考になった」「感謝したい」等の気持ちを表すこと</td></tr>
+<tr><td><strong>キュレーション</strong></td><td>インターネット上の情報を特定の視点で集め、新しい価値を持たせて共有（学芸員・キュレーターに由来）</td></tr>
+<tr><td><strong>コミュニティの組織化</strong></td><td>イベント・共通の趣味を通じてオンライン上にコミュニティを形成。目標明確化・プラットフォーム選択・ルール決め</td></tr>
+</tbody>
+</table>
+<span class="ptr">← S03:p.45-46</span>
+<div class="audio-block">
+<div class="block-label">音声補足</div>
+自分のオンラインでのアクションは残り、誰からも見え、再利用される可能性があることを理解し、発信する内容に責任を持って積極的に参画していく姿勢が重要。<span class="ptr">← S03:p.44 + S05</span>
+</div>
+</div>
+
+<div class="section" id="ch3-2">
+<h3 class="section-title">サイバー大学のオンラインコミュニケーション</h3>
+<p><strong>大学メール</strong>（Gmailアカウント）<span class="ptr">← S03:p.47</span></p>
+<ul>
+<li>送信前に宛先（To/CC/BCC）を必ず確認する</li>
+<li><strong>To</strong>：直接の宛先。<strong>CC</strong>：内容を知らせておくべき人（受信者がお互いのアドレスを見える）。<strong>BCC</strong>：アドレスが受信者に見えない同報方法</li>
+<li>長い文章は内容で段落を区切る</li>
+</ul>
+<p><strong>大学公式コミュニティ</strong>（cyber.commmune.com）：学生専用コミュニティ。勉強・趣味のことなど、仲間と情報交換やコミュニケーションを楽しむ場。<span class="ptr">← S03:p.48</span></p>
+</div>
+
+<div class="section" id="ch3-3">
+<h3 class="section-title">発信マナーと注意点</h3>
+<div class="def-block">
+<div class="block-label">発信マナーの基本</div>
+受け取る側の立場に立ち、<strong>ペイフォワード</strong>の姿勢で情報を発信する。<br>
+<strong>ペイフォワード（Pay Forward）</strong>＝「先に払う」。与えてもらった後に報いるのではなく、先に他の誰かに送ること。誰かの助けになる行動・情報提供をし、思いやりのある表現を心がける。<span class="ptr">← S03:p.49 + S05</span>
+</div>
+<div class="audio-block">
+<div class="block-label">音声補足（テキストコミュニケーションの限界）</div>
+対面では伝わる皮肉・冗談がオンラインでは伝わらないことがある。テキストのみのコミュニケーションは情報量が非常に少なく、表情・声の調子・身振りを使えない。また普段近くにいる人との既存の信頼関係もオンラインにはない。発信する際には十分な注意が必要。<span class="ptr">← S03:p.49 + S05</span>
+</div>
+<div class="def-block">
+<div class="block-label">重要概念：エコーチェンバー</div>
+<strong>エコーチェンバー</strong>：自分と共通する価値観の人の中に閉じてしまい、内の意見が正しいと過信してしまうリスクがある状態。閉じた小部屋の中で音がエコーするような状態。例：猫好きSNSで猫の写真ばかり見て「世界中みんな猫が好き」と過信し、犬好きさんを否定的に見てしまうような状態。<span class="ptr">← S03:p.50 + S05</span>
+</div>
+<figure>
+<svg viewBox="0 0 680 210" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:680px;display:block;margin:0 auto;">
+  <rect x="0" y="0" width="680" height="210" rx="10" fill="#161b27"/>
+  <rect x="18" y="18" width="108" height="88" rx="6" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+  <text x="72" y="55" text-anchor="middle" fill="#e2e8f5" font-size="26">&#128049;</text>
+  <text x="72" y="78" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP,sans-serif">猫好きさん、</text>
+  <text x="72" y="92" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP,sans-serif">集まれ！</text>
+  <rect x="142" y="28" width="108" height="78" rx="6" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+  <text x="196" y="60" text-anchor="middle" fill="#e2e8f5" font-size="24">&#128008;</text>
+  <text x="196" y="80" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP,sans-serif">うちのネコちゃん</text>
+  <text x="196" y="94" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP,sans-serif">です</text>
+  <rect x="96" y="120" width="108" height="70" rx="6" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+  <text x="150" y="148" text-anchor="middle" fill="#e2e8f5" font-size="24">&#128022;</text>
+  <text x="150" y="168" text-anchor="middle" fill="#8a99b8" font-size="9" font-family="Noto Sans JP,sans-serif">今日も猫！白猫発見！</text>
+  <text x="272" y="100" text-anchor="middle" fill="#5b8dee" font-size="20">&#8594;</text>
+  <circle cx="350" cy="108" r="28" fill="#1e2535" stroke="#5b8dee" stroke-width="2"/>
+  <text x="350" y="100" text-anchor="middle" fill="#e2e8f5" font-size="22">&#128100;</text>
+  <text x="350" y="124" text-anchor="middle" fill="#8a99b8" font-size="8.5" font-family="Noto Sans JP,sans-serif">猫好きユーザー</text>
+  <ellipse cx="494" cy="52" rx="110" ry="38" fill="#f5f5f5" stroke="#cccccc" stroke-width="1.5"/>
+  <circle cx="390" cy="78" r="8" fill="#f5f5f5" stroke="#cccccc" stroke-width="1"/>
+  <circle cx="398" cy="66" r="5" fill="#f5f5f5" stroke="#cccccc" stroke-width="1"/>
+  <text x="494" y="42" text-anchor="middle" fill="#222222" font-size="11" font-weight="bold" font-family="Noto Sans JP,sans-serif">もしかして、、</text>
+  <text x="494" y="57" text-anchor="middle" fill="#222222" font-size="11" font-weight="bold" font-family="Noto Sans JP,sans-serif">世界中みーんな</text>
+  <text x="494" y="74" text-anchor="middle" fill="#333333" font-size="11.5" font-weight="bold" font-family="Noto Sans JP,sans-serif">猫が好き!?</text>
+  <ellipse cx="550" cy="156" rx="100" ry="38" fill="#1a1a1a" stroke="#f87171" stroke-width="1.5"/>
+  <circle cx="463" cy="138" r="8" fill="#1a1a1a" stroke="#f87171" stroke-width="1"/>
+  <circle cx="453" cy="126" r="5" fill="#1a1a1a" stroke="#f87171" stroke-width="1"/>
+  <text x="550" y="149" text-anchor="middle" fill="#f87171" font-size="12" font-weight="bold" font-family="Noto Sans JP,sans-serif">犬好きなんて</text>
+  <text x="550" y="167" text-anchor="middle" fill="#f87171" font-size="12" font-weight="bold" font-family="Noto Sans JP,sans-serif">ダーメダメ！</text>
+  <text x="340" y="200" text-anchor="middle" fill="#556080" font-size="9.5" font-family="Noto Sans JP,sans-serif">猫投稿のみ見続けた結果 &#8594; 「猫好き=世界の常識」と過信 &#8594; 異なる意見を拒絶するエコーチェンバーへ</text>
+</svg>
+<figcaption>図：エコーチェンバー — 閉じた小部屋で音がエコーするような状態（スライドp.50の猫SNS事例より） <span class="ptr">&#8592; S03:p.50</span></figcaption>
+</figure>
+<p><strong>実名投稿のメリット・デメリット</strong><span class="ptr">← S03:p.51</span></p>
+<table>
+<thead><tr><th>メリット</th><th>デメリット</th></tr></thead>
+<tbody>
+<tr><td>対面社会での人脈形成・評価につながる可能性がある</td><td>個人情報の流出からトラブルに合うリスクが高まる</td></tr>
+<tr><td>お互いに節度を持った表現でのやり取りになることが多い</td><td rowspan="2"></td></tr>
+<tr><td>発言の信用度が高まる</td></tr>
+</tbody>
+</table>
+<div class="audio-block">
+<div class="block-label">音声補足（情報発信の重要性）</div>
+今あるインターネット上の重要な情報は過去からの蓄積による。価値ある情報を提供し知識を積み重ねていくことが大切。一方でインターネットに出した情報は消えずに再利用されることを認識すること。冗談のつもりの情報でも大きなトラブルにつながる場合がある。<span class="ptr">← S03:p.52 + S05</span>
+</div>
+</div>
+</section>
+
+<!-- 第4章 -->
+<section class="chapter" id="ch4">
+<h2 class="chapter-title"><span class="chapter-num">第4章</span>新しい技術を理解し正しく活用する</h2>
+
+<div class="section" id="ch4-1">
+<h3 class="section-title">AIの発展と生成系AI</h3>
+<p>技術の発展により音声・画像を用いた検索が可能になり、AIが画像・動画・文章等を生成することも可能になった。<span class="ptr">← S03:p.57</span></p>
+<figure>
+<svg viewBox="0 0 680 170" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:680px;display:block;margin:0 auto;">
+  <line x1="40" y1="86" x2="648" y2="86" stroke="#2a3448" stroke-width="2"/>
+  <polygon points="646,81 660,86 646,91" fill="#2a3448"/>
+  <circle cx="100" cy="86" r="8" fill="#1e2535" stroke="#5b8dee" stroke-width="2"/>
+  <text x="100" y="68" text-anchor="middle" fill="#5b8dee" font-size="12" font-weight="bold" font-family="Noto Sans JP,sans-serif">1950年</text>
+  <text x="100" y="108" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP,sans-serif">ダートマス会議で</text>
+  <text x="100" y="124" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP,sans-serif">確立された「AI」の概念</text>
+  <circle cx="270" cy="86" r="8" fill="#1e2535" stroke="#34d399" stroke-width="2"/>
+  <text x="270" y="68" text-anchor="middle" fill="#34d399" font-size="12" font-weight="bold" font-family="Noto Sans JP,sans-serif">1990年</text>
+  <text x="270" y="108" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP,sans-serif">インターネットの普及と</text>
+  <text x="270" y="124" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP,sans-serif">機械学習・統計手法の発展</text>
+  <circle cx="440" cy="86" r="8" fill="#1e2535" stroke="#fbbf24" stroke-width="2"/>
+  <text x="440" y="68" text-anchor="middle" fill="#fbbf24" font-size="12" font-weight="bold" font-family="Noto Sans JP,sans-serif">2000年</text>
+  <text x="440" y="108" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP,sans-serif">ビッグデータ登場</text>
+  <text x="440" y="124" text-anchor="middle" fill="#8a99b8" font-size="10" font-family="Noto Sans JP,sans-serif">画像・音声認識の性能向上</text>
+  <circle cx="610" cy="86" r="10" fill="#1a3d30" stroke="#34d399" stroke-width="2.5"/>
+  <text x="610" y="66" text-anchor="middle" fill="#fbbf24" font-size="12" font-weight="bold" font-family="Noto Sans JP,sans-serif">2020年</text>
+  <text x="610" y="108" text-anchor="middle" fill="#34d399" font-size="10" font-weight="bold" font-family="Noto Sans JP,sans-serif">生成系AIをはじめ</text>
+  <text x="610" y="124" text-anchor="middle" fill="#34d399" font-size="10" font-weight="bold" font-family="Noto Sans JP,sans-serif">高度なAI技術が普及</text>
+  <text x="610" y="144" text-anchor="middle" fill="#34d399" font-size="9" font-family="Noto Sans JP,sans-serif">AI倫理とルール化の時代へ</text>
+</svg>
+<figcaption>図：AIの発展の歴史（スライドp.58準拠） <span class="ptr">&#8592; S03:p.58</span></figcaption>
+</figure>
+<table>
+<thead><tr><th>時代</th><th>出来事</th></tr></thead>
+<tbody>
+<tr><td>1950年代</td><td>Alan Turing・John McCarthyらがAIの概念を確立</td></tr>
+<tr><td>1956年</td><td>ダートマス会議でのAI研究発表が発端</td></tr>
+<tr><td>1950〜60年代</td><td>第1次AIブーム（実用化）</td></tr>
+<tr><td>1980年代</td><td>第2次AIブーム（実用化）</td></tr>
+<tr><td>1990年代〜</td><td>インターネット普及・機械学習・統計手法の発展</td></tr>
+<tr><td>2000年代</td><td>ビッグデータ時代。大規模データ学習による第3次AIブーム</td></tr>
+<tr><td>2020年代</td><td>生成系AIをはじめ高度なAI技術が普及。<strong>AI倫理・ルール化</strong>の時代</td></tr>
+</tbody>
+</table>
+<span class="ptr">← S03:p.58</span>
+<div class="def-block">
+<div class="block-label">定義：生成系AI（生成型AI）</div>
+データから学習し新しいデータを生成するAI技術の一つ。インターネット上の情報・会話・物語・画像・動画・音楽など様々なデータから学習できる。人間の言葉を解釈し応答するサービス等、多様なサービスが誕生している。<span class="ptr">← S03:p.59</span>
+</div>
+</div>
+
+<div class="section" id="ch4-2">
+<h3 class="section-title">著作権と生成系AIの関係</h3>
+<div class="def-block">
+<div class="block-label">定義：著作権</div>
+著作者が著作物を創作した時点で<strong>自動的に発生する権利</strong>（手続き不要）。著作物の公正な利用と著作者の権利を保護し文化の発展に寄与することが目的。これは国際的なルールとなっている。<span class="ptr">← S03:p.60</span>
+</div>
+<div class="def-block">
+<div class="block-label">定義：著作物</div>
+著作者の<strong>思想または感情を創作的に表現した</strong>文芸・学術・美術・音楽のこと。単なる事実の記載・ありふれた表現・アイデア（思いつき・考え等の抽象的なもの）は著作権法の保護対象にならない。<span class="ptr">← S03:p.61</span>
+</div>
+<p><figure>
+<svg viewBox="0 0 680 150" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:680px;display:block;margin:0 auto;">
+  <defs><marker id="ac3" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#5b8dee"/></marker></defs>
+  <rect x="10" y="18" width="190" height="112" rx="10" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+  <text x="105" y="44" text-anchor="middle" fill="#5b8dee" font-size="12" font-weight="bold" font-family="Noto Sans JP,sans-serif">&#9312; 学習段階</text>
+  <text x="105" y="64" text-anchor="middle" fill="#8a99b8" font-size="10.5" font-family="Noto Sans JP,sans-serif">AIが著作物をもとに学習する</text>
+  <text x="105" y="84" text-anchor="middle" fill="#8a99b8" font-size="10.5" font-family="Noto Sans JP,sans-serif">情報解析目的なら</text>
+  <text x="105" y="101" text-anchor="middle" fill="#34d399" font-size="10.5" font-family="Noto Sans JP,sans-serif">原則: 許諾なしで可能</text>
+  <text x="105" y="118" text-anchor="middle" fill="#8a99b8" font-size="9.5" font-family="Noto Sans JP,sans-serif">（著作権法第30条の4）</text>
+  <line x1="202" y1="74" x2="238" y2="74" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#ac3)"/>
+  <rect x="243" y="18" width="190" height="112" rx="10" fill="#1e2535" stroke="#a78bfa" stroke-width="1.5"/>
+  <text x="338" y="44" text-anchor="middle" fill="#a78bfa" font-size="12" font-weight="bold" font-family="Noto Sans JP,sans-serif">&#9313; 生成段階</text>
+  <text x="338" y="64" text-anchor="middle" fill="#8a99b8" font-size="10.5" font-family="Noto Sans JP,sans-serif">AIが学習をもとに生成する</text>
+  <text x="338" y="84" text-anchor="middle" fill="#8a99b8" font-size="10.5" font-family="Noto Sans JP,sans-serif">著作物か否かが問われる</text>
+  <text x="338" y="104" text-anchor="middle" fill="#a78bfa" font-size="10.5" font-family="Noto Sans JP,sans-serif">類似性・依拠性で判断</text>
+  <line x1="435" y1="74" x2="471" y2="74" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#ac3)"/>
+  <rect x="476" y="18" width="193" height="112" rx="10" fill="#1e2535" stroke="#fbbf24" stroke-width="1.5"/>
+  <text x="572" y="44" text-anchor="middle" fill="#fbbf24" font-size="12" font-weight="bold" font-family="Noto Sans JP,sans-serif">&#9314; 利用段階</text>
+  <text x="572" y="64" text-anchor="middle" fill="#8a99b8" font-size="10.5" font-family="Noto Sans JP,sans-serif">AI生成した画像・文章・映像</text>
+  <text x="572" y="84" text-anchor="middle" fill="#8a99b8" font-size="10.5" font-family="Noto Sans JP,sans-serif">人が生成した場合と同様に</text>
+  <text x="572" y="104" text-anchor="middle" fill="#fbbf24" font-size="10.5" font-family="Noto Sans JP,sans-serif">類似性 + 依拠性で判断</text>
+</svg>
+<figcaption>図：生成系AIと著作権の3ステップ（スライドp.62準拠） <span class="ptr">&#8592; S03:p.62</span></figcaption>
+</figure>
+<p>rong>生成系AIと著作権の3ステップ</strong><span class="ptr">← S03:p.62</span></p>
+<table>
+<thead><tr><th>ステップ</th><th>内容</th><th>著作権の扱い</th></tr></thead>
+<tbody>
+<tr><td><strong>① 学習段階</strong></td><td>著作物をAIの学習データとして使用</td><td>思想・感情の享受を目的としない情報解析目的なら<strong>著作者許諾なしで原則可能</strong>。著作物自体の教授目的は許諾必要</td></tr>
+<tr><td><strong>② 生成段階</strong></td><td>AIが学習をもとに生成する</td><td>類似性・依拠性で判断</td></tr>
+<tr><td><strong>③ 利用段階</strong></td><td>AI生成物（画像・文章・映像・音楽等）を利用</td><td>人が生成した場合と同様に<strong>類似性</strong>と<strong>依拠性</strong>で判断</td></tr>
+</tbody>
+</table>
+<ul>
+<li><strong>類似性</strong>：既存の著作物と同じか似ていること</li>
+<li><strong>依拠性</strong>：既存の著作物に基づいて生成されたこと</li>
+</ul>
+<div class="def-block">
+<div class="block-label">AIが生み出した作品は著作物か？</div>
+<ul style="padding-left:18px;">
+<li><strong>人が思想・感情を創作的に表現する手段としてAIを用いた場合</strong>→ その人の著作物となり、作成した人に権利が発生する</li>
+<li><strong>AIが自律的に生成したもの</strong>→ 著作物ではないとされる</li>
+</ul>
+技術の進化とともに法律も変化するため、最新のルール・法制度に注目することが重要。<span class="ptr">← S03:p.63</span>
+</div>
+</div>
+
+<div class="section" id="ch4-3">
+<h3 class="section-title">個人情報保護法</h3>
+<p>個人のプライバシーを守ることとその活用を両立するための法律。技術の進化に対応できるよう定期的に見直しが行われている。<span class="ptr">← S03:p.64</span></p>
+<p>主な改正の方向性：<strong>「守り」の強化</strong>（保有個人データの利用停止・消去権の拡大、漏えい等の報告義務化、外国事業者への詳細情報提供義務）＋<strong>活用への期待</strong>（新カテゴリーの導入）<span class="ptr">← S03:p.65</span></p>
+<p><strong>個人に関する情報の4区分</strong><span class="ptr">← S03:p.66-67</span></p>
+<figure>
+<svg viewBox="0 0 680 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:680px;display:block;margin:0 auto;">
+  <rect x="10" y="10" width="155" height="180" rx="8" fill="#2d1a1a" stroke="#f87171" stroke-width="2"/>
+  <text x="87" y="36" text-anchor="middle" fill="#f87171" font-size="11" font-weight="bold" font-family="Noto Sans JP,sans-serif">個人情報</text>
+  <text x="87" y="56" text-anchor="middle" fill="#8a99b8" font-size="9.5" font-family="Noto Sans JP,sans-serif">氏名・生年月日・住所</text>
+  <text x="87" y="72" text-anchor="middle" fill="#8a99b8" font-size="9.5" font-family="Noto Sans JP,sans-serif">顔写真・個人識別符号</text>
+  <text x="87" y="90" text-anchor="middle" fill="#8a99b8" font-size="9.5" font-family="Noto Sans JP,sans-serif">特定個人を識別できる</text>
+  <text x="87" y="115" text-anchor="middle" fill="#f87171" font-size="9.5" font-family="Noto Sans JP,sans-serif">&#10003; 利用目的を特定し</text>
+  <text x="87" y="130" text-anchor="middle" fill="#f87171" font-size="9.5" font-family="Noto Sans JP,sans-serif">本人の同意が必要</text>
+  <rect x="178" y="10" width="155" height="180" rx="8" fill="#1e2535" stroke="#fbbf24" stroke-width="1.5"/>
+  <text x="255" y="36" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold" font-family="Noto Sans JP,sans-serif">仮名加工情報</text>
+  <text x="255" y="56" text-anchor="middle" fill="#8a99b8" font-size="9.5" font-family="Noto Sans JP,sans-serif">匿名化IDで識別</text>
+  <text x="255" y="72" text-anchor="middle" fill="#8a99b8" font-size="9.5" font-family="Noto Sans JP,sans-serif">照合すれば特定可能</text>
+  <text x="255" y="90" text-anchor="middle" fill="#8a99b8" font-size="9.5" font-family="Noto Sans JP,sans-serif">他情報との照合で</text>
+  <text x="255" y="106" text-anchor="middle" fill="#8a99b8" font-size="9.5" font-family="Noto Sans JP,sans-serif">個人識別が可能</text>
+  <text x="255" y="128" text-anchor="middle" fill="#fbbf24" font-size="9.5" font-family="Noto Sans JP,sans-serif">&#10003; 利用目的の公表義務</text>
+  <text x="255" y="144" text-anchor="middle" fill="#fbbf24" font-size="9.5" font-family="Noto Sans JP,sans-serif">（通知不要）</text>
+  <rect x="346" y="10" width="155" height="180" rx="8" fill="#1e2535" stroke="#34d399" stroke-width="1.5"/>
+  <text x="423" y="36" text-anchor="middle" fill="#34d399" font-size="11" font-weight="bold" font-family="Noto Sans JP,sans-serif">匿名加工情報</text>
+  <text x="423" y="56" text-anchor="middle" fill="#8a99b8" font-size="9.5" font-family="Noto Sans JP,sans-serif">年齢&#8594;年代に丸める等</text>
+  <text x="423" y="72" text-anchor="middle" fill="#8a99b8" font-size="9.5" font-family="Noto Sans JP,sans-serif">特異な情報を削除</text>
+  <text x="423" y="88" text-anchor="middle" fill="#8a99b8" font-size="9.5" font-family="Noto Sans JP,sans-serif">復元不可能に加工</text>
+  <text x="423" y="108" text-anchor="middle" fill="#8a99b8" font-size="9.5" font-family="Noto Sans JP,sans-serif">特定個人を識別不可</text>
+  <text x="423" y="130" text-anchor="middle" fill="#34d399" font-size="9.5" font-family="Noto Sans JP,sans-serif">&#10003; 一定ルールのもと</text>
+  <text x="423" y="146" text-anchor="middle" fill="#34d399" font-size="9.5" font-family="Noto Sans JP,sans-serif">活用可能</text>
+  <rect x="514" y="10" width="155" height="180" rx="8" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+  <text x="591" y="36" text-anchor="middle" fill="#5b8dee" font-size="11" font-weight="bold" font-family="Noto Sans JP,sans-serif">個人関連情報</text>
+  <text x="591" y="56" text-anchor="middle" fill="#8a99b8" font-size="9.5" font-family="Noto Sans JP,sans-serif">Cookie・IPアドレス</text>
+  <text x="591" y="72" text-anchor="middle" fill="#8a99b8" font-size="9.5" font-family="Noto Sans JP,sans-serif">端末ID・位置情報</text>
+  <text x="591" y="88" text-anchor="middle" fill="#8a99b8" font-size="9.5" font-family="Noto Sans JP,sans-serif">閲覧履歴・購買履歴</text>
+  <text x="591" y="108" text-anchor="middle" fill="#8a99b8" font-size="9.5" font-family="Noto Sans JP,sans-serif">個人情報等のいずれにも</text>
+  <text x="591" y="124" text-anchor="middle" fill="#8a99b8" font-size="9.5" font-family="Noto Sans JP,sans-serif">該当しないもの</text>
+  <text x="591" y="146" text-anchor="middle" fill="#5b8dee" font-size="9.5" font-family="Noto Sans JP,sans-serif">&#10003; 一定ルールあり</text>
+</svg>
+<figcaption>図：個人情報保護法における個人に関する情報の4区分（スライドp.66-67準拠） <span class="ptr">&#8592; S03:p.66-67</span></figcaption>
+</figure>
+<table>
+<thead><tr><th>区分</th><th>内容・例</th><th>ルール</th></tr></thead>
+<tbody>
+<tr><td><strong>個人情報</strong></td><td>氏名・生年月日・住所・顔写真等、特定の個人を識別できる情報（個人識別符号含む）</td><td>利用目的を特定し<strong>本人の同意が必要</strong></td></tr>
+<tr><td><strong>仮名加工情報</strong></td><td>他の情報と照合しない限り特定個人を識別できないよう加工。例：匿名化IDで識別された情報</td><td>通知不要、<strong>利用の公表義務あり</strong></td></tr>
+<tr><td><strong>匿名加工情報</strong></td><td>特定個人を識別できないよう加工し復元不可能にした情報。例：年齢を年代に丸めた情報</td><td>個人情報ルール不適用、<strong>一定のルールあり</strong></td></tr>
+<tr><td><strong>個人関連情報</strong></td><td>Cookie・IPアドレス・端末ID・位置情報・閲覧履歴・購買履歴等</td><td>個人情報ルール不適用、<strong>一定のルールあり</strong></td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="section" id="ch4-4">
+<h3 class="section-title">デジタル社会形成基本法</h3>
+<div class="def-block">
+<div class="block-label">定義</div>
+<strong>デジタル社会形成基本法</strong>（令和3年施行）：デジタル技術を活用して社会全体の機能を向上させるための基本的な枠組みを定めた法律。デジタル社会の形成に関する施策を迅速かつ重点的に推進し、わが国経済の持続的かつ健全な発展と国民の幸福な生活の実現に寄与することを目的とする。<span class="ptr">← S03:p.68</span>
+</div>
+<div class="audio-block">
+<div class="block-label">音声補足（講師のメッセージ）</div>
+技術革新のスピードは速く、法やルールは時代に合わせて変化している。最新の情報を確認し正しく使っていくこと。「よくわからないから避ける」ではなく、法やルールを守って正しく情報を使っていく姿勢が求められる。<span class="ptr">← S03:p.69 + S05</span>
+</div>
+</div>
+</section>
+
+<hr>
+
+<!-- 補足A -->
+<div class="appendix-card star" id="appendix-a">
+<h2>⭐ 補足A: 最重要ワード一覧</h2>
+<table>
+<thead><tr><th>用語</th><th>読み</th><th>定義（原文から抽出）</th><th>重要度</th></tr></thead>
+<tbody>
+<tr><td><strong>情報リテラシー</strong></td><td>じょうほうリテラシー</td><td>情報を探し、適切に読み取り、正しく使う力</td><td><span class="star-rank">★★★</span></td></tr>
+<tr><td><strong>選択的注意</strong></td><td>せんたくてきちゅうい</td><td>意識した特定のことに対して注意を向け、必要な情報を選択的に処理する認知機能</td><td><span class="star-rank">★★★</span></td></tr>
+<tr><td><strong>カクテルパーティー効果</strong></td><td>かくてるぱーてぃーこうか</td><td>多くの音声の中から特定の人の話を聞き取れる選択的注意の現象（Colin Cherry, 1953年提唱）</td><td><span class="star-rank">★★★</span></td></tr>
+<tr><td><strong>フィルターバブル</strong></td><td>ふぃるたーばぶる</td><td>検索履歴に基づき好みの情報のみが表示され、異なる情報が見えなくなる現象</td><td><span class="star-rank">★★★</span></td></tr>
+<tr><td><strong>エコーチェンバー</strong></td><td>えこーちぇんばー</td><td>同じ価値観の閉じたコミュニティ内で意見がエコーのように増幅・過信される現象</td><td><span class="star-rank">★★★</span></td></tr>
+<tr><td><strong>ファクトチェック</strong></td><td>ふぁくとちぇっく</td><td>ある事実について述べられた内容が真実か・正確かを検証すること</td><td><span class="star-rank">★★★</span></td></tr>
+<tr><td><strong>ディープフェイク</strong></td><td>でぃーぷふぇいく</td><td>AI技術を用いて動画・音声等を人工的に合成する技術</td><td><span class="star-rank">★★★</span></td></tr>
+<tr><td><strong>データリテラシー</strong></td><td>でーたリテラシー</td><td>データを理解し、評価し、適切に使用する能力。収集・管理・分析・解釈に関する知識</td><td><span class="star-rank">★★★</span></td></tr>
+<tr><td><strong>ペイフォワード</strong></td><td>ぺいふぉわーど</td><td>先に他の誰かに与える姿勢。受け取る前に先に払うこと</td><td><span class="star-rank">★★☆</span></td></tr>
+<tr><td><strong>著作権</strong></td><td>ちょさくけん</td><td>著作者が著作物を創作した時点で自動的に発生する権利（手続き不要・国際ルール）</td><td><span class="star-rank">★★★</span></td></tr>
+<tr><td><strong>依拠性</strong></td><td>いきょせい</td><td>既存の著作物に基づいて生成されたこと。著作権侵害の要件の一つ</td><td><span class="star-rank">★★★</span></td></tr>
+<tr><td><strong>類似性</strong></td><td>るいじせい</td><td>既存の著作物と同じか似ていること。著作権侵害の要件の一つ</td><td><span class="star-rank">★★★</span></td></tr>
+<tr><td><strong>生成系AI</strong></td><td>せいせいけいエーアイ</td><td>データから学習し新しいデータを生成するAI技術の一つ</td><td><span class="star-rank">★★★</span></td></tr>
+<tr><td><strong>仮名加工情報</strong></td><td>かめいかこうじょうほう</td><td>他の情報と照合しない限り特定個人を識別できないよう加工された情報</td><td><span class="star-rank">★★★</span></td></tr>
+<tr><td><strong>デジタル社会形成基本法</strong></td><td>でじたるしゃかいけいせいきほんほう</td><td>令和3年施行。デジタル技術活用による社会機能向上の基本的枠組みを定めた法律</td><td><span class="star-rank">★★★</span></td></tr>
+</tbody>
+</table>
+</div>
+
+<!-- 補足B -->
+<div class="appendix-card book" id="appendix-b">
+<h2>📚 補足B: 知っておくべき背景知識</h2>
+<p><strong>カクテルパーティー効果の実験背景</strong></p>
+<p class="ext-sub">[外部補足・確認済: Cherry, E.C., 1953, Journal of the Acoustical Society of America] Colin Cherryは1953年の論文で、両耳に異なるメッセージを同時に流す「二重聴取実験（dichotic listening）」を実施し、人間の選択的注意の仕組みを解明した。</p>
+<p><strong>フィルターバブルの提唱者</strong></p>
+<p class="ext-sub">[外部補足・確認済: Pariser, E., 2011, TED Talks] フィルターバブルという概念は、ネット活動家のイーライ・パリサー（Eli Pariser）が2011年のTED講演と著書『The Filter Bubble: What the Internet Is Hiding from You』で提唱した。</p>
+<p><strong>情報量34GBの出典</strong></p>
+<p class="ext-sub">[外部補足・確認済: Roger Bohn, James Short『Measuring Consumer Information』(2012), 980-1000] スライドに明記されている出典。2008年時点での推計値であり現在はさらに増加している。</p>
+<p><strong>著作権法第30条の4（情報解析目的の利用）</strong></p>
+<p class="ext-sub">[外部補足・確認済: 文化庁著作権法令データベース] 2018年の著作権法改正で新設。「著作物に表現された思想または感情を自ら享受し又は他人に享受させることを目的としない場合」は著作者の許可なく利用できると規定。日本ではAIの機械学習目的の著作物利用が原則として適法とされている。</p>
+</div>
+
+<!-- 補足C -->
+<div class="appendix-card target" id="appendix-c">
+<h2>🎯 補足C: 試験・レポートで重要な観点</h2>
+<ul>
+<li><strong>情報リテラシーの定義</strong>を正確に述べる（「探す・読み取る・使う」の3要素）</li>
+<li><strong>カクテルパーティー効果</strong>：提唱者（Colin Cherry）・年（1953年）・概念（選択的注意の具体例）をセットで覚える</li>
+<li><strong>フィルターバブルとエコーチェンバーの違い</strong>：フィルターバブル＝アルゴリズムが作る情報の泡。エコーチェンバー＝同じ価値観の人々のコミュニティで意見が増幅される現象</li>
+<li><strong>ファクトチェックの6つの方法</strong>を列挙できるようにする</li>
+<li><strong>著作権の自動発生</strong>：手続きなしで創作時点に発生することが国際ルール</li>
+<li><strong>アイデアは著作権の対象外</strong>：著作物は「創作的に表現したもの」に限る</li>
+<li><strong>依拠性・類似性</strong>：著作権侵害の2要件をセットで覚える</li>
+<li><strong>個人情報の4区分</strong>（個人情報・仮名加工情報・匿名加工情報・個人関連情報）の違いと例を整理する</li>
+<li><strong>AIと著作権の3ステップ</strong>（学習段階・生成段階・利用段階）で整理する</li>
+<li><strong>5Gの人口カバー率96.6%</strong>（令和4年時点、整備計画前倒し達成）</li>
+<li><strong>スマートフォン比率</strong>：2010年4.4%→2023年96.3%という変化を押さえる</li>
+</ul>
+</div>
+
+<!-- 補足D -->
+<div class="appendix-card link" id="appendix-d">
+<h2>🔗 補足D: 関連概念・次回への接続</h2>
+<p><strong>EU AI規制法（EU AI Act）</strong></p>
+<p class="ext-sub">[外部補足・確認済: Official Journal of the EU, 2024年7月] 2024年8月に施行されたEUのAI規制の包括的な法律。AIシステムをリスクレベルに応じて分類し規制する世界初の包括的AI規制。生成系AIの透明性要件（AIが生成したコンテンツであることの明示等）も含まれる。</p>
+<p><strong>セイバーメトリクス（Sabermetrics）</strong></p>
+<p class="ext-sub">[外部補足・確認済: Wikipedia / SABR] SABR（Society for American Baseball Research）に由来する野球統計の理論。1970年代にビル・ジェームズが体系化。映画『マネーボール』（2011年）の実話の主人公はオークランド・アスレチックスのビリー・ビーンGM。</p>
+<p><strong>個人情報保護法の改正サイクル</strong></p>
+<p class="ext-sub">[外部補足] 概ね3年ごとに見直しが行われており、2017年・2020年・2022年と改正が続いている。2022年施行の改正で仮名加工情報・個人関連情報の新設等が行われた。</p>
+<p><strong>情報リテラシー教育の国際的な枠組み</strong></p>
+<p class="ext-sub">[外部補足] ALA（米国図書館協会）は1989年に情報リテラシーを「情報を認識し、探し、評価し、効果的に使用する能力」と定義。UNESCOは2013年にメディア・情報リテラシー（MIL）を市民の基本的能力として推進している。</p>
+</div>
+
+</main>
+
+<script>
+const tocLinks=document.querySelectorAll('.toc-h2');
+const chapters=document.querySelectorAll('[id]');
+const observer=new IntersectionObserver((entries)=>{
+entries.forEach(e=>{
+if(e.isIntersecting){
+tocLinks.forEach(l=>l.classList.remove('active'));
+const a=document.querySelector('.toc-h2[href="#'+e.target.id+'"]');
+if(a)a.classList.add('active');
+}});
+},{rootMargin:'-20% 0px -70% 0px'});
+chapters.forEach(h=>observer.observe(h));
+</script>
+</body>
+</html>
