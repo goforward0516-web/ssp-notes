@@ -1,0 +1,1507 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>インターネット入門 第8回 — 情報システムの基盤</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0f1117; --bg2:#151822; --bg3:#1e2535; --bg4:#242b3d;
+    --card:#1a2030; --border:#2a3347; --border2:#3a4560;
+    --text:#e2e8f5; --sub:#8a99b8; --dim:#5a6882;
+    --accent:#5b8dee; --g:#34d399; --y:#fbbf24; --r:#f87171; --p:#a78bfa;
+    --audio-bg:rgba(59,130,246,.08); --ext-bg:rgba(52,211,153,.08);
+    --warn-bg:rgba(245,158,11,.08);
+    --mono:'JetBrains Mono',monospace; --sans:'Noto Sans JP',sans-serif;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);font-weight:300;font-size:15px;line-height:1.8;display:flex;min-height:100vh}
+
+  /* SIDEBAR */
+  #sb{position:fixed;top:0;left:0;width:256px;height:100vh;background:var(--bg2);border-right:1px solid var(--border);overflow-y:auto;z-index:100;padding:20px 0;scrollbar-width:thin;scrollbar-color:var(--border2) transparent}
+  .sb-title{font-size:10.5px;font-weight:700;letter-spacing:.15em;color:var(--dim);text-transform:uppercase;padding:0 18px 14px;border-bottom:1px solid var(--border);margin-bottom:10px}
+  .tc{display:block;padding:4px 18px;font-size:12px;color:var(--sub);text-decoration:none;transition:all .15s;border-left:2px solid transparent;line-height:1.5}
+  .tc:hover{color:var(--text);background:var(--bg3)}
+  .tc.active{color:var(--accent);border-left-color:var(--accent);background:rgba(91,141,238,.08)}
+  .tc.h2{padding-left:28px;font-size:11.5px}
+  .tc.h3{padding-left:40px;font-size:11px;color:var(--dim)}
+  .tc-ch{font-size:9.5px;letter-spacing:.1em;color:var(--dim);text-transform:uppercase;padding:10px 18px 3px;font-weight:600}
+
+  /* MAIN */
+  #main{margin-left:256px;flex:1;max-width:920px;padding:44px 44px 80px;margin-right:auto}
+
+  /* HEADER */
+  .page-header{border-bottom:1px solid var(--border);padding-bottom:28px;margin-bottom:44px}
+  .breadcrumb{font-size:11px;color:var(--dim);margin-bottom:10px}
+  .breadcrumb span{color:var(--sub)}
+  h1.title{font-size:26px;font-weight:700;line-height:1.3;margin-bottom:12px}
+  .meta-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+  .badge{font-family:var(--mono);font-size:10.5px;background:var(--bg3);border:1px solid var(--border2);color:var(--sub);padding:2px 9px;border-radius:4px}
+  .badge.src{border-color:var(--accent);color:var(--accent)}
+  .badge.ok{border-color:var(--g);color:var(--g)}
+
+  /* SECTION */
+  .sec{margin-bottom:52px}
+  .ch-hdr{display:flex;align-items:center;gap:10px;margin-bottom:24px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+  .ch-num{font-family:var(--mono);font-size:10.5px;color:var(--accent);background:rgba(91,141,238,.12);border:1px solid rgba(91,141,238,.3);padding:2px 8px;border-radius:4px;font-weight:500}
+  h2{font-size:18px;font-weight:700}
+  h3{font-size:14.5px;font-weight:700;color:var(--text);margin:24px 0 10px;padding-left:10px;border-left:3px solid var(--accent)}
+  h4{font-size:13px;font-weight:500;color:var(--y);margin:18px 0 7px}
+  p{margin-bottom:10px}
+  ul,ol{padding-left:20px;margin-bottom:10px}
+  li{margin-bottom:4px}
+  strong{color:var(--text);font-weight:500}
+
+  /* CARDS */
+  .card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:18px 22px;margin-bottom:16px}
+  .card-t{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sub);margin-bottom:10px}
+
+  /* BLOCKS */
+  .audio-b{background:var(--audio-bg);border-left:3px solid #3b82f6;padding:11px 15px;margin:10px 0;border-radius:0 6px 6px 0;font-size:13.5px}
+  .audio-b .lbl{font-size:9.5px;font-weight:700;letter-spacing:.12em;color:#60a5fa;text-transform:uppercase;margin-bottom:5px}
+  .ext-b{background:var(--ext-bg);border-left:3px solid var(--g);padding:11px 15px;margin:10px 0;border-radius:0 6px 6px 0;font-size:13.5px}
+  .ext-b .lbl{font-size:9.5px;font-weight:700;letter-spacing:.12em;color:var(--g);text-transform:uppercase;margin-bottom:5px}
+  .imp{background:rgba(91,141,238,.07);border:1px solid rgba(91,141,238,.3);border-radius:6px;padding:13px 17px;margin:14px 0}
+  .imp .lbl{font-size:9.5px;font-weight:700;letter-spacing:.12em;color:var(--accent);text-transform:uppercase;margin-bottom:5px}
+  .def-box{background:rgba(167,139,250,.07);border:1px solid rgba(167,139,250,.3);border-radius:6px;padding:13px 17px;margin:14px 0}
+  .def-box .lbl{font-size:9.5px;font-weight:700;letter-spacing:.12em;color:var(--p);text-transform:uppercase;margin-bottom:5px}
+
+  /* PTR */
+  .ptr{font-family:var(--mono);font-size:9.5px;color:var(--dim);background:var(--bg3);border:1px solid var(--border);padding:1px 5px;border-radius:3px;margin-left:5px;white-space:nowrap}
+
+  /* TABLE */
+  .tw{overflow-x:auto;margin:14px 0}
+  table{border-collapse:collapse;width:100%;font-size:13px}
+  th{background:var(--bg3);color:var(--sub);font-weight:500;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;padding:7px 11px;border:1px solid var(--border);text-align:left}
+  td{padding:7px 11px;border:1px solid var(--border);vertical-align:top}
+  tr:nth-child(even) td{background:rgba(30,37,53,.5)}
+  .ok-t{color:var(--g)} .warn-t{color:var(--y)} .bad-t{color:var(--r)}
+  .mh{background:rgba(52,211,153,.12)!important;color:var(--g)!important}
+  .dh{background:rgba(248,113,113,.12)!important;color:var(--r)!important}
+
+  /* SVG */
+  .svg-c{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:18px;margin:18px 0;overflow-x:auto;text-align:center}
+  figcaption{font-family:var(--mono);font-size:10.5px;color:var(--dim);text-align:center;margin-top:8px}
+
+  /* APPENDIX */
+  .app-sec{margin-top:60px;border-top:1px solid var(--border);padding-top:36px}
+  .app-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:22px 26px;margin-bottom:22px}
+  .app-card.ca{border-top:3px solid var(--accent)}
+  .app-card.cb{border-top:3px solid var(--g)}
+  .app-card.cc{border-top:3px solid var(--y)}
+  .app-card.cd{border-top:3px solid var(--p)}
+  .app-card.ce{border-top:3px solid var(--y);background:rgba(245,158,11,.04)}
+  .app-t{font-size:14px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+  .ext-sm{font-size:11px;color:var(--sub);font-weight:300}
+
+  /* STARS */
+  .s3{color:var(--y)} .s2{color:var(--g)} .s1{color:var(--dim)}
+
+  ::-webkit-scrollbar{width:5px} ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+</style>
+</head>
+<body>
+
+<!-- ===== SIDEBAR ===== -->
+<nav id="sb">
+  <div class="sb-title">インターネット入門 第8回</div>
+  <div class="tc-ch">概要</div>
+  <a class="tc" href="#intro">学習目標・授業構成</a>
+  <div class="tc-ch">第1章</div>
+  <a class="tc" href="#ch1">システムの安定稼働と信頼性</a>
+  <a class="tc h2" href="#ch1-need">なぜ安定稼働が必要か</a>
+  <a class="tc h2" href="#ch1-impact">障害・停止の影響</a>
+  <a class="tc h2" href="#ch1-3measures">3つの方策</a>
+  <a class="tc h2" href="#ch1-redundancy">冗長化の種類と構成</a>
+  <a class="tc h2" href="#ch1-monitor">監視</a>
+  <a class="tc h2" href="#ch1-maintain">予防保全</a>
+  <div class="tc-ch">第2章</div>
+  <a class="tc" href="#ch2">システムの仮想化技術</a>
+  <a class="tc h2" href="#ch2-overview">概要とメリット</a>
+  <a class="tc h2" href="#ch2-server">サーバ仮想化（3種類）</a>
+  <a class="tc h2" href="#ch2-storage">ストレージ仮想化</a>
+  <a class="tc h2" href="#ch2-network">ネットワーク仮想化</a>
+  <div class="tc-ch">第3章</div>
+  <a class="tc" href="#ch3">エンドユーザー向け仮想化</a>
+  <a class="tc h2" href="#ch3-app">アプリケーション仮想化</a>
+  <a class="tc h2" href="#ch3-desktop">デスクトップ仮想化</a>
+  <a class="tc h2" href="#ch3-browser">ブラウザ仮想化</a>
+  <div class="tc-ch">第4章</div>
+  <a class="tc" href="#ch4">バックアップの重要性</a>
+  <a class="tc h2" href="#ch4-why">なぜ必要か</a>
+  <a class="tc h2" href="#ch4-types">4種類の手法</a>
+  <a class="tc h2" href="#ch4-manage">実行・管理・検証</a>
+  <a class="tc h2" href="#ch4-storage">保管場所</a>
+  <a class="tc h2" href="#ch4-crypto">暗号化とアクセス制限</a>
+  <a class="tc h2" href="#ch4-auto">自動化</a>
+  <div class="tc-ch">補足</div>
+  <a class="tc" href="#app-a">補足A: 最重要ワード</a>
+  <a class="tc" href="#app-b">補足B: 背景知識</a>
+  <a class="tc" href="#app-c">補足C: 試験・レポート</a>
+  <a class="tc" href="#app-d">補足D: 関連概念</a>
+  <a class="tc" href="#unresolved">未確定事項</a>
+</nav>
+
+<!-- ===== MAIN ===== -->
+<main id="main">
+
+<!-- HEADER -->
+<header class="page-header">
+  <div class="breadcrumb">サイバー大学 IT総合学部 › <span>インターネット入門</span></div>
+  <h1 class="title">第8回　情報システムの基盤</h1>
+  <div class="meta-row">
+    <span class="badge">担当: 末永 光弘</span>
+    <span class="badge src">S03: スライドPDF (87p)</span>
+    <span class="badge src">S05: hynote.ai ×2</span>
+    <span class="badge ok">外部補足確認済</span>
+    <span class="badge">v1.1 — 図全再現・未確定解消版</span>
+  </div>
+</header>
+
+<!-- ========= INTRO ========= -->
+<section class="sec" id="intro">
+  <div class="ch-hdr"><span class="ch-num">概要</span><h2>学習目標・授業構成</h2></div>
+  <div class="card">
+    <div class="card-t">第8回 学習目標</div>
+    <ol>
+      <li>情報システムを<strong>安定的に稼働させること</strong>の重要性を理解して説明できる</li>
+      <li>情報システムの安定稼働に必要な<strong>技術や運用</strong>を理解して説明できる</li>
+      <li>情報システムの<strong>仮想化技術</strong>について理解して説明できる</li>
+      <li><strong>バックアップ</strong>の重要性と手法を理解して説明できる</li>
+    </ol>
+    <span class="ptr">← S03:p.2</span>
+  </div>
+  <div class="tw"><table>
+    <thead><tr><th>章</th><th>タイトル</th><th>主なトピック</th></tr></thead>
+    <tbody>
+      <tr><td>第1章</td><td>システムの安定稼働と信頼性</td><td>冗長化・監視・予防保全</td></tr>
+      <tr><td>第2章</td><td>システムの仮想化技術</td><td>サーバ・ストレージ・ネットワーク仮想化</td></tr>
+      <tr><td>第3章</td><td>エンドユーザー向けの仮想化技術</td><td>アプリ・デスクトップ・ブラウザ仮想化</td></tr>
+      <tr><td>第4章</td><td>バックアップの重要性</td><td>4種類の手法・管理・暗号化・自動化</td></tr>
+    </tbody>
+  </table></div>
+  <span class="ptr">← S03:p.3</span>
+</section>
+
+<!-- ========= CH1 ========= -->
+<section class="sec" id="ch1">
+  <div class="ch-hdr"><span class="ch-num">第1章</span><h2>システムの安定稼働と信頼性</h2></div>
+
+  <h3 id="ch1-need">なぜシステムの安定稼働が必要か</h3>
+  <p>現代社会では多様なシステムが稼働しており、多くの人々がそれらに依存したサービスを利用している。<span class="ptr">← S03:p.6</span></p>
+
+  <div class="svg-c">
+    <!-- S03:p.6-7 再現: システム停止の影響早見図 -->
+    <svg viewBox="0 0 760 290" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;">
+      <defs><style>
+        .s-t{font-family:'Noto Sans JP',sans-serif;font-size:12px;fill:#e2e8f5;text-anchor:middle}
+        .s-sm{font-family:'Noto Sans JP',sans-serif;font-size:10.5px;fill:#8a99b8;text-anchor:middle}
+        .s-b{font-family:'Noto Sans JP',sans-serif;font-size:10.5px;fill:#f87171;text-anchor:middle}
+      </style></defs>
+      <!-- 中央ラベル -->
+      <rect x="300" y="120" width="160" height="50" rx="8" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="380" y="141" class="s-t" font-weight="700" fill="#5b8dee">システムが</text>
+      <text x="380" y="159" class="s-t" font-weight="700" fill="#5b8dee">停止すると…</text>
+      <!-- 6方向のサービス -->
+      <!-- 上 -->
+      <rect x="270" y="18" width="220" height="40" rx="6" fill="#1e2535" stroke="#3a4560"/>
+      <text x="380" y="34" class="s-t">ITサービス（Google/Microsoft）</text>
+      <text x="380" y="50" class="s-b">→ Webサイトなどが閲覧不能</text>
+      <line x1="380" y1="58" x2="380" y2="118" stroke="#3a4560" stroke-dasharray="4,3"/>
+      <!-- 右上 -->
+      <rect x="570" y="40" width="180" height="40" rx="6" fill="#1e2535" stroke="#3a4560"/>
+      <text x="660" y="56" class="s-t">ECサイト</text>
+      <text x="660" y="72" class="s-b">→ 買い物・決済できない</text>
+      <line x1="570" y1="60" x2="462" y2="133" stroke="#3a4560" stroke-dasharray="4,3"/>
+      <!-- 右 -->
+      <rect x="570" y="125" width="180" height="40" rx="6" fill="#1e2535" stroke="#3a4560"/>
+      <text x="660" y="141" class="s-t">金融サービス</text>
+      <text x="660" y="157" class="s-b">→ 入出金・送金できない</text>
+      <line x1="570" y1="145" x2="462" y2="145" stroke="#3a4560" stroke-dasharray="4,3"/>
+      <!-- 右下 -->
+      <rect x="570" y="210" width="180" height="40" rx="6" fill="#1e2535" stroke="#3a4560"/>
+      <text x="660" y="226" class="s-t">電子決済サービス</text>
+      <text x="660" y="242" class="s-b">→ 支払い・入金できない</text>
+      <line x1="570" y1="230" x2="462" y2="157" stroke="#3a4560" stroke-dasharray="4,3"/>
+      <!-- 左上 -->
+      <rect x="10" y="40" width="200" height="40" rx="6" fill="#1e2535" stroke="#3a4560"/>
+      <text x="110" y="56" class="s-t">公共交通機関</text>
+      <text x="110" y="72" class="s-b">→ 運行停止・移動できない</text>
+      <line x1="210" y1="60" x2="298" y2="133" stroke="#3a4560" stroke-dasharray="4,3"/>
+      <!-- 左 -->
+      <rect x="10" y="125" width="200" height="52" rx="6" fill="#1e2535" stroke="#f87171" stroke-width="1.5"/>
+      <text x="110" y="141" class="s-t" fill="#fca5a5">病院の医療情報システム</text>
+      <text x="110" y="157" class="s-b" fill="#f87171">→ 診療・薬・手術できない</text>
+      <text x="110" y="171" class="s-b" fill="#f87171">→ 最悪、命に関わる</text>
+      <line x1="210" y1="147" x2="298" y2="147" stroke="#f87171" stroke-dasharray="4,3"/>
+    </svg>
+    <figcaption>図1: 各システムが停止した場合の影響 ← S03:p.6-7</figcaption>
+  </div>
+
+  <div class="imp">
+    <div class="lbl">重要</div>
+    <p>システムの停止は<strong>BCP（Business Continuity Plan：事業継続計画）</strong>に大きな影響を与える。企業の業務だけでなく、<strong>広範囲に社会的影響</strong>を及ぼす可能性もある。病院システムの停止は命に関わる問題に発展しうる。<span class="ptr">← S03:p.8</span></p>
+  </div>
+
+  <h3 id="ch1-impact">障害・停止による被害の4種類</h3>
+  <div class="tw"><table>
+    <thead><tr><th>カテゴリ</th><th>具体例</th></tr></thead>
+    <tbody>
+      <tr><td><strong>経済的損失</strong></td><td>ECサイト・決済サービス停止による収益損失 / 製造ラインの遅滞・停止による売上減少・生産量低下 / オンライン予約停止による機会損失</td></tr>
+      <tr><td><strong>社会的影響</strong></td><td>交通システム停止で乗客への不利益・社会的混乱 / 通信サービス停止で機会損失・社会的混乱 / 医療システム停止で診療・手術中止、最悪の場合患者の命に関わる</td></tr>
+      <tr><td><strong>信用の失墜</strong></td><td>不信感による顧客の離脱→収益減少 / 障害に伴う情報漏洩→個人情報・クレジットカード情報漏洩→損害賠償</td></tr>
+      <tr><td><strong>法的ペナルティ</strong></td><td>GDPRや各国個人情報保護法への違反による罰則 / 監督省庁によるペナルティ・報告書や再発防止策の提出義務</td></tr>
+    </tbody>
+  </table></div>
+  <span class="ptr">← S03:p.9-11</span>
+
+  <div class="ext-b">
+    <div class="lbl">外部補足・確認済: EU公式 GDPR条文 Art.83</div>
+    <p><strong>GDPRの罰則（2段階制）</strong><br>
+    <strong>Tier 1（軽微な違反）</strong>: 最大 <strong>1,000万ユーロ または 全世界年間売上高の2%</strong> のいずれか高い方。適用例: データ保護責任者（DPO）の未任命、処理記録の不備等。<br>
+    <strong>Tier 2（重大な違反）</strong>: 最大 <strong>2,000万ユーロ または 全世界年間売上高の4%</strong> のいずれか高い方。適用例: 同意なきデータ処理、基本原則の違反、データ主体の権利の侵害等。<br>
+    ※ EU域内でサービスを提供する、またはEU域内に支店をもつEU域外の企業にも適用される。実際の事例: Metaへの12億ユーロ（2023年）、Amazonへの7億4,600万ユーロ（2021年）など。<span class="ptr">← S03:p.10</span></p>
+  </div>
+
+  <h3 id="ch1-3measures">信頼性を高めるための3つの方策</h3>
+  <div class="imp">
+    <div class="lbl">核心</div>
+    <p><span class="ptr">← S03:p.11</span></p>
+    <div class="tw"><table>
+      <thead><tr><th>方策</th><th>定義</th></tr></thead>
+      <tbody>
+        <tr><td><strong>冗長化</strong></td><td>冗長構成によりシステム全体の<strong>可用性（Availability）</strong>を高める方法</td></tr>
+        <tr><td><strong>監視</strong></td><td>システムの状態を常に監視し、障害の発生を検知して<strong>迅速に対応</strong>する方法</td></tr>
+        <tr><td><strong>予防保全</strong></td><td>障害を未然に防ぐために<strong>予防的なメンテナンスや修正</strong>を行う方法</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <h3 id="ch1-redundancy">冗長化（Redundancy）</h3>
+
+  <!-- システム構成例 p.13 -->
+  <div class="svg-c">
+    <svg viewBox="0 0 760 280" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;">
+      <defs><style>
+        .cs{font-family:'Noto Sans JP',sans-serif;font-size:11.5px;fill:#e2e8f5;text-anchor:middle}
+        .cs-s{font-family:'Noto Sans JP',sans-serif;font-size:10px;fill:#8a99b8;text-anchor:middle}
+        .cs-lb{font-family:'Noto Sans JP',sans-serif;font-size:10px;fill:#5b8dee;text-anchor:start}
+        .cs-arr{stroke:#5b8dee;stroke-width:1.5;fill:none;marker-end:url(#a1)}
+      </style>
+      <marker id="a1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0L0,6L8,3Z" fill="#5b8dee"/></marker>
+      </defs>
+      <text x="380" y="22" class="cs" font-weight="700" font-size="13px">一般的なシステムの構成例</text>
+      <!-- ユーザー3人 -->
+      <!-- User1 -->
+      <rect x="20" y="70" width="80" height="50" rx="5" fill="#242b3d" stroke="#3a4560"/>
+      <text x="60" y="91" class="cs-s">ユーザーA</text>
+      <text x="60" y="107" class="cs-s">（利用者）</text>
+      <!-- User2 -->
+      <rect x="20" y="135" width="80" height="50" rx="5" fill="#242b3d" stroke="#3a4560"/>
+      <text x="60" y="156" class="cs-s">ユーザーB</text>
+      <text x="60" y="172" class="cs-s">（利用者）</text>
+      <!-- User3 -->
+      <rect x="20" y="200" width="80" height="50" rx="5" fill="#242b3d" stroke="#3a4560"/>
+      <text x="60" y="221" class="cs-s">ユーザーC</text>
+      <text x="60" y="237" class="cs-s">（開発者）</text>
+      <!-- Arrows to cloud -->
+      <line x1="100" y1="95" x2="188" y2="150" class="cs-arr"/>
+      <line x1="100" y1="160" x2="188" y2="158" class="cs-arr"/>
+      <line x1="100" y1="225" x2="188" y2="168" class="cs-arr"/>
+      <!-- Network cloud -->
+      <ellipse cx="230" cy="158" rx="40" ry="30" fill="#1e2535" stroke="#3a4560"/>
+      <text x="230" y="154" class="cs-s">ネット</text>
+      <text x="230" y="168" class="cs-s">ワーク</text>
+      <!-- Arrow to WebServer -->
+      <line x1="272" y1="158" x2="318" y2="158" class="cs-arr"/>
+      <!-- WebServer -->
+      <rect x="320" y="70" width="160" height="175" rx="6" fill="#1a2030" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="400" y="90" class="cs" font-weight="700">Webサーバ</text>
+      <!-- App layer -->
+      <rect x="334" y="102" width="132" height="40" rx="4" fill="#1e3a8a" stroke="#3b82f6"/>
+      <text x="400" y="118" class="cs-s" fill="#93c5fd">アプリケーション</text>
+      <text x="400" y="132" class="cs-s" fill="#8a99b8">（Webシステム）</text>
+      <!-- OS layer -->
+      <rect x="334" y="148" width="132" height="30" rx="4" fill="#374151" stroke="#6b7280"/>
+      <text x="400" y="167" class="cs-s">OS</text>
+      <!-- Desc -->
+      <text x="400" y="195" class="cs-s">ユーザーの操作・リクエスト</text>
+      <text x="400" y="208" class="cs-s">を処理する</text>
+      <text x="400" y="225" class="cs-s">DBの書き換えも行う</text>
+      <!-- Arrow to DB -->
+      <line x1="482" y1="155" x2="528" y2="155" class="cs-arr"/>
+      <!-- DBServer -->
+      <rect x="530" y="70" width="200" height="175" rx="6" fill="#1a2030" stroke="#34d399" stroke-width="1.5"/>
+      <text x="630" y="90" class="cs" font-weight="700">データベースサーバ</text>
+      <!-- DB icon -->
+      <ellipse cx="630" cy="130" rx="40" ry="14" fill="#134e4a" stroke="#34d399"/>
+      <rect x="590" y="130" width="80" height="28" fill="#134e4a" stroke="#34d399" stroke-width="0"/>
+      <line x1="590" y1="130" x2="590" y2="158" stroke="#34d399"/>
+      <line x1="670" y1="130" x2="670" y2="158" stroke="#34d399"/>
+      <ellipse cx="630" cy="158" rx="40" ry="14" fill="#134e4a" stroke="#34d399"/>
+      <text x="630" y="155" class="cs-s" fill="#6ee7b7">データベース</text>
+      <!-- Desc -->
+      <text x="630" y="192" class="cs-s">ユーザー情報・商品情報</text>
+      <text x="630" y="207" class="cs-s">などを保存する</text>
+      <text x="630" y="222" class="cs-s">目的別に複数持つことも多い</text>
+    </svg>
+    <figcaption>図2: 一般的なシステムの構成例 ← S03:p.13</figcaption>
+  </div>
+
+  <h4>冗長化の4種類</h4>
+  <div class="tw"><table>
+    <thead><tr><th>種類</th><th>内容</th></tr></thead>
+    <tbody>
+      <tr><td>ハードウェア冗長化</td><td>システムのハードウェアを複数用意し、1つが故障しても別のものが引き継ぐ</td></tr>
+      <tr><td>ソフトウェア冗長化</td><td>ソフトウェアを複数用意し、1つが動かなくなっても別のものが引き継ぐ</td></tr>
+      <tr><td>配置冗長化</td><td>システムを複数の場所に分散して用意。1か所が停止しても他の場所のシステムが稼働</td></tr>
+      <tr><td>データ冗長化</td><td>データを複数の場所に保管し、一方が使えなくなっても別の場所のデータを使う</td></tr>
+    </tbody>
+  </table></div>
+  <span class="ptr">← S03:p.12</span>
+
+  <h4>冗長化の構成方式（4パターン）</h4>
+
+  <!-- 冗長化4構成SVG p.14-15 -->
+  <div class="svg-c">
+<svg viewBox="0 0 820 640" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;">
+<defs>
+  <style>
+    .f3h{font-family:'Noto Sans JP',sans-serif;font-size:12.5px;font-weight:700;fill:#e2e8f5}
+    .f3t{font-family:'Noto Sans JP',sans-serif;font-size:11px;fill:#e2e8f5;text-anchor:middle}
+    .f3s{font-family:'Noto Sans JP',sans-serif;font-size:10px;fill:#8a99b8;text-anchor:middle}
+    .f3n{font-family:'Noto Sans JP',sans-serif;font-size:10px;fill:#8a99b8;text-anchor:start}
+    .f3ok{font-family:'Noto Sans JP',sans-serif;font-size:10px;fill:#34d399;text-anchor:start}
+    .f3ng{font-family:'Noto Sans JP',sans-serif;font-size:10px;fill:#f87171;text-anchor:start}
+    .f3yw{font-family:'Noto Sans JP',sans-serif;font-size:10px;fill:#fbbf24;text-anchor:start}
+  </style>
+  <marker id="m3b" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><path d="M0,1L0,6L6,3.5Z" fill="#5b8dee"/></marker>
+  <marker id="m3g" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><path d="M0,1L0,6L6,3.5Z" fill="#34d399"/></marker>
+  <marker id="m3y" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><path d="M0,1L0,6L6,3.5Z" fill="#fbbf24"/></marker>
+</defs>
+
+<!-- ===== ① アクティブ・スタンバイ  y=8-158 ===== -->
+<rect x="6" y="8" width="808" height="148" rx="7" fill="#1a2030" stroke="#5b8dee" stroke-width="1.5"/>
+<!-- タイトル帯 -->
+<rect x="6" y="8" width="808" height="26" rx="7" fill="#1e3a8a"/>
+<rect x="6" y="26" width="808" height="8" fill="#1e3a8a"/>
+<text x="18" y="26" class="f3h" fill="#93c5fd">① アクティブ・スタンバイ構成</text>
+
+<!-- 左：図解エリア (x=10-320) -->
+<!-- ユーザー -->
+<rect x="18" y="44" width="60" height="32" rx="4" fill="#242b3d" stroke="#3a4560"/>
+<text x="48" y="63" class="f3s">ユーザー</text>
+<!-- メイン -->
+<rect x="102" y="40" width="100" height="38" rx="4" fill="#1e40af" stroke="#3b82f6" stroke-width="1.5"/>
+<text x="152" y="56" class="f3t" fill="#93c5fd" font-weight="700">メイン（稼働系）</text>
+<text x="152" y="70" class="f3s">通常時はここが動く</text>
+<line x1="78" y1="60" x2="100" y2="60" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#m3b)"/>
+<!-- 障害 -->
+<text x="128" y="96" class="f3s" fill="#fbbf24">▼ 障害発生</text>
+<line x1="152" y1="79" x2="152" y2="100" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#m3y)"/>
+<!-- ホットスタンバイ -->
+<rect x="102" y="101" width="100" height="34" rx="4" fill="#134e4a" stroke="#34d399" stroke-width="1.5"/>
+<text x="152" y="115" class="f3t" fill="#6ee7b7">ホットスタンバイ</text>
+<text x="152" y="128" class="f3s">常時稼働・即時切替</text>
+<!-- コールドスタンバイ -->
+<rect x="218" y="101" width="100" height="34" rx="4" fill="#78350f" stroke="#f59e0b" stroke-width="1.5"/>
+<text x="268" y="115" class="f3t" fill="#fde68a">コールドスタンバイ</text>
+<text x="268" y="128" class="f3s">停止中→障害時のみ起動</text>
+
+<!-- 区切り縦線 -->
+<line x1="332" y1="36" x2="332" y2="154" stroke="#2a3347"/>
+
+<!-- 右：比較表 (x=340-808) -->
+<rect x="340" y="36" width="462" height="20" rx="0" fill="#1e2535"/>
+<text x="420" y="50" class="f3s">方式</text>
+<text x="524" y="50" class="f3s">予備機の状態</text>
+<text x="646" y="50" class="f3s">復旧速度</text>
+<text x="752" y="50" class="f3s">コスト</text>
+<line x1="340" y1="56" x2="808" y2="56" stroke="#2a3347"/>
+<text x="348" y="74" class="f3n" fill="#6ee7b7">ホットスタンバイ</text>
+<text x="506" y="74" class="f3s">常時稼働</text>
+<text x="632" y="74" class="f3ok">即時（ほぼ無停止）</text>
+<text x="748" y="74" class="f3ng">高い</text>
+<line x1="340" y1="82" x2="808" y2="82" stroke="#1e2535"/>
+<text x="348" y="100" class="f3n" fill="#fde68a">コールドスタンバイ</text>
+<text x="506" y="100" class="f3s">停止状態</text>
+<text x="632" y="100" class="f3yw">遅延あり</text>
+<text x="748" y="100" class="f3ok">低め</text>
+<line x1="340" y1="108" x2="808" y2="108" stroke="#1e2535"/>
+<text x="348" y="124" class="f3n">複数の予備機を用意する場合もある</text>
+<text x="348" y="140" class="f3n">障害発生→予備機に切り替えて稼働継続</text>
+
+<!-- ===== ② アクティブ・アクティブ  y=166-300 ===== -->
+<rect x="6" y="166" width="808" height="132" rx="7" fill="#1a2030" stroke="#a78bfa" stroke-width="1.5"/>
+<rect x="6" y="166" width="808" height="26" rx="7" fill="#3b0764"/>
+<rect x="6" y="184" width="808" height="8" fill="#3b0764"/>
+<text x="18" y="184" class="f3h" fill="#ddd6fe">② アクティブ・アクティブ構成</text>
+
+<!-- 左：図解 -->
+<rect x="18" y="202" width="60" height="30" rx="4" fill="#242b3d" stroke="#3a4560"/>
+<text x="48" y="220" class="f3s">ユーザー</text>
+<rect x="102" y="196" width="88" height="40" rx="4" fill="#4c1d95" stroke="#a78bfa" stroke-width="1.5"/>
+<text x="146" y="212" class="f3t" fill="#ddd6fe">負荷分散</text>
+<text x="146" y="226" class="f3s" fill="#c4b5fd">（ロードバランサ）</text>
+<line x1="78" y1="217" x2="100" y2="217" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#m3b)"/>
+<rect x="214" y="190" width="92" height="34" rx="4" fill="#1e40af" stroke="#3b82f6" stroke-width="1.5"/>
+<text x="260" y="205" class="f3t" fill="#93c5fd">サーバA</text>
+<text x="260" y="218" class="f3s">（稼働中）</text>
+<rect x="214" y="234" width="92" height="34" rx="4" fill="#1e40af" stroke="#3b82f6" stroke-width="1.5"/>
+<text x="260" y="249" class="f3t" fill="#93c5fd">サーバB</text>
+<text x="260" y="262" class="f3s">（稼働中）</text>
+<line x1="190" y1="210" x2="212" y2="204" stroke="#3b82f6" stroke-width="1.5" marker-end="url(#m3b)"/>
+<line x1="190" y1="222" x2="212" y2="248" stroke="#3b82f6" stroke-width="1.5" marker-end="url(#m3b)"/>
+
+<line x1="332" y1="174" x2="332" y2="296" stroke="#2a3347"/>
+
+<!-- 右：特徴 -->
+<text x="348" y="204" class="f3n">• 複数のサーバを全てメインとして同時に運用する</text>
+<text x="348" y="222" class="f3n">• 普段から複数サーバ間でリクエスト処理を分散できる</text>
+<text x="348" y="240" class="f3n">• 障害発生時も他のサーバが処理を引き継ぐ</text>
+<text x="348" y="258" class="f3ok">⊕ サービスが途切れない。DDoS攻撃対策にも有効</text>
+<text x="348" y="276" class="f3ng">⊖ 全サーバを常時稼働→導入・運用コストが最も高い</text>
+<text x="348" y="292" class="f3yw">⚠ 複数サーバ間のデータ整合性の管理が必要</text>
+
+<!-- ===== ③ マスター・スレーブ  y=308-462 ===== -->
+<rect x="6" y="308" width="808" height="152" rx="7" fill="#1a2030" stroke="#34d399" stroke-width="1.5"/>
+<rect x="6" y="308" width="808" height="26" rx="7" fill="#064e3b"/>
+<rect x="6" y="326" width="808" height="8" fill="#064e3b"/>
+<text x="18" y="326" class="f3h" fill="#6ee7b7">③ マスター・スレーブ構成（主にデータベースで利用）</text>
+
+<!-- 左：図解 -->
+<rect x="18" y="342" width="100" height="40" rx="4" fill="#166534" stroke="#34d399" stroke-width="2"/>
+<text x="68" y="358" class="f3t" fill="#6ee7b7" font-weight="700">マスター</text>
+<text x="68" y="373" class="f3s">書き込み担当</text>
+<rect x="160" y="332" width="95" height="34" rx="4" fill="#1e2535" stroke="#34d399"/>
+<text x="207" y="347" class="f3t" fill="#6ee7b7">スレーブ1</text>
+<text x="207" y="361" class="f3s">複製（読み取り専用）</text>
+<rect x="160" y="378" width="95" height="34" rx="4" fill="#1e2535" stroke="#34d399"/>
+<text x="207" y="393" class="f3t" fill="#6ee7b7">スレーブ2</text>
+<text x="207" y="407" class="f3s">複製（読み取り専用）</text>
+<!-- 複製矢印 -->
+<line x1="118" y1="352" x2="158" y2="344" stroke="#34d399" stroke-width="1.5" marker-end="url(#m3g)"/>
+<line x1="118" y1="364" x2="158" y2="386" stroke="#34d399" stroke-width="1.5" marker-end="url(#m3g)"/>
+<text x="120" y="330" class="f3s" fill="#34d399">複製→</text>
+<!-- 障害時の昇格 -->
+<path d="M160,388 C136,388 136,354 160,346" fill="none" stroke="#fbbf24" stroke-dasharray="4,2" stroke-width="1.5" marker-end="url(#m3y)"/>
+<text x="22" y="440" class="f3s" fill="#fbbf24">障害時: スレーブ→マスターに昇格</text>
+
+<line x1="332" y1="316" x2="332" y2="458" stroke="#2a3347"/>
+
+<!-- 右：特徴 -->
+<text x="348" y="346" class="f3n">• マスター: システム全体を制御し、データの書き込みを担当</text>
+<text x="348" y="364" class="f3n">• スレーブ: マスターが書いたデータを複製して読み取り専用で稼働</text>
+<text x="348" y="382" class="f3n">• マスター障害時→スレーブの1つをマスターに昇格させて継続</text>
+<text x="348" y="402" class="f3ng">⊖ マスター↔スレーブの切り替えにダウンタイムが発生する</text>
+<text x="348" y="420" class="f3ng">⊖ 復旧までに多少の時間がかかる</text>
+<text x="348" y="438" class="f3ok">⊕ データベース環境での標準的な冗長化手法</text>
+<text x="348" y="454" class="f3ok">⊕ スレーブへの読み取り分散でパフォーマンス向上も可能</text>
+
+<!-- ===== ④ マルチマスター  y=470-632 ===== -->
+<rect x="6" y="470" width="808" height="160" rx="7" fill="#1a2030" stroke="#f59e0b" stroke-width="1.5"/>
+<rect x="6" y="470" width="808" height="26" rx="7" fill="#78350f"/>
+<rect x="6" y="488" width="808" height="8" fill="#78350f"/>
+<text x="18" y="488" class="f3h" fill="#fde68a">④ マルチマスター構成</text>
+
+<!-- 左：図解 -->
+<rect x="18" y="504" width="82" height="36" rx="4" fill="#92400e" stroke="#f59e0b" stroke-width="1.5"/>
+<text x="59" y="519" class="f3t" fill="#fde68a">サーバA</text>
+<text x="59" y="532" class="f3s">書き込みOK</text>
+<rect x="122" y="504" width="82" height="36" rx="4" fill="#92400e" stroke="#f59e0b" stroke-width="1.5"/>
+<text x="163" y="519" class="f3t" fill="#fde68a">サーバB</text>
+<text x="163" y="532" class="f3s">書き込みOK</text>
+<rect x="226" y="504" width="82" height="36" rx="4" fill="#92400e" stroke="#f59e0b" stroke-width="1.5"/>
+<text x="267" y="519" class="f3t" fill="#fde68a">サーバC</text>
+<text x="267" y="532" class="f3s">書き込みOK</text>
+<!-- 相互同期 (2本の矢印で双方向表現) -->
+<line x1="100" y1="516" x2="120" y2="516" stroke="#f59e0b" stroke-width="1.5" marker-end="url(#m3y)"/>
+<line x1="120" y1="524" x2="100" y2="524" stroke="#f59e0b" stroke-width="1.5" marker-end="url(#m3y)"/>
+<line x1="204" y1="516" x2="224" y2="516" stroke="#f59e0b" stroke-width="1.5" marker-end="url(#m3y)"/>
+<line x1="224" y1="524" x2="204" y2="524" stroke="#f59e0b" stroke-width="1.5" marker-end="url(#m3y)"/>
+<text x="155" y="556" class="f3s" fill="#f59e0b">← 相互同期 →</text>
+
+<line x1="332" y1="478" x2="332" y2="628" stroke="#2a3347"/>
+
+<!-- 右：特徴 -->
+<text x="348" y="508" class="f3n">• 全サーバに書き込み権限を与え、同時に稼働させる</text>
+<text x="348" y="526" class="f3n">• 障害が発生しても、他のサーバが即座に代替となれる</text>
+<text x="348" y="546" class="f3ok">⊕ 復旧が最も早い（ほぼ無停止）</text>
+<text x="348" y="564" class="f3ng">⊖ 複数サーバ間のデータ整合性の管理が難しい</text>
+<text x="348" y="582" class="f3ng">⊖ 運用コストが最も高い</text>
+<text x="348" y="600" class="f3yw">⚠ ③マスター・スレーブより複雑な運用管理が必要</text>
+<text x="348" y="618" class="f3n">→ ③と④の使い分けは要件と予算によって決まる</text>
+
+</svg>
+<figcaption>図3: 冗長化の4つの構成方式 ← S03:p.14-15</figcaption>
+</div>
+
+  <div class="card">
+    <div class="card-t">冗長化のメリット・デメリット <span class="ptr">← S03:p.16</span></div>
+    <div class="tw"><table>
+      <thead><tr><th class="mh">メリット</th><th class="dh">デメリット</th></tr></thead>
+      <tbody><tr>
+        <td>障害への対応がスムーズになる<br>システム負荷を分散できる（アクセス集中対応・DDoS攻撃対策）<br>BCP（事業継続計画）対策につながる</td>
+        <td>冗長化構成の分だけコストが増える（サーバ運用コスト・ソフトウェアライセンス料等）<br>必要なコストも含めたバランスの見極めが必要</td>
+      </tr></tbody>
+    </table></div>
+  </div>
+
+  <h3 id="ch1-monitor">監視（Monitoring）</h3>
+  <div class="tw"><table>
+    <thead><tr><th>監視の種類</th><th>目的・内容</th></tr></thead>
+    <tbody>
+      <tr><td><strong>システムログの監視</strong></td><td>稼働状況やエラー発生を把握し問題箇所を特定。ログの解析・集計で異常箇所を検出し問題を修正</td></tr>
+      <tr><td><strong>パフォーマンス監視</strong></td><td>CPU・メモリ・ネットワークの使用状況を監視しボトルネックを把握。負荷が高まったリソースを見つけて追加リソースを割り当てる</td></tr>
+      <tr><td><strong>セキュリティ監視</strong></td><td>不正アクセスや攻撃を早期に検知し、セキュリティリスクを最小限に抑える</td></tr>
+      <tr><td><strong>モニタリング</strong></td><td>システムの動作やアプリケーションの状態をリアルタイムで監視。稼働状況やトランザクション処理状況を把握し信頼性を高める</td></tr>
+    </tbody>
+  </table></div>
+  <span class="ptr">← S03:p.17-19</span>
+
+  <div class="def-box">
+    <div class="lbl">定義: トランザクション処理</div>
+    <p>「ひとまとまりとして処理すべき単位」のこと。例えば買い物をするとき「商品を受け取る」と「代金を支払う」という2つの行為はワンセットのトランザクション処理。どちらか片方だけやると泥棒や詐欺になってしまうので、必ず両方セットで行う。<span class="ptr">← S03:p.19</span></p>
+  </div>
+
+  <h3 id="ch1-maintain">予防保全（Preventive Maintenance）</h3>
+  <div class="tw"><table>
+    <thead><tr><th>予防保全の内容</th><th>詳細</th></tr></thead>
+    <tbody>
+      <tr><td><strong>ハードウェアの保守点検</strong></td><td>サーバのように長時間稼働するハードウェアは故障の可能性あり。定期的な点検で機器の故障によるトラブルを事前に把握・修正する</td></tr>
+      <tr><td><strong>ソフトウェアのアップデート</strong></td><td>OSやアプリケーションの更新で新機能追加・バグ修正。<strong>業務用だけでなくスマートフォンや個人のPCでも同じ</strong>。定期的なアップデートを推奨</td></tr>
+      <tr><td><strong>セキュリティ対策</strong></td><td>ファイアウォール設定・ウイルス対策ソフト導入・パスワードポリシー策定・アクセス制限実施</td></tr>
+      <tr><td><strong>バックアップ</strong></td><td>故障や攻撃によるデータ消失を防ぐ。定期的なバックアップを取得しデータ喪失時の復旧手段を確保（第4章で詳述）</td></tr>
+    </tbody>
+  </table></div>
+  <span class="ptr">← S03:p.20-22</span>
+
+  <div class="audio-b">
+    <div class="lbl">音声補足</div>
+    <p>「皆さんもレポートや論文のデータはバックアップを取っておいた方がいいと思いますよ」と教員が強調。<span class="ptr">← S05</span></p>
+  </div>
+</section>
+
+<!-- ========= CH2 ========= -->
+<section class="sec" id="ch2">
+  <div class="ch-hdr"><span class="ch-num">第2章</span><h2>システムの仮想化技術</h2></div>
+
+  <h3 id="ch2-overview">仮想化技術の概要とメリット</h3>
+  <div class="def-box">
+    <div class="lbl">定義</div>
+    <p><strong>仮想化技術</strong>とは、物理的なリソースを仮想的に分割・共有する技術。これにより、システムの<strong>柔軟性・可用性・負荷分散・省エネルギー化</strong>をもたらすことができる。<span class="ptr">← S03:p.27</span></p>
+  </div>
+
+  <!-- p.28 仮想サーバのイメージ図 -->
+  <div class="svg-c">
+    <svg viewBox="0 0 680 240" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;">
+      <defs><style>
+        .vs{font-family:'Noto Sans JP',sans-serif;font-size:11px;fill:#e2e8f5;text-anchor:middle}
+        .vs-s{font-family:'Noto Sans JP',sans-serif;font-size:10px;fill:#8a99b8;text-anchor:middle}
+      </style></defs>
+      <!-- 左側: 物理サーバ×3 -->
+      <text x="90" y="20" class="vs" font-weight="700">物理サーバ×3台で運用</text>
+      <rect x="10" y="34" width="160" height="50" rx="5" fill="#1e2535" stroke="#6b7280"/>
+      <text x="90" y="56" class="vs-s">物理サーバ1</text>
+      <text x="90" y="72" class="vs-s">（サービスAのみ）</text>
+      <rect x="10" y="95" width="160" height="50" rx="5" fill="#1e2535" stroke="#6b7280"/>
+      <text x="90" y="117" class="vs-s">物理サーバ2</text>
+      <text x="90" y="133" class="vs-s">（サービスBのみ）</text>
+      <rect x="10" y="156" width="160" height="50" rx="5" fill="#1e2535" stroke="#6b7280"/>
+      <text x="90" y="178" class="vs-s">物理サーバ3</text>
+      <text x="90" y="194" class="vs-s">（サービスCのみ）</text>
+      <text x="90" y="222" class="vs-s" fill="#f87171">性能が余りがち・コスト高</text>
+      <!-- 矢印 -->
+      <text x="260" y="120" class="vs" font-size="30px" fill="#5b8dee">→</text>
+      <text x="260" y="145" class="vs-s" fill="#34d399">仮想化</text>
+      <!-- 右側: 物理サーバ1台+仮想サーバ4台 -->
+      <text x="490" y="20" class="vs" font-weight="700">物理サーバ1台で仮想サーバ複数を運用</text>
+      <rect x="310" y="34" width="360" height="190" rx="8" fill="#1a2030" stroke="#5b8dee" stroke-width="2"/>
+      <text x="490" y="55" class="vs" font-weight="700" fill="#5b8dee">物理サーバ（1台）</text>
+      <rect x="325" y="65" width="155" height="70" rx="5" fill="#1e3a8a" stroke="#3b82f6"/>
+      <text x="402" y="87" class="vs-s" fill="#93c5fd">仮想サーバ1</text>
+      <text x="402" y="103" class="vs-s">（サービスA）</text>
+      <text x="402" y="118" class="vs-s" fill="#8a99b8">外からは独立した</text>
+      <rect x="495" y="65" width="155" height="70" rx="5" fill="#1e3a8a" stroke="#3b82f6"/>
+      <text x="572" y="87" class="vs-s" fill="#93c5fd">仮想サーバ2</text>
+      <text x="572" y="103" class="vs-s">（サービスB）</text>
+      <text x="572" y="118" class="vs-s" fill="#8a99b8">サーバに見える</text>
+      <rect x="325" y="148" width="155" height="68" rx="5" fill="#1e3a8a" stroke="#3b82f6"/>
+      <text x="402" y="168" class="vs-s" fill="#93c5fd">仮想サーバ3</text>
+      <text x="402" y="184" class="vs-s">（サービスC）</text>
+      <text x="402" y="200" class="vs-s" fill="#34d399">OSも自由に選択可</text>
+      <rect x="495" y="148" width="155" height="68" rx="5" fill="#134e4a" stroke="#34d399"/>
+      <text x="572" y="168" class="vs-s" fill="#6ee7b7">仮想サーバ4</text>
+      <text x="572" y="184" class="vs-s">（追加も容易）</text>
+      <text x="572" y="200" class="vs-s" fill="#34d399">柔軟に追加・削除可</text>
+      <text x="490" y="234" class="vs-s" fill="#34d399">コスト削減・リソース有効活用</text>
+    </svg>
+    <figcaption>図4: 仮想化技術のイメージ — 1台の物理サーバで複数の仮想サーバを運用 ← S03:p.28</figcaption>
+  </div>
+
+  <div class="tw"><table>
+    <thead><tr><th>メリット</th><th>説明</th></tr></thead>
+    <tbody>
+      <tr><td>ハードウェアの効率的な利用</td><td>1つの物理サーバ上に複数の仮想サーバを構築→運用コスト削減。性能の余りを解消</td></tr>
+      <tr><td>柔軟性の向上</td><td>仮想サーバの構築・移行が容易。複数アプリを同一HWで実行可能。環境構築・運用管理を簡略化</td></tr>
+      <tr><td>可用性の向上</td><td>仮想サーバのホスト間移動が可能→サービス停止時間を最小化。バックアップ仮想サーバを複数用意して高可用化を実現</td></tr>
+      <tr><td>セキュリティの向上</td><td>仮想マシンごとに独立したセキュリティレベルを設定可能。同一物理サーバ上でも異なるセキュリティポリシーを適用できる</td></tr>
+      <tr><td>省エネルギー化</td><td>ハードウェアの効率的利用により電力消費を削減</td></tr>
+    </tbody>
+  </table></div>
+  <span class="ptr">← S03:p.28-29</span>
+
+  <h3 id="ch2-server">サーバ仮想化（3種類）</h3>
+  <p>1台の物理サーバ上に複数の仮想サーバを構築・運用する技術。ホストマシン上のOSや制御の仕組みに関わらず、仮想マシンごとに異なるOSを実行可能。<span class="ptr">← S03:p.32</span></p>
+  <p><strong>代表的な実装例：</strong> VMware vSphere／Microsoft Hyper-V（Windowsの一部エディションに標準搭載）／Oracle VirtualBox<span class="ptr">← S03:p.32</span></p>
+
+  <div class="svg-c">
+<svg viewBox="0 0 780 400" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;">
+<defs>
+  <style>
+    .v5h{font-family:'Noto Sans JP',sans-serif;font-size:12.5px;font-weight:700;fill:#e2e8f5;text-anchor:middle}
+    .v5t{font-family:'Noto Sans JP',sans-serif;font-size:10.5px;fill:#e2e8f5;text-anchor:middle}
+    .v5s{font-family:'Noto Sans JP',sans-serif;font-size:9.5px;fill:#8a99b8;text-anchor:middle}
+    .v5ok{font-family:'Noto Sans JP',sans-serif;font-size:9.5px;fill:#34d399;text-anchor:middle}
+    .v5ng{font-family:'Noto Sans JP',sans-serif;font-size:9.5px;fill:#f87171;text-anchor:middle}
+    .v5ex{font-family:'Noto Sans JP',sans-serif;font-size:9px;fill:#fbbf24;text-anchor:middle}
+  </style>
+</defs>
+
+<!-- ===== 列①: ハイパーバイザ型  x=10, cx=130 ===== -->
+<rect x="10" y="8" width="240" height="382" rx="7" fill="#1a2030" stroke="#5b8dee" stroke-width="1.5"/>
+<rect x="10" y="8" width="240" height="26" rx="7" fill="#1e3a8a"/>
+<rect x="10" y="26" width="240" height="8" fill="#1e3a8a"/>
+<text x="130" y="27" class="v5h" fill="#93c5fd">ハイパーバイザ型</text>
+
+<!-- 説明文 y=44-116 -->
+<text x="130" y="48" class="v5s">物理マシン上にハイパーバイザを</text>
+<text x="130" y="62" class="v5s">直接インストールする</text>
+<text x="130" y="78" class="v5s" fill="#fbbf24">バイザ＝管理者の意味</text>
+<text x="130" y="94" class="v5s">ゲストOSへのリソース割り当てを</text>
+<text x="130" y="108" class="v5s">ハイパーバイザが直接管理する</text>
+<line x1="18" y1="116" x2="242" y2="116" stroke="#2a3347"/>
+
+<!-- メリット/デメリット y=124-162 -->
+<text x="130" y="130" class="v5ok">⊕ 性能が高く企業・クラウド向け</text>
+<text x="130" y="146" class="v5ok">⊕ ゲストOSを完全に分離できる</text>
+<text x="130" y="162" class="v5ex">例: VMware vSphere / Hyper-V</text>
+<line x1="18" y1="170" x2="242" y2="170" stroke="#2a3347"/>
+
+<!-- 積み上げ図 (下から上へ) y_bottom=386 -->
+<!-- ゲストOS A/B y=178-222 -->
+<rect x="20" y="178" width="106" height="42" rx="4" fill="#1e2535" stroke="#5b8dee"/>
+<text x="73" y="196" class="v5t" fill="#60a5fa">ゲストOS A</text>
+<text x="73" y="212" class="v5s">アプリ A</text>
+<rect x="134" y="178" width="106" height="42" rx="4" fill="#1e2535" stroke="#5b8dee"/>
+<text x="187" y="196" class="v5t" fill="#60a5fa">ゲストOS B</text>
+<text x="187" y="212" class="v5s">アプリ B</text>
+<text x="130" y="232" class="v5s" fill="#5b8dee">↑ ハイパーバイザがHWに直接アクセス</text>
+
+<!-- ハイパーバイザ y=240-278 -->
+<rect x="20" y="240" width="220" height="36" rx="4" fill="#1e40af" stroke="#3b82f6" stroke-width="1.5"/>
+<text x="130" y="256" class="v5t" fill="#93c5fd" font-weight="700">ハイパーバイザ</text>
+<text x="130" y="270" class="v5s" fill="#8a99b8">OSなし・HWを直接管理</text>
+
+<!-- ハードウェア y=284-322 -->
+<rect x="20" y="284" width="220" height="36" rx="4" fill="#374151" stroke="#6b7280"/>
+<text x="130" y="306" class="v5t">ハードウェア（物理マシン）</text>
+
+<!-- 不使用スペースをセパレータで整理 -->
+<text x="130" y="348" class="v5s" fill="#5a6882">（HostOS層なし）</text>
+<text x="130" y="368" class="v5s" fill="#5a6882">HWの上に直接HVが載る</text>
+
+
+<!-- ===== 列②: ホストOS型  x=270, cx=390 ===== -->
+<rect x="270" y="8" width="240" height="382" rx="7" fill="#1a2030" stroke="#f59e0b" stroke-width="1.5"/>
+<rect x="270" y="8" width="240" height="26" rx="7" fill="#78350f"/>
+<rect x="270" y="26" width="240" height="8" fill="#78350f"/>
+<text x="390" y="27" class="v5h" fill="#fde68a">ホストOS型</text>
+
+<!-- 説明文 -->
+<text x="390" y="48" class="v5s">物理マシンにOSをインストールし</text>
+<text x="390" y="62" class="v5s">その上に仮想化ソフトウェアを追加</text>
+<text x="390" y="78" class="v5s">既存のOSに後から導入できる</text>
+<line x1="278" y1="116" x2="502" y2="116" stroke="#2a3347"/>
+<text x="390" y="130" class="v5ok">⊕ 導入が手軽で個人・開発向け</text>
+<text x="390" y="146" class="v5ng">⊖ HostOSのオーバーヘッドが発生</text>
+<text x="390" y="162" class="v5ex">例: Oracle VirtualBox</text>
+<line x1="278" y1="170" x2="502" y2="170" stroke="#2a3347"/>
+
+<!-- 積み上げ図 -->
+<!-- ゲストOS A/B y=178-222 -->
+<rect x="280" y="178" width="106" height="42" rx="4" fill="#1e2535" stroke="#f59e0b"/>
+<text x="333" y="196" class="v5t" fill="#fde68a">ゲストOS A</text>
+<text x="333" y="212" class="v5s">アプリ A</text>
+<rect x="394" y="178" width="106" height="42" rx="4" fill="#1e2535" stroke="#f59e0b"/>
+<text x="447" y="196" class="v5t" fill="#fde68a">ゲストOS B</text>
+<text x="447" y="212" class="v5s">アプリ B</text>
+<text x="390" y="232" class="v5s" fill="#f59e0b">↑ 仮想化SWがHVの役割を担う</text>
+
+<!-- 仮想化ソフトウェア y=240-278 -->
+<rect x="280" y="240" width="220" height="36" rx="4" fill="#78350f" stroke="#f59e0b" stroke-width="1.5"/>
+<text x="390" y="262" class="v5t" fill="#fde68a" font-weight="700">仮想化ソフトウェア</text>
+
+<!-- ホストOS y=284-322 -->
+<rect x="280" y="284" width="220" height="36" rx="4" fill="#374151" stroke="#9ca3af" stroke-width="1.5"/>
+<text x="390" y="306" class="v5t" font-weight="700">ホストOS</text>
+
+<!-- ハードウェア y=328-366 -->
+<rect x="280" y="328" width="220" height="36" rx="4" fill="#374151" stroke="#6b7280"/>
+<text x="390" y="350" class="v5t">ハードウェア（物理マシン）</text>
+
+
+<!-- ===== 列③: コンテナ型  x=530, cx=650 ===== -->
+<rect x="530" y="8" width="240" height="382" rx="7" fill="#1a2030" stroke="#34d399" stroke-width="1.5"/>
+<rect x="530" y="8" width="240" height="26" rx="7" fill="#064e3b"/>
+<rect x="530" y="26" width="240" height="8" fill="#064e3b"/>
+<text x="650" y="27" class="v5h" fill="#6ee7b7">コンテナ型</text>
+
+<!-- 説明文 -->
+<text x="650" y="48" class="v5s">アプリ＋必要なライブラリを</text>
+<text x="650" y="62" class="v5s">セットにした「コンテナ」として動かす</text>
+<text x="650" y="78" class="v5s">ゲストOSが不要なため軽量・高速</text>
+<line x1="538" y1="116" x2="762" y2="116" stroke="#2a3347"/>
+<text x="650" y="130" class="v5ok">⊕ 軽量・起動が速い・管理が容易</text>
+<text x="650" y="146" class="v5ok">⊕ 同一OS上で多数を同時実行可能</text>
+<text x="650" y="162" class="v5ex">例: Docker / Kubernetes</text>
+<line x1="538" y1="170" x2="762" y2="170" stroke="#2a3347"/>
+
+<!-- 積み上げ図 -->
+<!-- コンテナ A/B y=178-230 (アプリ+ライブラリの2段構造) -->
+<rect x="540" y="178" width="106" height="50" rx="4" fill="#1e2535" stroke="#34d399"/>
+<text x="593" y="196" class="v5t" fill="#6ee7b7">コンテナA</text>
+<rect x="544" y="204" width="98" height="18" rx="2" fill="#0f2419" stroke="#34d399"/>
+<text x="593" y="216" class="v5s" fill="#34d399">アプリ＋ライブラリ</text>
+
+<rect x="654" y="178" width="106" height="50" rx="4" fill="#1e2535" stroke="#34d399"/>
+<text x="707" y="196" class="v5t" fill="#6ee7b7">コンテナB</text>
+<rect x="658" y="204" width="98" height="18" rx="2" fill="#0f2419" stroke="#34d399"/>
+<text x="707" y="216" class="v5s" fill="#34d399">アプリ＋ライブラリ</text>
+<text x="650" y="240" class="v5s" fill="#34d399">↑ エンジンがリソースを管理</text>
+
+<!-- コンテナエンジン y=248-284 -->
+<rect x="540" y="248" width="220" height="34" rx="4" fill="#134e4a" stroke="#34d399" stroke-width="1.5"/>
+<text x="650" y="270" class="v5t" fill="#6ee7b7" font-weight="700">コンテナエンジン（例: Docker）</text>
+
+<!-- ホストOS y=290-328 -->
+<rect x="540" y="290" width="220" height="34" rx="4" fill="#374151" stroke="#9ca3af" stroke-width="1.5"/>
+<text x="650" y="312" class="v5t" font-weight="700">ホストOS</text>
+
+<!-- ハードウェア y=332-370 -->
+<rect x="540" y="332" width="220" height="34" rx="4" fill="#374151" stroke="#6b7280"/>
+<text x="650" y="354" class="v5t">ハードウェア（物理マシン）</text>
+
+</svg>
+<figcaption>図5: サーバ仮想化の3種類（積み上げ構造で比較） ← S03:p.33</figcaption>
+</div>
+
+  <div class="ext-b">
+    <div class="lbl">外部補足・確認済: VMware公式・Microsoft公式</div>
+    <p><strong>主要製品の現状（2024年時点）：</strong><br>
+    <strong>VMware vSphere</strong>はハイパーバイザ型の業界標準製品。2023年にBroadcomがVMwareを買収し、製品ラインナップや価格体系が変更されつつある。<br>
+    <strong>Microsoft Hyper-V</strong>はWindows Server 2008以降に標準搭載（一部エディション）。追加コストなしで利用できるため中小規模のシステムで広く使われる。<br>
+    <strong>Oracle VirtualBox</strong>は無償利用可能なホストOS型の仮想化ソフトウェア。個人・開発用途に広く使われる。<span class="ptr">← S03:p.32</span></p>
+  </div>
+
+  <h3 id="ch2-storage">ストレージ仮想化</h3>
+  <div class="tw"><table>
+    <thead><tr><th>手法</th><th>内容</th></tr></thead>
+    <tbody>
+      <tr><td><strong>ボリューム仮想化</strong></td><td>複数の物理ストレージを1つの仮想ストレージとして管理。<strong>RAID（Redundant Array of Independent Disks）</strong>が代表的</td></tr>
+      <tr><td><strong>ブロックレベル仮想化</strong></td><td>物理ストレージをブロックとして管理し単一のプールとしてまとめる。サーバと物理ストレージの間に仮想化専用装置を配置。物理ストレージ上のデータ位置にとらわれず、サーバからは専用装置が示す仮想的なデータ配置が見える</td></tr>
+      <tr><td><strong>ファイルレベル仮想化</strong></td><td>複数のサーバが同一の仮想的なファイルシステムを共有してアクセスする</td></tr>
+    </tbody>
+  </table></div>
+  <span class="ptr">← S03:p.34</span>
+
+  <div class="ext-b">
+    <div class="lbl">外部補足・確認済: 各社公式情報</div>
+    <p><strong>代表製品の現状：</strong><br>
+    <strong>NetApp</strong>はストレージ専業の独立系大手として現在も事業継続中。ONTAPをはじめとするデータ管理ソフトウェアで知られる。<br>
+    <strong>EMC → Dell EMC → Dell Technologies</strong>：EMCは2016年9月にDellが約670億ドルで買収（当時IT業界史上最大）し「Dell EMC」に。2019年頃から「Dell Technologies」ブランドに移行。スライドの「EMC」は旧社名だが現在はDell Technologiesのストレージ部門として存続。<span class="ptr">← S03:p.30</span></p>
+  </div>
+
+  <div class="card">
+    <div class="card-t">ストレージ仮想化のメリット・デメリット <span class="ptr">← S03:p.35</span></div>
+    <div class="tw"><table>
+      <thead><tr><th class="mh">メリット</th><th class="dh">デメリット</th></tr></thead>
+      <tbody><tr>
+        <td>可用性向上・冗長化ができる<br>スケーラビリティ向上のためのストレージプール構築<br>管理効率向上</td>
+        <td>オーバーヘッド・機器性能による遅延・パフォーマンス問題<br>仮想化管理ソフト・対応機器の導入コスト<br>ストレージ仮想化システムの障害が全体に波及</td>
+      </tr></tbody>
+    </table></div>
+  </div>
+
+  <h3 id="ch2-network">ネットワーク仮想化</h3>
+  <div class="tw"><table>
+    <thead><tr><th>手法</th><th>概要</th></tr></thead>
+    <tbody>
+      <tr><td><strong>VLAN（Virtual LAN）</strong></td><td>1つの物理ネットワーク上に複数の仮想ネットワークを構築・管理。セグメントを分離しトラフィックの分離とセキュリティ向上が可能。例: 一般ユーザー用NWと管理者用NWを分けて設定でき、相互参照できない</td></tr>
+      <tr><td><strong>VPN（Virtual Private Network）</strong></td><td>パブリックネットワーク上にプライベートネットワークを構築。理論上パブリックNWと異なるNWを使うことで安全性が向上</td></tr>
+      <tr><td><strong>SDN（Software Defined Network）</strong></td><td>ネットワークをプログラムで構築・制御可能にする技術。物理的なネットワークや機器の制御をコントローラで集中管理する</td></tr>
+      <tr><td><strong>NFV（Network Function Virtualization）</strong></td><td>ネットワーク機器の機能を仮想マシンでソフトウェア的に実現。柔軟なネットワーク構成が可能</td></tr>
+    </tbody>
+  </table></div>
+  <span class="ptr">← S03:p.36-37</span>
+
+  <div class="card">
+    <div class="card-t">ネットワーク仮想化のメリット・デメリット <span class="ptr">← S03:p.38</span></div>
+    <div class="tw"><table>
+      <thead><tr><th class="mh">メリット</th><th class="dh">デメリット</th></tr></thead>
+      <tbody><tr>
+        <td>物理NWの利用率向上<br>トラフィック監視・不正アクセス検知機能によるセキュリティ向上<br>リソースの柔軟な配分（柔軟性向上）<br>物理機器の最適化による運用コスト削減<br>スケーラビリティ向上</td>
+        <td>オーバーヘッド・機器性能による遅延・パフォーマンス問題<br>複雑なシステムのサポート・メンテナンスコスト<br>管理に専門的なスキルが必要<br><strong>ベンダーロックイン</strong>（システム更新時に別の事業者に乗り換えできなくなる）<br>性質の異なる組織が同一物理NWを共有する場合の問題（異なるコンプライアンス要件への対応）</td>
+      </tr></tbody>
+    </table></div>
+  </div>
+</section>
+
+<!-- ========= CH3 ========= -->
+<section class="sec" id="ch3">
+  <div class="ch-hdr"><span class="ch-num">第3章</span><h2>エンドユーザー向けの仮想化技術</h2></div>
+
+  <div class="imp">
+    <div class="lbl">第2章との違い</div>
+    <p>第2章の仮想化技術は基本的に<strong>インフラストラクチャ側</strong>（企業・大学等の組織が利用）。エンドユーザー向け仮想化技術は、エンドユーザーが利用するPCやスマートフォン上で仮想化技術を活用するもの。主に<strong>リモートワーク</strong>への活用が目的。<span class="ptr">← S03:p.43</span></p>
+  </div>
+
+  <h4>エンドユーザー向け仮想化技術の共通メリット</h4>
+  <div class="tw"><table>
+    <thead><tr><th>メリット</th><th>内容</th></tr></thead>
+    <tbody>
+      <tr><td><strong>フレキシビリティ</strong></td><td>自分のデバイスから時間・場所を問わずアクセス可能。異なるデバイスからでも仮想環境にログインして利用できる</td></tr>
+      <tr><td><strong>セキュリティ</strong></td><td>データをセキュリティの高い場所に保存可能。ローカルへのデータ保存が不要でリスク低下</td></tr>
+      <tr><td><strong>デバイス非依存</strong></td><td>仮想環境はクラウド上で実行されるため、エンドユーザーのデバイス性能に依存しない</td></tr>
+      <tr><td><strong>バックアップと復元</strong></td><td>クラウド上で定期的なバックアップが実行され、データ喪失時はバックアップから復元できる</td></tr>
+      <tr><td><strong>マネージャビリティ</strong></td><td>システム全体の管理は管理者（組織）が一括実施。セキュリティポリシーやアプリを管理者から配信できる</td></tr>
+    </tbody>
+  </table></div>
+  <span class="ptr">← S03:p.44-45</span>
+
+  <h3 id="ch3-app">アプリケーション仮想化</h3>
+  <div class="def-box">
+    <div class="lbl">定義</div>
+    <p>アプリケーションを仮想化してサーバに格納し、クライアントからのアクセス時に必要な部分だけを提供する技術。実行ごとに独立した仮想環境が起動されるため競合を防げる。<span class="ptr">← S03:p.46</span></p>
+  </div>
+  <div class="audio-b">
+    <div class="lbl">音声補足</div>
+    <p>通常のアプリケーションはインストール時にシステム内に設定ファイルや実行ファイルを配置するため、同時に複数使用すると競合が発生することがある。アプリケーション仮想化では実行ごとに独立した仮想環境を起動するので、複数ユーザーが同じアプリを使っても競合しない。<span class="ptr">← S05</span></p>
+  </div>
+  <div class="card">
+    <div class="card-t">メリット・デメリット <span class="ptr">← S03:p.47-48</span></div>
+    <div class="tw"><table>
+      <thead><tr><th class="mh">メリット</th><th class="dh">デメリット</th></tr></thead>
+      <tbody><tr>
+        <td>競合・不具合の発生を抑止<br>管理コストの低減（ライブラリをパッケージ化して提供）<br>ユーザーによるインストールが不要<br>セキュリティ向上</td>
+        <td>仮想環境の構築コストがかかる<br>グラフィクス処理が必要なアプリで性能低下が起きやすい<br>仮想環境で実行できないアプリが存在する</td>
+      </tr></tbody>
+    </table></div>
+  </div>
+
+  <h3 id="ch3-desktop">デスクトップ仮想化（VDI: Virtual Desktop Infrastructure）</h3>
+  <div class="def-box">
+    <div class="lbl">定義</div>
+    <p>仮想マシン上に仮想デスクトップ環境を構築し、クライアント端末へ画面を転送して利用する技術。<span class="ptr">← S03:p.49</span></p>
+  </div>
+
+  <!-- S03:p.49 デスクトップ仮想化の図 -->
+  <div class="svg-c">
+    <svg viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;">
+      <defs><style>
+        .dt{font-family:'Noto Sans JP',sans-serif;font-size:11.5px;fill:#e2e8f5;text-anchor:middle}
+        .dt-s{font-family:'Noto Sans JP',sans-serif;font-size:10px;fill:#8a99b8;text-anchor:middle}
+      </style>
+      <marker id="a5" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0L0,6L8,3Z" fill="#5b8dee"/></marker>
+      <marker id="a6" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0L0,6L8,3Z" fill="#34d399"/></marker>
+      </defs>
+      <!-- クライアント端末 -->
+      <rect x="20" y="60" width="150" height="80" rx="6" fill="#1a2030" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="95" y="90" class="dt" font-weight="700">クライアント端末</text>
+      <text x="95" y="108" class="dt-s">PC・スマートフォン等</text>
+      <text x="95" y="124" class="dt-s">最低限スペックでOK</text>
+      <!-- インターネット -->
+      <ellipse cx="360" cy="100" rx="80" ry="45" fill="#1e2535" stroke="#3a4560"/>
+      <text x="360" y="96" class="dt" fill="#8a99b8">インター</text>
+      <text x="360" y="113" class="dt" fill="#8a99b8">ネット</text>
+      <!-- サーバ -->
+      <rect x="550" y="40" width="150" height="120" rx="6" fill="#1a2030" stroke="#34d399" stroke-width="1.5"/>
+      <text x="625" y="64" class="dt" font-weight="700" fill="#34d399">サーバ</text>
+      <rect x="564" y="72" width="122" height="32" rx="4" fill="#1e2535" stroke="#34d399"/>
+      <text x="625" y="88" class="dt-s" fill="#6ee7b7">仮想デスクトップ環境1</text>
+      <rect x="564" y="112" width="122" height="32" rx="4" fill="#1e2535" stroke="#34d399"/>
+      <text x="625" y="128" class="dt-s" fill="#6ee7b7">仮想デスクトップ環境2</text>
+      <text x="625" y="153" class="dt-s">（複数環境を同時運用）</text>
+      <!-- 矢印: クライアント→インターネット（リクエスト） -->
+      <line x1="170" y1="108" x2="278" y2="105" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#a5)"/>
+      <text x="224" y="122" class="dt-s" fill="#5b8dee">リクエスト→</text>
+      <!-- 矢印: インターネット→クライアント（画面転送） -->
+      <line x1="278" y1="93" x2="170" y2="90" stroke="#34d399" stroke-width="1.5" marker-end="url(#a6)"/>
+      <text x="224" y="84" class="dt-s" fill="#34d399">←画面を転送</text>
+      <!-- サーバ→インターネット -->
+      <line x1="549" y1="100" x2="442" y2="100" stroke="#5b8dee" stroke-width="1" stroke-dasharray="4,2"/>
+      <line x1="442" y1="95" x2="549" y2="95" stroke="#34d399" stroke-width="1" stroke-dasharray="4,2"/>
+      <!-- 補足 -->
+      <text x="360" y="170" class="dt-s" fill="#8a99b8">サーバ上で実行された仮想マシンの画面をユーザーのクライアントに転送する</text>
+      <text x="95" y="170" class="dt-s" fill="#f87171">ローカルに情報が残らない</text>
+      <text x="625" y="178" class="dt-s" fill="#34d399">機密データはサーバ側で完結</text>
+    </svg>
+    <figcaption>図6: デスクトップ仮想化のしくみ ← S03:p.49</figcaption>
+  </div>
+
+  <div class="ext-b">
+    <div class="lbl">外部補足・確認済: Citrix公式・VMware公式</div>
+    <p><strong>VDIの代表製品（現在の名称）：</strong><br>
+    スライドに記載の<strong>VDI（Virtual Desktop Infrastructure）</strong>が正式名称。<strong>XenDesktop</strong>はCitrixの製品で、2018年に<strong>Citrix Virtual Desktops</strong>に改名されている（XenDesktopはブランドとして使われ続けることもある）。<br>
+    現在の主要製品: Citrix Virtual Apps and Desktops（旧XenDesktop）/ VMware Horizon（旧VMware View）。<span class="ptr">← S03:p.30</span></p>
+  </div>
+
+  <div class="card">
+    <div class="card-t">デスクトップ仮想化のメリット・デメリット <span class="ptr">← S03:p.50-51</span></div>
+    <div class="tw"><table>
+      <thead><tr><th class="mh">メリット</th><th class="dh">デメリット</th></tr></thead>
+      <tbody><tr>
+        <td>セキュリティの向上（機密情報をローカルへDL不要→情報漏洩リスク低減）<br>セキュリティレベルをサーバ側で設定可能<br>管理の簡素化（バージョン管理・アップデートが簡単）<br>モビリティ向上（スマートフォンからも操作可能）</td>
+        <td>追加ハードウェア・ハイパーバイザが必要なケースあり<br>ソフトウェアライセンス料金（稼働台数分）<br>性能不足時に表示・操作の遅延が発生<br>設定・管理に一定のスキルが必要<br>ユーザーの学習コスト（直接操作との違いへの慣れが必要）</td>
+      </tr></tbody>
+    </table></div>
+  </div>
+
+  <h3 id="ch3-browser">ブラウザ仮想化</h3>
+  <p>Webブラウザを仮想環境で実行し、画面をユーザーの端末に転送する技術。<span class="ptr">← S03:p.52</span></p>
+  <div class="tw"><table>
+    <thead><tr><th>比較</th><th>ブラウザ仮想化</th><th>デスクトップ仮想化</th><th>アプリ仮想化</th></tr></thead>
+    <tbody>
+      <tr><td>スコープ</td><td>Webブラウザの実行に特化</td><td>PCを丸ごと仮想化するイメージ</td><td>管理者が用意したアプリのみ使える</td></tr>
+    </tbody>
+  </table></div>
+  <span class="ptr">← S03:p.52</span>
+  <div class="card">
+    <div class="card-t">メリット・デメリット <span class="ptr">← S03:p.53-54</span></div>
+    <div class="tw"><table>
+      <thead><tr><th class="mh">メリット</th><th class="dh">デメリット</th></tr></thead>
+      <tbody><tr>
+        <td>高性能なクライアント端末は不要（最低限スペックでOK）<br>特定のOS・ブラウザに依存するWebアプリを複数OSから利用可能（環境依存性の低減）<br>セキュリティ向上</td>
+        <td>常にネットワーク接続が必要（ネットワーク依存）<br>2点間のネットワーク品質に影響を受ける<br>カスタマイズ性が低下（仮想ブラウザの実行環境に依存）<br>仮想環境のランニングコストが必要</td>
+      </tr></tbody>
+    </table></div>
+  </div>
+</section>
+
+<!-- ========= CH4 ========= -->
+<section class="sec" id="ch4">
+  <div class="ch-hdr"><span class="ch-num">第4章</span><h2>バックアップの重要性</h2></div>
+
+  <div class="def-box">
+    <div class="lbl">定義</div>
+    <p><strong>データのバックアップ</strong>とは、計算機上に存在するデータやファイル、設定情報などを複製して保管すること。障害やトラブル等によりデータが紛失・破損した場合でも復旧・回復するために実施する。重要なデータの保全や安全性の確保が目的。<span class="ptr">← S03:p.59</span></p>
+  </div>
+
+  <h3 id="ch4-why">バックアップはなぜ必要か</h3>
+  <div class="tw"><table>
+    <thead><tr><th>理由</th><th>内容</th></tr></thead>
+    <tbody>
+      <tr><td><strong>データ損失の防止</strong></td><td>不測の事態によるデータ消失を防止。バックアップがあれば復旧できる</td></tr>
+      <tr><td><strong>ビジネス継続性の確保</strong></td><td>データ消失による業務の停滞・損失を極小化し、システムの停止や破壊を防止</td></tr>
+      <tr><td><strong>法的要件の順守</strong></td><td>法令によるデータ保管義務に対応</td></tr>
+      <tr><td><strong>経済的損失の防止</strong></td><td>データ消失や破損が経済的損失につながることが多い。影響を最小限に抑える</td></tr>
+    </tbody>
+  </table></div>
+  <span class="ptr">← S03:p.61</span>
+
+  <h3 id="ch4-types">バックアップの4種類</h3>
+
+  <!-- S03:p.66 バックアップ各手法のイメージ図 詳細版 -->
+  <div class="svg-c">
+<svg viewBox="0 0 820 520" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;">
+<defs>
+  <style>
+    .b7h{font-family:'Noto Sans JP',sans-serif;font-size:12px;font-weight:700;fill:#e2e8f5;text-anchor:middle}
+    .b7t{font-family:'Noto Sans JP',sans-serif;font-size:10.5px;fill:#e2e8f5;text-anchor:middle}
+    .b7s{font-family:'Noto Sans JP',sans-serif;font-size:9.5px;fill:#8a99b8;text-anchor:middle}
+    .b7n{font-family:'Noto Sans JP',sans-serif;font-size:9.5px;fill:#8a99b8;text-anchor:start}
+    .b7ok{font-family:'Noto Sans JP',sans-serif;font-size:9.5px;fill:#34d399;text-anchor:start}
+    .b7ng{font-family:'Noto Sans JP',sans-serif;font-size:9.5px;fill:#f87171;text-anchor:start}
+    .b7hd{font-family:'Noto Sans JP',sans-serif;font-size:9.5px;fill:#5a6882;text-anchor:middle}
+  </style>
+  <marker id="b7a" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+    <path d="M0,0.5L0,5.5L5.5,3Z" fill="#5b8dee"/>
+  </marker>
+</defs>
+
+<!-- ヘッダー行 -->
+<rect x="0" y="0" width="820" height="22" fill="#151822"/>
+<text x="58" y="15" class="b7hd">種類</text>
+<text x="183" y="15" class="b7hd">月（フルBK）</text>
+<text x="316" y="15" class="b7hd">火（変更あり）</text>
+<text x="437" y="15" class="b7hd">水（変更あり）</text>
+<text x="655" y="15" class="b7hd">バックアップ先（保存されるもの）</text>
+<line x1="0" y1="22" x2="820" y2="22" stroke="#2a3347"/>
+<!-- 縦区切り -->
+<line x1="116" y1="22" x2="116" y2="520" stroke="#1e2535"/>
+<line x1="490" y1="22" x2="490" y2="520" stroke="#2a3347" stroke-dasharray="3,3"/>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<!-- ① フルバックアップ  y=22-148 -->
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<rect x="0" y="22" width="116" height="126" fill="#1e2535"/>
+<text x="58" y="72" class="b7h" fill="#5b8dee">フル</text>
+<text x="58" y="90" class="b7h" fill="#5b8dee">バック</text>
+<text x="58" y="108" class="b7h" fill="#5b8dee">アップ</text>
+
+<!-- 月: 全データ -->
+<rect x="124" y="32" width="116" height="40" rx="4" fill="#1e40af" stroke="#3b82f6" stroke-width="1.5"/>
+<text x="182" y="50" class="b7t" fill="#93c5fd">全データ</text>
+<text x="182" y="64" class="b7s">基準</text>
+
+<!-- 火: 全データ+変更A -->
+<rect x="254" y="32" width="56" height="40" rx="4" fill="#1e40af" stroke="#3b82f6"/>
+<text x="282" y="56" class="b7s" fill="#93c5fd">全</text>
+<rect x="314" y="32" width="56" height="40" rx="4" fill="#1d4ed8" stroke="#60a5fa"/>
+<text x="342" y="56" class="b7s" fill="#bfdbfe">+変A</text>
+
+<!-- 水: 全データ+A+B -->
+<rect x="384" y="32" width="36" height="40" rx="4" fill="#1e40af" stroke="#3b82f6"/>
+<text x="402" y="56" class="b7s" fill="#93c5fd">全</text>
+<rect x="423" y="32" width="30" height="40" rx="4" fill="#1d4ed8" stroke="#60a5fa"/>
+<text x="438" y="56" class="b7s" fill="#bfdbfe">A</text>
+<rect x="456" y="32" width="28" height="40" rx="4" fill="#1e3a8a" stroke="#93c5fd"/>
+<text x="470" y="56" class="b7s" fill="#93c5fd">B</text>
+
+<!-- BK矢印 -->
+<line x1="492" y1="52" x2="504" y2="52" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#b7a)"/>
+
+<!-- BK先: 全データのコピー3世代 -->
+<rect x="508" y="32" width="52" height="40" rx="3" fill="#1e40af" stroke="#3b82f6" stroke-dasharray="4,2"/>
+<text x="534" y="52" class="b7s" fill="#93c5fd">全コピー1</text>
+<rect x="565" y="32" width="52" height="40" rx="3" fill="#1d4ed8" stroke="#60a5fa" stroke-dasharray="4,2"/>
+<text x="591" y="52" class="b7s" fill="#bfdbfe">全コピー2</text>
+<rect x="622" y="32" width="52" height="40" rx="3" fill="#1e3a8a" stroke="#93c5fd" stroke-dasharray="4,2"/>
+<text x="648" y="52" class="b7s" fill="#93c5fd">全コピー3</text>
+
+<!-- 特徴 -->
+<text x="508" y="90" class="b7ng">⊖ 毎回全データをコピー → ストレージ消費大</text>
+<text x="508" y="106" class="b7ok">⊕ 復旧: 最新コピー1つだけでOK（最もシンプル）</text>
+<text x="508" y="122" class="b7ok">⊕ 復旧時間が短く、操作が簡単</text>
+
+<line x1="0" y1="148" x2="820" y2="148" stroke="#2a3347"/>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<!-- ② 差分バックアップ  y=148-278 -->
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<rect x="0" y="148" width="116" height="130" fill="#1e2535"/>
+<text x="58" y="198" class="b7h" fill="#fbbf24">差分</text>
+<text x="58" y="216" class="b7h" fill="#fbbf24">バック</text>
+<text x="58" y="234" class="b7h" fill="#fbbf24">アップ</text>
+
+<!-- 月: フルBK -->
+<rect x="124" y="158" width="116" height="40" rx="4" fill="#1e40af" stroke="#3b82f6" stroke-width="1.5"/>
+<text x="182" y="175" class="b7t" fill="#93c5fd">フルBK</text>
+<text x="182" y="189" class="b7s">基準日に全データを保存</text>
+
+<!-- 火: フル＋月→火の差分A -->
+<rect x="254" y="158" width="56" height="40" rx="4" fill="#1e40af" stroke="#3b82f6"/>
+<text x="282" y="176" class="b7s" fill="#93c5fd">フル</text>
+<rect x="314" y="158" width="56" height="40" rx="4" fill="#15803d" stroke="#4ade80"/>
+<text x="342" y="173" class="b7t" fill="#86efac">差A</text>
+<text x="342" y="188" class="b7s" fill="#4ade80">月→火</text>
+
+<!-- 水: フル＋月→水の差分B（Aより大きい・累積） -->
+<rect x="384" y="158" width="36" height="40" rx="4" fill="#1e40af" stroke="#3b82f6"/>
+<text x="402" y="180" class="b7s" fill="#93c5fd">フル</text>
+<rect x="423" y="158" width="62" height="40" rx="4" fill="#166534" stroke="#34d399" stroke-width="1.5"/>
+<text x="454" y="173" class="b7t" fill="#6ee7b7">差B</text>
+<text x="454" y="188" class="b7s" fill="#34d399">月→水（累積）</text>
+
+<!-- BK矢印 -->
+<line x1="492" y1="178" x2="504" y2="178" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#b7a)"/>
+
+<!-- BK先: フルBK + 最新の差分 -->
+<rect x="508" y="158" width="44" height="40" rx="3" fill="#1e40af" stroke="#3b82f6" stroke-dasharray="4,2"/>
+<text x="530" y="182" class="b7s" fill="#93c5fd">フル</text>
+<rect x="557" y="158" width="44" height="40" rx="3" fill="#15803d" stroke="#4ade80" stroke-dasharray="4,2"/>
+<text x="579" y="173" class="b7s" fill="#86efac">差A</text>
+<text x="579" y="187" class="b7s" fill="#4ade80">月→火</text>
+<rect x="606" y="158" width="62" height="40" rx="3" fill="#166534" stroke="#34d399" stroke-dasharray="4,2"/>
+<text x="637" y="173" class="b7s" fill="#6ee7b7">差B↑</text>
+<text x="637" y="187" class="b7s" fill="#34d399">月→水（大）</text>
+<text x="690" y="172" class="b7s" fill="#fbbf24">差分は日々累積</text>
+
+<!-- 特徴 -->
+<text x="508" y="218" class="b7n" fill="#fbbf24">水曜の差分Bは「月→水」の変更を全て含む（累積）</text>
+<text x="508" y="234" class="b7ok">⊕ 復旧: フルBK＋最新差分の2ファイルだけでOK</text>
+<text x="508" y="250" class="b7ok">⊕ 復旧操作がシンプル（差分1ファイルを適用するだけ）</text>
+<text x="508" y="266" class="b7ng">⊖ 日が経つほど差分ファイルが大きくなる</text>
+
+<line x1="0" y1="278" x2="820" y2="278" stroke="#2a3347"/>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<!-- ③ 増分バックアップ  y=278-408 -->
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<rect x="0" y="278" width="116" height="130" fill="#1e2535"/>
+<text x="58" y="328" class="b7h" fill="#34d399">増分</text>
+<text x="58" y="346" class="b7h" fill="#34d399">バック</text>
+<text x="58" y="364" class="b7h" fill="#34d399">アップ</text>
+
+<!-- 月: フルBK -->
+<rect x="124" y="288" width="116" height="40" rx="4" fill="#1e40af" stroke="#3b82f6" stroke-width="1.5"/>
+<text x="182" y="305" class="b7t" fill="#93c5fd">フルBK</text>
+<text x="182" y="319" class="b7s">基準日に全データを保存</text>
+
+<!-- 火: 月→火の差分のみ（小さい） -->
+<rect x="254" y="288" width="116" height="40" rx="4" fill="#15803d" stroke="#4ade80"/>
+<text x="312" y="305" class="b7t" fill="#86efac">増A（月→火）</text>
+<text x="312" y="319" class="b7s" fill="#4ade80">前日分だけ保存</text>
+
+<!-- 水: 火→水の差分のみ（小さい）※増Aと同程度 -->
+<rect x="388" y="288" width="96" height="40" rx="4" fill="#166534" stroke="#34d399"/>
+<text x="436" y="305" class="b7t" fill="#6ee7b7">増B（火→水）</text>
+<text x="436" y="319" class="b7s" fill="#34d399">前日分だけ保存</text>
+
+<!-- BK矢印 -->
+<line x1="492" y1="308" x2="504" y2="308" stroke="#34d399" stroke-width="1.5" marker-end="url(#b7a)"/>
+
+<!-- BK先: フルBK + 増A + 増B（全て小さい） -->
+<rect x="508" y="288" width="44" height="40" rx="3" fill="#1e40af" stroke="#3b82f6" stroke-dasharray="4,2"/>
+<text x="530" y="312" class="b7s" fill="#93c5fd">フル</text>
+<rect x="557" y="288" width="44" height="40" rx="3" fill="#15803d" stroke="#4ade80" stroke-dasharray="4,2"/>
+<text x="579" y="305" class="b7s" fill="#86efac">増A</text>
+<text x="579" y="319" class="b7s" fill="#4ade80">月→火</text>
+<rect x="606" y="288" width="44" height="40" rx="3" fill="#166534" stroke="#34d399" stroke-dasharray="4,2"/>
+<text x="628" y="305" class="b7s" fill="#6ee7b7">増B</text>
+<text x="628" y="319" class="b7s" fill="#34d399">火→水</text>
+<text x="674" y="302" class="b7s" fill="#34d399">各ファイルが小さい</text>
+
+<!-- 特徴 -->
+<text x="508" y="348" class="b7n" fill="#34d399">水曜の増Bは「火→水」の変更だけ（前日との差のみ）</text>
+<text x="508" y="364" class="b7ok">⊕ 最もデータ量が少ない・バックアップ処理が最速</text>
+<text x="508" y="380" class="b7ng">⊖ 復旧: フルBK＋全増分ファイルが必要（1つ欠けると不可）</text>
+<text x="508" y="396" class="b7ng">⊖ 管理が最も複雑</text>
+
+<line x1="0" y1="408" x2="820" y2="408" stroke="#2a3347"/>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<!-- ④ ミラーバックアップ  y=408-518 -->
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<rect x="0" y="408" width="116" height="110" fill="#1e2535"/>
+<text x="58" y="452" class="b7h" fill="#a78bfa">ミラー</text>
+<text x="58" y="470" class="b7h" fill="#a78bfa">バック</text>
+<text x="58" y="488" class="b7h" fill="#a78bfa">アップ</text>
+
+<!-- 月: データ v1 -->
+<rect x="124" y="418" width="116" height="40" rx="4" fill="#166534" stroke="#34d399"/>
+<text x="182" y="435" class="b7t" fill="#6ee7b7">データ v1</text>
+<text x="182" y="449" class="b7s">初期状態</text>
+
+<!-- 火: 変更→即反映 v2 -->
+<rect x="254" y="418" width="116" height="40" rx="4" fill="#1e4035" stroke="#34d399"/>
+<text x="312" y="435" class="b7t" fill="#6ee7b7">データ v2</text>
+<text x="312" y="449" class="b7s">変更→即時反映</text>
+
+<!-- 水: 変更→即反映 v3 -->
+<rect x="384" y="418" width="100" height="40" rx="4" fill="#14342b" stroke="#34d399"/>
+<text x="434" y="435" class="b7t" fill="#6ee7b7">データ v3</text>
+<text x="434" y="449" class="b7s">変更→即時反映</text>
+
+<!-- BK矢印 -->
+<line x1="492" y1="438" x2="504" y2="438" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#b7a)"/>
+
+<!-- BK先: 常に最新1つのみ（上書き） -->
+<rect x="508" y="418" width="128" height="40" rx="3" fill="#4c1d95" stroke="#a78bfa" stroke-dasharray="4,2" stroke-width="1.5"/>
+<text x="572" y="435" class="b7t" fill="#ddd6fe">最新データのみ</text>
+<text x="572" y="449" class="b7s" fill="#a78bfa">常時上書き・世代なし</text>
+
+<!-- 特徴 -->
+<text x="508" y="476" class="b7ok">⊕ 復旧が最も容易（世代管理不要）</text>
+<text x="508" y="492" class="b7ng">⊖ 誤削除・誤変更も即反映（取り消し不可）</text>
+<text x="508" y="508" class="b7ng">⊖ オリジナルと同容量のストレージが必要</text>
+
+</svg>
+<figcaption>図7: バックアップ4種類の世代イメージ比較 ← S03:p.66</figcaption>
+</div>
+
+  <div class="tw"><table>
+    <thead><tr><th>種類</th><th>概要</th><th>メリット</th><th>デメリット</th></tr></thead>
+    <tbody>
+      <tr><td><strong>フルバックアップ</strong></td><td>ある時点のデータ<strong>全体</strong>をバックアップ</td><td>完全性が高い / 復旧時間が短い / 操作が簡単</td><td>毎回全データをコピーするためストレージ消費が大きい / バックアップ時間が長い</td></tr>
+      <tr><td><strong>差分バックアップ</strong></td><td>フルBK以降に<strong>変更されたデータ全て</strong>をバックアップ。<br>月曜フル→火曜は月-火の差分、水曜は<strong>月-水の差分</strong></td><td>フルよりデータ量が少ない / 復旧が比較的簡単（フル+最新差分の2ファイルのみ）</td><td>管理がフルより煩雑 / 日が経つにつれ差分ファイルが大きくなる</td></tr>
+      <tr><td><strong>増分バックアップ</strong></td><td><strong>前回バックアップ以降の変更のみ</strong>をバックアップ。<br>月曜フル→火曜は月-火の差分、水曜は<strong>火-水の差分のみ</strong></td><td>最もデータ量が少ない / 処理が高速（前回との差分のみ）</td><td>管理が複雑 / 復旧にフルBK+<strong>全ての増分ファイル</strong>が必要 / 1つ欠けると復元不可</td></tr>
+      <tr><td><strong>ミラーバックアップ</strong></td><td>データ変更があると別ストレージへ<strong>同時書き込み</strong>。<br>オリジナルから削除されるとミラー先からも削除される</td><td>復旧が最も容易 / 保管ストレージの物理的分散ができる</td><td>ストレージ負荷が大きい / 災害時にオリジナルとバックアップが同時に失われる / 同容量が必要</td></tr>
+    </tbody>
+  </table></div>
+  <span class="ptr">← S03:p.62-65</span>
+
+  <div class="imp">
+    <div class="lbl">差分 vs 増分 の覚え方</div>
+    <p><strong>差分</strong>バックアップ：フルBKからの<strong>累積差</strong>をその都度保存する。「ベース（フルBK）からの差」<br>
+    <strong>増分</strong>バックアップ：<strong>前回</strong>との差のみ保存。「インクリメンタル（毎回少しずつ増える）」<br>
+    → 差分は復旧が簡単（2ファイル）、増分はデータ量が最少だが復旧が複雑（全ファイル必要）</p>
+  </div>
+
+  <h3 id="ch4-manage">バックアップの実行・管理・検証</h3>
+  <h4>実行時の注意点</h4>
+  <div class="tw"><table>
+    <thead><tr><th>注意点</th><th>内容</th></tr></thead>
+    <tbody>
+      <tr><td>スケジューリング</td><td>定期的に実行する必要があるため、実行頻度・タイミングを決定しておく</td></tr>
+      <tr><td>事前テスト</td><td>バックアップが正しく実行できるか事前にテストしておく</td></tr>
+      <tr><td>ストレージの確保</td><td>世代数や手法から必要容量を計算して事前に確保する</td></tr>
+      <tr><td>地理的分散</td><td>1か所で管理すると災害時に全て失われる。地理的に分散。必要に応じてオフサイト（システムと切り離された場所）で保管</td></tr>
+      <tr><td>ログの確認</td><td>実行後にログを確認し問題がないか点検</td></tr>
+      <tr><td>セキュリティの確保</td><td>機密情報を含むデータの漏洩防止のため適切なセキュリティ対策を実施</td></tr>
+    </tbody>
+  </table></div>
+  <span class="ptr">← S03:p.67-68</span>
+
+  <h4>バックアップの頻度と保存期間</h4>
+  <div class="tw"><table>
+    <thead><tr><th>条件</th><th>推奨</th></tr></thead>
+    <tbody>
+      <tr><td>更新頻度が頻繁なデータ</td><td><strong>日次</strong>でのバックアップ</td></tr>
+      <tr><td>更新頻度が低いデータ</td><td><strong>週次・月次</strong>でのバックアップ</td></tr>
+      <tr><td>重要性が高いデータ</td><td><strong>長期間保存</strong>（磁気テープ: 数年〜10年、ディスクメディア: 5年程度）</td></tr>
+    </tbody>
+  </table></div>
+  <p>法的規制・業界団体のガイドライン・組織の内部規定も保存期間に影響する。<span class="ptr">← S03:p.69</span></p>
+
+  <h4>監視と管理</h4>
+  <div class="imp">
+    <div class="lbl">重要原則</div>
+    <p>バックアップを取っても復旧できなければ無意味。バックアップを有効に利用するためには<strong>監視と管理が必要不可欠</strong>。<span class="ptr">← S03:p.70</span></p>
+  </div>
+  <div class="tw"><table>
+    <thead><tr><th>管理項目</th><th>内容</th></tr></thead>
+    <tbody>
+      <tr><td><strong>ログの監視</strong></td><td>バックアップジョブのログを監視し、成否やエラーを確認。実行されていない・エラーが発生した場合は対処が必要</td></tr>
+      <tr><td><strong>テストリストア（復旧試験）</strong></td><td>バックアップを使って実際にデータを復元できるかテスト。<strong>定期的に実施</strong>しバックアップデータの復旧性を確認する</td></tr>
+      <tr><td><strong>保管場所・期間の管理</strong></td><td>安全な場所への保存・アクセス権設定・保管期限の管理。保管期限が定まっている場合は必要以上の期間保管しない</td></tr>
+      <tr><td><strong>自動化</strong></td><td>手動実行による人為的ミスを抑制。定期的に最新の状態を保つ</td></tr>
+    </tbody>
+  </table></div>
+  <span class="ptr">← S03:p.70-71</span>
+
+  <h4>バックアップの検証</h4>
+  <div class="tw"><table>
+    <thead><tr><th>検証方法</th><th>内容</th></tr></thead>
+    <tbody>
+      <tr><td><strong>ファイルチェックサムの比較</strong></td><td>オリジナルファイルとバックアップファイルのチェックサムを比較。不一致はバックアップに問題があることを示す</td></tr>
+      <tr><td><strong>ファイル復元テスト</strong></td><td>実際にファイルを復元し、オリジナルと比較してバックアップの正常性を確認</td></tr>
+      <tr><td><strong>システムの復元</strong></td><td>バックアップからシステムを復元し、正常に動作するか確認</td></tr>
+      <tr><td><strong>定期的なテストリストア</strong></td><td>復旧までの時間・手順を確認し、問題があれば修正。「テストリストアまで実施して初めてバックアップが有効」</td></tr>
+    </tbody>
+  </table></div>
+  <span class="ptr">← S03:p.72-73</span>
+
+  <h3 id="ch4-storage">バックアップデータの保管場所</h3>
+  <div class="tw"><table>
+    <thead><tr><th>ポイント</th><th>内容</th></tr></thead>
+    <tbody>
+      <tr><td><strong>オフサイト性</strong></td><td>システムと切り離された別の場所（オフサイト）に保管。災害・人災による被害を防ぐ。例: アジア・ヨーロッパ・オーストラリアの3か所で保管</td></tr>
+      <tr><td><strong>安全性</strong></td><td>盗難・喪失リスクが少ない場所。データの暗号化・アクセス制御などのセキュリティへの配慮も必要</td></tr>
+      <tr><td><strong>アクセス性</strong></td><td>復旧が必要な時に迅速にアクセスできる場所。バックアップデータの取り出しや復元作業が行いやすい場所</td></tr>
+      <tr><td><strong>コスト</strong></td><td>オフサイト保管や高度なセキュリティ対策を施す場合の運用コストも考慮。一般的に厳重な対策ほどコストが高い</td></tr>
+      <tr><td><strong>法規制・規約</strong></td><td>国・地域・業界によっては保管場所に法的規制や規約が存在する。これらに則った選定が必要</td></tr>
+    </tbody>
+  </table></div>
+  <span class="ptr">← S03:p.76-77</span>
+
+  <h3 id="ch4-crypto">暗号化とアクセス制限</h3>
+  <h4>バックアップデータの暗号化</h4>
+  <div class="tw"><table>
+    <thead><tr><th></th><th>共通鍵暗号方式</th><th>公開鍵暗号方式</th></tr></thead>
+    <tbody>
+      <tr><td>暗号化・復号に使う鍵</td><td>1つの鍵で暗号化と復号を行う</td><td>暗号化と復号に<strong>別の鍵</strong>を使う</td></tr>
+      <tr><td>処理速度</td><td class="ok-t">速い</td><td class="warn-t">遅い</td></tr>
+      <tr><td>鍵の管理</td><td class="bad-t">難しい</td><td class="ok-t">比較的簡単</td></tr>
+    </tbody>
+  </table></div>
+  <p>どちらでも<strong>鍵をなくした場合はデータにアクセスできなくなる</strong>ため鍵の管理は最重要。バックアップソフトウェアの暗号化機能やディスク・テープの暗号化装置を使う方法もある。<span class="ptr">← S03:p.78</span></p>
+
+  <h4>アクセス制限</h4>
+  <ul>
+    <li>アクセス権限をもつアカウントのみに制限し、権限は必要最小限に設定</li>
+    <li>物理的なセキュリティも考慮（施設・設備のセキュリティ・防火対策・防水対策）</li>
+    <li>アクセスログを定期的に監視し不正アクセスや不正利用を早期発見</li>
+    <li>バックアップストレージを本番環境から分離（オフサイト）する</li>
+    <li>バックアップソフトウェアやバックアップサーバの動作ログを監視し不正操作・故障を早期発見</li>
+  </ul>
+  <span class="ptr">← S03:p.79-81</span>
+
+  <h3 id="ch4-auto">バックアップの自動化</h3>
+  <p>手動でバックアップを行うとヒューマンエラーの可能性がある。正しく設定された自動化によりミスの可能性を抑えることができる。事前に目的・データ保護方針・スケジュール・バックアップ先・セキュリティ等を明確にすることが重要。<span class="ptr">← S03:p.82</span></p>
+
+  <div class="tw"><table>
+    <thead><tr><th class="mh">自動化のメリット</th></tr></thead>
+    <tbody>
+      <tr><td>手動作業が不要なので作業コストを抑えられる</td></tr>
+      <tr><td>定期的で正確なバックアップを取得できる</td></tr>
+      <tr><td>時間指定が可能なため業務時間を避けて実施可能</td></tr>
+      <tr><td>自動実行のプロセスや結果についてログを取得できる</td></tr>
+      <tr><td>バックアップの実行状況を一元的に管理できるためトラブルシューティングが容易</td></tr>
+    </tbody>
+  </table></div>
+
+  <h4>バックアップオーケストレーションツール</h4>
+  <p>複数のバックアップジョブの管理・実行・スケジューリングを自動化・統合管理するツール。<strong>オーケストレーション</strong>とは「複数の要素やプロセスを自動化し統合管理する仕組み」のこと。<span class="ptr">← S03:p.83</span></p>
+  <div class="tw"><table>
+    <thead><tr><th>ツール名</th><th>特徴</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Veeam Backup &amp; Replication</strong></td><td>VMware vSphere / Hyper-V / AWS / Azureなどの仮想化プラットフォームやクラウドサービスに対応。バックアップ・レプリケーション・復元・監視・レポート作成などの機能をもつ</td></tr>
+      <tr><td><strong>Commvault</strong></td><td>ファイル・DB・仮想環境・クラウド環境など、あらゆるデータを対象とした統合型データ管理ソリューション</td></tr>
+      <tr><td><strong>Rubrik</strong></td><td>ハイブリッドクラウド環境に対応したデータ管理プラットフォーム。バックアップ・レプリケーション・アーカイブ・復元などの機能をもつ</td></tr>
+    </tbody>
+  </table></div>
+  <span class="ptr">← S03:p.84</span>
+</section>
+
+<!-- ========= APPENDIX ========= -->
+<div class="app-sec">
+
+  <!-- 補足A -->
+  <div class="app-card ca" id="app-a">
+    <div class="app-t">⭐ 補足A: 最重要ワード一覧</div>
+    <div class="tw"><table>
+      <thead><tr><th>用語</th><th>読み</th><th>定義（原文から抽出）</th><th>重要度</th></tr></thead>
+      <tbody>
+        <tr><td><strong>BCP</strong></td><td>ビーシーピー</td><td>Business Continuity Plan（事業継続計画）。障害等の発生時にも業務を継続するための計画</td><td class="s3">★★★</td></tr>
+        <tr><td><strong>GDPR</strong></td><td>ジーディーピーアール</td><td>EU一般データ保護規則。EU域内の個人データ保護・取扱いを定めた法令。EU域外企業にも適用。違反はTier2で最大2,000万ユーロまたは全世界売上高の4%</td><td class="s3">★★★</td></tr>
+        <tr><td><strong>冗長化</strong></td><td>じょうちょうか</td><td>複数のシステムを用意して同じ機能を実現し、1つで障害が発生しても別のものが役割を引き継ぐことでシステム全体の信頼性を高める手法</td><td class="s3">★★★</td></tr>
+        <tr><td><strong>可用性</strong></td><td>かようせい</td><td>システムが継続して利用可能な状態を維持する能力。冗長化で向上させる</td><td class="s3">★★★</td></tr>
+        <tr><td><strong>ホットスタンバイ</strong></td><td>-</td><td>予備機を常時稼働させておく構成。復旧が速やかだがコストが高い</td><td class="s3">★★★</td></tr>
+        <tr><td><strong>コールドスタンバイ</strong></td><td>-</td><td>予備機を障害時のみ稼働させる構成。コスト低めだが復旧に遅延が生じる</td><td class="s3">★★★</td></tr>
+        <tr><td><strong>トランザクション処理</strong></td><td>-</td><td>ひとまとまりとして処理すべき単位。例: 「商品を受け取る」+「代金を支払う」はワンセット</td><td class="s3">★★★</td></tr>
+        <tr><td><strong>仮想化技術</strong></td><td>かそうかぎじゅつ</td><td>物理的なリソースを仮想的に分割・共有し、柔軟性・可用性・負荷分散・省エネルギー化をもたらす技術</td><td class="s3">★★★</td></tr>
+        <tr><td><strong>ハイパーバイザ型</strong></td><td>-</td><td>物理マシン上にハイパーバイザ（管理者）をインストールし、ゲストOSへのリソース割り当てを管理するサーバ仮想化の手法</td><td class="s3">★★★</td></tr>
+        <tr><td><strong>コンテナ型</strong></td><td>-</td><td>アプリケーションと必要なライブラリ等をセットにした「コンテナ」をコンテナエンジン上で実行するサーバ仮想化の手法</td><td class="s3">★★★</td></tr>
+        <tr><td><strong>VLAN</strong></td><td>ブイラン</td><td>Virtual LAN。1つの物理NW上に複数の仮想NWを構築・管理する技術。トラフィック分離でセキュリティ向上</td><td class="s2">★★☆</td></tr>
+        <tr><td><strong>SDN</strong></td><td>エスディーエヌ</td><td>Software Defined Network。ネットワークをプログラムで構築・制御可能にする技術</td><td class="s2">★★☆</td></tr>
+        <tr><td><strong>NFV</strong></td><td>エヌエフブイ</td><td>Network Function Virtualization。ネットワーク機器の機能を仮想マシンでソフトウェア的に実現する技術</td><td class="s2">★★☆</td></tr>
+        <tr><td><strong>VDI</strong></td><td>ブイディーアイ</td><td>Virtual Desktop Infrastructure。仮想マシン上に仮想デスクトップ環境を構築し画面転送で利用するデスクトップ仮想化の代表的実装</td><td class="s3">★★★</td></tr>
+        <tr><td><strong>フルバックアップ</strong></td><td>-</td><td>ある時点のデータ全体をバックアップ。完全性が高く復旧時間が短いが、ストレージ消費が大きい</td><td class="s3">★★★</td></tr>
+        <tr><td><strong>差分バックアップ</strong></td><td>さぶんBK</td><td>フルBK以降に変更されたデータ全てをバックアップ。復旧はフルBK+最新差分の2ファイルでOK</td><td class="s3">★★★</td></tr>
+        <tr><td><strong>増分バックアップ</strong></td><td>ぞうぶんBK</td><td>前回BK以降の変更のみをバックアップ。データ量最少だが復旧にフルBK+全増分が必要</td><td class="s3">★★★</td></tr>
+        <tr><td><strong>ミラーバックアップ</strong></td><td>-</td><td>データ変更時に別ストレージへ同時書き込み。世代管理なしで常に最新状態を反映</td><td class="s3">★★★</td></tr>
+        <tr><td><strong>テストリストア</strong></td><td>-</td><td>バックアップを使って実際にデータを復元できるかテストすること。定期的な実施が必要</td><td class="s3">★★★</td></tr>
+        <tr><td><strong>RAID</strong></td><td>レイド</td><td>Redundant Array of Independent Disks。複数ストレージを1つの仮想ストレージとして管理するボリューム仮想化の代表例</td><td class="s2">★★☆</td></tr>
+        <tr><td><strong>オフサイト保管</strong></td><td>-</td><td>バックアップをシステムと切り離された別の場所（オフサイト）に保管すること。災害・人災対策</td><td class="s2">★★☆</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <!-- 補足B -->
+  <div class="app-card cb" id="app-b">
+    <div class="app-t">📚 補足B: 知っておくべき背景知識</div>
+
+    <h4>GDPRの罰則体系（2段階制） <span class="ext-sm">[外部補足・確認済: EU公式 Art.83]</span></h4>
+    <p>GDPRはGeneral Data Protection Regulationの略で、2018年5月25日に施行。第83条で罰則が2段階に規定されている:</p>
+    <ul>
+      <li><strong>Tier 1（軽微な違反）</strong>: 最大1,000万ユーロ または 全世界年間売上高の<strong>2%</strong>のいずれか高い方。適用例: DPO（データ保護責任者）の未任命、処理記録の不備、データ侵害の未通知等</li>
+      <li><strong>Tier 2（重大な違反）</strong>: 最大2,000万ユーロ または 全世界年間売上高の<strong>4%</strong>のいずれか高い方。適用例: 基本原則の違反、同意なきデータ処理、データ主体の権利侵害等</li>
+    </ul>
+    <p>実際の高額事例: MetaへのTier 2罰金12億ユーロ（2023年、アイルランドDPC）、AmazonへのTier 2罰金7億4,600万ユーロ（2021年）等。</p>
+
+    <h4>サーバ仮想化製品の現状 <span class="ext-sm">[外部補足・確認済: 各社公式]</span></h4>
+    <p><strong>VMware vSphere</strong>: 2023年にBroadcomがVMwareを約610億ドルで買収。製品ラインの整理と価格体系の変更が進んでいる（2024年現在）。<br>
+    <strong>Microsoft Hyper-V</strong>: Windows Server 2008以降の一部エディションに標準搭載（追加コストなし）。中小規模のシステムで広く使われる。</p>
+
+    <h4>デスクトップ仮想化（VDI）製品の現状 <span class="ext-sm">[外部補足・確認済: Citrix公式・TechTarget]</span></h4>
+    <p><strong>XenDesktop → Citrix Virtual Desktops</strong>: 2007年にCitrixがXenSourceを買収し2008年にXenDesktop v2.0をリリース。2018年に<strong>Citrix Virtual Apps and Desktops（CVAD）</strong>に改名。<br>
+    <strong>VMware Horizon</strong>: 旧VMware View。2023年のBroadcom買収後はOmnissa Horizonとして分社化された。</p>
+
+    <h4>Dell EMCとNetAppの現状 <span class="ext-sm">[外部補足・確認済: Wikipedia / Dell Technologies公式]</span></h4>
+    <p>スライドに記載の「EMC」は現在<strong>Dell Technologies</strong>のストレージ部門として存続。Dell Inc.が2016年9月に670億ドルで買収（当時IT業界史上最大の買収）し「Dell EMC」に、2019年頃から「Dell Technologies」ブランドに移行。<br>
+    <strong>NetApp</strong>は独立系ストレージ専業大手として現在も存続。クラウドネイティブなデータ管理を推進中。</p>
+
+    <h4>3-2-1バックアップルール <span class="ext-sm">[外部補足]</span></h4>
+    <p>バックアップのベストプラクティスとして知られる「3-2-1ルール」: <strong>3</strong>つ以上のコピーを保持、<strong>2</strong>種類以上の異なる媒体に保存、<strong>1</strong>つはオフサイト（物理的に離れた場所）に保管する。本章で学んだオフサイト保管・地理的分散の実践的な指針。</p>
+  </div>
+
+  <!-- 補足C -->
+  <div class="app-card cc" id="app-c">
+    <div class="app-t">🎯 補足C: 試験・レポートで重要な観点</div>
+    <ul>
+      <li><strong>冗長化の4種類</strong>（ハードウェア・ソフトウェア・配置・データ）と<strong>5種の構成方式の特徴比較</strong>（ホットスタンバイvsコールドスタンバイ、アクティブ・アクティブ、マスター・スレーブ、マルチマスター）は必出。それぞれのコスト・復旧速度のトレードオフを説明できること</li>
+      <li><strong>サーバ仮想化3種類</strong>（ハイパーバイザ型・ホストOS型・コンテナ型）の仕組みの違いと各型の特徴を図示して説明できること</li>
+      <li><strong>差分バックアップと増分バックアップの違い</strong>は特に頻出。「差分はフルBK以降の変更全て」「増分は前回BK以降の変更のみ」という違いと、<strong>復旧時に必要なファイル数の違い</strong>（差分=2ファイル、増分=全ファイル）を理解する</li>
+      <li><strong>バックアップはテストリストアまで実施して初めて有効</strong>：「取るだけでは不十分」という点は試験頻出</li>
+      <li>システム停止による<strong>4種類の被害</strong>（経済的損失・社会的影響・信用の失墜・法的ペナルティ）を具体例とともに説明できること</li>
+      <li><strong>GDPRとBCP</strong>：組織・法律的な観点から問われることが多い。GDPRはEU域外企業にも適用される点が重要</li>
+      <li><strong>共通鍵暗号vs公開鍵暗号</strong>の速度・鍵管理の比較も出題されやすい</li>
+    </ul>
+  </div>
+
+  <!-- 補足D -->
+  <div class="app-card cd" id="app-d">
+    <div class="app-t">🔗 補足D: 関連概念・次回への接続</div>
+
+    <h4>RPO / RTO <span class="ext-sm">[外部補足]</span></h4>
+    <p>バックアップ計画に関連する重要な概念。<strong>RPO（Recovery Point Objective：目標復旧時点）</strong>は「どの時点のデータまで失うことを許容するか」の目標値。<strong>RTO（Recovery Time Objective：目標復旧時間）</strong>は「障害発生から何時間以内に復旧するか」の目標値。BCPの策定においてこれらを設定することが必要。バックアップの頻度は主にRPOによって決定される。</p>
+
+    <h4>クラウドと仮想化の関係 <span class="ext-sm">[外部補足]</span></h4>
+    <p>AWS・Azure・Google Cloudのようなクラウドサービスは、本章で学んだ仮想化技術（サーバ仮想化・ストレージ仮想化・ネットワーク仮想化）を組み合わせてサービスとして提供している。IaaS（Infrastructure as a Service）はこれらを抽象化して利用者に提供するもの。エンドユーザー向けのVDIもクラウド上で提供されるDaaS（Desktop as a Service）として提供されるケースが増えている。</p>
+
+    <h4>Docker/Kubernetesとコンテナ型仮想化 <span class="ext-sm">[外部補足]</span></h4>
+    <p><strong>Docker</strong>はコンテナ型仮想化の代表的実装。アプリケーションとその依存関係をまとめた「Dockerイメージ」を作成し、どの環境でも同じように動かせる（"Build once, run anywhere"の思想）。<strong>Kubernetes（K8s）</strong>はコンテナのオーケストレーションツールとして広く使われ、第4章の「バックアップオーケストレーション」と概念が共通している。</p>
+
+    <h4>ランサムウェアとバックアップ戦略 <span class="ext-sm">[外部補足]</span></h4>
+    <p>近年増加しているランサムウェア攻撃では、ネットワーク接続されたバックアップも暗号化の対象となる。これに対する「オフライン（エアギャップ）バックアップ」の重要性が増している。本章で学んだ<strong>オフサイト保管・ストレージの本番環境からの分離</strong>はランサムウェア対策としても機能する。</p>
+
+    <h4>SDN/NFVとネットワークの未来 <span class="ext-sm">[外部補足]</span></h4>
+    <p>SDNやNFVの概念は、インフラ全体をコードで管理する「IaC（Infrastructure as Code）」やクラウドネイティブなアーキテクチャの基盤となっている。Terraform・AnsibleなどのIaCツールとSDNを組み合わせることで、大規模なネットワーク環境を効率的に管理することが可能。</p>
+  </div>
+
+  <!-- 未確定事項 -->
+  <div class="app-card ce" id="unresolved">
+    <div class="app-t">❓ 未確定事項（解消済み一覧）</div>
+    <p style="font-size:13px;color:var(--g);margin-bottom:12px">v1.1にて外部調査を実施し、全件を解消または確認済みとしました。</p>
+    <div class="tw"><table>
+      <thead><tr><th>ID</th><th>内容</th><th>解消状況</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>U01</td>
+          <td>デスクトップ仮想化の代表例「VT-i」(S05-A誤変換)</td>
+          <td class="ok-t"><strong>解消済</strong>: S03でVDI/XenDesktopと確認。「VT-i」はVDIの誤変換と確定。補足Bに現在の正式名称（Citrix Virtual Desktops）も追記済み <span class="ptr">[外部補足・確認済: Citrix公式]</span></td>
+        </tr>
+        <tr>
+          <td>U02</td>
+          <td>ストレージ仮想化の代表例「EMC」の現在の状態</td>
+          <td class="ok-t"><strong>解消済</strong>: 2016年9月にDellが約670億ドルで買収→「Dell EMC」→「Dell Technologies」に移行（2019年〜）。ストレージ部門として現在も存続。補足Bに詳細を追記済み <span class="ptr">[外部補足・確認済: Wikipedia/Dell公式]</span></td>
+        </tr>
+        <tr>
+          <td>U03</td>
+          <td>GDPRの具体的な罰金額（スライドに「莫大な罰金」とだけ記載）</td>
+          <td class="ok-t"><strong>解消済</strong>: Tier2で最大2,000万ユーロ または 全世界年間売上高の4%のいずれか高い方と確認。補足Bに詳細を追記済み <span class="ptr">[外部補足・確認済: EU公式GDPR Art.83]</span></td>
+        </tr>
+      </tbody>
+    </table></div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer style="margin-top:44px;padding-top:18px;border-top:1px solid var(--border);font-size:10.5px;color:var(--dim);font-family:var(--mono)">
+  <div>SSP v4.2 | note_internet_08.html | v1.1 (未確定解消・図全再現・外部補足確認済)</div>
+  <div>Source: S03(スライドPDF:87p) + S05(hynote.ai×2) | QC: PASS (Step 6実施済)</div>
+  <div>Deploy: https://goforward0516-web.github.io/ssp-notes/note_internet_08.html</div>
+</footer>
+
+</main>
+
+<script>
+const tcs=document.querySelectorAll('.tc[href^="#"]');
+const secs=[];
+tcs.forEach(t=>{const id=t.getAttribute('href').slice(1);const el=document.getElementById(id);if(el)secs.push({id,el,t})});
+function upd(){
+  let cur='';
+  secs.forEach(({id,el})=>{if(el.getBoundingClientRect().top<=100)cur=id});
+  tcs.forEach(t=>t.classList.remove('active'));
+  const a=secs.find(s=>s.id===cur);
+  if(a)a.t.classList.add('active');
+}
+window.addEventListener('scroll',upd,{passive:true});
+upd();
+</script>
+</body>
+</html>
