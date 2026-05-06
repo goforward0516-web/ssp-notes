@@ -201,6 +201,52 @@ body{background:var(--bg);color:var(--txt);font-family:"Noto Sans JP",sans-serif
     <figcaption>通学制 vs 通信制（スライドp.9参照）← S03:p.9</figcaption>
   </div>
 
+  <div class="sw">
+    <svg viewBox="0 0 580 90" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;">
+      <text x="290" y="16" text-anchor="middle" fill="#e2e8f5" font-size="12.5" font-weight="700" font-family="sans-serif">平日のスケジュール例（教員提示）</text>
+      <!-- 7段の時間帯表 -->
+      <rect x="10" y="24" width="560" height="60" rx="6" fill="#1e2535" stroke="#2a3350" stroke-width="1"/>
+      <!-- ヘッダー -->
+      <rect x="10" y="24" width="175" height="20" rx="0" fill="#2a3a6a"/>
+      <text x="97" y="38" text-anchor="middle" fill="#7aa3f5" font-size="11" font-weight="700" font-family="sans-serif">時間帯</text>
+      <rect x="185" y="24" width="385" height="20" rx="0" fill="#2a3a6a"/>
+      <text x="377" y="38" text-anchor="middle" fill="#7aa3f5" font-size="11" font-weight="700" font-family="sans-serif">活動</text>
+      <!-- データ行 (各8px高さで) -->
+      <text x="20" y="53" fill="#8a99b8" font-size="10" font-family="monospace">AM 7:00　起床・朝食　|　AM 8〜9:00 通勤　|　AM 9:00〜PM 7:00 仕事・休憩</text>
+      <text x="20" y="66" fill="#8a99b8" font-size="10" font-family="monospace">PM 7〜8:00 退勤　|　PM 8〜9:00 夕食・入浴　|　PM 9:00〜AM 0:00 受講　|　AM 0:00 就寝</text>
+      <text x="190" y="80" fill="#fbbf24" font-size="10.5" font-weight="700" font-family="sans-serif">★ PM 9:00〜AM 0:00 が学習時間の例</text>
+    </svg>
+    <figcaption>平日スケジュール例（スライドp.11再現）← S03:p.11</figcaption>
+  </div>
+  <div class="sw">
+    <svg viewBox="0 0 560 88" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;">
+      <text x="280" y="16" text-anchor="middle" fill="#e2e8f5" font-size="12.5" font-weight="700" font-family="sans-serif">1週間の学習時間配分（スライドp.12）</text>
+      <!-- 月〜日のセル -->
+      <rect x="10" y="26" width="60" height="36" rx="3" fill="#1e2535" stroke="#3a4a6a" stroke-width="1"/>
+      <text x="40" y="48" text-anchor="middle" fill="#e2e8f5" font-size="13" font-family="sans-serif">月</text>
+      <rect x="73" y="26" width="60" height="36" rx="3" fill="#1e2535" stroke="#3a4a6a" stroke-width="1"/>
+      <text x="103" y="48" text-anchor="middle" fill="#e2e8f5" font-size="13" font-family="sans-serif">火</text>
+      <rect x="136" y="26" width="60" height="36" rx="3" fill="#1e2535" stroke="#3a4a6a" stroke-width="1"/>
+      <text x="166" y="48" text-anchor="middle" fill="#e2e8f5" font-size="13" font-family="sans-serif">水</text>
+      <rect x="199" y="26" width="60" height="36" rx="3" fill="#1e2535" stroke="#3a4a6a" stroke-width="1"/>
+      <text x="229" y="48" text-anchor="middle" fill="#e2e8f5" font-size="13" font-family="sans-serif">木</text>
+      <rect x="262" y="26" width="60" height="36" rx="3" fill="#1e2535" stroke="#3a4a6a" stroke-width="1"/>
+      <text x="292" y="48" text-anchor="middle" fill="#e2e8f5" font-size="13" font-family="sans-serif">金</text>
+      <!-- 土日は強調 -->
+      <rect x="325" y="26" width="60" height="36" rx="3" fill="#1a3a2a" stroke="#34d399" stroke-width="2"/>
+      <text x="355" y="44" text-anchor="middle" fill="#34d399" font-size="13" font-weight="700" font-family="sans-serif">土</text>
+      <rect x="388" y="26" width="60" height="36" rx="3" fill="#1a3a2a" stroke="#34d399" stroke-width="2"/>
+      <text x="418" y="44" text-anchor="middle" fill="#34d399" font-size="13" font-weight="700" font-family="sans-serif">日</text>
+      <!-- 月〜金の括弧 -->
+      <path d="M10,68 L10,78 L292,78 L292,68" fill="none" stroke="#5b8dee" stroke-width="1.5"/>
+      <text x="151" y="88" text-anchor="middle" fill="#7aa3f5" font-size="11" font-family="sans-serif">仕事前・仕事終わりに学習</text>
+      <!-- 土日の括弧 -->
+      <path d="M325,68 L325,78 L448,78 L448,68" fill="none" stroke="#34d399" stroke-width="1.5"/>
+      <text x="386" y="88" text-anchor="middle" fill="#34d399" font-size="11" font-weight="700" font-family="sans-serif">重要！平日分をカバー</text>
+    </svg>
+    <figcaption>週間学習配分カレンダー（スライドp.12再現）← S03:p.12</figcaption>
+  </div>
+
   <h3 id="c1s4">卒業生のアンケート結果（全15項目）</h3>
   <p>「卒業まで受講を続けられた理由」（複数回答 / 有効回答数：32） <span class="sp">S03:p.10</span></p>
   <div class="sw">
@@ -525,9 +571,9 @@ body{background:var(--bg);color:var(--txt);font-family:"Noto Sans JP",sans-serif
   <table class="st">
     <thead><tr><th>活動</th><th>目安時間</th><th>備考</th></tr></thead>
     <tbody>
-      <tr><td>授業視聴（メモしながら）</td><td><strong>約90分</strong></td><td>60分授業だが振り返り込みで実質90分を想定</td></tr>
+      <tr><td>授業視聴（メモしながら）</td><td><strong>約60分</strong></td><td>「60分の授業をメモを取りながら60分で」<span class="sp">S03:p.30</span></td></tr>
       <tr><td>小テスト（振り返りながら）</td><td><strong>約20分</strong></td><td>計算式があれば超過する場合あり</td></tr>
-      <tr><td><strong>1回あたり合計</strong></td><td><strong>約110分</strong></td><td>演習・レポートはこれより長く見積もる</td></tr>
+      <tr><td><strong>1回あたり合計</strong></td><td><strong>約80分</strong></td><td>演習・レポートはこれより長く見積もる。まず課題を「早く」知ることが重要 <span class="sp">S03:p.30</span></td></tr>
     </tbody>
   </table>
   <span class="sp" style="display:inline-block;margin-top:3px">S03:p.30</span>
@@ -841,6 +887,9 @@ body{background:var(--bg);color:var(--txt);font-family:"Noto Sans JP",sans-serif
     </svg>
     <figcaption>サポート体制3要素（スライドp.52-54再現）← S03:p.52-54</figcaption>
   </div>
+  <div class="vb"><div class="bl">🎤 ツール詳細（スライドp.54）</div>
+  <strong>場所:</strong> 勉強する空間（落ち着く・静か・適度な広さ）<br>
+  <strong>ツール:</strong> PC・タブレットPC・iPad・iPhone等 ／ <strong>Google Apps・Dropbox・ToDo管理アプリ等</strong> ／ 手帳 <span class="sp">S03:p.54</span></div>
 
   <h3 id="c4s3">不安感を課題にして解決へ</h3>
   <div class="sw">
@@ -921,11 +970,22 @@ body{background:var(--bg);color:var(--txt);font-family:"Noto Sans JP",sans-serif
     </tbody>
   </table>
   <span class="sp" style="display:inline-block;margin-top:3px">S03:p.56</span>
+  <div class="vb"><div class="bl">📔 手帳の記入例（スライドp.58）</div>
+  時間軸手帳の例: 9〜11時の枠に「<strong>☑英語Ⅰ #3提出</strong>」「<strong>□XX入門#3視聴</strong>」と科目名＋回数を記入し、完了したらチェック。<strong>Googleカレンダー等のデジタルツールも同様に活用可能。</strong>アナログ・デジタル併用が効果的。 <span class="sp">S03:p.58</span></div>
 
   <h3 id="c4s5">在学生の一日 ── ペースの目安</h3>
   <div class="kb">4年間で卒業: <strong>124単位</strong> ÷ 4年 ＝ 年間31単位 ÷ 2学期 ＝ <strong>半期約16単位</strong>（2単位科目8科目履修）<br>
   基本目安: <strong>1科目あたり1.5〜2時間</strong> ／ 休日集中より<strong>平日コツコツ</strong>が継続のコツ <span class="sp">S03:p.60</span></div>
 
+  <h4>社会人Aさん（27歳）── 人物紹介</h4>
+  <div class="vb"><div class="bl">📋 人物プロフィール</div>
+  <ul>
+    <li>目標: <strong>4年で卒業</strong></li>
+    <li>通勤時間: 片道1時間（往復2時間）</li>
+    <li>平日は仕事が中心で帰りが遅い日もある</li>
+    <li>仕事の繁閑の差が大きい</li>
+  </ul>
+  <span class="sp">S03:p.61</span></div>
   <h4>社会人Aさん（27歳）── 平日スケジュール</h4>
   <div class="sw">
     <svg viewBox="0 0 590 380" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;">
@@ -1092,6 +1152,15 @@ body{background:var(--bg);color:var(--txt);font-family:"Noto Sans JP",sans-serif
     <figcaption>Aさん【休日】1日のスケジュール（スライドp.63完全再現）← S03:p.63</figcaption>
   </div>
 
+  <h4>社会人Bさん（25歳）── 人物紹介</h4>
+  <div class="vb"><div class="bl">📋 人物プロフィール</div>
+  <ul>
+    <li>目標: <strong>6年で卒業</strong>（仕事も無理なく続けたい）</li>
+    <li>平日は定時で上がれることが多い</li>
+    <li>仕事も無理なく続けていきたい</li>
+    <li>週末は習い事がある</li>
+  </ul>
+  <span class="sp">S03:p.64</span></div>
   <h4>社会人Bさん（25歳）── 平日・休日スケジュール</h4>
   <div class="sw">
     <svg viewBox="0 0 640 620" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;">
@@ -1315,10 +1384,20 @@ body{background:var(--bg);color:var(--txt);font-family:"Noto Sans JP",sans-serif
   <h3>ポモドーロ・テクニック（Pomodoro Technique）</h3>
   <p style="font-size:13.5px;color:var(--txt)">Francesco Cirillo が考案。25分集中→5分休憩のサイクルを繰り返す。本講義の「超集中15分」「軽い集中60分」の科学的根拠と合わせて参照すると、授業視聴（60〜90分枠）への応用が考えやすい。 <span class="sp">[外部補足]</span></p>
   <h3>第3回課題（ディベート課題）について</h3>
-  <ul style="font-size:13.5px;color:var(--txt)">
-    <li>A「自分なりの攻略法」または B「卒業後の目標」を<strong>200字以上</strong>で投稿し、他学生の投稿に<strong>120字以上</strong>でコメントする <span class="sp">S03:p.80</span></li>
-    <li>課題1投稿後<strong>30分経つと</strong>他の人の投稿が見える（それまでは非表示が正常動作）</li>
-  </ul>
+  <div style="font-size:13.5px;color:var(--txt)">
+  <p><strong>ディベート課題の目的（p.72）：</strong>ディベートに投稿し、他者にコメントすることに慣れる。ディベートを重視する科目や、ディベートで実践的な議論を行う科目もある。</p>
+  <table class="st" style="margin-top:8px">
+    <thead><tr><th>課題</th><th>内容</th><th>文字数</th></tr></thead>
+    <tbody>
+      <tr><td><strong>課題1</strong></td><td>A「サイバー大学で学び続けるための自分なりの攻略法」<br>または B「卒業後の目標」<br>（どちらか<strong>1つを選択</strong>して投稿）</td><td><strong>200文字以上</strong></td></tr>
+      <tr><td><strong>課題2</strong></td><td>他の学生の投稿に対してコメントを投稿する</td><td><strong>120文字以上</strong></td></tr>
+    </tbody>
+  </table>
+  <div class="kb" style="margin-top:10px"><strong>⚠ 注意点（p.73）：</strong><br>
+  ・自分が投稿するまでは、他の人の投稿が見えない<br>
+  ・<strong style="color:#fb923c">課題1を書き込まないと、課題2に着手できない</strong><br>
+  ・投稿後<strong>30分経つと</strong>他の人の投稿が見えるようになる <span class="sp">S03:p.73</span></div>
+  </div>
 </div>
 
 <!-- footer -->

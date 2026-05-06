@@ -1,0 +1,2040 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ITのための基礎知識 第8回 ― アルゴリズムとプログラミング</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-main:#0f1117; --bg-card:#1a1f2e; --bg-sidebar:#141824;
+    --text-main:#e2e8f5; --text-sub:#8a99b8; --text-code:#a8d8ea;
+    --border:#2a3350;
+    --blue:#5b8dee; --green:#34d399; --orange:#fbbf24;
+    --purple:#a78bfa; --red:#f87171; --cyan:#22d3ee;
+    --sidebar-w:260px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Noto Sans JP',sans-serif;background:var(--bg-main);color:var(--text-main);font-size:15px;line-height:1.8;display:flex}
+  #sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:var(--bg-sidebar);border-right:1px solid var(--border);overflow-y:auto;padding:20px 0;z-index:100}
+  #sidebar h2{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-sub);padding:0 18px 10px;border-bottom:1px solid var(--border);margin-bottom:10px}
+  #sidebar ul{list-style:none}
+  #sidebar ul li a{display:block;padding:4px 18px;font-size:12px;color:var(--text-sub);text-decoration:none;border-left:2px solid transparent;transition:all .15s;line-height:1.5}
+  #sidebar ul li a:hover,#sidebar ul li a.active{color:var(--text-main);border-left-color:var(--blue);background:rgba(91,141,238,.08)}
+  #sidebar ul li.chapter>a{font-weight:700;font-size:12.5px;color:var(--text-main);margin-top:8px}
+  #sidebar ul li.sub>a{padding-left:30px;font-size:11.5px}
+  #main{margin-left:var(--sidebar-w);flex:1;padding:40px 48px;max-width:940px}
+  .page-header{border-bottom:1px solid var(--border);padding-bottom:22px;margin-bottom:34px}
+  .page-header .subject{font-size:11.5px;color:var(--text-sub);letter-spacing:.1em}
+  .page-header h1{font-size:25px;font-weight:700;margin:8px 0 12px;line-height:1.35}
+  .meta-grid{display:flex;gap:20px;flex-wrap:wrap;margin-top:10px}
+  .meta-item{font-size:12.5px;color:var(--text-sub)}
+  .meta-item span{color:var(--text-main);font-weight:500}
+  .source-badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+  .badge{font-family:'JetBrains Mono',monospace;font-size:11px;padding:3px 8px;border-radius:4px;border:1px solid var(--border);color:var(--text-sub)}
+  .section{margin-bottom:40px}
+  .section-title{font-size:20px;font-weight:700;border-left:4px solid var(--blue);padding-left:14px;margin-bottom:20px}
+  .sub-title{font-size:16px;font-weight:600;color:var(--blue);margin:26px 0 12px}
+  .card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:22px 26px;margin-bottom:18px}
+  .audio-block{border-left:4px solid var(--blue);background:rgba(91,141,238,.07);border-radius:0 8px 8px 0;padding:14px 18px;margin:14px 0}
+  .audio-block .bl{font-size:10.5px;font-weight:700;letter-spacing:.1em;color:var(--blue);text-transform:uppercase;margin-bottom:6px}
+  .ext-block{border-left:4px solid var(--green);background:rgba(52,211,153,.07);border-radius:0 8px 8px 0;padding:14px 18px;margin:14px 0}
+  .ext-block .bl{color:var(--green);font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+  .warn-block{border-left:4px solid var(--orange);background:rgba(251,191,36,.07);border-radius:0 8px 8px 0;padding:14px 18px;margin:14px 0}
+  .warn-block .bl{color:var(--orange);font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+  .key-point{border:1px solid var(--blue);border-radius:8px;padding:14px 18px;background:rgba(91,141,238,.05);margin:14px 0;font-weight:500}
+  .def-box{border:1px dashed var(--blue);border-radius:8px;padding:14px 18px;margin:12px 0;background:rgba(91,141,238,.04)}
+  .def-term{font-weight:700;color:var(--blue);margin-right:6px}
+  .styled-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13.5px}
+  .styled-table th{background:rgba(91,141,238,.15);color:var(--blue);font-weight:600;padding:10px 14px;border:1px solid var(--border);text-align:left}
+  .styled-table td{padding:9px 14px;border:1px solid var(--border);vertical-align:top}
+  .styled-table tr:nth-child(even) td{background:rgba(255,255,255,.02)}
+  .code-block{font-family:'JetBrains Mono',monospace;font-size:13px;background:#0d1117;border:1px solid var(--border);border-radius:8px;padding:16px 18px;overflow-x:auto;color:var(--text-code);margin:12px 0;line-height:1.65;white-space:pre}
+  .kw{color:#f472b6} .cm{color:#6b7a99;font-style:italic} .str{color:#86efac} .num{color:#fbbf24} .fn{color:#60a5fa}
+  .svg-wrap{margin:20px 0;text-align:center}
+  .svg-wrap figcaption{font-size:12px;color:var(--text-sub);margin-top:8px}
+  .slide-label{display:inline-block;font-size:10.5px;color:var(--text-sub);background:rgba(91,141,238,.1);border:1px solid var(--border);border-radius:4px;padding:2px 8px;margin-bottom:8px;font-family:'JetBrains Mono',monospace}
+  .src{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-sub);margin-left:8px}
+  .ext-note{font-size:12px;color:var(--text-sub)}
+  .appendix{margin-top:50px;border-top:1px solid var(--border);padding-top:34px}
+  .appendix-card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:22px 26px;margin-bottom:22px}
+  .appendix-card h3{font-size:16px;font-weight:700;margin-bottom:16px}
+  .appendix-card.star h3{color:var(--blue)}
+  .appendix-card.bg-knowledge h3{color:var(--green)}
+  .appendix-card.exam h3{color:var(--orange)}
+  .appendix-card.related h3{color:var(--purple)}
+  .qc-meta{font-family:'JetBrains Mono',monospace;font-size:11.5px;background:#0d1117;border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin-top:50px;color:var(--text-sub);line-height:2}
+  .qc-meta .pass{color:var(--green);font-weight:700}
+  p{margin-bottom:10px} ul,ol{padding-left:22px;margin-bottom:10px} li{margin-bottom:5px}
+  strong{color:var(--blue);font-weight:600} em{color:var(--orange);font-style:normal;font-weight:500}
+  h4{font-size:14px;font-weight:600;color:var(--text-sub);margin:18px 0 8px}
+  @media(max-width:800px){#sidebar{display:none}#main{margin-left:0;padding:24px 18px}}
+</style>
+</head>
+<body>
+
+<nav id="sidebar">
+  <h2>目次 ― 第8回</h2>
+  <ul>
+    <li class="chapter"><a href="#overview">📋 概要・学習目標</a></li>
+    <li class="chapter"><a href="#ch1">第1章 データ構造とアルゴリズムの基本</a></li>
+    <li class="sub"><a href="#ch1-program">1-1 プログラムとは</a></li>
+    <li class="sub"><a href="#ch1-var">1-2 変数とデータ型</a></li>
+    <li class="sub"><a href="#ch1-struct1">1-3 配列・レコード</a></li>
+    <li class="sub"><a href="#ch1-struct2">1-4 リスト・木構造</a></li>
+    <li class="sub"><a href="#ch1-struct3">1-5 スタック・キュー</a></li>
+    <li class="sub"><a href="#ch1-algo">1-6 構造化プログラミング</a></li>
+    <li class="sub"><a href="#ch1-expr">1-7 アルゴリズムの表現</a></li>
+    <li class="chapter"><a href="#ch2">第2章 代表的なアルゴリズム</a></li>
+    <li class="sub"><a href="#ch2-table">2-1 表の検索</a></li>
+    <li class="sub"><a href="#ch2-linear">2-2 線形探索</a></li>
+    <li class="sub"><a href="#ch2-binary">2-3 二分探索</a></li>
+    <li class="sub"><a href="#ch2-bubble">2-4 バブルソート</a></li>
+    <li class="sub"><a href="#ch2-select">2-5 選択ソート</a></li>
+    <li class="sub"><a href="#ch2-quick">2-6 クイックソート</a></li>
+    <li class="chapter"><a href="#ch3">第3章 プログラムの性質</a></li>
+    <li class="sub"><a href="#ch3-basic">3-1 順次・分岐・繰り返し</a></li>
+    <li class="sub"><a href="#ch3-dtype">3-2 データ型・配列・オブジェクト</a></li>
+    <li class="sub"><a href="#ch3-obj">3-3 オブジェクトの継承</a></li>
+    <li class="chapter"><a href="#ch4">第4章 プログラミング言語とその他</a></li>
+    <li class="sub"><a href="#ch4-overview">4-1 概要・分類</a></li>
+    <li class="sub"><a href="#ch4-lang">4-2 主要言語</a></li>
+    <li class="sub"><a href="#ch4-markup">4-3 マークアップ言語</a></li>
+    <li class="sub"><a href="#ch4-data">4-4 データ記述方式・関連用語</a></li>
+    <li class="chapter"><a href="#appendix">📎 末尾補足</a></li>
+    <li class="sub"><a href="#appA">A: 最重要ワード一覧</a></li>
+    <li class="sub"><a href="#appB">B: 背景知識</a></li>
+    <li class="sub"><a href="#appC">C: 試験・レポート観点</a></li>
+    <li class="sub"><a href="#appD">D: 関連概念・次回接続</a></li>
+  </ul>
+</nav>
+
+<main id="main">
+
+<!-- ======= HEADER ======= -->
+<header class="page-header" id="overview">
+  <div class="subject">サイバー大学 IT総合学部 ｜ 専門基礎科目</div>
+  <h1>ITのための基礎知識 — 第8回<br>アルゴリズムとプログラミング</h1>
+  <div class="meta-grid">
+    <div class="meta-item">担当: <span>松本幸子（第1・2章）/ 田中頼人（第3・4章）</span></div>
+    <div class="meta-item">バージョン: <span>v1.2（スライド完全照合・フローチャート追加・擬似コード精密化）</span></div>
+  </div>
+  <div class="source-badges">
+    <span class="badge">S03: スライドPDF 165p ✓</span>
+    <span class="badge">S05-A: hynote.ai ✓</span>
+    <span class="badge">S05-B: hynote.ai ✓</span>
+  </div>
+  <div style="margin-top:20px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px 20px">
+    <div style="font-size:13px;font-weight:700;color:var(--blue);margin-bottom:10px">📋 第8回 学習目標</div>
+    <ol style="padding-left:20px;font-size:13.5px">
+      <li>データ構造の基本的な考え方を説明できる</li>
+      <li>アルゴリズムの基本的な考え方と表現方法を説明できる</li>
+      <li>プログラミングの方法と考え方を説明できる</li>
+    </ol>
+  </div>
+</header>
+
+<!-- ======= 第1章 ======= -->
+<section class="section" id="ch1">
+  <h2 class="section-title">第1章 データ構造とアルゴリズムの基本</h2>
+
+  <div id="ch1-program">
+    <h3 class="sub-title">1-1 プログラムとは</h3>
+    <div class="card">
+      <div class="slide-label">← S03:p10 スライド図再現</div>
+      <div class="svg-wrap">
+        <figure>
+          <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px">
+            <rect x="0" y="0" width="700" height="200" rx="10" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+            <text x="350" y="30" text-anchor="middle" font-family="'Noto Sans JP'" font-size="13" fill="#e2e8f5">コンピュータを動かすための指示を記述したもの</text>
+            <!-- データ構造 ボックス -->
+            <rect x="30" y="50" width="270" height="80" rx="6" fill="rgba(91,141,238,.15)" stroke="#5b8dee" stroke-width="1.5"/>
+            <text x="165" y="78" text-anchor="middle" font-family="'Noto Sans JP'" font-size="14" fill="#5b8dee" font-weight="700">■ データ構造</text>
+            <text x="165" y="100" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#8a99b8">データの性質や繋がりなどを考慮した</text>
+            <text x="165" y="118" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#8a99b8">データの格納や管理の形式</text>
+            <!-- アルゴリズム ボックス -->
+            <rect x="30" y="140" width="270" height="50" rx="6" fill="rgba(52,211,153,.12)" stroke="#34d399" stroke-width="1.5"/>
+            <text x="165" y="162" text-anchor="middle" font-family="'Noto Sans JP'" font-size="14" fill="#34d399" font-weight="700">■ アルゴリズム</text>
+            <text x="165" y="180" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#8a99b8">問題を解くための 客観的な手順</text>
+            <!-- 矢印 -->
+            <text x="318" y="112" font-size="28" fill="#5b8dee" font-family="Arial">→</text>
+            <!-- プログラム定義 ボックス -->
+            <rect x="370" y="50" width="310" height="140" rx="8" fill="rgba(91,141,238,.08)" stroke="#5b8dee" stroke-width="2"/>
+            <text x="525" y="100" text-anchor="middle" font-family="'Noto Sans JP'" font-size="13" fill="#e2e8f5">プログラムとは、データ構造と</text>
+            <text x="525" y="120" text-anchor="middle" font-family="'Noto Sans JP'" font-size="13" fill="#e2e8f5">アルゴリズムをプログラミング言語</text>
+            <text x="525" y="140" text-anchor="middle" font-family="'Noto Sans JP'" font-size="13" fill="#e2e8f5">で記述したもの ※1</text>
+            <text x="525" y="172" text-anchor="middle" font-family="'JetBrains Mono'" font-size="15" fill="#5b8dee" font-weight="700">プログラム = データ構造 + アルゴリズム</text>
+          </svg>
+          <figcaption>図1-1：プログラムの定義（S03:p10 再現）</figcaption>
+        </figure>
+      </div>
+      <div class="ext-block">
+        <div class="bl">📗 外部補足・確認済 ― Niklaus Wirth 著書</div>
+        ※1 の出典はスイスの計算機科学者 <strong>Niklaus Wirth</strong>（1934–2024）の著書タイトル「<em>Algorithms + Data Structures = Programs</em>」（Prentice Hall, 1976）。スライド脚注に書誌情報が明記されている。<span class="src">← S03:p10脚注</span>
+      </div>
+      <div class="audio-block">
+        <div class="bl">🎤 音声補足</div>
+        アルゴリズムはプログラミング言語に依らない——同じアルゴリズムをC言語で書いてもPythonで書いても、実行結果は同じになる。言語はあくまで「記述するための道具」。<span class="src">← S05-A</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="ch1-var">
+    <h3 class="sub-title">1-2 変数とデータ型</h3>
+    <div class="card">
+      <div class="slide-label">← S03 スライド図再現</div>
+      <div class="svg-wrap">
+        <figure>
+          <svg viewBox="0 0 600 120" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:600px">
+            <!-- x=7 の箱 -->
+            <rect x="20" y="20" width="100" height="80" rx="8" fill="#1e2535" stroke="#5b8dee" stroke-width="2"/>
+            <text x="70" y="48" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#8a99b8">変数 x</text>
+            <text x="70" y="80" text-anchor="middle" font-family="'JetBrains Mono'" font-size="26" fill="#fbbf24" font-weight="700">7</text>
+            <!-- 説明 -->
+            <text x="140" y="55" font-family="'Noto Sans JP'" font-size="12" fill="#8a99b8">コード中の「x」は格納値に置換</text>
+            <text x="140" y="75" font-family="'Noto Sans JP'" font-size="12" fill="#8a99b8">されて実行される</text>
+            <!-- 式ボックス -->
+            <rect x="360" y="20" width="220" height="80" rx="8" fill="#1e2535" stroke="#34d399" stroke-width="1.5"/>
+            <text x="470" y="52" text-anchor="middle" font-family="'JetBrains Mono'" font-size="13" fill="#8a99b8">コード: x + 2</text>
+            <text x="470" y="78" text-anchor="middle" font-family="'JetBrains Mono'" font-size="16" fill="#34d399" font-weight="700">実行: 7 + 2 = 9</text>
+          </svg>
+          <figcaption>図1-2：変数のしくみ — x=7 のとき x+2 を実行すると 7+2 が評価される</figcaption>
+        </figure>
+      </div>
+      <div class="def-box">
+        <span class="def-term">変数（variable）</span>
+        プログラム中でデータを一時的に記憶しておく仕組み。メモリ内の領域に名前をつけ、代入などによってデータを格納できるようにしたもの。プログラム中では格納値に置き換えられて実行される。<span class="src">← S03</span>
+      </div>
+      <h4>主なデータ型 ← S03</h4>
+      <table class="styled-table">
+        <thead><tr><th>データ型</th><th>英語名</th><th>説明</th><th>補足</th></tr></thead>
+        <tbody>
+          <tr><td><strong>整数型</strong></td><td>integer</td><td>整数値を扱う</td><td>2進数をそのままメモリに記憶</td></tr>
+          <tr><td><strong>実数型</strong></td><td>real / float</td><td>小数点数を扱う — <em>浮動小数点型</em></td><td>仮数部と指数部で構成。整数型と内部表現が異なる</td></tr>
+          <tr><td><strong>論理型</strong></td><td>boolean</td><td>真理値（true / false）</td><td>条件分岐の判定で使う</td></tr>
+          <tr><td><strong>文字型</strong></td><td>char</td><td>1文字を扱う</td><td>内部では文字コードという数値で管理</td></tr>
+          <tr><td><strong>文字列型</strong></td><td>string</td><td>複数文字からなる文字列</td><td>文字型の並び。多くの言語でダブルクォートで囲む</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="ch1-struct1">
+    <h3 class="sub-title">1-3 データ構造（1）― 配列・レコード</h3>
+    <div class="card">
+      <div class="slide-label">← S03:p15 スライド図再現</div>
+      <div class="svg-wrap">
+        <figure>
+          <svg viewBox="0 0 580 110" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:580px">
+            <text x="20" y="20" font-family="'Noto Sans JP'" font-size="13" fill="#5b8dee" font-weight="700">配列 array — 同じ種類のデータを並べた構造</text>
+            <rect x="20" y="34" width="110" height="44" rx="4" fill="#1e2535" stroke="#fbbf24" stroke-width="2"/>
+            <text x="75" y="52" text-anchor="middle" font-family="'JetBrains Mono'" font-size="11" fill="#fbbf24">配列名[0]</text>
+            <text x="75" y="70" text-anchor="middle" font-family="'JetBrains Mono'" font-size="13" fill="#e2e8f5">データ0</text>
+            <rect x="134" y="34" width="110" height="44" rx="4" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+            <text x="189" y="52" text-anchor="middle" font-family="'JetBrains Mono'" font-size="11" fill="#5b8dee">配列名[1]</text>
+            <text x="189" y="70" text-anchor="middle" font-family="'JetBrains Mono'" font-size="13" fill="#e2e8f5">データ1</text>
+            <rect x="248" y="34" width="110" height="44" rx="4" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+            <text x="303" y="52" text-anchor="middle" font-family="'JetBrains Mono'" font-size="11" fill="#5b8dee">配列名[2]</text>
+            <text x="303" y="70" text-anchor="middle" font-family="'JetBrains Mono'" font-size="13" fill="#e2e8f5">データ2</text>
+            <rect x="362" y="34" width="110" height="44" rx="4" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+            <text x="417" y="52" text-anchor="middle" font-family="'JetBrains Mono'" font-size="11" fill="#5b8dee">配列名[3]</text>
+            <text x="417" y="70" text-anchor="middle" font-family="'JetBrains Mono'" font-size="13" fill="#e2e8f5">データ3</text>
+            <text x="492" y="62" font-size="22" fill="#8a99b8" font-family="Arial">···</text>
+            <text x="20" y="105" font-family="'Noto Sans JP'" font-size="11" fill="#8a99b8">※ 添え字（インデックス）は0から始まる</text>
+          </svg>
+          <figcaption>図1-3：配列のしくみ（S03:p15 再現）</figcaption>
+        </figure>
+      </div>
+      <div class="def-box">
+        <span class="def-term">配列（array）</span>
+        同じ種類のデータを連続して並べた構造。配列内の各データは<em>要素</em>と呼ばれ、<em>要素番号（添え字）</em>により区別する。添え字は多くの言語で0から始まる。<span class="src">← S03</span>
+      </div>
+      <div class="def-box">
+        <span class="def-term">レコード（record）</span>
+        異なる種類のデータを1件にまとめた構造（表の1行分に相当）。レコード内の各項目を<em>フィールド</em>という（表の列に相当）。<span class="src">← S03</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="ch1-struct2">
+    <h3 class="sub-title">1-4 データ構造（2）― リスト・木構造</h3>
+    <div class="card">
+      <div class="slide-label">← S03:p18 スライド図再現</div>
+      <!-- 連結リスト -->
+      <div class="svg-wrap">
+        <figure>
+          <svg viewBox="0 0 660 120" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:660px">
+            <defs><marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#5b8dee"/></marker></defs>
+            <text x="20" y="20" font-family="'Noto Sans JP'" font-size="13" fill="#5b8dee" font-weight="700">リスト（連結リスト）linked list</text>
+            <text x="20" y="38" font-family="'Noto Sans JP'" font-size="11" fill="#8a99b8">各データに「次の格納位置」を示すポインタを付加し、論理的に繋げた構造</text>
+            <!-- node A -->
+            <rect x="20" y="52" width="96" height="42" rx="5" fill="#1e2535" stroke="#5b8dee" stroke-width="1.8"/>
+            <rect x="82" y="58" width="28" height="30" rx="3" fill="rgba(91,141,238,.3)" stroke="#5b8dee" stroke-width="1"/>
+            <text x="52" y="77" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#e2e8f5">データA</text>
+            <text x="96" y="77" text-anchor="middle" font-family="'JetBrains Mono'" font-size="10" fill="#5b8dee">ptr</text>
+            <line x1="110" y1="73" x2="138" y2="73" stroke="#5b8dee" stroke-width="1.8" marker-end="url(#arr)"/>
+            <!-- node B -->
+            <rect x="140" y="52" width="96" height="42" rx="5" fill="#1e2535" stroke="#5b8dee" stroke-width="1.8"/>
+            <rect x="202" y="58" width="28" height="30" rx="3" fill="rgba(91,141,238,.3)" stroke="#5b8dee" stroke-width="1"/>
+            <text x="172" y="77" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#e2e8f5">データB</text>
+            <text x="216" y="77" text-anchor="middle" font-family="'JetBrains Mono'" font-size="10" fill="#5b8dee">ptr</text>
+            <line x1="230" y1="73" x2="258" y2="73" stroke="#5b8dee" stroke-width="1.8" marker-end="url(#arr)"/>
+            <!-- node C -->
+            <rect x="260" y="52" width="96" height="42" rx="5" fill="#1e2535" stroke="#5b8dee" stroke-width="1.8"/>
+            <rect x="322" y="58" width="28" height="30" rx="3" fill="rgba(91,141,238,.3)" stroke="#5b8dee" stroke-width="1"/>
+            <text x="292" y="77" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#e2e8f5">データC</text>
+            <text x="336" y="77" text-anchor="middle" font-family="'JetBrains Mono'" font-size="10" fill="#5b8dee">ptr</text>
+            <line x1="350" y1="73" x2="378" y2="73" stroke="#5b8dee" stroke-width="1.8" marker-end="url(#arr)"/>
+            <!-- node D -->
+            <rect x="380" y="52" width="96" height="42" rx="5" fill="#1e2535" stroke="#5b8dee" stroke-width="1.8"/>
+            <rect x="442" y="58" width="28" height="30" rx="3" fill="rgba(91,141,238,.12)" stroke="#8a99b8" stroke-width="1"/>
+            <text x="412" y="77" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#e2e8f5">データD</text>
+            <text x="490" y="77" font-family="'JetBrains Mono'" font-size="12" fill="#8a99b8">NULL</text>
+            <!-- labels -->
+            <text x="20" y="108" font-family="'Noto Sans JP'" font-size="11" fill="#8a99b8">ptr（ポインタ）: 次ノードの格納位置を指す情報。最後のノードは NULL（次なし）</text>
+          </svg>
+          <figcaption>図1-4a：連結リスト（S03:p18 再現）</figcaption>
+        </figure>
+      </div>
+      <!-- 木構造 -->
+      <div class="svg-wrap">
+        <figure>
+          <svg viewBox="0 0 600 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:600px">
+            <defs>
+              <marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#34d399"/></marker>
+              <marker id="arr2b" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#5b8dee"/></marker>
+            </defs>
+            <text x="20" y="20" font-family="'Noto Sans JP'" font-size="13" fill="#34d399" font-weight="700">木構造 tree — 下へ向かって伸びる構造</text>
+            <!-- 凡例 -->
+            <rect x="410" y="30" width="180" height="100" rx="6" fill="rgba(91,141,238,.06)" stroke="#2a3350" stroke-width="1"/>
+            <text x="420" y="48" font-family="'Noto Sans JP'" font-size="11" fill="#fbbf24">● 根（root）: 最上位ノード</text>
+            <text x="420" y="64" font-family="'Noto Sans JP'" font-size="11" fill="#8a99b8">● 親・子: 上下の関係</text>
+            <text x="420" y="80" font-family="'Noto Sans JP'" font-size="11" fill="#fbbf24">● 葉（leaf）: 子がないノード</text>
+            <text x="420" y="96" font-family="'Noto Sans JP'" font-size="11" fill="#34d399">● 二分木: 全ノードの</text>
+            <text x="420" y="112" font-family="'Noto Sans JP'" font-size="11" fill="#34d399">　子が2つ以下</text>
+            <!-- 根 A -->
+            <rect x="172" y="34" width="96" height="44" rx="7" fill="#1e2535" stroke="#34d399" stroke-width="2.2"/>
+            <text x="220" y="52" text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#fbbf24">根（root）</text>
+            <text x="220" y="70" text-anchor="middle" font-family="'JetBrains Mono'" font-size="18" fill="#e2e8f5" font-weight="700">A</text>
+            <!-- B -->
+            <rect x="52" y="118" width="96" height="48" rx="7" fill="#1e2535" stroke="#5b8dee" stroke-width="1.8"/>
+            <text x="100" y="136" text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#8a99b8">親:A　子:D, E</text>
+            <text x="100" y="156" text-anchor="middle" font-family="'JetBrains Mono'" font-size="18" fill="#e2e8f5" font-weight="700">B</text>
+            <!-- C -->
+            <rect x="282" y="118" width="96" height="48" rx="7" fill="#1e2535" stroke="#5b8dee" stroke-width="1.8"/>
+            <text x="330" y="136" text-anchor="middle" font-family="'Noto Sans Jo'" font-size="10" fill="#8a99b8">親:A　子:F</text>
+            <text x="330" y="156" text-anchor="middle" font-family="'JetBrains Mono'" font-size="18" fill="#e2e8f5" font-weight="700">C</text>
+            <!-- D -->
+            <rect x="16" y="206" width="82" height="40" rx="6" fill="#1e2535" stroke="#8a99b8" stroke-width="1.2"/>
+            <text x="57" y="220" text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#fbbf24">葉（leaf）</text>
+            <text x="57" y="238" text-anchor="middle" font-family="'JetBrains Mono'" font-size="16" fill="#e2e8f5" font-weight="700">D</text>
+            <!-- E -->
+            <rect x="118" y="206" width="82" height="40" rx="6" fill="#1e2535" stroke="#8a99b8" stroke-width="1.2"/>
+            <text x="159" y="220" text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#fbbf24">葉（leaf）</text>
+            <text x="159" y="238" text-anchor="middle" font-family="'JetBrains Mono'" font-size="16" fill="#e2e8f5" font-weight="700">E</text>
+            <!-- F -->
+            <rect x="286" y="206" width="82" height="40" rx="6" fill="#1e2535" stroke="#8a99b8" stroke-width="1.2"/>
+            <text x="327" y="220" text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#fbbf24">葉（leaf）</text>
+            <text x="327" y="238" text-anchor="middle" font-family="'JetBrains Mono'" font-size="16" fill="#e2e8f5" font-weight="700">F</text>
+            <!-- Lines A→B, A→C -->
+            <line x1="200" y1="78" x2="140" y2="118" stroke="#34d399" stroke-width="1.8" marker-end="url(#arr2)"/>
+            <line x1="240" y1="78" x2="300" y2="118" stroke="#34d399" stroke-width="1.8" marker-end="url(#arr2)"/>
+            <!-- Lines B→D, B→E -->
+            <line x1="85" y1="166" x2="60" y2="206" stroke="#5b8dee" stroke-width="1.4" marker-end="url(#arr2b)"/>
+            <line x1="115" y1="166" x2="155" y2="206" stroke="#5b8dee" stroke-width="1.4" marker-end="url(#arr2b)"/>
+            <!-- Line C→F -->
+            <line x1="326" y1="166" x2="326" y2="206" stroke="#5b8dee" stroke-width="1.4" marker-end="url(#arr2b)"/>
+          </svg>
+          <figcaption>図1-4b：木構造（二分木）— A が根、D・E・F が葉。全ノードの子が2つ以下 → 二分木（S03:p18 再現）</figcaption>
+        </figure>
+      </div>
+      <div class="def-box">
+        <span class="def-term">リスト（連結リスト / linked list）</span>
+        各データに「次のデータの格納位置」を示す<em>ポインタ</em>を付加し、論理的に繋げた構造。配列を含む広義の「リスト」と区別して「連結リスト」ともよばれる。<span class="src">← S03</span>
+      </div>
+      <div class="def-box">
+        <span class="def-term">木構造（tree）</span>
+        データを下へ向かって伸びる木のように繋げた構造。各部分は<em>ノード（節）</em>と呼ばれ、最上位を<em>根（root）</em>、最下位を<em>葉（leaf）</em>という。上下関係は<em>親・子</em>で表す。全ノードの子が2つ以下を<em>二分木（binary tree）</em>という。<span class="src">← S03</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="ch1-struct3">
+    <h3 class="sub-title">1-5 データ構造（3）― スタック・キュー</h3>
+    <div class="card">
+      <div class="slide-label">← S03:p20 スライド図再現</div>
+      <div class="svg-wrap">
+        <figure>
+          <svg viewBox="0 0 760 460" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:760px">
+  <defs>
+    <marker id="aY" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#fbbf24"/></marker>
+    <marker id="aG" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#34d399"/></marker>
+    <marker id="aP" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#a78bfa"/></marker>
+  </defs>
+
+  <!-- =============================
+       LEFT: スタック  x:10〜365
+       ============================= -->
+  <rect x="10" y="8" width="355" height="444" rx="12" fill="rgba(91,141,238,.05)" stroke="#5b8dee" stroke-width="2"/>
+  <text x="187" y="38" text-anchor="middle" font-family="'Noto Sans JP'" font-size="16" fill="#5b8dee" font-weight="700">スタック（stack）</text>
+  <rect x="44" y="48" width="286" height="26" rx="5" fill="rgba(91,141,238,.12)"/>
+  <text x="187" y="65" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#5b8dee">LIFO — 後入れ先出し（Last In First Out）</text>
+
+  <!-- push ラベル（左ゾーン: x=20〜94） -->
+  <text x="57" y="100" text-anchor="middle" font-family="'Noto Sans JP'"   font-size="13" fill="#fbbf24" font-weight="700">追加</text>
+  <text x="57" y="118" text-anchor="middle" font-family="'JetBrains Mono'" font-size="13" fill="#fbbf24">push</text>
+  <!-- push矢印（左ラベル → スタック左壁） -->
+  <line x1="92" y1="109" x2="103" y2="109" stroke="#fbbf24" stroke-width="2.5" marker-end="url(#aY)"/>
+
+  <!-- pop ラベル（右ゾーン: x=276〜350） -->
+  <text x="316" y="100" text-anchor="middle" font-family="'Noto Sans JP'"   font-size="13" fill="#34d399" font-weight="700">取出し</text>
+  <text x="316" y="118" text-anchor="middle" font-family="'JetBrains Mono'" font-size="13" fill="#34d399">pop</text>
+  <!-- pop矢印（スタック右壁 → 右ラベル） -->
+  <line x1="267" y1="109" x2="278" y2="109" stroke="#34d399" stroke-width="2.5" marker-end="url(#aG)"/>
+
+  <!-- スタック本体: 左・底・右の3辺のみ（上は開放） -->
+  <line x1="105" y1="82"  x2="105" y2="256" stroke="#5b8dee" stroke-width="2.5"/>
+  <line x1="105" y1="256" x2="265" y2="256" stroke="#5b8dee" stroke-width="2.5"/>
+  <line x1="265" y1="82"  x2="265" y2="256" stroke="#5b8dee" stroke-width="2.5"/>
+  <!-- 開口部の点線 -->
+  <line x1="105" y1="82" x2="265" y2="82" stroke="#5b8dee" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <text x="185" y="78" text-anchor="middle" font-family="'Noto Sans JP'" font-size="9" fill="#5b8dee">↑ 上端が開口部（push/pop）</text>
+
+  <!-- C: 上（最後に追加・先に出る） -->
+  <rect x="107" y="84"  width="156" height="52" rx="0" fill="rgba(52,211,153,.28)" stroke="#34d399" stroke-width="1.8"/>
+  <text x="185" y="107" text-anchor="middle" font-family="'Noto Sans JP'" font-size="15" fill="#34d399" font-weight="700">C</text>
+  <text x="185" y="126" text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#34d399">最後に追加・先に出る</text>
+
+  <!-- B: 中 -->
+  <rect x="107" y="137" width="156" height="52" rx="0" fill="rgba(91,141,238,.20)" stroke="#5b8dee" stroke-width="1.2"/>
+  <text x="185" y="168" text-anchor="middle" font-family="'Noto Sans JP'" font-size="15" fill="#8a99b8">B</text>
+
+  <!-- A: 下（最初に追加・最後に出る） -->
+  <rect x="107" y="190" width="156" height="64" rx="0" fill="rgba(91,141,238,.10)" stroke="#5b8dee" stroke-width="1.2"/>
+  <text x="185" y="217" text-anchor="middle" font-family="'Noto Sans JP'" font-size="15" fill="#8a99b8">A</text>
+  <text x="185" y="237" text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#8a99b8">最初に追加・最後に出る</text>
+
+  <!-- 説明ボックス -->
+  <rect x="22" y="272" width="331" height="58" rx="6" fill="rgba(91,141,238,.10)" stroke="#5b8dee" stroke-width="1"/>
+  <text x="187" y="294" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#e2e8f5">入口と出口が同じ（上端のみ）</text>
+  <text x="187" y="316" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#8a99b8">取り出し順: C → B → A</text>
+
+  <!-- 例ボックス -->
+  <rect x="22" y="346" width="331" height="98" rx="6" fill="rgba(91,141,238,.06)" stroke="#2a3350"/>
+  <text x="187" y="368" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#8a99b8" font-weight="600">身近な例</text>
+  <text x="187" y="392" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#8a99b8">ブラウザの「戻る」ボタン</text>
+  <text x="187" y="412" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#8a99b8">（最後に開いたページへ戻る）</text>
+  <text x="187" y="434" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#8a99b8">テキストエディタの Ctrl+Z（元に戻す）</text>
+
+  <!-- =============================
+       RIGHT: キュー  x:385〜750
+       ============================= -->
+  <rect x="385" y="8" width="365" height="444" rx="12" fill="rgba(167,139,250,.05)" stroke="#a78bfa" stroke-width="2"/>
+  <text x="567" y="38" text-anchor="middle" font-family="'Noto Sans JP'" font-size="16" fill="#a78bfa" font-weight="700">キュー（queue）</text>
+  <rect x="420" y="48" width="294" height="26" rx="5" fill="rgba(167,139,250,.12)"/>
+  <text x="567" y="65" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#a78bfa">FIFO — 先入れ先出し（First In First Out）</text>
+
+  <!-- enqueue ラベル（右上） -->
+  <text x="700" y="110" text-anchor="middle" font-family="'Noto Sans JP'"   font-size="13" fill="#fbbf24" font-weight="700">追加</text>
+  <text x="700" y="128" text-anchor="middle" font-family="'JetBrains Mono'" font-size="13" fill="#fbbf24">enqueue</text>
+  <line x1="740" y1="165" x2="648" y2="165" stroke="#fbbf24" stroke-width="3" marker-end="url(#aY)"/>
+
+  <!-- dequeue ラベル（左上） -->
+  <text x="432" y="110" text-anchor="middle" font-family="'Noto Sans JP'"   font-size="13" fill="#a78bfa" font-weight="700">取出し</text>
+  <text x="432" y="128" text-anchor="middle" font-family="'JetBrains Mono'" font-size="13" fill="#a78bfa">dequeue</text>
+  <line x1="400" y1="165" x2="320" y2="165" stroke="#a78bfa" stroke-width="3" marker-end="url(#aP)"/>
+
+  <!-- キュー本体外枠 -->
+  <rect x="400" y="140" width="246" height="50" rx="0" fill="none" stroke="#a78bfa" stroke-width="2"/>
+
+  <!-- D: 右端（最後に追加） -->
+  <rect x="584" y="142" width="60" height="46" rx="0" fill="rgba(167,139,250,.08)" stroke="#a78bfa" stroke-width="1"/>
+  <text x="614" y="162" text-anchor="middle" font-family="'Noto Sans JP'" font-size="14" fill="#8a99b8">D</text>
+  <text x="614" y="178" text-anchor="middle" font-family="'Noto Sans JP'" font-size="9"  fill="#8a99b8">後に追加</text>
+  <!-- C -->
+  <rect x="522" y="142" width="60" height="46" rx="0" fill="rgba(167,139,250,.14)" stroke="#a78bfa" stroke-width="1"/>
+  <text x="552" y="170" text-anchor="middle" font-family="'Noto Sans JP'" font-size="14" fill="#8a99b8">C</text>
+  <!-- B -->
+  <rect x="460" y="142" width="60" height="46" rx="0" fill="rgba(167,139,250,.20)" stroke="#a78bfa" stroke-width="1"/>
+  <text x="490" y="170" text-anchor="middle" font-family="'Noto Sans JP'" font-size="14" fill="#8a99b8">B</text>
+  <!-- A: 左端（先に出る） -->
+  <rect x="402" y="142" width="56" height="46" rx="0" fill="rgba(167,139,250,.32)" stroke="#a78bfa" stroke-width="2"/>
+  <text x="430" y="162" text-anchor="middle" font-family="'Noto Sans JP'" font-size="14" fill="#a78bfa" font-weight="700">A</text>
+  <text x="430" y="178" text-anchor="middle" font-family="'Noto Sans JP'" font-size="9"  fill="#a78bfa">先に出る</text>
+
+  <text x="567" y="208" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#8a99b8">右から入り → 左へ流れて → 左端から取り出される</text>
+
+  <!-- 説明ボックス -->
+  <rect x="398" y="224" width="337" height="58" rx="6" fill="rgba(167,139,250,.10)" stroke="#a78bfa" stroke-width="1"/>
+  <text x="567" y="248" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#e2e8f5">入口（右）と出口（左）が別々</text>
+  <text x="567" y="270" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#8a99b8">取り出し順: A → B → C → D</text>
+
+  <!-- 例ボックス -->
+  <rect x="398" y="298" width="337" height="142" rx="6" fill="rgba(167,139,250,.06)" stroke="#2a3350"/>
+  <text x="567" y="322" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#8a99b8" font-weight="600">身近な例</text>
+  <text x="567" y="348" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#8a99b8">プリンターのジョブ管理</text>
+  <text x="567" y="368" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#8a99b8">（先に送った印刷が先に処理される）</text>
+  <text x="567" y="396" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#8a99b8">スーパーのレジ待ち行列</text>
+  <text x="567" y="416" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#8a99b8">（先に並んだ人が先に会計できる）</text>
+  <text x="567" y="436" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#8a99b8">「待ち行列」とも呼ばれる</text>
+</svg>
+          <figcaption>図1-5：スタック（LIFO / push・pop）とキュー（FIFO / enqueue・dequeue）の比較（S03:p20 再現）</figcaption>
+        </figure>
+      </div>
+      <table class="styled-table">
+        <thead><tr><th>名称</th><th>取り出し方</th><th>方式・略称</th><th>操作名</th><th>身近な例</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>スタック（stack）</strong></td>
+            <td>最後に追加したデータ</td>
+            <td>後入れ先出し<br><em>LIFO</em>（ライフォ）</td>
+            <td>追加: <strong>push</strong><br>取出し: <strong>pop</strong></td>
+            <td>ブラウザの「戻る」ボタン</td>
+          </tr>
+          <tr>
+            <td><strong>キュー（queue）</strong></td>
+            <td>最初に追加したデータ</td>
+            <td>先入れ先出し<br><em>FIFO</em>（ファイフォ/フィーフォ）</td>
+            <td>追加: <strong>enqueue</strong><br>取出し: <strong>dequeue</strong></td>
+            <td>プリンターのジョブ管理</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="color:var(--text-sub);font-size:13px">← S03</p>
+    </div>
+  </div>
+
+  <div id="ch1-algo">
+    <h3 class="sub-title">1-6 構造化プログラミングと3つの基本構造</h3>
+    <div class="card">
+      <div class="slide-label">← S03:p30 スライド図再現</div>
+      <div class="svg-wrap">
+        <figure>
+          <svg viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px">
+            <!-- ====左: わかりにくいプログラム==== -->
+            <rect x="10" y="10" width="300" height="290" rx="10" fill="rgba(248,113,113,.06)" stroke="#f87171" stroke-width="2"/>
+            <text x="160" y="36" text-anchor="middle" font-family="'Noto Sans JP'" font-size="13" fill="#f87171" font-weight="700">わかりにくいプログラム</text>
+            <text x="160" y="54" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#8a99b8">（GOTOで自由に飛び回る）</text>
+
+            <!-- スパゲッティ線 -->
+            <line x1="90"  y1="85"  x2="210" y2="125" stroke="#8a99b8" stroke-width="1.3"/>
+            <line x1="210" y1="125" x2="90"  y2="162" stroke="#8a99b8" stroke-width="1.3"/>
+            <line x1="90"  y1="162" x2="210" y2="200" stroke="#8a99b8" stroke-width="1.3"/>
+            <line x1="150" y1="72"  x2="95"  y2="200" stroke="#f87171" stroke-width="1.2" stroke-dasharray="5,3"/>
+            <line x1="95"  y1="162" x2="215" y2="228" stroke="#f87171" stroke-width="1.2" stroke-dasharray="5,3"/>
+
+            <!-- ボックス・条件 -->
+            <rect x="54"  y="68"  width="72" height="28" rx="3" fill="#1e2535" stroke="#8a99b8"/>
+            <text x="90"  y="86"  text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#e2e8f5">処理1</text>
+            <polygon points="210,117 192,133 228,133" fill="#1e2535" stroke="#8a99b8" stroke-width="1.2"/>
+            <text x="210" y="129" text-anchor="middle" font-family="'Noto Sans JP'" font-size="9"  fill="#8a99b8">条件</text>
+            <rect x="54"  y="150" width="72" height="28" rx="3" fill="#1e2535" stroke="#8a99b8"/>
+            <text x="90"  y="168" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#e2e8f5">処理2</text>
+            <rect x="174" y="192" width="72" height="28" rx="3" fill="#1e2535" stroke="#8a99b8"/>
+            <text x="210" y="210" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#e2e8f5">処理3</text>
+
+            <!-- 問題点ラベル（ボックス内に収める） -->
+            <rect x="30" y="242" width="260" height="46" rx="5" fill="rgba(248,113,113,.12)" stroke="#f87171" stroke-width="1"/>
+            <text x="160" y="261" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#f87171" font-weight="600">バグ発見・修正・改修が困難</text>
+            <text x="160" y="279" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#8a99b8">どこで何をしているか追えない</text>
+
+            <!-- 矢印 -->
+            <text x="340" y="163" text-anchor="middle" font-size="30" fill="#5b8dee" font-family="sans-serif">→</text>
+
+            <!-- ====右: 構造化されたプログラム==== -->
+            <rect x="370" y="10" width="320" height="290" rx="10" fill="rgba(52,211,153,.06)" stroke="#34d399" stroke-width="2"/>
+            <text x="530" y="36" text-anchor="middle" font-family="'Noto Sans JP'" font-size="13" fill="#34d399" font-weight="700">構造化されたプログラム</text>
+            <text x="530" y="54" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#8a99b8">（3基本構造のみで記述）</text>
+
+            <!-- 選択構造の外枠 -->
+            <rect x="385" y="68" width="290" height="162" rx="6" fill="none" stroke="#5b8dee" stroke-width="1.5" stroke-dasharray="6,3"/>
+            <rect x="460" y="62" width="70" height="18" rx="3" fill="#1a1f2e" stroke="none"/>
+            <text x="495" y="74" text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#5b8dee">選択構造</text>
+
+            <!-- 繰り返し構造の内枠 -->
+            <rect x="395" y="84" width="148" height="110" rx="4" fill="none" stroke="#fbbf24" stroke-width="1.3" stroke-dasharray="4,2"/>
+            <rect x="396" y="79" width="60" height="16" rx="3" fill="#1a1f2e" stroke="none"/>
+            <text x="426" y="91" text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#fbbf24">繰返し</text>
+
+            <!-- 繰り返し内の処理 -->
+            <polygon points="469,100 453,114 485,114" fill="#1e2535" stroke="#5b8dee" stroke-width="1.2"/>
+            <text x="469" y="110" text-anchor="middle" font-family="'Noto Sans JP'" font-size="9" fill="#5b8dee">条件</text>
+            <rect x="415" y="122" width="108" height="24" rx="3" fill="#1e2535" stroke="#fbbf24" stroke-width="1"/>
+            <text x="469" y="138" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#e2e8f5">処理A</text>
+            <rect x="415" y="154" width="108" height="24" rx="3" fill="#1e2535" stroke="#fbbf24" stroke-width="1"/>
+            <text x="469" y="170" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#e2e8f5">処理B</text>
+
+            <!-- 選択の右枝 -->
+            <rect x="556" y="106" width="104" height="28" rx="3" fill="#1e2535" stroke="#5b8dee" stroke-width="1"/>
+            <text x="608" y="124" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#e2e8f5">処理C</text>
+
+            <!-- 順次処理 -->
+            <rect x="395" y="196" width="260" height="24" rx="3" fill="#1e2535" stroke="#34d399" stroke-width="1.2"/>
+            <text x="525" y="212" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#34d399">処理D（順次）</text>
+
+            <!-- 利点ラベル -->
+            <rect x="388" y="242" width="292" height="46" rx="5" fill="rgba(52,211,153,.12)" stroke="#34d399" stroke-width="1"/>
+            <text x="534" y="261" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#34d399" font-weight="600">保守・改修・再利用が容易</text>
+            <text x="534" y="279" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#8a99b8">構造が明確でどこに何があるか分かる</text>
+
+            <!-- 提唱者 -->
+            <text x="350" y="312" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#8a99b8">1960年代　エドガー・W・ダイクストラ（Dijkstra）らが提唱</text>
+          </svg>
+          <figcaption>図1-6：わかりにくいプログラム vs 構造化されたプログラム（S03:p30 再現）</figcaption>
+        </figure>
+      </div>
+
+      <div class="def-box">
+        <span class="def-term">構造化プログラミング</span>
+        <strong>エドガー・W・ダイクストラ（Edgar W. Dijkstra）</strong>らが1960年代に提唱。プログラムを3つの基本構造の組み合わせで作ることで、バグが少なく改修・保守・再利用のしやすいプログラムを実現する考え方。<span class="src">← S03:p30</span>
+      </div>
+
+      <!-- 3基本構造フローチャート -->
+      <div class="svg-wrap">
+        <figure>
+          <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:720px">
+            <defs>
+              <marker id="a3b" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#5b8dee"/></marker>
+              <marker id="a3g" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#34d399"/></marker>
+              <marker id="a3o" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#fbbf24"/></marker>
+            </defs>
+
+            <!-- ===順次=== -->
+            <rect x="10" y="8" width="210" height="264" rx="10" fill="rgba(91,141,238,.05)" stroke="#5b8dee" stroke-width="1.5"/>
+            <text x="115" y="30" text-anchor="middle" font-family="'Noto Sans JP'" font-size="14" fill="#5b8dee" font-weight="700">① 順次</text>
+            <text x="115" y="48" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#8a99b8">上から順番に実行</text>
+            <!-- 入 -->
+            <rect x="76" y="58" width="78" height="26" rx="13" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+            <text x="115" y="75" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#8a99b8">入</text>
+            <line x1="115" y1="84" x2="115" y2="100" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#a3b)"/>
+            <!-- 処理A -->
+            <rect x="68" y="100" width="94" height="34" rx="5" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+            <text x="115" y="122" text-anchor="middle" font-family="'Noto Sans JP'" font-size="13" fill="#e2e8f5">処理 A</text>
+            <line x1="115" y1="134" x2="115" y2="150" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#a3b)"/>
+            <!-- 処理B -->
+            <rect x="68" y="150" width="94" height="34" rx="5" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+            <text x="115" y="172" text-anchor="middle" font-family="'Noto Sans JP'" font-size="13" fill="#e2e8f5">処理 B</text>
+            <line x1="115" y1="184" x2="115" y2="200" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#a3b)"/>
+            <!-- 処理C -->
+            <rect x="68" y="200" width="94" height="34" rx="5" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+            <text x="115" y="222" text-anchor="middle" font-family="'Noto Sans JP'" font-size="13" fill="#e2e8f5">処理 C</text>
+            <line x1="115" y1="234" x2="115" y2="250" stroke="#5b8dee" stroke-width="1.5"/>
+            <!-- 出 -->
+            <rect x="76" y="250" width="78" height="26" rx="13" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+            <text x="115" y="267" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#8a99b8">出</text>
+
+            <!-- ===選択（分岐）=== -->
+            <rect x="255" y="8" width="210" height="264" rx="10" fill="rgba(52,211,153,.05)" stroke="#34d399" stroke-width="1.5"/>
+            <text x="360" y="30" text-anchor="middle" font-family="'Noto Sans JP'" font-size="14" fill="#34d399" font-weight="700">② 選択（分岐）</text>
+            <text x="360" y="48" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#8a99b8">条件で処理を分ける</text>
+            <!-- 入 -->
+            <rect x="321" y="58" width="78" height="26" rx="13" fill="#1e2535" stroke="#34d399" stroke-width="1.5"/>
+            <text x="360" y="75" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#8a99b8">入</text>
+            <line x1="360" y1="84" x2="360" y2="100" stroke="#34d399" stroke-width="1.5" marker-end="url(#a3g)"/>
+            <!-- 条件ひし形 -->
+            <polygon points="360,100 330,124 360,148 390,124" fill="#1e2535" stroke="#34d399" stroke-width="1.8"/>
+            <text x="360" y="128" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#e2e8f5">条件</text>
+            <!-- yes/no -->
+            <line x1="330" y1="124" x2="282" y2="156" stroke="#34d399" stroke-width="1.4"/>
+            <text x="296" y="148" font-family="'Noto Sans JP'" font-size="11" fill="#34d399">yes</text>
+            <line x1="390" y1="124" x2="438" y2="156" stroke="#34d399" stroke-width="1.4"/>
+            <text x="408" y="148" font-family="'Noto Sans JP'" font-size="11" fill="#8a99b8">no</text>
+            <!-- 処理A(yes) -->
+            <rect x="258" y="156" width="80" height="34" rx="5" fill="#1e2535" stroke="#34d399" stroke-width="1.5"/>
+            <text x="298" y="178" text-anchor="middle" font-family="'Noto Sans JP'" font-size="13" fill="#e2e8f5">処理 A</text>
+            <!-- 処理B(no) -->
+            <rect x="382" y="156" width="80" height="34" rx="5" fill="#1e2535" stroke="#34d399" stroke-width="1.5"/>
+            <text x="422" y="178" text-anchor="middle" font-family="'Noto Sans JP'" font-size="13" fill="#e2e8f5">処理 B</text>
+            <!-- 収束 -->
+            <line x1="298" y1="190" x2="360" y2="218" stroke="#34d399" stroke-width="1.4"/>
+            <line x1="422" y1="190" x2="360" y2="218" stroke="#34d399" stroke-width="1.4"/>
+            <!-- 出 -->
+            <rect x="321" y="218" width="78" height="26" rx="13" fill="#1e2535" stroke="#34d399" stroke-width="1.5"/>
+            <text x="360" y="235" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#8a99b8">出</text>
+            <text x="360" y="262" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#8a99b8">入口・出口が各1つ</text>
+
+            <!-- ===繰り返し（ループ）=== -->
+            <rect x="500" y="8" width="212" height="264" rx="10" fill="rgba(251,191,36,.05)" stroke="#fbbf24" stroke-width="1.5"/>
+            <text x="606" y="30" text-anchor="middle" font-family="'Noto Sans JP'" font-size="14" fill="#fbbf24" font-weight="700">③ 繰り返し</text>
+            <text x="606" y="48" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#8a99b8">条件が真の間、繰り返す</text>
+            <!-- 入 -->
+            <rect x="567" y="58" width="78" height="26" rx="13" fill="#1e2535" stroke="#fbbf24" stroke-width="1.5"/>
+            <text x="606" y="75" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#8a99b8">入</text>
+            <line x1="606" y1="84" x2="606" y2="100" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#a3o)"/>
+            <!-- 条件ひし形 -->
+            <polygon points="606,100 574,126 606,152 638,126" fill="#1e2535" stroke="#fbbf24" stroke-width="1.8"/>
+            <text x="606" y="120" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#e2e8f5">条件式</text>
+            <text x="606" y="136" text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#8a99b8">真？</text>
+            <!-- yes(true): 処理へ -->
+            <line x1="606" y1="152" x2="606" y2="166" stroke="#fbbf24" stroke-width="1.4"/>
+            <text x="612" y="163" font-family="'Noto Sans JP'" font-size="11" fill="#fbbf24">yes</text>
+            <!-- 処理 -->
+            <rect x="562" y="166" width="88" height="36" rx="5" fill="#1e2535" stroke="#fbbf24" stroke-width="1.5"/>
+            <text x="606" y="189" text-anchor="middle" font-family="'Noto Sans JP'" font-size="13" fill="#e2e8f5">処理</text>
+            <!-- ループ戻り -->
+            <path d="M 650 184 Q 685 184 685 126 Q 685 100 638 100" fill="none" stroke="#fbbf24" stroke-width="1.4" stroke-dasharray="5,3" marker-end="url(#a3o)"/>
+            <!-- no: 出へ -->
+            <line x1="574" y1="126" x2="520" y2="126" stroke="#8a99b8" stroke-width="1.2"/>
+            <text x="534" y="122" font-family="'Noto Sans JP'" font-size="11" fill="#8a99b8">no</text>
+            <line x1="520" y1="126" x2="520" y2="244" stroke="#8a99b8" stroke-width="1.2"/>
+            <line x1="520" y1="244" x2="567" y2="244" stroke="#8a99b8" stroke-width="1.2"/>
+            <!-- 出 -->
+            <rect x="567" y="231" width="78" height="26" rx="13" fill="#1e2535" stroke="#fbbf24" stroke-width="1.5"/>
+            <text x="606" y="248" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#8a99b8">出</text>
+            <text x="606" y="270" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#8a99b8">no で脱出</text>
+          </svg>
+          <figcaption>図1-7：3つの基本構造 — 各構造は「入口1・出口1」のため自由に組み合わせ可能（S03:p26-28 再現）</figcaption>
+        </figure>
+      </div>
+
+      <table class="styled-table">
+        <thead><tr><th>基本構造</th><th>別名</th><th>説明</th></tr></thead>
+        <tbody>
+          <tr><td><strong>順次</strong></td><td>逐次実行</td><td>処理を上から順番に1つずつ実行する</td></tr>
+          <tr><td><strong>選択</strong></td><td>分岐</td><td>条件式の真偽などによって処理の流れを変える</td></tr>
+          <tr><td><strong>繰り返し</strong></td><td>反復・ループ</td><td>条件が満たされる間、同じ処理を繰り返す</td></tr>
+        </tbody>
+      </table>
+      <p>各構造は「入口」と「出口」が1つずつのため自由に組み合わせられる。<span class="src">← S03</span></p>
+    </div>
+  </div>
+
+  <div id="ch1-expr">
+    <h3 class="sub-title">1-7 アルゴリズムの表現方法</h3>
+    <div class="card">
+      <div class="slide-label">← S03:p41 スライド図再現</div>
+      <div class="svg-wrap">
+        <figure>
+          <svg viewBox="0 0 660 330" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:660px">
+            <defs><marker id="aS" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#8a99b8"/></marker></defs>
+
+            <!-- ======記号表（左列: x=10〜370）====== -->
+            <text x="20" y="20" font-family="'Noto Sans JP'" font-size="13" fill="#5b8dee" font-weight="700">フローチャートの主な記号（JIS X0128 / ISO 8631）</text>
+
+            <!-- ヘッダ -->
+            <rect x="10"  y="28" width="150" height="28" rx="0" fill="rgba(91,141,238,.22)" stroke="#5b8dee" stroke-width="1"/>
+            <text x="85"  y="47" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#5b8dee" font-weight="600">記号の形</text>
+            <rect x="162" y="28" width="208" height="28" rx="0" fill="rgba(91,141,238,.22)" stroke="#5b8dee" stroke-width="1"/>
+            <text x="266" y="47" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#5b8dee" font-weight="600">名称と意味</text>
+
+            <!-- 端子 -->
+            <rect x="10"  y="56" width="150" height="42" rx="0" fill="#1e2535" stroke="#2a3350" stroke-width="1"/>
+            <rect x="30"  y="63" width="110" height="28" rx="14" fill="none" stroke="#e2e8f5" stroke-width="1.8"/>
+            <rect x="162" y="56" width="208" height="42" rx="0" fill="#1e2535" stroke="#2a3350" stroke-width="1"/>
+            <text x="266" y="82" text-anchor="middle" font-family="'Noto Sans JP'" font-size="13" fill="#e2e8f5">端子（開始・終了）</text>
+
+            <!-- 処理 -->
+            <rect x="10"  y="98" width="150" height="42" rx="0" fill="#1e2535" stroke="#2a3350"/>
+            <rect x="30"  y="106" width="110" height="26" rx="3" fill="none" stroke="#e2e8f5" stroke-width="1.8"/>
+            <rect x="162" y="98" width="208" height="42" rx="0" fill="#1e2535" stroke="#2a3350"/>
+            <text x="266" y="124" text-anchor="middle" font-family="'Noto Sans JP'" font-size="13" fill="#e2e8f5">処理</text>
+
+            <!-- データ入出力 -->
+            <rect x="10"  y="140" width="150" height="42" rx="0" fill="#1e2535" stroke="#2a3350"/>
+            <polygon points="34,158 48,148 142,148 128,168 34,168" fill="none" stroke="#e2e8f5" stroke-width="1.8"/>
+            <rect x="162" y="140" width="208" height="42" rx="0" fill="#1e2535" stroke="#2a3350"/>
+            <text x="266" y="166" text-anchor="middle" font-family="'Noto Sans JP'" font-size="13" fill="#e2e8f5">データ入出力</text>
+
+            <!-- 判断 -->
+            <rect x="10"  y="182" width="150" height="48" rx="0" fill="#1e2535" stroke="#2a3350"/>
+            <polygon points="85,190 118,206 85,222 52,206" fill="none" stroke="#fbbf24" stroke-width="2"/>
+            <text x="85"  y="210" text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#fbbf24">判断</text>
+            <rect x="162" y="182" width="208" height="48" rx="0" fill="#1e2535" stroke="#2a3350"/>
+            <text x="266" y="205" text-anchor="middle" font-family="'Noto Sans JP'" font-size="13" fill="#fbbf24">判断（条件分岐）</text>
+            <text x="266" y="222" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#8a99b8">必ず菱形を使う</text>
+
+            <!-- ループ端 -->
+            <rect x="10"  y="230" width="150" height="56" rx="0" fill="#1e2535" stroke="#2a3350"/>
+            <polygon points="32,242 80,242 96,254 80,266 32,266 16,254" fill="none" stroke="#34d399" stroke-width="1.8"/>
+            <polygon points="32,270 80,270 96,280 80,286 32,286 16,280" fill="none" stroke="#34d399" stroke-width="1.8"/>
+            <rect x="162" y="230" width="208" height="56" rx="0" fill="#1e2535" stroke="#2a3350"/>
+            <text x="266" y="258" text-anchor="middle" font-family="'Noto Sans JP'" font-size="13" fill="#34d399">ループ始端・終端</text>
+            <text x="266" y="276" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#8a99b8">繰り返し範囲を囲む</text>
+
+            <!-- ======例のフローチャート（右列: x=390〜655）====== -->
+            <text x="400" y="20" font-family="'Noto Sans JP'" font-size="12" fill="#5b8dee" font-weight="700">例：配列の最大値を求める</text>
+
+            <!-- start -->
+            <rect x="408" y="30" width="80" height="24" rx="12" fill="#1e2535" stroke="#e2e8f5" stroke-width="1.6"/>
+            <text x="448" y="47" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#e2e8f5">start</text>
+            <line x1="448" y1="54" x2="448" y2="68" stroke="#8a99b8" stroke-width="1.3" marker-end="url(#aS)"/>
+
+            <!-- 初期化（2行）-->
+            <rect x="394" y="68" width="108" height="40" rx="3" fill="#1e2535" stroke="#8a99b8"/>
+            <text x="448" y="83"  text-anchor="middle" font-family="'JetBrains Mono'" font-size="10" fill="#e2e8f5">n←データ数</text>
+            <text x="448" y="101" text-anchor="middle" font-family="'JetBrains Mono'" font-size="10" fill="#e2e8f5">max←x[0]  i←1</text>
+            <line x1="448" y1="108" x2="448" y2="122" stroke="#8a99b8" stroke-width="1.3" marker-end="url(#aS)"/>
+
+            <!-- 判断: i<n -->
+            <polygon points="448,122 420,142 448,162 476,142" fill="#1e2535" stroke="#5b8dee" stroke-width="1.6"/>
+            <text x="448" y="146" text-anchor="middle" font-family="'JetBrains Mono'" font-size="11" fill="#5b8dee">i &lt; n</text>
+            <!-- no→右 -->
+            <text x="485" y="140" font-family="'Noto Sans JP'" font-size="10" fill="#f87171">no</text>
+            <line x1="476" y1="142" x2="560" y2="142" stroke="#f87171" stroke-width="1.2"/>
+            <line x1="560" y1="142" x2="560" y2="302" stroke="#8a99b8" stroke-width="1.2"/>
+            <line x1="560" y1="302" x2="498" y2="302" stroke="#8a99b8" stroke-width="1.2"/>
+            <!-- yes↓ -->
+            <line x1="448" y1="162" x2="448" y2="178" stroke="#8a99b8" stroke-width="1.3"/>
+            <text x="455" y="174" font-family="'Noto Sans JP'" font-size="10" fill="#8a99b8">yes</text>
+
+            <!-- 判断: max<x[i] -->
+            <polygon points="448,178 416,200 448,222 480,200" fill="#1e2535" stroke="#fbbf24" stroke-width="1.6"/>
+            <text x="448" y="203" text-anchor="middle" font-family="'JetBrains Mono'" font-size="10" fill="#fbbf24">max&lt;x[i]</text>
+            <!-- no→右（スキップ）-->
+            <text x="488" y="198" font-family="'Noto Sans JP'" font-size="10" fill="#8a99b8">no</text>
+            <!-- yes→左 max←x[i] -->
+            <line x1="416" y1="200" x2="390" y2="218" stroke="#8a99b8" stroke-width="1.2"/>
+            <text x="392" y="214" font-family="'Noto Sans JP'" font-size="10" fill="#34d399">yes</text>
+            <rect x="388" y="220" width="60" height="26" rx="3" fill="#1e2535" stroke="#fbbf24" stroke-width="1.3"/>
+            <text x="418" y="237" text-anchor="middle" font-family="'JetBrains Mono'" font-size="10" fill="#fbbf24">max←x[i]</text>
+            <line x1="448" y1="233" x2="448" y2="248" stroke="#8a99b8" stroke-width="1.2"/>
+
+            <!-- i←i+1（yes路とno路が合流） -->
+            <line x1="480" y1="200" x2="520" y2="200" stroke="#8a99b8" stroke-width="1.2"/>
+            <line x1="520" y1="200" x2="520" y2="254" stroke="#8a99b8" stroke-width="1.2"/>
+            <line x1="520" y1="254" x2="500" y2="254" stroke="#8a99b8" stroke-width="1.2"/>
+            <rect x="404" y="248" width="96" height="26" rx="3" fill="#1e2535" stroke="#8a99b8"/>
+            <text x="452" y="265" text-anchor="middle" font-family="'JetBrains Mono'" font-size="10" fill="#e2e8f5">i←i+1</text>
+
+            <!-- ループ戻り -->
+            <line x1="404" y1="261" x2="388" y2="261" stroke="#8a99b8" stroke-width="1.2" stroke-dasharray="3,2"/>
+            <line x1="388" y1="261" x2="388" y2="142" stroke="#8a99b8" stroke-width="1.2" stroke-dasharray="3,2"/>
+            <line x1="388" y1="142" x2="420" y2="142" stroke="#8a99b8" stroke-width="1.2" marker-end="url(#aS)"/>
+
+            <!-- 戻り値 max -->
+            <rect x="408" y="290" width="86" height="24" rx="3" fill="#1e2535" stroke="#34d399"/>
+            <text x="451" y="307" text-anchor="middle" font-family="'JetBrains Mono'" font-size="10" fill="#34d399">戻り値 max</text>
+          </svg>
+          <figcaption>図1-9：フローチャートの主な記号と「配列の最大値」を求める例（S03:p41 再現）</figcaption>
+        </figure>
+      </div>
+      <p><strong>フローチャート</strong>は「流れ図」とも呼ばれ、JIS X0128（対応国際規格: ISO 8631）で規格化された記号と線でアルゴリズムを図式化したもの。線の流れは原則として<strong>上から下、左から右</strong>へ向かい、それ以外の場合は線の先に<strong>矢先（矢印）</strong>をつける。<span class="src">← S03:p41,42</span></p>
+      <p><strong>擬似言語（擬似コード）</strong>は規格がなく、プログラミング言語に近い形式でアルゴリズムを記述する。制御構文: <code>if/endif</code>・<code>while/endwhile</code>・<code>for/endfor</code>。分岐・繰り返しの範囲はインデント（字下げ）がマナー。注釈: <code>/* 注釈 */</code>（複数行）・<code>// 注釈</code>（行末まで）。代入記号: <code>←</code> を使う書き方も広く使われる。<span class="src">← S03:p44-46</span></p>
+      <div class="code-block"><span class="cm">/* 配列 x の最大値を求める擬似コード */</span>
+配列x へ データ読み込み
+n ← データ数
+max ← x[0]
+<span class="kw">for</span>(i を 1 から n-1 まで 1 ずつ増やす)
+  <span class="kw">if</span>(max &lt; x[i])
+    max ← x[i]
+  <span class="kw">endif</span>
+<span class="kw">endfor</span>
+<span class="kw">return</span> max</div>
+    </div>
+  </div>
+</section>
+
+<!-- ======= 第2章 ======= -->
+<section class="section" id="ch2">
+  <h2 class="section-title">第2章 代表的なアルゴリズム</h2>
+
+  <div id="ch2-table">
+    <h3 class="sub-title">2-1 表の検索（テーブル検索の基本）</h3>
+    <div class="card">
+      <div class="slide-label">← S03:p55 スライド図再現</div>
+      <div class="svg-wrap">
+        <figure>
+          <svg viewBox="0 0 700 230" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px">
+            <defs><marker id="a4y" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#fbbf24"/></marker></defs>
+            <text x="30" y="20" font-family="'Noto Sans JP'" font-size="13" fill="#5b8dee" font-weight="700">表（テーブル）の検索例 — 年齢=20 のレコードを探す</text>
+            <!-- header -->
+            <rect x="20" y="30" width="44" height="24" rx="0" fill="rgba(91,141,238,.25)" stroke="#5b8dee"/>
+            <text x="42" y="46" text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#5b8dee">行</text>
+            <rect x="64" y="30" width="90" height="24" rx="0" fill="rgba(91,141,238,.25)" stroke="#5b8dee"/>
+            <text x="109" y="46" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#5b8dee">学籍番号</text>
+            <rect x="154" y="30" width="60" height="24" rx="0" fill="rgba(91,141,238,.25)" stroke="#5b8dee"/>
+            <text x="184" y="46" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#5b8dee">姓</text>
+            <rect x="214" y="30" width="60" height="24" rx="0" fill="rgba(91,141,238,.25)" stroke="#5b8dee"/>
+            <text x="244" y="46" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#5b8dee">名</text>
+            <rect x="274" y="30" width="60" height="24" rx="0" fill="rgba(251,191,36,.4)" stroke="#fbbf24" stroke-width="1.5"/>
+            <text x="304" y="46" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#fbbf24">年齢 ←キー</text>
+            <!-- rows 1-5 -->
+            <g font-family="'Noto Sans JP'" font-size="11">
+              <rect x="20" y="54" width="44" height="22" fill="#1e2535" stroke="#2a3350"/><text x="42" y="69" text-anchor="middle" font-family="'JetBrains Mono'" fill="#8a99b8">1</text>
+              <rect x="64" y="54" width="90" height="22" fill="#1e2535" stroke="#2a3350"/><text x="109" y="69" text-anchor="middle" font-family="'JetBrains Mono'" fill="#e2e8f5">160103</text>
+              <rect x="154" y="54" width="60" height="22" fill="#1e2535" stroke="#2a3350"/><text x="184" y="69" text-anchor="middle" fill="#e2e8f5">青木</text>
+              <rect x="214" y="54" width="60" height="22" fill="#1e2535" stroke="#2a3350"/><text x="244" y="69" text-anchor="middle" fill="#e2e8f5">一郎</text>
+              <rect x="274" y="54" width="60" height="22" fill="#1e2535" stroke="#2a3350"/><text x="304" y="69" text-anchor="middle" font-family="'JetBrains Mono'" fill="#8a99b8">27</text>
+
+              <rect x="20" y="76" width="44" height="22" fill="#1e2535" stroke="#2a3350"/><text x="42" y="91" text-anchor="middle" font-family="'JetBrains Mono'" fill="#8a99b8">2</text>
+              <rect x="64" y="76" width="90" height="22" fill="#1e2535" stroke="#2a3350"/><text x="109" y="91" text-anchor="middle" font-family="'JetBrains Mono'" fill="#e2e8f5">171328</text>
+              <rect x="154" y="76" width="60" height="22" fill="#1e2535" stroke="#2a3350"/><text x="184" y="91" text-anchor="middle" fill="#e2e8f5">加藤</text>
+              <rect x="214" y="76" width="60" height="22" fill="#1e2535" stroke="#2a3350"/><text x="244" y="91" text-anchor="middle" fill="#e2e8f5">春子</text>
+              <rect x="274" y="76" width="60" height="22" fill="#1e2535" stroke="#2a3350"/><text x="304" y="91" text-anchor="middle" font-family="'JetBrains Mono'" fill="#8a99b8">19</text>
+
+              <rect x="20" y="98" width="44" height="22" fill="#1e2535" stroke="#2a3350"/><text x="42" y="113" text-anchor="middle" font-family="'JetBrains Mono'" fill="#8a99b8">3</text>
+              <rect x="64" y="98" width="90" height="22" fill="#1e2535" stroke="#2a3350"/><text x="109" y="113" text-anchor="middle" font-family="'JetBrains Mono'" fill="#e2e8f5">151024</text>
+              <rect x="154" y="98" width="60" height="22" fill="#1e2535" stroke="#2a3350"/><text x="184" y="113" text-anchor="middle" fill="#e2e8f5">佐藤</text>
+              <rect x="214" y="98" width="60" height="22" fill="#1e2535" stroke="#2a3350"/><text x="244" y="113" text-anchor="middle" fill="#e2e8f5">二郎</text>
+              <rect x="274" y="98" width="60" height="22" fill="#1e2535" stroke="#2a3350"/><text x="304" y="113" text-anchor="middle" font-family="'JetBrains Mono'" fill="#8a99b8">32</text>
+
+              <rect x="20" y="120" width="44" height="22" fill="#1e2535" stroke="#2a3350"/><text x="42" y="135" text-anchor="middle" font-family="'JetBrains Mono'" fill="#8a99b8">4</text>
+              <rect x="64" y="120" width="90" height="22" fill="#1e2535" stroke="#2a3350"/><text x="109" y="135" text-anchor="middle" font-family="'JetBrains Mono'" fill="#e2e8f5">180262</text>
+              <rect x="154" y="120" width="60" height="22" fill="#1e2535" stroke="#2a3350"/><text x="184" y="135" text-anchor="middle" fill="#e2e8f5">田中</text>
+              <rect x="214" y="120" width="60" height="22" fill="#1e2535" stroke="#2a3350"/><text x="244" y="135" text-anchor="middle" fill="#e2e8f5">夏子</text>
+              <rect x="274" y="120" width="60" height="22" fill="#1e2535" stroke="#2a3350"/><text x="304" y="135" text-anchor="middle" font-family="'JetBrains Mono'" fill="#8a99b8">68</text>
+
+              <rect x="20" y="142" width="44" height="22" fill="#1e2535" stroke="#2a3350"/><text x="42" y="157" text-anchor="middle" font-family="'JetBrains Mono'" fill="#8a99b8">5</text>
+              <rect x="64" y="142" width="90" height="22" fill="#1e2535" stroke="#2a3350"/><text x="109" y="157" text-anchor="middle" font-family="'JetBrains Mono'" fill="#e2e8f5">161552</text>
+              <rect x="154" y="142" width="60" height="22" fill="#1e2535" stroke="#2a3350"/><text x="184" y="157" text-anchor="middle" fill="#e2e8f5">中川</text>
+              <rect x="214" y="142" width="60" height="22" fill="#1e2535" stroke="#2a3350"/><text x="244" y="157" text-anchor="middle" fill="#e2e8f5">三郎</text>
+              <rect x="274" y="142" width="60" height="22" fill="#1e2535" stroke="#2a3350"/><text x="304" y="157" text-anchor="middle" font-family="'JetBrains Mono'" fill="#8a99b8">45</text>
+
+              <!-- row 6: HIT -->
+              <rect x="20" y="164" width="44" height="22" fill="rgba(52,211,153,.3)" stroke="#34d399" stroke-width="1.5"/><text x="42" y="179" text-anchor="middle" font-family="'JetBrains Mono'" fill="#34d399" font-weight="700">6</text>
+              <rect x="64" y="164" width="90" height="22" fill="rgba(52,211,153,.15)" stroke="#34d399" stroke-width="1.5"/><text x="109" y="179" text-anchor="middle" font-family="'JetBrains Mono'" fill="#34d399">141076</text>
+              <rect x="154" y="164" width="60" height="22" fill="rgba(52,211,153,.15)" stroke="#34d399" stroke-width="1.5"/><text x="184" y="179" text-anchor="middle" fill="#34d399">林</text>
+              <rect x="214" y="164" width="60" height="22" fill="rgba(52,211,153,.15)" stroke="#34d399" stroke-width="1.5"/><text x="244" y="179" text-anchor="middle" fill="#34d399">秋子</text>
+              <rect x="274" y="164" width="60" height="22" fill="rgba(52,211,153,.4)" stroke="#34d399" stroke-width="2"/><text x="304" y="179" text-anchor="middle" font-family="'JetBrains Mono'" fill="#34d399" font-weight="700">20</text>
+            </g>
+            <!-- 目標値 -->
+            <rect x="380" y="154" width="82" height="40" rx="4" fill="#1e2535" stroke="#fbbf24" stroke-width="1.5"/>
+            <text x="421" y="172" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#8a99b8">目標値</text>
+            <text x="421" y="188" text-anchor="middle" font-family="'JetBrains Mono'" font-size="14" fill="#fbbf24" font-weight="700">20</text>
+            <line x1="380" y1="174" x2="334" y2="174" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#a4y)"/>
+            <text x="478" y="100" font-family="'Noto Sans JP'" font-size="11" fill="#8a99b8">表 → テーブル</text>
+            <text x="478" y="118" font-family="'Noto Sans JP'" font-size="11" fill="#5b8dee">行 → レコード</text>
+            <text x="478" y="136" font-family="'Noto Sans JP'" font-size="11" fill="#fbbf24">列 → フィールド</text>
+            <text x="478" y="154" font-family="'Noto Sans JP'" font-size="11" fill="#fbbf24">年齢列 → キー</text>
+            <text x="20" y="218" font-family="'Noto Sans JP'" font-size="11" fill="#8a99b8">「目標値」を指定し、キーが目標値と一致する「レコード」を探す → 6行目（林 秋子）が発見</text>
+          </svg>
+          <figcaption>図2-1：表の検索 — 年齢=20 のレコードを探す（S03:p55 再現）</figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+
+  <div id="ch2-linear">
+    <h3 class="sub-title">2-2 線形探索（リニアサーチ）</h3>
+    <div class="card">
+      <div class="slide-label">← S03:p62-64 スライド図再現</div>
+      <div class="svg-wrap">
+        <figure>
+          <svg viewBox="0 0 700 380" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px">
+            <defs>
+              <marker id="a5s" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#8a99b8"/></marker>
+              <marker id="a5g" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#34d399"/></marker>
+            </defs>
+            <!-- 配列（上段）-->
+            <text x="20" y="20" font-family="'Noto Sans JP'" font-size="12" fill="#5b8dee">検索対象: 配列 x（8個）　検索目標 target = 20</text>
+            <rect x="20"  y="30" width="64" height="38" rx="3" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+            <text x="52"  y="44" text-anchor="middle" font-family="'JetBrains Mono'" font-size="10" fill="#8a99b8">x[1]</text>
+            <text x="52"  y="61" text-anchor="middle" font-family="'JetBrains Mono'" font-size="14" fill="#e2e8f5">27</text>
+            <rect x="88"  y="30" width="64" height="38" rx="3" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+            <text x="120" y="44" text-anchor="middle" font-family="'JetBrains Mono'" font-size="10" fill="#8a99b8">x[2]</text>
+            <text x="120" y="61" text-anchor="middle" font-family="'JetBrains Mono'" font-size="14" fill="#e2e8f5">19</text>
+            <rect x="156" y="30" width="64" height="38" rx="3" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+            <text x="188" y="44" text-anchor="middle" font-family="'JetBrains Mono'" font-size="10" fill="#8a99b8">x[3]</text>
+            <text x="188" y="61" text-anchor="middle" font-family="'JetBrains Mono'" font-size="14" fill="#e2e8f5">32</text>
+            <rect x="224" y="30" width="64" height="38" rx="3" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+            <text x="256" y="44" text-anchor="middle" font-family="'JetBrains Mono'" font-size="10" fill="#8a99b8">x[4]</text>
+            <text x="256" y="61" text-anchor="middle" font-family="'JetBrains Mono'" font-size="14" fill="#e2e8f5">68</text>
+            <rect x="292" y="30" width="64" height="38" rx="3" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+            <text x="324" y="44" text-anchor="middle" font-family="'JetBrains Mono'" font-size="10" fill="#8a99b8">x[5]</text>
+            <text x="324" y="61" text-anchor="middle" font-family="'JetBrains Mono'" font-size="14" fill="#e2e8f5">45</text>
+            <rect x="360" y="30" width="64" height="38" rx="3" fill="rgba(52,211,153,.3)" stroke="#34d399" stroke-width="2"/>
+            <text x="392" y="44" text-anchor="middle" font-family="'JetBrains Mono'" font-size="10" fill="#34d399" font-weight="700">x[6]✓</text>
+            <text x="392" y="61" text-anchor="middle" font-family="'JetBrains Mono'" font-size="14" fill="#34d399" font-weight="700">20</text>
+            <rect x="428" y="30" width="64" height="38" rx="3" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+            <text x="460" y="44" text-anchor="middle" font-family="'JetBrains Mono'" font-size="10" fill="#8a99b8">x[7]</text>
+            <text x="460" y="61" text-anchor="middle" font-family="'JetBrains Mono'" font-size="14" fill="#e2e8f5">53</text>
+            <rect x="496" y="30" width="64" height="38" rx="3" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+            <text x="528" y="44" text-anchor="middle" font-family="'JetBrains Mono'" font-size="10" fill="#8a99b8">x[8]</text>
+            <text x="528" y="61" text-anchor="middle" font-family="'JetBrains Mono'" font-size="14" fill="#e2e8f5">36</text>
+            <rect x="578" y="30" width="106" height="38" rx="3" fill="rgba(251,191,36,.18)" stroke="#fbbf24" stroke-width="1.5"/>
+            <text x="631" y="44" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#8a99b8">target</text>
+            <text x="631" y="61" text-anchor="middle" font-family="'JetBrains Mono'" font-size="15" fill="#fbbf24" font-weight="700">20</text>
+            <!-- スキャン矢印 -->
+            <line x1="52"  y1="68" x2="52"  y2="80" stroke="#8a99b8" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#a5s)"/>
+            <line x1="120" y1="68" x2="120" y2="80" stroke="#8a99b8" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#a5s)"/>
+            <line x1="188" y1="68" x2="188" y2="80" stroke="#8a99b8" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#a5s)"/>
+            <line x1="256" y1="68" x2="256" y2="80" stroke="#8a99b8" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#a5s)"/>
+            <line x1="324" y1="68" x2="324" y2="80" stroke="#8a99b8" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#a5s)"/>
+            <line x1="392" y1="68" x2="392" y2="80" stroke="#34d399" stroke-width="2"   marker-end="url(#a5g)"/>
+            <text x="362" y="96" font-family="'Noto Sans JP'" font-size="12" fill="#34d399" font-weight="600">x[6]=20 発見！</text>
+            <text x="20"  y="112" font-family="'Noto Sans JP'" font-size="11" fill="#8a99b8">x[1]から順に比較 → x[1]≠20, x[2]≠20, … , x[6]=20 で一致。先頭から6回で発見。</text>
+            <!-- フローチャート（中央軸 x=340）-->
+            <text x="240" y="136" font-family="'Noto Sans JP'" font-size="12" fill="#5b8dee" font-weight="600">フローチャート（S03:p64 再現）</text>
+            <!-- 開始 -->
+            <rect x="300" y="146" width="80" height="26" rx="13" fill="#1e2535" stroke="#e2e8f5" stroke-width="1.6"/>
+            <text x="340" y="163" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#e2e8f5">開始</text>
+            <line x1="340" y1="172" x2="340" y2="186" stroke="#8a99b8" stroke-width="1.3" marker-end="url(#a5s)"/>
+            <!-- i←1 -->
+            <rect x="298" y="186" width="84" height="28" rx="3" fill="#1e2535" stroke="#8a99b8"/>
+            <text x="340" y="204" text-anchor="middle" font-family="'JetBrains Mono'" font-size="12" fill="#e2e8f5">i ← 1</text>
+            <line x1="340" y1="214" x2="340" y2="228" stroke="#8a99b8" stroke-width="1.3" marker-end="url(#a5s)"/>
+            <!-- 判断: i≦8 -->
+            <polygon points="340,228 310,252 340,276 370,252" fill="#1e2535" stroke="#5b8dee" stroke-width="1.8"/>
+            <text x="340" y="256" text-anchor="middle" font-family="'JetBrains Mono'" font-size="12" fill="#5b8dee">i ≦ 8</text>
+            <!-- no→右（終了へ）-->
+            <text x="378" y="250" font-family="'Noto Sans JP'" font-size="11" fill="#f87171">no →</text>
+            <line x1="370" y1="252" x2="560" y2="252" stroke="#f87171" stroke-width="1.3"/>
+            <line x1="560" y1="252" x2="560" y2="362" stroke="#8a99b8" stroke-width="1.2"/>
+            <!-- yes↓ -->
+            <line x1="340" y1="276" x2="340" y2="292" stroke="#8a99b8" stroke-width="1.3"/>
+            <text x="347" y="289" font-family="'Noto Sans JP'" font-size="11" fill="#8a99b8">yes</text>
+            <!-- 判断: x[i]=target -->
+            <polygon points="340,292 306,316 340,340 374,316" fill="#1e2535" stroke="#fbbf24" stroke-width="1.8"/>
+            <text x="340" y="320" text-anchor="middle" font-family="'JetBrains Mono'" font-size="11" fill="#fbbf24">x[i]=target</text>
+            <!-- yes→右（発見）-->
+            <text x="382" y="314" font-family="'Noto Sans JP'" font-size="11" fill="#34d399">yes →</text>
+            <line x1="374" y1="316" x2="490" y2="316" stroke="#34d399" stroke-width="1.3"/>
+            <text x="496" y="320" font-family="'Noto Sans JP'" font-size="12" fill="#34d399" font-weight="600">発見！</text>
+            <!-- no↓ i を1増やす -->
+            <line x1="340" y1="340" x2="340" y2="358" stroke="#8a99b8" stroke-width="1.3"/>
+            <text x="347" y="355" font-family="'Noto Sans JP'" font-size="11" fill="#8a99b8">no</text>
+            <rect x="292" y="358" width="96" height="28" rx="3" fill="#1e2535" stroke="#8a99b8"/>
+            <text x="340" y="376" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#e2e8f5">i を1増やす</text>
+            <!-- ループ戻り（左側 x=260）-->
+            <line x1="292" y1="372" x2="260" y2="372" stroke="#8a99b8" stroke-width="1.2" stroke-dasharray="4,2"/>
+            <line x1="260" y1="372" x2="260" y2="252" stroke="#8a99b8" stroke-width="1.2" stroke-dasharray="4,2"/>
+            <line x1="260" y1="252" x2="310" y2="252" stroke="#8a99b8" stroke-width="1.2" marker-end="url(#a5s)"/>
+            <!-- 終了 -->
+            <rect x="520" y="350" width="80" height="26" rx="13" fill="#1e2535" stroke="#e2e8f5" stroke-width="1.6"/>
+            <text x="560" y="367" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#e2e8f5">終了</text>
+            <line x1="560" y1="350" x2="560" y2="252" stroke="#8a99b8" stroke-width="0"/>
+          </svg>
+          <figcaption>図2-2：線形探索 — 先頭x[1]から順に比較、x[6]=20 で発見（S03:p62-64 再現）</figcaption>
+        </figure>
+      </div>
+      <div class="def-box">
+        <span class="def-term">線形探索（リニアサーチ / Linear Search）</span>
+        先頭から順に1つずつ検索目標と比較して調べていく方法。データが<strong>整列しておらずランダム</strong>に並んでいる場合でも使用可能。最悪の場合は<strong>全ての要素を調べる必要があり</strong>時間がかかる。<span class="src">← S03</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="ch2-binary">
+    <h3 class="sub-title">2-3 二分探索（バイナリサーチ）</h3>
+    <div class="card">
+      <div class="slide-label">← S03:p70 スライド図再現</div>
+      <div class="svg-wrap">
+        <figure>
+          <svg viewBox="0 0 700 230" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px">
+            <!-- 昇順配列 -->
+            <text x="20" y="18" font-family="'Noto Sans JP'" font-size="12" fill="#5b8dee">検索対象: <tspan fill="#fbbf24">昇順</tspan>配列 x（8個）　target = 20</text>
+            <rect x="20" y="28" width="66" height="36" rx="3" fill="#1e2535" stroke="#8a99b8"/>
+            <text x="53" y="42" text-anchor="middle" font-family="'JetBrains Mono'" font-size="10" fill="#8a99b8">x[1]</text>
+            <text x="53" y="58" text-anchor="middle" font-family="'JetBrains Mono'" font-size="14" fill="#e2e8f5">19</text>
+            <rect x="90" y="28" width="66" height="36" rx="3" fill="rgba(52,211,153,.3)" stroke="#34d399" stroke-width="2"/>
+            <text x="123" y="42" text-anchor="middle" font-family="'JetBrains Mono'" font-size="10" fill="#34d399" font-weight="700">x[2]✓</text>
+            <text x="123" y="58" text-anchor="middle" font-family="'JetBrains Mono'" font-size="14" fill="#34d399" font-weight="700">20</text>
+            <rect x="160" y="28" width="66" height="36" rx="3" fill="#1e2535" stroke="#8a99b8"/>
+            <text x="193" y="42" text-anchor="middle" font-family="'JetBrains Mono'" font-size="10" fill="#8a99b8">x[3]</text>
+            <text x="193" y="58" text-anchor="middle" font-family="'JetBrains Mono'" font-size="14" fill="#e2e8f5">27</text>
+            <rect x="230" y="28" width="66" height="36" rx="3" fill="rgba(251,191,36,.2)" stroke="#fbbf24" stroke-width="2"/>
+            <text x="263" y="42" text-anchor="middle" font-family="'JetBrains Mono'" font-size="10" fill="#fbbf24">x[4]中①</text>
+            <text x="263" y="58" text-anchor="middle" font-family="'JetBrains Mono'" font-size="14" fill="#fbbf24">32</text>
+            <rect x="300" y="28" width="66" height="36" rx="3" fill="#1e2535" stroke="#8a99b8"/>
+            <text x="333" y="42" text-anchor="middle" font-family="'JetBrains Mono'" font-size="10" fill="#8a99b8">x[5]</text>
+            <text x="333" y="58" text-anchor="middle" font-family="'JetBrains Mono'" font-size="14" fill="#e2e8f5">36</text>
+            <rect x="370" y="28" width="66" height="36" rx="3" fill="#1e2535" stroke="#8a99b8"/>
+            <text x="403" y="42" text-anchor="middle" font-family="'JetBrains Mono'" font-size="10" fill="#8a99b8">x[6]</text>
+            <text x="403" y="58" text-anchor="middle" font-family="'JetBrains Mono'" font-size="14" fill="#e2e8f5">45</text>
+            <rect x="440" y="28" width="66" height="36" rx="3" fill="#1e2535" stroke="#8a99b8"/>
+            <text x="473" y="42" text-anchor="middle" font-family="'JetBrains Mono'" font-size="10" fill="#8a99b8">x[7]</text>
+            <text x="473" y="58" text-anchor="middle" font-family="'JetBrains Mono'" font-size="14" fill="#e2e8f5">53</text>
+            <rect x="510" y="28" width="66" height="36" rx="3" fill="#1e2535" stroke="#8a99b8"/>
+            <text x="543" y="42" text-anchor="middle" font-family="'JetBrains Mono'" font-size="10" fill="#8a99b8">x[8]</text>
+            <text x="543" y="58" text-anchor="middle" font-family="'JetBrains Mono'" font-size="14" fill="#e2e8f5">68</text>
+            <!-- target -->
+            <rect x="590" y="28" width="78" height="36" rx="3" fill="rgba(251,191,36,.2)" stroke="#fbbf24" stroke-width="1.5"/>
+            <text x="629" y="42" text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#8a99b8">target</text>
+            <text x="629" y="58" text-anchor="middle" font-family="'JetBrains Mono'" font-size="14" fill="#fbbf24" font-weight="700">20</text>
+            <!-- Step 1 -->
+            <text x="20" y="90" font-family="'Noto Sans JP'" font-size="12" fill="#fbbf24" font-weight="700">①</text>
+            <text x="38" y="90" font-family="'Noto Sans JP'" font-size="12" fill="#e2e8f5">全体: 左端=1, 右端=8 → 中=(1+8)/2=4 → x[4]=32</text>
+            <line x1="20" y1="100" x2="580" y2="100" stroke="#5b8dee" stroke-width="2"/>
+            <line x1="20" y1="96" x2="20" y2="104" stroke="#5b8dee" stroke-width="2"/>
+            <line x1="580" y1="96" x2="580" y2="104" stroke="#5b8dee" stroke-width="2"/>
+            <text x="300" y="116" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#5b8dee">全体範囲 x[1]〜x[8]</text>
+            <line x1="263" y1="64" x2="263" y2="124" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="4,2"/>
+            <text x="170" y="136" font-family="'Noto Sans JP'" font-size="11" fill="#fbbf24">中 x[4]=32 ＞ target=20 → 左半分へ絞る</text>
+            <!-- Step 2 -->
+            <text x="20" y="162" font-family="'Noto Sans JP'" font-size="12" fill="#34d399" font-weight="700">②</text>
+            <text x="38" y="162" font-family="'Noto Sans JP'" font-size="12" fill="#e2e8f5">左半分: 左端=1, 右端=3 → 中=(1+3)/2=2 → x[2]=20</text>
+            <line x1="20" y1="172" x2="230" y2="172" stroke="#34d399" stroke-width="2"/>
+            <line x1="20" y1="168" x2="20" y2="176" stroke="#34d399" stroke-width="2"/>
+            <line x1="230" y1="168" x2="230" y2="176" stroke="#34d399" stroke-width="2"/>
+            <text x="125" y="188" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#34d399">絞り込み範囲 x[1]〜x[3]</text>
+            <line x1="123" y1="64" x2="123" y2="195" stroke="#34d399" stroke-width="1.5" stroke-dasharray="4,2"/>
+            <text x="40" y="210" font-family="'Noto Sans JP'" font-size="11" fill="#34d399">中 x[2]=20 = target → 発見！ 2ステップで完了（線形探索の最悪8ステップと比べて高速）</text>
+          </svg>
+          <figcaption>図2-3：二分探索 ① 全体中央x[4]=32＞20→左へ ② 左半分中央x[2]=20発見（S03:p70 再現）</figcaption>
+        </figure>
+      </div>
+      <div class="def-box">
+        <span class="def-term">二分探索（バイナリサーチ / Binary Search）</span>
+        データが<em>昇順（または降順）に整列済み</em>であることを前提に、検索範囲の真ん中の要素と目標を比べ、大小によって検索範囲を半分ずつ絞っていく方法。速い。<br>フローチャートのポイント: 初期値 左端←1, 右端←8。中 ← (左端+右端)/2（<strong>小数点以下切り捨て</strong>）。終了条件: <code>左端 &gt; 右端</code> なら「見つからなかった」。<span class="src">← S03:p70</span>
+      </div>
+      <div class="svg-wrap" style="margin:16px 0">
+        <figure>
+          <svg viewBox="0 0 660 210" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:660px">
+            <!-- タイトル -->
+            <text x="330" y="22" text-anchor="middle" font-family="'Noto Sans JP'" font-size="14" fill="#5b8dee" font-weight="700">線形探索 vs 二分探索（S03:p75 再現）</text>
+            <!-- ヘッダ -->
+            <rect x="10"  y="32" width="200" height="30" rx="0" fill="rgba(91,141,238,.15)" stroke="#5b8dee"/>
+            <rect x="212" y="32" width="216" height="30" rx="0" fill="rgba(91,141,238,.20)" stroke="#5b8dee"/>
+            <rect x="430" y="32" width="220" height="30" rx="0" fill="rgba(52,211,153,.20)" stroke="#34d399"/>
+            <text x="110" y="52" text-anchor="middle" font-family="'Noto Sans JP'" font-size="13" fill="#8a99b8">比較項目</text>
+            <text x="320" y="52" text-anchor="middle" font-family="'Noto Sans JP'" font-size="13" fill="#5b8dee" font-weight="600">線形探索 Linear Search</text>
+            <text x="540" y="52" text-anchor="middle" font-family="'Noto Sans JP'" font-size="13" fill="#34d399" font-weight="600">二分探索 Binary Search</text>
+            <!-- 行1: 整列の要否 -->
+            <rect x="10"  y="62" width="200" height="36" rx="0" fill="#1e2535" stroke="#2a3350"/>
+            <rect x="212" y="62" width="216" height="36" rx="0" fill="#1e2535" stroke="#2a3350"/>
+            <rect x="430" y="62" width="220" height="36" rx="0" fill="#1e2535" stroke="#2a3350"/>
+            <text x="110" y="85" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#8a99b8">データの整列</text>
+            <text x="320" y="85" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#e2e8f5">不要（ランダムでもOK）</text>
+            <text x="540" y="85" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#fbbf24">必要（昇順または降順）</text>
+            <!-- 行2: 速度 -->
+            <rect x="10"  y="98" width="200" height="36" rx="0" fill="#1e2535" stroke="#2a3350"/>
+            <rect x="212" y="98" width="216" height="36" rx="0" fill="#1e2535" stroke="#2a3350"/>
+            <rect x="430" y="98" width="220" height="36" rx="0" fill="#1e2535" stroke="#2a3350"/>
+            <text x="110" y="121" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#8a99b8">速度</text>
+            <text x="320" y="121" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#f87171">遅い（最悪: 全件走査）</text>
+            <text x="540" y="121" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#34d399">速い（目標によらず短い）</text>
+            <!-- 行3: 対象データ -->
+            <rect x="10"  y="134" width="200" height="36" rx="0" fill="#1e2535" stroke="#2a3350"/>
+            <rect x="212" y="134" width="216" height="36" rx="0" fill="#1e2535" stroke="#2a3350"/>
+            <rect x="430" y="134" width="220" height="36" rx="0" fill="#1e2535" stroke="#2a3350"/>
+            <text x="110" y="157" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#8a99b8">利用条件</text>
+            <text x="320" y="157" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#e2e8f5">整列・未整列問わず使える</text>
+            <text x="540" y="157" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#e2e8f5">順序関係のあるデータのみ</text>
+            <!-- 行4: 検索時間の変動 -->
+            <rect x="10"  y="170" width="200" height="36" rx="0" fill="#1e2535" stroke="#2a3350"/>
+            <rect x="212" y="170" width="216" height="36" rx="0" fill="#1e2535" stroke="#2a3350"/>
+            <rect x="430" y="170" width="220" height="36" rx="0" fill="#1e2535" stroke="#2a3350"/>
+            <text x="110" y="193" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#8a99b8">検索時間の変動</text>
+            <text x="320" y="193" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#f87171">並び順・目標により大きく変動</text>
+            <text x="540" y="193" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#34d399">目標によらず短く高速</text>
+          </svg>
+          <figcaption>図2-2b：線形探索 vs 二分探索 比較（S03:p75 再現）</figcaption>
+        </figure>
+      </div>
+      <table class="styled-table">
+        <thead><tr><th></th><th>線形探索</th><th>二分探索</th></tr></thead>
+        <tbody>
+          <tr><td><strong>事前整列</strong></td><td>不要</td><td>必要（昇順/降順）</td></tr>
+          <tr><td><strong>速度</strong></td><td>遅い（最悪: 全件走査）</td><td>速い（目標によらず短い）</td></tr>
+        </tbody>
+      </table>
+      <p style="color:var(--text-sub);font-size:13px">← S03</p>
+    </div>
+  </div>
+
+  <div id="ch2-sort-intro" style="margin-bottom:0">
+    <div class="card" style="padding:14px 20px">
+      <h4 style="color:var(--blue)">並べ替えを行う理由 <span class="src">← S03:p75</span></h4>
+      <p><strong>高速な二分探索を利用するためにはデータを順序良く並べておく必要がある。</strong>これが並べ替え（整列・ソート）の主要な動機のひとつ。</p>
+      <h4 style="color:var(--blue);margin-top:12px">並べ替えの規則 <span class="src">← S03:p75</span></h4>
+      <ul>
+        <li>文字列: <strong>五十音順</strong>・アルファベット順 ─ 内部的には <strong>文字コード</strong>（数値）に従った並べ替え</li>
+        <li>数値: <strong>昇順</strong>（小→大）・<strong>降順</strong>（大→小）</li>
+      </ul>
+      <p>多種のアルゴリズムが存在: バブルソート・選択ソート・クイックソートなど</p>
+      <div class="svg-wrap" style="margin-top:14px">
+        <figure>
+          <svg viewBox="0 0 560 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:560px">
+            <text x="140" y="18" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#8a99b8">整列前（ランダム）</text>
+            <!-- bars before (heights: 3,1,5,4,1.5,4.5,3.5) normalized to 70px max -->
+            <rect x="20"  y="78" width="22" height="32" fill="rgba(91,141,238,.5)" stroke="#5b8dee" stroke-width="1"/>
+            <rect x="46"  y="90" width="22" height="20" fill="rgba(91,141,238,.5)" stroke="#5b8dee" stroke-width="1"/>
+            <rect x="72"  y="42" width="22" height="68" fill="rgba(91,141,238,.5)" stroke="#5b8dee" stroke-width="1"/>
+            <rect x="98"  y="58" width="22" height="52" fill="rgba(91,141,238,.5)" stroke="#5b8dee" stroke-width="1"/>
+            <rect x="124" y="94" width="22" height="16" fill="rgba(91,141,238,.5)" stroke="#5b8dee" stroke-width="1"/>
+            <rect x="150" y="50" width="22" height="60" fill="rgba(91,141,238,.5)" stroke="#5b8dee" stroke-width="1"/>
+            <rect x="176" y="72" width="22" height="38" fill="rgba(91,141,238,.5)" stroke="#5b8dee" stroke-width="1"/>
+            <line x1="10" y1="110" x2="210" y2="110" stroke="#8a99b8" stroke-width="1.5"/>
+            <text x="90" y="124" text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#5b8dee">小 ←→ 大</text>
+            <!-- arrow -->
+            <text x="250" y="57" text-anchor="middle" font-size="24" fill="#fbbf24" font-family="sans-serif">⇒</text>
+            <text x="250" y="78" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#fbbf24">昇順に</text>
+            <text x="250" y="96" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#fbbf24">並べ替え</text>
+            <!-- bars after (sorted ascending) -->
+            <text x="420" y="18" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#34d399">整列後（昇順）</text>
+            <rect x="300" y="94" width="22" height="16" fill="rgba(52,211,153,.6)" stroke="#34d399" stroke-width="1"/>
+            <rect x="326" y="90" width="22" height="20" fill="rgba(52,211,153,.6)" stroke="#34d399" stroke-width="1"/>
+            <rect x="352" y="78" width="22" height="32" fill="rgba(52,211,153,.6)" stroke="#34d399" stroke-width="1"/>
+            <rect x="378" y="72" width="22" height="38" fill="rgba(52,211,153,.6)" stroke="#34d399" stroke-width="1"/>
+            <rect x="404" y="58" width="22" height="52" fill="rgba(52,211,153,.6)" stroke="#34d399" stroke-width="1"/>
+            <rect x="430" y="50" width="22" height="60" fill="rgba(52,211,153,.6)" stroke="#34d399" stroke-width="1"/>
+            <rect x="456" y="42" width="22" height="68" fill="rgba(52,211,153,.6)" stroke="#34d399" stroke-width="1"/>
+            <line x1="290" y1="110" x2="490" y2="110" stroke="#8a99b8" stroke-width="1.5"/>
+            <text x="380" y="124" text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#34d399">小 ─────────────→ 大</text>
+          </svg>
+          <figcaption>図2-1b：並べ替え（ソート）のイメージ — ランダム配列を昇順に整列（S03:p77 再現）</figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+
+  <div id="ch2-bubble">
+    <h3 class="sub-title">2-4 バブルソート</h3>
+    <div class="card">
+      <div class="slide-label">← S03:p81,85 スライド図再現</div>
+      <div class="svg-wrap">
+        <figure>
+          <svg viewBox="0 0 680 250" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:680px">
+            <text x="20" y="20" font-family="'Noto Sans JP'" font-size="12" fill="#5b8dee">バブルソート — 1周ごとに最大値を右端へ移動（隣接比較・交換）</text>
+
+            <!-- ===初期状態=== -->
+            <text x="20" y="46" font-family="'Noto Sans JP'" font-size="11" fill="#8a99b8">初期</text>
+            <rect x="50"  y="54" width="50" height="34" rx="3" fill="#1e2535" stroke="#8a99b8"/><text x="75"  y="76" text-anchor="middle" font-family="'JetBrains Mono'" font-size="14" fill="#e2e8f5">5</text>
+            <rect x="104" y="54" width="50" height="34" rx="3" fill="#1e2535" stroke="#8a99b8"/><text x="129" y="76" text-anchor="middle" font-family="'JetBrains Mono'" font-size="14" fill="#e2e8f5">3</text>
+            <rect x="158" y="54" width="50" height="34" rx="3" fill="#1e2535" stroke="#8a99b8"/><text x="183" y="76" text-anchor="middle" font-family="'JetBrains Mono'" font-size="14" fill="#e2e8f5">8</text>
+            <rect x="212" y="54" width="50" height="34" rx="3" fill="#1e2535" stroke="#8a99b8"/><text x="237" y="76" text-anchor="middle" font-family="'JetBrains Mono'" font-size="14" fill="#e2e8f5">1</text>
+            <rect x="266" y="54" width="50" height="34" rx="3" fill="#1e2535" stroke="#8a99b8"/><text x="291" y="76" text-anchor="middle" font-family="'JetBrains Mono'" font-size="14" fill="#e2e8f5">6</text>
+            <!-- 矢印 -->
+            <text x="334" y="76" text-anchor="middle" font-size="24" fill="#5b8dee" font-family="sans-serif">→</text>
+
+            <!-- ===1周後（最大値8が右端へ確定）=== -->
+            <text x="360" y="46" font-family="'Noto Sans JP'" font-size="11" fill="#8a99b8">1周後</text>
+            <rect x="388" y="54" width="50" height="34" rx="3" fill="#1e2535" stroke="#8a99b8"/><text x="413" y="76" text-anchor="middle" font-family="'JetBrains Mono'" font-size="14" fill="#e2e8f5">3</text>
+            <rect x="442" y="54" width="50" height="34" rx="3" fill="#1e2535" stroke="#8a99b8"/><text x="467" y="76" text-anchor="middle" font-family="'JetBrains Mono'" font-size="14" fill="#e2e8f5">5</text>
+            <rect x="496" y="54" width="50" height="34" rx="3" fill="#1e2535" stroke="#8a99b8"/><text x="521" y="76" text-anchor="middle" font-family="'JetBrains Mono'" font-size="14" fill="#e2e8f5">1</text>
+            <rect x="550" y="54" width="50" height="34" rx="3" fill="#1e2535" stroke="#8a99b8"/><text x="575" y="76" text-anchor="middle" font-family="'JetBrains Mono'" font-size="14" fill="#e2e8f5">6</text>
+            <!-- 確定セル（ラベルと値を余裕を持って配置） -->
+            <rect x="604" y="54" width="62" height="34" rx="3" fill="rgba(52,211,153,.3)" stroke="#34d399" stroke-width="2"/>
+            <text x="635" y="68"  text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#34d399">確定</text>
+            <text x="635" y="83"  text-anchor="middle" font-family="'JetBrains Mono'" font-size="14" fill="#34d399" font-weight="700">8</text>
+
+            <!-- ===値の交換図（S03:p85 再現）=== -->
+            <text x="20" y="114" font-family="'Noto Sans JP'" font-size="12" fill="#fbbf24" font-weight="700">値の交換（S03:p85 再現）— 3ステップ必要</text>
+            <rect x="20"  y="126" width="72" height="40" rx="5" fill="rgba(91,141,238,.2)" stroke="#5b8dee" stroke-width="1.5"/>
+            <text x="56"  y="142" text-anchor="middle" font-family="'JetBrains Mono'" font-size="12" fill="#5b8dee">x[i]</text>
+            <text x="56"  y="159" text-anchor="middle" font-family="'JetBrains Mono'" font-size="11" fill="#5b8dee">= A</text>
+            <rect x="106" y="126" width="72" height="40" rx="5" fill="rgba(52,211,153,.2)" stroke="#34d399" stroke-width="1.5"/>
+            <text x="142" y="142" text-anchor="middle" font-family="'JetBrains Mono'" font-size="12" fill="#34d399">x[i+1]</text>
+            <text x="142" y="159" text-anchor="middle" font-family="'JetBrains Mono'" font-size="11" fill="#34d399">= B</text>
+            <rect x="192" y="126" width="62" height="40" rx="5" fill="#1e2535" stroke="#8a99b8"/>
+            <text x="223" y="150" text-anchor="middle" font-family="'JetBrains Mono'" font-size="12" fill="#8a99b8">tmp</text>
+            <text x="278" y="132" font-family="'JetBrains Mono'" font-size="12" fill="#e2e8f5">① tmp  ← x[i]　　 A を退避</text>
+            <text x="278" y="150" font-family="'JetBrains Mono'" font-size="12" fill="#e2e8f5">② x[i]  ← x[i+1]　B で上書き</text>
+            <text x="278" y="168" font-family="'JetBrains Mono'" font-size="12" fill="#e2e8f5">③ x[i+1] ← tmp　　A を復元</text>
+
+            <text x="20" y="196" font-family="'Noto Sans JP'" font-size="11" fill="#8a99b8">いきなり x[i]←x[i+1] と代入すると x[i] の値が消える。一時退避変数 tmp が必要。</text>
+
+            <text x="20" y="220" font-family="'Noto Sans JP'" font-size="11" fill="#5b8dee" font-weight="700">擬似コード（S03:p90）</text>
+            <text x="20" y="240" font-family="'JetBrains Mono'" font-size="11" fill="#8a99b8">for(右端 n→2)  for(i 1→右端-1)  if(x[i]&gt;x[i+1])  値を交換</text>
+          </svg>
+          <figcaption>図2-4：バブルソートの動作と値の交換アルゴリズム（S03:p81,85,90 再現）</figcaption>
+        </figure>
+      </div>
+      <div class="code-block"><span class="cm">/* バブルソート 擬似コード（S03:p90 完全再現） */</span>
+<span class="kw">for</span>( 右端 を n から2まで 1 ずつ減らす )
+  <span class="kw">for</span>( i を 1 から 右端-1 まで 1 ずつ増やす )
+    <span class="kw">if</span>( x[ i ] &gt; x[ i+1 ] )
+      x[ i ] と x[ i+1 ] の <span style="color:#f87171">値を交換</span>　<span class="cm">← tmp ← x[i] / x[i] ← x[i+1] / x[i+1] ← tmp の3ステップ</span>
+    <span class="kw">end if</span>
+  <span class="kw">end for</span>
+<span class="kw">end for</span></div>
+      <div class="def-box">
+        <span class="def-term">バブルソート（Bubble Sort）</span>
+        <strong>隣合う要素を比較</strong>し大小関係が違えば交換する処理を左端から右端まで繰り返す。1周するたびに最大値が右端へ確定するので、右端を除いた範囲で同じことを繰り返す。<span class="src">← S03</span>
+      </div>
+      <div class="warn-block">
+        <div class="bl">⚠️ 値の交換は必ず3ステップ</div>
+        同時代入は不可。tmp（一時退避変数）で①退避→②上書き→③復元の手順が必須。<span class="src">← S03:p85</span>
+      </div>
+      <div class="svg-wrap" style="margin-top:16px">
+        <figure>
+          <svg viewBox="0 0 540 420" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:540px">
+            <defs><marker id="abub" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#8a99b8"/></marker></defs>
+            <text x="20" y="18" font-family="'Noto Sans JP'" font-size="13" fill="#5b8dee" font-weight="700">フローチャート（S03:p90 完全再現）</text>
+            <!-- 開始 -->
+            <rect x="200" y="28" width="80" height="26" rx="13" fill="#1e2535" stroke="#e2e8f5" stroke-width="1.5"/>
+            <text x="240" y="45" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#e2e8f5">開始</text>
+            <line x1="240" y1="54" x2="240" y2="68" stroke="#8a99b8" stroke-width="1.2" marker-end="url(#abub)"/>
+            <!-- 右端←n -->
+            <rect x="175" y="68" width="130" height="26" rx="3" fill="#1e2535" stroke="#8a99b8"/>
+            <text x="240" y="85" text-anchor="middle" font-family="'JetBrains Mono'" font-size="12" fill="#e2e8f5">右端 ← n</text>
+            <line x1="240" y1="94" x2="240" y2="108" stroke="#8a99b8" stroke-width="1.2" marker-end="url(#abub)"/>
+            <!-- 外ループ判断: 1<右端 -->
+            <polygon points="240,108 200,130 240,152 280,130" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+            <text x="240" y="133" text-anchor="middle" font-family="'JetBrains Mono'" font-size="11" fill="#5b8dee">1&lt;右端</text>
+            <text x="290" y="128" font-family="'Noto Sans JP'" font-size="10" fill="#f87171">no →</text>
+            <line x1="240" y1="152" x2="240" y2="166" stroke="#8a99b8" stroke-width="1.2"/>
+            <text x="246" y="163" font-family="'Noto Sans JP'" font-size="10" fill="#8a99b8">yes</text>
+            <!-- i←1 -->
+            <rect x="190" y="166" width="100" height="26" rx="3" fill="#1e2535" stroke="#8a99b8"/>
+            <text x="240" y="183" text-anchor="middle" font-family="'JetBrains Mono'" font-size="12" fill="#e2e8f5">i ← 1</text>
+            <line x1="240" y1="192" x2="240" y2="206" stroke="#8a99b8" stroke-width="1.2" marker-end="url(#abub)"/>
+            <!-- 内ループ判断: i<右端 -->
+            <polygon points="240,206 200,228 240,250 280,228" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+            <text x="240" y="231" text-anchor="middle" font-family="'JetBrains Mono'" font-size="11" fill="#5b8dee">i&lt;右端</text>
+            <text x="290" y="226" font-family="'Noto Sans JP'" font-size="10" fill="#f87171">no →</text>
+            <line x1="240" y1="250" x2="240" y2="264" stroke="#8a99b8" stroke-width="1.2"/>
+            <text x="246" y="261" font-family="'Noto Sans JP'" font-size="10" fill="#8a99b8">yes</text>
+            <!-- 判断: x[i]>x[i+1] -->
+            <polygon points="240,264 188,290 240,316 292,290" fill="#1e2535" stroke="#fbbf24" stroke-width="1.5"/>
+            <text x="240" y="286" text-anchor="middle" font-family="'JetBrains Mono'" font-size="10" fill="#fbbf24">x[i]&gt;x[i+1]</text>
+            <text x="294" y="291" font-family="'Noto Sans JP'" font-size="10" fill="#8a99b8">no</text>
+            <line x1="240" y1="316" x2="240" y2="330" stroke="#8a99b8" stroke-width="1.2"/>
+            <text x="246" y="327" font-family="'Noto Sans JP'" font-size="10" fill="#8a99b8">yes</text>
+            <!-- 値を交換 -->
+            <rect x="160" y="330" width="160" height="30" rx="3" fill="rgba(248,113,113,.15)" stroke="#f87171" stroke-width="1.5"/>
+            <text x="240" y="349" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#f87171">x[i]とx[i+1]の値を交換</text>
+            <!-- i+1 -->
+            <line x1="240" y1="360" x2="240" y2="374" stroke="#8a99b8" stroke-width="1.2" marker-end="url(#abub)"/>
+            <rect x="190" y="374" width="100" height="26" rx="3" fill="#1e2535" stroke="#8a99b8"/>
+            <text x="240" y="391" text-anchor="middle" font-family="'JetBrains Mono'" font-size="12" fill="#e2e8f5">i を1増やす</text>
+            <!-- 内ループ戻り -->
+            <path d="M 190 387 Q 140 387 140 228 Q 140 206 200 206" fill="none" stroke="#8a99b8" stroke-width="1.2" stroke-dasharray="3,2" marker-end="url(#abub)"/>
+            <!-- no分岐（内ループ抜け）: 右端を1減らす -->
+            <line x1="290" y1="228" x2="380" y2="228" stroke="#f87171" stroke-width="1.2"/>
+            <rect x="350" y="215" width="120" height="26" rx="3" fill="#1e2535" stroke="#34d399"/>
+            <text x="410" y="232" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#34d399">右端を1減らす</text>
+            <!-- 外ループ戻り -->
+            <path d="M 410 241 Q 410 130 280 130" fill="none" stroke="#8a99b8" stroke-width="1.2" stroke-dasharray="3,2" marker-end="url(#abub)"/>
+            <!-- no分岐（外ループ抜け）: 終了 -->
+            <line x1="320" y1="130" x2="440" y2="130" stroke="#f87171" stroke-width="1.2"/>
+            <line x1="440" y1="130" x2="440" y2="395" stroke="#8a99b8" stroke-width="1.2"/>
+            <rect x="400" y="395" width="80" height="26" rx="13" fill="#1e2535" stroke="#e2e8f5" stroke-width="1.5"/>
+            <text x="440" y="412" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#e2e8f5">終了</text>
+          </svg>
+          <figcaption>図2-4b：バブルソートのフローチャート（S03:p90 完全再現）— 2重ループ構造</figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+
+  <div id="ch2-select">
+    <h3 class="sub-title">2-5 選択ソート（最大値選択法）</h3>
+    <div class="card">
+      <div class="slide-label">← S03:p92-94 スライド図再現</div>
+      <div class="svg-wrap">
+        <figure>
+          <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px">
+            <text x="20" y="18" font-family="'Noto Sans JP'" font-size="12" fill="#5b8dee">最大値選択法 — 最大値を探して右端と1回だけ交換</text>
+
+            <!-- ===1周目（初期）=== -->
+            <text x="20" y="42" font-family="'Noto Sans JP'" font-size="11" fill="#fbbf24">① 初期状態</text>
+            <!-- 5セル -->
+            <rect x="38"  y="50" width="52" height="34" rx="3" fill="#1e2535" stroke="#8a99b8"/>
+            <text x="64"  y="72" text-anchor="middle" font-family="'JetBrains Mono'" font-size="14" fill="#e2e8f5">3</text>
+            <rect x="94"  y="50" width="52" height="34" rx="3" fill="#1e2535" stroke="#8a99b8"/>
+            <text x="120" y="72" text-anchor="middle" font-family="'JetBrains Mono'" font-size="14" fill="#e2e8f5">1</text>
+            <!-- 仮の最大: 8 -->
+            <rect x="148" y="48" width="56" height="40" rx="3" fill="rgba(251,191,36,.28)" stroke="#fbbf24" stroke-width="2"/>
+            <text x="176" y="64" text-anchor="middle" font-family="'Noto Sans JP'" font-size="9" fill="#fbbf24">仮の最大</text>
+            <text x="176" y="82" text-anchor="middle" font-family="'JetBrains Mono'" font-size="14" fill="#fbbf24">8</text>
+            <rect x="206" y="50" width="52" height="34" rx="3" fill="#1e2535" stroke="#8a99b8"/>
+            <text x="232" y="72" text-anchor="middle" font-family="'JetBrains Mono'" font-size="14" fill="#e2e8f5">2</text>
+            <!-- 右端: 6 -->
+            <rect x="260" y="48" width="56" height="40" rx="3" fill="rgba(91,141,238,.18)" stroke="#5b8dee" stroke-width="1.5"/>
+            <text x="288" y="64" text-anchor="middle" font-family="'Noto Sans JP'" font-size="9" fill="#5b8dee">右端</text>
+            <text x="288" y="82" text-anchor="middle" font-family="'JetBrains Mono'" font-size="14" fill="#e2e8f5">6</text>
+
+            <!-- 交換矢印（仮の最大 ↔ 右端） -->
+            <path d="M 176 48 Q 176 26 288 26 Q 288 26 288 48" fill="none" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="4,2"/>
+            <text x="232" y="22" text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#fbbf24">↔ 交換</text>
+
+            <!-- 矢印 → -->
+            <text x="330" y="74" text-anchor="middle" font-size="26" fill="#5b8dee" font-family="sans-serif">→</text>
+
+            <!-- ===1周後=== -->
+            <text x="368" y="42" font-family="'Noto Sans JP'" font-size="11" fill="#8a99b8">② 1周後</text>
+            <rect x="368" y="50" width="52" height="34" rx="3" fill="#1e2535" stroke="#8a99b8"/>
+            <text x="394" y="72" text-anchor="middle" font-family="'JetBrains Mono'" font-size="14" fill="#e2e8f5">3</text>
+            <rect x="424" y="50" width="52" height="34" rx="3" fill="#1e2535" stroke="#8a99b8"/>
+            <text x="450" y="72" text-anchor="middle" font-family="'JetBrains Mono'" font-size="14" fill="#e2e8f5">1</text>
+            <rect x="480" y="50" width="52" height="34" rx="3" fill="#1e2535" stroke="#8a99b8"/>
+            <text x="506" y="72" text-anchor="middle" font-family="'JetBrains Mono'" font-size="14" fill="#e2e8f5">6</text>
+            <rect x="536" y="50" width="52" height="34" rx="3" fill="#1e2535" stroke="#8a99b8"/>
+            <text x="562" y="72" text-anchor="middle" font-family="'JetBrains Mono'" font-size="14" fill="#e2e8f5">2</text>
+            <!-- 確定: 8 -->
+            <rect x="592" y="50" width="52" height="34" rx="3" fill="rgba(52,211,153,.28)" stroke="#34d399" stroke-width="2"/>
+            <text x="618" y="67" text-anchor="middle" font-family="'Noto Sans JP'" font-size="9" fill="#34d399">確定</text>
+            <text x="618" y="82" text-anchor="middle" font-family="'JetBrains Mono'" font-size="14" fill="#34d399" font-weight="700">8</text>
+
+            <!-- ===擬似コード（3行に分割）=== -->
+            <text x="20" y="108" font-family="'Noto Sans JP'" font-size="11" fill="#5b8dee" font-weight="600">擬似コード（S03:p94 再現）</text>
+            <text x="20" y="126" font-family="'JetBrains Mono'" font-size="11" fill="#8a99b8">for( 右端 を n から 2 まで )</text>
+            <text x="36" y="143" font-family="'JetBrains Mono'" font-size="11" fill="#8a99b8">  仮の最大 ← 右端</text>
+            <text x="36" y="160" font-family="'JetBrains Mono'" font-size="11" fill="#8a99b8">  for( i を 1 から 右端-1 まで )</text>
+            <text x="52" y="177" font-family="'JetBrains Mono'" font-size="11" fill="#8a99b8">    if( x[i] &gt; x[仮の最大] )  仮の最大 ← i</text>
+            <text x="20" y="194" font-family="'JetBrains Mono'" font-size="11" fill="#fbbf24">  x[仮の最大] と x[右端] を交換  ← 1周に1回のみ</text>
+            <text x="20" y="212" font-family="'Noto Sans JP'" font-size="11" fill="#8a99b8">バブルソートと異なり、1周の交換が1回のみ（効率的）</text>
+          </svg>
+          <figcaption>図2-5：選択ソート（最大値選択法）— 1周に1回の交換で確定させる（S03:p92-94 再現）</figcaption>
+        </figure>
+      </div>
+      <div class="code-block"><span class="cm">/* 選択ソート（最大値選択法）擬似コード（S03:p95 完全再現） */</span>
+<span class="kw">for</span>( 右端 を n から2まで 1 ずつ減らす )
+  仮の最大 ← 右端　<span class="cm">← まず右端を仮の最大値位置とする</span>
+  <span class="kw">for</span>( i を 1 から 右端-1 まで 1 ずつ増やす )
+    <span class="kw">if</span>( x[ i ] &gt; x[仮の最大] )
+      仮の最大 ← i
+    <span class="kw">end if</span>
+  <span class="kw">end for</span>
+  x[仮の最大] と x[右端] の <span style="color:#f87171">値を交換</span>　<span class="cm">← 1周に1回のみ</span>
+<span class="kw">end for</span></div>
+      <div class="def-box">
+        <span class="def-term">選択ソート（最大値選択法）</span>
+        仮の最大を更新しながら範囲を1周して最大値を見つけ、右端と1回だけ交換する。右端を除いた1つ狭い範囲で繰り返す。<span class="src">← S03</span>
+      </div>
+      <p style="color:var(--text-sub);font-size:12px">※ 最大値選択法の他、最小値選択法なども含め「選択ソート」と総称する。<span class="src">← S03:p95脚注</span></p>
+      <div class="svg-wrap" style="margin-top:16px">
+        <figure>
+          <svg viewBox="0 0 580 470" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:580px">
+            <defs><marker id="asel" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#8a99b8"/></marker></defs>
+            <text x="20" y="20" font-family="'Noto Sans JP'" font-size="13" fill="#5b8dee" font-weight="700">フローチャート（S03:p95 完全再現）</text>
+
+            <!-- 中央軸: x=210 -->
+            <!-- 開始 -->
+            <rect x="170" y="30" width="80" height="28" rx="14" fill="#1e2535" stroke="#e2e8f5" stroke-width="1.5"/>
+            <text x="210" y="48" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#e2e8f5">開始</text>
+            <line x1="210" y1="58" x2="210" y2="74" stroke="#8a99b8" stroke-width="1.3" marker-end="url(#asel)"/>
+
+            <!-- 右端 ← n -->
+            <rect x="150" y="74" width="120" height="28" rx="4" fill="#1e2535" stroke="#8a99b8"/>
+            <text x="210" y="92" text-anchor="middle" font-family="'JetBrains Mono'" font-size="12" fill="#e2e8f5">右端 ← n</text>
+            <line x1="210" y1="102" x2="210" y2="116" stroke="#8a99b8" stroke-width="1.3" marker-end="url(#asel)"/>
+
+            <!-- [外ループ] 1 < 右端? -->
+            <polygon points="210,116 174,140 210,164 246,140" fill="#1e2535" stroke="#5b8dee" stroke-width="1.8"/>
+            <text x="210" y="143" text-anchor="middle" font-family="'JetBrains Mono'" font-size="11" fill="#5b8dee">1 &lt; 右端</text>
+            <text x="255" y="138" font-family="'Noto Sans JP'" font-size="10" fill="#f87171">no →</text>
+            <line x1="210" y1="164" x2="210" y2="180" stroke="#8a99b8" stroke-width="1.3"/>
+            <text x="217" y="177" font-family="'Noto Sans JP'" font-size="10" fill="#8a99b8">yes</text>
+
+            <!-- i←1　仮の最大←右端 -->
+            <rect x="128" y="180" width="164" height="28" rx="4" fill="#1e2535" stroke="#8a99b8"/>
+            <text x="210" y="198" text-anchor="middle" font-family="'JetBrains Mono'" font-size="11" fill="#e2e8f5">i←1  仮の最大←右端</text>
+            <line x1="210" y1="208" x2="210" y2="222" stroke="#8a99b8" stroke-width="1.3" marker-end="url(#asel)"/>
+
+            <!-- [内ループ] i < 右端? -->
+            <polygon points="210,222 174,246 210,270 246,246" fill="#1e2535" stroke="#5b8dee" stroke-width="1.8"/>
+            <text x="210" y="249" text-anchor="middle" font-family="'JetBrains Mono'" font-size="11" fill="#5b8dee">i &lt; 右端</text>
+            <text x="255" y="244" font-family="'Noto Sans JP'" font-size="10" fill="#f87171">no →</text>
+            <line x1="210" y1="270" x2="210" y2="284" stroke="#8a99b8" stroke-width="1.3"/>
+            <text x="217" y="281" font-family="'Noto Sans JP'" font-size="10" fill="#8a99b8">yes</text>
+
+            <!-- x[i] > x[仮の最大]? -->
+            <polygon points="210,284 166,310 210,336 254,310" fill="#1e2535" stroke="#fbbf24" stroke-width="1.8"/>
+            <text x="210" y="306" text-anchor="middle" font-family="'JetBrains Mono'" font-size="10" fill="#fbbf24">x[i] &gt; x[仮の最大]</text>
+            <text x="262" y="312" font-family="'Noto Sans JP'" font-size="10" fill="#8a99b8">no ↓</text>
+            <line x1="210" y1="336" x2="210" y2="350" stroke="#8a99b8" stroke-width="1.3"/>
+            <text x="217" y="347" font-family="'Noto Sans JP'" font-size="10" fill="#8a99b8">yes</text>
+
+            <!-- 仮の最大 ← i -->
+            <rect x="152" y="350" width="116" height="28" rx="4" fill="rgba(251,191,36,.15)" stroke="#fbbf24" stroke-width="1.5"/>
+            <text x="210" y="368" text-anchor="middle" font-family="'JetBrains Mono'" font-size="11" fill="#fbbf24">仮の最大 ← i</text>
+            <line x1="210" y1="378" x2="210" y2="394" stroke="#8a99b8" stroke-width="1.3" marker-end="url(#asel)"/>
+
+            <!-- i を1増やす（no分岐も合流） -->
+            <!-- no分岐（x[i]条件）→ i増やすへ合流 -->
+            <line x1="254" y1="310" x2="310" y2="310" stroke="#8a99b8" stroke-width="1.2"/>
+            <line x1="310" y1="310" x2="310" y2="400" stroke="#8a99b8" stroke-width="1.2"/>
+            <line x1="310" y1="400" x2="286" y2="400" stroke="#8a99b8" stroke-width="1.2"/>
+            <rect x="152" y="394" width="134" height="28" rx="4" fill="#1e2535" stroke="#8a99b8"/>
+            <text x="219" y="412" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#e2e8f5">i を1増やす</text>
+
+            <!-- 内ループ戻り矢印（左側） -->
+            <line x1="152" y1="408" x2="100" y2="408" stroke="#8a99b8" stroke-width="1.2" stroke-dasharray="4,2"/>
+            <line x1="100" y1="408" x2="100" y2="246" stroke="#8a99b8" stroke-width="1.2" stroke-dasharray="4,2"/>
+            <line x1="100" y1="246" x2="174" y2="246" stroke="#8a99b8" stroke-width="1.2" marker-end="url(#asel)"/>
+
+            <!-- 内ループ抜け（no→右へ）：交換処理 -->
+            <line x1="246" y1="246" x2="372" y2="246" stroke="#f87171" stroke-width="1.3"/>
+            <!-- 交換 -->
+            <rect x="372" y="232" width="148" height="28" rx="4" fill="rgba(248,113,113,.15)" stroke="#f87171" stroke-width="1.5"/>
+            <text x="446" y="250" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#f87171">x[仮の最大]とx[右端]</text>
+            <!-- 2行分割 -->
+            <rect x="400" y="262" width="92" height="24" rx="3" fill="rgba(248,113,113,.1)" stroke="#f87171" stroke-width="1"/>
+            <text x="446" y="278" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#f87171">の値を交換</text>
+            <line x1="446" y1="286" x2="446" y2="302" stroke="#8a99b8" stroke-width="1.3" marker-end="url(#asel)"/>
+
+            <!-- 右端を1減らす -->
+            <rect x="376" y="302" width="140" height="28" rx="4" fill="#1e2535" stroke="#34d399"/>
+            <text x="446" y="320" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#34d399">右端を1減らす</text>
+
+            <!-- 外ループ戻り矢印（右側→上） -->
+            <line x1="446" y1="330" x2="446" y2="440" stroke="#8a99b8" stroke-width="1.2" stroke-dasharray="4,2"/>
+            <line x1="446" y1="440" x2="210" y2="440" stroke="#8a99b8" stroke-width="1.2" stroke-dasharray="4,2"/>
+            <line x1="210" y1="440" x2="210" y2="428" stroke="#8a99b8" stroke-width="1.2"/>
+            <line x1="210" y1="428" x2="210" y2="420" stroke="#8a99b8" stroke-width="1.2" marker-end="url(#asel)"/>
+            <!-- ダミーラインで「外ループ戻り」の終点を i←1 ボックス上部へ -->
+            <path d="M 446 330 Q 450 440 210 440 Q 210 420 210 420" fill="none" stroke="#8a99b8" stroke-width="1.2" stroke-dasharray="4,2" marker-end="url(#asel)"/>
+
+            <!-- 外ループ抜け（no→右側→終了） -->
+            <line x1="246" y1="140" x2="540" y2="140" stroke="#f87171" stroke-width="1.2"/>
+            <line x1="540" y1="140" x2="540" y2="455" stroke="#8a99b8" stroke-width="1.2"/>
+            <line x1="540" y1="455" x2="332" y2="455" stroke="#8a99b8" stroke-width="1.2"/>
+            <!-- 終了 -->
+            <rect x="252" y="443" width="80" height="28" rx="14" fill="#1e2535" stroke="#e2e8f5" stroke-width="1.5"/>
+            <text x="292" y="461" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#e2e8f5">終了</text>
+          </svg>
+          <figcaption>図2-5b：選択ソート（最大値選択法）フローチャート（S03:p95 完全再現）</figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+
+  <div id="ch2-quick">
+    <h3 class="sub-title">2-6 クイックソート</h3>
+    <div class="card">
+      <div class="slide-label">← S03:p100-102 スライド図再現</div>
+      <div class="svg-wrap">
+        <figure>
+          <svg viewBox="0 0 660 310" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:660px">
+            <defs><marker id="aqk" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#8a99b8"/></marker></defs>
+            <!-- Left: explanation -->
+            <text x="20" y="20" font-family="'Noto Sans JP'" font-size="13" fill="#5b8dee" font-weight="700">分割処理（S03:p102 再現）</text>
+            <rect x="20" y="30" width="330" height="130" rx="6" fill="#1a1f2e" stroke="#5b8dee" stroke-width="1.5"/>
+            <text x="30" y="52" font-family="'Noto Sans JP'" font-size="12" fill="#e2e8f5">データ列の両端から内側へ向かい繰り返す</text>
+            <text x="30" y="72" font-family="'Noto Sans JP'" font-size="12" fill="#5b8dee">・左から右へ → 基準値以上のデータを見つける</text>
+            <text x="30" y="90" font-family="'Noto Sans JP'" font-size="12" fill="#a78bfa">・右から左へ → 基準値以下のデータを見つける</text>
+            <text x="30" y="108" font-family="'Noto Sans JP'" font-size="12" fill="#fbbf24">・見つけたデータを交換</text>
+            <text x="30" y="126" font-family="'Noto Sans JP'" font-size="12" fill="#f87171">・位置が一致/逆転したら分割終了</text>
+            <text x="30" y="148" font-family="'Noto Sans JP'" font-size="11" fill="#8a99b8">基準値の例: （左端の値 + 右端の値）/ 2</text>
+            <text x="20" y="178" font-family="'Noto Sans JP'" font-size="12" fill="#e2e8f5">分割後のデータ列にも<tspan fill="#34d399" font-weight="700">再帰的</tspan>に同じ処理を繰り返す</text>
+            <text x="20" y="198" font-family="'Noto Sans JP'" font-size="12" fill="#34d399">全データが1つずつになったら並べ替え完了</text>
+            <text x="20" y="218" font-family="'Noto Sans JP'" font-size="12" fill="#8a99b8">大きな問題を小さな問題に分けて解く → 高速</text>
+
+            <!-- Right: recursive flowchart -->
+            <rect x="430" y="8" width="210" height="285" rx="10" fill="#1a1520" stroke="#fbbf24" stroke-width="2"/>
+            <text x="535" y="32" text-anchor="middle" font-family="'Noto Sans JP'" font-size="14" fill="#fbbf24" font-weight="700">クイックソート</text>
+            <rect x="468" y="42" width="134" height="24" rx="12" fill="#1e2535" stroke="#e2e8f5" stroke-width="1.5"/>
+            <text x="535" y="58" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#e2e8f5">開始</text>
+            <line x1="535" y1="66" x2="535" y2="80" stroke="#8a99b8" stroke-width="1.2" marker-end="url(#aqk)"/>
+            <rect x="454" y="80" width="162" height="28" rx="4" fill="#1e2535" stroke="#8a99b8"/>
+            <text x="535" y="98" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#e2e8f5">基準値を決める</text>
+            <line x1="535" y1="108" x2="535" y2="122" stroke="#8a99b8" stroke-width="1.2" marker-end="url(#aqk)"/>
+            <rect x="454" y="122" width="162" height="38" rx="4" fill="rgba(91,141,238,.2)" stroke="#5b8dee" stroke-width="1.5"/>
+            <text x="535" y="140" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#5b8dee" font-weight="700">分割処理</text>
+            <text x="535" y="155" text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#8a99b8">（内側へ向かい探索・交換）</text>
+            <line x1="535" y1="160" x2="535" y2="174" stroke="#8a99b8" stroke-width="1.2" marker-end="url(#aqk)"/>
+            <rect x="438" y="174" width="194" height="42" rx="4" fill="rgba(251,191,36,.15)" stroke="#fbbf24" stroke-width="1.5"/>
+            <text x="535" y="192" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#fbbf24">左のデータ列に対し</text>
+            <text x="535" y="208" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#fbbf24" font-weight="700">クイックソート</text>
+            <line x1="535" y1="216" x2="535" y2="230" stroke="#8a99b8" stroke-width="1.2" marker-end="url(#aqk)"/>
+            <rect x="438" y="230" width="194" height="42" rx="4" fill="rgba(167,139,250,.15)" stroke="#a78bfa" stroke-width="1.5"/>
+            <text x="535" y="248" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#a78bfa">右のデータ列に対し</text>
+            <text x="535" y="264" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#a78bfa" font-weight="700">クイックソート</text>
+            <line x1="535" y1="272" x2="535" y2="283" stroke="#8a99b8" stroke-width="1.2" marker-end="url(#aqk)"/>
+            <rect x="468" y="283" width="134" height="22" rx="11" fill="#1e2535" stroke="#e2e8f5" stroke-width="1.5"/>
+            <text x="535" y="298" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#e2e8f5">終了</text>
+          </svg>
+          <figcaption>図2-6：クイックソートの分割処理と再帰的フローチャート（S03:p100-102 再現）</figcaption>
+        </figure>
+      </div>
+      <div class="def-box">
+        <span class="def-term">クイックソート（Quick Sort）</span>
+        基準値（ピボット）を決め、基準値以下と基準値以上のデータ列に分割する処理を、分割後の各データ列に対しても<em>再帰的</em>に繰り返す。全データが1つずつになったら完了。<br>分割処理の詳細: データ列の両端から内側へ向かい、<strong>左から右へと調べて基準値以上のデータ</strong>を探し、<strong>右から左へと調べて基準値以下のデータ</strong>を探して交換。見つけた位置が一致または逆転したら分割終了。<span class="src">← S03:p102</span>
+      </div>
+      <div class="ext-block">
+        <div class="bl">📗 外部補足: 計算量</div>
+        バブルソート・選択ソートはO(n²)、クイックソートは平均O(n log n)。nが大きいほど差が顕著になる。<span class="ext-note">[外部補足: アルゴリズム教科書]</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======= 第3章 ======= -->
+<section class="section" id="ch3">
+  <h2 class="section-title">第3章 プログラムの性質</h2>
+  <div class="card">
+    <p>プログラミングとは、プログラミング言語を用いてアルゴリズムを記述すること。コンピュータは人間のような柔軟な解釈ができないため、指示は曖昧さのない正確なものでなければならない。本章はJavaScriptを用いて3例で性質を学ぶ。</p>
+    <div class="svg-wrap">
+      <figure>
+        <svg viewBox="0 0 580 120" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:580px">
+          <!-- 人間への指示 -->
+          <rect x="10" y="16" width="200" height="88" rx="10" fill="rgba(91,141,238,.08)" stroke="#5b8dee" stroke-width="1.5"/>
+          <text x="110" y="40" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#8a99b8">人間への指示</text>
+          <text x="110" y="68" text-anchor="middle" font-family="'Noto Sans JP'" font-size="22" fill="#e2e8f5" font-weight="700">塩を適量</text>
+          <text x="110" y="90" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#5b8dee">→ 人間なら察して判断できる</text>
+          <!-- NG矢印 -->
+          <text x="265" y="50" text-anchor="middle" font-family="'Noto Sans JP'" font-size="30" fill="#f87171">✗</text>
+          <text x="265" y="80" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#f87171">コンピュータには</text>
+          <text x="265" y="96" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#f87171">通じない</text>
+          <!-- コンピュータへの指示 -->
+          <rect x="310" y="16" width="200" height="88" rx="10" fill="rgba(52,211,153,.08)" stroke="#34d399" stroke-width="1.5"/>
+          <text x="410" y="40" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#8a99b8">コンピュータへの指示</text>
+          <text x="410" y="68" text-anchor="middle" font-family="'Noto Sans JP'" font-size="22" fill="#34d399" font-weight="700">塩を 3g</text>
+          <text x="410" y="90" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#34d399">→ 曖昧さなし・処理できる</text>
+          <!-- OK -->
+          <text x="528" y="62" text-anchor="middle" font-family="'Noto Sans JP'" font-size="30" fill="#34d399">✓</text>
+        </svg>
+        <figcaption>図3-0：コンピュータへの指示は曖昧さ禁止（S03:p108-109 再現）</figcaption>
+      </figure>
+    </div>
+    <div class="audio-block">
+      <div class="bl">🎤 音声補足（田中先生）</div>
+      「塩を適量」ではコンピュータは何もできないが「塩を3g加える」なら正確に処理できる。プログラミング未経験者でもOK。実際に動かすことを推奨——試行錯誤してもコンピュータは壊れない。<span class="src">← S03 / S05-A</span>
+    </div>
+  </div>
+
+  <div id="ch3-basic">
+    <h3 class="sub-title">3-1 例（1）順次実行・分岐・繰り返し</h3>
+    <div class="card">
+      <h4 style="color:var(--blue)">① 順次実行 — 上から順番に1行ずつ実行</h4>
+      <div class="code-block"><span class="cm">// 順次実行（S03:p113 再現）</span>
+<span class="kw">var</span> 名前 = <span class="str">"歳三"</span>;
+<span class="fn">alert</span>(<span class="str">"こんにちは、"</span> + 名前 + <span class="str">"さん！"</span>);
+<span class="cm">// 実行結果：「こんにちは、歳三さん！」</span></div>
+      <p>各文末の <code>;</code> は文の区切り。<code>//</code> で始まる行は<strong>コメント</strong>（実行に影響しない）。行の順番を入れ替えると意図しない動作になる。<span class="src">← S03</span></p>
+
+      <h4 style="color:var(--green);margin-top:18px">② 分岐（if文）— 条件に応じて処理の流れを変える</h4>
+      <div class="code-block"><span class="cm">// 分岐（if文）</span>
+<span class="kw">var</span> 年齢 = <span class="num">18</span>;
+<span class="kw">if</span> (年齢 >= <span class="num">18</span>) {
+    <span class="fn">alert</span>(<span class="str">"あなたは成人です。"</span>);
+} <span class="kw">else</span> {
+    <span class="fn">alert</span>(<span class="str">"あなたは未成年です。"</span>);
+}
+<span class="cm">// 年齢>=18 が真 → 「あなたは成人です。」</span></div>
+      <p>比較演算子（<code>&gt;=</code>等）で条件を記述。2方向だけでなく<strong>3方向以上に分岐させることも可能</strong>。<span class="src">← S03</span></p>
+
+      <h4 style="color:var(--orange);margin-top:18px">③ 繰り返し（for文）— S03:p120 スライド再現</h4>
+      <div class="code-block"><span class="cm">// 繰り返し（for文）</span>
+<span class="kw">for</span> (<span class="kw">var</span> 回数 = <span class="num">1</span>; 回数 &lt;= <span class="num">5</span>; 回数=回数+<span class="num">1</span>) {
+    <span class="fn">alert</span>(<span class="str">"カウント："</span> + 回数);
+}
+<span class="cm">// 実行結果：「カウント：1」〜「カウント：5」が順に表示</span></div>
+      <p><code>for文</code>の <em>「<strong>初期値・条件式・更新</strong>」</em> の3点セットが重要。回数が決まっていない繰り返しは <code>while文</code> / <code>do～while文</code> で表現。<span class="src">← S03:p120</span></p>
+      <div class="warn-block">
+        <div class="bl">⚠️ 無限ループに注意</div>
+        「初期値・条件式・更新」の設定を間違えると、繰り返しが終わらない<strong>無限ループ</strong>が発生してプログラムが止まらなくなる。<span class="src">← S03</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="ch3-dtype">
+    <h3 class="sub-title">3-2 例（2）データ型・配列・オブジェクト</h3>
+    <div class="card">
+      <div class="slide-label">← S03:p130 スライド再現</div>
+      <div class="warn-block"><div class="bl">⚠️ + 演算子の二重性</div><strong>加算演算子（+）</strong>は数値どうしなら「足し算」、文字列との組み合わせでは「文字列の連結」になる（予期せぬ連結に注意）。また文字列を囲む<strong>ダブルクオート（"）の閉じ忘れ</strong>は典型的なバグ。<span class="src">← S03:p130</span></div>
+      <div class="code-block"><span class="cm">// 数値型：四則演算が可能</span>
+<span class="kw">var</span> 得点 = <span class="num">85</span>;
+<span class="kw">var</span> 新得点 = 得点 + <span class="num">10</span>;   <span class="cm">// → 95</span>
+
+<span class="cm">// 文字列型：+ で連結</span>
+<span class="kw">var</span> 名前 = <span class="str">"花子"</span>;
+<span class="kw">var</span> 挨拶 = <span class="str">"こんにちは、"</span> + 名前 + <span class="str">"さん！"</span>;  <span class="cm">// →「こんにちは、花子さん！」</span>
+
+<span class="cm">// 配列：添え字は0から始まる</span>
+<span class="kw">var</span> 果物 = [<span class="str">"りんご"</span>, <span class="str">"バナナ"</span>, <span class="str">"オレンジ"</span>];
+<span class="fn">alert</span>(果物[<span class="num">0</span>]);   <span class="cm">// → 「りんご」</span>
+
+<span class="cm">// オブジェクト：ドット記法でプロパティにアクセス（S03:p130 再現）</span>
+<span class="kw">var</span> 人物 = { 名前: <span class="str">"総司"</span>, 年齢: <span class="num">30</span>, 職業: <span class="str">"庭師"</span> };
+<span class="fn">alert</span>(人物.名前 + <span class="str">"さんは"</span> + 人物.職業 + <span class="str">"で、"</span> + 人物.年齢 + <span class="str">"歳です。"</span>);
+<span class="cm">// 「総司さんは庭師で、30歳です。」</span>
+人物.職業 = <span class="str">"教師"</span>;  <span class="cm">// プロパティを変更</span>
+<span class="fn">alert</span>(人物.名前 + <span class="str">"さんの職業は"</span> + 人物.職業 + <span class="str">"になりました。"</span>);</div>
+      <p style="color:var(--text-sub);font-size:13px">← S03:p130</p>
+      <div class="warn-block">
+        <div class="bl">⚠️ 注意点</div>
+        <ul>
+          <li><code>+</code> は数値加算にも文字列連結にも使う。<strong>本当に数値どうしを足しているか</strong>に気を付ける。<span class="src">← S03:p121</span></li>
+          <li>文字列を囲むダブルクォート（"）の<strong>閉じ忘れ</strong>に注意。<span class="src">← S03</span></li>
+          <li>配列の添え字は0から始まる（0番が最初の要素）。間違った添え字で意図しない値が出ることがある。</li>
+          <li>配列は<strong>繰り返し処理と組み合わせる</strong>ことで大量のデータ操作がスムーズに行える。<span class="src">← S03:p123</span></li>
+          <li>オブジェクトは<strong>通信やデータの入出力</strong>にも活用される。プロパティ値の変更は容易なため意図しない上書きに注意。<span class="src">← S03</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div id="ch3-obj">
+    <h3 class="sub-title">3-3 例（3）オブジェクトの継承</h3>
+    <div class="card">
+      <div class="slide-label">← S03 スライド図再現</div>
+      <div class="svg-wrap">
+        <figure>
+          <svg viewBox="0 0 640 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:640px">
+            <defs><marker id="ainh" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,8 L4,0 L8,8 Z" fill="none" stroke="#8a99b8" stroke-width="1.5"/></marker></defs>
+            <!-- 動物 -->
+            <rect x="220" y="10" width="200" height="72" rx="8" fill="#1e2535" stroke="#5b8dee" stroke-width="2"/>
+            <text x="320" y="34" text-anchor="middle" font-family="'Noto Sans JP'" font-size="15" fill="#5b8dee" font-weight="700">動物</text>
+            <text x="320" y="54" text-anchor="middle" font-family="'JetBrains Mono'" font-size="11" fill="#8a99b8">プロパティ: 名前, 鳴き声</text>
+            <text x="320" y="72" text-anchor="middle" font-family="'JetBrains Mono'" font-size="11" fill="#8a99b8">動作: 鳴く()</text>
+            <!-- 犬 -->
+            <rect x="60" y="128" width="180" height="58" rx="8" fill="#1e2535" stroke="#34d399" stroke-width="1.8"/>
+            <text x="150" y="152" text-anchor="middle" font-family="'Noto Sans JP'" font-size="14" fill="#34d399" font-weight="700">犬</text>
+            <text x="150" y="170" text-anchor="middle" font-family="'JetBrains Mono'" font-size="11" fill="#8a99b8">鳴き声 = "ワン"</text>
+            <text x="150" y="184" text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#8a99b8">（動物から継承）</text>
+            <!-- 猫 -->
+            <rect x="400" y="128" width="180" height="58" rx="8" fill="#1e2535" stroke="#a78bfa" stroke-width="1.8"/>
+            <text x="490" y="152" text-anchor="middle" font-family="'Noto Sans JP'" font-size="14" fill="#a78bfa" font-weight="700">猫</text>
+            <text x="490" y="170" text-anchor="middle" font-family="'JetBrains Mono'" font-size="11" fill="#8a99b8">鳴き声 = "ニャー"</text>
+            <text x="490" y="184" text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#8a99b8">（動物から継承）</text>
+            <!-- 継承線 -->
+            <line x1="270" y1="82" x2="190" y2="128" stroke="#8a99b8" stroke-width="1.5" marker-end="url(#ainh)"/>
+            <line x1="370" y1="82" x2="450" y2="128" stroke="#8a99b8" stroke-width="1.5" marker-end="url(#ainh)"/>
+            <text x="210" y="108" font-family="'Noto Sans JP'" font-size="10" fill="#8a99b8">継承</text>
+            <text x="430" y="108" font-family="'Noto Sans JP'" font-size="10" fill="#8a99b8">継承</text>
+            <!-- オブジェクト -->
+            <rect x="20" y="138" width="32" height="22" rx="3" fill="#0f1117" stroke="#34d399"/>
+            <text x="36" y="152" text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#34d399">ポチ</text>
+            <line x1="60" y1="150" x2="52" y2="150" stroke="#34d399" stroke-width="1" stroke-dasharray="3,2"/>
+            <text x="36" y="168" text-anchor="middle" font-family="'Noto Sans JP'" font-size="9" fill="#8a99b8">→「ワン」</text>
+            <rect x="592" y="138" width="32" height="22" rx="3" fill="#0f1117" stroke="#a78bfa"/>
+            <text x="608" y="152" text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#a78bfa">タマ</text>
+            <line x1="580" y1="150" x2="592" y2="150" stroke="#a78bfa" stroke-width="1" stroke-dasharray="3,2"/>
+            <text x="608" y="168" text-anchor="middle" font-family="'Noto Sans JP'" font-size="9" fill="#8a99b8">→「ニャー」</text>
+          </svg>
+          <figcaption>図3-1：オブジェクトの継承関係 — 動物型を基に犬型・猫型、ポチ・タマはそれぞれのオブジェクト ← S03</figcaption>
+        </figure>
+      </div>
+      <div class="code-block"><span class="cm">// 動物オブジェクトを定義</span>
+<span class="kw">var</span> 動物 = {
+    名前: <span class="str">"名前のない動物"</span>,
+    鳴き声: <span class="str">"..."</span>,
+    鳴く: <span class="kw">function</span>() {
+        <span class="fn">alert</span>(<span class="kw">this</span>.名前 + <span class="str">"が"</span> + <span class="kw">this</span>.鳴き声 + <span class="str">"と鳴く"</span>);
+    }
+};
+<span class="cm">// 犬型（動物を継承）</span>
+<span class="kw">var</span> 犬 = <span class="fn">Object.create</span>(動物);
+犬.鳴き声 = <span class="str">"ワン"</span>;
+<span class="cm">// ポチを生成して鳴かせる</span>
+<span class="kw">var</span> ポチ = <span class="fn">Object.create</span>(犬);
+ポチ.名前 = <span class="str">"ポチ"</span>;
+ポチ.<span class="fn">鳴く</span>();   <span class="cm">// → 「ポチがワンと鳴く」</span></div>
+      <p><code>this</code>キーワードは呼び出し元のオブジェクト自身を指す。継承により動作（鳴く）を共有しながら固有の値（鳴き声）を上書き設定できる。<span class="src">← S03</span></p>
+      <div class="def-box">
+        <span class="def-term">継承（inheritance）</span>
+        既存オブジェクトのプロパティや動作を新たなオブジェクトが引き継ぐ仕組み。共通部分を再利用しながら固有の設定を追加・変更できる（再利用性・拡張性の向上）。<span class="src">← S03</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======= 第4章 ======= -->
+<section class="section" id="ch4">
+  <h2 class="section-title">第4章 プログラミング言語とその他の言語</h2>
+
+  <div id="ch4-overview">
+    <h3 class="sub-title">4-1 プログラミング言語の概要・分類</h3>
+    <div class="card">
+      <div class="svg-wrap">
+        <figure>
+          <svg viewBox="0 0 660 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:660px">
+            <text x="20" y="18" font-family="'Noto Sans JP'" font-size="13" fill="#5b8dee" font-weight="700">プログラミング言語の4分類（S03 再現）</text>
+            <rect x="10" y="28" width="148" height="140" rx="8" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+            <text x="84" y="50" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#5b8dee" font-weight="700">① 水準</text>
+            <text x="84" y="70" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#e2e8f5">低水準言語</text>
+            <text x="84" y="86" text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#8a99b8">機械語・アセンブリ</text>
+            <text x="84" y="106" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#e2e8f5">高水準言語</text>
+            <text x="84" y="122" text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#8a99b8">Python・Java</text>
+            <text x="84" y="155" text-anchor="middle" font-family="'Noto Sans JP'" font-size="9" fill="#8a99b8">（機械←→人間）</text>
+
+            <rect x="168" y="28" width="148" height="140" rx="8" fill="#1e2535" stroke="#34d399" stroke-width="1.5"/>
+            <text x="242" y="50" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#34d399" font-weight="700">② 実行方式</text>
+            <text x="242" y="70" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#e2e8f5">コンパイル言語</text>
+            <text x="242" y="86" text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#8a99b8">全体を事前に機械語へ</text>
+            <text x="242" y="100" text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#8a99b8">例: C・C++</text>
+            <text x="242" y="118" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#e2e8f5">インタプリタ言語</text>
+            <text x="242" y="134" text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#8a99b8">1行ずつ解釈して実行</text>
+            <text x="242" y="148" text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#8a99b8">例: Python・JS</text>
+
+            <rect x="326" y="28" width="148" height="140" rx="8" fill="#1e2535" stroke="#fbbf24" stroke-width="1.5"/>
+            <text x="400" y="50" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#fbbf24" font-weight="700">③ 用途</text>
+            <text x="400" y="70" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#e2e8f5">汎用言語</text>
+            <text x="400" y="86" text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#8a99b8">Python・Java</text>
+            <text x="400" y="110" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#e2e8f5">特定目的言語</text>
+            <text x="400" y="126" text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#8a99b8">R（統計）</text>
+            <text x="400" y="142" text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#8a99b8">MATLAB（科学計算）</text>
+
+            <rect x="484" y="28" width="168" height="140" rx="8" fill="#1e2535" stroke="#a78bfa" stroke-width="1.5"/>
+            <text x="568" y="50" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#a78bfa" font-weight="700">④ 記述スタイル</text>
+            <text x="568" y="70" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#e2e8f5">手続き型言語</text>
+            <text x="568" y="86" text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#8a99b8">処理を順番に記述</text>
+            <text x="568" y="100" text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#8a99b8">例: C・Pascal</text>
+            <text x="568" y="118" text-anchor="middle" font-family="'Noto Sans JP'" font-size="11" fill="#e2e8f5">オブジェクト指向言語</text>
+            <text x="568" y="134" text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#8a99b8">データと処理をまとめる</text>
+            <text x="568" y="148" text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#8a99b8">例: Java・C++</text>
+          </svg>
+          <figcaption>図4-1：プログラミング言語の4分類（S03 再現）</figcaption>
+        </figure>
+      </div>
+      <div class="audio-block">
+        <div class="bl">🎤 音声補足</div>
+        コンパイル言語は「全体をまとめて一気に訳す（翻訳）」、インタプリタ言語は「1文ごとに同時通訳する」イメージ。<span class="src">← S05-A</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="ch4-overview" style="margin-bottom:0">
+    <div class="card" style="padding:14px 20px">
+      <h4 style="color:var(--blue)">プログラミング言語の概要 <span class="src">← S03:p140</span></h4>
+      <p>コンピュータに指示を与えるために人によって作られた<strong>人工言語</strong>。人間が理解しやすい形式で書けるよう設計されており、実行時には<strong>機械語</strong>に変換される。</p>
+      <p>基本要素: <strong>文法</strong>（言語の規則・構造）・<strong>予約語</strong>（言語で特別な意味を持つ定義済みの単語、例: <code>var</code> <code>if</code> <code>for</code>）・変数・関数</p>
+    </div>
+  </div>
+
+  <div id="ch4-lang">
+    <h3 class="sub-title">4-2 主要プログラミング言語の特徴</h3>
+    <div class="card">
+      <table class="styled-table">
+        <thead><tr><th>言語</th><th>種別</th><th>特徴</th><th>主な用途</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>C言語</strong></td>
+            <td>高水準+低水準機能<br>コンパイル・手続き型</td>
+            <td>ハードウェア制御も可能。コンパイル後の実行が高速でシステム資源の要求が低い。汎用性高。基本的な機能の例: <code>int main()</code>（実行開始点）、<code>printf()</code>（画面出力関数、<code>#include &lt;stdio.h&gt;</code>が必要）、<code>return 0;</code>（正常終了を示す返り値）。<span class="src">← S03:p145</span></td>
+            <td>OS・デバイスドライバ・組み込みシステム・アプリ</td>
+          </tr>
+          <tr>
+            <td><strong>Java</strong></td>
+            <td>高水準・OOP<br>コンパイル(JVM)</td>
+            <td>Write Once, Run Anywhere（WORA）。JVMがOSの差異を吸収。<strong>class</strong>がオブジェクトの設計図、<strong>main</strong>はメソッド名（オブジェクト内の関数に相当）。<strong>マルチスレッド</strong>（並行処理）をサポート。ライブラリ充実。セキュリティ機能あり。出力関数: <code>System.out.println()</code>。<span class="src">← S03</span></td>
+            <td>エンタープライズアプリ・組み込みシステム</td>
+          </tr>
+          <tr>
+            <td><strong>Python</strong></td>
+            <td>高水準・汎用<br>インタプリタ</td>
+            <td>インデントによるブロック構造。C・Javaと違い<strong>文末セミコロンが不要</strong>。コンパイル不要（インタプリタ実行）。標準・サードパーティライブラリ豊富。<span class="src">← S03</span></td>
+            <td>Web・データ分析・機械学習・AI</td>
+          </tr>
+          <tr>
+            <td><strong>JavaScript</strong></td>
+            <td>高水準・スクリプト<br>インタプリタ</td>
+            <td>ブラウザ上で動作するクライアントサイド言語（クライアントサイドで実行）。<strong>イベント駆動型</strong>（ユーザーの操作に応じて処理を実行）。Cや Javaと違い<strong>main関数のような明示的な開始点が不要</strong>。サーバサイドやモバイルアプリ開発も可能。<strong>Javaとは全く別の言語</strong>。<span class="src">← S03</span></td>
+            <td>動的Webページ・Webサービス・サーバサイド</td>
+          </tr>
+          <tr>
+            <td><strong>R</strong></td>
+            <td>高水準・特定目的<br>インタプリタ</td>
+            <td>統計計算とデータ可視化に特化。散布図・線形回帰・データマイニングに強い。<span class="src">← S03:p155</span></td>
+            <td>統計解析・データサイエンス・金融工学</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="warn-block">
+        <div class="bl">⚠️ 要注意：JavaとJavaScriptは別物</div>
+        名称が似ているが設計思想・用途・構文が全く異なる別の言語。混同しないこと。<span class="src">← S03</span>
+      </div>
+      <div class="audio-block">
+        <div class="bl">🎤 田中先生の言語推薦（個人の強い感想）</div>
+        「プログラミング上級者と呼ばれたいなら<em>C言語</em>」「大企業で活躍したいなら<em>Java</em>」「AI・データサイエンスなら<em>Python</em>」「Web業界なら<em>JavaScript</em>」「データと仲良くなりたいなら（Pythonだけでなく）<em>Rも</em>習得せよ」<span class="src">← S03:p155</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="ch4-markup">
+    <h3 class="sub-title">4-3 マークアップ言語</h3>
+    <div class="card">
+      <div class="slide-label">← S03:p156 スライド図再現</div>
+      <div class="svg-wrap">
+        <figure>
+          <svg viewBox="0 0 720 230" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:720px">
+            <text x="20" y="20" font-family="'Noto Sans JP'" font-size="13" fill="#5b8dee" font-weight="700">プログラミング言語の4つの分類軸</text>
+
+            <!-- カード①: 水準 -->
+            <rect x="10" y="30" width="168" height="192" rx="8" fill="#1e2535" stroke="#5b8dee" stroke-width="1.5"/>
+            <rect x="10" y="30" width="168" height="28"  rx="8" fill="rgba(91,141,238,.25)"/>
+            <text x="94" y="49" text-anchor="middle" font-family="'Noto Sans JP'" font-size="13" fill="#5b8dee" font-weight="700">① 水準</text>
+            <text x="94" y="74" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#e2e8f5">低水準言語</text>
+            <text x="94" y="92" text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#8a99b8">機械語・アセンブリ</text>
+            <text x="94" y="110" text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#8a99b8">ハードに近い</text>
+            <line x1="20" y1="122" x2="168" y2="122" stroke="#2a3350" stroke-width="1"/>
+            <text x="94" y="140" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#e2e8f5">高水準言語</text>
+            <text x="94" y="158" text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#8a99b8">Python・Java</text>
+            <text x="94" y="176" text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#8a99b8">人間の言葉に近い</text>
+            <text x="94" y="214" text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#5b8dee">人間から遠い ↔ 近い</text>
+
+            <!-- カード②: 実行方式 -->
+            <rect x="192" y="30" width="168" height="192" rx="8" fill="#1e2535" stroke="#34d399" stroke-width="1.5"/>
+            <rect x="192" y="30" width="168" height="28"  rx="8" fill="rgba(52,211,153,.2)"/>
+            <text x="276" y="49" text-anchor="middle" font-family="'Noto Sans JP'" font-size="13" fill="#34d399" font-weight="700">② 実行方式</text>
+            <text x="276" y="74" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#e2e8f5">コンパイル言語</text>
+            <text x="276" y="92" text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#8a99b8">全体を事前に機械語へ</text>
+            <text x="276" y="110" text-anchor="middle" font-family="'JetBrains Mono'" font-size="10" fill="#8a99b8">例: C・C++</text>
+            <line x1="202" y1="122" x2="350" y2="122" stroke="#2a3350" stroke-width="1"/>
+            <text x="276" y="140" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#e2e8f5">インタプリタ言語</text>
+            <text x="276" y="158" text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#8a99b8">1行ずつ解釈して実行</text>
+            <text x="276" y="176" text-anchor="middle" font-family="'JetBrains Mono'" font-size="10" fill="#8a99b8">例: Python・JS</text>
+
+            <!-- カード③: 用途 -->
+            <rect x="374" y="30" width="168" height="192" rx="8" fill="#1e2535" stroke="#fbbf24" stroke-width="1.5"/>
+            <rect x="374" y="30" width="168" height="28"  rx="8" fill="rgba(251,191,36,.2)"/>
+            <text x="458" y="49" text-anchor="middle" font-family="'Noto Sans JP'" font-size="13" fill="#fbbf24" font-weight="700">③ 用途</text>
+            <text x="458" y="74" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#e2e8f5">汎用言語</text>
+            <text x="458" y="92" text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#8a99b8">様々な用途に使える</text>
+            <text x="458" y="110" text-anchor="middle" font-family="'JetBrains Mono'" font-size="10" fill="#8a99b8">例: Python・Java</text>
+            <line x1="384" y1="122" x2="532" y2="122" stroke="#2a3350" stroke-width="1"/>
+            <text x="458" y="140" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#e2e8f5">特定目的言語</text>
+            <text x="458" y="158" text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#8a99b8">特定分野に特化</text>
+            <text x="458" y="176" text-anchor="middle" font-family="'JetBrains Mono'" font-size="10" fill="#8a99b8">例: R（統計）</text>
+
+            <!-- カード④: スタイル -->
+            <rect x="556" y="30" width="154" height="192" rx="8" fill="#1e2535" stroke="#a78bfa" stroke-width="1.5"/>
+            <rect x="556" y="30" width="154" height="28"  rx="8" fill="rgba(167,139,250,.2)"/>
+            <text x="633" y="49" text-anchor="middle" font-family="'Noto Sans JP'" font-size="13" fill="#a78bfa" font-weight="700">④ 記述スタイル</text>
+            <text x="633" y="74" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#e2e8f5">手続き型</text>
+            <text x="633" y="92" text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#8a99b8">処理を順番に記述</text>
+            <text x="633" y="110" text-anchor="middle" font-family="'JetBrains Mono'" font-size="10" fill="#8a99b8">例: C・Pascal</text>
+            <line x1="566" y1="122" x2="700" y2="122" stroke="#2a3350" stroke-width="1"/>
+            <text x="633" y="140" text-anchor="middle" font-family="'Noto Sans JP'" font-size="12" fill="#e2e8f5">オブジェクト指向</text>
+            <text x="633" y="158" text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#8a99b8">データと処理を</text>
+            <text x="633" y="174" text-anchor="middle" font-family="'Noto Sans JP'" font-size="10" fill="#8a99b8">オブジェクトとしてまとめる</text>
+            <text x="633" y="192" text-anchor="middle" font-family="'JetBrains Mono'" font-size="10" fill="#8a99b8">例: Java・C++</text>
+          </svg>
+          <figcaption>図4-2：プログラミング言語 vs マークアップ言語（S03:p156 再現）</figcaption>
+        </figure>
+      </div>
+      <table class="styled-table">
+        <thead><tr><th></th><th>プログラミング言語</th><th>マークアップ言語</th></tr></thead>
+        <tbody>
+          <tr><td><strong>目的</strong></td><td>計算・制御・アルゴリズム実行</td><td>文書の構造化やデータのマーク付け</td></tr>
+          <tr><td><strong>例</strong></td><td>Python, Java, C++, JavaScript</td><td>HTML, XML, Markdown</td></tr>
+          <tr><td><strong>制御構造</strong></td><td>ループ・条件分岐（if, for など）を持つ</td><td>基本的に制御構造を持たない</td></tr>
+          <tr><td><strong>実行環境</strong></td><td>コンパイラ・インタプリタで実行</td><td>ブラウザやパーサで解釈</td></tr>
+        </tbody>
+      </table>
+      <p style="color:var(--text-sub);font-size:13px">← S03:p156</p>
+      <table class="styled-table">
+        <thead><tr><th></th><th>HTML</th><th>XML</th></tr></thead>
+        <tbody>
+          <tr><td><strong>フル名称</strong></td><td>HyperText Markup Language</td><td>eXtensible Markup Language</td></tr>
+          <tr><td><strong>用途</strong></td><td>Webページの構造を記述</td><td>データの構造を表現・保存・交換</td></tr>
+          <tr><td><strong>タグ</strong></td><td>定義済みタグ（&lt;h1&gt;等）を使用</td><td>独自タグを定義可能（拡張性高）</td></tr>
+        </tbody>
+      </table>
+      <p style="color:var(--text-sub);font-size:13px">← S03</p>
+    </div>
+  </div>
+
+  <div id="ch4-data">
+    <h3 class="sub-title">4-4 データ記述方式・その他の関連用語</h3>
+    <div class="card">
+      <h4>データ記述方式（プログラミング言語でも マークアップ言語でもない）</h4>
+      <table class="styled-table">
+        <thead><tr><th></th><th>JSON</th><th>YAML</th></tr></thead>
+        <tbody>
+          <tr><td><strong>フル名称</strong></td><td>JavaScript Object Notation</td><td>YAML Ain't Markup Language<br>（再帰的頭字語）</td></tr>
+          <tr><td><strong>形式</strong></td><td>波括弧・配列でキーと値のペア</td><td>インデントで階層構造を表現</td></tr>
+          <tr><td><strong>用途</strong></td><td>API・Webサービスのデータ交換</td><td>設定ファイル・データの記述</td></tr>
+          <tr><td><strong>例</strong></td><td><code>{"title":"本","year":1968}</code></td><td><code>title: 本<br>year: 1968</code></td></tr>
+        </tbody>
+      </table>
+      <p style="color:var(--text-sub);font-size:13px">← S03</p>
+      <div class="audio-block">
+        <div class="bl">🎤 音声補足（YAMLの名前）</div>
+        YAMLは名前に「Markup Language」を含むが実際はマークアップ言語ではない。名称自体が「マークアップではない」と明記する遊び心のある再帰的頭字語。<span class="src">← S03 / S05-A</span>
+      </div>
+      <h4 style="margin-top:18px">その他のプログラミング関連用語 ← S03:p160</h4>
+      <div class="def-box">
+        <span class="def-term">ライブラリ（Library）</span>
+        頻繁に使用する機能をまとめた再利用可能なプログラムの集まり。データ交換・乱数生成・統計処理・図形描画などを1から作らず呼び出すだけで使える。<em>便利・労力を減らせる</em>。<span class="src">← S03:p160</span>
+      </div>
+      <div class="def-box">
+        <span class="def-term">API / WebAPI（Application Programming Interface）</span>
+        異なるソフトウェア間でデータや機能をやり取りする仕組み。WebAPIはHTTP/HTTPSを使用し、<strong>XMLやJSONが使われる</strong>。<span class="src">← S03:p160</span>
+      </div>
+      <div class="def-box">
+        <span class="def-term">ローコード・ノーコードプラットフォーム</span>
+        プログラミング知識が少ない/全くない場合でもソフトウェアを開発できる枠組み。<strong>小規模・単機能システム</strong>の開発に適している。プロトタイプの迅速な作成や業務効率化のための社内ツール作成に有効。<span class="src">← S03:p160</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======= 末尾補足 ======= -->
+<section class="appendix" id="appendix">
+
+  <div class="appendix-card star" id="appA">
+    <h3>⭐ 補足A: 最重要ワード一覧</h3>
+    <table class="styled-table">
+      <thead><tr><th>用語</th><th>定義（S03から）</th><th>重要度</th></tr></thead>
+      <tbody>
+        <tr><td>データ構造</td><td>データの性質や繋がりを考慮したデータの格納・管理の形式</td><td>★★★</td></tr>
+        <tr><td>アルゴリズム</td><td>問題を解くための、その通りに行えば必ず同じ結果が得られる客観的な手順</td><td>★★★</td></tr>
+        <tr><td>配列（array）</td><td>同じ種類のデータを並べた構造。添え字（インデックス）は0から始まる</td><td>★★★</td></tr>
+        <tr><td>スタック（stack）</td><td>最後に追加したデータのみ取り出せるLIFO構造。push/popで操作</td><td>★★★</td></tr>
+        <tr><td>キュー（queue）</td><td>最初に追加したデータのみ取り出せるFIFO構造。enqueue/dequeueで操作</td><td>★★★</td></tr>
+        <tr><td>構造化プログラミング</td><td>ダイクストラが1960年代提唱。順次・選択・繰り返しの3基本構造の組み合わせでプログラムを作る考え方</td><td>★★★</td></tr>
+        <tr><td>線形探索（リニアサーチ）</td><td>先頭から順に1つずつ目標と比較。整列不要・最悪全件走査</td><td>★★★</td></tr>
+        <tr><td>二分探索（バイナリサーチ）</td><td>整列済みデータを前提に検索範囲を半分ずつ絞って高速検索</td><td>★★★</td></tr>
+        <tr><td>バブルソート</td><td>隣接要素の比較・交換を繰り返す整列アルゴリズム</td><td>★★★</td></tr>
+        <tr><td>選択ソート（最大値選択法）</td><td>最大値を探して端と1回だけ交換。バブルソートより交換回数少</td><td>★★★</td></tr>
+        <tr><td>クイックソート</td><td>基準値によるデータ分割を再帰的に繰り返す高速整列アルゴリズム</td><td>★★★</td></tr>
+        <tr><td>継承（inheritance）</td><td>既存オブジェクトのプロパティや動作を新たなオブジェクトが引き継ぐ仕組み</td><td>★★★</td></tr>
+        <tr><td>フローチャート</td><td>JIS X0128/ISO 8631で規格化された記号と線でアルゴリズムを図式化したもの</td><td>★★☆</td></tr>
+        <tr><td>コンパイル言語</td><td>実行前にプログラム全体を機械語に変換する言語（例: C・C++）</td><td>★★☆</td></tr>
+        <tr><td>インタプリタ言語</td><td>1行ずつ解釈しながら実行する言語（例: Python・JavaScript）</td><td>★★☆</td></tr>
+        <tr><td>オブジェクト指向</td><td>データと処理をオブジェクト単位でまとめるプログラム設計の考え方</td><td>★★☆</td></tr>
+        <tr><td>API（WebAPI）</td><td>Application Programming Interface。異なるソフトウェア間でデータや機能をやり取りする仕組み</td><td>★★☆</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="appendix-card bg-knowledge" id="appB">
+    <h3>📚 補足B: 確認済み背景知識</h3>
+    <ul>
+      <li><strong>Niklaus Wirth「Algorithms + Data Structures = Programs」</strong><br>スイスの計算機科学者 Niklaus Wirth（1934–2024）著。Prentice Hall, 1976年刊。スライド脚注に書誌情報が明記されている。<span class="ext-note">[外部補足・確認済: S03:p10脚注]</span></li>
+      <li><strong>エドガー・W・ダイクストラ（Edgar W. Dijkstra, 1930–2002）</strong><br>オランダの計算機科学者。1960年代に構造化プログラミングを提唱。最短経路アルゴリズム（ダイクストラ法）の考案者でもある。1972年 ACM チューリング賞受賞。<span class="ext-note">[外部補足・確認済: ACM Turing Award記録]</span></li>
+      <li><strong>Java の「Write Once, Run Anywhere（WORA）」</strong><br>JVM（Java Virtual Machine）がOSの差異を吸収するため、一度コンパイルしたJavaプログラムはJVMが動く環境ならどのOSでも実行できる原則。<span class="ext-note">[外部補足・確認済: S03 / Sun Microsystems]</span></li>
+      <li><strong>フローチャートのJIS規格</strong><br>JIS X0128「プログラム構成要素およびその表記法」、対応国際規格はISO 8631。スライド脚注に明記されている。<span class="ext-note">[外部補足・確認済: S03:p41脚注]</span></li>
+      <li><strong>YAML の名称の意味</strong><br>YAML = "YAML Ain't Markup Language"（再帰的頭字語）。名前にMarkup Languageを含むが実際はデータ記述方式。<span class="ext-note">[外部補足・確認済: S03 / YAML公式仕様]</span></li>
+      <li><strong>ソートアルゴリズムの計算量</strong><br>バブルソート・選択ソート: O(n²)。クイックソート: 平均O(n log n)、最悪O(n²)。二分探索: O(log n)、線形探索: O(n)。<span class="ext-note">[外部補足: アルゴリズム教科書]</span></li>
+    </ul>
+  </div>
+
+  <div class="appendix-card exam" id="appC">
+    <h3>🎯 補足C: 試験・レポートで重要な観点</h3>
+    <ul>
+      <li>「プログラム = データ構造 + アルゴリズム」の意味と出典（Niklaus Wirth）を説明できるか</li>
+      <li>スタック（LIFO/push/pop）とキュー（FIFO/enqueue/dequeue）の違いを具体例込みで説明できるか</li>
+      <li>構造化プログラミングの3基本構造（順次・選択・繰り返し）と、なぜGOTO文が問題か述べられるか</li>
+      <li>線形探索と二分探索の違い（整列の要否・速度）を比較できるか</li>
+      <li>バブルソート・選択ソート・クイックソートの基本操作を説明できるか</li>
+      <li>値の交換に一時変数 tmp が必要な理由を説明できるか</li>
+      <li>クイックソートの「再帰的」の意味を説明できるか</li>
+      <li>コンパイル言語とインタプリタ言語の違いを説明できるか</li>
+      <li>プログラミング言語・マークアップ言語・データ記述方式の違いを説明できるか</li>
+      <li>JavaとJavaScriptが全く別の言語であることを確認する</li>
+      <li>フローチャートの主な記号（端子・処理・判断・ループ端）を区別できるか</li>
+    </ul>
+  </div>
+
+  <div class="appendix-card related" id="appD">
+    <h3>🔗 補足D: 関連概念・次回への接続</h3>
+    <ul>
+      <li><strong>計算量（オーダー記法）</strong>: 線形探索O(n)、二分探索O(log n)。バブル・選択O(n²)、クイックソート平均O(n log n)。<span class="ext-note">[外部補足・確認済]</span></li>
+      <li><strong>オブジェクト指向の4大概念</strong>: 本章の「継承」のほか、カプセル化（データの隠蔽）・ポリモーフィズム（多態性）・抽象化がOOPの基本原則。<span class="ext-note">[外部補足・確認済]</span></li>
+      <li><strong>配列の添え字0始まりの理由</strong>: 多くの言語で先頭要素の添え字が0。これは「先頭からのオフセット（距離）」という設計で、C言語の仕様が多くの言語に影響を与えた。<span class="ext-note">[外部補足・確認済]</span></li>
+      <li><strong>その他のプログラミング言語（第4章まとめより）</strong><span class="src">← S03:第4章まとめ</span>
+        <ul style="margin-top:6px">
+          <li>関数型言語: <strong>Haskell</strong>・<strong>Lisp</strong>（関数を中心にプログラムを構成）</li>
+          <li>手続き型の古典: <strong>Pascal</strong>（構造化プログラミング教育言語として有名）</li>
+          <li>統計解析・データ分析: R・<strong>SAS</strong>・<strong>Julia</strong>（科学技術計算にも）</li>
+          <li>科学技術計算: MATLAB</li>
+        </ul>
+      </li>
+      <li><strong>実際にプログラムを動かしてみよう</strong>: 田中先生から「できる限り実際にプログラムを書いて動かす機会を持つことを推薦」。試行錯誤してもコンピュータは壊れない。<span class="src">← S05-A</span></li>
+    </ul>
+  </div>
+
+</section>
+
+<div class="qc-meta">
+  <strong>Step 6 QCメタデータ（v1.4 図版追加・補足昇格・精度強化版）</strong><br>
+  バージョン: v1.4 | SSP v4.2 / プロンプト v4.6.1<br>
+  更新内容 v1.2: スライド全165ページ視覚確認→バブルソートp90フローチャート追加・擬似コード展開形式化、選択ソートp95フローチャート追加・脚注「最小値選択法も含め選択ソートと総称」追記、擬似コード「仮の最大←右端」位置修正（外側ループ直下）<br>
+  ソース: S03（スライドPDF 165p）+ S05-A/B（hynote.ai ×2）<br>
+  S05信頼性: <span class="pass">high</span>（マルチバリアント不一致→S03照合済み解消）<br>
+  パートIII QCスコア: 16/16項目 pass → <span class="pass">100% PASS</span><br>
+  不確定事項: 0件（全件解消）<br>
+  Notion登録URL: https://goforward0516-web.github.io/ssp-notes/note_itbasics_08.html
+</div>
+
+</main>
+
+<script>
+const links = document.querySelectorAll('#sidebar a');
+const sections = document.querySelectorAll('[id]');
+window.addEventListener('scroll', () => {
+  let cur = '';
+  sections.forEach(s => { if(window.scrollY >= s.offsetTop - 110) cur = s.id; });
+  links.forEach(l => {
+    l.classList.remove('active');
+    if(l.getAttribute('href') === '#' + cur) l.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>

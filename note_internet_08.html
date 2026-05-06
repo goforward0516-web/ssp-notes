@@ -189,6 +189,17 @@
 <section class="sec" id="ch1">
   <div class="ch-hdr"><span class="ch-num">第1章</span><h2>システムの安定稼働と信頼性</h2></div>
 
+  <div class="card" style="margin-bottom:22px">
+    <div class="card-t">第1章 学習目標 <span class="ptr">← S03:p.5</span></div>
+    <ol>
+      <li>システムを安定的に稼働させることの重要性を理解して説明することができる</li>
+      <li>システムの運用がもたらすビジネスや社会への影響を理解して説明することができる</li>
+      <li>システムの障害や停止が引き起こす問題を理解して説明することができる</li>
+      <li>システムの信頼性を高める技術について理解して説明することができる</li>
+    </ol>
+  </div>
+
+
   <h3 id="ch1-need">なぜシステムの安定稼働が必要か</h3>
   <p>現代社会では多様なシステムが稼働しており、多くの人々がそれらに依存したサービスを利用している。<span class="ptr">← S03:p.6</span></p>
 
@@ -588,6 +599,15 @@
 <section class="sec" id="ch2">
   <div class="ch-hdr"><span class="ch-num">第2章</span><h2>システムの仮想化技術</h2></div>
 
+  <div class="card" style="margin-bottom:22px">
+    <div class="card-t">第2章 学習目標 <span class="ptr">← S03:p.20</span></div>
+    <ol>
+      <li>仮想化技術の概要を理解して説明することができる</li>
+      <li>仮想化技術の種類や特徴を理解して説明することができる</li>
+    </ol>
+  </div>
+
+
   <h3 id="ch2-overview">仮想化技術の概要とメリット</h3>
   <div class="def-box">
     <div class="lbl">定義</div>
@@ -657,7 +677,17 @@
   <p>1台の物理サーバ上に複数の仮想サーバを構築・運用する技術。ホストマシン上のOSや制御の仕組みに関わらず、仮想マシンごとに異なるOSを実行可能。<span class="ptr">← S03:p.32</span></p>
   <p><strong>代表的な実装例：</strong> VMware vSphere／Microsoft Hyper-V（Windowsの一部エディションに標準搭載）／Oracle VirtualBox<span class="ptr">← S03:p.32</span></p>
 
-  <div class="svg-c">
+  
+  <div class="card">
+    <div class="card-t">サーバ仮想化のサーバ管理上の利点 <span class="ptr">← S03:p.31</span></div>
+    <ul>
+      <li><strong>複数サーバの一元管理</strong>: 複数のサーバの稼働状況を効率的に管理・監視できる</li>
+      <li><strong>柔軟な変更対応</strong>: 仮想マシンの追加・削除・移行が柔軟に行える</li>
+      <li><strong>メンテナンス・拡張が容易</strong>: システムのメンテナンスや拡張を容易に実施できる</li>
+    </ul>
+  </div>
+
+<div class="svg-c">
 <svg viewBox="0 0 780 400" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;">
 <defs>
   <style>
@@ -863,6 +893,16 @@
 <section class="sec" id="ch3">
   <div class="ch-hdr"><span class="ch-num">第3章</span><h2>エンドユーザー向けの仮想化技術</h2></div>
 
+  <div class="card" style="margin-bottom:22px">
+    <div class="card-t">第3章 学習目標 <span class="ptr">← S03:p.41</span></div>
+    <ol>
+      <li>エンドユーザー向けの仮想化技術の概要を理解して説明することができる</li>
+      <li>エンドユーザー向けの仮想化技術の種類を理解して説明することができる</li>
+      <li>エンドユーザー向けの仮想化技術の特徴を理解して説明することができる</li>
+    </ol>
+  </div>
+
+
   <div class="imp">
     <div class="lbl">第2章との違い</div>
     <p>第2章の仮想化技術は基本的に<strong>インフラストラクチャ側</strong>（企業・大学等の組織が利用）。エンドユーザー向け仮想化技術は、エンドユーザーが利用するPCやスマートフォン上で仮想化技術を活用するもの。主に<strong>リモートワーク</strong>への活用が目的。<span class="ptr">← S03:p.43</span></p>
@@ -872,7 +912,7 @@
   <div class="tw"><table>
     <thead><tr><th>メリット</th><th>内容</th></tr></thead>
     <tbody>
-      <tr><td><strong>フレキシビリティ</strong></td><td>自分のデバイスから時間・場所を問わずアクセス可能。異なるデバイスからでも仮想環境にログインして利用できる</td></tr>
+      <tr><td><strong>フレキシビリティ</strong></td><td>自分のデバイスから時間・場所を問わずアクセス可能。異なるデバイスからでも仮想環境にログインして利用できる。なお企業等では<strong>特定の端末からのログインに制限する</strong>ケースがある<span class="ptr">← S03:p.44</span></td></tr>
       <tr><td><strong>セキュリティ</strong></td><td>データをセキュリティの高い場所に保存可能。ローカルへのデータ保存が不要でリスク低下</td></tr>
       <tr><td><strong>デバイス非依存</strong></td><td>仮想環境はクラウド上で実行されるため、エンドユーザーのデバイス性能に依存しない</td></tr>
       <tr><td><strong>バックアップと復元</strong></td><td>クラウド上で定期的なバックアップが実行され、データ喪失時はバックアップから復元できる</td></tr>
@@ -970,7 +1010,7 @@
   </div>
 
   <h3 id="ch3-browser">ブラウザ仮想化</h3>
-  <p>Webブラウザを仮想環境で実行し、画面をユーザーの端末に転送する技術。<span class="ptr">← S03:p.52</span></p>
+  <p>Webブラウザを仮想環境で実行し、画面をユーザーの端末に転送する技術。ユーザーは<strong>専用アプリケーションやリモートデスクトップ</strong>でアクセスする。<span class="ptr">← S03:p.52</span></p>
   <div class="tw"><table>
     <thead><tr><th>比較</th><th>ブラウザ仮想化</th><th>デスクトップ仮想化</th><th>アプリ仮想化</th></tr></thead>
     <tbody>
@@ -994,10 +1034,32 @@
 <section class="sec" id="ch4">
   <div class="ch-hdr"><span class="ch-num">第4章</span><h2>バックアップの重要性</h2></div>
 
+  <div class="card" style="margin-bottom:22px">
+    <div class="card-t">第4章 学習目標 <span class="ptr">← S03:p.59</span></div>
+    <ol>
+      <li>バックアップの重要性を理解して説明することができる</li>
+      <li>バックアップ手法の種類と特徴を理解して説明することができる</li>
+      <li>バックアップの実行と管理について理解して説明することができる</li>
+    </ol>
+  </div>
+
+
   <div class="def-box">
     <div class="lbl">定義</div>
     <p><strong>データのバックアップ</strong>とは、計算機上に存在するデータやファイル、設定情報などを複製して保管すること。障害やトラブル等によりデータが紛失・破損した場合でも復旧・回復するために実施する。重要なデータの保全や安全性の確保が目的。<span class="ptr">← S03:p.59</span></p>
   </div>
+
+
+  <h3 id="ch4-data">バックアップにより保護されるデータ</h3>
+  <div class="tw"><table>
+    <thead><tr><th>カテゴリ</th><th>内容</th></tr></thead>
+    <tbody>
+      <tr><td><strong>重要な文書・データベース</strong></td><td>企業や団体が保有する機密情報・重要文書・財務情報・従業員情報・顧客情報など。データが紛失・破損してもバックアップから復旧すれば事業継続が可能</td></tr>
+      <tr><td><strong>個人端末</strong></td><td>写真・動画・音楽データ・連絡先・メールメッセージなど。デバイスの盗難・紛失が起きてもデータ自体は手元に残る</td></tr>
+      <tr><td><strong>Webサイト</strong></td><td>企業や個人のWebサイトデータ。サーバ故障によるデータ消失・ハッキングによる改ざんなどへの対策となる</td></tr>
+    </tbody>
+  </table></div>
+  <span class="ptr">← S03:p.60</span>
 
   <h3 id="ch4-why">バックアップはなぜ必要か</h3>
   <div class="tw"><table>
@@ -1294,6 +1356,19 @@
   </table></div>
   <span class="ptr">← S03:p.72-73</span>
 
+  <h3 id="ch4-fail">バックアップ失敗時の対処</h3>
+  <p>バックアップの失敗は原因や状況によって異なるが、一般的な対処手順は以下のとおり。<span class="ptr">← S03:p.74-75</span></p>
+  <div class="tw"><table>
+    <thead><tr><th>ステップ</th><th>対処内容</th></tr></thead>
+    <tbody>
+      <tr><td><strong>① ログの確認</strong></td><td>バックアップソフトウェアのログから失敗の原因を特定する。エラーコードやエラーメッセージが特定の手掛かりとなる</td></tr>
+      <tr><td><strong>② バックアップの再実行</strong></td><td>一時的なネットワーク問題やストレージ容量不足が原因となることがある。問題が解消されたら再度実行する</td></tr>
+      <tr><td><strong>③ 設定の再確認</strong></td><td>バックアップの設定が適切に構成されているか確認する。問題があれば修正して再度バックアップを実行する</td></tr>
+      <tr><td><strong>④ サポートへの問い合わせ</strong></td><td>原因が特定できない・自力で修正できない場合、バックアップソフトウェアのサポートへ問い合わせてサポートエンジニアから情報を得る</td></tr>
+      <tr><td><strong>⑤ 代替手段の検討</strong></td><td>頻繁に失敗する・回復できない場合は現状とは別のバックアップ手段を検討する</td></tr>
+    </tbody>
+  </table></div>
+
   <h3 id="ch4-storage">バックアップデータの保管場所</h3>
   <div class="tw"><table>
     <thead><tr><th>ポイント</th><th>内容</th></tr></thead>
@@ -1324,10 +1399,24 @@
     <li>アクセス権限をもつアカウントのみに制限し、権限は必要最小限に設定</li>
     <li>物理的なセキュリティも考慮（施設・設備のセキュリティ・防火対策・防水対策）</li>
     <li>アクセスログを定期的に監視し不正アクセスや不正利用を早期発見</li>
+      <li>アクセスのための認証には<strong>物理的な認証デバイスの利用</strong>も考慮する</li>
+      <li>特に<strong>管理者権限を持つユーザーに対するアクセス制限</strong>を重点的に実施する <span class="ptr">← S03:p.82</span></li>
     <li>バックアップストレージを本番環境から分離（オフサイト）する</li>
     <li>バックアップソフトウェアやバックアップサーバの動作ログを監視し不正操作・故障を早期発見</li>
   </ul>
   <span class="ptr">← S03:p.79-81</span>
+
+
+  <h4>盗難・破壊からの保護</h4>
+  <div class="tw"><table>
+    <thead><tr><th>対策種別</th><th>内容</th></tr></thead>
+    <tbody>
+      <tr><td><strong>物理的対策</strong></td><td>セキュリティ対策が整備された施設・設備に保管し、盗難・不正アクセスに対応する。データ保護には<strong>防火対策・防水対策</strong>も重要</td></tr>
+      <tr><td><strong>論理的対策</strong></td><td>暗号化によるデータ漏洩の防止。アクセス制御による不正アクセスの防止。特に<strong>管理者権限を持つユーザーに対するアクセス制限</strong>は重要</td></tr>
+      <tr><td><strong>定期的なテストリストアと監査</strong></td><td>復旧手順・注意点の確認と、<strong>定期的な監査によるデータ保管状態の確認</strong>を実施する</td></tr>
+    </tbody>
+  </table></div>
+  <span class="ptr">← S03:p.83</span>
 
   <h3 id="ch4-auto">バックアップの自動化</h3>
   <p>手動でバックアップを行うとヒューマンエラーの可能性がある。正しく設定された自動化によりミスの可能性を抑えることができる。事前に目的・データ保護方針・スケジュール・バックアップ先・セキュリティ等を明確にすることが重要。<span class="ptr">← S03:p.82</span></p>
@@ -1345,6 +1434,35 @@
 
   <h4>バックアップオーケストレーションツール</h4>
   <p>複数のバックアップジョブの管理・実行・スケジューリングを自動化・統合管理するツール。<strong>オーケストレーション</strong>とは「複数の要素やプロセスを自動化し統合管理する仕組み」のこと。<span class="ptr">← S03:p.83</span></p>
+
+  <div class="card" style="margin-top:14px">
+    <div class="card-t">オーケストレーションツール導入のメリット <span class="ptr">← S03:p.85</span></div>
+    <div class="tw"><table>
+      <thead><tr><th>メリット</th><th>内容</th></tr></thead>
+      <tbody>
+        <tr><td><strong>作業効率化</strong></td><td>手動よりも簡単・迅速でタスクの一元管理ができる</td></tr>
+        <tr><td><strong>可視性向上</strong></td><td>実行状況のモニタリングにより問題発生に気づける</td></tr>
+        <tr><td><strong>セキュリティ強化</strong></td><td>人為的なミスやセキュリティ上の脆弱性を低減できる</td></tr>
+        <tr><td><strong>戦略の柔軟性向上</strong></td><td>複数のバックアップを同時実行可能なので、複雑なバックアップ戦略を実現できる</td></tr>
+        <tr><td><strong>コスト削減</strong></td><td>手動実行より作業コストを低減でき、単一ソリューションの導入で費用を低減できる</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="card" style="margin-top:14px">
+    <div class="card-t">オーケストレーションツール導入のメリット <span class="ptr">← S03:p.85</span></div>
+    <div class="tw"><table>
+      <thead><tr><th>メリット</th><th>内容</th></tr></thead>
+      <tbody>
+        <tr><td><strong>作業効率化</strong></td><td>手動よりも簡単・迅速でタスクの一元管理ができる</td></tr>
+        <tr><td><strong>バックアップの可視性向上</strong></td><td>実行状況のモニタリングにより問題発生に気づける</td></tr>
+        <tr><td><strong>セキュリティ強化</strong></td><td>人為的なミスやセキュリティ上の脆弱性を低減できる</td></tr>
+        <tr><td><strong>戦略の柔軟性向上</strong></td><td>複数のバックアップを同時実行可能なので、複雑なバックアップ戦略を実現できる</td></tr>
+        <tr><td><strong>コスト削減</strong></td><td>手動実行より作業コストを低減でき、単一ソリューションの導入で費用を低減できる</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
   <div class="tw"><table>
     <thead><tr><th>ツール名</th><th>特徴</th></tr></thead>
     <tbody>
@@ -1450,6 +1568,35 @@
 
     <h4>SDN/NFVとネットワークの未来 <span class="ext-sm">[外部補足]</span></h4>
     <p>SDNやNFVの概念は、インフラ全体をコードで管理する「IaC（Infrastructure as Code）」やクラウドネイティブなアーキテクチャの基盤となっている。Terraform・AnsibleなどのIaCツールとSDNを組み合わせることで、大規模なネットワーク環境を効率的に管理することが可能。</p>
+  </div>
+
+
+  <!-- 各章まとめ・第8回まとめ -->
+  <div class="app-card" style="border-top:3px solid #5b8dee" id="app-summary">
+    <div class="app-t">📋 各章まとめ・第8回まとめ（スライドから）</div>
+
+    <h4>第1章まとめ <span class="ext-sm">← S03:p.21-22</span></h4>
+    <p><strong>システムの安定稼働と障害・トラブルについて：</strong>現代社会では、ECサイトや金融サービス、病院の医療情報システムなど多くのシステムが稼働しており、ユーザーの社会生活に利用されている。システム障害やトラブルの停止が起きると、機会損失・経済的損失・信用の失墜、さらに場合によっては命に係わる問題が発生する。</p>
+    <p><strong>システムの安定稼働のための方策について：</strong>トラブルや障害の発生時にサービス提供を継続するための冗長性、異常を検知するための監視、トラブルや障害の発生を未然に防ぐための予防保全など、様々な方策を実施しなければならない。</p>
+
+    <h4 style="margin-top:16px">第2章まとめ <span class="ext-sm">← S03:p.38</span></h4>
+    <p><strong>仮想化技術について：</strong>ネットワークやサーバでは様々な仮想化技術が利用されている。仮想化技術の種類と特徴を把握し、適切な説明ができるようになる必要がある。</p>
+    <p><strong>仮想化技術のメリットとデメリット：</strong>各仮想化技術にはメリットとデメリットがある。仮想化技術を使う際には、メリットとデメリットを考慮し、<strong>適切なソリューションを選択・提示できる</strong>必要がある。</p>
+    <p><strong>仮想化技術の導入：</strong>組織が仮想化技術を導入する際には、組織のニーズに適合するかどうかリスク評価を行う必要がある。適切な計画と実装が必要であり、専門的なスキルや知識を持ったエンジニアが必要となる。</p>
+
+    <h4 style="margin-top:16px">第3章まとめ <span class="ext-sm">← S03:p.55-56</span></h4>
+    <p><strong>エンドユーザー向けの仮想化技術：</strong>第2章の仮想化技術は基本的にインフラストラクチャ側のものだが、エンドユーザー向け仮想化技術は仮想デスクトップや仮想ブラウザなど、個別のユーザーに対して提供されるサービスであることが多い。</p>
+    <p><strong>特徴：</strong>組織の構成員としてのエンドユーザーが利用する仮想環境については、組織により管理・運用されるケースがほとんどであり、仮想環境へのアクセスにはネットワークと最低限の性能のデバイスがあればよいケースが多く、リモートワーク等、場所にとらわれない働き方に活用される。</p>
+
+    <h4 style="margin-top:16px">第4章まとめ <span class="ext-sm">← S03:p.86</span></h4>
+    <p><strong>バックアップの重要性：</strong>システムのデータが喪失すると、機会損失や経済的利益の損失につながる。障害やトラブルへの対策として、バックアップを取得し、緊急事態の際は復旧できるように備えておく必要がある。</p>
+    <p><strong>バックアップの手法と特徴：</strong>バックアップにはいくつかの手法があり、それぞれに特徴とデメリットがある。バックアップするデータの目的やランニングコスト・運用体制等を考慮し、適切なバックアップ手法を選択する必要がある。</p>
+    <p><strong>バックアップの実行と管理：</strong>保管には情報システム上のセキュリティだけではなく、物理的なセキュリティや防護措置・地理的分散などを考慮する必要がある。災害等の発生時に迅速な復旧が可能となるように適切な保管方法を決定するべきである。</p>
+
+    <h4 style="margin-top:16px">第8回まとめ <span class="ext-sm">← S03:p.87</span></h4>
+    <p><strong>システムの安定稼働：</strong>情報化社会においては、社会的に重要なインフラを担うシステムも増えている。障害やトラブルにより社会的混乱を引き起こさないためにも、システムの安定稼働が必要である。様々な予防保全措置を行うとともに、障害発生時には迅速な復旧ができるように備えておくべきである。</p>
+    <p><strong>仮想化技術：</strong>コンピュータ資源の効率利用のために様々な仮想化技術が利用されている。目的や環境・メリットとデメリット・ニーズを考慮し、適切な仮想化技術を選択してシステムを構築し、あるいはサービスを提供することが求められる。</p>
+    <p><strong>バックアップの重要性：</strong>データの損失は機会損失や利益損失につながるため、緊急時の備えとしてバックアップの取得は必ず実施するべきである。バックアップの目的やデータ更新の頻度等に応じて適切なバックアップ手法を選択し、保管場所についても様々な条件を考慮して決定する必要がある。</p>
   </div>
 
   <!-- 未確定事項 -->

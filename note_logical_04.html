@@ -820,6 +820,22 @@ svg{display:block;width:100%;border-radius:8px;}
 <div class="hl">
   <strong>結論：</strong>購入先を選ぶ視点として体制・機器・費用の3つがある。9つの要素を評価項目とし、3社の中で最も評価の高い会社の製品を購入するのが適当。YES/NOリスト化して各社を評価する。 <span class="ptr">← S03:p.27-28</span>
 </div>
+
+<h4>評価項目リスト（YES/NO評価表）</h4>
+<p>ツリー図で補完した9要素を評価項目とし、3社をYES/NOでチェックする。YESの多い会社を選ぶ。 <span class="ptr">← S03:p.28</span></p>
+<table>
+  <tr><th>#</th><th>評価項目</th><th>分類</th><th>A社</th><th>B社</th><th>C社</th></tr>
+  <tr><td>1</td><td>故障したらすぐに来てくれるか</td><td>体制</td><td>YES</td><td>YES</td><td>NO</td></tr>
+  <tr><td>2</td><td>安定した会社か</td><td>体制</td><td>YES</td><td>NO</td><td>YES</td></tr>
+  <tr><td>3</td><td>実績が豊富にあるか</td><td>体制（補完）</td><td>YES</td><td>YES</td><td>YES</td></tr>
+  <tr><td>4</td><td>機能が充実しているか</td><td>機器</td><td>NO</td><td>YES</td><td>YES</td></tr>
+  <tr><td>5</td><td>性能が高いか・故障が少ないか</td><td>機器（補完）</td><td>YES</td><td>YES</td><td>NO</td></tr>
+  <tr><td>6</td><td>保証が少ない（故障率が低い）か</td><td>機器（補完）</td><td>NO</td><td>YES</td><td>YES</td></tr>
+  <tr><td>7</td><td>機器の値段が安いか</td><td>費用</td><td>YES</td><td>NO</td><td>YES</td></tr>
+  <tr><td>8</td><td>省エネタイプでランニングコストが低いか</td><td>費用（補完）</td><td>NO</td><td>YES</td><td>YES</td></tr>
+  <tr><td>9</td><td>交換部品が安いか</td><td>費用（補完）</td><td>YES</td><td>YES</td><td>NO</td></tr>
+</table>
+<p style="font-size:11px;color:var(--text-sub);">※ 上の数値は例示。実際は3社の実態に基づいて判断する。YESが多い会社の製品を購入するのが適当。← S03:p.28</p>
 </div>
 
 <!-- ── CASE②：点グラフ ── -->
@@ -1068,6 +1084,42 @@ svg{display:block;width:100%;border-radius:8px;}
 
 <h3 style="margin-top:16px;">③ 図にして対策を検討する（マトリクス図①）</h3>
 <p>課題を「反転」させて対策の方向性（目標）を軸に設定する。 <span class="ptr">← S03:p.48</span></p>
+
+<!-- p.48の反転プロセスを明示 -->
+<figure>
+<svg viewBox="0 0 640 160" xmlns="http://www.w3.org/2000/svg" style="background:#1e2535;padding:12px;">
+  <text x="320" y="18" text-anchor="middle" font-family="Noto Sans JP" font-size="11" fill="#8a99b8">課題（現状）→ 対策方向（目標）に「反転」させて軸を設定する</text>
+  <!-- 矢印定義 -->
+  <defs><marker id="arr-rev" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#34d399"/></marker></defs>
+  <!-- 課題1→対策1 -->
+  <rect x="10" y="34" width="200" height="32" rx="6" fill="#2d1a1a" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="110" y="55" text-anchor="middle" font-family="Noto Sans JP" font-size="11" fill="#e74c3c">制度を形骸化させる</text>
+  <line x1="215" y1="50" x2="245" y2="50" stroke="#34d399" stroke-width="2" marker-end="url(#arr-rev)"/>
+  <text x="230" y="44" text-anchor="middle" font-family="Noto Sans JP" font-size="9" fill="#34d399">反転</text>
+  <rect x="248" y="34" width="200" height="32" rx="6" fill="#1a3a2a" stroke="#34d399" stroke-width="1.5"/>
+  <text x="348" y="55" text-anchor="middle" font-family="Noto Sans JP" font-size="11" fill="#34d399">制度の実効性を高める</text>
+  <!-- 課題2→対策2 -->
+  <rect x="10" y="82" width="200" height="32" rx="6" fill="#1a1a2d" stroke="#3498db" stroke-width="1.5"/>
+  <text x="110" y="103" text-anchor="middle" font-family="Noto Sans JP" font-size="11" fill="#3498db">画一的な社員を育てる</text>
+  <line x1="215" y1="98" x2="245" y2="98" stroke="#34d399" stroke-width="2" marker-end="url(#arr-rev)"/>
+  <text x="230" y="92" text-anchor="middle" font-family="Noto Sans JP" font-size="9" fill="#34d399">反転</text>
+  <rect x="248" y="82" width="200" height="32" rx="6" fill="#1a3a2a" stroke="#34d399" stroke-width="1.5"/>
+  <text x="348" y="103" text-anchor="middle" font-family="Noto Sans JP" font-size="11" fill="#34d399">制度の柔軟性を高める</text>
+  <!-- 社員視点の課題→対策 -->
+  <rect x="455" y="34" width="90" height="32" rx="6" fill="#2d1a1a" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="500" y="55" text-anchor="middle" font-family="Noto Sans JP" font-size="10" fill="#e74c3c">納得性が低い</text>
+  <line x1="548" y1="44" x2="548" y2="72" stroke="#34d399" stroke-width="1.5" marker-end="url(#arr-rev)"/>
+  <text x="560" y="60" font-family="Noto Sans JP" font-size="9" fill="#34d399">反転</text>
+  <rect x="455" y="78" width="90" height="32" rx="6" fill="#1a3a2a" stroke="#34d399" stroke-width="1.5"/>
+  <text x="500" y="99" text-anchor="middle" font-family="Noto Sans JP" font-size="10" fill="#34d399">納得性を高める</text>
+  <!-- 2つ目の社員視点 -->
+  <rect x="455" y="118" width="90" height="32" rx="6" fill="#1a1a2d" stroke="#3498db" stroke-width="1.5"/>
+  <text x="500" y="135" text-anchor="middle" font-family="Noto Sans JP" font-size="10" fill="#3498db">動機づけが弱い</text>
+  <text x="500" y="120" text-anchor="middle" font-family="Noto Sans JP" font-size="9" fill="#34d399">↑ 同様に反転</text>
+  <text x="455" y="153" text-anchor="start" font-family="Noto Sans JP" font-size="9" fill="#34d399">→ 動機づけを与える</text>
+</svg>
+<figcaption>図：課題（現状）→ 対策方向（目標）への「反転」プロセス ← S03:p.48</figcaption>
+</figure>
 
 <!-- スライドp.50の対策マトリクスを精密に再現 -->
 <figure>
@@ -1643,27 +1695,62 @@ svg{display:block;width:100%;border-radius:8px;}
 <div class="card" id="ch4-combo">
 <h3>状況分析（第3回）＋対策検討（第4回）の組み合わせ</h3>
 
-<div class="slide-replica">
-  <div class="slide-title">← S03:p.72 スライド内容</div>
-  <div class="slide-body">
-    <div style="display:flex;gap:20px;align-items:center;flex-wrap:wrap;">
-      <div style="flex:1;min-width:160px;background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,0.3);border-radius:8px;padding:12px;">
-        <div style="font-size:11px;color:var(--accent2);font-weight:700;margin-bottom:4px;">状況を整理するための図解</div>
-        <div style="font-size:12px;">状況が複雑→何をどうすべきか分からない</div>
-      </div>
-      <div style="color:var(--text-dim);font-size:18px;">+</div>
-      <div style="flex:1;min-width:160px;background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.3);border-radius:8px;padding:12px;">
-        <div style="font-size:11px;color:var(--accent3);font-weight:700;margin-bottom:4px;">対策の検討に役立つ図解</div>
-        <div style="font-size:12px;">何をどうすべきかを決定する</div>
-      </div>
-    </div>
-    <div style="margin-top:10px;font-weight:700;text-align:center;font-size:13px;">「状況を把握し対策を検討する」という一連の流れで考えをまとめるのが効果的</div>
-  </div>
-</div>
+<!-- p.72のカラーボックス図を再現 -->
+<figure>
+<svg viewBox="0 0 620 160" xmlns="http://www.w3.org/2000/svg" style="background:#1e2535;padding:14px;">
+  <!-- 上段：考えを整理すべき局面 -->
+  <rect x="20" y="10" width="580" height="44" rx="8" fill="#253045" stroke="#5b8dee" stroke-width="1"/>
+  <text x="310" y="29" text-anchor="middle" font-family="Noto Sans JP" font-size="11" fill="#8a99b8">考えを整理すべき局面を考えてみると…</text>
+  <text x="150" y="46" text-anchor="middle" font-family="Noto Sans JP" font-size="12" fill="#3b82f6" font-weight="700">状況が複雑で</text>
+  <text x="460" y="46" text-anchor="middle" font-family="Noto Sans JP" font-size="12" fill="#3b82f6" font-weight="700">何をどうすべきかわからない</text>
+  <!-- 下向き矢印 -->
+  <polygon points="148,60 156,60 152,72" fill="#fbbf24"/>
+  <polygon points="456,60 464,60 460,72" fill="#fbbf24"/>
+  <!-- 下段：2種類の図解手法 -->
+  <rect x="20" y="72" width="580" height="72" rx="8" fill="#2a2510" stroke="#fbbf24" stroke-width="1"/>
+  <text x="310" y="92" text-anchor="middle" font-family="Noto Sans JP" font-size="11" fill="#8a99b8">2種類の図解手法（図を描くルール）がある</text>
+  <rect x="40" y="100" width="240" height="34" rx="6" fill="#1a3a28" stroke="#34d399" stroke-width="1.5"/>
+  <text x="160" y="122" text-anchor="middle" font-family="Noto Sans JP" font-size="12" fill="#34d399" font-weight="700">状況を整理するための図解</text>
+  <rect x="340" y="100" width="240" height="34" rx="6" fill="#3a2010" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="460" y="122" text-anchor="middle" font-family="Noto Sans JP" font-size="12" fill="#fbbf24" font-weight="700">対策の検討に役立つ図解</text>
+  <!-- 結論バナー -->
+  <text x="310" y="156" text-anchor="middle" font-family="Noto Sans JP" font-size="11" fill="#fbbf24" font-weight="700">「状況を把握し対策を検討する」という一連の流れで考えをまとめるのが効果的</text>
+</svg>
+<figcaption>図：状況を把握し対策を検討する — 2種の図解手法の関係 ← S03:p.72</figcaption>
+</figure>
 
 <div class="audio">
   <div class="lbl">Audio Supplement</div>
   状況分析・対策検討それぞれに発散思考と収束思考があることから、両方を組み合わせると「発散→収束、また発散→収束」という順に頭を働かせることになる。ロジカルシンキングは純粋な学問というより実践的・実用的な学問。ケーススタディを通して実際の経営コンサルティングに役立つノウハウを学ぶ。 <span class="ptr">← S05</span>
+</div>
+
+<h4>第3回・第4回の総まとめ</h4>
+
+<div class="slide-replica">
+  <div class="slide-title">← S03:p.75-77 スライド原文（第3回・第4回のまとめ）</div>
+  <div class="slide-body">
+    <p style="margin-bottom:8px;"><strong>【第3回：状況分析について】</strong></p>
+    <ul style="margin-bottom:12px;">
+      <li>状況を的確に把握できないために解決が難しくなっている問題が多い</li>
+      <li>裏を返せば、直面している事態・状況・実態を的確に把握することができれば、問題解決が容易に行える</li>
+      <li>現象学や言語学の知見を踏まえると、私たちは何らかの概念を理解する際に、それと似た別の概念との違いや関係を理解している</li>
+      <li>「<strong>いかなる言葉も実体的な何かを名状しているのではなく、他の言葉との差異・関係を通して初めて意味を与えられる</strong>」</li>
+      <li>→ 知りたいことを「深く知る」には、知りたいことと似ている比較要素を出し、それらとの関係の分析を行うのが良い</li>
+    </ul>
+    <p style="margin-bottom:8px;"><strong>【第4回：対策検討について】</strong></p>
+    <ul>
+      <li>問題や課題をいくつかの要素に分けることは「分かる」ことにつながる</li>
+      <li>問題や課題を対処しやすい大きさに分割することが「対策検討」には重要</li>
+      <li>＝ 状況（事象・概念・課題など）をいくつかの要素に分けて、要素相互の関係を読み解く</li>
+    </ul>
+  </div>
+</div>
+
+<div class="hl">
+  <strong>重要：発散・収束の繰り返し</strong><br>
+  状況分析と対策検討、それぞれに発散思考と収束思考がある。両方を組み合わせた場合、<br>
+  <strong>発散（状況分析）→ 収束（状況分析）→ 発散（対策検討）→ 収束（対策検討）</strong><br>
+  という順に頭を働かせることになる。 <span class="ptr">← S03:p.77</span>
 </div>
 
 <h4>組み合わせパターンの数</h4>
@@ -1674,13 +1761,33 @@ svg{display:block;width:100%;border-radius:8px;}
 </table>
 <p style="font-size:11px;color:var(--text-sub);">← S03:p.77</p>
 
+<h4>第3回ケーススタディ一覧（復習）</h4>
+<table>
+  <tr><th>章</th><th>テーマ</th><th>CASE</th><th>図解手法</th></tr>
+  <tr><td>第3回2章</td><td>状況分析</td><td>工場で起きた事故を分類する</td><td>状況分析マトリクス図</td></tr>
+  <tr><td>第3回3章</td><td>状況分析</td><td>「新型コロナ」を捉える</td><td>状況分析ツリー図</td></tr>
+  <tr><td>第3回4章</td><td>状況分析</td><td>経営戦略の手本を探し出す</td><td>状況分析点グラフ</td></tr>
+</table>
+<p style="font-size:11px;color:var(--text-sub);">← S03:p.79</p>
+
+<h4>第4回ケーススタディ一覧</h4>
+<table>
+  <tr><th>章</th><th>テーマ</th><th>CASE</th><th>図解手法</th></tr>
+  <tr><td>第4回2章</td><td>対策検討（ツリー図）</td><td>機械の購入先を選ぶ</td><td>対策検討ツリー図</td></tr>
+  <tr><td>第4回2章</td><td>対策検討（点グラフ）</td><td>新店舗の立地場所をどこにするか</td><td>対策検討点グラフ</td></tr>
+  <tr><td>第4回3章</td><td>対策検討（マトリクス図）</td><td>今の人事評価制度を見直したい</td><td>対策検討マトリクス図</td></tr>
+  <tr><td>第4回3章</td><td>対策検討（ベン図）</td><td>テレビ局のDX推進策を整理する</td><td>対策検討ベン図</td></tr>
+  <tr><td>第4回4章</td><td>対策検討（フロー図）</td><td>赤字の原因を探り対策を検討する</td><td>対策検討フロー図</td></tr>
+</table>
+<p style="font-size:11px;color:var(--text-sub);">← S03:p.80</p>
+
 <h4>第5回以降の予告</h4>
 <table>
-  <tr><th>回</th><th>テーマ</th><th>図解手法</th></tr>
-  <tr><td>第5回</td><td>発想力の強化</td><td>発想マトリクス図・発想ツリー図・発想フロー図</td></tr>
-  <tr><td>第6回</td><td>問題解決力の強化</td><td>問題解決フロー図・問題解決ツリー図・問題解決ベン図</td></tr>
-  <tr><td>第7回</td><td>意思決定力の強化</td><td>意思決定マトリクス図・意思決定点グラフ・意思決定ツリー図</td></tr>
-  <tr><td>第8回</td><td>交渉力の強化</td><td>交渉フロー図・交渉ベン図</td></tr>
+  <tr><th>回</th><th>テーマ</th><th>図解手法</th><th>CASE例</th></tr>
+  <tr><td>第5回</td><td>発想力の強化</td><td>発想マトリクス図・発想ツリー図・発想フロー図</td><td>新しいカメラを考案したい / 新しい旅行商品を企画する / 自動車の組み立て時間を縮めたい</td></tr>
+  <tr><td>第6回</td><td>問題解決力の強化</td><td>問題解決フロー図・問題解決ツリー図・問題解決ベン図</td><td>お客様相談窓口のクレーム対応 / コーヒーショップの売上を伸ばすには</td></tr>
+  <tr><td>第7回</td><td>意思決定力の強化</td><td>意思決定マトリクス図・意思決定点グラフ・意思決定ツリー図</td><td>台風で電車が運休、さてどうする / 中国工場を維持すべきか撤退すべきか</td></tr>
+  <tr><td>第8回</td><td>交渉力の強化</td><td>交渉フロー図・交渉ベン図</td><td>マンションの契約にこぎつけたい / 残業問題をどう解決するか</td></tr>
 </table>
 <p style="font-size:11px;color:var(--text-sub);">← S03:p.81-84</p>
 </div>
@@ -1761,6 +1868,11 @@ svg{display:block;width:100%;border-radius:8px;}
     <li><strong>状況分析×対策検討 = 25通り</strong>の組み合わせがある意義を説明できる</li>
     <li><strong>ツリー図の「掛け算型」vs「足し算型」の違い</strong>を事例で説明できる</li>
     <li><strong>マトリクス図で軸を変えると示唆が変わる</strong>理由と実例（人事評価ケースの2パターン）を説明できる</li>
+    <li><strong>ロジカルシンキングが重要になる局面</strong>を説明できる：「自分が今直面している状況が複雑で、何をどうすべきかわからない時」。簡単な問題でなく、混乱している時に役立つ <span class="ptr">← S03:p.72</span></li>
+    <li><strong>現象学・言語学の知見との接続</strong>を説明できる（レポート・記述式試験向け）：<br>
+      「いかなる言葉も実体的な何かを名状しているのではなく、他の言葉との差異・関係を通して初めて意味を与えられる」（スライドp.75の引用）<br>
+      → 「状況分析」では似たものとの比較で対象を深く理解する、という手法の理論的根拠になっている <span class="ptr">← S03:p.75</span>
+    </li>
   </ul>
 </div>
 </section>
@@ -1786,8 +1898,9 @@ svg{display:block;width:100%;border-radius:8px;}
 
 <!-- フッター -->
 <div style="margin-top:40px;padding:16px 20px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;font-size:11px;color:var(--text-dim);font-family:'JetBrains Mono',monospace;">
-  v2.0 2025-04-15 　強化版（スライド図精密再現・補足充実・外部補足確認済）<br>
-  v1.0 2025-04-15 　初版（Step 5-B完了）<br>
+  v3.0 完全チェック版（抜け6箇所補完：YESNOリスト・反転図・総まとめ・ケース一覧・25通り詳細・試験観点追加）<br>
+  v2.0 強化版（スライド図精密再現・補足充実・外部補足確認済）<br>
+  v1.0 初版（Step 5-B完了）<br>
   SSP v4.6.1 ／ ソース: S03（正ソース・85p）+ S05-A・B（hynote.ai×2）+ Web確認済み補足<br>
   GitHub Pages: https://goforward0516-web.github.io/ssp-notes/note_logical_04.html
 </div>

@@ -377,6 +377,16 @@ strong { color: var(--text); }
   </div>
 
   <h4 class="sub-title" id="pattern">3つの問題解決パターンと対応する図</h4>
+  <p>図を使って問題解決を図る上では、問題の性質に合わせて適切な図を選ぶことが重要。問題解決には主に3つのパターンがある。 <span class="src">← S03:p.13</span></p>
+  <div class="card">
+    <strong>問題を「分割する」ことの意義 <span class="src">S03:p.13</span></strong>
+    <ul style="margin-top:8px;">
+      <li>難解な問題でも、<strong>小分けにすれば比較的簡単に解ける場合がある</strong></li>
+      <li>我々の思考回路は問題を丸ごと一体的に捉えてしまう傾向があり、その認識の枠組みが問題解決を困難にしている場合がある</li>
+      <li>問題はいくつかの要素に分割することができる</li>
+      <li>一つひとつの要素を別々に考えていけば、<strong>解決策は比較的容易に導き出すことができる</strong></li>
+    </ul>
+  </div>
 
   <!-- スライドp.13-18の3パターン対応図 -->
   <div class="fig">
@@ -512,76 +522,82 @@ strong { color: var(--text); }
   <p>「スマートテレビの故障のクレームに対処する」では抽象的すぎて解決の糸口を探りにくい。そこで <strong>「突然画面が表示されなくなり操作不能になる」</strong>問題と定義する。 <span class="src">← S03:p.27</span></p>
 
   <p><strong>Step 2: 因果の連鎖を図にする → Step 3: 精査して根本原因を特定</strong></p>
-  <!-- スライドp.29-30の因果連鎖フロー図（完全再現・縦型） -->
+  <!-- スライドp.28-30の因果連鎖フロー図（過電圧ノード含む完全再現） -->
   <div class="fig">
-    <svg viewBox="0 0 660 480" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:660px;">
+    <svg viewBox="0 0 680 510" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:680px;">
       <defs>
         <marker id="b1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,1 L9,5 L0,9z" fill="#5b8dee"/></marker>
         <marker id="bg" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,1 L9,5 L0,9z" fill="#fbbf24"/></marker>
       </defs>
 
-      <!-- ── 層1: 問題 ── -->
-      <rect x="180" y="8" width="300" height="50" rx="7" fill="rgba(248,113,113,.13)" stroke="#f87171" stroke-width="2"/>
-      <text x="330" y="29" text-anchor="middle" fill="#f87171" font-family="'Noto Sans JP'" font-size="13" font-weight="700">突然画面が表示されなくなり</text>
-      <text x="330" y="49" text-anchor="middle" fill="#f87171" font-family="'Noto Sans JP'" font-size="13" font-weight="700">操作不能になる（問題）</text>
+      <!-- 問題 -->
+      <rect x="190" y="8" width="300" height="50" rx="7" fill="rgba(248,113,113,.13)" stroke="#f87171" stroke-width="2"/>
+      <text x="340" y="29" text-anchor="middle" fill="#f87171" font-family="'Noto Sans JP'" font-size="13" font-weight="700">突然画面が表示されなくなり</text>
+      <text x="340" y="49" text-anchor="middle" fill="#f87171" font-family="'Noto Sans JP'" font-size="13" font-weight="700">操作不能になる（問題）</text>
+      <line x1="340" y1="58" x2="340" y2="88" stroke="#5b8dee" stroke-width="2" marker-end="url(#b1)"/>
 
-      <!-- 層1→層2 -->
-      <line x1="330" y1="58" x2="330" y2="88" stroke="#5b8dee" stroke-width="2" marker-end="url(#b1)"/>
+      <!-- 電源供給回路の故障（直接原因） -->
+      <rect x="195" y="90" width="290" height="48" rx="7" fill="rgba(91,141,238,.12)" stroke="#5b8dee" stroke-width="1.8"/>
+      <text x="340" y="111" text-anchor="middle" fill="#e2e8f5" font-family="'Noto Sans JP'" font-size="13">電源供給回路の故障</text>
+      <text x="340" y="130" text-anchor="middle" fill="#8a99b8" font-family="'Noto Sans JP'" font-size="11">（直接原因）</text>
 
-      <!-- ── 層2: 電源供給回路の故障（直接原因） ── -->
-      <rect x="190" y="90" width="280" height="48" rx="7" fill="rgba(91,141,238,.12)" stroke="#5b8dee" stroke-width="1.8"/>
-      <text x="330" y="111" text-anchor="middle" fill="#e2e8f5" font-family="'Noto Sans JP'" font-size="13">電源供給回路の故障</text>
-      <text x="330" y="130" text-anchor="middle" fill="#8a99b8" font-family="'Noto Sans JP'" font-size="11">（直接原因）</text>
+      <!-- 3本矢印（均等・交差なし） -->
+      <line x1="250" y1="138" x2="120" y2="196" stroke="#5b8dee" stroke-width="1.8" marker-end="url(#b1)"/>
+      <line x1="340" y1="138" x2="340" y2="196" stroke="#5b8dee" stroke-width="1.8" marker-end="url(#b1)"/>
+      <line x1="430" y1="138" x2="556" y2="196" stroke="#5b8dee" stroke-width="1.8" marker-end="url(#b1)"/>
 
-      <!-- 層2→層3（3本・十分に間隔を空ける） -->
-      <line x1="240" y1="138" x2="110" y2="188" stroke="#5b8dee" stroke-width="1.8" marker-end="url(#b1)"/>
-      <line x1="330" y1="138" x2="330" y2="188" stroke="#5b8dee" stroke-width="1.8" marker-end="url(#b1)"/>
-      <line x1="420" y1="138" x2="548" y2="188" stroke="#5b8dee" stroke-width="1.8" marker-end="url(#b1)"/>
+      <!-- 原因1・2・3 -->
+      <rect x="26"  y="198" width="188" height="52" rx="6" fill="rgba(91,141,238,.09)" stroke="#3b82f6" stroke-width="1.5"/>
+      <text x="120" y="220" text-anchor="middle" fill="#e2e8f5" font-family="'Noto Sans JP'" font-size="12">電源供給回路の</text>
+      <text x="120" y="238" text-anchor="middle" fill="#e2e8f5" font-family="'Noto Sans JP'" font-size="12">安定性低下（原因1）</text>
 
-      <!-- ── 層3: 原因1・2・3 ── -->
-      <rect x="18"  y="190" width="184" height="52" rx="6" fill="rgba(91,141,238,.09)" stroke="#3b82f6" stroke-width="1.5"/>
-      <text x="110" y="213" text-anchor="middle" fill="#e2e8f5" font-family="'Noto Sans JP'" font-size="12">電源供給回路の</text>
-      <text x="110" y="230" text-anchor="middle" fill="#e2e8f5" font-family="'Noto Sans JP'" font-size="12">安定性低下 （原因1）</text>
+      <rect x="246" y="198" width="188" height="52" rx="6" fill="rgba(91,141,238,.09)" stroke="#3b82f6" stroke-width="1.5"/>
+      <text x="340" y="220" text-anchor="middle" fill="#e2e8f5" font-family="'Noto Sans JP'" font-size="12">漏液の発生</text>
+      <text x="340" y="238" text-anchor="middle" fill="#8a99b8" font-family="'Noto Sans JP'" font-size="11">（原因2）</text>
 
-      <rect x="238" y="190" width="184" height="52" rx="6" fill="rgba(91,141,238,.09)" stroke="#3b82f6" stroke-width="1.5"/>
-      <text x="330" y="213" text-anchor="middle" fill="#e2e8f5" font-family="'Noto Sans JP'" font-size="12">漏液の発生</text>
-      <text x="330" y="230" text-anchor="middle" fill="#8a99b8" font-family="'Noto Sans JP'" font-size="11">（原因2）</text>
+      <rect x="466" y="198" width="188" height="52" rx="6" fill="rgba(91,141,238,.09)" stroke="#3b82f6" stroke-width="1.5"/>
+      <text x="560" y="220" text-anchor="middle" fill="#e2e8f5" font-family="'Noto Sans JP'" font-size="12">内部が過熱</text>
+      <text x="560" y="238" text-anchor="middle" fill="#8a99b8" font-family="'Noto Sans JP'" font-size="11">（原因3）</text>
 
-      <rect x="458" y="190" width="184" height="52" rx="6" fill="rgba(91,141,238,.09)" stroke="#3b82f6" stroke-width="1.5"/>
-      <text x="550" y="213" text-anchor="middle" fill="#e2e8f5" font-family="'Noto Sans JP'" font-size="12">内部が過熱</text>
-      <text x="550" y="230" text-anchor="middle" fill="#8a99b8" font-family="'Noto Sans JP'" font-size="11">（原因3）</text>
+      <!-- 原因3 → 過電圧（S03:p.28で明示） -->
+      <line x1="560" y1="250" x2="560" y2="284" stroke="#5b8dee" stroke-width="1.8" marker-end="url(#b1)"/>
+      <rect x="466" y="286" width="188" height="44" rx="6" fill="rgba(91,141,238,.08)" stroke="#3b82f6" stroke-width="1.5"/>
+      <text x="560" y="305" text-anchor="middle" fill="#e2e8f5" font-family="'Noto Sans JP'" font-size="12">過電圧（原因3a）</text>
+      <text x="560" y="322" text-anchor="middle" fill="#8a99b8" font-family="'Noto Sans JP'" font-size="10">許容以上の電圧がかかった状態</text>
 
-      <!-- 層3→層4 -->
-      <!-- 原因1・2 → 電解コンデンサの劣化 -->
-      <line x1="110" y1="242" x2="200" y2="295" stroke="#5b8dee" stroke-width="1.8" marker-end="url(#b1)"/>
-      <line x1="330" y1="242" x2="290" y2="295" stroke="#5b8dee" stroke-width="1.8" marker-end="url(#b1)"/>
-      <!-- 原因3 → 冷却システムの不備 -->
-      <line x1="550" y1="242" x2="510" y2="295" stroke="#5b8dee" stroke-width="1.8" marker-end="url(#b1)"/>
+      <!-- 原因1・2 → 電解コンデンサ劣化 -->
+      <line x1="120" y1="250" x2="210" y2="322" stroke="#5b8dee" stroke-width="1.8" marker-end="url(#b1)"/>
+      <line x1="340" y1="250" x2="295" y2="322" stroke="#5b8dee" stroke-width="1.8" marker-end="url(#b1)"/>
 
-      <!-- ── 層4: 電解コンデンサ劣化 / 冷却システム不備（根本原因）── -->
-      <rect x="108" y="297" width="230" height="52" rx="6" fill="rgba(91,141,238,.07)" stroke="#3b82f6" stroke-width="1.5"/>
-      <text x="223" y="320" text-anchor="middle" fill="#e2e8f5" font-family="'Noto Sans JP'" font-size="12">基盤の電解コンデンサの劣化</text>
-      <text x="223" y="338" text-anchor="middle" fill="#8a99b8" font-family="'Noto Sans JP'" font-size="11">（原因4）</text>
+      <!-- 過電圧 → 電解コンデンサへ影響 -->
+      <line x1="466" y1="308" x2="372" y2="334" stroke="#5b8dee" stroke-width="1.5" marker-end="url(#b1)"/>
 
-      <rect x="378" y="297" width="234" height="52" rx="7" fill="rgba(251,191,36,.17)" stroke="#fbbf24" stroke-width="2.2"/>
-      <text x="495" y="318" text-anchor="middle" fill="#fbbf24" font-family="'Noto Sans JP'" font-size="13" font-weight="700">冷却システムの不備</text>
-      <text x="495" y="338" text-anchor="middle" fill="#fbbf24" font-family="'Noto Sans JP'" font-size="12" font-weight="700">（根本原因・真の問題）</text>
+      <!-- 電解コンデンサ劣化 -->
+      <rect x="108" y="326" width="252" height="48" rx="6" fill="rgba(91,141,238,.07)" stroke="#3b82f6" stroke-width="1.5"/>
+      <text x="234" y="346" text-anchor="middle" fill="#e2e8f5" font-family="'Noto Sans JP'" font-size="12">基盤の電解コンデンサの劣化</text>
+      <text x="234" y="364" text-anchor="middle" fill="#8a99b8" font-family="'Noto Sans JP'" font-size="11">（原因4）</text>
 
-      <!-- 冷却システム → 電解コンデンサへの影響矢印 -->
-      <line x1="378" y1="320" x2="340" y2="322" stroke="#fbbf24" stroke-width="1.8" marker-end="url(#bg)"/>
+      <!-- 根本原因：冷却システムの不備 -->
+      <rect x="376" y="374" width="258" height="52" rx="7" fill="rgba(251,191,36,.18)" stroke="#fbbf24" stroke-width="2.2"/>
+      <text x="505" y="395" text-anchor="middle" fill="#fbbf24" font-family="'Noto Sans JP'" font-size="13" font-weight="700">冷却システムの不備</text>
+      <text x="505" y="415" text-anchor="middle" fill="#fbbf24" font-family="'Noto Sans JP'" font-size="12" font-weight="700">（根本原因・真の問題）</text>
 
-      <!-- 解説ボックス（冷却の不備の説明） -->
-      <rect x="358" y="362" width="280" height="62" rx="6" fill="rgba(251,191,36,.06)" stroke="#fbbf24" stroke-width="1" stroke-dasharray="4,3"/>
-      <text x="498" y="380" text-anchor="middle" fill="#8a99b8" font-family="'Noto Sans JP'" font-size="10">冷却ファン・ヒートシンクの効率が低い</text>
-      <text x="498" y="396" text-anchor="middle" fill="#8a99b8" font-family="'Noto Sans JP'" font-size="10">→ 内部の熱が蓄積 → 部品加熱</text>
-      <text x="498" y="412" text-anchor="middle" fill="#8a99b8" font-family="'Noto Sans JP'" font-size="10">→ 電力供給不安定 + 部品早期劣化</text>
+      <!-- 根本原因→過熱を引き起こす（点線で示す） -->
+      <line x1="505" y1="374" x2="560" y2="252" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#bg)"/>
+
+      <!-- 解説ボックス -->
+      <rect x="376" y="438" width="258" height="58" rx="5" fill="rgba(251,191,36,.05)" stroke="#fbbf24" stroke-width="1" stroke-dasharray="4,3"/>
+      <text x="505" y="456" text-anchor="middle" fill="#8a99b8" font-family="'Noto Sans JP'" font-size="10">冷却ファン・ヒートシンクの効率が低い</text>
+      <text x="505" y="472" text-anchor="middle" fill="#8a99b8" font-family="'Noto Sans JP'" font-size="10">→ 内部の熱が蓄積 → 過熱・過電圧</text>
+      <text x="505" y="488" text-anchor="middle" fill="#8a99b8" font-family="'Noto Sans JP'" font-size="10">→ 電力供給不安定 + 部品早期劣化</text>
 
       <!-- 解決策バナー -->
-      <rect x="100" y="430" width="460" height="40" rx="7" fill="rgba(52,211,153,.1)" stroke="#34d399" stroke-width="1.8"/>
-      <text x="330" y="447" text-anchor="middle" fill="#34d399" font-family="'Noto Sans JP'" font-size="13" font-weight="700">⇒ 解決策: 冷却システムの改良</text>
-      <text x="330" y="463" text-anchor="middle" fill="#8a99b8" font-family="'Noto Sans JP'" font-size="10">根本原因を解消することで全問題が解決する</text>
+      <rect x="56" y="468" width="296" height="38" rx="7" fill="rgba(52,211,153,.1)" stroke="#34d399" stroke-width="1.8"/>
+      <text x="204" y="485" text-anchor="middle" fill="#34d399" font-family="'Noto Sans JP'" font-size="13" font-weight="700">⇒ 解決策: 冷却システムの改良</text>
+      <text x="204" y="499" text-anchor="middle" fill="#8a99b8" font-family="'Noto Sans JP'" font-size="10">根本原因を解消することで全問題が解決</text>
     </svg>
-    <div class="fig-cap">図5: スマートテレビ故障フロー図（因果連鎖と根本原因） <span class="src">S03:p.29-30</span></div>
+    <div class="fig-cap">図5: スマートテレビ故障フロー図（過電圧ノード含む因果連鎖） <span class="src">S03:p.28-30</span></div>
+  </div>
   </div>
 
   <!-- CASE 2 -->
@@ -711,6 +727,23 @@ strong { color: var(--text); }
     <p><span class="src">S03:p.45</span></p>
   </div>
 
+  <div class="sub-title" style="font-size:14.5px;font-weight:700;margin:22px 0 10px;padding-left:12px;border-left:3px solid var(--accent);">Step 1: 問題を具体的に挙げる</div>
+  <p>「ラインの不具合」を生み出している可能性のある原因を詳細かつ具体的に列挙する。一見些末と思われることも全て洗い出すことが大切。 <span class="src">← S03:p.45-46</span></p>
+  <div class="card">
+    <strong>列挙した原因の例（計6件）</strong> <span class="src">S03:p.46</span>
+    <ol style="margin-top:8px;">
+      <li>要求に合った設計仕様ではなかった</li>
+      <li>ラインの設計上にミスがあった</li>
+      <li>要求に合った機器の仕様でなかった</li>
+      <li>設置方法に問題があった</li>
+      <li>設計と実際の設置にずれがあった</li>
+      <li>メンテナンスの方法や内容が不適切だった</li>
+    </ol>
+  </div>
+  <div class="sub-title" style="font-size:14.5px;font-weight:700;margin:22px 0 10px;padding-left:12px;border-left:3px solid var(--accent);">Step 2: 類型化する</div>
+  <p>上記6件を「設計→選定→設置→メンテナンス」の時系列ステップで整理する。類型化の方法に決まりはないが、解決のアクションを行いやすいまとめ方を意識する。 <span class="src">← S03:p.47</span></p>
+  <div class="sub-title" style="font-size:14.5px;font-weight:700;margin:22px 0 10px;padding-left:12px;border-left:3px solid var(--accent);">Step 3: 個別に解決策を探る（抜け漏れチェック含む）</div>
+
   <!-- スライドp.48-50のツリー図（完全再現・縦型均等間隔） -->
   <div class="fig">
     <svg viewBox="0 0 660 420" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:660px;">
@@ -796,6 +829,20 @@ strong { color: var(--text); }
     <div class="case-lbl">CASE 2: コーヒーショップの売り上げを伸ばすには</div>
     <p><strong>【状況】</strong> ターミナル駅近くの複合ショッピングセンター地下1階。一口サイズのケーキが売りのコーヒーショップ（1年前オープン）。売り上げが伸び悩んでいる。 <span class="src">S03:p.51</span></p>
   </div>
+
+  <div class="sub-title" style="font-size:14.5px;font-weight:700;margin:22px 0 10px;padding-left:12px;border-left:3px solid var(--accent);">Step 1: 問題を具体的に挙げる</div>
+  <p>「売り上げが伸び悩んでいる」原因として思い浮かぶことを全て列挙する。 <span class="src">← S03:p.52</span></p>
+  <div class="card">
+    <strong>列挙した原因（計4件）</strong> <span class="src">S03:p.52</span>
+    <ul style="margin-top:8px;">
+      <li>店の前を歩く客数が少ない</li>
+      <li>似たコーヒーショップが隣で開業している</li>
+      <li>最近駅ビルができたためアクセスの面でこの店は見劣りがする</li>
+      <li>ショートサイズのコーヒー1杯で長居をして受験勉強をしている学生の客も多い</li>
+    </ul>
+  </div>
+  <div class="sub-title" style="font-size:14.5px;font-weight:700;margin:22px 0 10px;padding-left:12px;border-left:3px solid var(--accent);">Step 2: 類型化する → Step 3: 解決策を探る（ダブりチェック含む）</div>
+  <p>「立地」「客」という2つのカテゴリに類型化した後、ダブりを削除（「来店客が少ない」は「通行客が少ない」とダブり、「中高生が多い」は「客単価が低い」とダブり）して各解決策を検討する。 <span class="src">← S03:p.53-56</span></p>
 
   <!-- スライドp.53-56のツリー図（ダブり削除・解決策付き完全再現） -->
   <div class="fig">
@@ -957,7 +1004,8 @@ strong { color: var(--text); }
       <div class="step-arrow">▼</div>
       <div class="step-row"><span class="step-n">Step 3</span><span>両者の接点を探る（2つの価値観の重なり合う領域に着目）</span></div>
     </div>
-    <p style="margin-top:8px;"><strong>特徴</strong>: 相反する主張の背景にある2つの価値観の<strong>接点</strong>を探ること。的確な価値観を抽出するのが最重要ポイント。 <span class="src">← S03:p.63</span></p>
+    <p style="margin-top:8px;"><strong>特徴</strong>: 相反する主張の背景にある2つの価値観の<strong>接点</strong>を探ること。<strong>的確な価値観を抽出するのがこの図を描く上での重要なポイント</strong>。 <span class="src">← S03:p.63</span></p>
+    <p style="margin-top:4px;">主張の円（対立する2つの主張）と価値観の円（その主張を支える価値観）は別物。主張の円は重ならなくても、<strong>価値観の円は一部重なる場合がある</strong>。= 2つの価値観は場合によれば両立させられることを意味する。その<strong>重なり合う接点</strong>を「新たな視点C」として解決策を検討する。 <span class="src">← S03:p.65</span></p>
   </div>
 
   <!-- CASE 1 -->
@@ -1017,6 +1065,11 @@ strong { color: var(--text); }
       <text x="340" y="306" text-anchor="middle" fill="#8a99b8" font-family="'Noto Sans JP'" font-size="10">顧客はニーズと費用を見比べながら判断できる → 双方の価値観を両立</text>
     </svg>
     <div class="fig-cap">図10: 提案書作成の問題解決ベン図（入れ子構造） <span class="src">S03:p.66-67</span></div>
+  </div>
+
+  <div class="audio">
+    <div class="lbl">🎙️ 音声補足（解決策の詳細） <span class="src">S03:p.67</span></div>
+    <p>顧客のニーズをフルに満たす提案を行い、業務項目の打ち分けを示すことで、どの部分を削れば費用を抑えられるかの情報を渡す。<strong>顧客はどこまでをお願いするかを検討することができ</strong>、顧客のニーズと当社の利益の両方を確保できる解決策の一つとなり得る。<span class="src">← S03:p.67</span></p>
   </div>
 
   <!-- CASE 2 -->
@@ -1088,6 +1141,11 @@ strong { color: var(--text); }
       <text x="482" y="312" text-anchor="middle" fill="#8a99b8" font-family="'Noto Sans JP'" font-size="10">β版投入に同意できるかもしれない</text>
     </svg>
     <div class="fig-cap">図11: 開発担当vs販売担当 — ベン図と解決策 <span class="src">S03:p.71-72</span></div>
+  </div>
+
+  <div class="audio">
+    <div class="lbl">🎙️ 音声補足（テスト販売方式の詳細） <span class="src">S03:p.72</span></div>
+    <p>S氏は時期だけが重要なのであれば本格的な発売でなくてもよい可能性がある。例えば<strong>数量限定のテスト販売</strong>のように年末に売り出すことで、他社に先駆けて話題性を提供し同社のアピールが可能になる。C氏は質の高い製品が最終的に発売できるのであれば年末までに一旦<strong>β版として製品を市場に投入することに同意してもらえるかもしれない</strong>。1段階目は台数限定のテストマーケティングと位置付け、そこで得られた<strong>ユーザーの意見をモニター意見として収集</strong>し、それをもとに製品の完成度を高めて翌年夏に本格販売する。この方法を採用することで、両者の主張・背景とする価値観を重視した解決策を導くことが可能になる。 <span class="src">← S03:p.72 / S05-A</span></p>
   </div>
 
   <div class="hl">
